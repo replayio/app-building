@@ -212,7 +212,7 @@ interface ClaudeResponse {
 }
 
 function runClaude(prompt: string, targetDir: string): ClaudeResponse {
-  const result = execFileSync("claude", ["-p", prompt, "--output-format", "json"], {
+  const result = execFileSync("claude", ["-p", prompt, "--output-format", "json", "--dangerously-skip-permissions"], {
     cwd: targetDir,
     encoding: "utf-8",
     maxBuffer: 50 * 1024 * 1024,
