@@ -9,7 +9,7 @@ Each iteration of the loop:
 1. **Gathers context** from the target repository (AppSpec.md, docs/, git history, file tree)
 2. **Builds a prompt** combining the strategy instructions with the current repo context
 3. **Runs Claude** via the CLI (`claude -p`) in the target directory
-4. **Saves output** to `docs/iterations/iteration-N.json`
+4. **Logs output** to the specified log file
 5. **Commits changes** to git
 
 The loop stops when Claude includes `<DONE/>` in its response or the max iteration count is reached.
@@ -28,25 +28,26 @@ npm install
 ## Usage
 
 ```bash
-npm run loop -- <target-dir> <strategy1.md> [strategy2.md ...] [--max-iterations N]
+npm run loop -- <target-dir> --log <logfile> <strategy1.md> [strategy2.md ...] [--max-iterations N]
 ```
+
+The loop starts as a detached background process and returns immediately. All output is written to the log file.
 
 **Arguments:**
 - `target-dir` — Path to the target git repository (must contain an `AppSpec.md`)
 - `strategy.md` — One or more strategy files to guide the agent
 
 **Options:**
+- `--log <file>` — Log file for all output (required)
 - `--max-iterations N` — Stop after N iterations (default: unlimited)
 
 ### Example
 
 ```bash
-# Plan, then implement
-npm run loop -- ../my-app strategies/plan.md --max-iterations 1
-npm run loop -- ../my-app strategies/implement.md --max-iterations 10
+npm run loop -- ../my-app --log /tmp/my-app.log strategies/buildInitialApp.md --max-iterations 10
 
-# Or combine strategies in one run
-npm run loop -- ../my-app strategies/plan.md strategies/implement.md strategies/review.md
+# Watch progress
+tail -f /tmp/my-app.log
 ```
 
 ## Strategies
@@ -58,5 +59,4 @@ Strategy files are Markdown documents that tell Claude what to do each iteration
 The agent expects the target repository to have:
 
 - `AppSpec.md` — Describes what the application should do
-- `docs/plan.md` — Created/updated by the planning strategy
-- `docs/iterations/` — Iteration output is saved here automatically
+- `docs/plan.md` — Created/updated by the strategy
