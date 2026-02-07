@@ -31,7 +31,7 @@ Do not commit code that fails typecheck or lint.
 ## Matching the Spec
 
 - Build the app to closely match the prompt in AppSpec.md.
-- If images or screenshots were provided in the prompt, use Playwright to launch the running app, navigate to the relevant pages, and take screenshots. Compare your screenshots to the reference images and adjust styling and layout until they match closely.
+- If images or screenshots were provided in the prompt, use Playwright to launch the running app, navigate to the relevant pages, and take screenshots. Compare your screenshots to the reference images and adjust styling and layout until there are no significant differences.
 - Do not write tests. Playwright is only for taking screenshots to compare against the spec.
 
 ## Documentation
@@ -40,6 +40,8 @@ Maintain `docs/plan.md` with:
 - High-level app structure and architecture
 - Feature breakdown with status (done / in progress / todo)
 - Any blockers or decisions made
+- The plan must include tasks for taking screenshots and fixing discrepancies vs the mockup images. Iterate on these tasks until the app closely matches the mockups.
+- Adding extra necessary features beyond the mockup is appropriate (e.g. create/delete buttons, navigation, form validation) where needed for a complete, functional app.
 
 ## Commits
 
@@ -53,8 +55,3 @@ Maintain `docs/plan.md` with:
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
 - Focus on one task at a time. Do it well rather than rushing through multiple tasks.
 - If blocked, document the issue in `docs/plan.md` and move to the next task.
-
-## Completion
-
-When all tasks in the plan are complete, include `<DONE/>` in your response.
-If more work remains, describe what was accomplished and what still needs to be done.
