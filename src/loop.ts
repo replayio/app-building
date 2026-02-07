@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSync, appendFileSync } from "fs";
+import { readFileSync, existsSync, readdirSync, statSync, openSync, appendFileSync } from "fs";
 import { join, resolve, basename } from "path";
 
 // --- CLI Arg Parsing ---
@@ -211,19 +211,46 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(prompt: string, targetDir: string): ClaudeResponse {
-  const result = execFileSync("claude", ["-p", prompt, "--output-format", "json", "--dangerously-skip-permissions"], {
-    cwd: targetDir,
-    encoding: "utf-8",
-    maxBuffer: 50 * 1024 * 1024,
-    timeout: 30 * 60 * 1000, // 30 minutes
-  });
+function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
+  return new Promise((resolve, reject) => {
+    const child = spawn("claude", ["-p", prompt, "--output-format", "json", "--dangerously-skip-permissions"], {
+      cwd: targetDir,
+      env: process.env,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
 
-  try {
-    return JSON.parse(result);
-  } catch {
-    return { result };
-  }
+    const chunks: Buffer[] = [];
+
+    child.stdout.on("data", (data: Buffer) => {
+      chunks.push(data);
+      const text = data.toString();
+      for (const line of text.split("\n")) {
+        if (line.trim()) log(`[claude] ${line}`);
+      }
+    });
+
+    child.stderr.on("data", (data: Buffer) => {
+      const text = data.toString();
+      for (const line of text.split("\n")) {
+        if (line.trim()) log(`[claude:err] ${line}`);
+      }
+    });
+
+    child.on("error", (err) => reject(err));
+
+    child.on("close", (code) => {
+      const output = Buffer.concat(chunks).toString("utf-8");
+      if (code !== 0) {
+        reject(new Error(`claude exited with code ${code}`));
+        return;
+      }
+      try {
+        resolve(JSON.parse(output));
+      } catch {
+        resolve({ result: output });
+      }
+    });
+  });
 }
 
 // --- Git Operations ---
@@ -259,7 +286,7 @@ function detach(logFile: string): void {
 
 // --- Main Loop ---
 
-function main(): void {
+async function main(): Promise<void> {
   const { targetDir, strategyFiles, maxIterations, logFile } = parseArgs();
 
   // If not already running as the detached child, re-spawn detached
@@ -309,6 +336,10 @@ function main(): void {
       "Follow the strategy instructions above. Work on the target repository.",
       "When all work described in the strategy is complete, include `<DONE/>` in your response.",
       "If more work remains, describe what was accomplished and what still needs to be done.",
+      "",
+      "IMPORTANT: Monitor your context window usage. When you are running low on context,",
+      "wrap up your current task cleanly — commit your work, update docs/plan.md, and exit.",
+      "The next iteration of the loop will pick up where you left off with fresh context.",
     ];
 
     const prompt = promptParts.join("\n");
@@ -318,7 +349,7 @@ function main(): void {
 
     let response: ClaudeResponse;
     try {
-      response = runClaude(prompt, targetDir);
+      response = await runClaude(prompt, targetDir);
     } catch (e: any) {
       log(`Error running Claude: ${e.message}`);
       break;
@@ -352,4 +383,7 @@ function main(): void {
   log(`Finished after ${iteration} iteration(s).`);
 }
 
-main();
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
