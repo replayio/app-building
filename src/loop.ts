@@ -99,11 +99,12 @@ function parseArgs(): Args {
 let logFilePath: string | null = null;
 
 function log(message: string): void {
-  const line = `[${new Date().toISOString()}] ${message}`;
+  const line = `[${new Date().toISOString()}] ${message}\n`;
   if (logFilePath) {
-    appendFileSync(logFilePath, line + "\n");
+    appendFileSync(logFilePath, line);
+  } else {
+    process.stdout.write(line);
   }
-  console.log(line);
 }
 
 // --- Context Gathering ---
