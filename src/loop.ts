@@ -234,20 +234,10 @@ function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
 
       for (const line of lines) {
         if (!line.trim()) continue;
+        log(line);
         try {
           const event = JSON.parse(line);
-          if (event.type === "assistant") {
-            const content = event.message?.content;
-            if (Array.isArray(content)) {
-              for (const block of content) {
-                if (block.type === "text" && block.text) {
-                  log(`[claude] ${block.text}`);
-                } else if (block.type === "tool_use") {
-                  log(`[claude] tool: ${block.name}`);
-                }
-              }
-            }
-          } else if (event.type === "result") {
+          if (event.type === "result") {
             resultEvent = {
               result: event.result ?? "",
               cost_usd: event.total_cost_usd,
@@ -257,7 +247,7 @@ function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
             };
           }
         } catch {
-          log(`[claude] ${line}`);
+          // not JSON, already logged
         }
       }
     });
