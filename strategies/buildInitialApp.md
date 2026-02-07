@@ -6,8 +6,10 @@ You are building an application based on the provided AppSpec.md. Follow these c
 
 - **Vite** for build tooling
 - **TypeScript** for all source code (strict mode)
-- **React** for UI
+- **React 18** for UI (single-page application)
 - **shadcn/ui** for components
+- **Supabase** for backend (Postgres + PostgREST). Use the Supabase CLI for local development (`supabase init`, `supabase start`). Use `@supabase/supabase-js` for all database access. Define schema via SQL migrations (`supabase migration new`).
+- **Netlify Functions** for any backend/serverless functions. Place functions in `netlify/functions/`. Use `netlify dev` for local development.
 
 ## Development Process
 
@@ -29,7 +31,8 @@ Do not commit code that fails typecheck or lint.
 ## Matching the Spec
 
 - Build the app to closely match the prompt in AppSpec.md.
-- If images or screenshots were provided in the prompt, take screenshots of your implementation and compare them to the reference. Adjust styling and layout until they match closely.
+- If images or screenshots were provided in the prompt, use Playwright to launch the running app, navigate to the relevant pages, and take screenshots. Compare your screenshots to the reference images and adjust styling and layout until they match closely.
+- Do not write tests. Playwright is only for taking screenshots to compare against the spec.
 
 ## Documentation
 
@@ -47,7 +50,7 @@ Maintain `docs/plan.md` with:
 ## Guidelines
 
 - Follow existing code style and conventions in the repo.
-- Write clean, working code. No TODOs or placeholder implementations.
+- Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
 - Focus on one task at a time. Do it well rather than rushing through multiple tasks.
 - If blocked, document the issue in `docs/plan.md` and move to the next task.
 
