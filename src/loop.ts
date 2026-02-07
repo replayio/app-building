@@ -212,20 +212,53 @@ interface ClaudeResponse {
 }
 
 function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
-  return new Promise((resolve, reject) => {
-    const child = spawn("claude", ["-p", prompt, "--output-format", "json", "--dangerously-skip-permissions"], {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn("claude", [
+      "-p", prompt,
+      "--output-format", "stream-json",
+      "--verbose",
+      "--dangerously-skip-permissions",
+    ], {
       cwd: targetDir,
       env: process.env,
       stdio: ["ignore", "pipe", "pipe"],
     });
 
-    const chunks: Buffer[] = [];
+    let resultEvent: ClaudeResponse | null = null;
+    let buffer = "";
 
     child.stdout.on("data", (data: Buffer) => {
-      chunks.push(data);
-      const text = data.toString();
-      for (const line of text.split("\n")) {
-        if (line.trim()) log(`[claude] ${line}`);
+      buffer += data.toString();
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        try {
+          const event = JSON.parse(line);
+          if (event.type === "assistant") {
+            const content = event.message?.content;
+            if (Array.isArray(content)) {
+              for (const block of content) {
+                if (block.type === "text" && block.text) {
+                  log(`[claude] ${block.text}`);
+                } else if (block.type === "tool_use") {
+                  log(`[claude] tool: ${block.name}`);
+                }
+              }
+            }
+          } else if (event.type === "result") {
+            resultEvent = {
+              result: event.result ?? "",
+              cost_usd: event.total_cost_usd,
+              duration_ms: event.duration_ms,
+              num_turns: event.num_turns,
+              session_id: event.session_id,
+            };
+          }
+        } catch {
+          log(`[claude] ${line}`);
+        }
       }
     });
 
@@ -239,16 +272,29 @@ function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
     child.on("error", (err) => reject(err));
 
     child.on("close", (code) => {
-      const output = Buffer.concat(chunks).toString("utf-8");
-      if (code !== 0) {
+      // Process any remaining buffer
+      if (buffer.trim()) {
+        try {
+          const event = JSON.parse(buffer);
+          if (event.type === "result") {
+            resultEvent = {
+              result: event.result ?? "",
+              cost_usd: event.total_cost_usd,
+              duration_ms: event.duration_ms,
+              num_turns: event.num_turns,
+              session_id: event.session_id,
+            };
+          }
+        } catch {
+          // ignore
+        }
+      }
+
+      if (code !== 0 && !resultEvent) {
         reject(new Error(`claude exited with code ${code}`));
         return;
       }
-      try {
-        resolve(JSON.parse(output));
-      } catch {
-        resolve({ result: output });
-      }
+      resolvePromise(resultEvent ?? { result: "" });
     });
   });
 }
@@ -363,11 +409,6 @@ async function main(): Promise<void> {
     if (response.num_turns != null) {
       log(`Turns: ${response.num_turns}`);
     }
-
-    // Log Claude's response
-    log(`--- Claude response ---`);
-    log(response.result ?? "(no result)");
-    log(`--- End response ---`);
 
     // Git commit
     gitCommit(targetDir, iteration);
