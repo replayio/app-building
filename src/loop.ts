@@ -1,17 +1,18 @@
-import { execFileSync, execSync } from "child_process";
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from "fs";
+import { execFileSync, spawn } from "child_process";
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSync, appendFileSync } from "fs";
 import { join, resolve, basename } from "path";
 
 // --- CLI Arg Parsing ---
 
 function printUsage(): void {
-  console.log(`Usage: npx tsx src/loop.ts <target-dir> [--max-iterations N] <strategy1.md> [strategy2.md ...]
+  console.log(`Usage: npx tsx src/loop.ts <target-dir> --log <logfile> [--max-iterations N] <strategy1.md> [strategy2.md ...]
 
 Arguments:
   target-dir       Path to the target git repository
   strategy1.md     One or more strategy files (.md) to guide the agent
 
 Options:
+  --log <file>         Log file for all output (required)
   --max-iterations N   Maximum number of iterations to run (default: unlimited)
   --help               Show this help message`);
 }
@@ -20,6 +21,7 @@ interface Args {
   targetDir: string;
   strategyFiles: string[];
   maxIterations: number | null;
+  logFile: string;
 }
 
 function parseArgs(): Args {
@@ -30,8 +32,13 @@ function parseArgs(): Args {
     process.exit(0);
   }
 
+  // Remove --foreground flag (used internally for detached re-spawn)
+  const foregroundIdx = args.indexOf("--foreground");
+  if (foregroundIdx !== -1) args.splice(foregroundIdx, 1);
+
   const targetDir = resolve(args[0]);
   let maxIterations: number | null = null;
+  let logFile: string | null = null;
   const strategyFiles: string[] = [];
 
   let i = 1;
@@ -47,10 +54,23 @@ function parseArgs(): Args {
         console.error("Error: --max-iterations must be a positive integer");
         process.exit(1);
       }
+    } else if (args[i] === "--log") {
+      i++;
+      if (i >= args.length) {
+        console.error("Error: --log requires a file path");
+        process.exit(1);
+      }
+      logFile = resolve(args[i]);
     } else {
       strategyFiles.push(resolve(args[i]));
     }
     i++;
+  }
+
+  if (!logFile) {
+    console.error("Error: --log is required");
+    printUsage();
+    process.exit(1);
   }
 
   if (strategyFiles.length === 0) {
@@ -71,7 +91,19 @@ function parseArgs(): Args {
     }
   }
 
-  return { targetDir, strategyFiles, maxIterations };
+  return { targetDir, strategyFiles, maxIterations, logFile };
+}
+
+// --- Logging ---
+
+let logFilePath: string | null = null;
+
+function log(message: string): void {
+  const line = `[${new Date().toISOString()}] ${message}`;
+  if (logFilePath) {
+    appendFileSync(logFilePath, line + "\n");
+  }
+  console.log(line);
 }
 
 // --- Context Gathering ---
@@ -208,50 +240,42 @@ function gitCommit(targetDir: string, iteration: number): void {
       { encoding: "utf-8", timeout: 30000 }
     );
   } catch (e: any) {
-    console.warn(`Warning: git commit failed: ${e.message}`);
+    log(`Warning: git commit failed: ${e.message}`);
   }
 }
 
-// --- Iteration Output ---
+// --- Detach ---
 
-function saveIteration(
-  targetDir: string,
-  iteration: number,
-  response: ClaudeResponse,
-  strategyNames: string[]
-): void {
-  const iterDir = join(targetDir, "docs", "iterations");
-  mkdirSync(iterDir, { recursive: true });
-
-  const output = {
-    iteration,
-    timestamp: new Date().toISOString(),
-    strategies: strategyNames,
-    response: response.result,
-    cost_usd: response.cost_usd ?? null,
-    duration_ms: response.duration_ms ?? null,
-    num_turns: response.num_turns ?? null,
-    session_id: response.session_id ?? null,
-  };
-
-  writeFileSync(
-    join(iterDir, `iteration-${iteration}.json`),
-    JSON.stringify(output, null, 2) + "\n"
-  );
+function detach(logFile: string): void {
+  const fd = openSync(logFile, "a");
+  const child = spawn(process.execPath, [...process.execArgv, ...process.argv.slice(1), "--foreground"], {
+    detached: true,
+    stdio: ["ignore", fd, fd],
+    env: process.env,
+  });
+  child.unref();
+  console.log(`Started background process (pid ${child.pid}), logging to ${logFile}`);
 }
 
 // --- Main Loop ---
 
 function main(): void {
-  const { targetDir, strategyFiles, maxIterations } = parseArgs();
+  const { targetDir, strategyFiles, maxIterations, logFile } = parseArgs();
+
+  // If not already running as the detached child, re-spawn detached
+  if (!process.argv.includes("--foreground")) {
+    detach(logFile);
+    return;
+  }
+
+  logFilePath = logFile;
 
   const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
   const strategyNames = strategyFiles.map((f) => basename(f));
 
-  console.log(`Target: ${targetDir}`);
-  console.log(`Strategies: ${strategyNames.join(", ")}`);
-  console.log(`Max iterations: ${maxIterations ?? "unlimited"}`);
-  console.log();
+  log(`Target: ${targetDir}`);
+  log(`Strategies: ${strategyNames.join(", ")}`);
+  log(`Max iterations: ${maxIterations ?? "unlimited"}`);
 
   let iteration = 0;
 
@@ -259,11 +283,11 @@ function main(): void {
     iteration++;
 
     if (maxIterations !== null && iteration > maxIterations) {
-      console.log(`Reached max iterations (${maxIterations}). Stopping.`);
+      log(`Reached max iterations (${maxIterations}). Stopping.`);
       break;
     }
 
-    console.log(`=== Iteration ${iteration} ===`);
+    log(`=== Iteration ${iteration} ===`);
 
     // Gather fresh context each iteration
     const context = gatherContext(targetDir);
@@ -289,40 +313,43 @@ function main(): void {
 
     const prompt = promptParts.join("\n");
 
-    console.log(`Running Claude... (prompt length: ${prompt.length} chars)`);
+    log(`Running Claude... (prompt length: ${prompt.length} chars)`);
     const startTime = Date.now();
 
     let response: ClaudeResponse;
     try {
       response = runClaude(prompt, targetDir);
     } catch (e: any) {
-      console.error(`Error running Claude: ${e.message}`);
+      log(`Error running Claude: ${e.message}`);
       break;
     }
 
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    console.log(`Completed in ${elapsed}s`);
+    log(`Completed in ${elapsed}s`);
     if (response.cost_usd != null) {
-      console.log(`Cost: $${response.cost_usd.toFixed(4)}`);
+      log(`Cost: $${response.cost_usd.toFixed(4)}`);
+    }
+    if (response.num_turns != null) {
+      log(`Turns: ${response.num_turns}`);
     }
 
-    // Save iteration output
-    saveIteration(targetDir, iteration, response, strategyNames);
+    // Log Claude's response
+    log(`--- Claude response ---`);
+    log(response.result ?? "(no result)");
+    log(`--- End response ---`);
 
     // Git commit
     gitCommit(targetDir, iteration);
-    console.log(`Committed iteration ${iteration}`);
+    log(`Committed iteration ${iteration}`);
 
     // Check for done signal
     if (response.result && response.result.includes("<DONE/>")) {
-      console.log(`\nAgent signaled <DONE/>. Stopping.`);
+      log(`Agent signaled <DONE/>. Stopping.`);
       break;
     }
-
-    console.log();
   }
 
-  console.log(`\nFinished after ${iteration} iteration(s).`);
+  log(`Finished after ${iteration} iteration(s).`);
 }
 
 main();
