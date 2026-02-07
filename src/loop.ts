@@ -381,6 +381,9 @@ async function main(): Promise<void> {
 
     const prompt = promptParts.join("\n");
 
+    log(`--- Prompt ---`);
+    log(prompt);
+    log(`--- End prompt ---`);
     log(`Running Claude... (prompt length: ${prompt.length} chars)`);
     const startTime = Date.now();
 
