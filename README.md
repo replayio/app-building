@@ -51,15 +51,7 @@ npm run loop -- ../my-app strategies/plan.md strategies/implement.md strategies/
 
 ## Strategies
 
-Strategy files are Markdown documents that tell Claude what to do each iteration. Three are included:
-
-| File | Purpose |
-|------|---------|
-| `strategies/plan.md` | Analyze requirements and create `docs/plan.md` with feature breakdown and implementation steps |
-| `strategies/implement.md` | Pick the next task from the plan, implement it, and update the plan |
-| `strategies/review.md` | Review code for correctness, completeness, and quality; fix issues directly |
-
-You can write your own strategy files to customize the agent's behavior.
+Strategy files are Markdown documents that tell Claude what to do each iteration. You can write your own strategy files to customize the agent's behavior.
 
 ## Target Repository Structure
 
