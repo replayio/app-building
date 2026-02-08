@@ -2,11 +2,20 @@
 
 You are building an application based on the provided AppSpec.md. Follow these constraints strictly.
 
+## Required Environment Variables
+
+```
+NETLIFY_ACCOUNT_SLUG
+NETLIFY_AUTH_TOKEN
+NEON_API_KEY
+```
+
 ## Tech Stack
 
 - **Vite** for build tooling
 - **TypeScript** for all source code (strict mode)
 - **React 18** for UI (single-page application)
+- **Redux** for client side state management
 - **shadcn/ui** for components
 - **Supabase** for backend (Postgres + PostgREST). Use the Supabase CLI for local development (`supabase init`, `supabase start`). Use `@supabase/supabase-js` for all database access. Define schema via SQL migrations (`supabase migration new`).
 - **Netlify Functions** for any backend/serverless functions. Place functions in `netlify/functions/`. Use `netlify dev` for local development.
@@ -22,7 +31,7 @@ You are building an application based on the provided AppSpec.md. Follow these c
 
 ## Deployment
 
-The app must support `npm run deploy <site-name>` which creates a new netlify site with that site name and a new Neon database which is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
+The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and a new Neon database which is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
 
 ## Quality Gates
 
@@ -55,7 +64,7 @@ Maintain `docs/plan.md` with:
 
 - Follow existing code style and conventions in the repo.
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
-- Abstract functionality within React component files with their own files when appropriate. Avoid large blocks of JSX that are not encapsulated.
+- All JSX rendered on a page must be abstracted into other React components with their own files.
 - Focus on one task at a time. Do it well rather than rushing through multiple tasks.
 - If blocked, document the issue in `docs/plan.md` and move to the next task.
 
@@ -74,5 +83,6 @@ Make sure the plan includes the following tasks:
 
 - Building the initial app, pages, components, and any backend functionality to match the app spec.
 - Take screenshots and fixing discrepancies vs the mockup images. Iterate on these tasks until the app closely matches the mockups.
-- Write docs/tests.md with test entries that comprehensively exercise the app's components. Go through each page and component file and make sure all interactive elements are tested and that the app behaves appropriately when they are used.
+- Write docs/tests.md with test entries that comprehensively test. There must be a task for every component on each page to add test entries which make sure that component behaves as the user will expect. Every interactive element (buttons etc) must be tested.
 - Write a playwright test for each entry in tests.md. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
+- Successfully deploy the app to a new netlify/neon site and write that info to a file deployment.txt
