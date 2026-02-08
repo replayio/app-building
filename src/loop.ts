@@ -1,97 +1,54 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, existsSync, readdirSync, statSync, openSync, appendFileSync } from "fs";
+import { readFileSync, existsSync, readdirSync, statSync, openSync, appendFileSync, mkdirSync } from "fs";
 import { join, resolve, basename } from "path";
+import { Command } from "commander";
 
 // --- CLI Arg Parsing ---
-
-function printUsage(): void {
-  console.log(`Usage: npx tsx src/loop.ts <target-dir> --log <logfile> [--max-iterations N] <strategy1.md> [strategy2.md ...]
-
-Arguments:
-  target-dir       Path to the target git repository
-  strategy1.md     One or more strategy files (.md) to guide the agent
-
-Options:
-  --log <file>         Log file for all output (required)
-  --max-iterations N   Maximum number of iterations to run (default: unlimited)
-  --help               Show this help message`);
-}
 
 interface Args {
   targetDir: string;
   strategyFiles: string[];
   maxIterations: number | null;
-  logFile: string;
+  promptText: string | null;
+  foreground: boolean;
 }
 
 function parseArgs(): Args {
-  const args = process.argv.slice(2);
+  const program = new Command();
+  program
+    .argument("<target-dir>", "path to the target git repository")
+    .argument("<strategies...>", "one or more strategy files (.md) to guide the agent")
+    .option("--max-iterations <n>", "maximum number of iterations to run", parseInt)
+    .option("--prompt <text>", "additional prompt text to include in each iteration")
+    .option("--foreground", "run in foreground (used internally)", false)
+    .parse();
 
-  if (args.length === 0 || args.includes("--help")) {
-    printUsage();
-    process.exit(0);
+  const opts = program.opts();
+  const [targetDir, ...strategyFiles] = program.args;
+
+  return {
+    targetDir: resolve(targetDir),
+    strategyFiles: strategyFiles.map((f) => resolve(f)),
+    maxIterations: opts.maxIterations ?? null,
+    promptText: opts.prompt ?? null,
+    foreground: opts.foreground,
+  };
+}
+
+function getLogFile(targetDir: string): string {
+  const logsDir = join(targetDir, "logs");
+  mkdirSync(logsDir, { recursive: true });
+
+  let n = 1;
+  const existing = readdirSync(logsDir)
+    .filter((f) => /^loop-(\d+)\.log$/.test(f))
+    .map((f) => parseInt(f.match(/^loop-(\d+)\.log$/)![1], 10));
+  if (existing.length > 0) {
+    n = Math.max(...existing) + 1;
   }
 
-  // Remove --foreground flag (used internally for detached re-spawn)
-  const foregroundIdx = args.indexOf("--foreground");
-  if (foregroundIdx !== -1) args.splice(foregroundIdx, 1);
-
-  const targetDir = resolve(args[0]);
-  let maxIterations: number | null = null;
-  let logFile: string | null = null;
-  const strategyFiles: string[] = [];
-
-  let i = 1;
-  while (i < args.length) {
-    if (args[i] === "--max-iterations") {
-      i++;
-      if (i >= args.length) {
-        console.error("Error: --max-iterations requires a number");
-        process.exit(1);
-      }
-      maxIterations = parseInt(args[i], 10);
-      if (isNaN(maxIterations) || maxIterations < 1) {
-        console.error("Error: --max-iterations must be a positive integer");
-        process.exit(1);
-      }
-    } else if (args[i] === "--log") {
-      i++;
-      if (i >= args.length) {
-        console.error("Error: --log requires a file path");
-        process.exit(1);
-      }
-      logFile = resolve(args[i]);
-    } else {
-      strategyFiles.push(resolve(args[i]));
-    }
-    i++;
-  }
-
-  if (!logFile) {
-    console.error("Error: --log is required");
-    printUsage();
-    process.exit(1);
-  }
-
-  if (strategyFiles.length === 0) {
-    console.error("Error: at least one strategy file is required");
-    printUsage();
-    process.exit(1);
-  }
-
-  if (!existsSync(targetDir) || !statSync(targetDir).isDirectory()) {
-    console.error(`Error: target directory does not exist: ${targetDir}`);
-    process.exit(1);
-  }
-
-  for (const f of strategyFiles) {
-    if (!existsSync(f)) {
-      console.error(`Error: strategy file not found: ${f}`);
-      process.exit(1);
-    }
-  }
-
-  return { targetDir, strategyFiles, maxIterations, logFile };
+  const logFile = join(logsDir, `loop-${n}.log`);
+  return logFile;
 }
 
 // --- Logging ---
@@ -324,10 +281,11 @@ function detach(logFile: string): void {
 // --- Main Loop ---
 
 async function main(): Promise<void> {
-  const { targetDir, strategyFiles, maxIterations, logFile } = parseArgs();
+  const { targetDir, strategyFiles, maxIterations, promptText, foreground } = parseArgs();
+  const logFile = getLogFile(targetDir);
 
   // If not already running as the detached child, re-spawn detached
-  if (!process.argv.includes("--foreground")) {
+  if (!foreground) {
     detach(logFile);
     return;
   }
@@ -364,6 +322,7 @@ async function main(): Promise<void> {
       "## Strategy Instructions",
       "",
       ...strategyContents.map((content, i) => `### ${strategyNames[i]}\n\n${content}`),
+      ...(promptText ? ["", "## Additional Instructions", "", promptText] : []),
       "",
       "## Current Repository Context",
       "",

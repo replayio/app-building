@@ -20,6 +20,10 @@ You are building an application based on the provided AppSpec.md. Follow these c
 5. After every significant change, run typecheck and lint, fix any errors, then commit.
 6. Update `docs/plan.md` to reflect progress.
 
+## Deployment
+
+The app must support `npm run deploy <site-name>` which creates a new netlify site with that site name and a new Neon database which is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
+
 ## Quality Gates
 
 Before each commit:
