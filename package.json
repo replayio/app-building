@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Simple agent loop for building apps with Claude Code CLI",
   "scripts": {
-    "loop": "tsx src/loop.ts"
+    "loop": "tsx src/loop.ts",
+    "read-log": "tsx src/read-log.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.0",
