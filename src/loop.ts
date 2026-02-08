@@ -1,5 +1,6 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, existsSync, readdirSync, statSync, openSync, appendFileSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSync, closeSync, appendFileSync, mkdirSync } from "fs";
+
 import { join, resolve, basename } from "path";
 import { Command } from "commander";
 
@@ -34,7 +35,7 @@ function parseArgs(): Args {
   };
 }
 
-function getLogFile(targetDir: string): string {
+function getLogFile(targetDir: string): { logFile: string; loopNumber: number } {
   const logsDir = join(targetDir, "logs");
   mkdirSync(logsDir, { recursive: true });
 
@@ -46,7 +47,7 @@ function getLogFile(targetDir: string): string {
     n = Math.max(...existing) + 1;
   }
 
-  return join(logsDir, `loop-${n}.log`);
+  return { logFile: join(logsDir, `loop-${n}.log`), loopNumber: n };
 }
 
 // --- Logging ---
@@ -163,10 +164,17 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(prompt: string, targetDir: string, log: (msg: string) => void): Promise<ClaudeResponse> {
+function runClaude(prompt: string, targetDir: string, loopNumber: number, iteration: number, log: (msg: string) => void): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
+    // Write prompt to a file to avoid E2BIG on large prompts
+    const logsDir = join(targetDir, "logs");
+    mkdirSync(logsDir, { recursive: true });
+    const promptFile = join(logsDir, `prompt-${loopNumber}-${iteration}.txt`);
+    writeFileSync(promptFile, prompt);
+    const promptFd = openSync(promptFile, "r");
+
     const child = spawn("claude", [
-      "-p", prompt,
+      "-p",
       "--model", "claude-opus-4-6",
       "--output-format", "stream-json",
       "--verbose",
@@ -174,13 +182,13 @@ function runClaude(prompt: string, targetDir: string, log: (msg: string) => void
     ], {
       cwd: targetDir,
       env: process.env,
-      stdio: ["ignore", "pipe", "pipe"],
+      stdio: [promptFd, "pipe", "pipe"],
     });
 
     let resultEvent: ClaudeResponse | null = null;
     let buffer = "";
 
-    child.stdout.on("data", (data: Buffer) => {
+    child.stdout!.on("data", (data: Buffer) => {
       buffer += data.toString();
       const lines = buffer.split("\n");
       buffer = lines.pop() ?? "";
@@ -205,7 +213,7 @@ function runClaude(prompt: string, targetDir: string, log: (msg: string) => void
       }
     });
 
-    child.stderr.on("data", (data: Buffer) => {
+    child.stderr!.on("data", (data: Buffer) => {
       const text = data.toString();
       for (const line of text.split("\n")) {
         if (line.trim()) log(`[claude:err] ${line}`);
@@ -215,6 +223,8 @@ function runClaude(prompt: string, targetDir: string, log: (msg: string) => void
     child.on("error", (err) => reject(err));
 
     child.on("close", (code) => {
+      try { closeSync(promptFd); } catch { /* ignore */ }
+
       // Process any remaining buffer
       if (buffer.trim()) {
         try {
@@ -308,7 +318,7 @@ async function runLoop(
   maxIterations: number | null,
   promptText: string | null,
 ): Promise<void> {
-  const logFile = getLogFile(targetDir);
+  const { logFile, loopNumber } = getLogFile(targetDir);
   const log = createLogger(logFile);
 
   log(`Target: ${targetDir}`);
@@ -368,7 +378,7 @@ async function runLoop(
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(prompt, targetDir, log);
+      response = await runClaude(prompt, targetDir, loopNumber, iteration, log);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
