@@ -86,3 +86,5 @@ Make sure the plan includes the following tasks:
 - Write docs/tests.md with test entries that comprehensively test. There must be a task for every component on each page to add test entries which make sure that component behaves as the user will expect. Every interactive element (buttons etc) must be tested.
 - Write a playwright test for each entry in tests.md. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
 - Successfully deploy the app to a new netlify/neon site and write that info to a file deployment.txt
+
+The tasks might be updated through other processes. If there are remaining incomplete tasks in the list, you must focus on fixing them.
