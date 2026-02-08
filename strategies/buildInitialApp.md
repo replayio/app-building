@@ -75,6 +75,8 @@ Maintain `docs/plan.md` with:
 - Test entries must be grouped by page in the app.
 - Test entries must indicate the components on that page they are exercising.
 - Every interactive element (buttons etc) in the component must be tested. There must be a comment in the JSX next to every interactive element with the titles of the tests that exercise it.
+- The test must verify that the interactive element actually works and does what the user expects. For example, clicking a button must do something, and text added to forms must be reflected in the app state afterwards.
+- If while writing tests you discover parts of the app that haven't been fully implemented, you must finish implementation of the app. The tests must verify that the app is fully implemented and behaving as expected.
 - Playwright tests and app components/pages must use data-testid to identify elements on the page.
 
 ## Lessons
@@ -87,7 +89,7 @@ Make sure the plan includes the following tasks:
 
 - Building the initial app, pages, components, and any backend functionality to match the app spec.
 - Take screenshots and fixing discrepancies vs the mockup images. These tasks are not complete until the app closely matches the mockups.
-- Write docs/tests.md with test entries that comprehensively test the app.
+- Write docs/tests.md with test entries that comprehensively test the app and conform exactly to the requirements above.
 - Write a playwright test for each entry in tests.md. The entry indicates the test file which covers it. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
 - Deploy the app's initial version to a new netlify/neon site and write that info to a file deployment.txt
 
