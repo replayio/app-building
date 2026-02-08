@@ -32,7 +32,7 @@ Do not commit code that fails typecheck or lint.
 
 - Build the app to closely match the prompt in AppSpec.md.
 - If images or screenshots were provided in the prompt, use Playwright to launch the running app, navigate to the relevant pages, and take screenshots. Compare your screenshots to the reference images and adjust styling and layout until there are no significant differences.
-- Do not write tests. Playwright is only for taking screenshots to compare against the spec.
+- Adding extra necessary features beyond the mockup may be needed for a complete, functional app (e.g. create/delete buttons, navigation, form validation).
 
 ## Documentation
 
@@ -40,8 +40,6 @@ Maintain `docs/plan.md` with:
 - High-level app structure and architecture
 - Feature breakdown with status (done / in progress / todo)
 - Any blockers or decisions made
-- The plan must include tasks for taking screenshots and fixing discrepancies vs the mockup images. Iterate on these tasks until the app closely matches the mockups.
-- Adding extra necessary features beyond the mockup is appropriate (e.g. create/delete buttons, navigation, form validation) where needed for a complete, functional app.
 
 ## Commits
 
@@ -53,5 +51,24 @@ Maintain `docs/plan.md` with:
 
 - Follow existing code style and conventions in the repo.
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
+- Abstract functionality within React component files with their own files when appropriate. Avoid large blocks of JSX that are not encapsulated.
 - Focus on one task at a time. Do it well rather than rushing through multiple tasks.
 - If blocked, document the issue in `docs/plan.md` and move to the next task.
+
+## Tests
+
+- You will need to write a file docs/tests.md which describes the tests the app needs. Use behavior driven development to formulate these tests: describe the initial conditions of the app's state, the action the user takes, and the changes to the app that should occur afterwards.
+- Playwright tests and app components/pages must use data-testid to identify elements on the page.
+
+## Lessons
+
+- As you either succeed or fail to accomplish tasks, add / update files in the lessons folder that describe things that worked or didn't work, or which add more details about implementation strategy. Lessons should be organized in one file per core concept with an appropriate file name.
+
+## Tasks
+
+Make sure the plan includes the following tasks:
+
+- Building the initial app, pages, components, and any backend functionality to match the app spec.
+- Take screenshots and fixing discrepancies vs the mockup images. Iterate on these tasks until the app closely matches the mockups.
+- Write docs/tests.md with test entries that comprehensively exercise the app's components. Go through each page and component file and make sure all interactive elements are tested and that the app behaves appropriately when they are used.
+- Write a playwright test for each entry in tests.md. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.

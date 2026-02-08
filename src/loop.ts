@@ -342,6 +342,7 @@ async function main(): Promise<void> {
   log(`Max iterations: ${maxIterations ?? "unlimited"}`);
 
   let iteration = 0;
+  let totalCost = 0;
 
   while (true) {
     iteration++;
@@ -391,14 +392,20 @@ async function main(): Promise<void> {
     try {
       response = await runClaude(prompt, targetDir);
     } catch (e: any) {
-      log(`Error running Claude: ${e.message}`);
+      log(`Error running claude: ${e} ${e.message}`);
+      if (maxIterations !== null) {
+        log(`Have remaining iterations, retrying...`);
+        continue;
+      }
+      log(`Max iterations not set, stopping.`);
       break;
     }
 
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     log(`Completed in ${elapsed}s`);
     if (response.cost_usd != null) {
-      log(`Cost: $${response.cost_usd.toFixed(4)}`);
+      totalCost += response.cost_usd;
+      log(`Cost: $${response.cost_usd.toFixed(4)} (total: $${totalCost.toFixed(4)})`);
     }
     if (response.num_turns != null) {
       log(`Turns: ${response.num_turns}`);
