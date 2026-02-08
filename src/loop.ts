@@ -167,6 +167,7 @@ function runClaude(prompt: string, targetDir: string, log: (msg: string) => void
   return new Promise((resolvePromise, reject) => {
     const child = spawn("claude", [
       "-p", prompt,
+      "--model", "claude-opus-4-6",
       "--output-format", "stream-json",
       "--verbose",
       "--dangerously-skip-permissions",
