@@ -272,7 +272,7 @@ function detach(logFile: string): void {
   const child = spawn(process.execPath, [...process.execArgv, ...process.argv.slice(1), "--foreground"], {
     detached: true,
     stdio: ["ignore", fd, fd],
-    env: process.env,
+    env: { ...process.env, LOOP_LOG_FILE: logFile },
   });
   child.unref();
   console.log(`Started background process (pid ${child.pid}), logging to ${logFile}`);
@@ -282,7 +282,7 @@ function detach(logFile: string): void {
 
 async function main(): Promise<void> {
   const { targetDir, strategyFiles, maxIterations, promptText, foreground } = parseArgs();
-  const logFile = getLogFile(targetDir);
+  const logFile = process.env.LOOP_LOG_FILE ?? getLogFile(targetDir);
 
   // If not already running as the detached child, re-spawn detached
   if (!foreground) {
