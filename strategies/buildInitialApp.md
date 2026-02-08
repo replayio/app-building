@@ -71,6 +71,8 @@ Maintain `docs/plan.md` with:
 ## Tests
 
 - You will need to write a file docs/tests.md which describes the tests the app needs. Use behavior driven development to formulate these tests: describe the initial conditions of the app's state, the action the user takes, and the changes to the app that should occur afterwards.
+- Test entries should be grouped by page in the app.
+- Test entries should indicate the components on that page they are exercising.
 - Playwright tests and app components/pages must use data-testid to identify elements on the page.
 
 ## Lessons
@@ -82,9 +84,11 @@ Maintain `docs/plan.md` with:
 Make sure the plan includes the following tasks:
 
 - Building the initial app, pages, components, and any backend functionality to match the app spec.
-- Take screenshots and fixing discrepancies vs the mockup images. Iterate on these tasks until the app closely matches the mockups.
-- Write docs/tests.md with test entries that comprehensively test. There must be a task for every component on each page to add test entries which make sure that component behaves as the user will expect. Every interactive element (buttons etc) must be tested.
+- Take screenshots and fixing discrepancies vs the mockup images. These tasks are not complete until the app closely matches the mockups.
+- Write docs/tests.md with test entries that comprehensively test the app. There must be a task for every component on each page to add test entries which make sure that component behaves as the user will expect. Every interactive element (buttons etc) must be tested.
 - Write a playwright test for each entry in tests.md. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
-- Successfully deploy the app to a new netlify/neon site and write that info to a file deployment.txt
+- Deploy the app's initial version to a new netlify/neon site and write that info to a file deployment.txt
 
-The tasks might be updated through other processes. If there are remaining incomplete tasks in the list, you must focus on fixing them.
+The tasks might be updated through other processes. If there are remaining incomplete tasks in the plan, you must focus on fixing them.
+
+When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
