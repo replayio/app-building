@@ -6,7 +6,7 @@ import { Command } from "commander";
 // --- CLI Arg Parsing ---
 
 interface Args {
-  targetDir: string;
+  dirs: string[];
   strategyFiles: string[];
   maxIterations: number | null;
   promptText: string | null;
@@ -16,19 +16,18 @@ interface Args {
 function parseArgs(): Args {
   const program = new Command();
   program
-    .argument("<target-dir>", "path to the target git repository")
-    .argument("<strategies...>", "one or more strategy files (.md) to guide the agent")
+    .requiredOption("--dir <paths...>", "target git repository directories")
+    .requiredOption("--load <files...>", "strategy files (.md) to guide the agent")
     .option("--max-iterations <n>", "maximum number of iterations to run", parseInt)
     .option("--prompt <text>", "additional prompt text to include in each iteration")
     .option("--foreground", "run in foreground (used internally)", false)
     .parse();
 
   const opts = program.opts();
-  const [targetDir, ...strategyFiles] = program.args;
 
   return {
-    targetDir: resolve(targetDir),
-    strategyFiles: strategyFiles.map((f) => resolve(f)),
+    dirs: opts.dir.map((d: string) => resolve(d)),
+    strategyFiles: opts.load.map((f: string) => resolve(f)),
     maxIterations: opts.maxIterations ?? null,
     promptText: opts.prompt ?? null,
     foreground: opts.foreground,
@@ -47,21 +46,16 @@ function getLogFile(targetDir: string): string {
     n = Math.max(...existing) + 1;
   }
 
-  const logFile = join(logsDir, `loop-${n}.log`);
-  return logFile;
+  return join(logsDir, `loop-${n}.log`);
 }
 
 // --- Logging ---
 
-let logFilePath: string | null = null;
-
-function log(message: string): void {
-  const line = `[${new Date().toISOString()}] ${message}\n`;
-  if (logFilePath) {
+function createLogger(logFilePath: string) {
+  return (message: string): void => {
+    const line = `[${new Date().toISOString()}] ${message}\n`;
     appendFileSync(logFilePath, line);
-  } else {
-    process.stdout.write(line);
-  }
+  };
 }
 
 // --- Context Gathering ---
@@ -169,7 +163,7 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
+function runClaude(prompt: string, targetDir: string, log: (msg: string) => void): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
     const child = spawn("claude", [
       "-p", prompt,
@@ -249,7 +243,7 @@ function runClaude(prompt: string, targetDir: string): Promise<ClaudeResponse> {
 
 // --- Git Operations ---
 
-function gitCommit(targetDir: string, iteration: number): void {
+function gitCommit(targetDir: string, iteration: number, log: (msg: string) => void): void {
   try {
     execFileSync("git", ["-C", targetDir, "add", "-A"], {
       encoding: "utf-8",
@@ -267,37 +261,61 @@ function gitCommit(targetDir: string, iteration: number): void {
 
 // --- Detach ---
 
-function detach(logFile: string): void {
-  const fd = openSync(logFile, "a");
+function detach(): void {
   const child = spawn(process.execPath, [...process.execArgv, ...process.argv.slice(1), "--foreground"], {
     detached: true,
-    stdio: ["ignore", fd, fd],
-    env: { ...process.env, LOOP_LOG_FILE: logFile },
+    stdio: "ignore",
+    env: process.env,
   });
   child.unref();
-  console.log(`Started background process (pid ${child.pid}), logging to ${logFile}`);
+  console.log(`Started background process (pid ${child.pid})`);
 }
 
-// --- Main Loop ---
+// --- Env Var Check ---
 
-async function main(): Promise<void> {
-  const { targetDir, strategyFiles, maxIterations, promptText, foreground } = parseArgs();
-  const logFile = process.env.LOOP_LOG_FILE ?? getLogFile(targetDir);
+function checkEnvVars(strategyFiles: string[]): void {
+  const allVars: string[] = [];
 
-  // If not already running as the detached child, re-spawn detached
-  if (!foreground) {
-    detach(logFile);
-    return;
+  for (const f of strategyFiles) {
+    const content = readFileSync(f, "utf-8");
+    // Look for a "Required Environment Variables" section with a code block
+    const sectionMatch = content.match(/## Required Environment Variables\s*\n+```\n([\s\S]*?)\n```/);
+    if (!sectionMatch) continue;
+
+    const vars = sectionMatch[1]
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+    allVars.push(...vars);
   }
 
-  logFilePath = logFile;
+  if (allVars.length === 0) return;
 
-  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
-  const strategyNames = strategyFiles.map((f) => basename(f));
+  const missing = allVars.filter((v) => !process.env[v]);
+  if (missing.length > 0) {
+    console.error(`Missing required environment variables: ${missing.join(", ")}`);
+    process.exit(1);
+  }
+}
+
+// --- Run Loop for a Single Directory ---
+
+async function runLoop(
+  targetDir: string,
+  strategyContents: string[],
+  strategyNames: string[],
+  maxIterations: number | null,
+  promptText: string | null,
+): Promise<void> {
+  const logFile = getLogFile(targetDir);
+  const log = createLogger(logFile);
 
   log(`Target: ${targetDir}`);
+  log(`Log file: ${logFile}`);
   log(`Strategies: ${strategyNames.join(", ")}`);
   log(`Max iterations: ${maxIterations ?? "unlimited"}`);
+
+  console.log(`[${basename(targetDir)}] logging to ${logFile}`);
 
   let iteration = 0;
   let totalCost = 0;
@@ -349,7 +367,7 @@ async function main(): Promise<void> {
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(prompt, targetDir);
+      response = await runClaude(prompt, targetDir, log);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
@@ -371,7 +389,7 @@ async function main(): Promise<void> {
     }
 
     // Git commit
-    gitCommit(targetDir, iteration);
+    gitCommit(targetDir, iteration, log);
     log(`Committed iteration ${iteration}`);
 
     // Check for done signal
@@ -382,6 +400,27 @@ async function main(): Promise<void> {
   }
 
   log(`Finished after ${iteration} iteration(s).`);
+}
+
+// --- Main ---
+
+async function main(): Promise<void> {
+  const { dirs, strategyFiles, maxIterations, promptText, foreground } = parseArgs();
+  checkEnvVars(strategyFiles);
+
+  // If not already running as the detached child, re-spawn detached
+  if (!foreground) {
+    detach();
+    return;
+  }
+
+  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
+  const strategyNames = strategyFiles.map((f) => basename(f));
+
+  // Run all directories in parallel
+  await Promise.all(
+    dirs.map((dir) => runLoop(dir, strategyContents, strategyNames, maxIterations, promptText))
+  );
 }
 
 main().catch((e) => {
