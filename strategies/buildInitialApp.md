@@ -86,7 +86,7 @@ Make sure the plan includes the following tasks:
 - Building the initial app, pages, components, and any backend functionality to match the app spec.
 - Take screenshots and fixing discrepancies vs the mockup images. These tasks are not complete until the app closely matches the mockups.
 - Write docs/tests.md with test entries that comprehensively test the app. There must be a task for every component on each page to add test entries which make sure that component behaves as the user will expect. Every interactive element (buttons etc) must be tested.
-- Write a playwright test for each entry in tests.md. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
+- Write a playwright test for each entry in tests.md. The entry indicates the test file which covers it. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
 - Deploy the app's initial version to a new netlify/neon site and write that info to a file deployment.txt
 
 The tasks might be updated through other processes. If there are remaining incomplete tasks in the plan, you must focus on fixing them.
