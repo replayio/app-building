@@ -1,6 +1,6 @@
 # app-building
 
-An agent loop that iteratively builds applications using the Claude Code CLI. Point it at a git repository with an `AppSpec.md` and a set of strategy files, and it will plan, implement, and review your project across multiple iterations.
+An agent loop that iteratively builds applications using the Claude Code CLI. Point it at a git repository with an `AppSpec.md` and a set of strategy files, and it will plan, implement, and review your project across multiple iterations — each target running in its own Docker container.
 
 ## How It Works
 
@@ -17,7 +17,9 @@ The loop stops when Claude includes `<DONE/>` in its response or the max iterati
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/)
+- [Docker](https://www.docker.com/)
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
+- `ANTHROPIC_API_KEY` environment variable set
 
 ## Setup
 
@@ -27,28 +29,66 @@ npm install
 
 ## Usage
 
-```bash
-npm run loop -- --dir <target-dir> [<target-dir2> ...] --load <strategy.md> [<strategy2.md> ...] [--max-iterations N] [--prompt "extra instructions"]
+### Running with Docker containers (recommended)
+
+Create a JSON config file (see `config.example.json`):
+
+```json
+{
+  "maxIterations": 10,
+  "targets": [
+    {
+      "dir": "../app1",
+      "strategies": ["strategies/buildInitialApp.md"]
+    },
+    {
+      "dir": "../app2",
+      "strategies": ["strategies/buildInitialApp.md"]
+    }
+  ]
+}
 ```
 
-The loop starts as a detached background process and returns immediately. Logs are written to `<target-dir>/logs/loop-N.log`.
+Paths are resolved relative to the config file's directory.
 
-**Options:**
-- `--dir <paths...>` — One or more target git repository directories (required)
-- `--load <files...>` — One or more strategy files to guide the agent (required)
-- `--max-iterations N` — Stop after N iterations (default: unlimited)
-- `--prompt <text>` — Additional prompt text to include in each iteration
-
-Multiple directories run in parallel, each with their own log file and independent loop.
-
-### Example
+Then run the agent:
 
 ```bash
-# Single app
-npm run loop -- --dir ../my-app --load strategies/buildInitialApp.md --max-iterations 10
+npm run agent -- config.json
+```
 
-# Multiple apps in parallel
-npm run loop -- --dir ../app1 ../app2 ../app3 --load strategies/buildInitialApp.md
+This will:
+1. Build the Docker image if it doesn't exist
+2. Start a container for each target in parallel
+3. Each container mounts the target directory at `/workspace` and strategies at `/strategies`
+4. Pipe container stdout/stderr to the host console
+5. Report exit status when all containers finish
+
+Required environment variables declared in strategy files (plus `ANTHROPIC_API_KEY`) are checked at startup and passed into each container.
+
+#### Building the Docker image manually
+
+```bash
+npm run docker:build
+```
+
+### Running the loop directly (without Docker)
+
+For debugging or running outside containers, use `loop.ts` directly:
+
+```bash
+npm run loop -- --dir <target-dir> --load <strategy.md> [<strategy2.md> ...] [--max-iterations N]
+```
+
+**Options:**
+- `--dir <path>` — Target git repository directory (required)
+- `--load <files...>` — One or more strategy files to guide the agent (required)
+- `--max-iterations N` — Stop after N iterations (default: unlimited)
+
+#### Example
+
+```bash
+npm run loop -- --dir ../my-app --load strategies/buildInitialApp.md --max-iterations 10
 ```
 
 ### Reading Logs

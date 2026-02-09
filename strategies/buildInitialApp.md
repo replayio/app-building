@@ -17,12 +17,14 @@ NEON_API_KEY
 - **React 18** for UI (single-page application)
 - **Redux** for client side state management
 - **shadcn/ui** for components
-- **Neon** for database backend (Postgres + PostgREST).
+- **Neon** for database backend (Postgres).
 - **Netlify Functions** for any backend/serverless functions. Place functions in `netlify/functions/`. Use `netlify dev` for local development.
 
 ## Database
 
-The app must support `npm run init-db` which creates a new Neon database and configures the app to connect to it. Set up the data API and connect to it over PostgREST. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of anything or any proxies.
+The app must support `npm run init-db` which creates a new Neon database and configures the app to connect to it. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of anything or any proxies.
+
+All database accesses must happen in backend Netlify functions. Netlify functions should be focused and operate on specific parts of the database corresponding to the needs of one or more specific frontend components.
 
 ## Development Process
 
