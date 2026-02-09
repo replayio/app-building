@@ -4,6 +4,8 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSyn
 import { join, resolve, basename } from "path";
 import { Command } from "commander";
 
+const ReplayMCPServer = "https://dispatch.replay.io/nut/mcp";
+
 // --- CLI Arg Parsing ---
 
 interface Args {
@@ -164,7 +166,7 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(prompt: string, targetDir: string, loopNumber: number, iteration: number, log: (msg: string) => void): Promise<ClaudeResponse> {
+function runClaude(prompt: string, targetDir: string, loopNumber: number, iteration: number, log: (msg: string) => void, requiredEnvVars: string[]): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
     // Write prompt to a file to avoid E2BIG on large prompts
     const logsDir = join(targetDir, "logs");
@@ -173,12 +175,25 @@ function runClaude(prompt: string, targetDir: string, loopNumber: number, iterat
     writeFileSync(promptFile, prompt);
     const promptFd = openSync(promptFile, "r");
 
+    const mcpConfig: Record<string, any> = {
+      mcpServers: {},
+    };
+
+    // Add replay MCP server if RECORD_REPLAY_API_KEY is a required env var
+    if (requiredEnvVars.includes("RECORD_REPLAY_API_KEY")) {
+      mcpConfig.mcpServers.replay = {
+        type: "http",
+        url: ReplayMCPServer,
+      };
+    }
+
     const child = spawn("claude", [
       "-p",
       "--model", "claude-opus-4-6",
       "--output-format", "stream-json",
       "--verbose",
       "--dangerously-skip-permissions",
+      "--mcp-config", JSON.stringify(mcpConfig),
     ], {
       cwd: targetDir,
       env: process.env,
@@ -284,11 +299,10 @@ function detach(): void {
 
 // --- Env Var Check ---
 
-function checkEnvVars(strategyFiles: string[]): void {
+function extractRequiredEnvVars(strategyContents: string[]): string[] {
   const allVars: string[] = [];
 
-  for (const f of strategyFiles) {
-    const content = readFileSync(f, "utf-8");
+  for (const content of strategyContents) {
     // Look for a "Required Environment Variables" section with a code block
     const sectionMatch = content.match(/## Required Environment Variables\s*\n+```\n([\s\S]*?)\n```/);
     if (!sectionMatch) continue;
@@ -299,6 +313,13 @@ function checkEnvVars(strategyFiles: string[]): void {
       .filter((line) => line.length > 0);
     allVars.push(...vars);
   }
+
+  return allVars;
+}
+
+function checkEnvVars(strategyFiles: string[]): void {
+  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
+  const allVars = extractRequiredEnvVars(strategyContents);
 
   if (allVars.length === 0) return;
 
@@ -327,6 +348,8 @@ async function runLoop(
   log(`Max iterations: ${maxIterations ?? "unlimited"}`);
 
   console.log(`[${basename(targetDir)}] logging to ${logFile}`);
+
+  const requiredEnvVars = extractRequiredEnvVars(strategyContents);
 
   let iteration = 0;
   let totalCost = 0;
@@ -378,7 +401,7 @@ async function runLoop(
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(prompt, targetDir, loopNumber, iteration, log);
+      response = await runClaude(prompt, targetDir, loopNumber, iteration, log, requiredEnvVars);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
