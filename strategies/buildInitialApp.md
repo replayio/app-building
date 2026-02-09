@@ -33,6 +33,8 @@ NEON_API_KEY
 
 The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and a new Neon database which is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
 
+Make sure to update all URLs etc to match the deployed resources. Use playwright to load the app and test it after deploying to make sure it works.
+
 ## Quality Gates
 
 Before each commit:

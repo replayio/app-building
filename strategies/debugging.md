@@ -1,6 +1,6 @@
 # Strategy
 
-When running tests you must use the Replay Browser to record test executions,
+When running tests you must use the Replay browser to record test executions,
 and the Replay MCP service to debug test failures. Make sure you understand the cause
 of every test failure, and fix the test and/or app in an appropriate fashion.
 
@@ -16,6 +16,8 @@ update or create a suitable lesson file in lessons/debugging.
 
 Whenever you are investigating a non-obvious test failure, look through these lessons
 for anything relevant to the failure.
+
+When testing the app after deployment, use the Replay browser to record the app and debug any problems.
 
 ## Required Environment Variables
 
