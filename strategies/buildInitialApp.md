@@ -17,12 +17,12 @@ NEON_API_KEY
 - **React 18** for UI (single-page application)
 - **Redux** for client side state management
 - **shadcn/ui** for components
-- **Supabase** for backend (Postgres + PostgREST). Use the Supabase CLI for local development (`supabase init`, `supabase start`). Use `@supabase/supabase-js` for all database access. Define schema via SQL migrations (`supabase migration new`).
+- **Neon** for database backend (Postgres + PostgREST).
 - **Netlify Functions** for any backend/serverless functions. Place functions in `netlify/functions/`. Use `netlify dev` for local development.
 
 ## Database
 
-The app must support `npm run init-db` which creates a new Neon database and configures supabase to connect to it. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of supabase.
+The app must support `npm run init-db` which creates a new Neon database and configures the app to connect to it. Set up the data API and connect to it over PostgREST. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of anything or any proxies.
 
 ## Development Process
 
