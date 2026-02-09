@@ -20,6 +20,10 @@ NEON_API_KEY
 - **Supabase** for backend (Postgres + PostgREST). Use the Supabase CLI for local development (`supabase init`, `supabase start`). Use `@supabase/supabase-js` for all database access. Define schema via SQL migrations (`supabase migration new`).
 - **Netlify Functions** for any backend/serverless functions. Place functions in `netlify/functions/`. Use `netlify dev` for local development.
 
+## Database
+
+The app must support `npm run init-db` which creates a new Neon database and configures supabase to connect to it. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of supabase.
+
 ## Development Process
 
 1. Read `AppSpec.md` to understand what needs to be built.
@@ -31,7 +35,7 @@ NEON_API_KEY
 
 ## Deployment
 
-The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and a new Neon database which is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
+The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and the Neon database you set up earlier that is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
 
 Make sure to update all URLs etc to match the deployed resources. Use playwright to load the app and test it after deploying to make sure it works.
 
