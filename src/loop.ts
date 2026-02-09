@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSync, closeSync, appendFileSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, appendFileSync, mkdirSync } from "fs";
 
 import { join, resolve, basename } from "path";
 import { Command } from "commander";
@@ -173,7 +173,6 @@ function runClaude(prompt: string, targetDir: string, loopNumber: number, iterat
     mkdirSync(logsDir, { recursive: true });
     const promptFile = join(logsDir, `prompt-${loopNumber}-${iteration}.txt`);
     writeFileSync(promptFile, prompt);
-    const promptFd = openSync(promptFile, "r");
 
     const mcpConfig: Record<string, any> = {
       mcpServers: {},
@@ -188,7 +187,7 @@ function runClaude(prompt: string, targetDir: string, loopNumber: number, iterat
     }
 
     const child = spawn("claude", [
-      "-p",
+      "-p", `Read the file ${promptFile} and follow the directions in it.`,
       "--model", "claude-opus-4-6",
       "--output-format", "stream-json",
       "--verbose",
@@ -197,7 +196,7 @@ function runClaude(prompt: string, targetDir: string, loopNumber: number, iterat
     ], {
       cwd: targetDir,
       env: process.env,
-      stdio: [promptFd, "pipe", "pipe"],
+      stdio: ["ignore", "pipe", "pipe"],
     });
 
     let resultEvent: ClaudeResponse | null = null;
@@ -238,8 +237,6 @@ function runClaude(prompt: string, targetDir: string, loopNumber: number, iterat
     child.on("error", (err) => reject(err));
 
     child.on("close", (code) => {
-      try { closeSync(promptFd); } catch { /* ignore */ }
-
       // Process any remaining buffer
       if (buffer.trim()) {
         try {
