@@ -1,6 +1,5 @@
 import { execFileSync, spawn } from "child_process";
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, appendFileSync, mkdirSync } from "fs";
-
 import { join, resolve, basename } from "path";
 import { Command } from "commander";
 
@@ -9,31 +8,25 @@ const ReplayMCPServer = "https://dispatch.replay.io/nut/mcp";
 // --- CLI Arg Parsing ---
 
 interface Args {
-  dirs: string[];
+  dir: string;
   strategyFiles: string[];
   maxIterations: number | null;
-  promptText: string | null;
-  foreground: boolean;
 }
 
 function parseArgs(): Args {
   const program = new Command();
   program
-    .requiredOption("--dir <paths...>", "target git repository directories")
+    .requiredOption("--dir <path>", "target git repository directory")
     .requiredOption("--load <files...>", "strategy files (.md) to guide the agent")
     .option("--max-iterations <n>", "maximum number of iterations to run", parseInt)
-    .option("--prompt <text>", "additional prompt text to include in each iteration")
-    .option("--foreground", "run in foreground (used internally)", false)
     .parse();
 
   const opts = program.opts();
 
   return {
-    dirs: opts.dir.map((d: string) => resolve(d)),
+    dir: resolve(opts.dir),
     strategyFiles: opts.load.map((f: string) => resolve(f)),
     maxIterations: opts.maxIterations ?? null,
-    promptText: opts.prompt ?? null,
-    foreground: opts.foreground,
   };
 }
 
@@ -282,25 +275,12 @@ function gitCommit(targetDir: string, iteration: number, log: (msg: string) => v
   }
 }
 
-// --- Detach ---
-
-function detach(): void {
-  const child = spawn(process.execPath, [...process.execArgv, ...process.argv.slice(1), "--foreground"], {
-    detached: true,
-    stdio: "ignore",
-    env: process.env,
-  });
-  child.unref();
-  console.log(`Started background process (pid ${child.pid})`);
-}
-
 // --- Env Var Check ---
 
 function extractRequiredEnvVars(strategyContents: string[]): string[] {
   const allVars: string[] = [];
 
   for (const content of strategyContents) {
-    // Look for a "Required Environment Variables" section with a code block
     const sectionMatch = content.match(/## Required Environment Variables\s*\n+```\n([\s\S]*?)\n```/);
     if (!sectionMatch) continue;
 
@@ -314,27 +294,13 @@ function extractRequiredEnvVars(strategyContents: string[]): string[] {
   return allVars;
 }
 
-function checkEnvVars(strategyFiles: string[]): void {
-  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
-  const allVars = extractRequiredEnvVars(strategyContents);
-
-  if (allVars.length === 0) return;
-
-  const missing = allVars.filter((v) => !process.env[v]);
-  if (missing.length > 0) {
-    console.error(`Missing required environment variables: ${missing.join(", ")}`);
-    process.exit(1);
-  }
-}
-
-// --- Run Loop for a Single Directory ---
+// --- Run Loop ---
 
 async function runLoop(
   targetDir: string,
   strategyContents: string[],
   strategyNames: string[],
   maxIterations: number | null,
-  promptText: string | null,
 ): Promise<void> {
   const { logFile, loopNumber } = getLogFile(targetDir);
   const log = createLogger(logFile);
@@ -361,17 +327,14 @@ async function runLoop(
 
     log(`=== Iteration ${iteration} ===`);
 
-    // Gather fresh context each iteration
     const context = gatherContext(targetDir);
 
-    // Build prompt
     const promptParts = [
       `# Agent Loop — Iteration ${iteration}`,
       "",
       "## Strategy Instructions",
       "",
       ...strategyContents.map((content, i) => `### ${strategyNames[i]}\n\n${content}`),
-      ...(promptText ? ["", "## Additional Instructions", "", promptText] : []),
       "",
       "## Current Repository Context",
       "",
@@ -419,11 +382,9 @@ async function runLoop(
       log(`Turns: ${response.num_turns}`);
     }
 
-    // Git commit
     gitCommit(targetDir, iteration, log);
     log(`Committed iteration ${iteration}`);
 
-    // Check for done signal
     if (response.result && response.result.includes("<DONE/>")) {
       log(`Agent signaled <DONE/>. Stopping.`);
       break;
@@ -436,22 +397,20 @@ async function runLoop(
 // --- Main ---
 
 async function main(): Promise<void> {
-  const { dirs, strategyFiles, maxIterations, promptText, foreground } = parseArgs();
-  checkEnvVars(strategyFiles);
+  const args = parseArgs();
 
-  // If not already running as the detached child, re-spawn detached
-  if (!foreground) {
-    detach();
-    return;
+  const strategyContents = args.strategyFiles.map((f) => readFileSync(f, "utf-8"));
+  const strategyNames = args.strategyFiles.map((f) => basename(f));
+
+  // Check env vars
+  const allVars = extractRequiredEnvVars(strategyContents);
+  const missing = allVars.filter((v) => !process.env[v]);
+  if (missing.length > 0) {
+    console.error(`Missing required environment variables: ${missing.join(", ")}`);
+    process.exit(1);
   }
 
-  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
-  const strategyNames = strategyFiles.map((f) => basename(f));
-
-  // Run all directories in parallel
-  await Promise.all(
-    dirs.map((dir) => runLoop(dir, strategyContents, strategyNames, maxIterations, promptText))
-  );
+  await runLoop(args.dir, strategyContents, strategyNames, args.maxIterations);
 }
 
 main().catch((e) => {
