@@ -13,7 +13,9 @@ entry in tests.md
 
 ## Running Tests
 
-Every time you run the playwright tests, write the results to a logs/test-run-N.log file.
+Every time you run the playwright tests, do the following:
+- Write the results to a logs/test-run-N.log file.
+- Use a single worker, to avoid tests interfering with each other.
 
 If any tests fail, pick a specific failing test to work on, preferring any regressing test
 that passed in previous runs. Add a task for fixing it to plan.md and work on that until it is
