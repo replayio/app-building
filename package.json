@@ -6,7 +6,7 @@
     "agent": "tsx src/agent.ts",
     "loop": "tsx src/loop.ts",
     "read-log": "tsx src/read-log.ts",
-    "docker:build": "docker build -t app-building ."
+    "docker:build": "docker build --network=host -t app-building ."
   },
   "devDependencies": {
     "tsx": "^4.19.0",
