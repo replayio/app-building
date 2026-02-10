@@ -5,6 +5,7 @@
   "scripts": {
     "agent": "tsx src/agent.ts",
     "loop": "tsx src/loop.ts",
+    "status": "tsx src/status.ts",
     "read-log": "tsx src/read-log.ts",
     "docker:build": "docker build --network=host -t app-building ."
   },
