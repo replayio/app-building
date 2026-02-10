@@ -25,16 +25,18 @@ RUN apt-get update && apt-get install -y \
 RUN npm install -g \
     @anthropic-ai/claude-code \
     netlify-cli \
-    supabase \
+    replayio \
     tsx \
     typescript
 
-# Install Playwright Chromium
+# Install Playwright Chromium and Replay browser (globally accessible)
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
 RUN npx playwright install --with-deps chromium
+RUN replayio update
 
-# Git identity for commits inside container
-RUN git config --global user.name "App Builder" && \
-    git config --global user.email "app-builder@localhost"
+# Git identity for commits inside container (system-level so it works for any uid)
+RUN git config --system user.name "App Builder" && \
+    git config --system user.email "app-builder@localhost"
 
 # Copy loop script
 WORKDIR /app-building

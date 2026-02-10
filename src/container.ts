@@ -8,7 +8,7 @@ const IMAGE_NAME = "app-building";
 export function buildImage(): void {
   const contextDir = resolve(__dirname, "..");
   console.log("Building Docker image...");
-  execFileSync("docker", ["build", "-t", IMAGE_NAME, contextDir], {
+  execFileSync("docker", ["build", "--network", "host", "-t", IMAGE_NAME, contextDir], {
     stdio: "inherit",
     timeout: 600000,
   });
@@ -49,12 +49,16 @@ export function spawnContainer(
   target: TargetConfig,
   config: Config,
   strategiesDir: string,
-  envVars: string[],
 ): Promise<ContainerResult> {
   return new Promise((resolvePromise, reject) => {
     const dirName = basename(target.dir);
     const containerName = `app-building-${dirName}`;
     const strategyMountPaths = getStrategyMountPaths(target, strategiesDir);
+
+    // Stop any existing container with the same name
+    try {
+      execFileSync("docker", ["rm", "-f", containerName], { stdio: "ignore" });
+    } catch {}
 
     // Build docker run args
     const args: string[] = [
@@ -63,15 +67,22 @@ export function spawnContainer(
       "--name", containerName,
       "-v", `${target.dir}:/workspace`,
       "-v", `${strategiesDir}:/strategies:ro`,
+      "--network", "host",
       "--user", `${process.getuid!()}:${process.getgid!()}`,
     ];
 
-    // Pass env vars
-    const allEnvVars = ["ANTHROPIC_API_KEY", ...envVars];
-    for (const v of allEnvVars) {
-      if (process.env[v]) {
-        args.push("--env", `${v}=${process.env[v]}`);
-      }
+    // Git identity (system gitconfig not visible to non-root user)
+    args.push("--env", "GIT_AUTHOR_NAME=App Builder");
+    args.push("--env", "GIT_AUTHOR_EMAIL=app-builder@localhost");
+    args.push("--env", "GIT_COMMITTER_NAME=App Builder");
+    args.push("--env", "GIT_COMMITTER_EMAIL=app-builder@localhost");
+
+    // Playwright browsers installed at shared path
+    args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
+
+    // Pass env vars from config
+    for (const [k, v] of Object.entries(config.env)) {
+      args.push("--env", `${k}=${v}`);
     }
 
     // Image name
@@ -124,19 +135,19 @@ export async function runContainers(config: Config): Promise<void> {
   ensureImageExists();
 
   const strategiesDir = getStrategyDir(config);
-  const allStrategyFiles = config.targets.flatMap((t) => t.strategies);
-  const envVars = extractRequiredEnvVars(allStrategyFiles);
 
-  // Check required env vars
-  const missing = [...envVars, "ANTHROPIC_API_KEY"].filter((v) => !process.env[v]);
+  // Check required env vars from strategy files
+  const allStrategyFiles = config.targets.flatMap((t) => t.strategies);
+  const requiredVars = [...extractRequiredEnvVars(allStrategyFiles), "ANTHROPIC_API_KEY"];
+  const missing = requiredVars.filter((v) => !config.env[v]);
   if (missing.length > 0) {
-    console.error(`Missing required environment variables: ${missing.join(", ")}`);
+    console.error(`Missing required env vars in config: ${missing.join(", ")}`);
     process.exit(1);
   }
 
   const results = await Promise.all(
     config.targets.map((target) =>
-      spawnContainer(target, config, strategiesDir, envVars)
+      spawnContainer(target, config, strategiesDir)
     )
   );
 

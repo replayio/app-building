@@ -8,11 +8,13 @@ export interface TargetConfig {
 
 export interface Config {
   maxIterations: number | null;
+  env: Record<string, string>;
   targets: TargetConfig[];
 }
 
 interface RawConfig {
   maxIterations?: number;
+  env?: Record<string, string>;
   targets?: Array<{
     dir?: string;
     strategies?: string[];
@@ -50,6 +52,7 @@ export function loadConfig(configPath: string): Config {
 
   return {
     maxIterations: raw.maxIterations ?? null,
+    env: raw.env ?? {},
     targets,
   };
 }
