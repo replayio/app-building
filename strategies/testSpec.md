@@ -7,7 +7,7 @@ You are writing a complete, detailed test specification for an app based on an i
 The test spec must be written in docs/tests.md. This file is organized by page, with one or more test entries for the page.
 
 - The test entries must match the app spec as closely as possible.
-- If there are image URLs in the app spec, download them and follow them carefully. If you're unable to view the images directly, download them and read them from disk.
+- If there are image URLs in the app spec, download them and follow them carefully. IMPORTANT: If you're unable to view the images directly, download them and read them from disk.
 - Use behavior driven development to formulate test entries: describe the initial conditions of the app's state, the action the user takes, and the changes to the app that should occur afterwards.
 - Test entries must all have titles.
 - Test entries must be grouped by page in the app.
