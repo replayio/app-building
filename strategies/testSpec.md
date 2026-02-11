@@ -24,3 +24,13 @@ When working on a toplevel task for a page, if the page is complicated break it 
 When working on a task for a page or its components, make sure docs/tests.md completely describes the page/component's requirements.
 
 ## Tips
+
+- Systematically inventory every visible element in each mockup — every column header, filter control, button, icon, badge, and section. Write a test entry for each one. It is easy to gloss over elements that seem minor or to only test the most prominent features.
+
+- For every clickable element, the test entry must specify the exact navigation target or action result. Do not leave navigation destinations ambiguous — otherwise the implementation may link to a generic list page instead of a specific detail view.
+
+- For any user action that mutates data, write test entries verifying that the change is persisted correctly and that exactly the right side effects occur (e.g. history/timeline entries are created, and only one per action — not duplicates).
+
+- Button and control appearance matters: if a mockup shows specific text, icons, or styling for a button, the test entry should verify that appearance — not just that some button exists.
+
+- Clarify interaction models for features like file attachments: does "add" mean file upload, URL input, or both? The mockup usually shows the answer — the test spec must be explicit about it.
