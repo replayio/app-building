@@ -1,6 +1,21 @@
 # Strategy
 
 You are building an application based on the provided AppSpec.md. Follow these constraints strictly.
+You will build the app in the following stages, with links to additional instructions.
+
+1. Create a detailed test specification for the tests the app must pass in order to match the app spec.
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/testSpec.md
+
+2. Write the app's code according to the two specs.
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/writeApp.md
+
+3. Write the tests according to the two specs.
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/writeTests.md
+
+4. Get all tests to pass, debugging and fixing the app / tests as needed.
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/testing.md
+
+5. Deploy the app to production.
 
 ## Required Environment Variables
 
@@ -8,6 +23,7 @@ You are building an application based on the provided AppSpec.md. Follow these c
 NETLIFY_ACCOUNT_SLUG
 NETLIFY_AUTH_TOKEN
 NEON_API_KEY
+RECORD_REPLAY_API_KEY
 ```
 
 ## Tech Stack
@@ -29,7 +45,7 @@ All database accesses must happen in backend Netlify functions. Netlify function
 ## Development Process
 
 1. Read `AppSpec.md` to understand what needs to be built.
-2. Read `docs/plan.md` (if it exists) to understand current progress.
+2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one task for each stage.
 3. Review the codebase and git history to understand what's already implemented.
 4. Pick the next task and implement it.
 5. After every significant change, run typecheck and lint, fix any errors, then commit.
@@ -41,6 +57,8 @@ The app must support `npm run deploy` which creates a new netlify site (name doe
 
 Make sure to update all URLs etc to match the deployed resources. Use playwright to load the app and test it after deploying to make sure it works.
 
+Write information about the deployment to deployment.txt
+
 ## Quality Gates
 
 Before each commit:
@@ -48,12 +66,6 @@ Before each commit:
 - `npx eslint .` must pass with no errors
 
 Do not commit code that fails typecheck or lint.
-
-## Matching the Spec
-
-- Build the app to closely match the prompt in AppSpec.md.
-- If images or screenshots were provided in the prompt, use Playwright to launch the running app, navigate to the relevant pages, and take screenshots. Compare your screenshots to the reference images and adjust styling and layout until there are no significant differences.
-- Adding extra necessary features beyond the mockup may be needed for a complete, functional app (e.g. create/delete buttons, navigation, form validation).
 
 ## Documentation
 
@@ -68,39 +80,14 @@ Maintain `docs/plan.md` with:
 - Write clear commit messages describing what changed and why.
 - Never commit code that fails typecheck or lint.
 
-## Guidelines
+## Instructions
 
-- Follow existing code style and conventions in the repo.
-- Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
-- All JSX rendered on a page must be abstracted into other React components with their own files.
-- Focus on one task at a time. Do it well rather than rushing through multiple tasks.
-- If blocked, document the issue in `docs/plan.md` and move to the next task.
+Pick an unfinished task and start working on it.
 
-## Tests
-
-- You will need to write a file docs/tests.md which describes the tests the app needs. Use behavior driven development to formulate these tests: describe the initial conditions of the app's state, the action the user takes, and the changes to the app that should occur afterwards.
-- Test entries must all have titles.
-- Test entries must be grouped by page in the app.
-- Test entries must indicate the components on that page they are exercising.
-- Every interactive element (buttons etc) in the component must be tested. There must be a comment in the JSX next to every interactive element with the titles of the tests that exercise it.
-- The test must verify that the interactive element actually works and does what the user expects. For example, clicking a button must do something, and text added to forms must be reflected in the app state afterwards.
-- If while writing tests you discover parts of the app that haven't been fully implemented, you must finish implementation of the app. The tests must verify that the app is fully implemented and behaving as expected.
-- Playwright tests and app components/pages must use data-testid to identify elements on the page.
-
-## Lessons
-
-- As you either succeed or fail to accomplish tasks, add / update files in the lessons folder that describe things that worked or didn't work, or which add more details about implementation strategy. Lessons should be organized in one file per core concept with an appropriate file name.
-
-## Tasks
-
-Make sure the plan includes the following tasks:
-
-- Building the initial app, pages, components, and any backend functionality to match the app spec.
-- Take screenshots and fixing discrepancies vs the mockup images. These tasks are not complete until the app closely matches the mockups.
-- Write docs/tests.md with test entries that comprehensively test the app and conform exactly to the requirements above.
-- Write a playwright test for each entry in tests.md. The entry indicates the test file which covers it. Do not run the playwright tests, but make sure that the test should pass and update the app code if necessary.
-- Deploy the app's initial version to a new netlify/neon site and write that info to a file deployment.txt
-
-The tasks might be updated through other processes. If there are remaining incomplete tasks in the plan, you must focus on fixing them.
+Focus on one task at a time. Do it well rather than rushing through multiple tasks. If the task is associated with one of the stages of app development, download and read the additional instructions for that stage from the links above.
 
 When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
+
+Describe your thoughts in detail when writing code or specs and using tools.
+
+As you either succeed or fail to accomplish tasks, add / update files in the lessons folder that describe things that worked or didn't work, or which add more details about implementation strategy. Lessons should be organized in one file per core concept with an appropriate file name.
