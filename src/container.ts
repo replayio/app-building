@@ -145,22 +145,7 @@ export async function runContainers(config: Config): Promise<void> {
     process.exit(1);
   }
 
-  const results = await Promise.all(
-    config.targets.map((target) =>
-      spawnContainer(target, config, strategiesDir)
-    )
+  config.targets.forEach((target) =>
+    spawnContainer(target, config, strategiesDir)
   );
-
-  // Report results
-  console.log("\n--- Results ---");
-  let hasFailure = false;
-  for (const r of results) {
-    const status = r.exitCode === 0 ? "SUCCESS" : "FAILED";
-    console.log(`  ${basename(r.dir)}: ${status} (exit code ${r.exitCode})`);
-    if (r.exitCode !== 0) hasFailure = true;
-  }
-
-  if (hasFailure) {
-    process.exit(1);
-  }
 }
