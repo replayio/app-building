@@ -21,9 +21,32 @@ If any tests fail, pick a specific failing test to work on, preferring any regre
 that passed in previous runs. Add a task for fixing it to plan.md and work on that until it is
 passing.
 
+## Debugging
+
+When running tests you must use the Replay browser to record test executions,
+and the Replay MCP service to debug test failures. Make sure you understand the cause
+of every test failure, and fix the test and/or app in an appropriate fashion.
+
+Read these skill files.
+
+https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-cli/SKILL.md
+https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-mcp/SKILL.md
+
+RECORD_REPLAY_API_KEY is already set in the environment for using the Replay CLI.
+
+Whenever you use the tools to understand a test failure, write a file in lessons
+describing what you did and what you learned from using the tool.
+
+Whenever you are investigating a non-obvious test failure, look through these lessons and the tips below
+for anything relevant to the failure.
+
+When testing the app after deployment, use the Replay browser to record the app and debug any problems.
+
 ## Tasks
 
 Make sure the plan includes the following tasks:
 
 - A task to get the tests passing.
 - When tests are passing, do an additional deploy of the tested version to a new netlify/neon site and add that info to the deployment.txt file.
+
+## Tips
