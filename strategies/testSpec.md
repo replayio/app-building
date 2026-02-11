@@ -13,7 +13,7 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 - Test entries must indicate the components on that page they are exercising.
 - Every interactive element (buttons etc) in the component must be tested. There must be a comment in the JSX next to every interactive element with the titles of the tests that exercise it.
 - The test must verify that the interactive element actually works and does what the user expects. For example, clicking a button must do something, and text added to forms must be reflected in the app state afterwards.
-- Adding extra necessary features beyond the mockup may be needed for a complete, functional app (e.g. create/delete buttons, navigation, form validation).
+- Adding extra necessary features beyond the app spec may be needed for a complete, functional app (e.g. create/delete buttons, navigation, form validation).
 
 ## Tasks
 
