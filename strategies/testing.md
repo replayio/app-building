@@ -50,3 +50,9 @@ Make sure the plan includes the following tasks:
 - When tests are passing, do an additional deploy of the tested version to a new netlify/neon site and add that info to the deployment.txt file.
 
 ## Tips
+
+- After getting tests green, visually compare each page against its mockup. Passing tests do not guarantee the page looks right — tests can miss layout issues, missing columns, wrong button styling, or absent sections if the test spec was incomplete.
+
+- When debugging a failing navigation test, check the actual destination URL — a common bug is sub-items on detail pages linking to a generic list page instead of a specific detail view.
+
+- When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.

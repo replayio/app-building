@@ -15,3 +15,9 @@ You are writing playwright tests which check that all the different entries in d
 Make sure there is a subtask to write a test for every entry in tests.md
 
 ## Tips
+
+- Tests must verify navigation targets precisely — assert the URL or page content after a click, not just that a click handler exists. A link going to the wrong page is a common bug that only surfaces if the test checks where it actually lands.
+
+- For actions that produce side effects (e.g. history entries, timeline updates), write assertions that verify both the primary effect and the side effect. Also assert the side effect happens exactly once — duplicate entries from redundant API calls are a common bug.
+
+- If a mockup exists for a page, the tests should cover every visible element: all table columns, all filter/sort controls, button text and icons, and section-specific layouts. Missing coverage here means missing features will slip through.
