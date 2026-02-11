@@ -110,4 +110,5 @@ Strategy files can declare required environment variables under a `## Required E
 The agent expects the target repository to have:
 
 - `AppSpec.md` — Describes what the application should do
+- `AppStyle.md` - Describes the styling of the app
 - `docs/plan.md` — Created/updated by the strategy

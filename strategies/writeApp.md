@@ -1,11 +1,12 @@
 # Strategy
 
-You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md
+You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md
 
 ## Guidelines
 
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
 - All JSX rendered on a page must be abstracted into other React components with their own files.
+- If AppStyle.md is present, use it to style the pages and components appropriately. Prefer using CSS files with style variables instead of hardcoded styles.
 
 ## Tasks
 
