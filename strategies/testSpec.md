@@ -38,6 +38,8 @@ When working on a task for a page or its components, make sure docs/tests.md com
 
 - Button and control appearance matters: if a mockup shows specific text, icons, or styling for a button, the test entry should verify that appearance — not just that some button exists.
 
+- Completely test that modal dialogs work properly.
+
 - Attachment functionality should support file uploads unless the mockup specifically indicates something else.
 
 - State-changing actions must have tests that when performed other parts of the app update appropriately. For example:
