@@ -23,6 +23,7 @@ You will build the app in the following stages, with links to additional instruc
 NETLIFY_ACCOUNT_SLUG
 NETLIFY_AUTH_TOKEN
 NEON_API_KEY
+UPLOADTHING_TOKEN
 RECORD_REPLAY_API_KEY
 ```
 
@@ -35,6 +36,7 @@ RECORD_REPLAY_API_KEY
 - **shadcn/ui** for components
 - **Neon** for database backend (Postgres).
 - **Netlify Functions** for any backend/serverless functions. Place functions in `netlify/functions/`. Use `netlify dev` for local development.
+- **File Storage** use UploadThing with the provided token for any file storage.
 
 ## Database
 
@@ -47,9 +49,12 @@ All database accesses must happen in backend Netlify functions. Netlify function
 1. Read `AppSpec.md` to understand what needs to be built.
 2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one task for each stage.
 3. Review the codebase and git history to understand what's already implemented.
-4. Pick the next task and implement it.
-5. After every significant change, run typecheck and lint, fix any errors, then commit.
-6. Update `docs/plan.md` to reflect progress.
+4. Pick the next task and announce that you are going to implement it.
+5. Implement the task.
+6. Announce you are going to review your work.
+7. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
+8. After every significant change, run typecheck and lint, fix any errors, then commit.
+9. Update `docs/plan.md` to reflect progress.
 
 ## Deployment
 
