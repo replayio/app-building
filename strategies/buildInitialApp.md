@@ -16,20 +16,20 @@ You will build the app in the following stages, with links to additional instruc
    https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/testing.md
 
 5. Deploy the app to production.
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/deployment.md
 
 ## Development Process
 
 ULTRA IMPORTANT: Follow these directions exactly.
 
-1. Read `AppSpec.md` to understand what needs to be built.
-2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one task for each stage.
-3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
-4. Implement the task.
-5. Announce `REVIEW: <TaskName>`.
-6. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
-7. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
-8. Update `docs/plan.md` to reflect progress.
-9. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
+1. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
+2. Pick the next task and announce `IMPLEMENT: <TaskName>`.
+3. Read the instructions for the associated stage (if you haven't already) and implement the task.
+4. Announce `REVIEW: <TaskName>`.
+5. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
+6. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
+7. Update `docs/plan.md` to reflect progress.
+8. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
 
 ## Required Environment Variables
 
@@ -57,14 +57,6 @@ RECORD_REPLAY_API_KEY
 The app must support `npm run init-db` which creates a new Neon database and configures the app to connect to it. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of anything or any proxies.
 
 All database accesses must happen in backend Netlify functions. Netlify functions should be focused and operate on specific parts of the database corresponding to the needs of one or more specific frontend components.
-
-## Deployment
-
-The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and the Neon database you set up earlier that is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
-
-Make sure to update all URLs etc to match the deployed resources. Use playwright to load the app and test it after deploying to make sure it works.
-
-Write information about the deployment to deployment.txt
 
 ## Quality Gates
 

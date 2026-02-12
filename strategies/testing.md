@@ -1,6 +1,14 @@
 # Strategy
 
-You are testing an app to make sure all of its functionality works.
+You will run all the tests in the app and get them to pass..
+
+## Unpack Subtasks
+
+Unpack the initial stage task into a single FixTests task to get all tests passing.
+
+After running tests and there are failures, pick a specific failing test and add a subtask to fix that test without regressing any tests that passed in previous runs. The subtask must require committing and exiting afterwards. Focus on that subtask until finished.
+
+## Requirements
 
 Once all playwright tests have been written, you must get them to pass.
 When getting tests to pass, you must ensure the app is actually working.
@@ -38,14 +46,6 @@ describing what you did and what you learned from using the tool.
 Look through these lessons and the tips below for anything relevant to the failure.
 
 When testing the app after deployment, use the Replay browser to record the app and debug any problems.
-
-## Tasks
-
-Make sure the plan includes the following tasks:
-
-- A task to get the tests passing.
-
-After running tests and there are failures, pick a specific failing test and add a subtask to fix that test without regressing any tests that passed in previous runs. The subtask must require committing and exiting afterwards. Focus on that subtask until finished.
 
 ## Directives
 
