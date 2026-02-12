@@ -29,6 +29,7 @@ RECORD_REPLAY_API_KEY is already set in the environment for using the Replay CLI
 ## Running Tests
 
 Every time you run the playwright tests, do the following:
+- Restart any existing development servers to pick up the latest changes. There might be development servers running from previous runs.
 - Use the Replay browser to record test executions.
 - Write the results to a logs/test-run-N.log file.
 - Use a single worker, to avoid tests interfering with each other.
