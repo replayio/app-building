@@ -1,6 +1,6 @@
 # Strategy
 
-You are building an application based on the provided AppSpec.md. Follow these constraints strictly.
+You are building an application based on the provided AppSpec.md.
 You will build the app in the following stages, with links to additional instructions.
 
 1. Create a detailed test specification for the tests the app must pass in order to match the app spec.
@@ -16,6 +16,20 @@ You will build the app in the following stages, with links to additional instruc
    https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/testing.md
 
 5. Deploy the app to production.
+
+## Development Process
+
+ULTRA IMPORTANT: Follow these directions exactly.
+
+1. Read `AppSpec.md` to understand what needs to be built.
+2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one task for each stage.
+3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
+4. Implement the task.
+5. Announce `REVIEW: <TaskName>`.
+6. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
+7. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
+8. Update `docs/plan.md` to reflect progress.
+9. If any changes were committed, wrap up and exit. You will restart afterwards with a fresh context.
 
 ## Required Environment Variables
 
@@ -44,18 +58,6 @@ The app must support `npm run init-db` which creates a new Neon database and con
 
 All database accesses must happen in backend Netlify functions. Netlify functions should be focused and operate on specific parts of the database corresponding to the needs of one or more specific frontend components.
 
-## Development Process
-
-1. Read `AppSpec.md` to understand what needs to be built.
-2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one task for each stage.
-3. Review the codebase and git history to understand what's already implemented.
-4. Pick the next task and announce that you are going to implement it.
-5. Implement the task.
-6. Announce you are going to review your work.
-7. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
-8. After every significant change, run typecheck and lint, fix any errors, then commit.
-9. Update `docs/plan.md` to reflect progress.
-
 ## Deployment
 
 The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and the Neon database you set up earlier that is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
@@ -78,6 +80,7 @@ Maintain `docs/plan.md` with:
 - High-level app structure and architecture
 - Feature breakdown with status (done / in progress / todo)
 - Any blockers or decisions made
+- Pending and completed tasks. All tasks must be of the form "TaskName: Description"
 
 ## Commits
 

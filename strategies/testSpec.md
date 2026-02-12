@@ -22,6 +22,8 @@ Make sure there are toplevel tasks for each page which the app needs. Get these 
 
 When working on a toplevel task for a page, if the page is complicated break it down into subtasks for the different components of the page.
 
+The last task done to specify the test entries for a page must require committing and exiting afterwards.
+
 When working on a task for a page or its components, make sure docs/tests.md completely describes the page/component's requirements.
 
 ## Directives

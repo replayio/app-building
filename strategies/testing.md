@@ -11,34 +11,31 @@ You might encounter bugs in the tests and can fix those, but you must ensure
 that the test is correctly exercising the app as described in the corresponding
 entry in tests.md
 
-## Running Tests
-
-Every time you run the playwright tests, do the following:
-- Write the results to a logs/test-run-N.log file.
-- Use a single worker, to avoid tests interfering with each other.
-
-If any tests fail, pick a specific failing test to work on, preferring any regressing test
-that passed in previous runs. Add a task for fixing it to plan.md and work on that until it is
-passing.
-
-## Debugging
-
-When running tests you must use the Replay browser to record test executions,
-and the Replay MCP service to debug test failures. Make sure you understand the cause
-of every test failure, and fix the test and/or app in an appropriate fashion.
-
-Read these skill files.
+You MUST read these skill files before testing.
 
 https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-cli/SKILL.md
 https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-mcp/SKILL.md
 
 RECORD_REPLAY_API_KEY is already set in the environment for using the Replay CLI.
 
+## Running Tests
+
+Every time you run the playwright tests, do the following:
+- Use the Replay browser to record test executions.
+- Write the results to a logs/test-run-N.log file.
+- Use a single worker, to avoid tests interfering with each other.
+
+## Debugging
+
+When debugging with a test failure whose cause isn't obvious, upload the Replay recording of the
+test failure captured while running and use the Replay MCP service to debug the failure.
+
+Make sure you understand the cause of every test failure, and fix the test and/or app in an appropriate fashion.
+
 Whenever you use the tools to understand a test failure, write a file in lessons
 describing what you did and what you learned from using the tool.
 
-Whenever you are investigating a non-obvious test failure, look through these lessons and the tips below
-for anything relevant to the failure.
+Look through these lessons and the tips below for anything relevant to the failure.
 
 When testing the app after deployment, use the Replay browser to record the app and debug any problems.
 
@@ -47,7 +44,8 @@ When testing the app after deployment, use the Replay browser to record the app 
 Make sure the plan includes the following tasks:
 
 - A task to get the tests passing.
-- When tests are passing, do an additional deploy of the tested version to a new netlify/neon site and add that info to the deployment.txt file.
+
+After running tests and there are failures, pick a specific failing test and add a subtask to fix that test without regressing any tests that passed in previous runs. The subtask must require committing and exiting afterwards. Focus on that subtask until finished.
 
 ## Directives
 

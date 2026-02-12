@@ -13,6 +13,7 @@ You are writing playwright tests which check that all the different entries in d
 ## Tasks
 
 Make sure there is a subtask to write a test for every entry in tests.md
+The last subtask for the tests on each page must require committing and exiting afterwards.
 
 ## Directives
 

@@ -16,6 +16,7 @@ Make sure there are the following toplevel tasks:
 - Write the pages for each app.
 
 When working on the page for an app, add subtasks to write out each component in the app.
+The last subtask for each page must require committing and exiting afterwards.
 
 When working on a component, identify the test entries in the spec relevant to that component, and add subtasks to check that the entry's requirements are satisfied by the app code.
 
