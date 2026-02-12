@@ -32,6 +32,9 @@ your job is as follows:
 8. Otherwise, add or update a directive with suitable instructions. Directives should be general
    purpose and not include details specific to the app being built.
 
+IMPORTANT: You MUST NOT modify the app itself. Your goal is not to fix the bugs. Your goal is to
+understand why the strategy documents allowed the bug to occur.
+
 ## Functional Problems
 
 Broken or unexpected behavior using the app must be caught while testing.
