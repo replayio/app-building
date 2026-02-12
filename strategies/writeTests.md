@@ -14,7 +14,7 @@ You are writing playwright tests which check that all the different entries in d
 
 Make sure there is a subtask to write a test for every entry in tests.md
 
-## Tips
+## Directives
 
 - Tests must verify navigation targets precisely — assert the URL or page content after a click, not just that a click handler exists. A link going to the wrong page is a common bug that only surfaces if the test checks where it actually lands.
 

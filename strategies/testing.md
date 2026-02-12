@@ -49,6 +49,6 @@ Make sure the plan includes the following tasks:
 - A task to get the tests passing.
 - When tests are passing, do an additional deploy of the tested version to a new netlify/neon site and add that info to the deployment.txt file.
 
-## Tips
+## Directives
 
 - When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.
