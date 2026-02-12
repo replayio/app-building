@@ -29,7 +29,7 @@ ULTRA IMPORTANT: Follow these directions exactly.
 6. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
 7. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
 8. Update `docs/plan.md` to reflect progress.
-9. If any changes were committed, wrap up and exit. You will restart afterwards with a fresh context.
+9. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
 
 ## Required Environment Variables
 
