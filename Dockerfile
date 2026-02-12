@@ -26,6 +26,7 @@ RUN npm install -g \
     @anthropic-ai/claude-code \
     netlify-cli \
     [REDACTED]io \
+    @[REDACTED]io/playwright \
     tsx \
     typescript
 
