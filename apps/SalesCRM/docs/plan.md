@@ -55,7 +55,14 @@
   - [x] WriteComponentTimelineSection: Chronological feed of events with type, description, user attribution
   - [x] WriteComponentClientDetailModals: Add Task, Add Deal, Add Attachment, Add Person modals
   - [x] WritePageClientDetailPage: Assemble all components into the final page
-- [ ] UnpackWritePagePersonDetailPage: Plan and create subtasks for implementing the PersonDetailPage (/individuals/:individualId) components
+- [x] UnpackWritePagePersonDetailPage: Plan and create subtasks for implementing the PersonDetailPage (/individuals/:individualId) components
+  - [x] WriteComponentPersonDetailBackend: Create Netlify function for individual detail data (GET individual with associations/relationships/contact history, PUT to update, POST/PUT/DELETE for relationships and contact history)
+  - [x] WriteComponentPersonHeader: Person name, title/role, client associations, contact info (email, phone, location) with inline edit
+  - [x] WriteComponentRelationshipsSection: Relationships with other individuals — List View/Graph View tabs, filter, add entry
+  - [x] WriteComponentContactHistorySection: Chronological log of interactions — filter, add/edit entries with type, summary, team member
+  - [x] WriteComponentAssociatedClientsSection: Card-based display of associated clients with status, industry, and View Client Detail Page button
+  - [x] WriteComponentPersonDetailModals: Add Relationship modal, Add Contact History Entry modal, Edit Contact History Entry modal
+  - [x] WritePagePersonDetailPage: Assemble all components into the final page, then commit and exit
 - [ ] UnpackWritePageDealsListPage: Plan and create subtasks for implementing the DealsListPage (/deals) components
 - [ ] UnpackWritePageDealDetailPage: Plan and create subtasks for implementing the DealDetailPage (/deals/:dealId) components
 - [ ] UnpackWritePageTasksListPage: Plan and create subtasks for implementing the TasksListPage (/tasks) components
