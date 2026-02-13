@@ -117,10 +117,10 @@
 - [x] WriteTestCDP_ATT: Write tests for ClientDetailPage AttachmentsSection (CDP-ATT-01 through CDP-ATT-04)
 - [x] WriteTestCDP_PPL: Write tests for ClientDetailPage PeopleSection (CDP-PPL-01, CDP-PPL-02)
 - [x] WriteTestCDP_TL: Write tests for ClientDetailPage TimelineSection (CDP-TL-01 through CDP-TL-08), then commit and exit
-- [ ] WriteTestPDP_HDR: Write tests for PersonDetailPage PersonHeader (PDP-HDR-01 through PDP-HDR-04)
-- [ ] WriteTestPDP_REL: Write tests for PersonDetailPage RelationshipsSection (PDP-REL-01 through PDP-REL-07)
-- [ ] WriteTestPDP_CH: Write tests for PersonDetailPage ContactHistorySection (PDP-CH-01 through PDP-CH-07)
-- [ ] WriteTestPDP_AC: Write tests for PersonDetailPage AssociatedClientsSection (PDP-AC-01, PDP-AC-02), then commit and exit
+- [x] WriteTestPDP_HDR: Write tests for PersonDetailPage PersonHeader (PDP-HDR-01 through PDP-HDR-04)
+- [x] WriteTestPDP_REL: Write tests for PersonDetailPage RelationshipsSection (PDP-REL-01 through PDP-REL-07)
+- [x] WriteTestPDP_CH: Write tests for PersonDetailPage ContactHistorySection (PDP-CH-01 through PDP-CH-07)
+- [x] WriteTestPDP_AC: Write tests for PersonDetailPage AssociatedClientsSection (PDP-AC-01, PDP-AC-02), then commit and exit
 - [ ] WriteTestDLP_HDR: Write tests for DealsListPage PageHeader (DLP-HDR-01 through DLP-HDR-03)
 - [ ] WriteTestDLP_SUM: Write tests for DealsListPage SummaryCards (DLP-SUM-01, DLP-SUM-02)
 - [ ] WriteTestDLP_VW: Write tests for DealsListPage ViewToggle (DLP-VW-01 through DLP-VW-03)
