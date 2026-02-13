@@ -77,7 +77,18 @@
   - [x] WriteComponentDealsPagination: Page indicator with Previous/Next navigation
   - [x] WriteComponentCreateDealModal: Modal form with deal name, client, value, stage, owner, close date fields
   - [x] WritePageDealsListPage: Assemble all components into the final page with Redux state management
-- [ ] UnpackWritePageDealDetailPage: Plan and create subtasks for implementing the DealDetailPage (/deals/:dealId) components
+- [x] UnpackWritePageDealDetailPage: Plan and create subtasks for implementing the DealDetailPage (/deals/:dealId) components
+  - [x] WriteComponentDealDetailBackend: Create Netlify function for deal detail data (history, writeups, tasks, attachments, contacts CRUD)
+  - [x] WriteComponentDealDetailHeader: Deal title, client, value, owner, stage dropdown with change stage button
+  - [x] WriteComponentStagePipeline: Visual horizontal pipeline showing stages with current stage highlighted, checkmarks on completed, progress bar
+  - [x] WriteComponentDealHistorySection: Chronological list of stage changes with date, time, old→new stage, user
+  - [x] WriteComponentDealMetricsSection: Probability percentage and expected close date, editable
+  - [x] WriteComponentWriteupsSection: Writeups list with add/edit/version history
+  - [x] WriteComponentLinkedTasksSection: Deal-specific tasks with checkboxes, add task button
+  - [x] WriteComponentDealAttachmentsSection: Deal attachments with upload/download/delete
+  - [x] WriteComponentDealContactsSection: Deal contacts with avatar, name, role, company, view profile link
+  - [x] WriteComponentDealDetailModals: Add Writeup, Add Task, Upload Attachment, Version History modals
+  - [x] WritePageDealDetailPage: Assemble all components into the final page
 - [ ] UnpackWritePageTasksListPage: Plan and create subtasks for implementing the TasksListPage (/tasks) components
 
 ### Stage 3: Write Tests (writeTests.md)

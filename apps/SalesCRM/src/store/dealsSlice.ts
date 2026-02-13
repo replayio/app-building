@@ -86,6 +86,19 @@ export const createDeal = createAsyncThunk(
   }
 )
 
+export const updateDeal = createAsyncThunk(
+  'deals/updateDeal',
+  async ({ dealId, data }: { dealId: string; data: Record<string, unknown> }) => {
+    const res = await fetch(`/.netlify/functions/deals/${dealId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error('Failed to update deal')
+    return res.json() as Promise<Deal>
+  }
+)
+
 export const deleteDeal = createAsyncThunk(
   'deals/deleteDeal',
   async (dealId: string) => {
@@ -131,6 +144,10 @@ export const dealsSlice = createSlice({
       .addCase(fetchDeal.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(updateDeal.fulfilled, (state, action) => {
+        state.currentDeal = action.payload
+        state.items = state.items.map((d) => d.id === action.payload.id ? action.payload : d)
       })
       .addCase(deleteDeal.fulfilled, (state, action) => {
         state.items = state.items.filter((d) => d.id !== action.payload)
