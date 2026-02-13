@@ -22,14 +22,15 @@ You will build the app in the following stages, with links to additional instruc
 
 ULTRA IMPORTANT: Follow these directions exactly.
 
-1. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
-2. Pick the next task and announce `IMPLEMENT: <TaskName>`.
-3. Read the instructions for the associated stage (if you haven't already) and implement the task.
-4. Announce `REVIEW: <TaskName>`.
-5. Read the directives from your stage instructions and check that they are all being followed. Correct any problems.
-6. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
-7. Update `docs/plan.md` to reflect progress.
-8. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
+1. Look for files `logs/iteration-...` describing recent changes made. While there are any,
+   follow instructions from this link to process them
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/reviewChanges.md
+2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
+3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
+4. Read the instructions for the associated stage (if you haven't already) and implement the task.
+5. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
+6. Update `docs/plan.md` to reflect progress.
+7. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
 
 ## Required Environment Variables
 
@@ -89,5 +90,3 @@ Focus on one task at a time. Do it well rather than rushing through multiple tas
 When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
 
 Describe your thoughts in detail when writing code or specs and using tools.
-
-As you either succeed or fail to accomplish tasks, add / update files in the lessons folder that describe things that worked or didn't work, or which add more details about implementation strategy. Lessons should be organized in one file per core concept with an appropriate file name.

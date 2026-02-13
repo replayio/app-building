@@ -1,8 +1,8 @@
-# Overview
+# Strategy
 
-Newly built apps have bugs: things are broken, they don't work right, look bad, and so on.
+Apps have bugs: things are broken, they don't work right, look bad, and so on.
 
-Bug reports from users are reviewed and used to improve the quality of future apps.
+Bug reports from users are reviewed and used to improve the quality of future work.
 This document describes how to do this.
 
 The features of an app are based on its AppSpec.md and the various strategy documents used

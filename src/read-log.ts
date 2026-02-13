@@ -4,7 +4,7 @@ import { Command } from "commander";
 
 const program = new Command();
 program
-  .argument("<logfile>", "path to a loop log file")
+  .argument("<logfile>", "path to an iteration log file")
   .parse();
 
 const logFile = resolve(program.args[0]);
@@ -30,6 +30,10 @@ for (const rawLine of content.split("\n")) {
   // Loop control lines
   if (line.startsWith("=== Iteration")) {
     console.log(`\n${BOLD}${CYAN}${line}${RESET}`);
+    continue;
+  }
+  if (line.startsWith("Initial revision:") || line.startsWith("Final revision:")) {
+    console.log(`${BOLD}${line}${RESET}`);
     continue;
   }
   if (line.startsWith("Target:") || line.startsWith("Strategies:") || line.startsWith("Max iterations:") || line.startsWith("Log file:")) {
