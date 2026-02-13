@@ -41,15 +41,10 @@ test failure captured while running and use the Replay MCP service to debug the 
 
 Make sure you understand the cause of every test failure, and fix the test and/or app in an appropriate fashion.
 
-Whenever you use the tools to understand a test failure, write a file in lessons
-describing what you did and what you learned from using the tool.
-
-Look through these lessons and the tips below for anything relevant to the failure.
-
 When testing the app after deployment, use the Replay browser to record the app and debug any problems.
 
 ## Directives
 
-- When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.
-
 ## Tips
+
+- When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.

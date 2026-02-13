@@ -90,5 +90,3 @@ Focus on one task at a time. Do it well rather than rushing through multiple tas
 When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
 
 Describe your thoughts in detail when writing code or specs and using tools.
-
-As you either succeed or fail to accomplish tasks, add / update files in the lessons folder that describe things that worked or didn't work, or which add more details about implementation strategy. Lessons should be organized in one file per core concept with an appropriate file name.

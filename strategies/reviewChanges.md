@@ -36,4 +36,7 @@ correct those.
 Read the log for any place where you had difficulty, e.g. going down the wrong path and having
 to correct, or taking a while to figure something out. Identify a suitable strategy you could have
 followed to handle the situation better, and update either the directives or tips in the stage
-instructions. Directives must be followed, while tips are hints that will help perform tasks more easily.
+instructions.Directives must be followed, while tips are hints that will help perform tasks more easily.
+
+Pay particular attention to documenting ways in which you used the Replay MCP tools
+to debug test failures or other problems.
