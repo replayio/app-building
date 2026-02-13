@@ -1,4 +1,4 @@
-import { execFileSync, spawn } from "child_process";
+import { execFileSync } from "child_process";
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 
@@ -66,7 +66,7 @@ export function spawnContainer(
   appName: string,
   strategyBasenames: string[],
   maxIterations?: number,
-): Promise<number> {
+): number {
   const projectRoot = resolve(__dirname, "..");
 
   ensureImageExists();
@@ -92,6 +92,7 @@ export function spawnContainer(
   // Build docker run args
   const args: string[] = [
     "run",
+    "-d",
     "--rm",
     "--name", containerName,
     "-v", `${projectRoot}:/repo`,
@@ -128,35 +129,13 @@ export function spawnContainer(
 
   console.log(`[${appName}] Starting container ${containerName}...`);
 
-  return new Promise((resolvePromise, reject) => {
-    const child = spawn("docker", args, {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
+  const containerId = execFileSync("docker", args, {
+    encoding: "utf-8",
+    timeout: 30000,
+  }).trim();
 
-    child.stdout!.on("data", (data: Buffer) => {
-      const lines = data.toString().split("\n");
-      for (const line of lines) {
-        if (line.trim()) {
-          console.log(`[${appName}] ${line}`);
-        }
-      }
-    });
+  console.log(`[${appName}] Container started: ${containerId.slice(0, 12)}`);
+  console.log(`[${appName}] Logs: docker logs -f ${containerName}`);
 
-    child.stderr!.on("data", (data: Buffer) => {
-      const lines = data.toString().split("\n");
-      for (const line of lines) {
-        if (line.trim()) {
-          console.error(`[${appName}] ${line}`);
-        }
-      }
-    });
-
-    child.on("error", (err) => reject(err));
-
-    child.on("close", (code) => {
-      const exitCode = code ?? 1;
-      console.log(`[${appName}] Container exited with code ${exitCode}`);
-      resolvePromise(exitCode);
-    });
-  });
+  return 0;
 }

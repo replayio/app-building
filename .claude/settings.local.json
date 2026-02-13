@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp:*)",
+      "Bash(sudo kill:*)",
+      "Bash(sudo systemctl:*)",
+      "Bash(sudo pm2 list:*)",
+      "Bash(sudo docker ps:*)",
+      "Bash(ps:*)",
+      "Bash(sudo ctr:*)",
+      "Bash(sudo nerdctl ps:*)",
+      "Bash(sudo ls:*)",
+      "Bash(pstree:*)",
+      "Bash(NETLIFY_ACCOUNT_SLUG=[REDACTED] NETLIFY_AUTH_TOKEN=nfp_RNRqVBBYhnSYvd4yKA7HwCnRmH2mRFp22016 NEON_API_KEY=napi_zqfobzhdo9yj8w7htnhaf4z15n57zanqixr9k2b3vr68w0okyn3ukihl2mr690a0 npm run agent -- config.json)",
+      "Bash(docker network:*)",
+      "Bash(nslookup:*)",
+      "Bash(docker rmi:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(docker rm:*)",
+      "Bash(npm run agent:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(docker kill:*)",
+      "Bash(sudo docker rm:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker stop:*)",
+      "Bash(aa-status:*)",
+      "Bash(sudo aa-status:*)",
+      "Bash(sudo cat:*)",
+      "Bash(dmesg:*)",
+      "Bash(sudo dmesg:*)",
+      "Bash(sudo apparmor_parser:*)",
+      "Bash(sudo snap restart:*)",
+      "Bash(sudo snap start:*)",
+      "Bash(sudo aa-teardown:*)",
+      "Bash(sudo snap logs:*)",
+      "WebFetch(domain:utfs.io)",
+      "Bash(wc:*)",
+      "Bash(git config:*)",
+      "Bash(docker build:*)"
+    ]
+  }
+}
