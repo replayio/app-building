@@ -89,7 +89,15 @@
   - [x] WriteComponentDealContactsSection: Deal contacts with avatar, name, role, company, view profile link
   - [x] WriteComponentDealDetailModals: Add Writeup, Add Task, Upload Attachment, Version History modals
   - [x] WritePageDealDetailPage: Assemble all components into the final page
-- [ ] UnpackWritePageTasksListPage: Plan and create subtasks for implementing the TasksListPage (/tasks) components
+- [x] UnpackWritePageTasksListPage: Plan and create subtasks for implementing the TasksListPage (/tasks) components
+  - [x] WriteComponentTasksBackend: Create Netlify function for global tasks listing with search, filter, CRUD, and related data (assignees, clients)
+  - [x] WriteComponentTasksPageHeader: Page header with "Upcoming Tasks" title and "New Task" button
+  - [x] WriteComponentTasksFilterBar: Filter dropdown (priority, assignee, client) and text filter input
+  - [x] WriteComponentTaskPriorityBadge: Colored priority badge (High=red, Medium=amber, Low=green, Normal=blue)
+  - [x] WriteComponentTaskCard: Card with priority badge, title, due date, assignee avatar/name, and action menu (Edit, Mark Complete, Delete)
+  - [x] WriteComponentCreateTaskModal: Modal form with title, description, due date, priority, assignee, client, deal fields
+  - [x] WriteComponentEditTaskModal: Modal form pre-filled with existing task data for editing
+  - [x] WritePageTasksListPage: Assemble all components into the final page with Redux state management
 
 ### Stage 3: Write Tests (writeTests.md)
 - [ ] UnpackWriteTests: Unpack the write tests stage into subtasks
