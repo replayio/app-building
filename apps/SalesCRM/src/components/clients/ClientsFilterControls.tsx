@@ -27,6 +27,7 @@ function FilterSelect({
   return (
     <div className="relative">
       <select
+        data-testid={`filter-${label.toLowerCase()}`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="appearance-none h-[34px] pl-3 pr-7 text-[13px] text-text-secondary bg-surface border border-border rounded-[5px] cursor-pointer hover:bg-hover focus:outline-none focus:border-accent transition-colors duration-100"
@@ -84,7 +85,7 @@ export function ClientsFilterControls({
   ]
 
   return (
-    <div className="flex items-center gap-2">
+    <div data-testid="clients-filter-controls" className="flex items-center gap-2">
       <FilterSelect label="Status" value={status} options={statusOptions} onChange={onStatusChange} />
       <FilterSelect label="Tags" value={tag} options={tagOptions} onChange={onTagChange} />
       <FilterSelect label="Source" value={source} options={sourceOptions} onChange={onSourceChange} />

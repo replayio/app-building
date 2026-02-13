@@ -24,8 +24,9 @@ export function ClientRowActionMenu({ onView, onEdit, onDelete }: ClientRowActio
   }, [open])
 
   return (
-    <div className="relative" ref={ref}>
+    <div data-testid="row-action-menu" className="relative" ref={ref}>
       <button
+        data-testid="row-action-trigger"
         onClick={(e) => {
           e.stopPropagation()
           setOpen(!open)
@@ -35,8 +36,9 @@ export function ClientRowActionMenu({ onView, onEdit, onDelete }: ClientRowActio
         <MoreHorizontal size={16} strokeWidth={1.75} />
       </button>
       {open && (
-        <div className="absolute right-0 top-8 z-50 w-36 bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] py-1">
+        <div data-testid="row-action-dropdown" className="absolute right-0 top-8 z-50 w-36 bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] py-1">
           <button
+            data-testid="action-view"
             onClick={(e) => {
               e.stopPropagation()
               onView()
@@ -48,6 +50,7 @@ export function ClientRowActionMenu({ onView, onEdit, onDelete }: ClientRowActio
             View
           </button>
           <button
+            data-testid="action-edit"
             onClick={(e) => {
               e.stopPropagation()
               onEdit()
@@ -59,6 +62,7 @@ export function ClientRowActionMenu({ onView, onEdit, onDelete }: ClientRowActio
             Edit
           </button>
           <button
+            data-testid="action-delete"
             onClick={(e) => {
               e.stopPropagation()
               onDelete()

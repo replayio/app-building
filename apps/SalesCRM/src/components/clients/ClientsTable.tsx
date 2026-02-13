@@ -53,9 +53,9 @@ export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
   }
 
   return (
-    <div className="w-full">
+    <div data-testid="clients-table" className="w-full">
       {/* Header */}
-      <div className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[36px] px-4 text-[12px] font-medium text-text-muted border-b border-border">
+      <div data-testid="clients-table-header" className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[36px] px-4 text-[12px] font-medium text-text-muted border-b border-border">
         <span>Client Name</span>
         <span>Type</span>
         <span>Status</span>
@@ -70,30 +70,31 @@ export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
       {clients.map((client) => (
         <div
           key={client.id}
+          data-testid={`client-row-${client.id}`}
           onClick={() => navigate(`/clients/${client.id}`)}
           className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[44px] px-4 cursor-pointer hover:bg-hover transition-colors duration-100 border-b border-border/50"
         >
-          <span className="text-[13px] font-medium text-text-primary truncate pr-2">
+          <span data-testid="client-name" className="text-[13px] font-medium text-text-primary truncate pr-2">
             {client.name}
           </span>
-          <span className="text-[13px] text-text-secondary">
+          <span data-testid="client-type" className="text-[13px] text-text-secondary">
             {client.type === 'organization' ? 'Organization' : 'Individual'}
           </span>
-          <span>
+          <span data-testid="client-status">
             <StatusBadge status={client.status} />
           </span>
-          <div className="flex items-center gap-1 overflow-hidden">
+          <div data-testid="client-tags" className="flex items-center gap-1 overflow-hidden">
             {client.tags.map((tag) => (
               <TagBadge key={tag} tag={tag} />
             ))}
           </div>
-          <span className="text-[13px] text-text-secondary truncate pr-2">
+          <span data-testid="client-primary-contact" className="text-[13px] text-text-secondary truncate pr-2">
             {formatPrimaryContact(client)}
           </span>
-          <span className="text-[13px] text-text-secondary">
+          <span data-testid="client-open-deals" className="text-[13px] text-text-secondary">
             {formatOpenDeals(client)}
           </span>
-          <span className="text-[13px] text-text-secondary truncate pr-2">
+          <span data-testid="client-next-task" className="text-[13px] text-text-secondary truncate pr-2">
             {formatNextTask(client)}
           </span>
           <ClientRowActionMenu

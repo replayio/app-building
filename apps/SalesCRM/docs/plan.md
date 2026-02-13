@@ -101,14 +101,14 @@
 
 ### Stage 3: Write Tests (writeTests.md)
 - [x] UnpackWriteTests: Unpack the write tests stage into subtasks
-- [ ] SetupPlaywright: Install Playwright, configure test infrastructure, create test helpers and fixtures
-- [ ] WriteTestCLP_NAV: Write tests for ClientsListPage SidebarNavigation (CLP-NAV-01, CLP-NAV-02)
-- [ ] WriteTestCLP_HDR: Write tests for ClientsListPage PageHeader (CLP-HDR-01 through CLP-HDR-05)
-- [ ] WriteTestCLP_SRCH: Write tests for ClientsListPage SearchBar (CLP-SRCH-01 through CLP-SRCH-05)
-- [ ] WriteTestCLP_FLT: Write tests for ClientsListPage FilterControls (CLP-FLT-01 through CLP-FLT-09)
-- [ ] WriteTestCLP_TBL: Write tests for ClientsListPage ClientsTable (CLP-TBL-01 through CLP-TBL-08)
-- [ ] WriteTestCLP_ACT: Write tests for ClientsListPage RowActionMenu (CLP-ACT-01 through CLP-ACT-04)
-- [ ] WriteTestCLP_PGN: Write tests for ClientsListPage Pagination (CLP-PGN-01 through CLP-PGN-04), then commit and exit
+- [x] SetupPlaywright: Install Playwright, configure test infrastructure, create test helpers and fixtures
+- [x] WriteTestCLP_NAV: Write tests for ClientsListPage SidebarNavigation (CLP-NAV-01, CLP-NAV-02)
+- [x] WriteTestCLP_HDR: Write tests for ClientsListPage PageHeader (CLP-HDR-01 through CLP-HDR-05)
+- [x] WriteTestCLP_SRCH: Write tests for ClientsListPage SearchBar (CLP-SRCH-01 through CLP-SRCH-05)
+- [x] WriteTestCLP_FLT: Write tests for ClientsListPage FilterControls (CLP-FLT-01 through CLP-FLT-09)
+- [x] WriteTestCLP_TBL: Write tests for ClientsListPage ClientsTable (CLP-TBL-01 through CLP-TBL-08)
+- [x] WriteTestCLP_ACT: Write tests for ClientsListPage RowActionMenu (CLP-ACT-01 through CLP-ACT-04)
+- [x] WriteTestCLP_PGN: Write tests for ClientsListPage Pagination (CLP-PGN-01 through CLP-PGN-04), then commit and exit
 - [ ] WriteTestCDP_HDR: Write tests for ClientDetailPage ClientHeader (CDP-HDR-01 through CDP-HDR-05)
 - [ ] WriteTestCDP_QA: Write tests for ClientDetailPage QuickActions (CDP-QA-01 through CDP-QA-09)
 - [ ] WriteTestCDP_SRC: Write tests for ClientDetailPage SourceInfoSection (CDP-SRC-01 through CDP-SRC-03)
