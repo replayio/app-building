@@ -1,0 +1,26 @@
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { AppLayout } from './components/layout/AppLayout'
+import { ClientsListPage } from './pages/ClientsListPage'
+import { ClientDetailPage } from './pages/ClientDetailPage'
+import { PersonDetailPage } from './pages/PersonDetailPage'
+import { DealsListPage } from './pages/DealsListPage'
+import { DealDetailPage } from './pages/DealDetailPage'
+import { TasksListPage } from './pages/TasksListPage'
+import { NotFoundPage } from './pages/NotFoundPage'
+
+export default function App() {
+  return (
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Navigate to="/clients" replace />} />
+        <Route path="/clients" element={<ClientsListPage />} />
+        <Route path="/clients/:clientId" element={<ClientDetailPage />} />
+        <Route path="/individuals/:individualId" element={<PersonDetailPage />} />
+        <Route path="/deals" element={<DealsListPage />} />
+        <Route path="/deals/:dealId" element={<DealDetailPage />} />
+        <Route path="/tasks" element={<TasksListPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  )
+}

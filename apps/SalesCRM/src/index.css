@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  /* Sidebar */
+  --color-sidebar: #f5f5f5;
+  --color-sidebar-hover: #f7f7f7;
+  --color-sidebar-active: #eeeeee;
+
+  /* Backgrounds */
+  --color-base: #fcfcfc;
+  --color-surface: #ffffff;
+
+  /* Borders */
+  --color-border: #dcdcdc;
+  --color-border-light: #e0e0e0;
+
+  /* Text */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #2d2e2f;
+  --color-text-muted: #59595a;
+  --color-text-disabled: #b0b5c0;
+
+  /* Accent / Brand */
+  --color-accent: #7180ff;
+  --color-accent-blue: #5d85ff;
+  --color-accent-purple: #9577ff;
+  --color-accent-muted: #6d78d5;
+
+  /* Status colors */
+  --color-status-active: #22c55e;
+  --color-status-inactive: #6b7280;
+  --color-status-prospect: #3b82f6;
+  --color-status-churned: #ef4444;
+
+  /* Hover states */
+  --color-hover: rgba(0, 0, 0, 0.063);
+  --color-pressed: #efefef;
+  --color-selected: #ededed;
+
+  /* Shadows */
+  --shadow-elevation-1: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-elevation-2: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+
+  /* Sizing */
+  --spacing-sidebar-width: 244px;
+
+  /* Border radius */
+  --radius-control: 4px;
+  --radius-card: 6px;
+  --radius-modal: 8px;
+
+  /* Font sizes */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "SF Pro Display", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  background-color: var(--color-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  width: 100%;
+}
