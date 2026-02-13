@@ -31,7 +31,15 @@
 - **Stage 1 COMPLETE**: All test specifications written in docs/tests.md (100+ test entries across 6 pages + cross-cutting tests)
 
 ### Stage 2: Write App (writeApp.md)
-- [ ] UnpackWriteApp: Unpack the write app stage into subtasks
+- [x] UnpackWriteApp: Unpack the write app stage into subtasks
+- [x] SetupApp: Initialize the Vite + React + TypeScript project with all dependencies (Redux, React Router, shadcn/ui, etc.), configure ESLint, tsconfig strict mode, Netlify Functions structure, and the init-db script
+- [x] DesignDatabase: Design the Postgres schema for all entities (clients, individuals, deals, tasks, attachments, timeline events, relationships, contact history, writeups) and implement the init-db script
+- [ ] UnpackWritePageClientsListPage: Plan and create subtasks for implementing the ClientsListPage (/clients) components
+- [ ] UnpackWritePageClientDetailPage: Plan and create subtasks for implementing the ClientDetailPage (/clients/:clientId) components
+- [ ] UnpackWritePagePersonDetailPage: Plan and create subtasks for implementing the PersonDetailPage (/individuals/:individualId) components
+- [ ] UnpackWritePageDealsListPage: Plan and create subtasks for implementing the DealsListPage (/deals) components
+- [ ] UnpackWritePageDealDetailPage: Plan and create subtasks for implementing the DealDetailPage (/deals/:dealId) components
+- [ ] UnpackWritePageTasksListPage: Plan and create subtasks for implementing the TasksListPage (/tasks) components
 
 ### Stage 3: Write Tests (writeTests.md)
 - [ ] UnpackWriteTests: Unpack the write tests stage into subtasks
