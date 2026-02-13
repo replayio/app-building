@@ -1,0 +1,108 @@
+import { useNavigate } from 'react-router-dom'
+import type { Client } from '../../types'
+import { StatusBadge } from './StatusBadge'
+import { TagBadge } from './TagBadge'
+import { ClientRowActionMenu } from './ClientRowActionMenu'
+
+interface ClientsTableProps {
+  clients: Client[]
+  onDeleteClient: (clientId: string) => void
+}
+
+function formatDealsValue(value: number): string {
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`
+  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}k`
+  return `$${value}`
+}
+
+function formatNextTask(client: Client): string {
+  if (client.status === 'churned') return 'N/A'
+  if (!client.next_task_title) return 'No task scheduled'
+  const dateStr = client.next_task_due
+    ? ` - ${new Date(client.next_task_due).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+    : ''
+  return `${client.next_task_title}${dateStr}`
+}
+
+function formatPrimaryContact(client: Client): string {
+  if (client.type === 'individual') {
+    return `${client.name} (Self)`
+  }
+  if (!client.primary_contact_name) return '—'
+  const role = client.primary_contact_role ? ` (${client.primary_contact_role})` : ''
+  return `${client.primary_contact_name}${role}`
+}
+
+function formatOpenDeals(client: Client): string {
+  if (client.status === 'churned') return '0'
+  const count = Number(client.open_deals_count) || 0
+  if (count === 0) return '0'
+  const value = Number(client.open_deals_value) || 0
+  return `${count} (Value: ${formatDealsValue(value)})`
+}
+
+export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
+  const navigate = useNavigate()
+
+  if (clients.length === 0) {
+    return (
+      <div className="text-center py-12 text-text-muted text-[13px]">
+        No clients found.
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full">
+      {/* Header */}
+      <div className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[36px] px-4 text-[12px] font-medium text-text-muted border-b border-border">
+        <span>Client Name</span>
+        <span>Type</span>
+        <span>Status</span>
+        <span>Tags</span>
+        <span>Primary Contact</span>
+        <span>Open Deals</span>
+        <span>Next Task</span>
+        <span></span>
+      </div>
+
+      {/* Rows */}
+      {clients.map((client) => (
+        <div
+          key={client.id}
+          onClick={() => navigate(`/clients/${client.id}`)}
+          className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[44px] px-4 cursor-pointer hover:bg-hover transition-colors duration-100 border-b border-border/50"
+        >
+          <span className="text-[13px] font-medium text-text-primary truncate pr-2">
+            {client.name}
+          </span>
+          <span className="text-[13px] text-text-secondary">
+            {client.type === 'organization' ? 'Organization' : 'Individual'}
+          </span>
+          <span>
+            <StatusBadge status={client.status} />
+          </span>
+          <div className="flex items-center gap-1 overflow-hidden">
+            {client.tags.map((tag) => (
+              <TagBadge key={tag} tag={tag} />
+            ))}
+          </div>
+          <span className="text-[13px] text-text-secondary truncate pr-2">
+            {formatPrimaryContact(client)}
+          </span>
+          <span className="text-[13px] text-text-secondary">
+            {formatOpenDeals(client)}
+          </span>
+          <span className="text-[13px] text-text-secondary truncate pr-2">
+            {formatNextTask(client)}
+          </span>
+          <ClientRowActionMenu
+            onView={() => navigate(`/clients/${client.id}`)}
+            onEdit={() => navigate(`/clients/${client.id}`)}
+            onDelete={() => onDeleteClient(client.id)}
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
