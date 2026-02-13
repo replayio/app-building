@@ -7,13 +7,14 @@ interface ClientsSearchBarProps {
 
 export function ClientsSearchBar({ value, onChange }: ClientsSearchBarProps) {
   return (
-    <div className="relative flex-1 max-w-[400px]">
+    <div data-testid="clients-search-bar" className="relative flex-1 max-w-[400px]">
       <Search
         size={14}
         strokeWidth={1.75}
         className="absolute left-3 top-1/2 -translate-y-1/2 text-text-disabled"
       />
       <input
+        data-testid="clients-search-input"
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -22,6 +23,7 @@ export function ClientsSearchBar({ value, onChange }: ClientsSearchBarProps) {
       />
       {value && (
         <button
+          data-testid="clients-search-clear"
           onClick={() => onChange('')}
           className="absolute right-2 top-1/2 -translate-y-1/2 text-text-disabled hover:text-text-muted"
         >

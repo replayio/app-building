@@ -8,10 +8,11 @@ interface ClientsPageHeaderProps {
 
 export function ClientsPageHeader({ onAddClient, onImport, onExport }: ClientsPageHeaderProps) {
   return (
-    <div className="flex items-center justify-between mb-6">
+    <div data-testid="clients-page-header" className="flex items-center justify-between mb-6">
       <h1 className="text-[24px] font-semibold text-text-primary">Clients</h1>
       <div className="flex items-center gap-2">
         <button
+          data-testid="import-button"
           onClick={onImport}
           className="inline-flex items-center gap-1.5 h-[34px] px-3 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] bg-surface hover:bg-hover transition-colors duration-100"
         >
@@ -19,6 +20,7 @@ export function ClientsPageHeader({ onAddClient, onImport, onExport }: ClientsPa
           Import
         </button>
         <button
+          data-testid="export-button"
           onClick={onExport}
           className="inline-flex items-center gap-1.5 h-[34px] px-3 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] bg-surface hover:bg-hover transition-colors duration-100"
         >
@@ -26,6 +28,7 @@ export function ClientsPageHeader({ onAddClient, onImport, onExport }: ClientsPa
           Export
         </button>
         <button
+          data-testid="add-new-client-button"
           onClick={onAddClient}
           className="inline-flex items-center gap-1.5 h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 transition-opacity duration-100"
         >

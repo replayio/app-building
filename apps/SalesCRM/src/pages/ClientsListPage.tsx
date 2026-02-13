@@ -177,7 +177,7 @@ function ImportDialog({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[420px]">
+      <div data-testid="import-dialog" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[420px]">
         <div className="px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Import Clients</h2>
         </div>

@@ -27,12 +27,13 @@ export function ClientsPagination({ page, pageSize, total, onPageChange }: Clien
   }
 
   return (
-    <div className="flex items-center justify-end gap-3 mt-4 px-4 py-3">
-      <span className="text-[12px] text-text-muted">
+    <div data-testid="clients-pagination" className="flex items-center justify-end gap-3 mt-4 px-4 py-3">
+      <span data-testid="pagination-info" className="text-[12px] text-text-muted">
         Showing {start}-{end} of {total} clients
       </span>
       <div className="flex items-center gap-1">
         <button
+          data-testid="pagination-previous"
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
           className="h-[28px] px-2.5 text-[12px] text-text-secondary border border-border rounded-[4px] hover:bg-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-100"
@@ -47,6 +48,7 @@ export function ClientsPagination({ page, pageSize, total, onPageChange }: Clien
           ) : (
             <button
               key={p}
+              data-testid={`pagination-page-${p}`}
               onClick={() => onPageChange(p)}
               className={`h-[28px] w-[28px] text-[12px] rounded-[4px] transition-colors duration-100 ${
                 p === page
@@ -59,6 +61,7 @@ export function ClientsPagination({ page, pageSize, total, onPageChange }: Clien
           )
         )}
         <button
+          data-testid="pagination-next"
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
           className="h-[28px] px-2.5 text-[12px] text-text-secondary border border-border rounded-[4px] hover:bg-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-100"
