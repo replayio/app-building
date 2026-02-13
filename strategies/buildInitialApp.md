@@ -22,12 +22,15 @@ You will build the app in the following stages, with links to additional instruc
 
 ULTRA IMPORTANT: Follow these directions exactly.
 
-1. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
-2. Pick the next task and announce `IMPLEMENT: <TaskName>`.
-3. Read the instructions for the associated stage (if you haven't already) and implement the task.
-4. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
-5. Update `docs/plan.md` to reflect progress.
-6. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
+1. Look for files `logs/iteration-...` describing recent changes made. While there are any,
+   follow instructions from this link to process them
+   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/reviewChanges.md
+2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
+3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
+4. Read the instructions for the associated stage (if you haven't already) and implement the task.
+5. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
+6. Update `docs/plan.md` to reflect progress.
+7. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
 
 ## Required Environment Variables
 

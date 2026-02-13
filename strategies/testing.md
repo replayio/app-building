@@ -51,3 +51,5 @@ When testing the app after deployment, use the Replay browser to record the app 
 ## Directives
 
 - When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.
+
+## Tips
