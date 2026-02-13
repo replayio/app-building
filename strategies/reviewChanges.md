@@ -19,8 +19,8 @@ Follow these instructions exactly.
 2. Announce 'REVIEW: <logFile>'
 3. Read the changes made in git based on the start / end revisions in the iteration log.
 4. Read the instructions file for the stage associated with the log's tasks (there should be only one).
-   See https://raw.githubusercontent.com/[REDACTED]io/app-building/refs/heads/main/strategies/buildInitialApp.md
-   for the stages and their instruction links.
+   See buildInitialApp.md
+   for the stages and their instruction files.
 5. Look for any problems described in the sections below.
 6. If any are found, make changes to the code and/or strategies to correct them.
 7. Move the log file to logs/reviewed/iteration-<timestamp>.log
