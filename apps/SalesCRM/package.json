@@ -9,11 +9,14 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "init-db": "tsx scripts/init-db.ts"
+    "init-db": "tsx scripts/init-db.ts",
+    "test": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test",
+    "test:ui": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test --ui"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
     "@reduxjs/toolkit": "^2.5.0",
+    "@uploadthing/react": "^7.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
@@ -23,12 +26,12 @@
     "react-router-dom": "^7.1.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^7.4.0",
-    "@uploadthing/react": "^7.1.0"
+    "uploadthing": "^7.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@netlify/functions": "^3.0.0",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.1.0",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.14",

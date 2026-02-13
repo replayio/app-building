@@ -100,7 +100,48 @@
   - [x] WritePageTasksListPage: Assemble all components into the final page with Redux state management
 
 ### Stage 3: Write Tests (writeTests.md)
-- [ ] UnpackWriteTests: Unpack the write tests stage into subtasks
+- [x] UnpackWriteTests: Unpack the write tests stage into subtasks
+- [ ] SetupPlaywright: Install Playwright, configure test infrastructure, create test helpers and fixtures
+- [ ] WriteTestCLP_NAV: Write tests for ClientsListPage SidebarNavigation (CLP-NAV-01, CLP-NAV-02)
+- [ ] WriteTestCLP_HDR: Write tests for ClientsListPage PageHeader (CLP-HDR-01 through CLP-HDR-05)
+- [ ] WriteTestCLP_SRCH: Write tests for ClientsListPage SearchBar (CLP-SRCH-01 through CLP-SRCH-05)
+- [ ] WriteTestCLP_FLT: Write tests for ClientsListPage FilterControls (CLP-FLT-01 through CLP-FLT-09)
+- [ ] WriteTestCLP_TBL: Write tests for ClientsListPage ClientsTable (CLP-TBL-01 through CLP-TBL-08)
+- [ ] WriteTestCLP_ACT: Write tests for ClientsListPage RowActionMenu (CLP-ACT-01 through CLP-ACT-04)
+- [ ] WriteTestCLP_PGN: Write tests for ClientsListPage Pagination (CLP-PGN-01 through CLP-PGN-04), then commit and exit
+- [ ] WriteTestCDP_HDR: Write tests for ClientDetailPage ClientHeader (CDP-HDR-01 through CDP-HDR-05)
+- [ ] WriteTestCDP_QA: Write tests for ClientDetailPage QuickActions (CDP-QA-01 through CDP-QA-09)
+- [ ] WriteTestCDP_SRC: Write tests for ClientDetailPage SourceInfoSection (CDP-SRC-01 through CDP-SRC-03)
+- [ ] WriteTestCDP_TSK: Write tests for ClientDetailPage TasksSection (CDP-TSK-01 through CDP-TSK-04)
+- [ ] WriteTestCDP_DL: Write tests for ClientDetailPage DealsSection (CDP-DL-01, CDP-DL-02)
+- [ ] WriteTestCDP_ATT: Write tests for ClientDetailPage AttachmentsSection (CDP-ATT-01 through CDP-ATT-04)
+- [ ] WriteTestCDP_PPL: Write tests for ClientDetailPage PeopleSection (CDP-PPL-01, CDP-PPL-02)
+- [ ] WriteTestCDP_TL: Write tests for ClientDetailPage TimelineSection (CDP-TL-01 through CDP-TL-08), then commit and exit
+- [ ] WriteTestPDP_HDR: Write tests for PersonDetailPage PersonHeader (PDP-HDR-01 through PDP-HDR-04)
+- [ ] WriteTestPDP_REL: Write tests for PersonDetailPage RelationshipsSection (PDP-REL-01 through PDP-REL-07)
+- [ ] WriteTestPDP_CH: Write tests for PersonDetailPage ContactHistorySection (PDP-CH-01 through PDP-CH-07)
+- [ ] WriteTestPDP_AC: Write tests for PersonDetailPage AssociatedClientsSection (PDP-AC-01, PDP-AC-02), then commit and exit
+- [ ] WriteTestDLP_HDR: Write tests for DealsListPage PageHeader (DLP-HDR-01 through DLP-HDR-03)
+- [ ] WriteTestDLP_SUM: Write tests for DealsListPage SummaryCards (DLP-SUM-01, DLP-SUM-02)
+- [ ] WriteTestDLP_VW: Write tests for DealsListPage ViewToggle (DLP-VW-01 through DLP-VW-03)
+- [ ] WriteTestDLP_FLT: Write tests for DealsListPage FilterControls (DLP-FLT-01 through DLP-FLT-08)
+- [ ] WriteTestDLP_TBL: Write tests for DealsListPage DealsTable (DLP-TBL-01 through DLP-TBL-05)
+- [ ] WriteTestDLP_ACT: Write tests for DealsListPage RowActionMenu (DLP-ACT-01, DLP-ACT-02)
+- [ ] WriteTestDLP_PGN: Write tests for DealsListPage Pagination (DLP-PGN-01, DLP-PGN-02), then commit and exit
+- [ ] WriteTestDDP_HDR: Write tests for DealDetailPage DealHeader (DDP-HDR-01 through DDP-HDR-04)
+- [ ] WriteTestDDP_PIP: Write tests for DealDetailPage StagePipeline (DDP-PIP-01, DDP-PIP-02)
+- [ ] WriteTestDDP_HIS: Write tests for DealDetailPage DealHistorySection (DDP-HIS-01, DDP-HIS-02)
+- [ ] WriteTestDDP_MET: Write tests for DealDetailPage DealMetricsSection (DDP-MET-01, DDP-MET-02)
+- [ ] WriteTestDDP_WRT: Write tests for DealDetailPage WriteupsSection (DDP-WRT-01 through DDP-WRT-06)
+- [ ] WriteTestDDP_LTK: Write tests for DealDetailPage LinkedTasksSection (DDP-LTK-01 through DDP-LTK-04)
+- [ ] WriteTestDDP_ATT: Write tests for DealDetailPage AttachmentsSection (DDP-ATT-01 through DDP-ATT-05)
+- [ ] WriteTestDDP_CON: Write tests for DealDetailPage ContactsSection (DDP-CON-01, DDP-CON-02), then commit and exit
+- [ ] WriteTestTLP_HDR: Write tests for TasksListPage PageHeader (TLP-HDR-01 through TLP-HDR-03)
+- [ ] WriteTestTLP_FLT: Write tests for TasksListPage FilterBar (TLP-FLT-01 through TLP-FLT-06)
+- [ ] WriteTestTLP_CRD: Write tests for TasksListPage TaskCards (TLP-CRD-01 through TLP-CRD-09), then commit and exit
+- [ ] WriteTestNAV: Write cross-cutting navigation tests (NAV-01 through NAV-03)
+- [ ] WriteTestDATA: Write cross-cutting data consistency tests (DATA-01 through DATA-05)
+- [ ] WriteTestATOM: Write cross-cutting timeline atomicity tests (ATOM-01 through ATOM-03), then commit and exit
 
 ### Stage 4: Testing (testing.md)
 - [ ] UnpackTesting: Unpack the testing stage into subtasks
