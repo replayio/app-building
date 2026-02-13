@@ -1,7 +1,6 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync } from "fs";
-import { basename, resolve } from "path";
-import { Config, TargetConfig, getStrategyDir, getStrategyMountPaths } from "./config";
+import { readFileSync, existsSync } from "fs";
+import { resolve } from "path";
 
 const IMAGE_NAME = "app-building";
 
@@ -25,9 +24,27 @@ function ensureImageExists(): void {
   }
 }
 
-export interface ContainerResult {
-  dir: string;
-  exitCode: number;
+function loadDotEnv(projectRoot: string): Record<string, string> {
+  const envPath = resolve(projectRoot, ".env");
+  if (!existsSync(envPath)) {
+    return {};
+  }
+  const content = readFileSync(envPath, "utf-8");
+  const vars: Record<string, string> = {};
+  for (const line of content.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eqIndex = trimmed.indexOf("=");
+    if (eqIndex === -1) continue;
+    const key = trimmed.slice(0, eqIndex).trim();
+    let value = trimmed.slice(eqIndex + 1).trim();
+    // Strip surrounding quotes
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    vars[key] = value;
+  }
+  return vars;
 }
 
 function extractRequiredEnvVars(strategyFiles: string[]): string[] {
@@ -46,59 +63,72 @@ function extractRequiredEnvVars(strategyFiles: string[]): string[] {
 }
 
 export function spawnContainer(
-  target: TargetConfig,
-  config: Config,
-  strategiesDir: string,
-): Promise<ContainerResult> {
+  appName: string,
+  strategyBasenames: string[],
+  maxIterations?: number,
+): Promise<number> {
+  const projectRoot = resolve(__dirname, "..");
+
+  ensureImageExists();
+
+  const envVars = loadDotEnv(projectRoot);
+
+  // Check required env vars from strategy files
+  const strategyFiles = strategyBasenames.map((s) => resolve(projectRoot, "strategies", s));
+  const requiredVars = [...extractRequiredEnvVars(strategyFiles), "ANTHROPIC_API_KEY"];
+  const missing = requiredVars.filter((v) => !envVars[v]);
+  if (missing.length > 0) {
+    console.error(`Missing required env vars in .env: ${missing.join(", ")}`);
+    process.exit(1);
+  }
+
+  const containerName = `app-building-${appName}`;
+
+  // Stop any existing container with the same name
+  try {
+    execFileSync("docker", ["rm", "-f", containerName], { stdio: "ignore" });
+  } catch {}
+
+  // Build docker run args
+  const args: string[] = [
+    "run",
+    "--rm",
+    "--name", containerName,
+    "-v", `${projectRoot}:/repo`,
+    "--network", "host",
+    "--user", `${process.getuid!()}:${process.getgid!()}`,
+  ];
+
+  // Git identity (system gitconfig not visible to non-root user)
+  args.push("--env", "GIT_AUTHOR_NAME=App Builder");
+  args.push("--env", "GIT_AUTHOR_EMAIL=app-builder@localhost");
+  args.push("--env", "GIT_COMMITTER_NAME=App Builder");
+  args.push("--env", "GIT_COMMITTER_EMAIL=app-builder@localhost");
+
+  // Playwright browsers installed at shared path
+  args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
+
+  // Pass env vars from .env
+  for (const [k, v] of Object.entries(envVars)) {
+    args.push("--env", `${k}=${v}`);
+  }
+
+  // Image name
+  args.push(IMAGE_NAME);
+
+  // Container args (passed to entrypoint)
+  args.push("--app", appName);
+  args.push("--repo-root", "/repo");
+  for (const s of strategyBasenames) {
+    args.push("--load", s);
+  }
+  if (maxIterations != null) {
+    args.push("--max-iterations", String(maxIterations));
+  }
+
+  console.log(`[${appName}] Starting container ${containerName}...`);
+
   return new Promise((resolvePromise, reject) => {
-    const dirName = basename(target.dir);
-    const containerName = `app-building-${dirName}`;
-    const strategyMountPaths = getStrategyMountPaths(target, strategiesDir);
-
-    // Stop any existing container with the same name
-    try {
-      execFileSync("docker", ["rm", "-f", containerName], { stdio: "ignore" });
-    } catch {}
-
-    // Build docker run args
-    const args: string[] = [
-      "run",
-      "--rm",
-      "--name", containerName,
-      "-v", `${target.dir}:/workspace`,
-      "-v", `${strategiesDir}:/strategies:ro`,
-      "--network", "host",
-      "--user", `${process.getuid!()}:${process.getgid!()}`,
-    ];
-
-    // Git identity (system gitconfig not visible to non-root user)
-    args.push("--env", "GIT_AUTHOR_NAME=App Builder");
-    args.push("--env", "GIT_AUTHOR_EMAIL=app-builder@localhost");
-    args.push("--env", "GIT_COMMITTER_NAME=App Builder");
-    args.push("--env", "GIT_COMMITTER_EMAIL=app-builder@localhost");
-
-    // Playwright browsers installed at shared path
-    args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
-
-    // Pass env vars from config
-    for (const [k, v] of Object.entries(config.env)) {
-      args.push("--env", `${k}=${v}`);
-    }
-
-    // Image name
-    args.push(IMAGE_NAME);
-
-    // Container args (passed to entrypoint)
-    args.push("--dir", "/workspace");
-    for (const mp of strategyMountPaths) {
-      args.push("--load", mp);
-    }
-    if (config.maxIterations != null) {
-      args.push("--max-iterations", String(config.maxIterations));
-    }
-
-    console.log(`[${dirName}] Starting container ${containerName}...`);
-
     const child = spawn("docker", args, {
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -107,7 +137,7 @@ export function spawnContainer(
       const lines = data.toString().split("\n");
       for (const line of lines) {
         if (line.trim()) {
-          console.log(`[${dirName}] ${line}`);
+          console.log(`[${appName}] ${line}`);
         }
       }
     });
@@ -116,7 +146,7 @@ export function spawnContainer(
       const lines = data.toString().split("\n");
       for (const line of lines) {
         if (line.trim()) {
-          console.error(`[${dirName}] ${line}`);
+          console.error(`[${appName}] ${line}`);
         }
       }
     });
@@ -125,27 +155,8 @@ export function spawnContainer(
 
     child.on("close", (code) => {
       const exitCode = code ?? 1;
-      console.log(`[${dirName}] Container exited with code ${exitCode}`);
-      resolvePromise({ dir: target.dir, exitCode });
+      console.log(`[${appName}] Container exited with code ${exitCode}`);
+      resolvePromise(exitCode);
     });
   });
-}
-
-export async function runContainers(config: Config): Promise<void> {
-  ensureImageExists();
-
-  const strategiesDir = getStrategyDir(config);
-
-  // Check required env vars from strategy files
-  const allStrategyFiles = config.targets.flatMap((t) => t.strategies);
-  const requiredVars = [...extractRequiredEnvVars(allStrategyFiles), "ANTHROPIC_API_KEY"];
-  const missing = requiredVars.filter((v) => !config.env[v]);
-  if (missing.length > 0) {
-    console.error(`Missing required env vars in config: ${missing.join(", ")}`);
-    process.exit(1);
-  }
-
-  config.targets.forEach((target) =>
-    spawnContainer(target, config, strategiesDir)
-  );
 }

@@ -1,30 +1,25 @@
 # Strategy
 
 You are building an application based on the provided AppSpec.md.
-You will build the app in the following stages, with links to additional instructions.
+You will build the app in the following stages, with strategy files to additional instructions.
 
-1. Create a detailed test specification for the tests the app must pass in order to match the app spec.
-   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/testSpec.md
+1. testSpec.md: Create a detailed test specification for the tests the app must pass in order to match the app spec.
 
-2. Write the app's code according to the two specs.
-   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/writeApp.md
+2. writeApp.md: Write the app's code according to the two specs.
 
-3. Write the tests according to the two specs.
-   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/writeTests.md
+3. writeTests.md: Write the tests according to the two specs.
 
-4. Get all tests to pass, debugging and fixing the app / tests as needed.
-   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/testing.md
+4. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
 
-5. Deploy the app to production.
-   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/deployment.md
+5. deployment.md: Deploy the app to production.
 
 ## Development Process
 
 ULTRA IMPORTANT: Follow these directions exactly.
 
 1. Look for files `logs/iteration-...` describing recent changes made. While there are any,
-   follow instructions from this link to process them
-   https://raw.githubusercontent.com/replayio/app-building/refs/heads/main/strategies/reviewChanges.md
+   follow instructions from this file to process them
+   reviewChanges.md
 2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
 3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
 4. Read the instructions for the associated stage (if you haven't already) and implement the task.
@@ -85,7 +80,7 @@ Maintain `docs/plan.md` with:
 
 Pick an unfinished task and start working on it.
 
-Focus on one task at a time. Do it well rather than rushing through multiple tasks. If the task is associated with one of the stages of app development, download and read the additional instructions for that stage from the links above.
+Focus on one task at a time. Do it well rather than rushing through multiple tasks. If the task is associated with one of the stages of app development, read the additional instructions for that stage from the files listed above.
 
 When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
 

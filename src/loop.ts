@@ -8,7 +8,8 @@ const ReplayMCPServer = "https://dispatch.replay.io/nut/mcp";
 // --- CLI Arg Parsing ---
 
 interface Args {
-  dir: string;
+  appName: string;
+  repoRoot: string;
   strategyFiles: string[];
   maxIterations: number | null;
 }
@@ -16,16 +17,19 @@ interface Args {
 function parseArgs(): Args {
   const program = new Command();
   program
-    .requiredOption("--dir <path>", "target git repository directory")
-    .requiredOption("--load <files...>", "strategy files (.md) to guide the agent")
+    .requiredOption("--app <name>", "app name (under apps/<name>/)")
+    .requiredOption("--repo-root <path>", "repo root directory (mounted as /repo)")
+    .requiredOption("--load <basenames...>", "strategy file basenames (from strategies/)")
     .option("--max-iterations <n>", "maximum number of iterations to run", parseInt)
     .parse();
 
   const opts = program.opts();
+  const repoRoot = resolve(opts.repoRoot);
 
   return {
-    dir: resolve(opts.dir),
-    strategyFiles: opts.load.map((f: string) => resolve(f)),
+    appName: opts.app,
+    repoRoot,
+    strategyFiles: opts.load.map((s: string) => join(repoRoot, "strategies", s)),
     maxIterations: opts.maxIterations ?? null,
   };
 }
@@ -409,6 +413,7 @@ async function runLoop(
 
 async function main(): Promise<void> {
   const args = parseArgs();
+  const appDir = join(args.repoRoot, "apps", args.appName);
 
   const strategyContents = args.strategyFiles.map((f) => readFileSync(f, "utf-8"));
   const strategyNames = args.strategyFiles.map((f) => basename(f));
@@ -421,7 +426,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  await runLoop(args.dir, strategyContents, strategyNames, args.maxIterations);
+  await runLoop(appDir, strategyContents, strategyNames, args.maxIterations);
 }
 
 main().catch((e) => {

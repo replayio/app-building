@@ -1,7 +1,6 @@
 import { execFileSync } from "child_process";
-import { readFileSync, readdirSync } from "fs";
-import { basename, join } from "path";
-import { loadConfig } from "./config";
+import { readFileSync, readdirSync, statSync } from "fs";
+import { join, resolve } from "path";
 
 const RESET = "\x1b[0m";
 const DIM = "\x1b[2m";
@@ -26,32 +25,39 @@ interface TargetStatus {
   lastActivity: string | null;
 }
 
-function isContainerRunning(dirName: string): boolean {
+function isContainerRunning(appName: string): boolean {
   try {
     const out = execFileSync(
       "docker",
-      ["ps", "--filter", `name=app-building-${dirName}`, "--format", "{{.Names}}"],
+      ["ps", "--filter", `name=app-building-${appName}`, "--format", "{{.Names}}"],
       { encoding: "utf-8", timeout: 5000 },
     ).trim();
-    return out.includes(`app-building-${dirName}`);
+    return out.includes(`app-building-${appName}`);
   } catch {
     return false;
   }
 }
 
-function getIterationLogFiles(targetDir: string): string[] {
-  const logsDir = join(targetDir, "logs");
-  let entries: string[];
-  try {
-    entries = readdirSync(logsDir);
-  } catch {
-    return [];
+function getIterationLogFiles(appDir: string): string[] {
+  const logsDir = join(appDir, "logs");
+  const files: string[] = [];
+
+  // Collect from logs/ and logs/reviewed/
+  for (const dir of [logsDir, join(logsDir, "reviewed")]) {
+    let entries: string[];
+    try {
+      entries = readdirSync(dir);
+    } catch {
+      continue;
+    }
+    for (const f of entries) {
+      if (/^iteration-.*\.log$/.test(f)) {
+        files.push(join(dir, f));
+      }
+    }
   }
 
-  return entries
-    .filter((f) => /^iteration-.*\.log$/.test(f))
-    .sort()
-    .map((f) => join(logsDir, f));
+  return files.sort();
 }
 
 function parseIterationLogs(logPaths: string[]): Omit<TargetStatus, "name" | "dir" | "containerRunning" | "logFile"> {
@@ -183,50 +189,78 @@ function printStatus(status: TargetStatus): void {
   console.log(`  ${DIM}Log: ${status.logFile}${RESET}`);
 }
 
-function main(): void {
-  const configPath = process.argv[2];
-  if (!configPath) {
-    console.error("Usage: npm run status -- <config.json>");
-    process.exit(1);
+function getAppStatus(appName: string, appsDir: string): TargetStatus {
+  const appDir = join(appsDir, appName);
+  const running = isContainerRunning(appName);
+  const logFiles = getIterationLogFiles(appDir);
+
+  if (logFiles.length > 0) {
+    const parsed = parseIterationLogs(logFiles);
+    return {
+      name: appName,
+      dir: appDir,
+      containerRunning: running,
+      logFile: logFiles[logFiles.length - 1],
+      ...parsed,
+    };
   }
 
-  const config = loadConfig(configPath);
+  return {
+    name: appName,
+    dir: appDir,
+    containerRunning: running,
+    logFile: null,
+    completedIterations: 0,
+    currentIteration: null,
+    maxIterations: null,
+    totalCost: 0,
+    finished: false,
+    finishReason: null,
+    lastError: null,
+    lastActivity: null,
+  };
+}
+
+function listAppNames(appsDir: string): string[] {
+  let entries: string[];
+  try {
+    entries = readdirSync(appsDir);
+  } catch {
+    return [];
+  }
+  return entries
+    .filter((e) => {
+      try {
+        return statSync(join(appsDir, e)).isDirectory();
+      } catch {
+        return false;
+      }
+    })
+    .sort();
+}
+
+function main(): void {
+  const projectRoot = resolve(__dirname, "..");
+  const appsDir = join(projectRoot, "apps");
+  const appName = process.argv[2];
 
   console.log(`${BOLD}Container Status${RESET}`);
 
-  for (const target of config.targets) {
-    const dirName = basename(target.dir);
-    const running = isContainerRunning(dirName);
-    const logFiles = getIterationLogFiles(target.dir);
-
-    let status: TargetStatus;
-    if (logFiles.length > 0) {
-      const parsed = parseIterationLogs(logFiles);
-      status = {
-        name: dirName,
-        dir: target.dir,
-        containerRunning: running,
-        logFile: logFiles[logFiles.length - 1],
-        ...parsed,
-      };
-    } else {
-      status = {
-        name: dirName,
-        dir: target.dir,
-        containerRunning: running,
-        logFile: null,
-        completedIterations: 0,
-        currentIteration: null,
-        maxIterations: null,
-        totalCost: 0,
-        finished: false,
-        finishReason: null,
-        lastError: null,
-        lastActivity: null,
-      };
-    }
-
+  if (appName) {
+    // Show status for a single app
+    const status = getAppStatus(appName, appsDir);
     printStatus(status);
+  } else {
+    // Show status for all apps
+    const appNames = listAppNames(appsDir);
+    if (appNames.length === 0) {
+      console.log(`\n${DIM}No apps found in ${appsDir}/${RESET}`);
+    } else {
+      for (const name of appNames) {
+        const status = getAppStatus(name, appsDir);
+        printStatus(status);
+      }
+    }
   }
 
   console.log();
