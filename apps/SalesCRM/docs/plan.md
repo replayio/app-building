@@ -109,14 +109,14 @@
 - [x] WriteTestCLP_TBL: Write tests for ClientsListPage ClientsTable (CLP-TBL-01 through CLP-TBL-08)
 - [x] WriteTestCLP_ACT: Write tests for ClientsListPage RowActionMenu (CLP-ACT-01 through CLP-ACT-04)
 - [x] WriteTestCLP_PGN: Write tests for ClientsListPage Pagination (CLP-PGN-01 through CLP-PGN-04), then commit and exit
-- [ ] WriteTestCDP_HDR: Write tests for ClientDetailPage ClientHeader (CDP-HDR-01 through CDP-HDR-05)
-- [ ] WriteTestCDP_QA: Write tests for ClientDetailPage QuickActions (CDP-QA-01 through CDP-QA-09)
-- [ ] WriteTestCDP_SRC: Write tests for ClientDetailPage SourceInfoSection (CDP-SRC-01 through CDP-SRC-03)
-- [ ] WriteTestCDP_TSK: Write tests for ClientDetailPage TasksSection (CDP-TSK-01 through CDP-TSK-04)
-- [ ] WriteTestCDP_DL: Write tests for ClientDetailPage DealsSection (CDP-DL-01, CDP-DL-02)
-- [ ] WriteTestCDP_ATT: Write tests for ClientDetailPage AttachmentsSection (CDP-ATT-01 through CDP-ATT-04)
-- [ ] WriteTestCDP_PPL: Write tests for ClientDetailPage PeopleSection (CDP-PPL-01, CDP-PPL-02)
-- [ ] WriteTestCDP_TL: Write tests for ClientDetailPage TimelineSection (CDP-TL-01 through CDP-TL-08), then commit and exit
+- [x] WriteTestCDP_HDR: Write tests for ClientDetailPage ClientHeader (CDP-HDR-01 through CDP-HDR-05)
+- [x] WriteTestCDP_QA: Write tests for ClientDetailPage QuickActions (CDP-QA-01 through CDP-QA-09)
+- [x] WriteTestCDP_SRC: Write tests for ClientDetailPage SourceInfoSection (CDP-SRC-01 through CDP-SRC-03)
+- [x] WriteTestCDP_TSK: Write tests for ClientDetailPage TasksSection (CDP-TSK-01 through CDP-TSK-04)
+- [x] WriteTestCDP_DL: Write tests for ClientDetailPage DealsSection (CDP-DL-01, CDP-DL-02)
+- [x] WriteTestCDP_ATT: Write tests for ClientDetailPage AttachmentsSection (CDP-ATT-01 through CDP-ATT-04)
+- [x] WriteTestCDP_PPL: Write tests for ClientDetailPage PeopleSection (CDP-PPL-01, CDP-PPL-02)
+- [x] WriteTestCDP_TL: Write tests for ClientDetailPage TimelineSection (CDP-TL-01 through CDP-TL-08), then commit and exit
 - [ ] WriteTestPDP_HDR: Write tests for PersonDetailPage PersonHeader (PDP-HDR-01 through PDP-HDR-04)
 - [ ] WriteTestPDP_REL: Write tests for PersonDetailPage RelationshipsSection (PDP-REL-01 through PDP-REL-07)
 - [ ] WriteTestPDP_CH: Write tests for PersonDetailPage ContactHistorySection (PDP-CH-01 through PDP-CH-07)
