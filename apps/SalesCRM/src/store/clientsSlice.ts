@@ -9,6 +9,8 @@ interface ClientsState {
   total: number
   page: number
   pageSize: number
+  availableTags: string[]
+  availableSources: string[]
 }
 
 const initialState: ClientsState = {
@@ -19,6 +21,8 @@ const initialState: ClientsState = {
   total: 0,
   page: 1,
   pageSize: 50,
+  availableTags: [],
+  availableSources: [],
 }
 
 export const fetchClients = createAsyncThunk(
@@ -33,7 +37,7 @@ export const fetchClients = createAsyncThunk(
     if (params.sort) query.set('sort', params.sort)
     const res = await fetch(`/.netlify/functions/clients?${query}`)
     if (!res.ok) throw new Error('Failed to fetch clients')
-    return res.json() as Promise<{ clients: Client[]; total: number }>
+    return res.json() as Promise<{ clients: Client[]; total: number; tags: string[]; sources: string[] }>
   }
 )
 
@@ -43,6 +47,40 @@ export const fetchClient = createAsyncThunk(
     const res = await fetch(`/.netlify/functions/clients/${clientId}`)
     if (!res.ok) throw new Error('Failed to fetch client')
     return res.json() as Promise<Client>
+  }
+)
+
+export const createClient = createAsyncThunk(
+  'clients/createClient',
+  async (data: {
+    name: string
+    type: string
+    status?: string
+    tags?: string[]
+    source_type?: string
+    source_detail?: string
+    campaign?: string
+    channel?: string
+    date_acquired?: string
+  }) => {
+    const res = await fetch('/.netlify/functions/clients', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error('Failed to create client')
+    return res.json() as Promise<Client>
+  }
+)
+
+export const deleteClient = createAsyncThunk(
+  'clients/deleteClient',
+  async (clientId: string) => {
+    const res = await fetch(`/.netlify/functions/clients/${clientId}`, {
+      method: 'DELETE',
+    })
+    if (!res.ok) throw new Error('Failed to delete client')
+    return clientId
   }
 )
 
@@ -64,6 +102,8 @@ export const clientsSlice = createSlice({
         state.loading = false
         state.items = action.payload.clients
         state.total = action.payload.total
+        state.availableTags = action.payload.tags ?? []
+        state.availableSources = action.payload.sources ?? []
       })
       .addCase(fetchClients.rejected, (state, action) => {
         state.loading = false
@@ -80,6 +120,14 @@ export const clientsSlice = createSlice({
       .addCase(fetchClient.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(createClient.fulfilled, (state, action) => {
+        state.items.unshift(action.payload)
+        state.total += 1
+      })
+      .addCase(deleteClient.fulfilled, (state, action) => {
+        state.items = state.items.filter((c) => c.id !== action.payload)
+        state.total -= 1
       })
   },
 })
