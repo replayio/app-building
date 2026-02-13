@@ -36,19 +36,21 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
   }
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="source-info-section">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-[14px] font-semibold text-text-primary">Source Info</h2>
         {editing ? (
           <div className="flex items-center gap-1">
             <button
               onClick={handleSave}
+              data-testid="source-info-save-button"
               className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-status-active hover:bg-hover transition-colors duration-100"
             >
               <Check size={14} strokeWidth={2} />
             </button>
             <button
               onClick={handleCancel}
+              data-testid="source-info-cancel-button"
               className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
             >
               <X size={14} strokeWidth={2} />
@@ -57,6 +59,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
         ) : (
           <button
             onClick={() => setEditing(true)}
+            data-testid="source-info-edit-button"
             className="inline-flex items-center gap-1 px-2 py-1 text-[12px] text-text-muted hover:bg-hover rounded-[4px] transition-colors duration-100"
           >
             <Pencil size={12} strokeWidth={1.75} />
@@ -74,6 +77,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
               value={sourceType}
               onChange={(e) => setSourceType(e.target.value)}
               placeholder="e.g. Referral"
+              data-testid="source-info-source-input"
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
             />
           </div>
@@ -84,6 +88,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
               value={sourceDetail}
               onChange={(e) => setSourceDetail(e.target.value)}
               placeholder="e.g. John Smith"
+              data-testid="source-info-detail-input"
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
             />
           </div>
@@ -94,6 +99,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
               value={campaign}
               onChange={(e) => setCampaign(e.target.value)}
               placeholder="Campaign name"
+              data-testid="source-info-campaign-input"
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
             />
           </div>
@@ -104,6 +110,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
               value={channel}
               onChange={(e) => setChannel(e.target.value)}
               placeholder="e.g. Direct Sales"
+              data-testid="source-info-channel-input"
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
             />
           </div>
@@ -113,30 +120,31 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
               type="date"
               value={dateAcquired}
               onChange={(e) => setDateAcquired(e.target.value)}
+              data-testid="source-info-date-input"
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
             />
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4" data-testid="source-info-display">
           <div>
             <div className="text-[12px] text-text-muted mb-0.5">Acquisition Source</div>
-            <div className="text-[13px] text-text-primary">
+            <div className="text-[13px] text-text-primary" data-testid="source-info-source-value">
               {client.source_type || 'None'}
               {client.source_detail && ` (${client.source_detail})`}
             </div>
           </div>
           <div>
             <div className="text-[12px] text-text-muted mb-0.5">Campaign</div>
-            <div className="text-[13px] text-text-primary">{client.campaign || 'None'}</div>
+            <div className="text-[13px] text-text-primary" data-testid="source-info-campaign-value">{client.campaign || 'None'}</div>
           </div>
           <div>
             <div className="text-[12px] text-text-muted mb-0.5">Channel</div>
-            <div className="text-[13px] text-text-primary">{client.channel || 'None'}</div>
+            <div className="text-[13px] text-text-primary" data-testid="source-info-channel-value">{client.channel || 'None'}</div>
           </div>
           <div>
             <div className="text-[12px] text-text-muted mb-0.5">Date Acquired</div>
-            <div className="text-[13px] text-text-primary">
+            <div className="text-[13px] text-text-primary" data-testid="source-info-date-value">
               {client.date_acquired ? new Date(client.date_acquired).toLocaleDateString() : 'None'}
             </div>
           </div>

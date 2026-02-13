@@ -28,23 +28,25 @@ export function TasksSection({ tasks, onToggleTask }: TasksSectionProps) {
   }
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="tasks-section">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-[14px] font-semibold text-text-primary">Tasks</h2>
-        <span className="text-[12px] text-text-muted">Unresolved tasks</span>
+        <span className="text-[12px] text-text-muted" data-testid="tasks-unresolved-label">Unresolved tasks</span>
       </div>
 
       {tasks.length === 0 ? (
-        <div className="text-[13px] text-text-muted py-2">No unresolved tasks</div>
+        <div className="text-[13px] text-text-muted py-2" data-testid="tasks-empty-state">No unresolved tasks</div>
       ) : (
         <div className="flex flex-col gap-1">
           {tasks.map((task) => (
             <div
               key={task.id}
+              data-testid={`task-item-${task.id}`}
               className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100 cursor-pointer group"
             >
               <button
                 onClick={(e) => { e.stopPropagation(); onToggleTask(task.id, true) }}
+                data-testid={`task-checkbox-${task.id}`}
                 className="flex-shrink-0 text-text-muted hover:text-status-active transition-colors duration-100"
               >
                 {task.completed ? (
@@ -61,14 +63,14 @@ export function TasksSection({ tasks, onToggleTask }: TasksSectionProps) {
                   }
                 }}
               >
-                <span className="text-[13px] text-text-primary">{task.title}</span>
+                <span className="text-[13px] text-text-primary" data-testid={`task-title-${task.id}`}>{task.title}</span>
                 {task.due_date && (
-                  <span className="text-[12px] text-text-muted ml-2">
+                  <span className="text-[12px] text-text-muted ml-2" data-testid={`task-due-date-${task.id}`}>
                     · Due: {formatDueDate(task.due_date)}
                   </span>
                 )}
                 {task.deal_name && (
-                  <span className="text-[12px] text-text-muted ml-1">
+                  <span className="text-[12px] text-text-muted ml-1" data-testid={`task-deal-link-${task.id}`}>
                     , Deal: &apos;{task.deal_name}&apos;
                   </span>
                 )}

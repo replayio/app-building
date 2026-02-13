@@ -25,22 +25,23 @@ export function DealsSection({ deals }: DealsSectionProps) {
   const navigate = useNavigate()
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="deals-section">
       <h2 className="text-[14px] font-semibold text-text-primary mb-3">Deals</h2>
 
       {deals.length === 0 ? (
-        <div className="text-[13px] text-text-muted py-2">No deals</div>
+        <div className="text-[13px] text-text-muted py-2" data-testid="deals-empty-state">No deals</div>
       ) : (
         <div className="flex flex-col gap-1">
           {deals.map((deal) => (
             <div
               key={deal.id}
               onClick={() => navigate(`/deals/${deal.id}`)}
+              data-testid={`deal-item-${deal.id}`}
               className="flex items-center justify-between px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100 cursor-pointer"
             >
               <div className="text-[13px] text-text-primary">
-                {deal.name}
-                <span className="text-text-muted ml-2">
+                <span data-testid={`deal-name-${deal.id}`}>{deal.name}</span>
+                <span className="text-text-muted ml-2" data-testid={`deal-info-${deal.id}`}>
                   - Stage: {stageLabels[deal.stage]}, Value: {formatValue(Number(deal.value))}
                 </span>
               </div>

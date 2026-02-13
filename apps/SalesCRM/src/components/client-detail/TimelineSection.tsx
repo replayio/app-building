@@ -59,26 +59,26 @@ export function TimelineSection({ events }: TimelineSectionProps) {
   }, {})
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="timeline-section">
       <h2 className="text-[14px] font-semibold text-text-primary mb-3">Timeline</h2>
 
       {events.length === 0 ? (
-        <div className="text-[13px] text-text-muted py-2">No timeline events</div>
+        <div className="text-[13px] text-text-muted py-2" data-testid="timeline-empty-state">No timeline events</div>
       ) : (
         <div className="relative">
           {Object.entries(grouped).map(([dateLabel, groupEvents]) => (
-            <div key={dateLabel} className="mb-4 last:mb-0">
-              <div className="text-[12px] font-medium text-text-muted mb-2">{dateLabel}</div>
+            <div key={dateLabel} className="mb-4 last:mb-0" data-testid="timeline-date-group">
+              <div className="text-[12px] font-medium text-text-muted mb-2" data-testid="timeline-date-label">{dateLabel}</div>
               {groupEvents.map((event) => (
-                <div key={event.id} className="flex items-start gap-3 mb-2 last:mb-0 pl-2">
+                <div key={event.id} className="flex items-start gap-3 mb-2 last:mb-0 pl-2" data-testid={`timeline-event-${event.id}`}>
                   <span className={`flex-shrink-0 text-[8px] mt-1.5 ${getEventColor(event.event_type)}`}>
                     {getEventIcon(event.event_type)}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-[13px] text-text-primary">
+                    <div className="text-[13px] text-text-primary" data-testid={`timeline-event-description-${event.id}`}>
                       {event.description}
                       {event.user_name && (
-                        <span className="text-accent-blue ml-1">
+                        <span className="text-accent-blue ml-1" data-testid={`timeline-event-user-${event.id}`}>
                           by {event.user_name}
                         </span>
                       )}
