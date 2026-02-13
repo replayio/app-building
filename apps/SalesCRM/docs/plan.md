@@ -63,7 +63,20 @@
   - [x] WriteComponentAssociatedClientsSection: Card-based display of associated clients with status, industry, and View Client Detail Page button
   - [x] WriteComponentPersonDetailModals: Add Relationship modal, Add Contact History Entry modal, Edit Contact History Entry modal
   - [x] WritePagePersonDetailPage: Assemble all components into the final page, then commit and exit
-- [ ] UnpackWritePageDealsListPage: Plan and create subtasks for implementing the DealsListPage (/deals) components
+- [x] UnpackWritePageDealsListPage: Plan and create subtasks for implementing the DealsListPage (/deals) components
+  - [x] WriteComponentDealsBackend: Create Netlify function for global deals listing with search, filter, sort, pagination, CRUD, metrics, and stage change history
+  - [x] WriteComponentDealsPageHeader: Page header with breadcrumb, title "Deals List", "Create New Deal" button, and search input
+  - [x] WriteComponentDealsSummaryCards: Four metric cards (Total Active Deals, Pipeline Value, Won, Lost) with icons and formatted values
+  - [x] WriteComponentDealsViewToggle: Table View / Pipeline View tab toggle
+  - [x] WriteComponentDealsFilterControls: Stage, Client, Status, Sort, and Date Range filter dropdowns
+  - [x] WriteComponentDealsTable: Table with Deal Name, Client, Stage, Owner, Value, Close Date (sortable), Status columns
+  - [x] WriteComponentDealStageBadge: Colored badge for deal stages (Lead, Qualification, Discovery, etc.)
+  - [x] WriteComponentDealStatusBadge: Colored badge for deal status (Active, On Track, At Risk, etc.)
+  - [x] WriteComponentDealRowActionMenu: Three-dot action menu with View, Edit, Delete options
+  - [x] WriteComponentDealsPipelineView: Kanban-style pipeline board with columns per stage, deal cards with name/client/value/status
+  - [x] WriteComponentDealsPagination: Page indicator with Previous/Next navigation
+  - [x] WriteComponentCreateDealModal: Modal form with deal name, client, value, stage, owner, close date fields
+  - [x] WritePageDealsListPage: Assemble all components into the final page with Redux state management
 - [ ] UnpackWritePageDealDetailPage: Plan and create subtasks for implementing the DealDetailPage (/deals/:dealId) components
 - [ ] UnpackWritePageTasksListPage: Plan and create subtasks for implementing the TasksListPage (/tasks) components
 
