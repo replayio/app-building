@@ -43,7 +43,18 @@
   - [x] WriteComponentClientsPagination: Page navigation with count display and Previous/Next buttons
   - [x] WriteComponentAddClientModal: Modal form for creating a new client
   - [x] WritePageClientsListPage: Assemble all components into the final page
-- [ ] UnpackWritePageClientDetailPage: Plan and create subtasks for implementing the ClientDetailPage (/clients/:clientId) components
+- [x] UnpackWritePageClientDetailPage: Plan and create subtasks for implementing the ClientDetailPage (/clients/:clientId) components
+  - [x] WriteComponentClientDetailBackend: Create Netlify functions for client detail data (tasks, deals, attachments, people, timeline) and update clients function with PUT for editing
+  - [x] WriteComponentClientHeader: Client name, type badge, status badge, tags with inline edit capability
+  - [x] WriteComponentQuickActions: Row of action buttons — Add Task, Add Deal, Add Attachment, Add Person
+  - [x] WriteComponentSourceInfoSection: Source info fields (Acquisition Source, Campaign, Channel, Date Acquired) with edit mode
+  - [x] WriteComponentTasksSection: Unresolved tasks list with checkboxes, due dates, deal associations
+  - [x] WriteComponentDealsSection: Deals list with name, stage, value, clickable to deal detail
+  - [x] WriteComponentAttachmentsSection: File/link attachments list with download/view/delete actions
+  - [x] WriteComponentPeopleSection: Associated individuals list with avatars, names, roles
+  - [x] WriteComponentTimelineSection: Chronological feed of events with type, description, user attribution
+  - [x] WriteComponentClientDetailModals: Add Task, Add Deal, Add Attachment, Add Person modals
+  - [x] WritePageClientDetailPage: Assemble all components into the final page
 - [ ] UnpackWritePagePersonDetailPage: Plan and create subtasks for implementing the PersonDetailPage (/individuals/:individualId) components
 - [ ] UnpackWritePageDealsListPage: Plan and create subtasks for implementing the DealsListPage (/deals) components
 - [ ] UnpackWritePageDealDetailPage: Plan and create subtasks for implementing the DealDetailPage (/deals/:dealId) components
