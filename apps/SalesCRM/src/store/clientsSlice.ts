@@ -73,6 +73,19 @@ export const createClient = createAsyncThunk(
   }
 )
 
+export const updateClient = createAsyncThunk(
+  'clients/updateClient',
+  async ({ clientId, data }: { clientId: string; data: Record<string, unknown> }) => {
+    const res = await fetch(`/.netlify/functions/clients/${clientId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error('Failed to update client')
+    return res.json() as Promise<Client>
+  }
+)
+
 export const deleteClient = createAsyncThunk(
   'clients/deleteClient',
   async (clientId: string) => {
@@ -124,6 +137,11 @@ export const clientsSlice = createSlice({
       .addCase(createClient.fulfilled, (state, action) => {
         state.items.unshift(action.payload)
         state.total += 1
+      })
+      .addCase(updateClient.fulfilled, (state, action) => {
+        state.currentClient = action.payload
+        const idx = state.items.findIndex((c) => c.id === action.payload.id)
+        if (idx !== -1) state.items[idx] = action.payload
       })
       .addCase(deleteClient.fulfilled, (state, action) => {
         state.items = state.items.filter((c) => c.id !== action.payload)

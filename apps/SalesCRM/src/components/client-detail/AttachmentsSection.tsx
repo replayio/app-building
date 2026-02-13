@@ -1,0 +1,75 @@
+import { FileText, Link as LinkIcon, Download, Eye, Trash2 } from 'lucide-react'
+import type { Attachment } from '../../types'
+
+interface AttachmentsSectionProps {
+  attachments: Attachment[]
+  onDelete: (attachmentId: string) => void
+}
+
+export function AttachmentsSection({ attachments, onDelete }: AttachmentsSectionProps) {
+  return (
+    <div className="border border-border rounded-[6px] p-4 mb-4">
+      <h2 className="text-[14px] font-semibold text-text-primary mb-3">Attachments</h2>
+
+      {attachments.length === 0 ? (
+        <div className="text-[13px] text-text-muted py-2">No attachments</div>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {attachments.map((att) => (
+            <div
+              key={att.id}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
+            >
+              <span className="flex-shrink-0 text-text-muted">
+                {att.type === 'document' ? (
+                  <FileText size={16} strokeWidth={1.5} />
+                ) : (
+                  <LinkIcon size={16} strokeWidth={1.5} />
+                )}
+              </span>
+              <div className="flex-1 min-w-0 flex items-center gap-3">
+                <span className="text-[13px] text-text-primary font-medium truncate">{att.filename}</span>
+                <span className="text-[12px] text-text-muted capitalize">{att.type === 'document' ? 'Document' : 'Link'}</span>
+                <span className="text-[12px] text-text-muted">
+                  Created: {new Date(att.created_at).toLocaleDateString()}
+                </span>
+                <span className="text-[12px] text-text-muted">
+                  Linked Deal: {att.deal_name ?? 'None'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                {att.type === 'document' ? (
+                  <a
+                    href={att.url}
+                    download={att.filename}
+                    className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
+                    title="Download"
+                  >
+                    <Download size={14} strokeWidth={1.75} />
+                  </a>
+                ) : (
+                  <a
+                    href={att.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
+                    title="View"
+                  >
+                    <Eye size={14} strokeWidth={1.75} />
+                  </a>
+                )}
+                <button
+                  onClick={() => onDelete(att.id)}
+                  className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:text-status-churned hover:bg-hover transition-colors duration-100"
+                  title="Delete"
+                >
+                  <Trash2 size={14} strokeWidth={1.75} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
