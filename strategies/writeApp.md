@@ -26,3 +26,5 @@ Unpack the task for implementing a page into the following:
 - When working on a component, identify the test entries in the spec relevant to that component, and make sure that the entry requirements are satisfied by the app code.
 
 - Match the visual appearance of elements to the mockup: button variants, icon presence, badge/tag styling, section layouts (horizontal vs vertical), and field sets. Do not simplify the visual design.
+
+## Tips

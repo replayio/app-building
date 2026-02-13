@@ -30,19 +30,19 @@ function parseArgs(): Args {
   };
 }
 
-function getLogFile(targetDir: string): { logFile: string; loopNumber: number } {
-  const logsDir = join(targetDir, "logs");
-  mkdirSync(logsDir, { recursive: true });
+function formatTimestamp(date: Date): string {
+  return date.toISOString().replace(/[:.]/g, "-");
+}
 
-  let n = 1;
-  const existing = readdirSync(logsDir)
-    .filter((f) => /^loop-(\d+)\.log$/.test(f))
-    .map((f) => parseInt(f.match(/^loop-(\d+)\.log$/)![1], 10));
-  if (existing.length > 0) {
-    n = Math.max(...existing) + 1;
+function getGitRevision(targetDir: string): string {
+  try {
+    return execFileSync("git", ["-C", targetDir, "rev-parse", "HEAD"], {
+      encoding: "utf-8",
+      timeout: 10000,
+    }).trim();
+  } catch {
+    return "(unknown)";
   }
-
-  return { logFile: join(logsDir, `loop-${n}.log`), loopNumber: n };
 }
 
 // --- Logging ---
@@ -159,12 +159,12 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(prompt: string, targetDir: string, loopNumber: number, iteration: number, log: (msg: string) => void, requiredEnvVars: string[]): Promise<ClaudeResponse> {
+function runClaude(prompt: string, targetDir: string, timestamp: string, log: (msg: string) => void, requiredEnvVars: string[]): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
     // Write prompt to a file to avoid E2BIG on large prompts
     const logsDir = join(targetDir, "logs");
     mkdirSync(logsDir, { recursive: true });
-    const promptFile = join(logsDir, `prompt-${loopNumber}-${iteration}.txt`);
+    const promptFile = join(logsDir, `prompt-${timestamp}.txt`);
     writeFileSync(promptFile, prompt);
 
     const mcpConfig: Record<string, any> = {
@@ -302,28 +302,36 @@ async function runLoop(
   strategyNames: string[],
   maxIterations: number | null,
 ): Promise<void> {
-  const { logFile, loopNumber } = getLogFile(targetDir);
-  const log = createLogger(logFile);
-
-  log(`Target: ${targetDir}`);
-  log(`Log file: ${logFile}`);
-  log(`Strategies: ${strategyNames.join(", ")}`);
-  log(`Max iterations: ${maxIterations ?? "unlimited"}`);
-
-  console.log(`[${basename(targetDir)}] logging to ${logFile}`);
+  const logsDir = join(targetDir, "logs");
+  mkdirSync(logsDir, { recursive: true });
 
   const requiredEnvVars = extractRequiredEnvVars(strategyContents);
 
   let iteration = 0;
   let totalCost = 0;
+  let log: ((msg: string) => void) | null = null;
 
   while (true) {
     iteration++;
 
     if (maxIterations !== null && iteration > maxIterations) {
-      log(`Reached max iterations (${maxIterations}). Stopping.`);
+      if (log) log(`Reached max iterations (${maxIterations}). Stopping.`);
       break;
     }
+
+    const timestamp = formatTimestamp(new Date());
+    const logFile = join(logsDir, `iteration-${timestamp}.log`);
+    log = createLogger(logFile);
+
+    const initialRevision = getGitRevision(targetDir);
+    log(`Initial revision: ${initialRevision}`);
+
+    log(`Target: ${targetDir}`);
+    log(`Log file: ${logFile}`);
+    log(`Strategies: ${strategyNames.join(", ")}`);
+    log(`Max iterations: ${maxIterations ?? "unlimited"}`);
+
+    console.log(`[${basename(targetDir)}] iteration ${iteration}, logging to ${logFile}`);
 
     log(`=== Iteration ${iteration} ===`);
 
@@ -361,7 +369,7 @@ async function runLoop(
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(prompt, targetDir, loopNumber, iteration, log, requiredEnvVars);
+      response = await runClaude(prompt, targetDir, timestamp, log, requiredEnvVars);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
@@ -385,13 +393,16 @@ async function runLoop(
     gitCommit(targetDir, iteration, log);
     log(`Committed iteration ${iteration}`);
 
+    const finalRevision = getGitRevision(targetDir);
+    log(`Final revision: ${finalRevision}`);
+
     if (response.result && response.result.includes("<DONE/>")) {
       log(`Agent signaled <DONE/>. Stopping.`);
       break;
     }
   }
 
-  log(`Finished after ${iteration} iteration(s).`);
+  if (log) log(`Finished after ${iteration} iteration(s).`);
 }
 
 // --- Main ---

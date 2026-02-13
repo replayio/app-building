@@ -16,7 +16,6 @@ interface TargetStatus {
   dir: string;
   containerRunning: boolean;
   logFile: string | null;
-  loopNumber: number | null;
   completedIterations: number;
   currentIteration: number | null;
   maxIterations: string | null;
@@ -40,31 +39,22 @@ function isContainerRunning(dirName: string): boolean {
   }
 }
 
-function getLatestLogFile(targetDir: string): { path: string; loopNumber: number } | null {
+function getIterationLogFiles(targetDir: string): string[] {
   const logsDir = join(targetDir, "logs");
   let entries: string[];
   try {
     entries = readdirSync(logsDir);
   } catch {
-    return null;
+    return [];
   }
 
-  const logFiles = entries
-    .filter((f) => /^loop-(\d+)\.log$/.test(f))
-    .map((f) => ({
-      name: f,
-      num: parseInt(f.match(/^loop-(\d+)\.log$/)![1], 10),
-    }))
-    .sort((a, b) => b.num - a.num);
-
-  if (logFiles.length === 0) return null;
-  return { path: join(logsDir, logFiles[0].name), loopNumber: logFiles[0].num };
+  return entries
+    .filter((f) => /^iteration-.*\.log$/.test(f))
+    .sort()
+    .map((f) => join(logsDir, f));
 }
 
-function parseLog(logPath: string): Omit<TargetStatus, "name" | "dir" | "containerRunning" | "logFile" | "loopNumber"> {
-  const content = readFileSync(logPath, "utf-8");
-  const lines = content.split("\n");
-
+function parseIterationLogs(logPaths: string[]): Omit<TargetStatus, "name" | "dir" | "containerRunning" | "logFile"> {
   let completedIterations = 0;
   let currentIteration: number | null = null;
   let maxIterations: string | null = null;
@@ -74,46 +64,51 @@ function parseLog(logPath: string): Omit<TargetStatus, "name" | "dir" | "contain
   let lastError: string | null = null;
   let lastActivity: string | null = null;
 
-  for (const rawLine of lines) {
-    if (!rawLine.trim()) continue;
+  for (const logPath of logPaths) {
+    const content = readFileSync(logPath, "utf-8");
+    const lines = content.split("\n");
 
-    const tsMatch = rawLine.match(/^\[(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\]\s*(.*)/);
-    const timestamp = tsMatch ? tsMatch[1] : null;
-    const line = tsMatch ? tsMatch[2] : rawLine;
+    for (const rawLine of lines) {
+      if (!rawLine.trim()) continue;
 
-    if (timestamp) lastActivity = timestamp;
+      const tsMatch = rawLine.match(/^\[(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\]\s*(.*)/);
+      const timestamp = tsMatch ? tsMatch[1] : null;
+      const line = tsMatch ? tsMatch[2] : rawLine;
 
-    const iterMatch = line.match(/^=== Iteration (\d+) ===/);
-    if (iterMatch) {
-      currentIteration = parseInt(iterMatch[1], 10);
-    }
+      if (timestamp) lastActivity = timestamp;
 
-    if (line.startsWith("Max iterations:")) {
-      maxIterations = line.replace("Max iterations:", "").trim();
-    }
+      const iterMatch = line.match(/^=== Iteration (\d+) ===/);
+      if (iterMatch) {
+        currentIteration = parseInt(iterMatch[1], 10);
+      }
 
-    if (line.startsWith("Committed iteration")) {
-      completedIterations++;
-    }
+      if (line.startsWith("Max iterations:")) {
+        maxIterations = line.replace("Max iterations:", "").trim();
+      }
 
-    const costMatch = line.match(/Cost: \$[\d.]+ \(total: \$([\d.]+)\)/);
-    if (costMatch) {
-      totalCost = parseFloat(costMatch[1]);
-    }
+      if (line.startsWith("Committed iteration")) {
+        completedIterations++;
+      }
 
-    if (line.includes("Agent signaled <DONE/>")) {
-      finished = true;
-      finishReason = "done";
-    } else if (line.startsWith("Reached max iterations")) {
-      finished = true;
-      finishReason = "max iterations";
-    } else if (line.startsWith("Finished after")) {
-      finished = true;
-      if (!finishReason) finishReason = "finished";
-    }
+      const costMatch = line.match(/Cost: \$[\d.]+ \(total: \$([\d.]+)\)/);
+      if (costMatch) {
+        totalCost = parseFloat(costMatch[1]);
+      }
 
-    if (line.startsWith("Error running") || line.startsWith("[claude:err]")) {
-      lastError = line;
+      if (line.includes("Agent signaled <DONE/>")) {
+        finished = true;
+        finishReason = "done";
+      } else if (line.startsWith("Reached max iterations")) {
+        finished = true;
+        finishReason = "max iterations";
+      } else if (line.startsWith("Finished after")) {
+        finished = true;
+        if (!finishReason) finishReason = "finished";
+      }
+
+      if (line.startsWith("Error running") || line.startsWith("[claude:err]")) {
+        lastError = line;
+      }
     }
   }
 
@@ -202,17 +197,16 @@ function main(): void {
   for (const target of config.targets) {
     const dirName = basename(target.dir);
     const running = isContainerRunning(dirName);
-    const latestLog = getLatestLogFile(target.dir);
+    const logFiles = getIterationLogFiles(target.dir);
 
     let status: TargetStatus;
-    if (latestLog) {
-      const parsed = parseLog(latestLog.path);
+    if (logFiles.length > 0) {
+      const parsed = parseIterationLogs(logFiles);
       status = {
         name: dirName,
         dir: target.dir,
         containerRunning: running,
-        logFile: latestLog.path,
-        loopNumber: latestLog.loopNumber,
+        logFile: logFiles[logFiles.length - 1],
         ...parsed,
       };
     } else {
@@ -221,7 +215,6 @@ function main(): void {
         dir: target.dir,
         containerRunning: running,
         logFile: null,
-        loopNumber: null,
         completedIterations: 0,
         currentIteration: null,
         maxIterations: null,
