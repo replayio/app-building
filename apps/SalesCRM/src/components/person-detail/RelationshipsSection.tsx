@@ -30,7 +30,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
   const uniqueTypes = Array.from(new Set(relationships.map((r) => r.relationship_type)))
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="relationships-section" className="border border-border rounded-[6px] p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Users size={16} strokeWidth={1.5} className="text-text-muted" />
@@ -39,6 +39,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
         <div className="flex items-center gap-1">
           <div className="relative">
             <button
+              data-testid="relationships-filter-button"
               onClick={() => setFilterOpen(!filterOpen)}
               className="inline-flex items-center gap-1 h-7 px-2.5 text-[12px] font-medium text-text-secondary border border-border rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
@@ -46,8 +47,9 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
               Filter
             </button>
             {filterOpen && (
-              <div className="absolute right-0 top-full mt-1 z-10 bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] min-w-[160px]">
+              <div data-testid="relationships-filter-dropdown" className="absolute right-0 top-full mt-1 z-10 bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] min-w-[160px]">
                 <div
+                  data-testid="relationships-filter-option-all"
                   onClick={() => { setFilterType('all'); setFilterOpen(false) }}
                   className="px-3 py-2 text-[13px] text-text-primary cursor-pointer hover:bg-hover"
                 >
@@ -56,6 +58,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
                 {uniqueTypes.map((type) => (
                   <div
                     key={type}
+                    data-testid={`relationships-filter-option-${type}`}
                     onClick={() => { setFilterType(type); setFilterOpen(false) }}
                     className="px-3 py-2 text-[13px] text-text-primary cursor-pointer hover:bg-hover"
                   >
@@ -66,6 +69,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
             )}
           </div>
           <button
+            data-testid="relationships-add-entry-button"
             onClick={onAddEntry}
             className="inline-flex items-center gap-1 h-7 px-2.5 text-[12px] font-medium text-white bg-accent rounded-[4px] hover:opacity-90 transition-opacity duration-100"
           >
@@ -76,8 +80,9 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
       </div>
 
       {/* View toggle tabs */}
-      <div className="flex items-center gap-0 mb-3 border-b border-border">
+      <div data-testid="relationships-view-toggle" className="flex items-center gap-0 mb-3 border-b border-border">
         <button
+          data-testid="relationships-graph-view-tab"
           onClick={() => setView('graph')}
           className={`px-3 py-1.5 text-[12px] font-medium border-b-2 transition-colors duration-100 ${
             view === 'graph'
@@ -88,6 +93,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
           Graph View
         </button>
         <button
+          data-testid="relationships-list-view-tab"
           onClick={() => setView('list')}
           className={`px-3 py-1.5 text-[12px] font-medium border-b-2 transition-colors duration-100 ${
             view === 'list'
@@ -100,21 +106,22 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
       </div>
 
       {view === 'list' ? (
-        <div>
+        <div data-testid="relationships-list-view">
           {filteredRelationships.length === 0 ? (
-            <div className="text-[13px] text-text-muted py-2">No relationships found</div>
+            <div data-testid="relationships-empty-state" className="text-[13px] text-text-muted py-2">No relationships found</div>
           ) : (
             <div className="flex flex-col gap-1">
               {filteredRelationships.map((rel) => (
                 <div
                   key={rel.id}
+                  data-testid={`relationship-item-${rel.id}`}
                   className="flex items-center justify-between px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
                 >
                   <div className="flex-1 min-w-0">
-                    <span className="text-[13px] font-medium text-text-primary">
+                    <span data-testid={`relationship-name-${rel.id}`} className="text-[13px] font-medium text-text-primary">
                       {rel.related_individual_name}
                     </span>
-                    <span className="text-[13px] text-text-muted ml-1">
+                    <span data-testid={`relationship-type-${rel.id}`} className="text-[13px] text-text-muted ml-1">
                       ({RELATIONSHIP_LABELS[rel.relationship_type as RelationshipType] ?? rel.relationship_type})
                     </span>
                     {rel.role && (
@@ -127,6 +134,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
                     )}
                   </div>
                   <button
+                    data-testid={`relationship-link-${rel.id}`}
                     onClick={() => navigate(`/individuals/${rel.related_individual_id}`)}
                     className="inline-flex items-center gap-1 text-[12px] text-accent hover:underline cursor-pointer"
                   >
@@ -139,12 +147,12 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
           )}
         </div>
       ) : (
-        <div className="py-4">
+        <div data-testid="relationships-graph-view" className="py-4">
           {/* Simple graph view: central node with connections */}
           <div className="flex flex-col items-center">
             <div className="relative w-full max-w-[400px] min-h-[200px] flex items-center justify-center">
               {/* Center node */}
-              <div className="absolute z-10 bg-accent text-white rounded-full w-14 h-14 flex items-center justify-center text-[11px] font-semibold text-center leading-tight px-1">
+              <div data-testid="relationships-graph-center" className="absolute z-10 bg-accent text-white rounded-full w-14 h-14 flex items-center justify-center text-[11px] font-semibold text-center leading-tight px-1">
                 You
               </div>
               {/* Relationship nodes arranged in a circle */}
@@ -159,6 +167,7 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
                 return (
                   <div
                     key={rel.id}
+                    data-testid={`relationships-graph-node-${rel.id}`}
                     className="absolute z-10"
                     style={{
                       transform: `translate(${x}px, ${y}px)`,

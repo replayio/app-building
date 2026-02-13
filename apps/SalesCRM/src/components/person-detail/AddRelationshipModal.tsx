@@ -34,7 +34,7 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div data-testid="add-relationship-modal" className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
