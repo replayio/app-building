@@ -54,6 +54,19 @@ export default async function handler(req: Request) {
   const subResource = pathParts.length >= 5 ? pathParts[4] : null
   const subId = pathParts.length >= 6 ? pathParts[5] : null
 
+  // GET /individuals — list/search all individuals
+  if (req.method === 'GET' && !individualId) {
+    const search = url.searchParams.get('search') ?? ''
+    const searchPattern = search ? '%' + search + '%' : null
+    const rows = await sql`
+      SELECT id, name, title FROM individuals
+      WHERE (${searchPattern}::text IS NULL OR name ILIKE ${searchPattern})
+      ORDER BY name ASC
+      LIMIT 50
+    ` as { id: string; name: string; title: string | null }[]
+    return Response.json({ individuals: rows })
+  }
+
   // GET /individuals/:id — fetch individual with associations, relationships, and contact history
   if (req.method === 'GET' && individualId && !subResource) {
     const rows = await sql`

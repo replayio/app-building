@@ -71,6 +71,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
             <label className="block text-[12px] font-medium text-text-muted mb-1">Attachment Type</label>
             <div className="flex gap-2">
               <button
+                data-testid="attachment-file-upload-toggle"
                 onClick={() => setAttachmentType('document')}
                 className={`h-[34px] px-3 text-[13px] font-medium rounded-[5px] border transition-colors duration-100 ${
                   attachmentType === 'document'
@@ -81,6 +82,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
                 File Upload
               </button>
               <button
+                data-testid="attachment-link-url-toggle"
                 onClick={() => setAttachmentType('link')}
                 className={`h-[34px] px-3 text-[13px] font-medium rounded-[5px] border transition-colors duration-100 ${
                   attachmentType === 'link'
@@ -98,6 +100,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
               <label className="block text-[12px] font-medium text-text-muted mb-1">File</label>
               <div className="border border-dashed border-border rounded-[5px] p-4 text-center">
                 <input
+                  data-testid="attachment-file-input"
                   type="file"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                   className="text-[13px] text-text-secondary"
@@ -112,6 +115,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
               <div>
                 <label className="block text-[12px] font-medium text-text-muted mb-1">Link Name</label>
                 <input
+                  data-testid="attachment-link-name-input"
                   type="text"
                   value={linkName}
                   onChange={(e) => setLinkName(e.target.value)}
@@ -122,6 +126,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
               <div>
                 <label className="block text-[12px] font-medium text-text-muted mb-1">URL *</label>
                 <input
+                  data-testid="attachment-url-input"
                   type="url"
                   value={linkUrl}
                   onChange={(e) => setLinkUrl(e.target.value)}
@@ -135,6 +140,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Associated Deal (optional)</label>
             <select
+              data-testid="attachment-associated-deal-select"
               value={dealId}
               onChange={(e) => setDealId(e.target.value)}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -148,12 +154,14 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="attachment-cancel-button"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
             Cancel
           </button>
           <button
+            data-testid="attachment-save-button"
             onClick={handleSave}
             disabled={!canSave}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

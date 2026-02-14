@@ -21,42 +21,35 @@ export default async function handler(req: Request) {
     const clientId = url.searchParams.get('clientId') ?? ''
     const includeCompleted = url.searchParams.get('includeCompleted') === 'true'
 
-    // Build WHERE clause with parameterized queries
-    const conditions: string[] = []
-    const params: unknown[] = []
-    let paramIdx = 1
+    const searchPattern = search ? '%' + search + '%' : null
+    const priorityFilter = priority || null
+    const assigneePattern = assignee ? '%' + assignee + '%' : null
+    const clientIdFilter = clientId || null
 
-    if (!includeCompleted) {
-      conditions.push(`t.completed = false`)
-    }
-    if (search) {
-      conditions.push(`t.title ILIKE $${paramIdx}`)
-      params.push('%' + search + '%')
-      paramIdx++
-    }
-    if (priority) {
-      conditions.push(`t.priority = $${paramIdx}`)
-      params.push(priority)
-      paramIdx++
-    }
-    if (assignee) {
-      conditions.push(`t.assignee_name ILIKE $${paramIdx}`)
-      params.push('%' + assignee + '%')
-      paramIdx++
-    }
-    if (clientId) {
-      conditions.push(`t.client_id = $${paramIdx}::uuid`)
-      params.push(clientId)
-      paramIdx++
-    }
+    const tasks = await sql`
+      SELECT t.*, c.name as client_name, d.name as deal_name
+      FROM tasks t
+      LEFT JOIN clients c ON t.client_id = c.id
+      LEFT JOIN deals d ON t.deal_id = d.id
+      WHERE (${includeCompleted}::boolean OR t.completed = false)
+      AND (${searchPattern}::text IS NULL OR t.title ILIKE ${searchPattern})
+      AND (${priorityFilter}::text IS NULL OR t.priority = ${priorityFilter})
+      AND (${assigneePattern}::text IS NULL OR t.assignee_name ILIKE ${assigneePattern})
+      AND (${clientIdFilter}::text IS NULL OR t.client_id = ${clientIdFilter}::uuid)
+      ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
+    `
 
-    const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : ''
-
-    const tasksQuery = `SELECT t.*, c.name as client_name, d.name as deal_name FROM tasks t LEFT JOIN clients c ON t.client_id = c.id LEFT JOIN deals d ON t.deal_id = d.id ${whereClause} ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`
-    const tasks = await sql(tasksQuery, params)
-
-    const countQuery = `SELECT COUNT(*) as count FROM tasks t LEFT JOIN clients c ON t.client_id = c.id LEFT JOIN deals d ON t.deal_id = d.id ${whereClause}`
-    const countResult = await sql(countQuery, params)
+    const countResult = await sql`
+      SELECT COUNT(*) as count
+      FROM tasks t
+      LEFT JOIN clients c ON t.client_id = c.id
+      LEFT JOIN deals d ON t.deal_id = d.id
+      WHERE (${includeCompleted}::boolean OR t.completed = false)
+      AND (${searchPattern}::text IS NULL OR t.title ILIKE ${searchPattern})
+      AND (${priorityFilter}::text IS NULL OR t.priority = ${priorityFilter})
+      AND (${assigneePattern}::text IS NULL OR t.assignee_name ILIKE ${assigneePattern})
+      AND (${clientIdFilter}::text IS NULL OR t.client_id = ${clientIdFilter}::uuid)
+    `
     const total = parseInt(String(countResult[0].count), 10)
 
     // Get unique assignees for filter dropdown
