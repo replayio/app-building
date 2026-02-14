@@ -37,7 +37,8 @@
       "WebFetch(domain:utfs.io)",
       "Bash(wc:*)",
       "Bash(git config:*)",
-      "Bash(docker build:*)"
+      "Bash(docker build:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

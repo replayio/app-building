@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, appendFileSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, appendFileSync, mkdirSync, renameSync } from "fs";
 import { join, resolve, basename } from "path";
 import { Command } from "commander";
 
@@ -58,101 +58,6 @@ function createLogger(logFilePath: string) {
   };
 }
 
-// --- Context Gathering ---
-
-function readFileIfExists(path: string): string | null {
-  try {
-    return readFileSync(path, "utf-8");
-  } catch {
-    return null;
-  }
-}
-
-function getFileTree(dir: string, prefix = "", maxDepth = 3, depth = 0): string {
-  if (depth >= maxDepth) return "";
-  const lines: string[] = [];
-  let entries: string[];
-  try {
-    entries = readdirSync(dir);
-  } catch {
-    return "";
-  }
-  const filtered = entries.filter(
-    (e) => !e.startsWith(".") && e !== "node_modules" && e !== "dist"
-  );
-  for (const entry of filtered) {
-    const fullPath = join(dir, entry);
-    let isDir = false;
-    try {
-      isDir = statSync(fullPath).isDirectory();
-    } catch {
-      continue;
-    }
-    lines.push(`${prefix}${entry}${isDir ? "/" : ""}`);
-    if (isDir) {
-      lines.push(getFileTree(fullPath, prefix + "  ", maxDepth, depth + 1));
-    }
-  }
-  return lines.filter(Boolean).join("\n");
-}
-
-function getGitLog(targetDir: string): string {
-  try {
-    return execFileSync("git", ["-C", targetDir, "log", "--oneline", "-20"], {
-      encoding: "utf-8",
-      timeout: 10000,
-    }).trim();
-  } catch {
-    return "(no git history)";
-  }
-}
-
-function readDocsFolder(targetDir: string): string {
-  const docsDir = join(targetDir, "docs");
-  if (!existsSync(docsDir)) return "";
-  const parts: string[] = [];
-  function walk(dir: string): void {
-    for (const entry of readdirSync(dir)) {
-      const full = join(dir, entry);
-      if (statSync(full).isDirectory()) {
-        walk(full);
-      } else if (entry.endsWith(".md") || entry.endsWith(".txt")) {
-        const rel = full.slice(targetDir.length + 1);
-        const content = readFileSync(full, "utf-8");
-        parts.push(`--- ${rel} ---\n${content}`);
-      }
-    }
-  }
-  try {
-    walk(docsDir);
-  } catch {
-    // ignore read errors
-  }
-  return parts.join("\n\n");
-}
-
-function gatherContext(targetDir: string): string {
-  const sections: string[] = [];
-
-  const appSpec = readFileIfExists(join(targetDir, "AppSpec.md"));
-  if (appSpec) {
-    sections.push(`## AppSpec.md\n\n${appSpec}`);
-  }
-
-  const docs = readDocsFolder(targetDir);
-  if (docs) {
-    sections.push(`## docs/\n\n${docs}`);
-  }
-
-  const gitLog = getGitLog(targetDir);
-  sections.push(`## Recent Git History\n\n${gitLog}`);
-
-  const tree = getFileTree(targetDir);
-  sections.push(`## File Tree\n\n${tree}`);
-
-  return sections.join("\n\n---\n\n");
-}
-
 // --- Agent Invocation ---
 
 interface ClaudeResponse {
@@ -163,13 +68,10 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(prompt: string, targetDir: string, timestamp: string, log: (msg: string) => void, requiredEnvVars: string[]): Promise<ClaudeResponse> {
+function runClaude(strategyFiles: string[], targetDir: string, log: (msg: string) => void, requiredEnvVars: string[]): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
-    // Write prompt to a file to avoid E2BIG on large prompts
-    const logsDir = join(targetDir, "logs");
-    mkdirSync(logsDir, { recursive: true });
-    const promptFile = join(logsDir, `prompt-${timestamp}.txt`);
-    writeFileSync(promptFile, prompt);
+    const fileList = strategyFiles.join(", ");
+    const prompt = `Read ${fileList} and follow the instructions exactly.`;
 
     const mcpConfig: Record<string, any> = {
       mcpServers: {},
@@ -184,7 +86,7 @@ function runClaude(prompt: string, targetDir: string, timestamp: string, log: (m
     }
 
     const child = spawn("claude", [
-      "-p", `Read the file ${promptFile} and follow the directions in it.`,
+      "-p", prompt,
       "--model", "claude-opus-4-6",
       "--output-format", "stream-json",
       "--verbose",
@@ -302,14 +204,15 @@ function extractRequiredEnvVars(strategyContents: string[]): string[] {
 
 async function runLoop(
   targetDir: string,
-  strategyContents: string[],
-  strategyNames: string[],
+  strategyFiles: string[],
   maxIterations: number | null,
 ): Promise<void> {
   const logsDir = join(targetDir, "logs");
   mkdirSync(logsDir, { recursive: true });
 
+  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
   const requiredEnvVars = extractRequiredEnvVars(strategyContents);
+  const strategyNames = strategyFiles.map((f) => basename(f));
 
   let iteration = 0;
   let totalCost = 0;
@@ -323,57 +226,26 @@ async function runLoop(
       break;
     }
 
-    const timestamp = formatTimestamp(new Date());
-    const logFile = join(logsDir, `iteration-${timestamp}.log`);
-    log = createLogger(logFile);
+    const currentLogFile = join(logsDir, "iteration-current.log");
+    writeFileSync(currentLogFile, ""); // truncate
+    log = createLogger(currentLogFile);
 
     const initialRevision = getGitRevision(targetDir);
     log(`Initial revision: ${initialRevision}`);
 
     log(`Target: ${targetDir}`);
-    log(`Log file: ${logFile}`);
     log(`Strategies: ${strategyNames.join(", ")}`);
     log(`Max iterations: ${maxIterations ?? "unlimited"}`);
 
-    console.log(`[${basename(targetDir)}] iteration ${iteration}, logging to ${logFile}`);
+    console.log(`[${basename(targetDir)}] iteration ${iteration}, logging to ${currentLogFile}`);
 
     log(`=== Iteration ${iteration} ===`);
-
-    const context = gatherContext(targetDir);
-
-    const promptParts = [
-      `# Agent Loop — Iteration ${iteration}`,
-      "",
-      "## Strategy Instructions",
-      "",
-      ...strategyContents.map((content, i) => `### ${strategyNames[i]}\n\n${content}`),
-      "",
-      "## Current Repository Context",
-      "",
-      context,
-      "",
-      "## Instructions",
-      "",
-      "Follow the strategy instructions above. Work on the target repository.",
-      "When all work described in the strategy is complete, include `<DONE/>` in your response.",
-      "If more work remains, describe what was accomplished and what still needs to be done.",
-      "",
-      "IMPORTANT: Monitor your context window usage. When you are running low on context,",
-      "wrap up your current task cleanly — commit your work, update docs/plan.md, and exit.",
-      "The next iteration of the loop will pick up where you left off with fresh context.",
-    ];
-
-    const prompt = promptParts.join("\n");
-
-    log(`--- Prompt ---`);
-    log(prompt);
-    log(`--- End prompt ---`);
-    log(`Running Claude... (prompt length: ${prompt.length} chars)`);
+    log(`Running Claude...`);
     const startTime = Date.now();
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(prompt, targetDir, timestamp, log, requiredEnvVars);
+      response = await runClaude(strategyFiles, targetDir, log, requiredEnvVars);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
@@ -394,11 +266,19 @@ async function runLoop(
       log(`Turns: ${response.num_turns}`);
     }
 
+    // Commit code changes while log is still iteration-current.log (gitignored)
     gitCommit(targetDir, iteration, log);
     log(`Committed iteration ${iteration}`);
 
     const finalRevision = getGitRevision(targetDir);
     log(`Final revision: ${finalRevision}`);
+
+    // Rename log to timestamped file and commit separately
+    const timestamp = formatTimestamp(new Date());
+    const finalLogFile = join(logsDir, `iteration-${timestamp}.log`);
+    renameSync(currentLogFile, finalLogFile);
+    log = createLogger(finalLogFile);
+    gitCommit(targetDir, iteration, log);
 
     if (response.result && response.result.includes("<DONE/>")) {
       log(`Agent signaled <DONE/>. Stopping.`);
@@ -415,10 +295,8 @@ async function main(): Promise<void> {
   const args = parseArgs();
   const appDir = join(args.repoRoot, "apps", args.appName);
 
-  const strategyContents = args.strategyFiles.map((f) => readFileSync(f, "utf-8"));
-  const strategyNames = args.strategyFiles.map((f) => basename(f));
-
   // Check env vars
+  const strategyContents = args.strategyFiles.map((f) => readFileSync(f, "utf-8"));
   const allVars = extractRequiredEnvVars(strategyContents);
   const missing = allVars.filter((v) => !process.env[v]);
   if (missing.length > 0) {
@@ -426,7 +304,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  await runLoop(appDir, strategyContents, strategyNames, args.maxIterations);
+  await runLoop(appDir, args.strategyFiles, args.maxIterations);
 }
 
 main().catch((e) => {
