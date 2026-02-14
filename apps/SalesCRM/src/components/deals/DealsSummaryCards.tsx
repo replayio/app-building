@@ -32,15 +32,16 @@ function SummaryCard({
   value: string
   subValue?: string
 }) {
+  const testIdKey = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '')
   return (
-    <div className="flex items-center gap-3 p-4 bg-surface border border-border rounded-[6px]">
+    <div className="flex items-center gap-3 p-4 bg-surface border border-border rounded-[6px]" data-testid={`summary-card-${testIdKey}`}>
       <div className={`flex items-center justify-center w-10 h-10 rounded-[6px] ${iconBg}`}>
         {icon}
       </div>
       <div>
-        <p className="text-[12px] text-text-muted">{label}</p>
-        <p className="text-[18px] font-semibold text-text-primary">{value}</p>
-        {subValue && <p className="text-[11px] text-text-muted">{subValue}</p>}
+        <p className="text-[12px] text-text-muted" data-testid={`summary-card-label-${testIdKey}`}>{label}</p>
+        <p className="text-[18px] font-semibold text-text-primary" data-testid={`summary-card-value-${testIdKey}`}>{value}</p>
+        {subValue && <p className="text-[11px] text-text-muted" data-testid={`summary-card-subvalue-${testIdKey}`}>{subValue}</p>}
       </div>
     </div>
   )
@@ -55,7 +56,7 @@ export function DealsSummaryCards({
   lostValue,
 }: DealsSummaryCardsProps) {
   return (
-    <div className="grid grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-4 gap-4 mb-6" data-testid="deals-summary-cards">
       <SummaryCard
         icon={<TrendingUp size={18} className="text-accent" />}
         iconBg="bg-accent/10"

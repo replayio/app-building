@@ -53,7 +53,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center" data-testid="create-deal-modal">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px]">
         <div className="px-5 py-4 border-b border-border">
@@ -64,6 +64,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
             <label className="block text-[12px] text-text-muted mb-1">Deal Name *</label>
             <input
               type="text"
+              data-testid="create-deal-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
@@ -73,6 +74,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
           <div>
             <label className="block text-[12px] text-text-muted mb-1">Client *</label>
             <select
+              data-testid="create-deal-client"
               value={clientId}
               onChange={(e) => setClientId(e.target.value)}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
@@ -88,6 +90,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
               <label className="block text-[12px] text-text-muted mb-1">Value ($)</label>
               <input
                 type="number"
+                data-testid="create-deal-value"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
@@ -99,6 +102,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
             <div>
               <label className="block text-[12px] text-text-muted mb-1">Stage</label>
               <select
+                data-testid="create-deal-stage"
                 value={stage}
                 onChange={(e) => setStage(e.target.value as DealStage)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
@@ -114,6 +118,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
               <label className="block text-[12px] text-text-muted mb-1">Owner</label>
               <input
                 type="text"
+                data-testid="create-deal-owner"
                 value={owner}
                 onChange={(e) => setOwner(e.target.value)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
@@ -124,6 +129,7 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
               <label className="block text-[12px] text-text-muted mb-1">Expected Close Date</label>
               <input
                 type="date"
+                data-testid="create-deal-close-date"
                 value={closeDate}
                 onChange={(e) => setCloseDate(e.target.value)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
@@ -133,12 +139,14 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-border">
           <button
+            data-testid="create-deal-cancel"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
             Cancel
           </button>
           <button
+            data-testid="create-deal-save"
             onClick={handleSave}
             disabled={!name.trim() || !clientId}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

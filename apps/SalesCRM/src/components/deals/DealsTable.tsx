@@ -34,7 +34,7 @@ export function DealsTable({ deals, sort, onSortChange, onDeleteDeal }: DealsTab
   }
 
   return (
-    <table className="w-full">
+    <table className="w-full" data-testid="deals-table">
       <thead>
         <tr className="border-b border-border">
           <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted">Deal Name</th>
@@ -44,6 +44,7 @@ export function DealsTable({ deals, sort, onSortChange, onDeleteDeal }: DealsTab
           <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted">Value</th>
           <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted">
             <button
+              data-testid="deals-close-date-sort"
               onClick={handleCloseDateSort}
               className="inline-flex items-center gap-1 hover:text-text-primary transition-colors duration-100"
             >
@@ -66,18 +67,19 @@ export function DealsTable({ deals, sort, onSortChange, onDeleteDeal }: DealsTab
           deals.map((deal) => (
             <tr
               key={deal.id}
+              data-testid={`deal-row-${deal.id}`}
               onClick={() => navigate(`/deals/${deal.id}`)}
               className="border-b border-border last:border-b-0 cursor-pointer hover:bg-hover transition-colors duration-100"
             >
-              <td className="px-4 py-3 text-[13px] font-medium text-text-primary">{deal.name}</td>
-              <td className="px-4 py-3 text-[13px] text-text-secondary">{deal.client_name}</td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-3 text-[13px] font-medium text-text-primary" data-testid={`deal-name-${deal.id}`}>{deal.name}</td>
+              <td className="px-4 py-3 text-[13px] text-text-secondary" data-testid={`deal-client-${deal.id}`}>{deal.client_name}</td>
+              <td className="px-4 py-3" data-testid={`deal-stage-${deal.id}`}>
                 <DealStageBadge stage={deal.stage} />
               </td>
-              <td className="px-4 py-3 text-[13px] text-text-secondary">{deal.owner || '—'}</td>
-              <td className="px-4 py-3 text-[13px] text-text-primary font-medium">{formatCurrency(deal.value)}</td>
-              <td className="px-4 py-3 text-[13px] text-text-secondary">{formatDate(deal.expected_close_date)}</td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-3 text-[13px] text-text-secondary" data-testid={`deal-owner-${deal.id}`}>{deal.owner || '—'}</td>
+              <td className="px-4 py-3 text-[13px] text-text-primary font-medium" data-testid={`deal-value-${deal.id}`}>{formatCurrency(deal.value)}</td>
+              <td className="px-4 py-3 text-[13px] text-text-secondary" data-testid={`deal-close-date-${deal.id}`}>{formatDate(deal.expected_close_date)}</td>
+              <td className="px-4 py-3" data-testid={`deal-status-${deal.id}`}>
                 <DealStatusBadge status={deal.status} />
               </td>
               <td className="px-4 py-3">

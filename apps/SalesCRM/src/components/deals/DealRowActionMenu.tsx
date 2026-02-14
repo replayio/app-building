@@ -27,6 +27,7 @@ export function DealRowActionMenu({ dealId, onDelete }: DealRowActionMenuProps) 
   return (
     <div className="relative" ref={menuRef}>
       <button
+        data-testid={`deal-action-menu-button-${dealId}`}
         onClick={(e) => {
           e.stopPropagation()
           setOpen(!open)
@@ -36,8 +37,9 @@ export function DealRowActionMenu({ dealId, onDelete }: DealRowActionMenuProps) 
         <MoreHorizontal size={16} strokeWidth={1.75} />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-[140px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-20 py-1">
+        <div data-testid={`deal-action-menu-${dealId}`} className="absolute right-0 top-full mt-1 w-[140px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-20 py-1">
           <button
+            data-testid={`deal-action-view-${dealId}`}
             onClick={(e) => {
               e.stopPropagation()
               setOpen(false)
@@ -49,6 +51,7 @@ export function DealRowActionMenu({ dealId, onDelete }: DealRowActionMenuProps) 
             View
           </button>
           <button
+            data-testid={`deal-action-edit-${dealId}`}
             onClick={(e) => {
               e.stopPropagation()
               setOpen(false)
@@ -60,6 +63,7 @@ export function DealRowActionMenu({ dealId, onDelete }: DealRowActionMenuProps) 
             Edit
           </button>
           <button
+            data-testid={`deal-action-delete-${dealId}`}
             onClick={(e) => {
               e.stopPropagation()
               setOpen(false)

@@ -30,6 +30,7 @@ function DealCard({ deal }: { deal: Deal }) {
 
   return (
     <div
+      data-testid={`pipeline-deal-card-${deal.id}`}
       onClick={() => navigate(`/deals/${deal.id}`)}
       className="p-3 bg-surface border border-border rounded-[6px] cursor-pointer hover:shadow-[var(--shadow-elevation-1)] transition-shadow duration-150"
     >
@@ -53,9 +54,9 @@ export function DealsPipelineView({ deals }: DealsPipelineViewProps) {
   }))
 
   return (
-    <div className="grid grid-cols-6 gap-3 min-h-[400px]">
+    <div className="grid grid-cols-6 gap-3 min-h-[400px]" data-testid="deals-pipeline-view">
       {dealsByStage.map((column) => (
-        <div key={column.key} className={`flex flex-col border-t-2 ${column.color} rounded-t-none`}>
+        <div key={column.key} data-testid={`pipeline-column-${column.key}`} className={`flex flex-col border-t-2 ${column.color} rounded-t-none`}>
           <div className="px-2 py-2 mb-2">
             <div className="flex items-center justify-between mb-0.5">
               <span className="text-[13px] font-medium text-text-primary">{column.label}</span>
