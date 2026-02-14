@@ -203,8 +203,9 @@
   - [x] checkDirectives.md: RunTests: All 176 Playwright tests passing after fixes. Fixed PDP-REL-04 test to match updated "Person *" label. Fixed netlify dev functions path resolution.
   - [x] checkDirectives.md: DocumentFix: Documented all fixes in plan.md
 - [x] polishApp.md: UnpackPolishApp: Unpack subtasks — Stub with no subtasks
-- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
+- **Maintenance Round 1 COMPLETE**: All directive violations fixed, tests passing, deployed to production
 
 ## Blockers
 
-None. All stages complete.
+None. All stages and maintenance rounds complete.
