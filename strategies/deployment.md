@@ -12,7 +12,7 @@ Unpack the initial deployment task into the following subtasks:
 
 ## Deployment
 
-The app must support `npm run deploy` which creates a new netlify site (name doesn't matter) and the Neon database you set up earlier that is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
+The app must support `npm run deploy` which creates or reuses an existing netlify site (name doesn't matter) and the Neon database you set up earlier that is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
 
 Make sure to update all URLs etc to match the deployed resources.
 

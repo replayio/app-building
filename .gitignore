@@ -2,6 +2,7 @@ node_modules/
 dist/
 .env
 iteration-current.log
+prompt-*.txt
 
 # Local Netlify folder
 .netlify
