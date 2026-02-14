@@ -146,19 +146,19 @@ test.describe('Cross-Cutting Data Consistency', () => {
     await expect(page).toHaveURL(new RegExp(`/deals/${dealId}`));
 
     // Add a task on the deal detail page
-    const addTaskBtn = page.getByTestId('linked-tasks-add-button');
+    const addTaskBtn = page.getByTestId('deal-linked-tasks-add-button');
     await addTaskBtn.click();
 
-    const taskModal = page.getByTestId('add-task-modal');
+    const taskModal = page.getByTestId('add-deal-task-modal');
     await expect(taskModal).toBeVisible();
 
     const taskName = `Complete Test Task ${Date.now()}`;
-    await taskModal.getByTestId('task-title-input').fill(taskName);
-    await taskModal.getByTestId('task-save-button').click();
+    await taskModal.getByTestId('add-deal-task-title').fill(taskName);
+    await taskModal.getByTestId('add-deal-task-save').click();
     await page.waitForLoadState('networkidle');
 
-    // Complete the task by clicking its checkbox
-    const taskCheckbox = page.locator(`[data-testid^="task-checkbox-"]`).first();
+    // Complete the task by clicking its toggle
+    const taskCheckbox = page.locator(`[data-testid^="deal-linked-task-toggle-"]`).first();
     if (await taskCheckbox.isVisible()) {
       await taskCheckbox.click();
       await page.waitForLoadState('networkidle');
@@ -170,7 +170,7 @@ test.describe('Cross-Cutting Data Consistency', () => {
 
     // The completed task should not appear in upcoming tasks
     // (search for the task name to be sure)
-    const taskFilter = page.getByTestId('task-filter-input');
+    const taskFilter = page.getByTestId('tasks-filter-search');
     if (await taskFilter.isVisible()) {
       await taskFilter.fill(taskName);
       await page.waitForLoadState('networkidle');
@@ -252,7 +252,7 @@ test.describe('Cross-Cutting Data Consistency', () => {
     await page.getByTestId('action-delete').click();
 
     // Confirm deletion
-    const confirmBtn = page.getByTestId('confirm-delete-button');
+    const confirmBtn = page.getByTestId('confirm-ok');
     if (await confirmBtn.isVisible()) {
       await confirmBtn.click();
     }
@@ -414,7 +414,7 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
     await page.waitForLoadState('networkidle');
 
     // Change the deal stage
-    const stageSelect = page.getByTestId('deal-stage-select');
+    const stageSelect = page.getByTestId('deal-header-stage-select');
     if (await stageSelect.isVisible()) {
       const currentStage = await stageSelect.inputValue();
       // Pick a different stage
@@ -422,7 +422,7 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
       const nextStage = stages.find(s => s !== currentStage) || 'proposal';
 
       await stageSelect.selectOption(nextStage);
-      await page.getByTestId('change-stage-button').click();
+      await page.getByTestId('deal-header-change-stage-button').click();
       await page.waitForLoadState('networkidle');
     }
 

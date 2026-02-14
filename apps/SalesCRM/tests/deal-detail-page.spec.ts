@@ -511,8 +511,9 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
       await page.waitForLoadState('networkidle');
 
       // The task should now show as completed (line-through style)
-      const lastTask = page.locator('[data-testid^="deal-linked-task-"]').filter({ hasNotText: 'toggle' }).last();
-      // Check that it contains "Completed" text indicating it was marked done
+      const taskItems = page.locator('[data-testid^="deal-linked-task-"]:not([data-testid*="toggle"])');
+      const lastTask = taskItems.last();
+      // Check that the task element has text content
       const taskText = await lastTask.textContent();
       expect(taskText).toBeTruthy();
     }

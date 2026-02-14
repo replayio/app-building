@@ -70,7 +70,7 @@ export function TimelineSection({ events }: TimelineSectionProps) {
             <div key={dateLabel} className="mb-4 last:mb-0" data-testid="timeline-date-group">
               <div className="text-[12px] font-medium text-text-muted mb-2" data-testid="timeline-date-label">{dateLabel}</div>
               {groupEvents.map((event) => (
-                <div key={event.id} className="flex items-start gap-3 mb-2 last:mb-0 pl-2" data-testid={`timeline-event-${event.id}`}>
+                <div key={event.id} className="flex items-start gap-3 mb-2 last:mb-0 pl-2" data-testid={`timeline-entry-${event.id}`}>
                   <span className={`flex-shrink-0 text-[8px] mt-1.5 ${getEventColor(event.event_type)}`}>
                     {getEventIcon(event.event_type)}
                   </span>

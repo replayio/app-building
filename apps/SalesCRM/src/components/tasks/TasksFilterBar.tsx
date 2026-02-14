@@ -64,7 +64,7 @@ export function TasksFilterBar({
               <select
                 data-testid="tasks-filter-priority"
                 value={priorityFilter}
-                onChange={(e) => onPriorityChange(e.target.value)}
+                onChange={(e) => { onPriorityChange(e.target.value); setFilterOpen(false) }}
                 className="mt-1 w-full h-[30px] px-2 text-[13px] text-text-primary bg-surface border border-border rounded-[4px] focus:outline-none focus:border-accent"
               >
                 <option value="">All Priorities</option>
@@ -80,7 +80,7 @@ export function TasksFilterBar({
               <select
                 data-testid="tasks-filter-assignee"
                 value={assigneeFilter}
-                onChange={(e) => onAssigneeChange(e.target.value)}
+                onChange={(e) => { onAssigneeChange(e.target.value); setFilterOpen(false) }}
                 className="mt-1 w-full h-[30px] px-2 text-[13px] text-text-primary bg-surface border border-border rounded-[4px] focus:outline-none focus:border-accent"
               >
                 <option value="">All Assignees</option>
@@ -97,7 +97,7 @@ export function TasksFilterBar({
               <select
                 data-testid="tasks-filter-client"
                 value={clientFilter}
-                onChange={(e) => onClientChange(e.target.value)}
+                onChange={(e) => { onClientChange(e.target.value); setFilterOpen(false) }}
                 className="mt-1 w-full h-[30px] px-2 text-[13px] text-text-primary bg-surface border border-border rounded-[4px] focus:outline-none focus:border-accent"
               >
                 <option value="">All Clients</option>
@@ -117,6 +117,7 @@ export function TasksFilterBar({
                     onPriorityChange('')
                     onAssigneeChange('')
                     onClientChange('')
+                    setFilterOpen(false)
                   }}
                   className="text-[12px] text-accent hover:underline"
                 >

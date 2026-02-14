@@ -11,7 +11,7 @@ export default async function handler(req: Request) {
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
   // Path: /deals or /deals/:dealId
-  const dealId = pathParts.length >= 3 ? pathParts[2] : null
+  const dealId = pathParts.length >= 4 ? pathParts[3] : null
 
   // GET /deals — list all deals with filters and pagination
   if (req.method === 'GET' && !dealId) {
@@ -27,120 +27,64 @@ export default async function handler(req: Request) {
 
     const offset = (page - 1) * pageSize
 
-    // Build WHERE conditions
-    const conditions: string[] = []
-    const params: unknown[] = []
-    let paramIndex = 1
-
+    // Build composable WHERE clause using neon tagged template fragments
+    const whereParts: ReturnType<typeof sql>[] = []
     if (search) {
-      conditions.push(`(d.name ILIKE $${paramIndex} OR c.name ILIKE $${paramIndex})`)
-      params.push(`%${search}%`)
-      paramIndex++
+      whereParts.push(sql`(d.name ILIKE ${'%' + search + '%'} OR c.name ILIKE ${'%' + search + '%'})`)
     }
     if (stage) {
-      conditions.push(`d.stage = $${paramIndex}`)
-      params.push(stage)
-      paramIndex++
+      whereParts.push(sql`d.stage = ${stage}`)
     }
     if (client) {
-      conditions.push(`d.client_id = $${paramIndex}::uuid`)
-      params.push(client)
-      paramIndex++
+      whereParts.push(sql`d.client_id = ${client}::uuid`)
     }
     if (status) {
-      conditions.push(`d.status = $${paramIndex}`)
-      params.push(status)
-      paramIndex++
+      if (status === 'active') {
+        whereParts.push(sql`d.stage NOT IN ('closed_won', 'closed_lost')`)
+      } else if (status === 'won') {
+        whereParts.push(sql`d.stage = 'closed_won'`)
+      } else if (status === 'lost') {
+        whereParts.push(sql`d.stage = 'closed_lost'`)
+      } else {
+        whereParts.push(sql`d.status = ${status}`)
+      }
     }
     if (dateFrom) {
-      conditions.push(`d.expected_close_date >= $${paramIndex}::date`)
-      params.push(dateFrom)
-      paramIndex++
+      whereParts.push(sql`d.expected_close_date >= ${dateFrom}::date`)
     }
     if (dateTo) {
-      conditions.push(`d.expected_close_date <= $${paramIndex}::date`)
-      params.push(dateTo)
-      paramIndex++
+      whereParts.push(sql`d.expected_close_date <= ${dateTo}::date`)
     }
 
-    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
-
-    // Sort mapping
-    const sortMap: Record<string, string> = {
-      close_date_desc: 'd.expected_close_date DESC NULLS LAST',
-      close_date_asc: 'd.expected_close_date ASC NULLS LAST',
-      name_asc: 'd.name ASC',
-      name_desc: 'd.name DESC',
-      value_desc: 'd.value DESC',
-      value_asc: 'd.value ASC',
-      updated_at: 'd.updated_at DESC',
-    }
-    const orderBy = sortMap[sort] ?? sortMap.close_date_desc
-
-    // Use raw query with template literal for the neon driver
-    // Since neon() tagged templates don't support dynamic WHERE easily,
-    // we'll construct the query carefully
-    const countQuery = `SELECT COUNT(*) as count FROM deals d JOIN clients c ON d.client_id = c.id ${whereClause}`
-    const dataQuery = `SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereClause} ORDER BY ${orderBy} LIMIT ${pageSize} OFFSET ${offset}`
-
-    let total: number
-    let deals: Record<string, unknown>[]
-
-    if (params.length === 0) {
-      const countResult = await sql`SELECT COUNT(*) as count FROM deals d JOIN clients c ON d.client_id = c.id`
-      total = parseInt(String(countResult[0].count), 10)
-
-      // Build sort-specific queries
-      if (sort === 'close_date_asc') {
-        deals = await sql`
-          SELECT d.*, c.name as client_name FROM deals d
-          JOIN clients c ON d.client_id = c.id
-          ORDER BY d.expected_close_date ASC NULLS LAST
-          LIMIT ${pageSize} OFFSET ${offset}
-        `
-      } else if (sort === 'name_asc') {
-        deals = await sql`
-          SELECT d.*, c.name as client_name FROM deals d
-          JOIN clients c ON d.client_id = c.id
-          ORDER BY d.name ASC
-          LIMIT ${pageSize} OFFSET ${offset}
-        `
-      } else if (sort === 'name_desc') {
-        deals = await sql`
-          SELECT d.*, c.name as client_name FROM deals d
-          JOIN clients c ON d.client_id = c.id
-          ORDER BY d.name DESC
-          LIMIT ${pageSize} OFFSET ${offset}
-        `
-      } else if (sort === 'value_desc') {
-        deals = await sql`
-          SELECT d.*, c.name as client_name FROM deals d
-          JOIN clients c ON d.client_id = c.id
-          ORDER BY d.value DESC
-          LIMIT ${pageSize} OFFSET ${offset}
-        `
-      } else if (sort === 'value_asc') {
-        deals = await sql`
-          SELECT d.*, c.name as client_name FROM deals d
-          JOIN clients c ON d.client_id = c.id
-          ORDER BY d.value ASC
-          LIMIT ${pageSize} OFFSET ${offset}
-        `
-      } else {
-        deals = await sql`
-          SELECT d.*, c.name as client_name FROM deals d
-          JOIN clients c ON d.client_id = c.id
-          ORDER BY d.expected_close_date DESC NULLS LAST
-          LIMIT ${pageSize} OFFSET ${offset}
-        `
+    // Build the WHERE clause by combining fragments
+    let whereFragment = sql``
+    if (whereParts.length > 0) {
+      whereFragment = sql`WHERE ${whereParts[0]}`
+      for (let i = 1; i < whereParts.length; i++) {
+        whereFragment = sql`${whereFragment} AND ${whereParts[i]}`
       }
+    }
+
+    // Count total matching deals
+    const countResult = await sql`SELECT COUNT(*) as count FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment}`
+    const total = parseInt(String(countResult[0].count), 10)
+
+    // Fetch deals with sorting (neon tagged templates require static ORDER BY, so use if/else)
+    let deals: Record<string, unknown>[]
+    if (sort === 'close_date_asc') {
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.expected_close_date ASC NULLS LAST LIMIT ${pageSize} OFFSET ${offset}`
+    } else if (sort === 'name_asc') {
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.name ASC LIMIT ${pageSize} OFFSET ${offset}`
+    } else if (sort === 'name_desc') {
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.name DESC LIMIT ${pageSize} OFFSET ${offset}`
+    } else if (sort === 'value_desc') {
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.value DESC LIMIT ${pageSize} OFFSET ${offset}`
+    } else if (sort === 'value_asc') {
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.value ASC LIMIT ${pageSize} OFFSET ${offset}`
+    } else if (sort === 'updated_at') {
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.updated_at DESC LIMIT ${pageSize} OFFSET ${offset}`
     } else {
-      // For filtered queries, use the neon sql function with parameters
-      // We need to handle this with tagged templates for each combination
-      // Since neon tagged templates require static SQL, build queries per filter combo
-      const countR = await sql(countQuery, params)
-      total = parseInt(String(countR[0].count), 10)
-      deals = await sql(dataQuery, params)
+      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.expected_close_date DESC NULLS LAST LIMIT ${pageSize} OFFSET ${offset}`
     }
 
     // Get summary metrics
@@ -205,7 +149,7 @@ export default async function handler(req: Request) {
         ${body.stage ?? 'lead'},
         ${body.owner ?? null},
         ${body.probability ?? 0},
-        ${body.expected_close_date ?? null},
+        ${body.expected_close_date || null},
         ${body.status ?? 'active'}
       )
       RETURNING *
@@ -275,7 +219,7 @@ export default async function handler(req: Request) {
         stage = COALESCE(${body.stage ?? null}, stage),
         owner = COALESCE(${body.owner ?? null}, owner),
         probability = COALESCE(${body.probability ?? null}, probability),
-        expected_close_date = COALESCE(${body.expected_close_date ?? null}, expected_close_date),
+        expected_close_date = COALESCE(${body.expected_close_date || null}, expected_close_date),
         status = COALESCE(${body.status ?? null}, status),
         updated_at = NOW()
       WHERE id = ${dealId}::uuid

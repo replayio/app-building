@@ -11,7 +11,7 @@ export default async function handler(req: Request) {
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
   // Path: /tasks or /tasks/:taskId
-  const taskId = pathParts.length >= 3 ? pathParts[2] : null
+  const taskId = pathParts.length >= 4 ? pathParts[3] : null
 
   // GET /tasks — list all upcoming (uncompleted) tasks with filters
   if (req.method === 'GET' && !taskId) {
@@ -21,89 +21,50 @@ export default async function handler(req: Request) {
     const clientId = url.searchParams.get('clientId') ?? ''
     const includeCompleted = url.searchParams.get('includeCompleted') === 'true'
 
-    const conditions: string[] = []
-    const params: unknown[] = []
-    let paramIndex = 1
+    // Build composable WHERE clause using neon tagged template fragments
+    const whereParts: ReturnType<typeof sql>[] = []
 
     if (!includeCompleted) {
-      conditions.push('t.completed = false')
+      whereParts.push(sql`t.completed = false`)
     }
-
     if (search) {
-      conditions.push(`t.title ILIKE $${paramIndex}`)
-      params.push(`%${search}%`)
-      paramIndex++
+      whereParts.push(sql`t.title ILIKE ${'%' + search + '%'}`)
     }
     if (priority) {
-      conditions.push(`t.priority = $${paramIndex}`)
-      params.push(priority)
-      paramIndex++
+      whereParts.push(sql`t.priority = ${priority}`)
     }
     if (assignee) {
-      conditions.push(`t.assignee_name ILIKE $${paramIndex}`)
-      params.push(`%${assignee}%`)
-      paramIndex++
+      whereParts.push(sql`t.assignee_name ILIKE ${'%' + assignee + '%'}`)
     }
     if (clientId) {
-      conditions.push(`t.client_id = $${paramIndex}::uuid`)
-      params.push(clientId)
-      paramIndex++
+      whereParts.push(sql`t.client_id = ${clientId}::uuid`)
     }
 
-    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
+    let whereFragment = sql``
+    if (whereParts.length > 0) {
+      whereFragment = sql`WHERE ${whereParts[0]}`
+      for (let i = 1; i < whereParts.length; i++) {
+        whereFragment = sql`${whereFragment} AND ${whereParts[i]}`
+      }
+    }
 
-    const dataQuery = `
+    const tasks = await sql`
       SELECT t.*, c.name as client_name, d.name as deal_name
       FROM tasks t
       LEFT JOIN clients c ON t.client_id = c.id
       LEFT JOIN deals d ON t.deal_id = d.id
-      ${whereClause}
+      ${whereFragment}
       ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
     `
 
-    const countQuery = `
+    const countResult = await sql`
       SELECT COUNT(*) as count
       FROM tasks t
       LEFT JOIN clients c ON t.client_id = c.id
       LEFT JOIN deals d ON t.deal_id = d.id
-      ${whereClause}
+      ${whereFragment}
     `
-
-    let tasks: Record<string, unknown>[]
-    let total: number
-
-    if (params.length === 0) {
-      if (includeCompleted) {
-        tasks = await sql`
-          SELECT t.*, c.name as client_name, d.name as deal_name
-          FROM tasks t
-          LEFT JOIN clients c ON t.client_id = c.id
-          LEFT JOIN deals d ON t.deal_id = d.id
-          ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
-        `
-        const countResult = await sql`
-          SELECT COUNT(*) as count FROM tasks t
-        `
-        total = parseInt(String(countResult[0].count), 10)
-      } else {
-        tasks = await sql`
-          SELECT t.*, c.name as client_name, d.name as deal_name
-          FROM tasks t
-          LEFT JOIN clients c ON t.client_id = c.id
-          LEFT JOIN deals d ON t.deal_id = d.id
-          WHERE t.completed = false
-          ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
-        `
-        const countResult = await sql`
-          SELECT COUNT(*) as count FROM tasks t WHERE t.completed = false
-        `
-        total = parseInt(String(countResult[0].count), 10)
-      }
-    } else {
-      tasks = await sql(dataQuery, params)
-      const countResult = await sql(countQuery, params)
-      total = parseInt(String(countResult[0].count), 10)
-    }
+    const total = parseInt(String(countResult[0].count), 10)
 
     // Get unique assignees for filter dropdown
     const assignees = await sql`
@@ -142,10 +103,10 @@ export default async function handler(req: Request) {
       VALUES (
         ${body.title},
         ${body.description ?? null},
-        ${body.due_date ?? null},
+        ${body.due_date || null},
         ${body.priority ?? 'normal'},
-        ${body.client_id ?? null},
-        ${body.deal_id ?? null},
+        ${body.client_id || null},
+        ${body.deal_id || null},
         ${body.assignee_name ?? null},
         ${body.assignee_role ?? null}
       )
@@ -187,61 +148,24 @@ export default async function handler(req: Request) {
       assignee_role?: string
     }
 
-    const updates: string[] = []
-    const params: unknown[] = []
-    let paramIdx = 1
-
-    if (body.completed !== undefined) {
-      updates.push(`completed = $${paramIdx}`)
-      params.push(body.completed)
-      paramIdx++
-      if (body.completed) {
-        updates.push(`completed_at = NOW()`)
-      } else {
-        updates.push(`completed_at = NULL`)
-      }
-    }
-    if (body.title !== undefined) {
-      updates.push(`title = $${paramIdx}`)
-      params.push(body.title)
-      paramIdx++
-    }
-    if (body.description !== undefined) {
-      updates.push(`description = $${paramIdx}`)
-      params.push(body.description)
-      paramIdx++
-    }
-    if (body.due_date !== undefined) {
-      updates.push(`due_date = $${paramIdx}`)
-      params.push(body.due_date)
-      paramIdx++
-    }
-    if (body.priority !== undefined) {
-      updates.push(`priority = $${paramIdx}`)
-      params.push(body.priority)
-      paramIdx++
-    }
-    if (body.assignee_name !== undefined) {
-      updates.push(`assignee_name = $${paramIdx}`)
-      params.push(body.assignee_name)
-      paramIdx++
-    }
-    if (body.assignee_role !== undefined) {
-      updates.push(`assignee_role = $${paramIdx}`)
-      params.push(body.assignee_role)
-      paramIdx++
-    }
-
-    if (updates.length === 0) {
-      return new Response(JSON.stringify({ error: 'No fields to update' }), { status: 400 })
-    }
-
-    updates.push('updated_at = NOW()')
-
-    const query = `UPDATE tasks SET ${updates.join(', ')} WHERE id = $${paramIdx}::uuid RETURNING *`
-    params.push(taskId)
-
-    const rows = await sql(query, params)
+    const rows = await sql`
+      UPDATE tasks SET
+        completed = COALESCE(${body.completed !== undefined ? body.completed : null}, completed),
+        completed_at = CASE
+          WHEN ${body.completed !== undefined ? body.completed : null}::boolean = true THEN NOW()
+          WHEN ${body.completed !== undefined ? body.completed : null}::boolean = false THEN NULL
+          ELSE completed_at
+        END,
+        title = COALESCE(${body.title ?? null}, title),
+        description = COALESCE(${body.description ?? null}, description),
+        due_date = COALESCE(${body.due_date !== undefined ? (body.due_date || null) : null}, due_date),
+        priority = COALESCE(${body.priority ?? null}, priority),
+        assignee_name = COALESCE(${body.assignee_name ?? null}, assignee_name),
+        assignee_role = COALESCE(${body.assignee_role ?? null}, assignee_role),
+        updated_at = NOW()
+      WHERE id = ${taskId}::uuid
+      RETURNING *
+    `
     if (rows.length === 0) {
       return new Response(JSON.stringify({ error: 'Task not found' }), { status: 404 })
     }

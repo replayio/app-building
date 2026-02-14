@@ -10,7 +10,7 @@ export default async function handler(req: Request) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
-  const dealId = pathParts.length >= 3 ? pathParts[2] : null
+  const dealId = pathParts.length >= 4 ? pathParts[3] : null
 
   // GET /client-deals?clientId=...
   if (req.method === 'GET' && !dealId) {
@@ -51,7 +51,7 @@ export default async function handler(req: Request) {
         ${body.stage ?? 'lead'},
         ${body.owner ?? null},
         ${body.probability ?? 0},
-        ${body.expected_close_date ?? null}
+        ${body.expected_close_date || null}
       )
       RETURNING *
     `

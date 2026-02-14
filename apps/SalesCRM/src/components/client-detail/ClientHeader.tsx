@@ -149,7 +149,7 @@ function StatusDropdown({ status, onChange }: { status: ClientStatus; onChange: 
   return (
     <div className="relative" data-testid="client-header-status-dropdown">
       <button onClick={() => setOpen(!open)} data-testid="status-dropdown-button">
-        <StatusBadge status={status} />
+        <span data-testid="client-header-status-badge"><StatusBadge status={status} /></span>
       </button>
       {open && (
         <>

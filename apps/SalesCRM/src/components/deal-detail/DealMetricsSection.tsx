@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BarChart2, Pencil, Check, X } from 'lucide-react'
 import type { Deal } from '../../types'
 
 interface DealMetricsSectionProps {
   deal: Deal
-  onUpdate: (data: Record<string, unknown>) => void
+  onUpdate: (data: Record<string, unknown>) => void | Promise<void>
 }
 
 export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) {
@@ -12,8 +12,13 @@ export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) 
   const [probability, setProbability] = useState(String(deal.probability))
   const [closeDate, setCloseDate] = useState(deal.expected_close_date ?? '')
 
-  function handleSave() {
-    onUpdate({
+  useEffect(() => {
+    setProbability(String(deal.probability))
+    setCloseDate(deal.expected_close_date ?? '')
+  }, [deal.probability, deal.expected_close_date])
+
+  async function handleSave() {
+    await onUpdate({
       probability: parseInt(probability, 10) || 0,
       expected_close_date: closeDate || null,
     })
