@@ -15,27 +15,21 @@ strategy used for the task.
 
 Follow these instructions exactly.
 
-1. Pick a file `logs/iteration-<timestamp>.log` that is NOT your own current iteration's log.
-   Your own log has the same timestamp as your session and is being written in real time — skip it.
-   To identify which logs need review, compare `ls logs/iteration-*.log` against `ls logs/reviewed/` —
-   any log in `logs/` but NOT in `logs/reviewed/` (excluding your own timestamp) needs review.
+1. Pick a file `logs/iteration-<timestamp>.log`. Ignore `iteration-current.log` which is the current
+   iteration and still being written to.
 2. Announce 'REVIEW: <logFile>'
-3. Read the changes made in git based on the start / end revisions in the iteration log.
-   Do NOT read the raw log file — it contains JSON payloads and routinely exceeds 500KB.
-   Instead, get the start revision from `head -1 <logfile>` and use:
+3. Run `npm run read-log /path/to/log` from the root to get the conversation and other key details.
+4. Read the code changes made between the start/end revisions in the log file:
    - `git log --oneline <startRev>..<endRev>` to see commits
    - `git diff --stat <startRev>..<endRev>` for an overview of changed files
    - `git diff <startRev>..<endRev> -- <specific-file>` for details on specific changes
-   To check for errors in the log: `grep -c 'is_error.*true' <logfile>`
-4. Read the instructions file for the stage associated with the log's tasks (there should be only one).
+5. Read the instructions file for the stage associated with the log's tasks (there should be only one).
    Stage instruction files are at `/repo/strategies/` (the repo root), NOT inside the app directory.
    See buildInitialApp.md for the stages and their instruction files.
-5. Look for any problems described in the sections below.
-6. If any are found, make changes to the code and/or strategies to correct them.
+6. Look for any problems described in the sections below.
+7. If any are found, make changes to the code and/or strategies to correct them.
    You MUST update the relevant stage instruction file if you found any difficulties or directive violations.
-   Simply concluding "no issues found" is not acceptable — every iteration has room for improvement.
-   Find at least one tip or directive enhancement per review.
-7. Move the log file to logs/reviewed/iteration-<timestamp>.log
+8. Move the log file to logs/reviewed/iteration-<timestamp>.log
    NEVER move a log to reviewed/ without actually completing steps 2-6.
    Batch-moving multiple logs without reviewing each one's git diff is not acceptable.
 
@@ -60,9 +54,8 @@ was unproductive and add a strategy tip to prevent the same pattern.
 
 ## Tips
 
-- Do NOT use inline Python scripts, `find`, or `cat` to parse log files. Use `git log`, `git diff --stat`,
-  and targeted `grep` with small output limits.
-- Do NOT try to Read the raw JSON log file — it will exceed the 256KB read limit. Always use git commands.
+- Do NOT try to Read the raw JSON log file — it will exceed the 256KB read limit.
+  Always use `npm run read-log` commands.
 - When reviewing multiple accumulated logs, review each one individually by checking its git diff.
   Do not skip reviews because "we can see from the plan what was done."
 - If a review identifies directive violations, fix them BEFORE moving the log to reviewed/.
