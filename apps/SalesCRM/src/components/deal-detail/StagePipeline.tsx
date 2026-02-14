@@ -21,7 +21,7 @@ export function StagePipeline({ currentStage }: StagePipelineProps) {
   const progressPercent = isClosedLost ? 0 : Math.min(100, ((currentIndex + 1) / stages.length) * 100)
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="deal-stage-pipeline" className="border border-border rounded-[6px] p-4 mb-4">
       {/* Stage indicators */}
       <div className="flex items-center justify-between mb-3">
         {stages.map((stage, index) => {
@@ -29,8 +29,11 @@ export function StagePipeline({ currentStage }: StagePipelineProps) {
           const isCurrent = !isClosedLost && index === currentIndex
 
           return (
-            <div key={stage.key} className="flex flex-col items-center flex-1">
+            <div key={stage.key} data-testid={`pipeline-stage-${stage.key}`} className="flex flex-col items-center flex-1">
               <div
+                data-testid={`pipeline-stage-indicator-${stage.key}`}
+                data-completed={isCompleted ? 'true' : 'false'}
+                data-current={isCurrent ? 'true' : 'false'}
                 className={`
                   w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-medium mb-1.5
                   ${isCompleted ? 'bg-status-active text-white' : ''}
@@ -60,8 +63,9 @@ export function StagePipeline({ currentStage }: StagePipelineProps) {
       </div>
 
       {/* Progress bar */}
-      <div className="h-1.5 bg-sidebar rounded-full overflow-hidden">
+      <div data-testid="pipeline-progress-bar" className="h-1.5 bg-sidebar rounded-full overflow-hidden">
         <div
+          data-testid="pipeline-progress-fill"
           className="h-full bg-accent rounded-full transition-all duration-300"
           style={{ width: `${progressPercent}%` }}
         />

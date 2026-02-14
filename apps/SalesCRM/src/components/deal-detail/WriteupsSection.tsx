@@ -43,13 +43,14 @@ export function WriteupsSection({ writeups, onAddWriteup, onEditWriteup, onViewV
   }
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="deal-writeups-section" className="border border-border rounded-[6px] p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <FileText size={14} strokeWidth={1.75} className="text-text-muted" />
           <h2 className="text-[14px] font-semibold text-text-primary">Writeups</h2>
         </div>
         <button
+          data-testid="deal-writeups-add-button"
           onClick={onAddWriteup}
           className="inline-flex items-center gap-1 h-[28px] px-2.5 text-[12px] font-medium text-accent hover:bg-hover rounded-[4px] transition-colors duration-100"
         >
@@ -59,12 +60,13 @@ export function WriteupsSection({ writeups, onAddWriteup, onEditWriteup, onViewV
       </div>
 
       {writeups.length === 0 ? (
-        <div className="text-[13px] text-text-muted py-2">No writeups yet</div>
+        <div data-testid="deal-writeups-empty" className="text-[13px] text-text-muted py-2">No writeups yet</div>
       ) : (
         <div className="flex flex-col gap-2">
           {writeups.map((writeup) => (
             <div
               key={writeup.id}
+              data-testid={`deal-writeup-${writeup.id}`}
               className="border border-border rounded-[4px] p-3"
             >
               {editingId === writeup.id ? (
@@ -110,6 +112,7 @@ export function WriteupsSection({ writeups, onAddWriteup, onEditWriteup, onViewV
                     </div>
                     <div className="flex items-center gap-0.5">
                       <button
+                        data-testid={`deal-writeup-edit-${writeup.id}`}
                         onClick={() => startEdit(writeup)}
                         className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
                         title="Edit"
@@ -117,6 +120,7 @@ export function WriteupsSection({ writeups, onAddWriteup, onEditWriteup, onViewV
                         <Pencil size={13} strokeWidth={1.75} />
                       </button>
                       <button
+                        data-testid={`deal-writeup-versions-${writeup.id}`}
                         onClick={() => onViewVersions(writeup.id)}
                         className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
                         title="Version History"

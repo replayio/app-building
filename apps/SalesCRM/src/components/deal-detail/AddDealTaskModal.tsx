@@ -37,7 +37,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
+      <div data-testid="add-deal-task-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add Task</h2>
           <button
@@ -51,6 +51,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Task Title *</label>
             <input
+              data-testid="add-deal-task-title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -72,6 +73,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Due Date</label>
               <input
+                data-testid="add-deal-task-due-date"
                 type="datetime-local"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
@@ -81,6 +83,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Priority</label>
               <select
+                data-testid="add-deal-task-priority"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -95,12 +98,14 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="add-deal-task-cancel"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
             Cancel
           </button>
           <button
+            data-testid="add-deal-task-save"
             onClick={handleSave}
             disabled={!title.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
