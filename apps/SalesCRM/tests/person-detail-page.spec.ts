@@ -10,8 +10,9 @@ async function navigateToFirstPersonDetail(page: import('@playwright/test').Page
   await page.goto('/clients');
   await page.waitForLoadState('networkidle');
 
-  // Click the first client row
+  // Wait for client rows to render after API data loads
   const rows = page.locator('[data-testid^="client-row-"]');
+  await rows.first().waitFor({ state: 'visible', timeout: 15000 });
   const count = await rows.count();
   expect(count).toBeGreaterThan(0);
 
@@ -20,6 +21,9 @@ async function navigateToFirstPersonDetail(page: import('@playwright/test').Page
 
   await page.goto(`/clients/${clientId}`);
   await page.waitForLoadState('networkidle');
+
+  // Wait for people section to load
+  await page.getByTestId('people-section').waitFor({ state: 'visible', timeout: 10000 });
 
   // Find a person in the people section
   const personItems = page.locator('[data-testid^="person-item-"]');
@@ -35,11 +39,16 @@ async function navigateToFirstPersonDetail(page: import('@playwright/test').Page
   }
 
   // Fallback: try to find any individual via the clients list
+  await page.goto('/clients');
+  await page.waitForLoadState('networkidle');
+  await rows.first().waitFor({ state: 'visible', timeout: 15000 });
+
   for (let i = 1; i < count && i < 10; i++) {
     const rowTestId = await rows.nth(i).getAttribute('data-testid');
     const cId = rowTestId!.replace('client-row-', '');
     await page.goto(`/clients/${cId}`);
     await page.waitForLoadState('networkidle');
+    await page.getByTestId('people-section').waitFor({ state: 'visible', timeout: 10000 });
 
     const pItems = page.locator('[data-testid^="person-item-"]');
     const pCount = await pItems.count();

@@ -27,65 +27,72 @@ export default async function handler(req: Request) {
 
     const offset = (page - 1) * pageSize
 
-    // Build composable WHERE clause using neon tagged template fragments
-    const whereParts: ReturnType<typeof sql>[] = []
+    // Build WHERE clause with parameterized queries
+    const conditions: string[] = []
+    const params: unknown[] = []
+    let paramIdx = 1
+
     if (search) {
-      whereParts.push(sql`(d.name ILIKE ${'%' + search + '%'} OR c.name ILIKE ${'%' + search + '%'})`)
+      conditions.push(`(d.name ILIKE $${paramIdx} OR c.name ILIKE $${paramIdx})`)
+      params.push('%' + search + '%')
+      paramIdx++
     }
     if (stage) {
-      whereParts.push(sql`d.stage = ${stage}`)
+      conditions.push(`d.stage = $${paramIdx}`)
+      params.push(stage)
+      paramIdx++
     }
     if (client) {
-      whereParts.push(sql`d.client_id = ${client}::uuid`)
+      conditions.push(`d.client_id = $${paramIdx}::uuid`)
+      params.push(client)
+      paramIdx++
     }
     if (status) {
       if (status === 'active') {
-        whereParts.push(sql`d.stage NOT IN ('closed_won', 'closed_lost')`)
+        conditions.push(`d.stage NOT IN ('closed_won', 'closed_lost')`)
       } else if (status === 'won') {
-        whereParts.push(sql`d.stage = 'closed_won'`)
+        conditions.push(`d.stage = 'closed_won'`)
       } else if (status === 'lost') {
-        whereParts.push(sql`d.stage = 'closed_lost'`)
+        conditions.push(`d.stage = 'closed_lost'`)
       } else {
-        whereParts.push(sql`d.status = ${status}`)
+        conditions.push(`d.status = $${paramIdx}`)
+        params.push(status)
+        paramIdx++
       }
     }
     if (dateFrom) {
-      whereParts.push(sql`d.expected_close_date >= ${dateFrom}::date`)
+      conditions.push(`d.expected_close_date >= $${paramIdx}::date`)
+      params.push(dateFrom)
+      paramIdx++
     }
     if (dateTo) {
-      whereParts.push(sql`d.expected_close_date <= ${dateTo}::date`)
+      conditions.push(`d.expected_close_date <= $${paramIdx}::date`)
+      params.push(dateTo)
+      paramIdx++
     }
 
-    // Build the WHERE clause by combining fragments
-    let whereFragment = sql``
-    if (whereParts.length > 0) {
-      whereFragment = sql`WHERE ${whereParts[0]}`
-      for (let i = 1; i < whereParts.length; i++) {
-        whereFragment = sql`${whereFragment} AND ${whereParts[i]}`
-      }
+    const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : ''
+
+    // Map sort parameter to ORDER BY clause
+    const sortMap: Record<string, string> = {
+      'close_date_asc': 'd.expected_close_date ASC NULLS LAST',
+      'close_date_desc': 'd.expected_close_date DESC NULLS LAST',
+      'name_asc': 'd.name ASC',
+      'name_desc': 'd.name DESC',
+      'value_desc': 'd.value DESC',
+      'value_asc': 'd.value ASC',
+      'updated_at': 'd.updated_at DESC',
     }
+    const orderBy = sortMap[sort] ?? 'd.expected_close_date DESC NULLS LAST'
 
     // Count total matching deals
-    const countResult = await sql`SELECT COUNT(*) as count FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment}`
+    const countQuery = `SELECT COUNT(*) as count FROM deals d JOIN clients c ON d.client_id = c.id ${whereClause}`
+    const countResult = await sql(countQuery, params)
     const total = parseInt(String(countResult[0].count), 10)
 
-    // Fetch deals with sorting (neon tagged templates require static ORDER BY, so use if/else)
-    let deals: Record<string, unknown>[]
-    if (sort === 'close_date_asc') {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.expected_close_date ASC NULLS LAST LIMIT ${pageSize} OFFSET ${offset}`
-    } else if (sort === 'name_asc') {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.name ASC LIMIT ${pageSize} OFFSET ${offset}`
-    } else if (sort === 'name_desc') {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.name DESC LIMIT ${pageSize} OFFSET ${offset}`
-    } else if (sort === 'value_desc') {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.value DESC LIMIT ${pageSize} OFFSET ${offset}`
-    } else if (sort === 'value_asc') {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.value ASC LIMIT ${pageSize} OFFSET ${offset}`
-    } else if (sort === 'updated_at') {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.updated_at DESC LIMIT ${pageSize} OFFSET ${offset}`
-    } else {
-      deals = await sql`SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereFragment} ORDER BY d.expected_close_date DESC NULLS LAST LIMIT ${pageSize} OFFSET ${offset}`
-    }
+    // Fetch deals
+    const dataQuery = `SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereClause} ORDER BY ${orderBy} LIMIT $${paramIdx} OFFSET $${paramIdx + 1}`
+    const deals = await sql(dataQuery, [...params, pageSize, offset])
 
     // Get summary metrics
     const metrics = await sql`

@@ -95,19 +95,18 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
     await page.getByTestId('tasks-filter-button').click();
     await expect(page.getByTestId('tasks-filter-dropdown')).toBeVisible();
 
-    // Select "High" priority filter
+    // Select "High" priority filter (this closes the dropdown and triggers a fetch)
     await page.getByTestId('tasks-filter-priority').selectOption('high');
-    await page.waitForLoadState('networkidle');
 
-    // All visible task cards should have a "High" priority badge
-    const highBadges = page.locator('[data-testid="task-priority-badge-high"]');
-    const cards = page.locator('[data-testid^="task-card-"]');
-    const cardCount = await cards.count();
-
-    if (cardCount > 0) {
+    // Wait for filtered results where all cards have high priority badges
+    await expect(async () => {
+      const highBadges = page.locator('[data-testid="task-priority-badge-high"]');
+      const cards = page.locator('[data-testid^="task-card-"]');
+      const cardCount = await cards.count();
+      expect(cardCount).toBeGreaterThan(0);
       const badgeCount = await highBadges.count();
       expect(badgeCount).toBe(cardCount);
-    }
+    }).toPass({ timeout: 10000 });
   });
 
   test('TLP-FLT-03: Text filter searches task titles', async ({ page }) => {
@@ -155,18 +154,18 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
       const assigneeName = await options[1].textContent();
       const assigneeValue = await options[1].getAttribute('value');
       await assigneeSelect.selectOption(assigneeValue!);
-      await page.waitForLoadState('networkidle');
 
-      // All visible task cards should have this assignee
-      const cards = page.locator('[data-testid^="task-card-"]');
-      const count = await cards.count();
-      if (count > 0) {
+      // Wait for filtered results where all cards contain the assignee name
+      await expect(async () => {
+        const cards = page.locator('[data-testid^="task-card-"]');
+        const count = await cards.count();
+        expect(count).toBeGreaterThan(0);
         for (let i = 0; i < count; i++) {
           const card = cards.nth(i);
           const cardText = await card.textContent();
           expect(cardText).toContain(assigneeName!);
         }
-      }
+      }).toPass({ timeout: 10000 });
     }
   });
 

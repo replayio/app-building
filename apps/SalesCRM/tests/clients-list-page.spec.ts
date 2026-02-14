@@ -158,17 +158,16 @@ test.describe('ClientsListPage - SearchBar', () => {
     // Type a search query
     await searchInput.fill('Acme');
 
-    // Wait for debounce and network request
-    await page.waitForTimeout(500);
-    await page.waitForLoadState('networkidle');
-
-    // Check that displayed clients match the search
-    const clientNames = page.locator('[data-testid="client-name"]');
-    const count = await clientNames.count();
-    for (let i = 0; i < count; i++) {
-      const text = await clientNames.nth(i).textContent();
-      expect(text?.toLowerCase()).toContain('acme');
-    }
+    // Wait for debounce, network request, and React re-render
+    await expect(async () => {
+      const clientNames = page.locator('[data-testid="client-name"]');
+      const count = await clientNames.count();
+      expect(count).toBeGreaterThan(0);
+      for (let i = 0; i < count; i++) {
+        const text = await clientNames.nth(i).textContent();
+        expect(text?.toLowerCase()).toContain('acme');
+      }
+    }).toPass({ timeout: 10000 });
   });
 
   test('CLP-SRCH-03: Search filters clients by tag', async ({ page }) => {
@@ -265,14 +264,16 @@ test.describe('ClientsListPage - FilterControls', () => {
 
     // Select Active status
     await page.getByTestId('filter-status').selectOption('active');
-    await page.waitForLoadState('networkidle');
 
-    // All visible status badges should be "Active"
-    const statusBadges = page.locator('[data-testid="client-status"]');
-    const count = await statusBadges.count();
-    for (let i = 0; i < count; i++) {
-      await expect(statusBadges.nth(i).locator('[data-testid="status-badge-active"]')).toBeVisible();
-    }
+    // Wait for filtered results to render
+    await expect(async () => {
+      const statusBadges = page.locator('[data-testid="client-status"]');
+      const count = await statusBadges.count();
+      expect(count).toBeGreaterThan(0);
+      for (let i = 0; i < count; i++) {
+        await expect(statusBadges.nth(i).locator('[data-testid="status-badge-active"]')).toBeVisible();
+      }
+    }).toPass({ timeout: 10000 });
   });
 
   test('CLP-FLT-03: Tags filter dropdown shows available tags', async ({ page }) => {
@@ -336,14 +337,18 @@ test.describe('ClientsListPage - FilterControls', () => {
 
     const sourceOption = allTexts.find(t => !t.includes('All'));
     if (sourceOption) {
-      const sourceValue = await options.filter({ hasText: sourceOption }).getAttribute('value');
+      // Use the value attribute directly to avoid strict mode issues with hasText matching multiple options
+      const matchingOptions = options.filter({ hasText: sourceOption });
+      const sourceValue = await matchingOptions.first().getAttribute('value');
       if (sourceValue) {
         await sourceFilter.selectOption(sourceValue);
-        await page.waitForLoadState('networkidle');
 
-        const rows = page.locator('[data-testid^="client-row-"]');
-        const count = await rows.count();
-        expect(count).toBeGreaterThanOrEqual(0);
+        // Wait for filtered results to render
+        await expect(async () => {
+          const rows = page.locator('[data-testid^="client-row-"]');
+          const count = await rows.count();
+          expect(count).toBeGreaterThanOrEqual(0);
+        }).toPass({ timeout: 10000 });
       }
     }
   });
@@ -368,12 +373,12 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.waitForLoadState('networkidle');
 
     await page.getByTestId('filter-sort').selectOption('name_asc');
-    await page.waitForLoadState('networkidle');
 
-    // Verify clients are in alphabetical order
-    const clientNames = page.locator('[data-testid="client-name"]');
-    const count = await clientNames.count();
-    if (count > 1) {
+    // Wait for sorted results to render
+    await expect(async () => {
+      const clientNames = page.locator('[data-testid="client-name"]');
+      const count = await clientNames.count();
+      expect(count).toBeGreaterThan(1);
       const names: string[] = [];
       for (let i = 0; i < count; i++) {
         const text = await clientNames.nth(i).textContent();
@@ -381,16 +386,20 @@ test.describe('ClientsListPage - FilterControls', () => {
       }
       const sorted = [...names].sort((a, b) => a.localeCompare(b));
       expect(names).toEqual(sorted);
-    }
+    }).toPass({ timeout: 10000 });
   });
 
   test('CLP-FLT-09: Multiple filters can be combined', async ({ page }) => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
-    // Apply status filter
+    // Apply status filter and wait for results
     await page.getByTestId('filter-status').selectOption('active');
-    await page.waitForLoadState('networkidle');
+    await expect(async () => {
+      const badges = page.locator('[data-testid="status-badge-active"]');
+      const count = await badges.count();
+      expect(count).toBeGreaterThan(0);
+    }).toPass({ timeout: 10000 });
 
     // Apply tag filter if available
     const tagsFilter = page.getByTestId('filter-tags');
@@ -398,19 +407,20 @@ test.describe('ClientsListPage - FilterControls', () => {
     const allTexts = await options.allTextContents();
     const tagOption = allTexts.find(t => !t.includes('All'));
     if (tagOption) {
-      const tagValue = await options.filter({ hasText: tagOption }).getAttribute('value');
+      const tagValue = await options.filter({ hasText: tagOption }).first().getAttribute('value');
       if (tagValue) {
         await tagsFilter.selectOption(tagValue);
-        await page.waitForLoadState('networkidle');
       }
     }
 
-    // Combined filters should show only matching clients
-    const statusBadges = page.locator('[data-testid="client-status"]');
-    const count = await statusBadges.count();
-    for (let i = 0; i < count; i++) {
-      await expect(statusBadges.nth(i).locator('[data-testid="status-badge-active"]')).toBeVisible();
-    }
+    // Combined filters should show only matching clients (if any results)
+    await expect(async () => {
+      const statusBadges = page.locator('[data-testid="client-status"]');
+      const count = await statusBadges.count();
+      for (let i = 0; i < count; i++) {
+        await expect(statusBadges.nth(i).locator('[data-testid="status-badge-active"]')).toBeVisible();
+      }
+    }).toPass({ timeout: 10000 });
   });
 });
 
@@ -542,7 +552,16 @@ test.describe('ClientsListPage - ClientsTable', () => {
 
     // Filter by churned status first
     await page.getByTestId('filter-status').selectOption('churned');
-    await page.waitForLoadState('networkidle');
+
+    // Wait for churned clients to render
+    await expect(async () => {
+      const rows = page.locator('[data-testid^="client-row-"]');
+      const count = await rows.count();
+      expect(count).toBeGreaterThan(0);
+      // Verify all visible rows have churned badge
+      const churnedBadges = page.locator('[data-testid="status-badge-churned"]');
+      expect(await churnedBadges.count()).toBe(count);
+    }).toPass({ timeout: 10000 });
 
     const rows = page.locator('[data-testid^="client-row-"]');
     const count = await rows.count();

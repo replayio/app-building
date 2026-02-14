@@ -10,6 +10,7 @@ async function navigateToFirstClientDetail(page: import('@playwright/test').Page
   await page.waitForLoadState('networkidle');
 
   const rows = page.locator('[data-testid^="client-row-"]');
+  await rows.first().waitFor({ state: 'visible', timeout: 15000 });
   const count = await rows.count();
   expect(count).toBeGreaterThan(0);
 

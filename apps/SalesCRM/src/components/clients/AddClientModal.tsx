@@ -77,6 +77,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
             <label className="block text-[12px] font-medium text-text-muted mb-1">Client Name *</label>
             <input
               type="text"
+              data-testid="client-name-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter client name"
@@ -173,6 +174,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
             Cancel
           </button>
           <button
+            data-testid="client-save-button"
             onClick={handleSave}
             disabled={!name.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
