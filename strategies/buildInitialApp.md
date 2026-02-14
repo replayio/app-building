@@ -12,3 +12,7 @@ You will build the app in the following stages, with strategy files to additiona
 4. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
 
 5. deployment.md: Deploy the app to production.
+
+If docs/plan.md does not exist, create the file with one "Unpack Subtasks" task for each stage.
+
+Then, follow the strategy in performTasks.md to continue building the application.
