@@ -121,13 +121,13 @@
 - [x] WriteTestPDP_REL: Write tests for PersonDetailPage RelationshipsSection (PDP-REL-01 through PDP-REL-07)
 - [x] WriteTestPDP_CH: Write tests for PersonDetailPage ContactHistorySection (PDP-CH-01 through PDP-CH-07)
 - [x] WriteTestPDP_AC: Write tests for PersonDetailPage AssociatedClientsSection (PDP-AC-01, PDP-AC-02), then commit and exit
-- [ ] WriteTestDLP_HDR: Write tests for DealsListPage PageHeader (DLP-HDR-01 through DLP-HDR-03)
-- [ ] WriteTestDLP_SUM: Write tests for DealsListPage SummaryCards (DLP-SUM-01, DLP-SUM-02)
-- [ ] WriteTestDLP_VW: Write tests for DealsListPage ViewToggle (DLP-VW-01 through DLP-VW-03)
-- [ ] WriteTestDLP_FLT: Write tests for DealsListPage FilterControls (DLP-FLT-01 through DLP-FLT-08)
-- [ ] WriteTestDLP_TBL: Write tests for DealsListPage DealsTable (DLP-TBL-01 through DLP-TBL-05)
-- [ ] WriteTestDLP_ACT: Write tests for DealsListPage RowActionMenu (DLP-ACT-01, DLP-ACT-02)
-- [ ] WriteTestDLP_PGN: Write tests for DealsListPage Pagination (DLP-PGN-01, DLP-PGN-02), then commit and exit
+- [x] WriteTestDLP_HDR: Write tests for DealsListPage PageHeader (DLP-HDR-01 through DLP-HDR-03)
+- [x] WriteTestDLP_SUM: Write tests for DealsListPage SummaryCards (DLP-SUM-01, DLP-SUM-02)
+- [x] WriteTestDLP_VW: Write tests for DealsListPage ViewToggle (DLP-VW-01 through DLP-VW-03)
+- [x] WriteTestDLP_FLT: Write tests for DealsListPage FilterControls (DLP-FLT-01 through DLP-FLT-08)
+- [x] WriteTestDLP_TBL: Write tests for DealsListPage DealsTable (DLP-TBL-01 through DLP-TBL-05)
+- [x] WriteTestDLP_ACT: Write tests for DealsListPage RowActionMenu (DLP-ACT-01, DLP-ACT-02)
+- [x] WriteTestDLP_PGN: Write tests for DealsListPage Pagination (DLP-PGN-01, DLP-PGN-02), then commit and exit
 - [ ] WriteTestDDP_HDR: Write tests for DealDetailPage DealHeader (DDP-HDR-01 through DDP-HDR-04)
 - [ ] WriteTestDDP_PIP: Write tests for DealDetailPage StagePipeline (DDP-PIP-01, DDP-PIP-02)
 - [ ] WriteTestDDP_HIS: Write tests for DealDetailPage DealHistorySection (DDP-HIS-01, DDP-HIS-02)

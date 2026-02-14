@@ -5,8 +5,9 @@ interface DealsViewToggleProps {
 
 export function DealsViewToggle({ view, onViewChange }: DealsViewToggleProps) {
   return (
-    <div className="flex items-center border border-border rounded-[5px] overflow-hidden mb-4">
+    <div className="flex items-center border border-border rounded-[5px] overflow-hidden mb-4" data-testid="deals-view-toggle">
       <button
+        data-testid="deals-view-table"
         onClick={() => onViewChange('table')}
         className={`h-[32px] px-4 text-[13px] font-medium transition-colors duration-100 ${
           view === 'table'
@@ -17,6 +18,7 @@ export function DealsViewToggle({ view, onViewChange }: DealsViewToggleProps) {
         Table View
       </button>
       <button
+        data-testid="deals-view-pipeline"
         onClick={() => onViewChange('pipeline')}
         className={`h-[32px] px-4 text-[13px] font-medium transition-colors duration-100 ${
           view === 'pipeline'

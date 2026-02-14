@@ -8,8 +8,8 @@ interface DealsPageHeaderProps {
 
 export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal }: DealsPageHeaderProps) {
   return (
-    <div className="mb-6">
-      <div className="flex items-center gap-2 text-[12px] text-text-muted mb-2">
+    <div className="mb-6" data-testid="deals-page-header">
+      <div className="flex items-center gap-2 text-[12px] text-text-muted mb-2" data-testid="deals-breadcrumb">
         <span>/deals</span>
       </div>
       <div className="flex items-center justify-between">
@@ -23,6 +23,7 @@ export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal }: D
             />
             <input
               type="text"
+              data-testid="deals-search-input"
               value={searchValue}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search deals..."
@@ -30,6 +31,7 @@ export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal }: D
             />
           </div>
           <button
+            data-testid="create-new-deal-button"
             onClick={onCreateDeal}
             className="inline-flex items-center gap-1.5 h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 transition-opacity duration-100"
           >
