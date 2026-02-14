@@ -27,4 +27,45 @@ Unpack the task for implementing a page into the following:
 
 - Match the visual appearance of elements to the mockup: button variants, icon presence, badge/tag styling, section layouts (horizontal vs vertical), and field sets. Do not simplify the visual design.
 
+- All components must include `data-testid` attributes on interactive elements, containers, list items,
+  and anything that E2E tests will need to target. Add testids during initial component development,
+  not retroactively. Reference docs/tests.md to identify which elements need testids.
+
+- In a monorepo where the app is in a subdirectory (e.g., `apps/SalesCRM`), add `base = "apps/SalesCRM"`
+  to `netlify.toml` so that Netlify CLI resolves the functions directory relative to the app root,
+  not the git repository root.
+
+- When using the neon serverless driver (`@neondatabase/serverless`), ONLY use tagged template literal
+  syntax for queries: `` sql`SELECT * FROM table WHERE id = ${id}` ``. NEVER use `sql(queryString, paramsArray)` —
+  it is not supported and will silently fail or return incorrect results. For dynamic WHERE clauses,
+  build composable query fragments and conditionally include them in the tagged template.
+
+- For database columns with DATE, TIMESTAMP, or UUID types, always convert empty strings to null
+  before inserting or updating. Use `value || null` instead of `value ?? null`, because the nullish
+  coalescing operator (`??`) does not convert empty strings.
+
+- Netlify Functions accessed at `/.netlify/functions/<name>/<resourceId>` have the function name at
+  path index 2 and the resource ID at index 3 (after splitting on `/` and filtering empty segments).
+  Common off-by-one error: using index 2 for the resource ID when it contains the function name.
+
+- When building modals that reference other entities (e.g., adding a relationship to a person), use a
+  searchable select/dropdown component, not a plain text input for IDs.
+
 ## Tips
+
+- When scaffolding a new Vite project, the target directory must be empty. Scaffold in a temp directory
+  (`/tmp/<name>`) and copy the needed files to the app directory.
+- Plan the complete data flow before writing code: what the backend endpoint returns, what the Redux
+  slice state shape looks like, and what props each component needs. Write backend → Redux → sections → modals → page.
+- When significantly modifying an existing file (>50% of lines), use Write to replace the entire file
+  rather than multiple sequential Edits. Avoid chains of 4-5 Edits to the same file.
+- When a React component uses `useState` with a prop as the initial value, the state will NOT update
+  when the prop changes. Add a `useEffect` to sync local state with prop changes, or use the prop
+  directly for display and only use local state during editing.
+- For Redux slices, avoid setting `loading = true` during refetches when data already exists. Only show
+  loading indicators on initial load (`state.items.length === 0`). This prevents "Loading..." flashes
+  that cause tests to see empty content during refetches.
+- When an async operation (like saving) should visually complete before closing edit mode, make the
+  `onUpdate`/`onSave` callback return a Promise, and await it before calling `setEditing(false)`.
+- If the backend supports DELETE operations for a resource, the UI must include delete buttons/actions.
+  Check all backend endpoints and ensure the frontend exposes every CRUD operation.

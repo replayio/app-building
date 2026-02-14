@@ -45,6 +45,26 @@ When testing the app after deployment, use the Replay browser to record the app 
 
 ## Directives
 
+- Before running tests for the first time, verify that Netlify Functions are reachable by curling a
+  known endpoint (e.g., `curl http://localhost:8888/.netlify/functions/clients`). If you get
+  "Function not found", debug the functions directory resolution FIRST before investigating individual
+  test failures. Use `npx netlify dev --debug` to check the `functionsDirectory` setting.
+
+- After making code changes to Netlify Functions or frontend code during a testing session, ALWAYS
+  restart the dev server before re-running tests. The dev server may cache old function bundles.
+  Kill background processes with `pkill -f "netlify"` and `pkill -f "vite"` before restarting.
+
 ## Tips
 
 - When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.
+- When many detail-page tests fail with "expected count > 0, received 0", the root cause is almost
+  always that the database has no seed data OR the API functions are not working. Check both before
+  attempting to fix individual tests.
+- When filter/search tests return wrong data (e.g., filtering by "proposal" returns "Qualification"),
+  the root cause may be that the SQL query is silently broken. Verify the API returns correctly
+  filtered results by curling the endpoint directly with filter parameters.
+- Tests that pass individually but fail in the full suite usually indicate data contamination between
+  tests. Consider adding database re-seeding in `globalSetup` or `beforeAll`, or make tests that
+  create/modify/delete data operate on their own isolated records.
+- When test IDs differ between spec files (cross-cutting vs page-specific), decide on ONE canonical
+  set of IDs in the component and update whichever test file has fewer references.

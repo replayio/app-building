@@ -15,15 +15,29 @@ strategy used for the task.
 
 Follow these instructions exactly.
 
-1. Pick a file logs/iteration-<timestamp>.log and read it.
+1. Pick a file `logs/iteration-<timestamp>.log` that is NOT your own current iteration's log.
+   Your own log has the same timestamp as your session and is being written in real time — skip it.
+   To identify which logs need review, compare `ls logs/iteration-*.log` against `ls logs/reviewed/` —
+   any log in `logs/` but NOT in `logs/reviewed/` (excluding your own timestamp) needs review.
 2. Announce 'REVIEW: <logFile>'
 3. Read the changes made in git based on the start / end revisions in the iteration log.
+   Do NOT read the raw log file — it contains JSON payloads and routinely exceeds 500KB.
+   Instead, get the start revision from `head -1 <logfile>` and use:
+   - `git log --oneline <startRev>..<endRev>` to see commits
+   - `git diff --stat <startRev>..<endRev>` for an overview of changed files
+   - `git diff <startRev>..<endRev> -- <specific-file>` for details on specific changes
+   To check for errors in the log: `grep -c 'is_error.*true' <logfile>`
 4. Read the instructions file for the stage associated with the log's tasks (there should be only one).
-   See buildInitialApp.md
-   for the stages and their instruction files.
+   Stage instruction files are at `/repo/strategies/` (the repo root), NOT inside the app directory.
+   See buildInitialApp.md for the stages and their instruction files.
 5. Look for any problems described in the sections below.
 6. If any are found, make changes to the code and/or strategies to correct them.
+   You MUST update the relevant stage instruction file if you found any difficulties or directive violations.
+   Simply concluding "no issues found" is not acceptable — every iteration has room for improvement.
+   Find at least one tip or directive enhancement per review.
 7. Move the log file to logs/reviewed/iteration-<timestamp>.log
+   NEVER move a log to reviewed/ without actually completing steps 2-6.
+   Batch-moving multiple logs without reviewing each one's git diff is not acceptable.
 
 ## Revising Changes
 
@@ -36,7 +50,20 @@ correct those.
 Read the log for any place where you had difficulty, e.g. going down the wrong path and having
 to correct, or taking a while to figure something out. Identify a suitable strategy you could have
 followed to handle the situation better, and update either the directives or tips in the stage
-instructions.Directives must be followed, while tips are hints that will help perform tasks more easily.
+instructions. Directives must be followed, while tips are hints that will help perform tasks more easily.
 
 Pay particular attention to documenting ways in which you used the Replay MCP tools
 to debug test failures or other problems.
+
+If a previous iteration produced zero commits, that is a significant finding. Investigate why it
+was unproductive and add a strategy tip to prevent the same pattern.
+
+## Tips
+
+- Do NOT use inline Python scripts, `find`, or `cat` to parse log files. Use `git log`, `git diff --stat`,
+  and targeted `grep` with small output limits.
+- Do NOT try to Read the raw JSON log file — it will exceed the 256KB read limit. Always use git commands.
+- When reviewing multiple accumulated logs, review each one individually by checking its git diff.
+  Do not skip reviews because "we can see from the plan what was done."
+- If a review identifies directive violations, fix them BEFORE moving the log to reviewed/.
+  Do not skip fixes because they seem "minor" — unfixed issues compound across iterations.
