@@ -47,19 +47,16 @@ function loadDotEnv(projectRoot: string): Record<string, string> {
   return vars;
 }
 
-function extractRequiredEnvVars(strategyFiles: string[]): string[] {
-  const allVars: string[] = [];
-  for (const file of strategyFiles) {
-    const content = readFileSync(file, "utf-8");
-    const sectionMatch = content.match(/## Required Environment Variables\s*\n+```\n([\s\S]*?)\n```/);
-    if (!sectionMatch) continue;
-    const vars = sectionMatch[1]
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0);
-    allVars.push(...vars);
-  }
-  return Array.from(new Set(allVars));
+function loadRequiredEnvVars(projectRoot: string): string[] {
+  const examplePath = resolve(projectRoot, ".env.example");
+  if (!existsSync(examplePath)) return [];
+  const content = readFileSync(examplePath, "utf-8");
+  return content
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .map((line) => line.split("=")[0].trim())
+    .filter((key) => key.length > 0);
 }
 
 export function spawnContainer(
@@ -73,9 +70,8 @@ export function spawnContainer(
 
   const envVars = loadDotEnv(projectRoot);
 
-  // Check required env vars from strategy files
-  const strategyFiles = strategyBasenames.map((s) => resolve(projectRoot, "strategies", s));
-  const requiredVars = [...extractRequiredEnvVars(strategyFiles), "ANTHROPIC_API_KEY"];
+  // Check required env vars from .env.example
+  const requiredVars = loadRequiredEnvVars(projectRoot);
   const missing = requiredVars.filter((v) => !envVars[v]);
   if (missing.length > 0) {
     console.error(`Missing required env vars in .env: ${missing.join(", ")}`);

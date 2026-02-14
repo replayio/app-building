@@ -5,15 +5,12 @@ Apps have bugs: things are broken, they don't work right, look bad, and so on.
 Bug reports from users are reviewed and used to improve the quality of future work.
 This document describes how to do this.
 
+The bugReports.md file contains reports from users 
+
 The features of an app are based on its AppSpec.md and the various strategy documents used
 as the prompts for the app building stages.
 
-Here are the four stages of the structured app building process in buildInitialApp.md:
-
-1. Create a detailed test specification for the tests the app must pass in order to match the app spec.
-2. Write the app's code according to the two specs.
-3. Write the tests according to the two specs.
-4. Get all tests to pass, debugging and fixing the app / tests as needed.
+Read about the stages of the structured app building process in buildInitialApp.md.
 
 Each stage has its own separate strategy document breaking down how to perform it into
 increasingly small and well defined tasks. These stages have directives for things to watch

@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, writeFileSync, appendFileSync, mkdirSync, renameSync } from "fs";
+import { writeFileSync, appendFileSync, mkdirSync, renameSync } from "fs";
 import { join, resolve, basename } from "path";
 import { Command } from "commander";
 
@@ -68,7 +68,7 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(strategyFiles: string[], targetDir: string, log: (msg: string) => void, requiredEnvVars: string[]): Promise<ClaudeResponse> {
+function runClaude(strategyFiles: string[], targetDir: string, log: (msg: string) => void): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
     const fileList = strategyFiles.join(", ");
     const prompt = `Read ${fileList} and follow the instructions exactly.`;
@@ -77,8 +77,8 @@ function runClaude(strategyFiles: string[], targetDir: string, log: (msg: string
       mcpServers: {},
     };
 
-    // Add replay MCP server if RECORD_REPLAY_API_KEY is a required env var
-    if (requiredEnvVars.includes("RECORD_REPLAY_API_KEY")) {
+    // Add replay MCP server if RECORD_REPLAY_API_KEY is available
+    if (process.env.RECORD_REPLAY_API_KEY) {
       mcpConfig.mcpServers.replay = {
         type: "http",
         url: ReplayMCPServer,
@@ -181,25 +181,6 @@ function gitCommit(targetDir: string, iteration: number, log: (msg: string) => v
   }
 }
 
-// --- Env Var Check ---
-
-function extractRequiredEnvVars(strategyContents: string[]): string[] {
-  const allVars: string[] = [];
-
-  for (const content of strategyContents) {
-    const sectionMatch = content.match(/## Required Environment Variables\s*\n+```\n([\s\S]*?)\n```/);
-    if (!sectionMatch) continue;
-
-    const vars = sectionMatch[1]
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0);
-    allVars.push(...vars);
-  }
-
-  return allVars;
-}
-
 // --- Run Loop ---
 
 async function runLoop(
@@ -210,8 +191,6 @@ async function runLoop(
   const logsDir = join(targetDir, "logs");
   mkdirSync(logsDir, { recursive: true });
 
-  const strategyContents = strategyFiles.map((f) => readFileSync(f, "utf-8"));
-  const requiredEnvVars = extractRequiredEnvVars(strategyContents);
   const strategyNames = strategyFiles.map((f) => basename(f));
 
   let iteration = 0;
@@ -245,7 +224,7 @@ async function runLoop(
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(strategyFiles, targetDir, log, requiredEnvVars);
+      response = await runClaude(strategyFiles, targetDir, log);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
@@ -294,16 +273,6 @@ async function runLoop(
 async function main(): Promise<void> {
   const args = parseArgs();
   const appDir = join(args.repoRoot, "apps", args.appName);
-
-  // Check env vars
-  const strategyContents = args.strategyFiles.map((f) => readFileSync(f, "utf-8"));
-  const allVars = extractRequiredEnvVars(strategyContents);
-  const missing = allVars.filter((v) => !process.env[v]);
-  if (missing.length > 0) {
-    console.error(`Missing required environment variables: ${missing.join(", ")}`);
-    process.exit(1);
-  }
-
   await runLoop(appDir, args.strategyFiles, args.maxIterations);
 }
 
