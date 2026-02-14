@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { type Page, expect } from '@playwright/test';
 
 /**
  * Wait for the app to finish loading by checking for common loading indicators.
@@ -33,7 +33,7 @@ export async function clickSidebarLink(page: Page, linkText: string) {
 /**
  * Open the action menu ("...") on a row by index or by locator.
  */
-export async function openRowActionMenu(page: Page, rowLocator: ReturnType<Page['locator']>) {
+export async function openRowActionMenu(_page: Page, rowLocator: ReturnType<Page['locator']>) {
   await rowLocator.getByTestId('row-action-menu').click();
 }
 
