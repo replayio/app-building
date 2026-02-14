@@ -77,6 +77,7 @@ async function navigateToFirstClientDetail(page: import('@playwright/test').Page
   await page.waitForLoadState('networkidle');
 
   const rows = page.locator('[data-testid^="client-row-"]');
+  await rows.first().waitFor({ state: 'visible', timeout: 15000 });
   const count = await rows.count();
   expect(count).toBeGreaterThan(0);
 
@@ -157,12 +158,17 @@ test.describe('Cross-Cutting Data Consistency', () => {
     await taskModal.getByTestId('add-deal-task-save').click();
     await page.waitForLoadState('networkidle');
 
-    // Complete the task by clicking its toggle
-    const taskCheckbox = page.locator(`[data-testid^="deal-linked-task-toggle-"]`).first();
-    if (await taskCheckbox.isVisible()) {
-      await taskCheckbox.click();
-      await page.waitForLoadState('networkidle');
-    }
+    // Wait for the task to appear in the linked tasks section
+    const tasksSection = page.getByTestId('deal-linked-tasks-section');
+    await expect(tasksSection).toContainText(taskName);
+
+    // Find the specific task item containing our task name and click its toggle button
+    const taskItem = tasksSection.locator('[data-testid^="deal-linked-task-"]').filter({ hasText: taskName }).first();
+    const taskItemTestId = await taskItem.getAttribute('data-testid');
+    const taskItemId = taskItemTestId!.replace('deal-linked-task-', '');
+    const taskToggle = page.getByTestId(`deal-linked-task-toggle-${taskItemId}`);
+    await taskToggle.click();
+    await page.waitForLoadState('networkidle');
 
     // Verify it disappears from TasksListPage
     await page.goto('/tasks');
@@ -173,22 +179,23 @@ test.describe('Cross-Cutting Data Consistency', () => {
     const taskFilter = page.getByTestId('tasks-filter-search');
     if (await taskFilter.isVisible()) {
       await taskFilter.fill(taskName);
-      await page.waitForLoadState('networkidle');
     }
 
-    // Task should not be in the upcoming list
-    const taskCards = page.locator('[data-testid^="task-card-"]');
-    const visibleTasks = await taskCards.count();
-    let found = false;
-    for (let i = 0; i < visibleTasks; i++) {
-      const text = await taskCards.nth(i).textContent();
-      if (text?.includes(taskName)) {
-        found = true;
-        break;
+    // Wait for debounce + network request + verify the completed task does not appear
+    await expect(async () => {
+      const taskCards = page.locator('[data-testid^="task-card-"]');
+      const visibleTasks = await taskCards.count();
+      let found = false;
+      for (let i = 0; i < visibleTasks; i++) {
+        const text = await taskCards.nth(i).textContent();
+        if (text?.includes(taskName)) {
+          found = true;
+          break;
+        }
       }
-    }
-    // The completed task should not appear in the upcoming list
-    expect(found).toBeFalsy();
+      // The completed task should not appear in the upcoming list
+      expect(found).toBeFalsy();
+    }).toPass({ timeout: 15000 });
   });
 
   test('DATA-03: Adding a person on ClientDetailPage creates accessible PersonDetailPage', async ({ page }) => {
@@ -219,7 +226,7 @@ test.describe('Cross-Cutting Data Consistency', () => {
     await expect(page).toHaveURL(/\/individuals\/[a-f0-9-]+/);
 
     // Person name should be visible on the PersonDetailPage
-    await expect(page.getByText(personName)).toBeVisible();
+    await expect(page.getByText(personName).first()).toBeVisible();
 
     // Associated Clients section should show the original client
     const associatedClients = page.getByTestId('associated-clients-section');
@@ -415,37 +422,44 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
 
     // Change the deal stage
     const stageSelect = page.getByTestId('deal-header-stage-select');
-    if (await stageSelect.isVisible()) {
-      const currentStage = await stageSelect.inputValue();
-      // Pick a different stage
-      const stages = ['lead', 'qualification', 'discovery', 'proposal', 'negotiation', 'closed_won'];
-      const nextStage = stages.find(s => s !== currentStage) || 'proposal';
+    await expect(stageSelect).toBeVisible({ timeout: 10000 });
 
-      await stageSelect.selectOption(nextStage);
-      await page.getByTestId('deal-header-change-stage-button').click();
-      await page.waitForLoadState('networkidle');
-    }
+    const currentStage = await stageSelect.inputValue();
+    // Pick a different stage
+    const stages = ['lead', 'qualification', 'discovery', 'proposal', 'negotiation', 'closed_won'];
+    const nextStage = stages.find(s => s !== currentStage) || 'proposal';
+
+    await stageSelect.selectOption(nextStage);
+
+    const changeStageBtn = page.getByTestId('deal-header-change-stage-button');
+    await expect(changeStageBtn).not.toBeDisabled({ timeout: 5000 });
+    await changeStageBtn.click();
+    await page.waitForLoadState('networkidle');
+    // Wait for the stage change to be processed
+    await page.waitForTimeout(500);
 
     // Navigate back to client detail to check timeline
     await page.goto(`/clients/${clientId}`);
     await page.waitForLoadState('networkidle');
 
-    // Count timeline entries that mention "Stage"
-    const timelineEntries = page.locator('[data-testid^="timeline-entry-"]');
-    const totalCount = await timelineEntries.count();
+    // Wait for timeline entries to load and verify stage change entry exists
+    await expect(async () => {
+      const timelineEntries = page.locator('[data-testid^="timeline-entry-"]');
+      const totalCount = await timelineEntries.count();
+      expect(totalCount).toBeGreaterThan(0);
 
-    // Find entries related to stage change
-    let stageChangeCount = 0;
-    for (let i = 0; i < Math.min(totalCount, 5); i++) {
-      const text = await timelineEntries.nth(i).textContent();
-      if (text?.toLowerCase().includes('stage')) {
-        stageChangeCount++;
+      // Find entries related to stage change
+      let stageChangeCount = 0;
+      for (let i = 0; i < Math.min(totalCount, 5); i++) {
+        const text = await timelineEntries.nth(i).textContent();
+        if (text?.toLowerCase().includes('stage')) {
+          stageChangeCount++;
+        }
       }
-    }
 
-    // The most recent stage change should produce exactly one entry
-    // (we just changed the stage once, so there should be at least one recent stage entry)
-    expect(stageChangeCount).toBeGreaterThanOrEqual(1);
+      // The most recent stage change should produce exactly one entry
+      expect(stageChangeCount).toBeGreaterThanOrEqual(1);
+    }).toPass({ timeout: 10000 });
   });
 
   test('ATOM-03: Single status change produces exactly one timeline entry', async ({ page }) => {
@@ -483,11 +497,11 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
     await page.reload();
     await page.waitForLoadState('networkidle');
 
-    // Count timeline entries again
-    const newCount = await page.locator('[data-testid^="timeline-entry-"]').count();
-
-    // Should have exactly one more entry
-    expect(newCount).toBe(initialCount + 1);
+    // Wait for timeline entries to render with the new count
+    await expect(async () => {
+      const newCount = await page.locator('[data-testid^="timeline-entry-"]').count();
+      expect(newCount).toBe(initialCount + 1);
+    }).toPass({ timeout: 10000 });
 
     // Verify the new entry references the status change
     const latestEntry = page.locator('[data-testid^="timeline-entry-"]').first();

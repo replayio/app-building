@@ -21,49 +21,42 @@ export default async function handler(req: Request) {
     const clientId = url.searchParams.get('clientId') ?? ''
     const includeCompleted = url.searchParams.get('includeCompleted') === 'true'
 
-    // Build composable WHERE clause using neon tagged template fragments
-    const whereParts: ReturnType<typeof sql>[] = []
+    // Build WHERE clause with parameterized queries
+    const conditions: string[] = []
+    const params: unknown[] = []
+    let paramIdx = 1
 
     if (!includeCompleted) {
-      whereParts.push(sql`t.completed = false`)
+      conditions.push(`t.completed = false`)
     }
     if (search) {
-      whereParts.push(sql`t.title ILIKE ${'%' + search + '%'}`)
+      conditions.push(`t.title ILIKE $${paramIdx}`)
+      params.push('%' + search + '%')
+      paramIdx++
     }
     if (priority) {
-      whereParts.push(sql`t.priority = ${priority}`)
+      conditions.push(`t.priority = $${paramIdx}`)
+      params.push(priority)
+      paramIdx++
     }
     if (assignee) {
-      whereParts.push(sql`t.assignee_name ILIKE ${'%' + assignee + '%'}`)
+      conditions.push(`t.assignee_name ILIKE $${paramIdx}`)
+      params.push('%' + assignee + '%')
+      paramIdx++
     }
     if (clientId) {
-      whereParts.push(sql`t.client_id = ${clientId}::uuid`)
+      conditions.push(`t.client_id = $${paramIdx}::uuid`)
+      params.push(clientId)
+      paramIdx++
     }
 
-    let whereFragment = sql``
-    if (whereParts.length > 0) {
-      whereFragment = sql`WHERE ${whereParts[0]}`
-      for (let i = 1; i < whereParts.length; i++) {
-        whereFragment = sql`${whereFragment} AND ${whereParts[i]}`
-      }
-    }
+    const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : ''
 
-    const tasks = await sql`
-      SELECT t.*, c.name as client_name, d.name as deal_name
-      FROM tasks t
-      LEFT JOIN clients c ON t.client_id = c.id
-      LEFT JOIN deals d ON t.deal_id = d.id
-      ${whereFragment}
-      ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
-    `
+    const tasksQuery = `SELECT t.*, c.name as client_name, d.name as deal_name FROM tasks t LEFT JOIN clients c ON t.client_id = c.id LEFT JOIN deals d ON t.deal_id = d.id ${whereClause} ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`
+    const tasks = await sql(tasksQuery, params)
 
-    const countResult = await sql`
-      SELECT COUNT(*) as count
-      FROM tasks t
-      LEFT JOIN clients c ON t.client_id = c.id
-      LEFT JOIN deals d ON t.deal_id = d.id
-      ${whereFragment}
-    `
+    const countQuery = `SELECT COUNT(*) as count FROM tasks t LEFT JOIN clients c ON t.client_id = c.id LEFT JOIN deals d ON t.deal_id = d.id ${whereClause}`
+    const countResult = await sql(countQuery, params)
     const total = parseInt(String(countResult[0].count), 10)
 
     // Get unique assignees for filter dropdown

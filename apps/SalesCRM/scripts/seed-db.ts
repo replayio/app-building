@@ -151,7 +151,7 @@ async function main() {
     VALUES ('Acme Software License', ${client1.id}, 50000, 'proposal', 'active', 'Sarah Lee', 40, '2023-12-15')
     RETURNING id
   `
-  const [deal2] = await sql`
+  await sql`
     INSERT INTO deals (name, client_id, value, stage, status, owner, probability, expected_close_date)
     VALUES ('Additional Services', ${client1.id}, 10000, 'qualification', 'active', 'John Doe', 20, '2024-01-31')
     RETURNING id
@@ -171,12 +171,12 @@ async function main() {
     VALUES ('Delta Hardware Upgrade', ${client5.id}, 75000, 'negotiation', 'active', 'Maria R.', 60, '2023-11-30')
     RETURNING id
   `
-  const [deal6] = await sql`
+  await sql`
     INSERT INTO deals (name, client_id, value, stage, status, owner, probability, expected_close_date)
     VALUES ('Wayne Legacy Migration', ${client3.id}, 120000, 'closed_won', 'won', 'John D.', 100, '2023-09-30')
     RETURNING id
   `
-  const [deal7] = await sql`
+  await sql`
     INSERT INTO deals (name, client_id, value, stage, status, owner, probability, expected_close_date)
     VALUES ('Wayne Cloud Transition', ${client3.id}, 95000, 'closed_lost', 'lost', 'Sarah K.', 0, '2023-08-15')
     RETURNING id

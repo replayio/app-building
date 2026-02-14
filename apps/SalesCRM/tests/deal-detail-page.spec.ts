@@ -10,6 +10,7 @@ async function navigateToFirstDealDetail(page: import('@playwright/test').Page):
   await page.waitForLoadState('networkidle');
 
   const rows = page.locator('[data-testid^="deal-row-"]');
+  await rows.first().waitFor({ state: 'visible', timeout: 15000 });
   const count = await rows.count();
   expect(count).toBeGreaterThan(0);
 
@@ -122,32 +123,45 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
   test('DDP-HDR-04: Changing stage via dropdown and Change Stage button', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
-    // Get current stage
+    // Wait for deal header to be fully loaded
     const stageSelect = page.getByTestId('deal-header-stage-select');
+    await expect(stageSelect).toBeVisible();
+    const changeStageBtn = page.getByTestId('deal-header-change-stage-button');
+    await expect(changeStageBtn).toBeVisible();
+
+    // Get current stage
     const currentStage = await stageSelect.inputValue();
 
     // Change Stage button should be disabled when same stage selected
-    await expect(page.getByTestId('deal-header-change-stage-button')).toBeDisabled();
+    await expect(changeStageBtn).toBeDisabled();
 
     // Select a different stage
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
     await stageSelect.selectOption(newStage);
 
     // Change Stage button should now be enabled
-    await expect(page.getByTestId('deal-header-change-stage-button')).not.toBeDisabled();
+    await expect(changeStageBtn).not.toBeDisabled();
 
     // Click Change Stage
-    await page.getByTestId('deal-header-change-stage-button').click();
-    await page.waitForLoadState('networkidle');
+    await changeStageBtn.click();
 
-    // Stage should be updated
-    const updatedStage = await stageSelect.inputValue();
-    expect(updatedStage).toBe(newStage);
+    // Wait for stage to be updated
+    await expect(async () => {
+      const updatedStage = await stageSelect.inputValue();
+      expect(updatedStage).toBe(newStage);
+    }).toPass({ timeout: 10000 });
+
+    // Button should be disabled again (selectedStage synced back to deal.stage)
+    await expect(changeStageBtn).toBeDisabled();
 
     // Restore original stage
     await stageSelect.selectOption(currentStage);
-    await page.getByTestId('deal-header-change-stage-button').click();
-    await page.waitForLoadState('networkidle');
+    await expect(changeStageBtn).not.toBeDisabled();
+    await changeStageBtn.click();
+    await expect(async () => {
+      const restored = await stageSelect.inputValue();
+      expect(restored).toBe(currentStage);
+    }).toPass({ timeout: 10000 });
   });
 });
 
@@ -244,12 +258,13 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
     await stageSelect.selectOption(newStage);
     await page.getByTestId('deal-header-change-stage-button').click();
-    await page.waitForLoadState('networkidle');
 
-    // History should have one more entry
-    const entriesAfter = page.locator('[data-testid^="deal-history-entry-"]');
-    const countAfter = await entriesAfter.count();
-    expect(countAfter).toBe(countBefore + 1);
+    // Wait for history to be updated with the new entry
+    await expect(async () => {
+      const entriesAfter = page.locator('[data-testid^="deal-history-entry-"]');
+      const countAfter = await entriesAfter.count();
+      expect(countAfter).toBe(countBefore + 1);
+    }).toPass({ timeout: 10000 });
 
     // Restore original stage
     await stageSelect.selectOption(currentStage);
@@ -601,7 +616,10 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
     await page.getByTestId('upload-attachment-url').fill('https://example.com/delete-me.pdf');
     await page.getByTestId('upload-attachment-save').click();
     await expect(modal).not.toBeVisible();
-    await page.waitForLoadState('networkidle');
+
+    // Wait for attachment to appear in the list
+    const attachmentsSection = page.getByTestId('deal-attachments-section');
+    await expect(attachmentsSection).toContainText(filename);
 
     // Find the delete button for the last attachment
     const deleteButtons = page.locator('[data-testid^="deal-attachment-delete-"]');
@@ -616,10 +634,8 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
 
       // Confirm deletion
       await page.getByTestId('confirm-ok').click();
-      await page.waitForLoadState('networkidle');
 
-      // The attachment should be removed
-      const attachmentsSection = page.getByTestId('deal-attachments-section');
+      // Wait for the attachment to be removed from the list
       await expect(attachmentsSection).not.toContainText(filename);
     }
   });

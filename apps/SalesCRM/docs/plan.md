@@ -145,7 +145,16 @@
 - **Stage 3 COMPLETE**: All Playwright tests written across 7 test files covering all 6 pages + cross-cutting tests
 
 ### Stage 4: Testing (testing.md)
-- [ ] UnpackTesting: Unpack the testing stage into subtasks
+- [x] UnpackTesting: Unpack the testing stage into subtasks
+- [x] ReviewChanges: Process iteration 16 log (reviewed)
+- [x] FixBackendSQL: Fixed Neon SQL fragment composition bug in clients/deals/tasks API endpoints — rewrote parameterized query building with string-based `sql(query, params)` form
+- [x] FixNavigationHelpers: Added `rows.first().waitFor()` to test navigation helpers across 4 test files
+- [x] AddMissingTestIds: Added `data-testid="client-name-input"` and `data-testid="client-save-button"` to AddClientModal
+- [x] FixFilterTimingTests: Fixed 16 test timing issues by replacing `waitForLoadState('networkidle')` with `toPass()` retry patterns for filter/search/sort assertions
+- [x] AddStatusChangeTimeline: Added timeline event creation for client status changes in clients PUT handler
+- [x] FixDealDetailTests: Fixed Change Stage button, history entry, and attachment deletion test timing
+- [x] FixCrossCuttingTests: Fixed task completion toggle targeting, person detail name selector, and timeline atomicity waits
+- **Stage 4 COMPLETE**: All 176 Playwright tests passing (0 failures)
 
 ### Stage 5: Deployment (deployment.md)
 - [ ] UnpackDeployment: Unpack the deployment stage into subtasks

@@ -59,14 +59,15 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     const dealName = `Test Deal ${Date.now()}`;
     await page.getByTestId('create-deal-name').fill(dealName);
 
-    // Select first available client
+    // Wait for client options to load, then select first available client
     const clientSelect = page.getByTestId('create-deal-client');
+    await expect(async () => {
+      const options = await clientSelect.locator('option').all();
+      expect(options.length).toBeGreaterThan(1);
+    }).toPass({ timeout: 10000 });
     const options = await clientSelect.locator('option').all();
-    // Skip the first option (placeholder "Select a client...")
-    if (options.length > 1) {
-      const clientValue = await options[1].getAttribute('value');
-      await clientSelect.selectOption(clientValue!);
-    }
+    const clientValue = await options[1].getAttribute('value');
+    await clientSelect.selectOption(clientValue!);
 
     await page.getByTestId('create-deal-value').fill('180000');
     await page.getByTestId('create-deal-stage').selectOption('discovery');
@@ -130,12 +131,15 @@ test.describe('DealsListPage - SummaryCards (DLP-SUM)', () => {
     const dealName = `Summary Test Deal ${Date.now()}`;
     await page.getByTestId('create-deal-name').fill(dealName);
 
+    // Wait for client options to load
     const clientSelect = page.getByTestId('create-deal-client');
+    await expect(async () => {
+      const opts = await clientSelect.locator('option').all();
+      expect(opts.length).toBeGreaterThan(1);
+    }).toPass({ timeout: 10000 });
     const options = await clientSelect.locator('option').all();
-    if (options.length > 1) {
-      const clientValue = await options[1].getAttribute('value');
-      await clientSelect.selectOption(clientValue!);
-    }
+    const clientValue = await options[1].getAttribute('value');
+    await clientSelect.selectOption(clientValue!);
 
     await page.getByTestId('create-deal-value').fill('50000');
     await page.getByTestId('create-deal-save').click();
@@ -242,23 +246,28 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
 
     // Select "Proposal Sent" from stage filter
     await page.getByTestId('deals-filter-stage').selectOption('proposal');
-    await page.waitForLoadState('networkidle');
 
-    // All visible deal rows should have "Proposal Sent" stage badge
-    const rows = page.locator('[data-testid^="deal-row-"]');
-    const count = await rows.count();
+    // Wait for filtered results to render with all matching stages
+    await expect(async () => {
+      const rows = page.locator('[data-testid^="deal-row-"]');
+      const count = await rows.count();
+      expect(count).toBeGreaterThan(0);
 
-    for (let i = 0; i < count; i++) {
-      const rowTestId = await rows.nth(i).getAttribute('data-testid');
-      const dealId = rowTestId!.replace('deal-row-', '');
-      const stageCell = page.getByTestId(`deal-stage-${dealId}`);
-      await expect(stageCell).toContainText('Proposal Sent');
-    }
+      for (let i = 0; i < count; i++) {
+        const rowTestId = await rows.nth(i).getAttribute('data-testid');
+        const dealId = rowTestId!.replace('deal-row-', '');
+        const stageCell = page.getByTestId(`deal-stage-${dealId}`);
+        await expect(stageCell).toContainText('Proposal Sent');
+      }
+    }).toPass({ timeout: 10000 });
   });
 
   test('DLP-FLT-03: Client filter shows all client options', async ({ page }) => {
     await page.goto('/deals');
     await page.waitForLoadState('networkidle');
+
+    // Wait for deal rows to load (ensures API data with clients has arrived)
+    await page.locator('[data-testid^="deal-row-"]').first().waitFor({ state: 'visible', timeout: 15000 });
 
     const clientFilter = page.getByTestId('deals-filter-client');
     await expect(clientFilter).toBeVisible();
@@ -269,15 +278,23 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     expect(firstText).toContain('All Clients');
 
     // Should have more than just the "All Clients" option
-    const optionCount = await options.count();
-    expect(optionCount).toBeGreaterThan(1);
+    await expect(async () => {
+      const optionCount = await options.count();
+      expect(optionCount).toBeGreaterThan(1);
+    }).toPass({ timeout: 10000 });
   });
 
   test('DLP-FLT-04: Filtering by client shows only that client\'s deals', async ({ page }) => {
     await page.goto('/deals');
     await page.waitForLoadState('networkidle');
 
+    // Wait for client filter options to load
     const clientFilter = page.getByTestId('deals-filter-client');
+    await expect(async () => {
+      const opts = await clientFilter.locator('option').all();
+      expect(opts.length).toBeGreaterThan(1);
+    }).toPass({ timeout: 10000 });
+
     const options = await clientFilter.locator('option').all();
 
     // Pick the second option (first real client after "All Clients")
@@ -287,18 +304,20 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
       const clientName = clientText!.replace('Client: ', '');
 
       await clientFilter.selectOption(clientValue!);
-      await page.waitForLoadState('networkidle');
 
-      // All visible deal rows should have this client name
-      const rows = page.locator('[data-testid^="deal-row-"]');
-      const count = await rows.count();
+      // Wait for filtered results to render with the correct client
+      await expect(async () => {
+        const rows = page.locator('[data-testid^="deal-row-"]');
+        const count = await rows.count();
+        expect(count).toBeGreaterThan(0);
 
-      for (let i = 0; i < count; i++) {
-        const rowTestId = await rows.nth(i).getAttribute('data-testid');
-        const dealId = rowTestId!.replace('deal-row-', '');
-        const clientCell = page.getByTestId(`deal-client-${dealId}`);
-        await expect(clientCell).toHaveText(clientName);
-      }
+        for (let i = 0; i < count; i++) {
+          const rowTestId = await rows.nth(i).getAttribute('data-testid');
+          const dealId = rowTestId!.replace('deal-row-', '');
+          const clientCell = page.getByTestId(`deal-client-${dealId}`);
+          await expect(clientCell).toHaveText(clientName);
+        }
+      }).toPass({ timeout: 10000 });
     }
   });
 
