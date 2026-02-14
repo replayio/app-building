@@ -11,8 +11,8 @@ export default async function handler(req: Request) {
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
   // Path: /deal-detail?dealId=... or /deal-detail/<resource>/<resourceId>
-  const resource = pathParts.length >= 3 ? pathParts[2] : null
-  const resourceId = pathParts.length >= 4 ? pathParts[3] : null
+  const resource = pathParts.length >= 4 ? pathParts[3] : null
+  const resourceId = pathParts.length >= 5 ? pathParts[4] : null
 
   const dealId = url.searchParams.get('dealId') ?? ''
 
@@ -48,7 +48,7 @@ export default async function handler(req: Request) {
         FROM attachments a
         LEFT JOIN deals d ON a.deal_id = d.id
         WHERE a.deal_id = ${dealId}::uuid
-        ORDER BY a.created_at DESC
+        ORDER BY a.created_at ASC
       `,
       sql`
         SELECT dc.id, dc.role, i.id as individual_id, i.name as individual_name, i.title,
@@ -157,7 +157,7 @@ export default async function handler(req: Request) {
       VALUES (
         ${body.title},
         ${body.description ?? null},
-        ${body.due_date ?? null},
+        ${body.due_date || null},
         ${body.priority ?? 'normal'},
         ${body.client_id}::uuid,
         ${body.deal_id}::uuid,
@@ -199,7 +199,7 @@ export default async function handler(req: Request) {
         completed = COALESCE(${body.completed ?? null}, completed),
         completed_at = CASE WHEN ${body.completed ?? null}::boolean = true THEN NOW() ELSE NULL END,
         title = COALESCE(${body.title ?? null}, title),
-        due_date = COALESCE(${body.due_date ?? null}, due_date),
+        due_date = COALESCE(${body.due_date || null}, due_date),
         priority = COALESCE(${body.priority ?? null}, priority),
         updated_at = NOW()
       WHERE id = ${resourceId}::uuid

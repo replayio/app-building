@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "init-db": "tsx scripts/init-db.ts",
+    "seed-db": "tsx scripts/seed-db.ts",
     "test": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test",
     "test:ui": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test --ui"
   },

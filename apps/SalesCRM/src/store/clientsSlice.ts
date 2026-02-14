@@ -108,7 +108,9 @@ export const clientsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchClients.pending, (state) => {
-        state.loading = true
+        if (state.items.length === 0) {
+          state.loading = true
+        }
         state.error = null
       })
       .addCase(fetchClients.fulfilled, (state, action) => {

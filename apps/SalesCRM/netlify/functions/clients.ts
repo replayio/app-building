@@ -10,7 +10,7 @@ export default async function handler(req: Request) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
-  const resourceId = pathParts.length >= 3 ? pathParts[2] : null
+  const resourceId = pathParts.length >= 4 ? pathParts[3] : null
 
   // GET /clients/:id
   if (req.method === 'GET' && resourceId) {
@@ -42,59 +42,91 @@ export default async function handler(req: Request) {
     const source = url.searchParams.get('source') ?? ''
     const sort = url.searchParams.get('sort') ?? 'updated_at'
 
-    let whereClause = 'WHERE 1=1'
-    const params: unknown[] = []
-    let paramIdx = 1
+    // Build composable WHERE clause using neon tagged template fragments
+    const whereParts: ReturnType<typeof sql>[] = []
 
     if (search) {
-      whereClause += ` AND (c.name ILIKE $${paramIdx} OR EXISTS (SELECT 1 FROM unnest(c.tags) AS t WHERE t ILIKE $${paramIdx}) OR EXISTS (SELECT 1 FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND i.name ILIKE $${paramIdx}))`
-      params.push(`%${search}%`)
-      paramIdx++
+      whereParts.push(sql`(c.name ILIKE ${'%' + search + '%'} OR EXISTS (SELECT 1 FROM unnest(c.tags) AS t WHERE t ILIKE ${'%' + search + '%'}) OR EXISTS (SELECT 1 FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND i.name ILIKE ${'%' + search + '%'}))`)
     }
     if (status) {
-      whereClause += ` AND c.status = $${paramIdx}`
-      params.push(status)
-      paramIdx++
+      whereParts.push(sql`c.status = ${status}`)
     }
     if (tag) {
-      whereClause += ` AND $${paramIdx} = ANY(c.tags)`
-      params.push(tag)
-      paramIdx++
+      whereParts.push(sql`${tag} = ANY(c.tags)`)
     }
     if (source) {
-      whereClause += ` AND c.source_type = $${paramIdx}`
-      params.push(source)
-      paramIdx++
+      whereParts.push(sql`c.source_type = ${source}`)
     }
 
-    let orderBy = 'c.updated_at DESC'
-    if (sort === 'name_asc') orderBy = 'c.name ASC'
-    else if (sort === 'name_desc') orderBy = 'c.name DESC'
-    else if (sort === 'status') orderBy = 'c.status ASC'
+    let whereFragment = sql``
+    if (whereParts.length > 0) {
+      whereFragment = sql`WHERE ${whereParts[0]}`
+      for (let i = 1; i < whereParts.length; i++) {
+        whereFragment = sql`${whereFragment} AND ${whereParts[i]}`
+      }
+    }
 
-    const countQuery = `SELECT COUNT(*) as count FROM clients c ${whereClause}`
-    const dataQuery = `
-      SELECT c.*,
-        (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
-        COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
-        (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
-        (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
-        (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
-        (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
-      FROM clients c
-      ${whereClause}
-      ORDER BY ${orderBy}
-      LIMIT ${pageSize} OFFSET ${offset}
-    `
+    const countResult = await sql`SELECT COUNT(*) as count FROM clients c ${whereFragment}`
 
-    const [countResult, dataResult] = await Promise.all([
-      params.length > 0
-        ? sql(countQuery, params)
-        : sql`SELECT COUNT(*) as count FROM clients`,
-      params.length > 0
-        ? sql(dataQuery, params)
-        : sql(dataQuery, []),
-    ])
+    // Fetch clients with sorting (neon tagged templates require static ORDER BY)
+    let dataResult: Record<string, unknown>[]
+    if (sort === 'name_asc') {
+      dataResult = await sql`
+        SELECT c.*,
+          (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
+          COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
+          (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
+          (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
+          (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
+          (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
+        FROM clients c
+        ${whereFragment}
+        ORDER BY c.name ASC
+        LIMIT ${pageSize} OFFSET ${offset}
+      `
+    } else if (sort === 'name_desc') {
+      dataResult = await sql`
+        SELECT c.*,
+          (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
+          COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
+          (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
+          (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
+          (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
+          (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
+        FROM clients c
+        ${whereFragment}
+        ORDER BY c.name DESC
+        LIMIT ${pageSize} OFFSET ${offset}
+      `
+    } else if (sort === 'status') {
+      dataResult = await sql`
+        SELECT c.*,
+          (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
+          COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
+          (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
+          (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
+          (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
+          (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
+        FROM clients c
+        ${whereFragment}
+        ORDER BY c.status ASC
+        LIMIT ${pageSize} OFFSET ${offset}
+      `
+    } else {
+      dataResult = await sql`
+        SELECT c.*,
+          (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
+          COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
+          (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
+          (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
+          (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
+          (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
+        FROM clients c
+        ${whereFragment}
+        ORDER BY c.updated_at DESC
+        LIMIT ${pageSize} OFFSET ${offset}
+      `
+    }
 
     // Fetch distinct tags and sources for filter dropdowns
     const [tagsResult, sourcesResult] = await Promise.all([

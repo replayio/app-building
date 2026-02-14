@@ -102,7 +102,9 @@ export const tasksSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => {
-        state.loading = true
+        if (state.items.length === 0) {
+          state.loading = true
+        }
         state.error = null
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
@@ -115,6 +117,19 @@ export const tasksSlice = createSlice({
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(createTask.fulfilled, (state, action) => {
+        state.items.unshift(action.payload)
+        state.total += 1
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const idx = state.items.findIndex((t) => t.id === action.payload.id)
+        if (action.payload.completed) {
+          state.items = state.items.filter((t) => t.id !== action.payload.id)
+          state.total = Math.max(0, state.total - 1)
+        } else if (idx !== -1) {
+          state.items[idx] = action.payload
+        }
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.items = state.items.filter((t) => t.id !== action.payload)

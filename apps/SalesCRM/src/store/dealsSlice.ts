@@ -119,7 +119,9 @@ export const dealsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchDeals.pending, (state) => {
-        state.loading = true
+        if (state.items.length === 0) {
+          state.loading = true
+        }
         state.error = null
       })
       .addCase(fetchDeals.fulfilled, (state, action) => {
@@ -134,7 +136,9 @@ export const dealsSlice = createSlice({
         state.error = action.error.message ?? 'Unknown error'
       })
       .addCase(fetchDeal.pending, (state) => {
-        state.loading = true
+        if (!state.currentDeal) {
+          state.loading = true
+        }
         state.error = null
       })
       .addCase(fetchDeal.fulfilled, (state, action) => {
@@ -145,9 +149,18 @@ export const dealsSlice = createSlice({
         state.loading = false
         state.error = action.error.message ?? 'Unknown error'
       })
+      .addCase(createDeal.fulfilled, (state, action) => {
+        state.items.unshift(action.payload)
+        state.total += 1
+      })
       .addCase(updateDeal.fulfilled, (state, action) => {
-        state.currentDeal = action.payload
-        state.items = state.items.map((d) => d.id === action.payload.id ? action.payload : d)
+        const updated = action.payload
+        // Preserve client_name from existing currentDeal since PUT RETURNING * doesn't include it
+        if (state.currentDeal && state.currentDeal.id === updated.id && !updated.client_name && state.currentDeal.client_name) {
+          updated.client_name = state.currentDeal.client_name
+        }
+        state.currentDeal = updated
+        state.items = state.items.map((d) => d.id === updated.id ? updated : d)
       })
       .addCase(deleteDeal.fulfilled, (state, action) => {
         state.items = state.items.filter((d) => d.id !== action.payload)

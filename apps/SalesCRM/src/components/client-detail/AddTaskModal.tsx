@@ -57,6 +57,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Task Title *</label>
             <input
+              data-testid="task-title-input"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -120,6 +121,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
             Cancel
           </button>
           <button
+            data-testid="task-save-button"
             onClick={handleSave}
             disabled={!title.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

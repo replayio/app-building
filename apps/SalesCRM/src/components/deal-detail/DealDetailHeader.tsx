@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Pencil, Check, X } from 'lucide-react'
 import type { Deal, DealStage } from '../../types'
 
 interface DealDetailHeaderProps {
   deal: Deal
-  onUpdate: (data: Record<string, unknown>) => void
+  onUpdate: (data: Record<string, unknown>) => void | Promise<void>
   onStageChange: (newStage: DealStage) => void
 }
 
@@ -31,8 +31,18 @@ export function DealDetailHeader({ deal, onUpdate, onStageChange }: DealDetailHe
   const [owner, setOwner] = useState(deal.owner ?? '')
   const [selectedStage, setSelectedStage] = useState<DealStage>(deal.stage)
 
-  function handleSave() {
-    onUpdate({
+  useEffect(() => {
+    setSelectedStage(deal.stage)
+  }, [deal.stage])
+
+  useEffect(() => {
+    setName(deal.name)
+    setValue(String(deal.value))
+    setOwner(deal.owner ?? '')
+  }, [deal.name, deal.value, deal.owner])
+
+  async function handleSave() {
+    await onUpdate({
       name: name.trim(),
       value: parseFloat(value) || 0,
       owner: owner.trim() || null,

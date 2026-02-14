@@ -169,7 +169,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                 }}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
               >
-                <option value="">No client</option>
+                <option value="">— None —</option>
                 {availableClients.map((c) => (
                   <option key={c.id} value={c.id}>{c.name}</option>
                 ))}

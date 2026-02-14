@@ -80,19 +80,19 @@ export function DealDetailPage() {
     }
   }, [dealId, dispatch, loadDetailData])
 
-  function handleUpdateDeal(data: Record<string, unknown>) {
+  async function handleUpdateDeal(data: Record<string, unknown>) {
     if (!dealId) return
-    dispatch(updateDeal({ dealId, data })).then(() => {
-      loadDetailData()
-    })
+    await dispatch(updateDeal({ dealId, data }))
+    await loadDetailData()
   }
 
-  function handleStageChange(newStage: DealStage) {
+  async function handleStageChange(newStage: DealStage) {
     if (!dealId) return
-    dispatch(updateDeal({ dealId, data: { stage: newStage } })).then(() => {
-      dispatch(fetchDeal(dealId))
-      loadDetailData()
-    })
+    await dispatch(updateDeal({ dealId, data: { stage: newStage } }))
+    await Promise.all([
+      dispatch(fetchDeal(dealId)),
+      loadDetailData(),
+    ])
   }
 
   async function handleAddWriteup(data: { title: string; content: string; author: string }) {
@@ -104,7 +104,7 @@ export function DealDetailPage() {
     })
     if (res.ok) {
       setAddWriteupOpen(false)
-      loadDetailData()
+      await loadDetailData()
     }
   }
 
@@ -115,7 +115,7 @@ export function DealDetailPage() {
       body: JSON.stringify(data),
     })
     if (res.ok) {
-      loadDetailData()
+      await loadDetailData()
     }
   }
 
@@ -146,7 +146,7 @@ export function DealDetailPage() {
     })
     if (res.ok) {
       setAddTaskOpen(false)
-      loadDetailData()
+      await loadDetailData()
     }
   }
 
@@ -157,7 +157,7 @@ export function DealDetailPage() {
       body: JSON.stringify({ completed }),
     })
     if (res.ok) {
-      loadDetailData()
+      await loadDetailData()
     }
   }
 
@@ -179,7 +179,7 @@ export function DealDetailPage() {
     })
     if (res.ok) {
       setUploadOpen(false)
-      loadDetailData()
+      await loadDetailData()
     }
   }
 
@@ -190,7 +190,7 @@ export function DealDetailPage() {
     })
     if (res.ok) {
       setDeleteAttachmentId(null)
-      loadDetailData()
+      await loadDetailData()
     }
   }
 

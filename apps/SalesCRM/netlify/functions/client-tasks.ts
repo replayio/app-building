@@ -11,7 +11,7 @@ export default async function handler(req: Request) {
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
   // Path: /client-tasks or /client-tasks/:taskId
-  const taskId = pathParts.length >= 3 ? pathParts[2] : null
+  const taskId = pathParts.length >= 4 ? pathParts[3] : null
 
   // GET /client-tasks?clientId=...
   if (req.method === 'GET' && !taskId) {
@@ -50,10 +50,10 @@ export default async function handler(req: Request) {
       VALUES (
         ${body.title},
         ${body.description ?? null},
-        ${body.due_date ?? null},
+        ${body.due_date || null},
         ${body.priority ?? 'normal'},
         ${body.client_id},
-        ${body.deal_id ?? null},
+        ${body.deal_id || null},
         ${body.assignee_name ?? null},
         ${body.assignee_role ?? null}
       )
@@ -86,47 +86,22 @@ export default async function handler(req: Request) {
       priority?: string
     }
 
-    const updates: string[] = []
-    const params: unknown[] = []
-    let paramIdx = 1
-
-    if (body.completed !== undefined) {
-      updates.push(`completed = $${paramIdx}`)
-      params.push(body.completed)
-      paramIdx++
-      if (body.completed) {
-        updates.push(`completed_at = NOW()`)
-      } else {
-        updates.push(`completed_at = NULL`)
-      }
-    }
-    if (body.title !== undefined) {
-      updates.push(`title = $${paramIdx}`)
-      params.push(body.title)
-      paramIdx++
-    }
-    if (body.description !== undefined) {
-      updates.push(`description = $${paramIdx}`)
-      params.push(body.description)
-      paramIdx++
-    }
-    if (body.due_date !== undefined) {
-      updates.push(`due_date = $${paramIdx}`)
-      params.push(body.due_date)
-      paramIdx++
-    }
-    if (body.priority !== undefined) {
-      updates.push(`priority = $${paramIdx}`)
-      params.push(body.priority)
-      paramIdx++
-    }
-
-    updates.push('updated_at = NOW()')
-
-    const query = `UPDATE tasks SET ${updates.join(', ')} WHERE id = $${paramIdx} RETURNING *`
-    params.push(taskId)
-
-    const rows = await sql(query, params)
+    const rows = await sql`
+      UPDATE tasks SET
+        completed = COALESCE(${body.completed !== undefined ? body.completed : null}, completed),
+        completed_at = CASE
+          WHEN ${body.completed !== undefined ? body.completed : null}::boolean = true THEN NOW()
+          WHEN ${body.completed !== undefined ? body.completed : null}::boolean = false THEN NULL
+          ELSE completed_at
+        END,
+        title = COALESCE(${body.title ?? null}, title),
+        description = COALESCE(${body.description ?? null}, description),
+        due_date = COALESCE(${body.due_date !== undefined ? (body.due_date || null) : null}, due_date),
+        priority = COALESCE(${body.priority ?? null}, priority),
+        updated_at = NOW()
+      WHERE id = ${taskId}::uuid
+      RETURNING *
+    `
     if (rows.length === 0) {
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 })
     }

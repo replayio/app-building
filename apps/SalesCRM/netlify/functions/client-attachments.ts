@@ -10,7 +10,7 @@ export default async function handler(req: Request) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
-  const attachmentId = pathParts.length >= 3 ? pathParts[2] : null
+  const attachmentId = pathParts.length >= 4 ? pathParts[3] : null
 
   // GET /client-attachments?clientId=...
   if (req.method === 'GET' && !attachmentId) {

@@ -50,9 +50,9 @@ export default async function handler(req: Request) {
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
   // Path: /.netlify/functions/individuals/:individualId/:subResource/:subId
-  const individualId = pathParts.length >= 3 ? pathParts[2] : null
-  const subResource = pathParts.length >= 4 ? pathParts[3] : null
-  const subId = pathParts.length >= 5 ? pathParts[4] : null
+  const individualId = pathParts.length >= 4 ? pathParts[3] : null
+  const subResource = pathParts.length >= 5 ? pathParts[4] : null
+  const subId = pathParts.length >= 6 ? pathParts[5] : null
 
   // GET /individuals/:id — fetch individual with associations, relationships, and contact history
   if (req.method === 'GET' && individualId && !subResource) {

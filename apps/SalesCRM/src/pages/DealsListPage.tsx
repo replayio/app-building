@@ -68,7 +68,16 @@ export function DealsListPage() {
   }) {
     dispatch(createDeal(data)).then(() => {
       setCreateModalOpen(false)
-      loadDeals()
+      return dispatch(fetchDeals({
+        page,
+        search: search || undefined,
+        stage: stageFilter || undefined,
+        client: clientFilter || undefined,
+        status: statusFilter || undefined,
+        sort,
+        dateFrom: dateFrom || undefined,
+        dateTo: dateTo || undefined,
+      }))
     })
   }
 

@@ -55,6 +55,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Name *</label>
             <input
+              data-testid="person-name-input"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -65,6 +66,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Role/Title</label>
             <input
+              data-testid="person-role-input"
               type="text"
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -113,6 +115,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
             Cancel
           </button>
           <button
+            data-testid="person-save-button"
             onClick={handleSave}
             disabled={!name.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

@@ -59,6 +59,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Deal Name *</label>
             <input
+              data-testid="deal-name-input"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -70,6 +71,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Value ($)</label>
               <input
+                data-testid="deal-value-input"
                 type="number"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
@@ -135,6 +137,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
             Cancel
           </button>
           <button
+            data-testid="deal-save-button"
             onClick={handleSave}
             disabled={!name.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
