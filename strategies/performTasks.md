@@ -8,7 +8,7 @@ ULTRA IMPORTANT: Follow these directions exactly.
    follow instructions from `reviewChanges.md` to process them.
 2. Read `docs/plan.md` to understand current progress. If this file is missing or has no pending tasks, signal <DONE/> and exit.
 3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
-4. Read the instructions for the associated stage (if you haven't already) and implement the task.
+4. Read the strategy file for the task (if you haven't already) and implement the task.
 5. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
 6. Update `docs/plan.md` to reflect progress.
 7. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
@@ -44,7 +44,8 @@ Maintain `docs/plan.md` with:
 - High-level app structure and architecture
 - Feature breakdown with status (done / in progress / todo)
 - Any blockers or decisions made
-- Pending and completed tasks. All tasks must be of the form "TaskName: Description"
+- Pending and completed tasks. All tasks are associated with a strategy file for how to implement them,
+and a name for referring to them. Task entries must be of the form "StrategyFile: TaskName: Description"
 
 ## Commits
 
@@ -56,7 +57,7 @@ Maintain `docs/plan.md` with:
 
 Pick an unfinished task and start working on it.
 
-Focus on one task at a time. Do it well rather than rushing through multiple tasks. If the task is associated with one of the stages of app development, read the additional instructions for that stage from the files listed above.
+Focus on one task at a time. Do it well rather than rushing through multiple tasks. Make sure to read the strategy file for the task before implementing it.
 
 When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
 
