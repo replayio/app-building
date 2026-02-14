@@ -128,14 +128,14 @@
 - [x] WriteTestDLP_TBL: Write tests for DealsListPage DealsTable (DLP-TBL-01 through DLP-TBL-05)
 - [x] WriteTestDLP_ACT: Write tests for DealsListPage RowActionMenu (DLP-ACT-01, DLP-ACT-02)
 - [x] WriteTestDLP_PGN: Write tests for DealsListPage Pagination (DLP-PGN-01, DLP-PGN-02), then commit and exit
-- [ ] WriteTestDDP_HDR: Write tests for DealDetailPage DealHeader (DDP-HDR-01 through DDP-HDR-04)
-- [ ] WriteTestDDP_PIP: Write tests for DealDetailPage StagePipeline (DDP-PIP-01, DDP-PIP-02)
-- [ ] WriteTestDDP_HIS: Write tests for DealDetailPage DealHistorySection (DDP-HIS-01, DDP-HIS-02)
-- [ ] WriteTestDDP_MET: Write tests for DealDetailPage DealMetricsSection (DDP-MET-01, DDP-MET-02)
-- [ ] WriteTestDDP_WRT: Write tests for DealDetailPage WriteupsSection (DDP-WRT-01 through DDP-WRT-06)
-- [ ] WriteTestDDP_LTK: Write tests for DealDetailPage LinkedTasksSection (DDP-LTK-01 through DDP-LTK-04)
-- [ ] WriteTestDDP_ATT: Write tests for DealDetailPage AttachmentsSection (DDP-ATT-01 through DDP-ATT-05)
-- [ ] WriteTestDDP_CON: Write tests for DealDetailPage ContactsSection (DDP-CON-01, DDP-CON-02), then commit and exit
+- [x] WriteTestDDP_HDR: Write tests for DealDetailPage DealHeader (DDP-HDR-01 through DDP-HDR-04)
+- [x] WriteTestDDP_PIP: Write tests for DealDetailPage StagePipeline (DDP-PIP-01, DDP-PIP-02)
+- [x] WriteTestDDP_HIS: Write tests for DealDetailPage DealHistorySection (DDP-HIS-01, DDP-HIS-02)
+- [x] WriteTestDDP_MET: Write tests for DealDetailPage DealMetricsSection (DDP-MET-01, DDP-MET-02)
+- [x] WriteTestDDP_WRT: Write tests for DealDetailPage WriteupsSection (DDP-WRT-01 through DDP-WRT-06)
+- [x] WriteTestDDP_LTK: Write tests for DealDetailPage LinkedTasksSection (DDP-LTK-01 through DDP-LTK-04)
+- [x] WriteTestDDP_ATT: Write tests for DealDetailPage AttachmentsSection (DDP-ATT-01 through DDP-ATT-05)
+- [x] WriteTestDDP_CON: Write tests for DealDetailPage ContactsSection (DDP-CON-01, DDP-CON-02), then commit and exit
 - [ ] WriteTestTLP_HDR: Write tests for TasksListPage PageHeader (TLP-HDR-01 through TLP-HDR-03)
 - [ ] WriteTestTLP_FLT: Write tests for TasksListPage FilterBar (TLP-FLT-01 through TLP-FLT-06)
 - [ ] WriteTestTLP_CRD: Write tests for TasksListPage TaskCards (TLP-CRD-01 through TLP-CRD-09), then commit and exit

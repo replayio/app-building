@@ -29,7 +29,7 @@ export function AddWriteupModal({ open, onClose, onSave }: AddWriteupModalProps)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-h-[90vh] overflow-auto">
+      <div data-testid="add-writeup-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-h-[90vh] overflow-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">New Writeup</h2>
           <button
@@ -43,6 +43,7 @@ export function AddWriteupModal({ open, onClose, onSave }: AddWriteupModalProps)
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Title *</label>
             <input
+              data-testid="add-writeup-title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -53,6 +54,7 @@ export function AddWriteupModal({ open, onClose, onSave }: AddWriteupModalProps)
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Content *</label>
             <textarea
+              data-testid="add-writeup-content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write your analysis, notes, or strategy..."
@@ -63,6 +65,7 @@ export function AddWriteupModal({ open, onClose, onSave }: AddWriteupModalProps)
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Author</label>
             <input
+              data-testid="add-writeup-author"
               type="text"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
@@ -73,12 +76,14 @@ export function AddWriteupModal({ open, onClose, onSave }: AddWriteupModalProps)
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="add-writeup-cancel"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
             Cancel
           </button>
           <button
+            data-testid="add-writeup-save"
             onClick={handleSave}
             disabled={!title.trim() || !content.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

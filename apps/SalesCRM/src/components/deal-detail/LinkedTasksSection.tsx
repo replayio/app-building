@@ -26,10 +26,11 @@ function formatDueDate(dateStr: string | null): string {
 
 export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTasksSectionProps) {
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="deal-linked-tasks-section" className="border border-border rounded-[6px] p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-[14px] font-semibold text-text-primary">Linked Tasks</h2>
         <button
+          data-testid="deal-linked-tasks-add-button"
           onClick={onAddTask}
           className="inline-flex items-center gap-1 h-[28px] px-2.5 text-[12px] font-medium text-accent hover:bg-hover rounded-[4px] transition-colors duration-100"
         >
@@ -39,15 +40,17 @@ export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTas
       </div>
 
       {tasks.length === 0 ? (
-        <div className="text-[13px] text-text-muted py-2">No linked tasks</div>
+        <div data-testid="deal-linked-tasks-empty" className="text-[13px] text-text-muted py-2">No linked tasks</div>
       ) : (
         <div className="flex flex-col gap-1">
           {tasks.map((task) => (
             <div
               key={task.id}
+              data-testid={`deal-linked-task-${task.id}`}
               className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
               <button
+                data-testid={`deal-linked-task-toggle-${task.id}`}
                 onClick={() => onToggleTask(task.id, !task.completed)}
                 className="flex-shrink-0 text-text-muted hover:text-status-active transition-colors duration-100"
               >

@@ -35,7 +35,7 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
+      <div data-testid="upload-attachment-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Upload Attachment</h2>
           <button
@@ -49,6 +49,7 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">File Name *</label>
             <input
+              data-testid="upload-attachment-filename"
               type="text"
               value={filename}
               onChange={(e) => setFilename(e.target.value)}
@@ -59,6 +60,7 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
             <select
+              data-testid="upload-attachment-type"
               value={type}
               onChange={(e) => setType(e.target.value as 'document' | 'link')}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -72,6 +74,7 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
               {type === 'document' ? 'File URL *' : 'Link URL *'}
             </label>
             <input
+              data-testid="upload-attachment-url"
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -82,12 +85,14 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="upload-attachment-cancel"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
             Cancel
           </button>
           <button
+            data-testid="upload-attachment-save"
             onClick={handleSave}
             disabled={!filename.trim() || !url.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

@@ -36,7 +36,7 @@ export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) 
   }
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="deal-metrics-section" className="border border-border rounded-[6px] p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <BarChart2 size={14} strokeWidth={1.75} className="text-text-muted" />
@@ -44,6 +44,7 @@ export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) 
         </div>
         {!editing ? (
           <button
+            data-testid="deal-metrics-edit-button"
             onClick={() => setEditing(true)}
             className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
             title="Edit metrics"
@@ -53,12 +54,14 @@ export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) 
         ) : (
           <div className="flex items-center gap-1">
             <button
+              data-testid="deal-metrics-save-button"
               onClick={handleSave}
               className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-status-active hover:bg-hover transition-colors duration-100"
             >
               <Check size={14} strokeWidth={1.75} />
             </button>
             <button
+              data-testid="deal-metrics-cancel-button"
               onClick={handleCancel}
               className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-status-churned hover:bg-hover transition-colors duration-100"
             >
@@ -74,6 +77,7 @@ export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) 
           {editing ? (
             <div className="flex items-center gap-1">
               <input
+                data-testid="deal-metrics-probability-input"
                 type="number"
                 min="0"
                 max="100"
@@ -84,20 +88,21 @@ export function DealMetricsSection({ deal, onUpdate }: DealMetricsSectionProps) 
               <span className="text-[13px] text-text-muted">%</span>
             </div>
           ) : (
-            <div className="text-[16px] font-semibold text-text-primary">{deal.probability}%</div>
+            <div data-testid="deal-metrics-probability" className="text-[16px] font-semibold text-text-primary">{deal.probability}%</div>
           )}
         </div>
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Expected Close</div>
           {editing ? (
             <input
+              data-testid="deal-metrics-close-date-input"
               type="date"
               value={closeDate}
               onChange={(e) => setCloseDate(e.target.value)}
               className="h-[30px] px-2 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
             />
           ) : (
-            <div className="text-[16px] font-semibold text-text-primary">
+            <div data-testid="deal-metrics-close-date" className="text-[16px] font-semibold text-text-primary">
               {formatDate(deal.expected_close_date)}
             </div>
           )}

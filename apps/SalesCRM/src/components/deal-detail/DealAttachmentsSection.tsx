@@ -16,10 +16,11 @@ function formatSize(size: number | null): string {
 
 export function DealAttachmentsSection({ attachments, onUpload, onDelete }: DealAttachmentsSectionProps) {
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="deal-attachments-section" className="border border-border rounded-[6px] p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-[14px] font-semibold text-text-primary">Attachments</h2>
         <button
+          data-testid="deal-attachments-upload-button"
           onClick={onUpload}
           className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
           title="Upload"
@@ -29,12 +30,13 @@ export function DealAttachmentsSection({ attachments, onUpload, onDelete }: Deal
       </div>
 
       {attachments.length === 0 ? (
-        <div className="text-[13px] text-text-muted py-2">No attachments</div>
+        <div data-testid="deal-attachments-empty" className="text-[13px] text-text-muted py-2">No attachments</div>
       ) : (
         <div className="flex flex-col gap-1">
           {attachments.map((att) => (
             <div
               key={att.id}
+              data-testid={`deal-attachment-${att.id}`}
               className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
               <FileText size={16} strokeWidth={1.5} className="text-text-muted flex-shrink-0" />
@@ -44,6 +46,7 @@ export function DealAttachmentsSection({ attachments, onUpload, onDelete }: Deal
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
                 <a
+                  data-testid={`deal-attachment-download-${att.id}`}
                   href={att.url}
                   download={att.filename}
                   className="text-[12px] text-accent hover:underline"
@@ -51,6 +54,7 @@ export function DealAttachmentsSection({ attachments, onUpload, onDelete }: Deal
                   Download
                 </a>
                 <button
+                  data-testid={`deal-attachment-delete-${att.id}`}
                   onClick={() => onDelete(att.id)}
                   className="text-[12px] text-status-churned hover:underline ml-2"
                 >
