@@ -157,14 +157,21 @@
 - **Stage 4 COMPLETE**: All 176 Playwright tests passing (0 failures)
 
 ### Stage 5: Deployment (deployment.md)
-- [ ] UnpackDeployment: Unpack the deployment stage into subtasks
+- [x] UnpackDeployment: Unpack the deployment stage into subtasks
+- [x] FixBuildErrors: Fixed TypeScript build errors in tests/helpers.ts (type-only import for Page, unused parameter prefix)
+- [x] CreateNetlifySite: Created Netlify site (sales-crm-1771041441) and linked it
+- [x] SetEnvVars: Set DATABASE_URL environment variable on Netlify site
+- [x] DeployProduction: Built and deployed to production at https://sales-crm-1771041441.netlify.app
+- [x] VerifyDeployment: Verified frontend (200) and API functions (200 with data) working in production
+- **Stage 5 COMPLETE**: App deployed and verified at https://sales-crm-1771041441.netlify.app
 
 ## Decisions
 
 - Following Linear-inspired design system from AppStyle.md (Inter Variable font, neutral palette with purple accent, compact density)
 - Database accessed only through Netlify Functions
 - `npm run init-db` creates and configures Neon database
+- Deployed to Netlify with Neon database connection via DATABASE_URL env var
 
 ## Blockers
 
-None currently.
+None. All stages complete.
