@@ -18,8 +18,7 @@ You will build the app in the following stages, with strategy files to additiona
 ULTRA IMPORTANT: Follow these directions exactly.
 
 1. Look for files `logs/iteration-...` describing recent changes made. While there are any,
-   follow instructions from this file to process them
-   reviewChanges.md
+   follow instructions from `reviewChanges.md` to process them.
 2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
 3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
 4. Read the instructions for the associated stage (if you haven't already) and implement the task.
