@@ -78,12 +78,8 @@ export function spawnContainer(
     process.exit(1);
   }
 
-  const containerName = `app-building-${appName}`;
-
-  // Stop any existing container with the same name
-  try {
-    execFileSync("docker", ["rm", "-f", containerName], { stdio: "ignore" });
-  } catch {}
+  const uniqueId = Math.random().toString(36).slice(2, 8);
+  const containerName = `app-building-${appName}-${uniqueId}`;
 
   // Build docker run args
   const args: string[] = [
