@@ -46,4 +46,6 @@ After updating tests, make sure they pass. Read `testing.md` to understand how t
 Now that the bug is fixed, move it from the top section of the file to an "Unreviewed" section lower down.
 Label the bug with the git revision before / after the bug was fixed and tests updated.
 
+Update the section for the current round of maintenance in `docs/plan.md` with a note about the bug fix.
+
 Commit all changes and exit.

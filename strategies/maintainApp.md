@@ -12,6 +12,8 @@ You will continue performing additional rounds of maintenance as needed.
 
 4. polishApp.md: Improve the app's overall quality.
 
+5. deployment.md: Deploy the updated app to production.
+
 You must already know the round of maintenance you are currently doing. If you don't, signal <DONE> and exit.
 
 Read the tasks in docs/plan.md. If the file does not have a summary section for the round of maintenance
