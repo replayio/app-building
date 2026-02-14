@@ -55,6 +55,7 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
 
   return (
     <div
+      data-testid={`task-card-${task.id}`}
       className="border border-border rounded-[6px] bg-surface px-5 py-4 hover:shadow-[var(--shadow-elevation-1)] transition-shadow duration-150 cursor-pointer"
       onClick={() => onClick(task)}
     >
@@ -62,17 +63,17 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
         <TaskPriorityBadge priority={task.priority} />
 
         <div className="flex-1 min-w-0">
-          <div className="text-[14px] font-medium text-text-primary leading-snug">
+          <div data-testid={`task-title-${task.id}`} className="text-[14px] font-medium text-text-primary leading-snug">
             {task.title}
           </div>
         </div>
 
-        <div className="text-[13px] text-text-muted whitespace-nowrap flex-shrink-0">
+        <div data-testid={`task-due-date-${task.id}`} className="text-[13px] text-text-muted whitespace-nowrap flex-shrink-0">
           {formatDueDate(task.due_date)}
         </div>
 
         {task.assignee_name && (
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div data-testid={`task-assignee-${task.id}`} className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 rounded-full bg-sidebar flex items-center justify-center">
               <User size={14} strokeWidth={1.75} className="text-text-muted" />
             </div>
@@ -84,6 +85,7 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
 
         <div className="relative flex-shrink-0" ref={menuRef}>
           <button
+            data-testid={`task-action-menu-button-${task.id}`}
             onClick={(e) => {
               e.stopPropagation()
               setMenuOpen(!menuOpen)
@@ -94,8 +96,9 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-[140px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-50 py-1">
+            <div data-testid={`task-action-menu-${task.id}`} className="absolute right-0 top-full mt-1 w-[140px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-50 py-1">
               <button
+                data-testid={`task-action-edit-${task.id}`}
                 onClick={(e) => {
                   e.stopPropagation()
                   setMenuOpen(false)
@@ -106,6 +109,7 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
                 Edit
               </button>
               <button
+                data-testid={`task-action-complete-${task.id}`}
                 onClick={(e) => {
                   e.stopPropagation()
                   setMenuOpen(false)
@@ -116,6 +120,7 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
                 Mark Complete
               </button>
               <button
+                data-testid={`task-action-delete-${task.id}`}
                 onClick={(e) => {
                   e.stopPropagation()
                   setMenuOpen(false)

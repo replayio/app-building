@@ -42,9 +42,10 @@ export function TasksFilterBar({
   const hasActiveFilters = priorityFilter || assigneeFilter || clientFilter
 
   return (
-    <div className="flex items-center gap-2 mb-4">
+    <div className="flex items-center gap-2 mb-4" data-testid="tasks-filter-bar">
       <div className="relative" ref={dropdownRef}>
         <button
+          data-testid="tasks-filter-button"
           onClick={() => setFilterOpen(!filterOpen)}
           className={`inline-flex items-center gap-1.5 h-[34px] px-3 text-[13px] font-medium border rounded-[5px] transition-colors duration-100 ${
             hasActiveFilters
@@ -57,10 +58,11 @@ export function TasksFilterBar({
         </button>
 
         {filterOpen && (
-          <div className="absolute left-0 top-full mt-1 w-[240px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-50 py-1">
+          <div data-testid="tasks-filter-dropdown" className="absolute left-0 top-full mt-1 w-[240px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-50 py-1">
             <div className="px-3 py-2">
               <label className="text-[11px] font-medium text-text-muted uppercase tracking-wide">Priority</label>
               <select
+                data-testid="tasks-filter-priority"
                 value={priorityFilter}
                 onChange={(e) => onPriorityChange(e.target.value)}
                 className="mt-1 w-full h-[30px] px-2 text-[13px] text-text-primary bg-surface border border-border rounded-[4px] focus:outline-none focus:border-accent"
@@ -76,6 +78,7 @@ export function TasksFilterBar({
             <div className="px-3 py-2">
               <label className="text-[11px] font-medium text-text-muted uppercase tracking-wide">Assignee</label>
               <select
+                data-testid="tasks-filter-assignee"
                 value={assigneeFilter}
                 onChange={(e) => onAssigneeChange(e.target.value)}
                 className="mt-1 w-full h-[30px] px-2 text-[13px] text-text-primary bg-surface border border-border rounded-[4px] focus:outline-none focus:border-accent"
@@ -92,6 +95,7 @@ export function TasksFilterBar({
             <div className="px-3 py-2">
               <label className="text-[11px] font-medium text-text-muted uppercase tracking-wide">Client</label>
               <select
+                data-testid="tasks-filter-client"
                 value={clientFilter}
                 onChange={(e) => onClientChange(e.target.value)}
                 className="mt-1 w-full h-[30px] px-2 text-[13px] text-text-primary bg-surface border border-border rounded-[4px] focus:outline-none focus:border-accent"
@@ -108,6 +112,7 @@ export function TasksFilterBar({
             {hasActiveFilters && (
               <div className="px-3 py-2 border-t border-border">
                 <button
+                  data-testid="tasks-filter-clear"
                   onClick={() => {
                     onPriorityChange('')
                     onAssigneeChange('')
@@ -125,6 +130,7 @@ export function TasksFilterBar({
 
       <input
         type="text"
+        data-testid="tasks-filter-search"
         value={searchValue}
         onChange={(e) => onSearchChange(e.target.value)}
         placeholder="Filter..."
