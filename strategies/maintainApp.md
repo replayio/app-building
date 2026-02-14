@@ -15,5 +15,7 @@ You will continue performing additional rounds of maintenance as needed.
 You must already know the round of maintenance you are currently doing. If you don't, signal <DONE> and exit.
 
 Read the tasks in docs/plan.md. If the file does not have a summary section for the round of maintenance
-you're working on, add the section and pending tasks for each of the above stages, using the
-"<strategy-file>: Unpack<StrategyName> Subtasks" format for tasks.
+you're working on, add the section and pending tasks for each of the above stages, using a
+"<strategy-file>: Unpack<StrategyName>: Unpack subtasks" format.
+
+Then, follow the strategy in performTasks.md to continue maintaining the application.
