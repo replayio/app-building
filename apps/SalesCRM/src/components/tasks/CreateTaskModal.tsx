@@ -66,7 +66,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px]">
+      <div data-testid="create-task-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px]">
         <div className="flex items-center justify-between px-5 py-3 border-b border-border">
           <h3 className="text-[14px] font-semibold text-text-primary">New Task</h3>
           <button
@@ -83,6 +83,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
               <label className="text-[12px] font-medium text-text-muted mb-1 block">Title *</label>
               <input
                 type="text"
+                data-testid="create-task-title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Task title"
@@ -94,6 +95,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
             <div>
               <label className="text-[12px] font-medium text-text-muted mb-1 block">Description</label>
               <textarea
+                data-testid="create-task-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Task description"
@@ -107,6 +109,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Due Date</label>
                 <input
                   type="date"
+                  data-testid="create-task-due-date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                   className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -116,6 +119,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Priority</label>
                 <select
+                  data-testid="create-task-priority"
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as TaskPriority)}
                   className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -133,6 +137,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee Name</label>
                 <input
                   type="text"
+                  data-testid="create-task-assignee-name"
                   value={assigneeName}
                   onChange={(e) => setAssigneeName(e.target.value)}
                   placeholder="e.g., Sarah J."
@@ -144,6 +149,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee Role</label>
                 <input
                   type="text"
+                  data-testid="create-task-assignee-role"
                   value={assigneeRole}
                   onChange={(e) => setAssigneeRole(e.target.value)}
                   placeholder="e.g., PM"
@@ -155,6 +161,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
             <div>
               <label className="text-[12px] font-medium text-text-muted mb-1 block">Client</label>
               <select
+                data-testid="create-task-client"
                 value={clientId}
                 onChange={(e) => {
                   setClientId(e.target.value)
@@ -173,6 +180,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Deal (optional)</label>
                 <select
+                  data-testid="create-task-deal"
                   value={dealId}
                   onChange={(e) => setDealId(e.target.value)}
                   className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -189,6 +197,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
           <div className="flex items-center justify-end gap-2 mt-5">
             <button
               type="button"
+              data-testid="create-task-cancel"
               onClick={onClose}
               className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
             >
@@ -196,6 +205,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
             </button>
             <button
               type="submit"
+              data-testid="create-task-save"
               disabled={!title.trim()}
               className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 transition-opacity duration-100 disabled:opacity-50"
             >

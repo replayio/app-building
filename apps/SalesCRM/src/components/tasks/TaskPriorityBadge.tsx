@@ -16,6 +16,7 @@ export function TaskPriorityBadge({ priority }: TaskPriorityBadgeProps) {
 
   return (
     <span
+      data-testid={`task-priority-badge-${priority}`}
       className={`inline-flex items-center justify-center h-[24px] px-2.5 text-[12px] font-medium rounded-[4px] flex-shrink-0 ${config.bg} ${config.text}`}
     >
       {config.label}
