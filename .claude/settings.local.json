@@ -38,7 +38,8 @@
       "Bash(wc:*)",
       "Bash(git config:*)",
       "Bash(docker build:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(git -C /Users/brianhackett/record[REDACTED]/app-building status)"
     ]
   }
 }

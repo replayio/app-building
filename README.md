@@ -6,11 +6,10 @@ An agent loop that iteratively builds applications using the Claude Code CLI. Po
 
 Each iteration of the loop:
 
-1. **Gathers context** from the app directory (AppSpec.md, docs/, git history, file tree)
-2. **Builds a prompt** combining the strategy instructions with the current repo context
-3. **Runs Claude** via the CLI (`claude -p`) in the app directory
-4. **Logs output** to `apps/<name>/logs/iteration-<timestamp>.log`
-5. **Commits changes** to git
+1. **Tells Claude** to read the strategy files and follow their instructions
+2. **Runs Claude** via the CLI (`claude -p`) in the app directory
+3. **Logs output** to `apps/<name>/logs/iteration-<timestamp>.log`
+4. **Commits changes** to git
 
 The loop stops when Claude includes `<DONE/>` in its response or the max iteration count is reached.
 
@@ -26,7 +25,7 @@ The loop stops when Claude includes `<DONE/>` in its response or the max iterati
 npm install
 ```
 
-Create a `.env` file in the project root with your API keys:
+Create a `.env` file in the project root with your API keys (see `.env.example` for the full list):
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
@@ -34,7 +33,7 @@ NETLIFY_AUTH_TOKEN=...
 NEON_API_KEY=...
 ```
 
-Required environment variables declared in strategy files (plus `ANTHROPIC_API_KEY`) are checked at startup.
+All variables in `.env.example` must be set in `.env`.
 
 ## Usage
 
@@ -98,6 +97,14 @@ npm run status              # Show status for all apps
 npm run status -- my-app    # Show status for one app
 ```
 
+### Resetting an app
+
+Remove all generated files, keeping only `AppSpec.md`, `AppStyle.md`, and `.git`:
+
+```bash
+npm run reset-app -- my-app
+```
+
 ### Reading Logs
 
 Log files contain raw JSON stream events. Use `read-log` to render them as readable output:
@@ -109,8 +116,6 @@ npm run read-log -- apps/my-app/logs/iteration-2026-02-13T00-00-00-000Z.log
 ## Strategies
 
 Strategy files are Markdown documents in `strategies/` that tell Claude what to do each iteration. You can write your own strategy files to customize the agent's behavior.
-
-Strategy files can declare required environment variables under a `## Required Environment Variables` heading with a code block. The loop checks these at startup and exits if any are missing.
 
 ## App Directory Structure
 
