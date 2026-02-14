@@ -1,4 +1,4 @@
-import { execFileSync, spawn } from "child_process";
+import { execFileSync } from "child_process";
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 
@@ -47,35 +47,31 @@ function loadDotEnv(projectRoot: string): Record<string, string> {
   return vars;
 }
 
-function extractRequiredEnvVars(strategyFiles: string[]): string[] {
-  const allVars: string[] = [];
-  for (const file of strategyFiles) {
-    const content = readFileSync(file, "utf-8");
-    const sectionMatch = content.match(/## Required Environment Variables\s*\n+```\n([\s\S]*?)\n```/);
-    if (!sectionMatch) continue;
-    const vars = sectionMatch[1]
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0);
-    allVars.push(...vars);
-  }
-  return Array.from(new Set(allVars));
+function loadRequiredEnvVars(projectRoot: string): string[] {
+  const examplePath = resolve(projectRoot, ".env.example");
+  if (!existsSync(examplePath)) return [];
+  const content = readFileSync(examplePath, "utf-8");
+  return content
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .map((line) => line.split("=")[0].trim())
+    .filter((key) => key.length > 0);
 }
 
 export function spawnContainer(
   appName: string,
   strategyBasenames: string[],
   maxIterations?: number,
-): Promise<number> {
+): number {
   const projectRoot = resolve(__dirname, "..");
 
   ensureImageExists();
 
   const envVars = loadDotEnv(projectRoot);
 
-  // Check required env vars from strategy files
-  const strategyFiles = strategyBasenames.map((s) => resolve(projectRoot, "strategies", s));
-  const requiredVars = [...extractRequiredEnvVars(strategyFiles), "ANTHROPIC_API_KEY"];
+  // Check required env vars from .env.example
+  const requiredVars = loadRequiredEnvVars(projectRoot);
   const missing = requiredVars.filter((v) => !envVars[v]);
   if (missing.length > 0) {
     console.error(`Missing required env vars in .env: ${missing.join(", ")}`);
@@ -92,6 +88,7 @@ export function spawnContainer(
   // Build docker run args
   const args: string[] = [
     "run",
+    "-d",
     "--rm",
     "--name", containerName,
     "-v", `${projectRoot}:/repo`,
@@ -128,35 +125,13 @@ export function spawnContainer(
 
   console.log(`[${appName}] Starting container ${containerName}...`);
 
-  return new Promise((resolvePromise, reject) => {
-    const child = spawn("docker", args, {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
+  const containerId = execFileSync("docker", args, {
+    encoding: "utf-8",
+    timeout: 30000,
+  }).trim();
 
-    child.stdout!.on("data", (data: Buffer) => {
-      const lines = data.toString().split("\n");
-      for (const line of lines) {
-        if (line.trim()) {
-          console.log(`[${appName}] ${line}`);
-        }
-      }
-    });
+  console.log(`[${appName}] Container started: ${containerId.slice(0, 12)}`);
+  console.log(`[${appName}] Logs: docker logs -f ${containerName}`);
 
-    child.stderr!.on("data", (data: Buffer) => {
-      const lines = data.toString().split("\n");
-      for (const line of lines) {
-        if (line.trim()) {
-          console.error(`[${appName}] ${line}`);
-        }
-      }
-    });
-
-    child.on("error", (err) => reject(err));
-
-    child.on("close", (code) => {
-      const exitCode = code ?? 1;
-      console.log(`[${appName}] Container exited with code ${exitCode}`);
-      resolvePromise(exitCode);
-    });
-  });
+  return 0;
 }

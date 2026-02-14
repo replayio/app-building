@@ -1,4 +1,8 @@
 node_modules/
 dist/
-apps/
 .env
+iteration-current.log
+prompt-*.txt
+
+# Local Netlify folder
+.netlify

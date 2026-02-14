@@ -1,0 +1,131 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: Sales CRM
+      - navigation [ref=e7]:
+        - link "Dashboard" [ref=e8] [cursor=pointer]:
+          - /url: /clients
+          - img [ref=e9]
+          - text: Dashboard
+        - link "Clients" [ref=e14] [cursor=pointer]:
+          - /url: /clients
+          - img [ref=e15]
+          - text: Clients
+        - link "Deals" [ref=e20] [cursor=pointer]:
+          - /url: /deals
+          - img [ref=e21]
+          - text: Deals
+        - link "Tasks" [ref=e26] [cursor=pointer]:
+          - /url: /tasks
+          - img [ref=e27]
+          - text: Tasks
+        - link "Reports" [ref=e30] [cursor=pointer]:
+          - /url: /reports
+          - img [ref=e31]
+          - text: Reports
+    - link "Settings" [ref=e34] [cursor=pointer]:
+      - /url: /settings
+      - img [ref=e35]
+      - text: Settings
+  - main [ref=e38]:
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e42]: /deals
+        - generic [ref=e43]:
+          - heading "Deals List" [level=1] [ref=e44]
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - img [ref=e47]
+              - textbox "Search deals..." [ref=e50]
+            - button "Create New Deal" [ref=e51]:
+              - img [ref=e52]
+              - text: Create New Deal
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - generic [ref=e59]:
+            - paragraph [ref=e60]: Total Active Deals
+            - paragraph [ref=e61]: "0"
+        - generic [ref=e62]:
+          - img [ref=e64]
+          - generic [ref=e66]:
+            - paragraph [ref=e67]: Pipeline Value
+            - paragraph [ref=e68]: $0
+        - generic [ref=e69]:
+          - img [ref=e71]
+          - generic [ref=e77]:
+            - paragraph [ref=e78]: Won (Quarter)
+            - paragraph [ref=e79]: "0"
+            - paragraph [ref=e80]: $0
+        - generic [ref=e81]:
+          - img [ref=e83]
+          - generic [ref=e87]:
+            - paragraph [ref=e88]: Lost (Quarter)
+            - paragraph [ref=e89]: "0"
+            - paragraph [ref=e90]: $0
+      - generic [ref=e91]:
+        - button "Table View" [ref=e92]
+        - button "Pipeline View" [ref=e93]
+      - generic [ref=e94]:
+        - generic [ref=e95]:
+          - combobox [ref=e96] [cursor=pointer]:
+            - 'option "Stage: All Stages" [selected]'
+            - 'option "Stage: Lead"'
+            - 'option "Stage: Qualification"'
+            - 'option "Stage: Discovery"'
+            - 'option "Stage: Proposal Sent"'
+            - 'option "Stage: Negotiation"'
+            - 'option "Stage: Closed Won"'
+            - 'option "Stage: Closed Lost"'
+          - img
+        - generic [ref=e97]:
+          - combobox [ref=e98] [cursor=pointer]:
+            - 'option "Client: All Clients" [selected]'
+          - img
+        - generic [ref=e99]:
+          - combobox [ref=e100] [cursor=pointer]:
+            - 'option "Status: All" [selected]'
+            - 'option "Status: Active"'
+            - 'option "Status: On Track"'
+            - 'option "Status: Needs Attention"'
+            - 'option "Status: At Risk"'
+            - 'option "Status: Won"'
+            - 'option "Status: Lost"'
+            - 'option "Status: On Hold"'
+          - img
+        - generic [ref=e101]:
+          - combobox [ref=e102] [cursor=pointer]:
+            - 'option "Sort by: Close Date (Newest)" [selected]'
+            - 'option "Sort by: Close Date (Oldest)"'
+            - 'option "Sort by: Name A-Z"'
+            - 'option "Sort by: Name Z-A"'
+            - 'option "Sort by: Value (High-Low)"'
+            - 'option "Sort by: Value (Low-High)"'
+          - img
+        - generic [ref=e103]:
+          - textbox [ref=e104]:
+            - /placeholder: From
+          - generic [ref=e105]: to
+          - textbox [ref=e106]:
+            - /placeholder: To
+      - table [ref=e108]:
+        - rowgroup [ref=e109]:
+          - row "Deal Name Client Stage Owner Value Close Date Status" [ref=e110]:
+            - columnheader "Deal Name" [ref=e111]
+            - columnheader "Client" [ref=e112]
+            - columnheader "Stage" [ref=e113]
+            - columnheader "Owner" [ref=e114]
+            - columnheader "Value" [ref=e115]
+            - columnheader "Close Date" [ref=e116]:
+              - button "Close Date" [ref=e117]:
+                - text: Close Date
+                - img [ref=e118]
+            - columnheader "Status" [ref=e121]
+            - columnheader [ref=e122]
+        - rowgroup [ref=e123]:
+          - row "No deals found" [ref=e124]:
+            - cell "No deals found" [ref=e125]
+```

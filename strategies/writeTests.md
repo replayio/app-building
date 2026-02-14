@@ -22,4 +22,25 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
 
 - For actions that produce side effects (e.g. history entries, timeline updates), write assertions that verify both the primary effect and the side effect. Also assert the side effect happens exactly once — duplicate entries from redundant API calls are a common bug.
 
+- Avoid using `getByText()` with common words that may appear as substrings in other elements (labels,
+  options, buttons). Playwright's `getByText` is case-insensitive and uses substring matching by default.
+  Prefer `getByTestId` for precise element targeting, or use `getByRole`/`getByLabel` with exact matching.
+
+- All `data-testid` values used across all test files for the same component must be consistent. Before
+  writing cross-cutting tests that reference components tested in other spec files, read the existing
+  spec files to use the same testid values.
+
+- Strategy files are at `/repo/strategies/` (the repo root), NOT inside the app directory. Always use
+  `/repo/strategies/reviewChanges.md`, `/repo/strategies/writeTests.md`, etc.
+
 ## Tips
+
+- Before writing tests that interact with shared UI components (ConfirmDialog, modals, dropdowns),
+  read the shared component first to get the exact `data-testid` values. Do not guess test IDs.
+- When adding `data-testid` attributes to a set of components for a page, plan ALL testid additions
+  upfront by reading all components first, then make edits in batches. This avoids repeated re-reads
+  and sequential small edits to the same file.
+- When writing tests for a detail page, read: (1) the Netlify function for the entity, (2) the page
+  component, (3) 2-3 representative section components. Do not exhaustively read every file in the app.
+- If Playwright browser installation fails with permission errors, set `PLAYWRIGHT_BROWSERS_PATH` to
+  a writable directory (e.g., `/home/node/.cache/ms-playwright`) before running `npx playwright install`.

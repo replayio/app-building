@@ -49,3 +49,8 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 * If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry. Ensure this happens atomically to avoid duplicates from re-renders. Think through every field that can change and whether it needs history tracking.
 
 ## Tips
+
+- Mockup images hosted on utfs.io cannot be fetched via WebFetch. Download them with
+  `curl -L -o <local-path> <url>` and then use the Read tool to view the downloaded image files.
+- When starting from scratch with no existing plan.md, create and commit plan.md before moving on
+  to PlanPage tasks. This avoids losing the plan if the iteration runs out of turns.

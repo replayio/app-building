@@ -1,0 +1,115 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: Sales CRM
+      - navigation [ref=e7]:
+        - link "Dashboard" [ref=e8] [cursor=pointer]:
+          - /url: /clients
+          - img [ref=e9]
+          - text: Dashboard
+        - link "Clients" [ref=e14] [cursor=pointer]:
+          - /url: /clients
+          - img [ref=e15]
+          - text: Clients
+        - link "Deals" [ref=e20] [cursor=pointer]:
+          - /url: /deals
+          - img [ref=e21]
+          - text: Deals
+        - link "Tasks" [ref=e26] [cursor=pointer]:
+          - /url: /tasks
+          - img [ref=e27]
+          - text: Tasks
+        - link "Reports" [ref=e30] [cursor=pointer]:
+          - /url: /reports
+          - img [ref=e31]
+          - text: Reports
+    - link "Settings" [ref=e34] [cursor=pointer]:
+      - /url: /settings
+      - img [ref=e35]
+      - text: Settings
+  - main [ref=e38]:
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - heading "Clients" [level=1] [ref=e41]
+        - generic [ref=e42]:
+          - button "Import" [ref=e43]:
+            - img [ref=e44]
+            - text: Import
+          - button "Export" [ref=e47]:
+            - img [ref=e48]
+            - text: Export
+          - button "Add New Client" [active] [ref=e51]:
+            - img [ref=e52]
+            - text: Add New Client
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - img [ref=e55]
+          - textbox "Search clients by name, tag, or contact..." [ref=e58]
+        - generic [ref=e59]:
+          - generic [ref=e60]:
+            - combobox [ref=e61] [cursor=pointer]:
+              - 'option "Status: All" [selected]'
+              - 'option "Status: Active"'
+              - 'option "Status: Inactive"'
+              - 'option "Status: Prospect"'
+              - 'option "Status: Churned"'
+            - img
+          - generic [ref=e62]:
+            - combobox [ref=e63] [cursor=pointer]:
+              - 'option "Tags: All" [selected]'
+            - img
+          - generic [ref=e64]:
+            - combobox [ref=e65] [cursor=pointer]:
+              - 'option "Source: All" [selected]'
+            - img
+          - generic [ref=e66]:
+            - combobox [ref=e67] [cursor=pointer]:
+              - 'option "Sort: Recently Updated" [selected]'
+              - 'option "Sort: Name A-Z"'
+              - 'option "Sort: Name Z-A"'
+              - 'option "Sort: Status"'
+            - img
+      - generic [ref=e69]: No clients found.
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - heading "Add New Client" [level=2] [ref=e74]
+          - button [ref=e75]:
+            - img [ref=e76]
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: Client Name *
+            - textbox "Enter client name" [ref=e82]
+          - generic [ref=e83]:
+            - generic [ref=e84]: Type
+            - combobox [ref=e85]:
+              - option "Organization" [selected]
+              - option "Individual"
+          - generic [ref=e86]:
+            - generic [ref=e87]: Status
+            - combobox [ref=e88]:
+              - option "Prospect" [selected]
+              - option "Active"
+              - option "Inactive"
+              - option "Churned"
+          - generic [ref=e89]:
+            - generic [ref=e90]: Tags (comma-separated)
+            - textbox "e.g. Enterprise, SaaS, VIP" [ref=e91]
+          - generic [ref=e92]:
+            - generic [ref=e93]: Acquisition Source
+            - textbox "e.g. Referral, Direct Sales, Campaign" [ref=e94]
+          - generic [ref=e95]:
+            - generic [ref=e96]: Source Detail
+            - textbox "e.g. John Smith" [ref=e97]
+          - generic [ref=e98]:
+            - generic [ref=e99]: Campaign
+            - textbox "Campaign name" [ref=e100]
+          - generic [ref=e101]:
+            - generic [ref=e102]: Channel
+            - textbox "e.g. Direct Sales, Partner" [ref=e103]
+        - generic [ref=e104]:
+          - button "Cancel" [ref=e105]
+          - button "Save" [disabled] [ref=e106]
+```
