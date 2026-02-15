@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface AddDealModalProps {
   open: boolean
@@ -81,19 +82,20 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
             </div>
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Stage</label>
-              <select
-                data-testid="deal-stage-select"
+              <FilterSelect
+                testId="deal-stage-select"
                 value={stage}
-                onChange={(e) => setStage(e.target.value)}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-              >
-                <option value="lead">Lead</option>
-                <option value="qualification">Qualification</option>
-                <option value="discovery">Discovery</option>
-                <option value="proposal">Proposal Sent</option>
-                <option value="negotiation">Negotiation</option>
-                <option value="closed_won">Closed Won</option>
-              </select>
+                onChange={(v) => setStage(v)}
+                options={[
+                  { value: 'lead', label: 'Lead' },
+                  { value: 'qualification', label: 'Qualification' },
+                  { value: 'discovery', label: 'Discovery' },
+                  { value: 'proposal', label: 'Proposal Sent' },
+                  { value: 'negotiation', label: 'Negotiation' },
+                  { value: 'closed_won', label: 'Closed Won' },
+                ]}
+                className="w-full"
+              />
             </div>
           </div>
           <div>

@@ -22,6 +22,24 @@ async function navigateToFirstDealDetail(page: import('@playwright/test').Page):
   return dealId;
 }
 
+/**
+ * Helper: select an option from a custom FilterSelect component.
+ * Clicks the trigger button, then clicks the option with the given value.
+ */
+async function selectFilterOption(page: import('@playwright/test').Page, testId: string, value: string) {
+  await page.getByTestId(`${testId}-trigger`).click();
+  const optionId = value === '' ? `${testId}-option-all` : `${testId}-option-${value}`;
+  await page.getByTestId(optionId).click();
+}
+
+/**
+ * Helper: get the current value of a custom FilterSelect component.
+ * Reads the data-value attribute from the wrapper div.
+ */
+async function getFilterValue(page: import('@playwright/test').Page, testId: string): Promise<string> {
+  return await page.getByTestId(testId).getAttribute('data-value') ?? '';
+}
+
 test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
   test('DDP-HDR-01: Header displays deal info with editable fields', async ({ page }) => {
     await navigateToFirstDealDetail(page);
@@ -130,14 +148,14 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     await expect(changeStageBtn).toBeVisible();
 
     // Get current stage
-    const currentStage = await stageSelect.inputValue();
+    const currentStage = await getFilterValue(page, 'deal-header-stage-select');
 
     // Change Stage button should be disabled when same stage selected
     await expect(changeStageBtn).toBeDisabled();
 
     // Select a different stage
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
-    await stageSelect.selectOption(newStage);
+    await selectFilterOption(page, 'deal-header-stage-select', newStage);
 
     // Change Stage button should now be enabled
     await expect(changeStageBtn).not.toBeDisabled();
@@ -147,7 +165,7 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
 
     // Wait for stage to be updated
     await expect(async () => {
-      const updatedStage = await stageSelect.inputValue();
+      const updatedStage = await getFilterValue(page, 'deal-header-stage-select');
       expect(updatedStage).toBe(newStage);
     }).toPass({ timeout: 10000 });
 
@@ -155,11 +173,11 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     await expect(changeStageBtn).toBeDisabled();
 
     // Restore original stage
-    await stageSelect.selectOption(currentStage);
+    await selectFilterOption(page, 'deal-header-stage-select', currentStage);
     await expect(changeStageBtn).not.toBeDisabled();
     await changeStageBtn.click();
     await expect(async () => {
-      const restored = await stageSelect.inputValue();
+      const restored = await getFilterValue(page, 'deal-header-stage-select');
       expect(restored).toBe(currentStage);
     }).toPass({ timeout: 10000 });
   });
@@ -194,8 +212,7 @@ test.describe('DealDetailPage - StagePipeline (DDP-PIP)', () => {
     await navigateToFirstDealDetail(page);
 
     // Get current stage
-    const stageSelect = page.getByTestId('deal-header-stage-select');
-    const currentStage = await stageSelect.inputValue();
+    const currentStage = await getFilterValue(page, 'deal-header-stage-select');
 
     // Get the current indicator status
     const currentIndicator = page.getByTestId(`pipeline-stage-indicator-${currentStage}`);
@@ -203,7 +220,7 @@ test.describe('DealDetailPage - StagePipeline (DDP-PIP)', () => {
 
     // Change to a different stage
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
-    await stageSelect.selectOption(newStage);
+    await selectFilterOption(page, 'deal-header-stage-select', newStage);
     await page.getByTestId('deal-header-change-stage-button').click();
     await page.waitForLoadState('networkidle');
 
@@ -212,7 +229,7 @@ test.describe('DealDetailPage - StagePipeline (DDP-PIP)', () => {
     await expect(newIndicator).toHaveAttribute('data-current', 'true');
 
     // Restore original stage
-    await stageSelect.selectOption(currentStage);
+    await selectFilterOption(page, 'deal-header-stage-select', currentStage);
     await page.getByTestId('deal-header-change-stage-button').click();
     await page.waitForLoadState('networkidle');
   });
@@ -253,10 +270,9 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
     const countBefore = await entriesBefore.count();
 
     // Change stage to trigger new history entry
-    const stageSelect = page.getByTestId('deal-header-stage-select');
-    const currentStage = await stageSelect.inputValue();
+    const currentStage = await getFilterValue(page, 'deal-header-stage-select');
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
-    await stageSelect.selectOption(newStage);
+    await selectFilterOption(page, 'deal-header-stage-select', newStage);
     await page.getByTestId('deal-header-change-stage-button').click();
 
     // Wait for history to be updated with the new entry
@@ -267,7 +283,7 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
     }).toPass({ timeout: 10000 });
 
     // Restore original stage
-    await stageSelect.selectOption(currentStage);
+    await selectFilterOption(page, 'deal-header-stage-select', currentStage);
     await page.getByTestId('deal-header-change-stage-button').click();
     await page.waitForLoadState('networkidle');
   });

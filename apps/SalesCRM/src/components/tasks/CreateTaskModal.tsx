@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import type { TaskPriority } from '../../types'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface CreateTaskModalProps {
   open: boolean
@@ -118,17 +119,17 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
 
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Priority</label>
-                <select
-                  data-testid="create-task-priority"
+                <FilterSelect
+                  testId="create-task-priority"
                   value={priority}
-                  onChange={(e) => setPriority(e.target.value as TaskPriority)}
-                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
-                >
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                  <option value="normal">Normal</option>
-                </select>
+                  onChange={(val) => setPriority(val as TaskPriority)}
+                  options={[
+                    { value: 'high', label: 'High' },
+                    { value: 'medium', label: 'Medium' },
+                    { value: 'low', label: 'Low' },
+                    { value: 'normal', label: 'Normal' },
+                  ]}
+                />
               </div>
             </div>
 
@@ -160,36 +161,32 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
 
             <div>
               <label className="text-[12px] font-medium text-text-muted mb-1 block">Client</label>
-              <select
-                data-testid="create-task-client"
+              <FilterSelect
+                testId="create-task-client"
                 value={clientId}
-                onChange={(e) => {
-                  setClientId(e.target.value)
+                onChange={(val) => {
+                  setClientId(val)
                   setDealId('')
                 }}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
-              >
-                <option value="">— None —</option>
-                {availableClients.map((c) => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
+                options={[
+                  { value: '', label: '\u2014 None \u2014' },
+                  ...availableClients.map((c) => ({ value: c.id, label: c.name })),
+                ]}
+              />
             </div>
 
             {clientId && filteredDeals.length > 0 && (
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Deal (optional)</label>
-                <select
-                  data-testid="create-task-deal"
+                <FilterSelect
+                  testId="create-task-deal"
                   value={dealId}
-                  onChange={(e) => setDealId(e.target.value)}
-                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
-                >
-                  <option value="">No deal</option>
-                  {filteredDeals.map((d) => (
-                    <option key={d.id} value={d.id}>{d.name}</option>
-                  ))}
-                </select>
+                  onChange={(val) => setDealId(val)}
+                  options={[
+                    { value: '', label: 'No deal' },
+                    ...filteredDeals.map((d) => ({ value: d.id, label: d.name })),
+                  ]}
+                />
               </div>
             )}
           </div>

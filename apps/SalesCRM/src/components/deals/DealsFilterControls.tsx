@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface DealsFilterControlsProps {
   stage: string
@@ -14,42 +14,6 @@ interface DealsFilterControlsProps {
   onSortChange: (value: string) => void
   onDateFromChange: (value: string) => void
   onDateToChange: (value: string) => void
-}
-
-function FilterSelect({
-  label,
-  value,
-  options,
-  onChange,
-  testId,
-}: {
-  label: string
-  value: string
-  options: { value: string; label: string }[]
-  onChange: (value: string) => void
-  testId?: string
-}) {
-  return (
-    <div className="relative">
-      <select
-        data-testid={testId}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="appearance-none h-[34px] pl-3 pr-7 text-[13px] text-text-secondary bg-surface border border-border rounded-[5px] cursor-pointer hover:bg-hover focus:outline-none focus:border-accent transition-colors duration-100"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {label}: {opt.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        size={12}
-        strokeWidth={2}
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-text-disabled pointer-events-none"
-      />
-    </div>
-  )
 }
 
 export function DealsFilterControls({

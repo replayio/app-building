@@ -60,17 +60,21 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     await page.getByTestId('create-deal-name').fill(dealName);
 
     // Wait for client options to load, then select first available client
-    const clientSelect = page.getByTestId('create-deal-client');
+    await page.getByTestId('create-deal-client-trigger').click();
+    const clientMenu = page.getByTestId('create-deal-client-menu');
+    await expect(clientMenu).toBeVisible();
     await expect(async () => {
-      const options = await clientSelect.locator('option').all();
+      const options = await clientMenu.locator('button').all();
       expect(options.length).toBeGreaterThan(1);
     }).toPass({ timeout: 10000 });
-    const options = await clientSelect.locator('option').all();
-    const clientValue = await options[1].getAttribute('value');
-    await clientSelect.selectOption(clientValue!);
+    const clientOptions = await clientMenu.locator('button').all();
+    await clientOptions[1].click();
 
     await page.getByTestId('create-deal-value').fill('180000');
-    await page.getByTestId('create-deal-stage').selectOption('discovery');
+
+    // Select stage using custom FilterSelect
+    await page.getByTestId('create-deal-stage-trigger').click();
+    await page.getByTestId('create-deal-stage-option-discovery').click();
     await page.getByTestId('create-deal-owner').fill('Test Owner');
 
     await page.getByTestId('create-deal-save').click();
@@ -132,14 +136,15 @@ test.describe('DealsListPage - SummaryCards (DLP-SUM)', () => {
     await page.getByTestId('create-deal-name').fill(dealName);
 
     // Wait for client options to load
-    const clientSelect = page.getByTestId('create-deal-client');
+    await page.getByTestId('create-deal-client-trigger').click();
+    const clientMenu = page.getByTestId('create-deal-client-menu');
+    await expect(clientMenu).toBeVisible();
     await expect(async () => {
-      const opts = await clientSelect.locator('option').all();
+      const opts = await clientMenu.locator('button').all();
       expect(opts.length).toBeGreaterThan(1);
     }).toPass({ timeout: 10000 });
-    const options = await clientSelect.locator('option').all();
-    const clientValue = await options[1].getAttribute('value');
-    await clientSelect.selectOption(clientValue!);
+    const options = await clientMenu.locator('button').all();
+    await options[1].click();
 
     await page.getByTestId('create-deal-value').fill('50000');
     await page.getByTestId('create-deal-save').click();
@@ -225,19 +230,25 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     const stageFilter = page.getByTestId('deals-filter-stage');
     await expect(stageFilter).toBeVisible();
 
-    // Check that all stage options are present
-    const options = stageFilter.locator('option');
-    const optionTexts = await options.allTextContents();
-    const optionLabels = optionTexts.map((t) => t.replace('Stage: ', ''));
+    // Open the dropdown menu
+    await page.getByTestId('deals-filter-stage-trigger').click();
+    const menu = page.getByTestId('deals-filter-stage-menu');
+    await expect(menu).toBeVisible();
 
-    expect(optionLabels).toContain('All Stages');
-    expect(optionLabels).toContain('Lead');
-    expect(optionLabels).toContain('Qualification');
-    expect(optionLabels).toContain('Discovery');
-    expect(optionLabels).toContain('Proposal Sent');
-    expect(optionLabels).toContain('Negotiation');
-    expect(optionLabels).toContain('Closed Won');
-    expect(optionLabels).toContain('Closed Lost');
+    // Check that all stage options are present
+    const optionTexts = await menu.locator('button').allTextContents();
+
+    expect(optionTexts.join(',')).toContain('All Stages');
+    expect(optionTexts.join(',')).toContain('Lead');
+    expect(optionTexts.join(',')).toContain('Qualification');
+    expect(optionTexts.join(',')).toContain('Discovery');
+    expect(optionTexts.join(',')).toContain('Proposal Sent');
+    expect(optionTexts.join(',')).toContain('Negotiation');
+    expect(optionTexts.join(',')).toContain('Closed Won');
+    expect(optionTexts.join(',')).toContain('Closed Lost');
+
+    // Close the menu
+    await page.getByTestId('deals-filter-stage-trigger').click();
   });
 
   test('DLP-FLT-02: Filtering by stage shows only matching deals', async ({ page }) => {
@@ -245,7 +256,8 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     await page.waitForLoadState('networkidle');
 
     // Select "Proposal Sent" from stage filter
-    await page.getByTestId('deals-filter-stage').selectOption('proposal');
+    await page.getByTestId('deals-filter-stage-trigger').click();
+    await page.getByTestId('deals-filter-stage-option-proposal').click();
 
     // Wait for filtered results to render with all matching stages
     await expect(async () => {
@@ -272,38 +284,42 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     const clientFilter = page.getByTestId('deals-filter-client');
     await expect(clientFilter).toBeVisible();
 
+    // Open the dropdown menu
+    await page.getByTestId('deals-filter-client-trigger').click();
+    const menu = page.getByTestId('deals-filter-client-menu');
+    await expect(menu).toBeVisible();
+
     // Should have "All Clients" as the first option
-    const options = clientFilter.locator('option');
-    const firstText = await options.first().textContent();
-    expect(firstText).toContain('All Clients');
+    const firstOptionText = await menu.locator('button').first().textContent();
+    expect(firstOptionText).toContain('All Clients');
 
     // Should have more than just the "All Clients" option
-    await expect(async () => {
-      const optionCount = await options.count();
-      expect(optionCount).toBeGreaterThan(1);
-    }).toPass({ timeout: 10000 });
+    const optionCount = await menu.locator('button').count();
+    expect(optionCount).toBeGreaterThan(1);
+
+    // Close the menu
+    await page.getByTestId('deals-filter-client-trigger').click();
   });
 
   test('DLP-FLT-04: Filtering by client shows only that client\'s deals', async ({ page }) => {
     await page.goto('/deals');
     await page.waitForLoadState('networkidle');
 
-    // Wait for client filter options to load
-    const clientFilter = page.getByTestId('deals-filter-client');
-    await expect(async () => {
-      const opts = await clientFilter.locator('option').all();
-      expect(opts.length).toBeGreaterThan(1);
-    }).toPass({ timeout: 10000 });
+    // Wait for deal rows to load
+    await page.locator('[data-testid^="deal-row-"]').first().waitFor({ state: 'visible', timeout: 15000 });
 
-    const options = await clientFilter.locator('option').all();
+    // Open the client filter dropdown
+    await page.getByTestId('deals-filter-client-trigger').click();
+    const menu = page.getByTestId('deals-filter-client-menu');
+    await expect(menu).toBeVisible();
+
+    const options = await menu.locator('button').all();
 
     // Pick the second option (first real client after "All Clients")
     if (options.length > 1) {
-      const clientValue = await options[1].getAttribute('value');
-      const clientText = await options[1].textContent();
-      const clientName = clientText!.replace('Client: ', '');
+      const clientName = (await options[1].textContent())!.trim();
 
-      await clientFilter.selectOption(clientValue!);
+      await options[1].click();
 
       // Wait for filtered results to render with the correct client
       await expect(async () => {
@@ -328,15 +344,21 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     const statusFilter = page.getByTestId('deals-filter-status');
     await expect(statusFilter).toBeVisible();
 
-    const options = statusFilter.locator('option');
-    const optionTexts = await options.allTextContents();
-    const optionLabels = optionTexts.map((t) => t.replace('Status: ', ''));
+    // Open the dropdown menu
+    await page.getByTestId('deals-filter-status-trigger').click();
+    const menu = page.getByTestId('deals-filter-status-menu');
+    await expect(menu).toBeVisible();
 
-    expect(optionLabels).toContain('All');
-    expect(optionLabels).toContain('Active');
-    expect(optionLabels).toContain('Won');
-    expect(optionLabels).toContain('Lost');
-    expect(optionLabels).toContain('On Hold');
+    const optionTexts = await menu.locator('button').allTextContents();
+
+    expect(optionTexts.join(',')).toContain('All');
+    expect(optionTexts.join(',')).toContain('Active');
+    expect(optionTexts.join(',')).toContain('Won');
+    expect(optionTexts.join(',')).toContain('Lost');
+    expect(optionTexts.join(',')).toContain('On Hold');
+
+    // Close the menu
+    await page.getByTestId('deals-filter-status-trigger').click();
   });
 
   test('DLP-FLT-06: Date range filter limits deals by close date', async ({ page }) => {
@@ -366,16 +388,22 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     const sortFilter = page.getByTestId('deals-filter-sort');
     await expect(sortFilter).toBeVisible();
 
+    // Open the dropdown menu
+    await page.getByTestId('deals-filter-sort-trigger').click();
+    const menu = page.getByTestId('deals-filter-sort-menu');
+    await expect(menu).toBeVisible();
+
     // Check sort options exist
-    const options = sortFilter.locator('option');
-    const optionTexts = await options.allTextContents();
-    const optionLabels = optionTexts.map((t) => t.replace('Sort by: ', ''));
+    const optionTexts = await menu.locator('button').allTextContents();
 
-    expect(optionLabels).toContain('Close Date (Newest)');
-    expect(optionLabels).toContain('Close Date (Oldest)');
+    expect(optionTexts.join(',')).toContain('Close Date (Newest)');
+    expect(optionTexts.join(',')).toContain('Close Date (Oldest)');
 
-    // Default is Close Date (Newest)
-    await expect(sortFilter).toHaveValue('close_date_desc');
+    // Close menu
+    await page.getByTestId('deals-filter-sort-trigger').click();
+
+    // Default is Close Date (Newest) — check data-value attribute
+    await expect(sortFilter).toHaveAttribute('data-value', 'close_date_desc');
   });
 
   test('DLP-FLT-08: Search filters deals by name', async ({ page }) => {
