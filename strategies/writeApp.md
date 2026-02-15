@@ -36,9 +36,8 @@ Unpack the task for implementing a page into the following:
   not the git repository root.
 
 - When using the neon serverless driver (`@neondatabase/serverless`), ONLY use tagged template literal
-  syntax for queries: `` sql`SELECT * FROM table WHERE id = ${id}` ``. NEVER use `sql(queryString, paramsArray)` —
-  it is not supported and will silently fail or return incorrect results. For dynamic WHERE clauses,
-  build composable query fragments and conditionally include them in the tagged template.
+  syntax for queries: `` sql`SELECT * FROM table WHERE id = ${id}` ``. NEVER use `sql(queryString, paramsArray)`.
+  For dynamic WHERE clausess, build composable query fragments and conditionally include them in the tagged template.
 
 - For database columns with DATE, TIMESTAMP, or UUID types, always convert empty strings to null
   before inserting or updating. Use `value || null` instead of `value ?? null`, because the nullish

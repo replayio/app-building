@@ -1,38 +1,23 @@
 import { execFileSync, spawn } from "child_process";
 import { writeFileSync, appendFileSync, mkdirSync, renameSync } from "fs";
-import { join, resolve, basename } from "path";
-import { Command } from "commander";
+import { join, basename } from "path";
 
+const REPO_ROOT = "/repo";
+const STRATEGY_FILE = join(REPO_ROOT, "strategies", "performTasks.md");
+const LOGS_DIR = join(REPO_ROOT, "logs");
 const ReplayMCPServer = "https://dispatch.replay.io/nut/mcp";
 
-// --- CLI Arg Parsing ---
+// --- Args ---
 
-interface Args {
-  appName: string;
-  repoRoot: string;
-  strategyFiles: string[];
-  maxIterations: number | null;
+const appDir = process.argv[2];
+if (!appDir) {
+  console.error("Usage: npx tsx src/performTasks.ts <appDir>");
+  process.exit(1);
 }
 
-function parseArgs(): Args {
-  const program = new Command();
-  program
-    .requiredOption("--app <name>", "app name (under apps/<name>/)")
-    .requiredOption("--repo-root <path>", "repo root directory (mounted as /repo)")
-    .requiredOption("--load <basenames...>", "strategy file basenames (from strategies/)")
-    .option("--max-iterations <n>", "maximum number of iterations to run", parseInt)
-    .parse();
+const maxIterations = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
 
-  const opts = program.opts();
-  const repoRoot = resolve(opts.repoRoot);
-
-  return {
-    appName: opts.app,
-    repoRoot,
-    strategyFiles: opts.load.map((s: string) => join(repoRoot, "strategies", s)),
-    maxIterations: opts.maxIterations ?? null,
-  };
-}
+// --- Helpers ---
 
 function formatTimestamp(date: Date): string {
   return date.toISOString().replace(/[:.]/g, "-");
@@ -68,16 +53,14 @@ interface ClaudeResponse {
   session_id?: string;
 }
 
-function runClaude(strategyFiles: string[], targetDir: string, log: (msg: string) => void): Promise<ClaudeResponse> {
+function runClaude(targetDir: string, log: (msg: string) => void): Promise<ClaudeResponse> {
   return new Promise((resolvePromise, reject) => {
-    const fileList = strategyFiles.join(", ");
-    const prompt = `Read ${fileList} and follow the instructions exactly.`;
+    const prompt = `Read ${STRATEGY_FILE} and follow the instructions exactly.`;
 
     const mcpConfig: Record<string, any> = {
       mcpServers: {},
     };
 
-    // Add replay MCP server if RECORD_REPLAY_API_KEY is available
     if (process.env.RECORD_REPLAY_API_KEY) {
       mcpConfig.mcpServers.replay = {
         type: "http",
@@ -183,15 +166,8 @@ function gitCommit(targetDir: string, iteration: number, log: (msg: string) => v
 
 // --- Run Loop ---
 
-async function runLoop(
-  targetDir: string,
-  strategyFiles: string[],
-  maxIterations: number | null,
-): Promise<void> {
-  const logsDir = join(targetDir, "logs");
-  mkdirSync(logsDir, { recursive: true });
-
-  const strategyNames = strategyFiles.map((f) => basename(f));
+async function runLoop(): Promise<void> {
+  mkdirSync(LOGS_DIR, { recursive: true });
 
   let iteration = 0;
   let totalCost = 0;
@@ -205,18 +181,18 @@ async function runLoop(
       break;
     }
 
-    const currentLogFile = join(logsDir, "iteration-current.log");
+    const currentLogFile = join(LOGS_DIR, "iteration-current.log");
     writeFileSync(currentLogFile, ""); // truncate
     log = createLogger(currentLogFile);
 
-    const initialRevision = getGitRevision(targetDir);
+    const initialRevision = getGitRevision(appDir);
     log(`Initial revision: ${initialRevision}`);
 
-    log(`Target: ${targetDir}`);
-    log(`Strategies: ${strategyNames.join(", ")}`);
+    log(`Target: ${appDir}`);
+    log(`Strategy: ${basename(STRATEGY_FILE)}`);
     log(`Max iterations: ${maxIterations ?? "unlimited"}`);
 
-    console.log(`[${basename(targetDir)}] iteration ${iteration}, logging to ${currentLogFile}`);
+    console.log(`[${basename(appDir)}] iteration ${iteration}, logging to ${currentLogFile}`);
 
     log(`=== Iteration ${iteration} ===`);
     log(`Running Claude...`);
@@ -224,7 +200,7 @@ async function runLoop(
 
     let response: ClaudeResponse;
     try {
-      response = await runClaude(strategyFiles, targetDir, log);
+      response = await runClaude(appDir, log);
     } catch (e: any) {
       log(`Error running claude: ${e} ${e.message}`);
       if (maxIterations !== null) {
@@ -246,18 +222,17 @@ async function runLoop(
     }
 
     // Commit code changes while log is still iteration-current.log (gitignored)
-    gitCommit(targetDir, iteration, log);
+    gitCommit(appDir, iteration, log);
     log(`Committed iteration ${iteration}`);
 
-    const finalRevision = getGitRevision(targetDir);
+    const finalRevision = getGitRevision(appDir);
     log(`Final revision: ${finalRevision}`);
 
-    // Rename log to timestamped file and commit separately
+    // Rename log to timestamped file
     const timestamp = formatTimestamp(new Date());
-    const finalLogFile = join(logsDir, `iteration-${timestamp}.log`);
+    const finalLogFile = join(LOGS_DIR, `iteration-${timestamp}.log`);
     renameSync(currentLogFile, finalLogFile);
     log = createLogger(finalLogFile);
-    gitCommit(targetDir, iteration, log);
 
     if (response.result && response.result.includes("<DONE/>")) {
       log(`Agent signaled <DONE/>. Stopping.`);
@@ -270,13 +245,7 @@ async function runLoop(
 
 // --- Main ---
 
-async function main(): Promise<void> {
-  const args = parseArgs();
-  const appDir = join(args.repoRoot, "apps", args.appName);
-  await runLoop(appDir, args.strategyFiles, args.maxIterations);
-}
-
-main().catch((e) => {
+runLoop().catch((e) => {
   console.error(e);
   process.exit(1);
 });

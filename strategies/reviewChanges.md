@@ -15,8 +15,8 @@ strategy used for the task.
 
 Follow these instructions exactly.
 
-1. Pick a file `logs/iteration-<timestamp>.log`. Ignore `iteration-current.log` which is the current
-   iteration and still being written to.
+1. Pick a file `/repo/logs/iteration-<timestamp>.log` or `/repo/logs/worker-<timestamp>.log`.
+   Ignore `*-current.log` files which are still being written to.
 2. Announce 'REVIEW: <logFile>'
 3. Run `npm run read-log /path/to/log` from the root to get the conversation and other key details.
 4. Read the code changes made between the start/end revisions in the log file:
@@ -29,7 +29,7 @@ Follow these instructions exactly.
 6. Look for any problems described in the sections below.
 7. If any are found, make changes to the code and/or strategies to correct them.
    You MUST update the relevant stage instruction file if you found any difficulties or directive violations.
-8. Move the log file to logs/reviewed/iteration-<timestamp>.log
+8. Move the log file to /repo/logs/reviewed/
    NEVER move a log to reviewed/ without actually completing steps 2-6.
    Batch-moving multiple logs without reviewing each one's git diff is not acceptable.
 
