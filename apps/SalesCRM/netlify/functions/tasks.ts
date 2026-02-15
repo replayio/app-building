@@ -10,8 +10,49 @@ export default async function handler(req: Request) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
-  // Path: /tasks or /tasks/:taskId
+  // Path: /tasks, /tasks/:taskId, or /tasks/:taskId/notes
   const taskId = pathParts.length >= 4 ? pathParts[3] : null
+  const subResource = pathParts.length >= 5 ? pathParts[4] : null
+
+  // GET /tasks/:taskId — single task detail with notes
+  if (req.method === 'GET' && taskId && !subResource) {
+    const rows = await sql`
+      SELECT t.*, c.name as client_name, d.name as deal_name
+      FROM tasks t
+      LEFT JOIN clients c ON t.client_id = c.id
+      LEFT JOIN deals d ON t.deal_id = d.id
+      WHERE t.id = ${taskId}::uuid
+    `
+    if (rows.length === 0) {
+      return new Response(JSON.stringify({ error: 'Task not found' }), { status: 404 })
+    }
+
+    const notes = await sql`
+      SELECT * FROM task_notes WHERE task_id = ${taskId}::uuid ORDER BY created_at DESC
+    `
+
+    return Response.json({ task: rows[0], notes })
+  }
+
+  // POST /tasks/:taskId/notes — add a note to a task
+  if (req.method === 'POST' && taskId && subResource === 'notes') {
+    const body = await req.json() as { content: string; author?: string }
+    const rows = await sql`
+      INSERT INTO task_notes (task_id, content, author)
+      VALUES (${taskId}::uuid, ${body.content}, ${body.author ?? 'User'})
+      RETURNING *
+    `
+    return Response.json(rows[0], { status: 201 })
+  }
+
+  // DELETE /tasks/:taskId/notes/:noteId — delete a note
+  if (req.method === 'DELETE' && taskId && subResource === 'notes') {
+    const noteId = pathParts.length >= 6 ? pathParts[5] : null
+    if (noteId) {
+      await sql`DELETE FROM task_notes WHERE id = ${noteId}::uuid AND task_id = ${taskId}::uuid`
+      return Response.json({ success: true })
+    }
+  }
 
   // GET /tasks — list all upcoming (uncompleted) tasks with filters
   if (req.method === 'GET' && !taskId) {

@@ -131,11 +131,7 @@ export function TasksListPage() {
   }
 
   function handleTaskClick(task: Task) {
-    if (task.deal_id) {
-      navigate(`/deals/${task.deal_id}`)
-    } else if (task.client_id) {
-      navigate(`/clients/${task.client_id}`)
-    }
+    navigate(`/tasks/${task.id}`)
   }
 
   return (
