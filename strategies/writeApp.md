@@ -51,6 +51,18 @@ Unpack the task for implementing a page into the following:
 - When building modals that reference other entities (e.g., adding a relationship to a person), use a
   searchable select/dropdown component, not a plain text input for IDs.
 
+- Navigation sidebars and menus must not contain duplicate links pointing to the same URL. Each
+  navigation item must have a unique route. Remove or consolidate any entries that would navigate
+  to the same destination.
+
+- Never use native HTML `<select>` elements for filter controls or dropdowns when the app has a
+  custom design system or style guide. Native form elements cannot be fully styled and will revert
+  to browser defaults on interaction. Always use custom dropdown components with React state.
+
+- Attachment displays should show file-type-specific icons or thumbnails (e.g., image preview for
+  images, document icon for PDFs, spreadsheet icon for CSVs). Do not use a single generic file
+  icon for all attachment types.
+
 ## Tips
 
 - When scaffolding a new Vite project, the target directory must be empty. Scaffold in a temp directory
