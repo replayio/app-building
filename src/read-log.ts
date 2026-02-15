@@ -36,7 +36,7 @@ for (const rawLine of content.split("\n")) {
     console.log(`${BOLD}${line}${RESET}`);
     continue;
   }
-  if (line.startsWith("Target:") || line.startsWith("Strategies:") || line.startsWith("Max iterations:") || line.startsWith("Log file:")) {
+  if (line.startsWith("Target:") || line.startsWith("Strategy:") || line.startsWith("Strategies:") || line.startsWith("Max iterations:") || line.startsWith("Log file:")) {
     console.log(`${DIM}${line}${RESET}`);
     continue;
   }
@@ -77,7 +77,8 @@ for (const rawLine of content.split("\n")) {
   try {
     event = JSON.parse(line);
   } catch {
-    // Not JSON — might be prompt content between delimiters, skip it
+    // Not JSON — print as plain text (covers worker logs and other non-JSON content)
+    console.log(line);
     continue;
   }
 

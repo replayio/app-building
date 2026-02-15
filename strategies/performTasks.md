@@ -4,7 +4,8 @@ This strategy document describes the process and requirements for app developmen
 
 ULTRA IMPORTANT: Follow these directions exactly.
 
-1. Look for files `logs/iteration-...` describing recent changes made. While there are any,
+1. Look for files in `/repo/logs/` named `iteration-<timestamp>.log` or `worker-<timestamp>.log` describing
+   recent changes made. While there are any (ignoring `*-current.log` files which are still being written to),
    follow instructions from `reviewChanges.md` to process them.
 2. Read `docs/plan.md` to understand current progress. If this file is missing or has no pending tasks, signal <DONE/> and exit.
 3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
