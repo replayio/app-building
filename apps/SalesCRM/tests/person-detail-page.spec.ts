@@ -223,8 +223,8 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
     const modal = page.getByTestId('add-relationship-modal');
     await expect(modal).toBeVisible();
 
-    // Should have Person ID and Relationship Type fields
-    await expect(modal.getByText('Person ID *')).toBeVisible();
+    // Should have Person and Relationship Type fields
+    await expect(modal.getByText('Person *')).toBeVisible();
     await expect(modal.getByText('Relationship Type *')).toBeVisible();
 
     // Save and Cancel buttons

@@ -29,7 +29,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npx netlify dev --port 8888',
+    command: 'npx netlify dev --port 8888 --functions ./netlify/functions',
     url: 'http://localhost:8888',
     reuseExistingServer: true,
     timeout: 60000,

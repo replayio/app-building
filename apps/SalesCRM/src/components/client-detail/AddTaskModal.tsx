@@ -68,6 +68,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Description</label>
             <textarea
+              data-testid="task-description-input"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Task description"
@@ -79,6 +80,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Due Date</label>
               <input
+                data-testid="task-due-date-input"
                 type="datetime-local"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
@@ -88,6 +90,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Priority</label>
               <select
+                data-testid="task-priority-select"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -102,6 +105,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Associated Deal (optional)</label>
             <select
+              data-testid="task-associated-deal-select"
               value={dealId}
               onChange={(e) => setDealId(e.target.value)}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -115,6 +119,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="task-cancel-button"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >

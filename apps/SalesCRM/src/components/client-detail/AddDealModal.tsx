@@ -82,6 +82,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Stage</label>
               <select
+                data-testid="deal-stage-select"
                 value={stage}
                 onChange={(e) => setStage(e.target.value)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -98,6 +99,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Owner</label>
             <input
+              data-testid="deal-owner-input"
               type="text"
               value={owner}
               onChange={(e) => setOwner(e.target.value)}
@@ -109,6 +111,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Probability (%)</label>
               <input
+                data-testid="deal-probability-input"
                 type="number"
                 value={probability}
                 onChange={(e) => setProbability(e.target.value)}
@@ -121,6 +124,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Expected Close Date</label>
               <input
+                data-testid="deal-expected-close-date-input"
                 type="date"
                 value={closeDate}
                 onChange={(e) => setCloseDate(e.target.value)}
@@ -131,6 +135,7 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="deal-cancel-button"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
