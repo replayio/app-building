@@ -7,7 +7,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 ## 1. ClientsListPage (/clients)
 
 ### Components
-- **SidebarNavigation**: Left sidebar with nav links (Dashboard, Clients, Deals, Tasks, Reports, Settings) and bottom Settings link
+- **SidebarNavigation**: Left sidebar with nav links (Clients, Deals, Tasks)
 - **PageHeader**: "Clients" title with Import, Export, and "+ Add New Client" buttons
 - **SearchBar**: Text input for searching clients by name, tag, or contact
 - **FilterControls**: Dropdown filters for Status (All/Active/Inactive/Prospect/Churned), Tags (All/specific tags), Source (All/specific sources), and Sort (Recently Updated, Name A-Z, etc.)
@@ -22,7 +22,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CLP-NAV-01: Sidebar displays all navigation items**
 - Initial: User navigates to /clients
 - Action: Observe the sidebar
-- Expected: Sidebar shows navigation links: Dashboard, Clients, Deals, Tasks, Reports, Settings. The "Clients" link is visually highlighted as active.
+- Expected: Sidebar shows navigation links: Clients, Deals, Tasks. The "Clients" link is visually highlighted as active.
 
 **CLP-NAV-02: Sidebar navigation links route correctly**
 - Initial: User is on /clients
