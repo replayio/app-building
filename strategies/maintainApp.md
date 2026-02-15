@@ -14,10 +14,10 @@ You will continue performing additional rounds of maintenance as needed.
 
 5. deployment.md: Deploy the updated app to production.
 
-You must already know the round of maintenance you are currently doing. If you don't, signal <DONE> and exit.
+Read the tasks in docs/plan.md. There should not already be pending tasks for any
+round of maintenance in progress in plan.md. If there is no active round of maintenance,
+start a new one by adding pending tasks for each of the above stages, using a
+"<strategy-file>: Unpack<StrategyName>: Unpack subtasks" format. Also add a section at
+the end of plan.md for notes about the work done during maintenance.
 
-Read the tasks in docs/plan.md. If the file does not have a summary section for the round of maintenance
-you're working on, add the section and pending tasks for each of the above stages, using a
-"<strategy-file>: Unpack<StrategyName>: Unpack subtasks" format.
-
-Then, follow the strategy in performTasks.md to continue maintaining the application.
+Then run the `performTasks` script according to your instructions.

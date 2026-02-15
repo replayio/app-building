@@ -1,5 +1,5 @@
 import { execFileSync } from "child_process";
-import { readFileSync, readdirSync, statSync } from "fs";
+import { readFileSync, readdirSync } from "fs";
 import { join, resolve } from "path";
 
 const RESET = "\x1b[0m";
@@ -10,10 +10,9 @@ const GREEN = "\x1b[32m";
 const YELLOW = "\x1b[33m";
 const RED = "\x1b[31m";
 
-interface TargetStatus {
-  name: string;
-  dir: string;
+interface Status {
   containerRunning: boolean;
+  containerName: string | null;
   logFile: string | null;
   completedIterations: number;
   currentIteration: number | null;
@@ -25,24 +24,22 @@ interface TargetStatus {
   lastActivity: string | null;
 }
 
-function isContainerRunning(appName: string): boolean {
+function getRunningContainers(): string[] {
   try {
     const out = execFileSync(
       "docker",
-      ["ps", "--filter", `name=app-building-${appName}`, "--format", "{{.Names}}"],
+      ["ps", "--filter", "name=app-building-", "--format", "{{.Names}}"],
       { encoding: "utf-8", timeout: 5000 },
     ).trim();
-    return out.includes(`app-building-${appName}`);
+    return out ? out.split("\n").filter(Boolean) : [];
   } catch {
-    return false;
+    return [];
   }
 }
 
-function getIterationLogFiles(appDir: string): string[] {
-  const logsDir = join(appDir, "logs");
+function getIterationLogFiles(logsDir: string): string[] {
   const files: string[] = [];
 
-  // Collect from logs/ and logs/reviewed/
   for (const dir of [logsDir, join(logsDir, "reviewed")]) {
     let entries: string[];
     try {
@@ -60,7 +57,7 @@ function getIterationLogFiles(appDir: string): string[] {
   return files.sort();
 }
 
-function parseIterationLogs(logPaths: string[]): Omit<TargetStatus, "name" | "dir" | "containerRunning" | "logFile"> {
+function parseIterationLogs(logPaths: string[]): Omit<Status, "containerRunning" | "containerName" | "logFile"> {
   let completedIterations = 0;
   let currentIteration: number | null = null;
   let maxIterations: string | null = null;
@@ -141,126 +138,82 @@ function formatTimeSince(isoTimestamp: string): string {
   return `${Math.floor(diffSec / 86400)}d ago`;
 }
 
-function printStatus(status: TargetStatus): void {
-  const nameLabel = `${BOLD}${CYAN}${status.name}${RESET}`;
+function main(): void {
+  const projectRoot = resolve(__dirname, "..");
+  const logsDir = join(projectRoot, "logs");
+
+  console.log(`${BOLD}Container Status${RESET}`);
+
+  // Check running containers
+  const running = getRunningContainers();
+
+  // Read logs
+  const logFiles = getIterationLogFiles(logsDir);
 
   let stateLabel: string;
-  if (status.finished && status.finishReason === "done") {
+  if (logFiles.length === 0 && running.length === 0) {
+    stateLabel = `${DIM}NO LOGS${RESET}`;
+    console.log(`\n  ${stateLabel}`);
+    console.log(`  ${DIM}No log files found in ${logsDir}/${RESET}`);
+    console.log();
+    return;
+  }
+
+  const parsed = logFiles.length > 0
+    ? parseIterationLogs(logFiles)
+    : {
+        completedIterations: 0,
+        currentIteration: null,
+        maxIterations: null,
+        totalCost: 0,
+        finished: false,
+        finishReason: null,
+        lastError: null,
+        lastActivity: null,
+      };
+
+  if (parsed.finished && parsed.finishReason === "done") {
     stateLabel = `${BOLD}${GREEN}DONE${RESET}`;
-  } else if (status.finished) {
-    stateLabel = `${YELLOW}STOPPED${RESET} ${DIM}(${status.finishReason})${RESET}`;
-  } else if (status.containerRunning) {
+  } else if (parsed.finished) {
+    stateLabel = `${YELLOW}STOPPED${RESET} ${DIM}(${parsed.finishReason})${RESET}`;
+  } else if (running.length > 0) {
     stateLabel = `${BOLD}${GREEN}RUNNING${RESET}`;
-  } else if (status.logFile) {
+  } else if (logFiles.length > 0) {
     stateLabel = `${RED}NOT RUNNING${RESET}`;
   } else {
     stateLabel = `${DIM}NO LOGS${RESET}`;
   }
 
-  console.log(`\n${nameLabel}  ${stateLabel}`);
+  console.log(`\n  ${stateLabel}`);
 
-  if (!status.logFile) {
-    console.log(`  ${DIM}No log files found in ${status.dir}/logs/${RESET}`);
-    return;
+  if (running.length > 0) {
+    console.log(`  ${DIM}Containers:${RESET} ${running.join(", ")}`);
   }
 
-  const iterInfo = status.maxIterations
-    ? `${status.completedIterations}/${status.maxIterations} iterations`
-    : `${status.completedIterations} iterations`;
+  const iterInfo = parsed.maxIterations
+    ? `${parsed.completedIterations}/${parsed.maxIterations} iterations`
+    : `${parsed.completedIterations} iterations`;
 
   console.log(`  ${DIM}Progress:${RESET}  ${iterInfo}`);
 
-  if (status.totalCost > 0) {
-    console.log(`  ${DIM}Cost:${RESET}      $${status.totalCost.toFixed(4)}`);
+  if (parsed.totalCost > 0) {
+    console.log(`  ${DIM}Cost:${RESET}      $${parsed.totalCost.toFixed(4)}`);
   }
 
-  if (status.lastActivity) {
-    console.log(`  ${DIM}Last log:${RESET}  ${formatTimeSince(status.lastActivity)}`);
+  if (parsed.lastActivity) {
+    console.log(`  ${DIM}Last log:${RESET}  ${formatTimeSince(parsed.lastActivity)}`);
   }
 
-  if (status.containerRunning && status.currentIteration != null) {
-    console.log(`  ${DIM}Working on:${RESET} iteration ${status.currentIteration}`);
+  if (running.length > 0 && parsed.currentIteration != null) {
+    console.log(`  ${DIM}Working on:${RESET} iteration ${parsed.currentIteration}`);
   }
 
-  if (status.lastError) {
-    console.log(`  ${RED}Last error: ${status.lastError}${RESET}`);
+  if (parsed.lastError) {
+    console.log(`  ${RED}Last error: ${parsed.lastError}${RESET}`);
   }
-
-  console.log(`  ${DIM}Log: ${status.logFile}${RESET}`);
-}
-
-function getAppStatus(appName: string, appsDir: string): TargetStatus {
-  const appDir = join(appsDir, appName);
-  const running = isContainerRunning(appName);
-  const logFiles = getIterationLogFiles(appDir);
 
   if (logFiles.length > 0) {
-    const parsed = parseIterationLogs(logFiles);
-    return {
-      name: appName,
-      dir: appDir,
-      containerRunning: running,
-      logFile: logFiles[logFiles.length - 1],
-      ...parsed,
-    };
-  }
-
-  return {
-    name: appName,
-    dir: appDir,
-    containerRunning: running,
-    logFile: null,
-    completedIterations: 0,
-    currentIteration: null,
-    maxIterations: null,
-    totalCost: 0,
-    finished: false,
-    finishReason: null,
-    lastError: null,
-    lastActivity: null,
-  };
-}
-
-function listAppNames(appsDir: string): string[] {
-  let entries: string[];
-  try {
-    entries = readdirSync(appsDir);
-  } catch {
-    return [];
-  }
-  return entries
-    .filter((e) => {
-      try {
-        return statSync(join(appsDir, e)).isDirectory();
-      } catch {
-        return false;
-      }
-    })
-    .sort();
-}
-
-function main(): void {
-  const projectRoot = resolve(__dirname, "..");
-  const appsDir = join(projectRoot, "apps");
-  const appName = process.argv[2];
-
-  console.log(`${BOLD}Container Status${RESET}`);
-
-  if (appName) {
-    // Show status for a single app
-    const status = getAppStatus(appName, appsDir);
-    printStatus(status);
-  } else {
-    // Show status for all apps
-    const appNames = listAppNames(appsDir);
-    if (appNames.length === 0) {
-      console.log(`\n${DIM}No apps found in ${appsDir}/${RESET}`);
-    } else {
-      for (const name of appNames) {
-        const status = getAppStatus(name, appsDir);
-        printStatus(status);
-      }
-    }
+    console.log(`  ${DIM}Log: ${logFiles[logFiles.length - 1]}${RESET}`);
   }
 
   console.log();

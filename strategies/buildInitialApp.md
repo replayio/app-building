@@ -13,6 +13,6 @@ You will build the app in the following stages, with strategy files to additiona
 
 5. deployment.md: Deploy the app to production.
 
-If docs/plan.md does not exist, create the file with one "<strategy-file>: Unpack<StrategyName>: Unpack subtasks" task for each stage.
+Create the docs/plan.md file with one "<strategy-file>: Unpack<StrategyName>: Unpack subtasks" task for each stage.
 
-Then, follow the strategy in performTasks.md to continue building the application.
+Then run the `performTasks` script according to your instructions.
