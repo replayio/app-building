@@ -39,10 +39,10 @@ RUN [REDACTED]io update
 RUN git config --system user.name "App Builder" && \
     git config --system user.email "app-builder@localhost"
 
-# Copy loop script
+# Copy app scripts (performTasks.ts etc. for use inside container)
 WORKDIR /app-building
 COPY package.json ./
 RUN npm install --production
 COPY src/ ./src/
 
-ENTRYPOINT ["npx", "tsx", "src/loop.ts"]
+# No entrypoint - command is provided by docker run (either claude interactive or claude -p "prompt")
