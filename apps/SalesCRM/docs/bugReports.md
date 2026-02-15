@@ -7,3 +7,5 @@
 2/14/2026: Add a task detail page that has all pertinent information and can be used to mark the task completed or canceled, or add notes
 
 2/14/2026: On deals page the dropdowns look good but when clicked they revert to the browser's default styling which is ugly. when clicked they should be styled appropriately
+
+2/14/2026: Attachments on clients page should show a preview with the file type and thumbnail for images. all attachment displays should look this way
