@@ -213,10 +213,10 @@
   - [x] fixBugReport.md: FixBugAttachmentPreview: Added AttachmentPreview component with file-type-specific icons and image thumbnails, updated both AttachmentsSection and DealAttachmentsSection
   - [x] fixBugReport.md: UpdateTestsAttachmentPreview: Updated CDP-ATT-01/02 and DDP-ATT-01 test specs with file-type-specific preview descriptions, updated CDP-ATT-02 test assertions. All 9 ATT tests pass.
   - [x] fixBugReport.md: ResolveBugAttachmentPreview: Bug moved to Unreviewed section in bugReports.md
-  - [ ] fixBugReport.md: AnalyzeBugDealsDropdownStyling: Analyze deals page dropdown styling reverting to browser defaults
-  - [ ] fixBugReport.md: FixBugDealsDropdownStyling: Fix dropdown styling on deals page
-  - [ ] fixBugReport.md: UpdateTestsDealsDropdownStyling: Update spec and tests for dropdown styling
-  - [ ] fixBugReport.md: ResolveBugDealsDropdownStyling: Mark bug as resolved
+  - [x] fixBugReport.md: AnalyzeBugDealsDropdownStyling: Native `<select>` elements show browser-default dropdown menus — see docs/bugs/DealsDropdownStyling.md
+  - [x] fixBugReport.md: FixBugDealsDropdownStyling: Replaced native `<select>` with custom dropdown component in FilterSelect
+  - [x] fixBugReport.md: UpdateTestsDealsDropdownStyling: Updated DLP-FLT-01 through DLP-FLT-07 tests for custom dropdown interactions. All 8 DLP-FLT tests pass.
+  - [x] fixBugReport.md: ResolveBugDealsDropdownStyling: Bug moved to Unreviewed in bugReports.md
   - [ ] fixBugReport.md: FixBugTaskDetailPage: Add task detail page with completion/cancellation and notes
   - [ ] fixBugReport.md: UpdateTestsTaskDetailPage: Update spec and tests for task detail page
   - [ ] fixBugReport.md: ResolveBugTaskDetailPage: Mark bug as resolved
