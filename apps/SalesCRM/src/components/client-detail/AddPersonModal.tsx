@@ -77,6 +77,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Title</label>
             <input
+              data-testid="person-title-input"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -88,6 +89,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Email</label>
               <input
+                data-testid="person-email-input"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -98,6 +100,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Phone</label>
               <input
+                data-testid="person-phone-input"
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -109,6 +112,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="person-cancel-button"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >

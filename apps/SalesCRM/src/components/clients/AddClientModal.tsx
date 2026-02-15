@@ -88,6 +88,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
             <select
+              data-testid="client-type-select"
               value={type}
               onChange={(e) => setType(e.target.value as ClientType)}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -100,6 +101,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Status</label>
             <select
+              data-testid="client-status-select"
               value={status}
               onChange={(e) => setStatus(e.target.value as ClientStatus)}
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -114,6 +116,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Tags (comma-separated)</label>
             <input
+              data-testid="client-tags-input"
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
@@ -125,6 +128,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Acquisition Source</label>
             <input
+              data-testid="client-source-input"
               type="text"
               value={sourceType}
               onChange={(e) => setSourceType(e.target.value)}
@@ -136,6 +140,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Source Detail</label>
             <input
+              data-testid="client-source-detail-input"
               type="text"
               value={sourceDetail}
               onChange={(e) => setSourceDetail(e.target.value)}
@@ -147,6 +152,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Campaign</label>
             <input
+              data-testid="client-campaign-input"
               type="text"
               value={campaign}
               onChange={(e) => setCampaign(e.target.value)}
@@ -158,6 +164,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Channel</label>
             <input
+              data-testid="client-channel-input"
               type="text"
               value={channel}
               onChange={(e) => setChannel(e.target.value)}
@@ -168,6 +175,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="client-cancel-button"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >

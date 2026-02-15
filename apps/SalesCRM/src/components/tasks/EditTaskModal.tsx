@@ -82,6 +82,7 @@ export function EditTaskModal({ open, task, onClose, onSave }: EditTaskModalProp
             <div>
               <label className="text-[12px] font-medium text-text-muted mb-1 block">Description</label>
               <textarea
+                data-testid="edit-task-description-input"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Task description"
@@ -123,6 +124,7 @@ export function EditTaskModal({ open, task, onClose, onSave }: EditTaskModalProp
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee Name</label>
                 <input
                   type="text"
+                  data-testid="edit-task-assignee-name-input"
                   value={assigneeName}
                   onChange={(e) => setAssigneeName(e.target.value)}
                   placeholder="e.g., Sarah J."
@@ -134,6 +136,7 @@ export function EditTaskModal({ open, task, onClose, onSave }: EditTaskModalProp
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee Role</label>
                 <input
                   type="text"
+                  data-testid="edit-task-assignee-role-input"
                   value={assigneeRole}
                   onChange={(e) => setAssigneeRole(e.target.value)}
                   placeholder="e.g., PM"

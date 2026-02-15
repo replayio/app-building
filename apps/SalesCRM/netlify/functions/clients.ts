@@ -6,14 +6,6 @@ function getDb() {
   return neon(url)
 }
 
-const CLIENT_SELECT_FIELDS = `c.*,
-  (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
-  COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
-  (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
-  (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
-  (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
-  (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due`
-
 export default async function handler(req: Request) {
   const sql = getDb()
   const url = new URL(req.url)
@@ -22,10 +14,16 @@ export default async function handler(req: Request) {
 
   // GET /clients/:id
   if (req.method === 'GET' && resourceId) {
-    const rows = await sql(
-      `SELECT ${CLIENT_SELECT_FIELDS} FROM clients c WHERE c.id = $1`,
-      [resourceId]
-    )
+    const rows = await sql`
+      SELECT c.*,
+        (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
+        COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
+        (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
+        (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
+        (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
+        (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
+      FROM clients c WHERE c.id = ${resourceId}::uuid
+    `
     if (rows.length === 0) {
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 })
     }
@@ -44,50 +42,56 @@ export default async function handler(req: Request) {
     const source = url.searchParams.get('source') ?? ''
     const sort = url.searchParams.get('sort') ?? 'updated_at'
 
-    // Build WHERE clause parts and params
-    const conditions: string[] = []
-    const params: unknown[] = []
-    let paramIdx = 1
+    const searchPattern = search ? '%' + search + '%' : null
 
-    if (search) {
-      conditions.push(`(c.name ILIKE $${paramIdx} OR EXISTS (SELECT 1 FROM unnest(c.tags) AS t WHERE t ILIKE $${paramIdx}) OR EXISTS (SELECT 1 FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND i.name ILIKE $${paramIdx}))`)
-      params.push('%' + search + '%')
-      paramIdx++
-    }
-    if (status) {
-      conditions.push(`c.status = $${paramIdx}`)
-      params.push(status)
-      paramIdx++
-    }
-    if (tag) {
-      conditions.push(`$${paramIdx} = ANY(c.tags)`)
-      params.push(tag)
-      paramIdx++
-    }
-    if (source) {
-      conditions.push(`c.source_type = $${paramIdx}`)
-      params.push(source)
-      paramIdx++
-    }
+    // Count query using conditional WHERE with tagged template
+    const countResult = await sql`
+      SELECT COUNT(*) as count FROM clients c
+      WHERE (${searchPattern}::text IS NULL OR (
+        c.name ILIKE ${searchPattern}
+        OR EXISTS (SELECT 1 FROM unnest(c.tags) AS tg WHERE tg ILIKE ${searchPattern})
+        OR EXISTS (SELECT 1 FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND i.name ILIKE ${searchPattern})
+      ))
+      AND (${status || null}::text IS NULL OR c.status = ${status || null})
+      AND (${tag || null}::text IS NULL OR ${tag || null} = ANY(c.tags))
+      AND (${source || null}::text IS NULL OR c.source_type = ${source || null})
+    `
 
-    const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : ''
-
-    // Map sort parameter to ORDER BY clause
+    // Map sort parameter to safe sort key
     const sortMap: Record<string, string> = {
-      'name_asc': 'c.name ASC',
-      'name_desc': 'c.name DESC',
-      'status': 'c.status ASC',
-      'updated_at': 'c.updated_at DESC',
+      'name_asc': 'name_asc',
+      'name_desc': 'name_desc',
+      'status': 'status',
+      'updated_at': 'updated_at',
     }
-    const orderBy = sortMap[sort] ?? 'c.updated_at DESC'
+    const sortKey = sortMap[sort] ?? 'updated_at'
 
-    // Count query
-    const countQuery = `SELECT COUNT(*) as count FROM clients c ${whereClause}`
-    const countResult = await sql(countQuery, params)
-
-    // Data query
-    const dataQuery = `SELECT ${CLIENT_SELECT_FIELDS} FROM clients c ${whereClause} ORDER BY ${orderBy} LIMIT $${paramIdx} OFFSET $${paramIdx + 1}`
-    const dataResult = await sql(dataQuery, [...params, pageSize, offset])
+    // Data query — use CASE-based ORDER BY to avoid dynamic SQL
+    const dataResult = await sql`
+      SELECT c.*,
+        (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) as open_deals_count,
+        COALESCE((SELECT SUM(d.value) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')), 0) as open_deals_value,
+        (SELECT i.name FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_name,
+        (SELECT ci.role FROM client_individuals ci WHERE ci.client_id = c.id AND ci.is_primary = true LIMIT 1) as primary_contact_role,
+        (SELECT t.title FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_title,
+        (SELECT t.due_date FROM tasks t WHERE t.client_id = c.id AND t.completed = false ORDER BY t.due_date ASC NULLS LAST LIMIT 1) as next_task_due
+      FROM clients c
+      WHERE (${searchPattern}::text IS NULL OR (
+        c.name ILIKE ${searchPattern}
+        OR EXISTS (SELECT 1 FROM unnest(c.tags) AS tg WHERE tg ILIKE ${searchPattern})
+        OR EXISTS (SELECT 1 FROM client_individuals ci JOIN individuals i ON ci.individual_id = i.id WHERE ci.client_id = c.id AND i.name ILIKE ${searchPattern})
+      ))
+      AND (${status || null}::text IS NULL OR c.status = ${status || null})
+      AND (${tag || null}::text IS NULL OR ${tag || null} = ANY(c.tags))
+      AND (${source || null}::text IS NULL OR c.source_type = ${source || null})
+      ORDER BY
+        CASE WHEN ${sortKey} = 'name_asc' THEN c.name END ASC,
+        CASE WHEN ${sortKey} = 'name_desc' THEN c.name END DESC,
+        CASE WHEN ${sortKey} = 'status' THEN c.status END ASC,
+        CASE WHEN ${sortKey} = 'updated_at' THEN c.updated_at END DESC,
+        c.updated_at DESC
+      LIMIT ${pageSize} OFFSET ${offset}
+    `
 
     // Fetch distinct tags and sources for filter dropdowns
     const [tagsResult, sourcesResult] = await Promise.all([
@@ -119,7 +123,7 @@ export default async function handler(req: Request) {
 
     const rows = await sql`
       INSERT INTO clients (name, type, status, tags, source_type, source_detail, campaign, channel, date_acquired)
-      VALUES (${body.name}, ${body.type}, ${body.status ?? 'prospect'}, ${body.tags ?? []}, ${body.source_type ?? null}, ${body.source_detail ?? null}, ${body.campaign ?? null}, ${body.channel ?? null}, ${body.date_acquired ?? null})
+      VALUES (${body.name}, ${body.type}, ${body.status ?? 'prospect'}, ${body.tags ?? []}, ${body.source_type ?? null}, ${body.source_detail ?? null}, ${body.campaign ?? null}, ${body.channel ?? null}, ${body.date_acquired || null})
       RETURNING *
     `
 

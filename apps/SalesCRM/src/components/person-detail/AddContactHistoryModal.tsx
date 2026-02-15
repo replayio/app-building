@@ -56,6 +56,7 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Date/Time *</label>
               <input
+                data-testid="contact-history-date-input"
                 type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
@@ -65,6 +66,7 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Type *</label>
               <select
+                data-testid="contact-history-type-select"
                 value={type}
                 onChange={(e) => setType(e.target.value as ContactHistoryType)}
                 className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
@@ -78,6 +80,7 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Summary/Notes *</label>
             <textarea
+              data-testid="contact-history-summary-input"
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="Describe the interaction..."
@@ -88,6 +91,7 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Team Member</label>
             <input
+              data-testid="contact-history-team-member-input"
               type="text"
               value={teamMember}
               onChange={(e) => setTeamMember(e.target.value)}
@@ -98,12 +102,14 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
+            data-testid="contact-history-cancel-button"
             onClick={onClose}
             className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
           >
             Cancel
           </button>
           <button
+            data-testid="contact-history-save-button"
             onClick={handleSave}
             disabled={!date || !summary.trim()}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"

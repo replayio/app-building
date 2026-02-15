@@ -48,3 +48,12 @@ Update the section for the current round of maintenance in `docs/plan.md`
 with a note about the fix you performed.
 
 Commit all changes and exit.
+
+## Tips
+
+- When fixing violations, commit after each logical group of fixes (e.g. all SQL fixes together,
+  all data-testid fixes together) rather than trying to fix everything in one pass. The performTasks
+  strategy requires exiting after commits, and attempting to fix all violations without committing
+  leads to unproductive iterations with zero commits.
+- Group related fix tasks into a single FixViolation task when they share the same root cause
+  (e.g. "FixViolationMissingTestIds" for all modals missing data-testid attributes).

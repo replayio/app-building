@@ -27,72 +27,70 @@ export default async function handler(req: Request) {
 
     const offset = (page - 1) * pageSize
 
-    // Build WHERE clause with parameterized queries
-    const conditions: string[] = []
-    const params: unknown[] = []
-    let paramIdx = 1
+    const searchPattern = search ? '%' + search + '%' : null
+    const stageFilter = stage || null
+    const clientFilter = client || null
+    const dateFromFilter = dateFrom || null
+    const dateToFilter = dateTo || null
 
-    if (search) {
-      conditions.push(`(d.name ILIKE $${paramIdx} OR c.name ILIKE $${paramIdx})`)
-      params.push('%' + search + '%')
-      paramIdx++
-    }
-    if (stage) {
-      conditions.push(`d.stage = $${paramIdx}`)
-      params.push(stage)
-      paramIdx++
-    }
-    if (client) {
-      conditions.push(`d.client_id = $${paramIdx}::uuid`)
-      params.push(client)
-      paramIdx++
-    }
-    if (status) {
-      if (status === 'active') {
-        conditions.push(`d.stage NOT IN ('closed_won', 'closed_lost')`)
-      } else if (status === 'won') {
-        conditions.push(`d.stage = 'closed_won'`)
-      } else if (status === 'lost') {
-        conditions.push(`d.stage = 'closed_lost'`)
-      } else {
-        conditions.push(`d.status = $${paramIdx}`)
-        params.push(status)
-        paramIdx++
-      }
-    }
-    if (dateFrom) {
-      conditions.push(`d.expected_close_date >= $${paramIdx}::date`)
-      params.push(dateFrom)
-      paramIdx++
-    }
-    if (dateTo) {
-      conditions.push(`d.expected_close_date <= $${paramIdx}::date`)
-      params.push(dateTo)
-      paramIdx++
-    }
-
-    const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : ''
-
-    // Map sort parameter to ORDER BY clause
-    const sortMap: Record<string, string> = {
-      'close_date_asc': 'd.expected_close_date ASC NULLS LAST',
-      'close_date_desc': 'd.expected_close_date DESC NULLS LAST',
-      'name_asc': 'd.name ASC',
-      'name_desc': 'd.name DESC',
-      'value_desc': 'd.value DESC',
-      'value_asc': 'd.value ASC',
-      'updated_at': 'd.updated_at DESC',
-    }
-    const orderBy = sortMap[sort] ?? 'd.expected_close_date DESC NULLS LAST'
+    // Normalize status into stage-based or status-based filter
+    const statusIsActive = status === 'active'
+    const statusIsWon = status === 'won'
+    const statusIsLost = status === 'lost'
+    const statusOther = (status && !statusIsActive && !statusIsWon && !statusIsLost) ? status : null
 
     // Count total matching deals
-    const countQuery = `SELECT COUNT(*) as count FROM deals d JOIN clients c ON d.client_id = c.id ${whereClause}`
-    const countResult = await sql(countQuery, params)
+    const countResult = await sql`
+      SELECT COUNT(*) as count FROM deals d
+      JOIN clients c ON d.client_id = c.id
+      WHERE (${searchPattern}::text IS NULL OR (d.name ILIKE ${searchPattern} OR c.name ILIKE ${searchPattern}))
+      AND (${stageFilter}::text IS NULL OR d.stage = ${stageFilter})
+      AND (${clientFilter}::text IS NULL OR d.client_id = ${clientFilter}::uuid)
+      AND (NOT ${statusIsActive}::boolean OR d.stage NOT IN ('closed_won', 'closed_lost'))
+      AND (NOT ${statusIsWon}::boolean OR d.stage = 'closed_won')
+      AND (NOT ${statusIsLost}::boolean OR d.stage = 'closed_lost')
+      AND (${statusOther}::text IS NULL OR d.status = ${statusOther})
+      AND (${dateFromFilter}::date IS NULL OR d.expected_close_date >= ${dateFromFilter}::date)
+      AND (${dateToFilter}::date IS NULL OR d.expected_close_date <= ${dateToFilter}::date)
+    `
     const total = parseInt(String(countResult[0].count), 10)
 
-    // Fetch deals
-    const dataQuery = `SELECT d.*, c.name as client_name FROM deals d JOIN clients c ON d.client_id = c.id ${whereClause} ORDER BY ${orderBy} LIMIT $${paramIdx} OFFSET $${paramIdx + 1}`
-    const deals = await sql(dataQuery, [...params, pageSize, offset])
+    // Map sort parameter to safe sort key
+    const sortMap: Record<string, string> = {
+      'close_date_asc': 'close_date_asc',
+      'close_date_desc': 'close_date_desc',
+      'name_asc': 'name_asc',
+      'name_desc': 'name_desc',
+      'value_desc': 'value_desc',
+      'value_asc': 'value_asc',
+      'updated_at': 'updated_at',
+    }
+    const sortKey = sortMap[sort] ?? 'close_date_desc'
+
+    // Fetch deals with CASE-based ORDER BY to avoid dynamic SQL
+    const deals = await sql`
+      SELECT d.*, c.name as client_name FROM deals d
+      JOIN clients c ON d.client_id = c.id
+      WHERE (${searchPattern}::text IS NULL OR (d.name ILIKE ${searchPattern} OR c.name ILIKE ${searchPattern}))
+      AND (${stageFilter}::text IS NULL OR d.stage = ${stageFilter})
+      AND (${clientFilter}::text IS NULL OR d.client_id = ${clientFilter}::uuid)
+      AND (NOT ${statusIsActive}::boolean OR d.stage NOT IN ('closed_won', 'closed_lost'))
+      AND (NOT ${statusIsWon}::boolean OR d.stage = 'closed_won')
+      AND (NOT ${statusIsLost}::boolean OR d.stage = 'closed_lost')
+      AND (${statusOther}::text IS NULL OR d.status = ${statusOther})
+      AND (${dateFromFilter}::date IS NULL OR d.expected_close_date >= ${dateFromFilter}::date)
+      AND (${dateToFilter}::date IS NULL OR d.expected_close_date <= ${dateToFilter}::date)
+      ORDER BY
+        CASE WHEN ${sortKey} = 'close_date_asc' THEN d.expected_close_date END ASC NULLS LAST,
+        CASE WHEN ${sortKey} = 'close_date_desc' THEN d.expected_close_date END DESC NULLS LAST,
+        CASE WHEN ${sortKey} = 'name_asc' THEN d.name END ASC,
+        CASE WHEN ${sortKey} = 'name_desc' THEN d.name END DESC,
+        CASE WHEN ${sortKey} = 'value_desc' THEN d.value END DESC,
+        CASE WHEN ${sortKey} = 'value_asc' THEN d.value END ASC,
+        CASE WHEN ${sortKey} = 'updated_at' THEN d.updated_at END DESC,
+        d.expected_close_date DESC NULLS LAST
+      LIMIT ${pageSize} OFFSET ${offset}
+    `
 
     // Get summary metrics
     const metrics = await sql`

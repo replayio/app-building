@@ -41,6 +41,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add Task</h2>
           <button
+            data-testid="add-deal-task-close"
             onClick={onClose}
             className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
           >
@@ -62,6 +63,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Description</label>
             <textarea
+              data-testid="add-deal-task-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Task description"

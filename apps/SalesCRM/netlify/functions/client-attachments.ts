@@ -49,7 +49,7 @@ export default async function handler(req: Request) {
         ${body.url},
         ${body.size ?? null},
         ${body.client_id},
-        ${body.deal_id ?? null}
+        ${body.deal_id || null}
       )
       RETURNING *
     `
