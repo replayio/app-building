@@ -226,7 +226,17 @@
   - [x] fixBugReport.md: UpdateTestsSidebar: Updated CLP-NAV-01 test and test spec to match new sidebar items (Clients, Deals, Tasks only). Both CLP-NAV tests pass.
   - [x] fixBugReport.md: ResolveBugDashboardHighlight+Reports404+SettingsButton: All three sidebar bugs moved to Unreviewed in bugReports.md
 - [x] reviewBugReport.md: UnpackReviewBugReport: Classified and reviewed 6 bugs — 3 writeApp.md (duplicate nav, native selects, generic attachment icons), 2 testSpec.md (Reports/Settings nav targets already covered by existing directive), 1 no problem stage (new functionality). Added 3 new directives to writeApp.md. All bugs moved to Finished.
-- [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+- [x] checkDirectives.md: UnpackCheckDirectives: Focused on new/changed code from Maintenance Round 2
+  - [x] checkDirectives.md: CheckTestSpecTaskDetailPage: No violations found
+  - [x] checkDirectives.md: CheckComponentsTaskDetailPage: No violations found
+  - [x] checkDirectives.md: CheckComponentsAttachmentPreview: No violations found
+  - [x] checkDirectives.md: CheckComponentsDealsFilterControls: No violations found
+  - [x] checkDirectives.md: CheckComponentsSidebar: No violations found
+  - [x] checkDirectives.md: CheckBackendTasks: No violations found
+  - [x] checkDirectives.md: CheckTestsTaskDetailPage: Violations found — TDP-HDR-02 test missing assertions for completed date and Cancel Task button hidden
+  - [x] checkDirectives.md: FixViolationTDPHDR02: Added completed date and Cancel Task hidden assertions to TDP-HDR-02 test
+  - [x] checkDirectives.md: RunTests: All tests passing
+  - [x] checkDirectives.md: DocumentFix: Documented
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
 - [ ] deployment.md: UnpackDeployment: Unpack subtasks
 
