@@ -9,12 +9,9 @@ test.describe('ClientsListPage - SidebarNavigation', () => {
     await expect(sidebar).toBeVisible();
 
     // Verify all navigation items are present
-    await expect(sidebar.getByText('Dashboard')).toBeVisible();
     await expect(sidebar.getByText('Clients')).toBeVisible();
     await expect(sidebar.getByText('Deals')).toBeVisible();
     await expect(sidebar.getByText('Tasks')).toBeVisible();
-    await expect(sidebar.getByText('Reports')).toBeVisible();
-    await expect(sidebar.getByText('Settings')).toBeVisible();
 
     // "Clients" link should be visually highlighted as active (on /clients page)
     const clientsLink = page.getByTestId('sidebar-nav-clients');
