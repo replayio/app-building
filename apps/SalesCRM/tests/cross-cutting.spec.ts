@@ -424,12 +424,13 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
     const stageSelect = page.getByTestId('deal-header-stage-select');
     await expect(stageSelect).toBeVisible({ timeout: 10000 });
 
-    const currentStage = await stageSelect.inputValue();
+    const currentStage = await stageSelect.getAttribute('data-value');
     // Pick a different stage
     const stages = ['lead', 'qualification', 'discovery', 'proposal', 'negotiation', 'closed_won'];
     const nextStage = stages.find(s => s !== currentStage) || 'proposal';
 
-    await stageSelect.selectOption(nextStage);
+    await page.getByTestId('deal-header-stage-select-trigger').click();
+    await page.getByTestId(`deal-header-stage-select-option-${nextStage}`).click();
 
     const changeStageBtn = page.getByTestId('deal-header-change-stage-button');
     await expect(changeStageBtn).not.toBeDisabled({ timeout: 5000 });

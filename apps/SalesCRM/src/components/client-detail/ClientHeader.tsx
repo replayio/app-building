@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Pencil, X, Check } from 'lucide-react'
 import { StatusBadge } from '../clients/StatusBadge'
 import { TagBadge } from '../clients/TagBadge'
+import { FilterSelect } from '../shared/FilterSelect'
 import type { Client, ClientStatus, ClientType } from '../../types'
 
 interface ClientHeaderProps {
@@ -66,29 +67,29 @@ export function ClientHeader({ client, onUpdate }: ClientHeaderProps) {
         <div className="flex items-center gap-3 mb-3">
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
-            <select
+            <FilterSelect
+              testId="client-header-type-select"
               value={type}
-              onChange={(e) => setType(e.target.value as ClientType)}
-              data-testid="client-header-type-select"
-              className="h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="organization">Organization</option>
-              <option value="individual">Individual</option>
-            </select>
+              onChange={(v) => setType(v as ClientType)}
+              options={[
+                { value: 'organization', label: 'Organization' },
+                { value: 'individual', label: 'Individual' },
+              ]}
+            />
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Status</label>
-            <select
+            <FilterSelect
+              testId="client-header-status-select"
               value={status}
-              onChange={(e) => setStatus(e.target.value as ClientStatus)}
-              data-testid="client-header-status-select"
-              className="h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="prospect">Prospect</option>
-              <option value="churned">Churned</option>
-            </select>
+              onChange={(v) => setStatus(v as ClientStatus)}
+              options={[
+                { value: 'active', label: 'Active' },
+                { value: 'inactive', label: 'Inactive' },
+                { value: 'prospect', label: 'Prospect' },
+                { value: 'churned', label: 'Churned' },
+              ]}
+            />
           </div>
         </div>
         <div>

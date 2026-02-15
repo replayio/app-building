@@ -241,6 +241,18 @@
 - [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200)
 - **Maintenance Round 2 COMPLETE**: All 6 bugs fixed, bug reports reviewed, directives checked, deployed to production
 
+### Maintenance Round 3
+
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — No open bug reports
+- [x] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks — No unreviewed bug reports
+- [x] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+  - [x] checkDirectives.md: CheckAllComponents: Violations found — 24 native HTML `<select>` elements across 16 files violating "never use native HTML select" directive
+  - [x] checkDirectives.md: FixViolationNativeSelects: Extracted shared FilterSelect component to `src/components/shared/FilterSelect.tsx`, replaced all 24 native `<select>` elements across 16 files with custom dropdowns
+  - [x] checkDirectives.md: RunTests: All 183 Playwright tests passing. Updated 6 test files to use custom FilterSelect interaction pattern (click trigger → click option) instead of native selectOption/inputValue
+  - [x] checkDirectives.md: DocumentFix: Documented all fixes in plan.md
+- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
+- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+
 ## Blockers
 
 None.

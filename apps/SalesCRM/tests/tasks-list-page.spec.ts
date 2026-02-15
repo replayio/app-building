@@ -1,4 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+async function selectFilterOption(page: Page, testId: string, value: string) {
+  await page.getByTestId(`${testId}-trigger`).click();
+  const optionId = value === '' ? `${testId}-option-all` : `${testId}-option-${value}`;
+  await page.getByTestId(optionId).click();
+}
 
 test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
   test('TLP-HDR-01: Page header shows title and New Task button', async ({ page }) => {
@@ -49,7 +55,7 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
     // Fill in task data
     const taskTitle = `Test Task ${Date.now()}`;
     await page.getByTestId('create-task-title').fill(taskTitle);
-    await page.getByTestId('create-task-priority').selectOption('high');
+    await selectFilterOption(page, 'create-task-priority', 'high');
     await page.getByTestId('create-task-assignee-name').fill('Sarah J.');
     await page.getByTestId('create-task-assignee-role').fill('PM');
 
@@ -96,7 +102,7 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
     await expect(page.getByTestId('tasks-filter-dropdown')).toBeVisible();
 
     // Select "High" priority filter (this closes the dropdown and triggers a fetch)
-    await page.getByTestId('tasks-filter-priority').selectOption('high');
+    await selectFilterOption(page, 'tasks-filter-priority', 'high');
 
     // Wait for filtered results where all cards have high priority badges
     await expect(async () => {
@@ -205,7 +211,7 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
     // Open filter dropdown and set a priority filter
     await page.getByTestId('tasks-filter-button').click();
     await expect(page.getByTestId('tasks-filter-dropdown')).toBeVisible();
-    await page.getByTestId('tasks-filter-priority').selectOption('high');
+    await selectFilterOption(page, 'tasks-filter-priority', 'high');
     await page.waitForLoadState('networkidle');
 
     const filteredCount = await cards.count();

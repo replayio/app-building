@@ -77,9 +77,9 @@ test.describe('PersonDetailPage - PersonHeader (PDP-HDR)', () => {
     const nameText = await nameEl.textContent();
     expect(nameText!.length).toBeGreaterThan(0);
 
-    // Contact info area exists
+    // Contact info area exists (may be empty if the individual has no email/phone/location)
     const contactInfo = page.getByTestId('person-header-contact-info');
-    await expect(contactInfo).toBeVisible();
+    await expect(contactInfo).toHaveCount(1);
   });
 
   test('PDP-HDR-02: Clicking associated client link navigates to ClientDetailPage', async ({ page }) => {

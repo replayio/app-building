@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 import type { Deal } from '../../types'
 
 interface AddAttachmentModalProps {
@@ -139,17 +140,16 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
 
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Associated Deal (optional)</label>
-            <select
-              data-testid="attachment-associated-deal-select"
+            <FilterSelect
+              testId="attachment-associated-deal-select"
               value={dealId}
-              onChange={(e) => setDealId(e.target.value)}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="">None</option>
-              {deals.map((deal) => (
-                <option key={deal.id} value={deal.id}>{deal.name}</option>
-              ))}
-            </select>
+              onChange={(v) => setDealId(v)}
+              options={[
+                { value: '', label: 'None' },
+                ...deals.map((deal) => ({ value: deal.id, label: deal.name })),
+              ]}
+              className="w-full"
+            />
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">

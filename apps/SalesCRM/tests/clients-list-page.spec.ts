@@ -1,4 +1,21 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+async function selectFilterOption(page: Page, testId: string, value: string) {
+  await page.getByTestId(`${testId}-trigger`).click();
+  const optionId = value === '' ? `${testId}-option-all` : `${testId}-option-${value}`;
+  await page.getByTestId(optionId).click();
+}
+
+async function getFilterOptionTexts(page: Page, testId: string): Promise<string[]> {
+  await page.getByTestId(`${testId}-trigger`).click();
+  const menu = page.getByTestId(`${testId}-menu`);
+  await expect(menu).toBeVisible();
+  const options = menu.locator('button');
+  const texts = await options.allTextContents();
+  // Close the menu by clicking the trigger again
+  await page.getByTestId(`${testId}-trigger`).click();
+  return texts;
+}
 
 test.describe('ClientsListPage - SidebarNavigation', () => {
   test('CLP-NAV-01: Sidebar displays all navigation items', async ({ page }) => {
@@ -93,8 +110,12 @@ test.describe('ClientsListPage - PageHeader', () => {
 
     // Fill form
     await modal.getByPlaceholder('Enter client name').fill('Test Corp');
-    await modal.locator('select').first().selectOption('organization'); // Type
-    await modal.locator('select').nth(1).selectOption('prospect'); // Status
+    // Select Type using FilterSelect (client-type-select)
+    await modal.getByTestId('client-type-select-trigger').click();
+    await modal.getByTestId('client-type-select-option-organization').click();
+    // Select Status using FilterSelect (client-status-select)
+    await modal.getByTestId('client-status-select-trigger').click();
+    await modal.getByTestId('client-status-select-option-prospect').click();
     await modal.getByPlaceholder('e.g. Enterprise, SaaS, VIP').fill('Enterprise');
 
     // Click Save
@@ -245,9 +266,8 @@ test.describe('ClientsListPage - FilterControls', () => {
     const statusFilter = page.getByTestId('filter-status');
     await expect(statusFilter).toBeVisible();
 
-    // Check options exist
-    const options = statusFilter.locator('option');
-    const texts = await options.allTextContents();
+    // Check options exist by opening the dropdown menu
+    const texts = await getFilterOptionTexts(page, 'filter-status');
     expect(texts.some(t => t.includes('All'))).toBeTruthy();
     expect(texts.some(t => t.includes('Active'))).toBeTruthy();
     expect(texts.some(t => t.includes('Inactive'))).toBeTruthy();
@@ -259,8 +279,8 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
-    // Select Active status
-    await page.getByTestId('filter-status').selectOption('active');
+    // Select Active status using FilterSelect
+    await selectFilterOption(page, 'filter-status', 'active');
 
     // Wait for filtered results to render
     await expect(async () => {
@@ -280,9 +300,8 @@ test.describe('ClientsListPage - FilterControls', () => {
     const tagsFilter = page.getByTestId('filter-tags');
     await expect(tagsFilter).toBeVisible();
 
-    // Should have "All" option plus available tags
-    const options = tagsFilter.locator('option');
-    const texts = await options.allTextContents();
+    // Should have "All" option plus available tags — open dropdown to check
+    const texts = await getFilterOptionTexts(page, 'filter-tags');
     expect(texts.some(t => t.includes('All'))).toBeTruthy();
     expect(texts.length).toBeGreaterThanOrEqual(1);
   });
@@ -291,24 +310,34 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
-    const tagsFilter = page.getByTestId('filter-tags');
-    const options = tagsFilter.locator('option');
-    const allTexts = await options.allTextContents();
+    // Open the tags dropdown to find a non-"All" tag option
+    await page.getByTestId('filter-tags-trigger').click();
+    const menu = page.getByTestId('filter-tags-menu');
+    await expect(menu).toBeVisible();
+    const menuOptions = menu.locator('button');
+    const allTexts = await menuOptions.allTextContents();
 
     // Find a non-"All" tag option
     const tagOption = allTexts.find(t => !t.includes('All'));
     if (tagOption) {
-      // Extract the value - the value is the tag name, option text is "Tags: <tagname>"
-      const tagValue = await options.filter({ hasText: tagOption }).getAttribute('value');
+      // Get the value from the data-option-value attribute
+      const optionEl = menuOptions.filter({ hasText: tagOption }).first();
+      const tagValue = await optionEl.getAttribute('data-option-value');
       if (tagValue) {
-        await tagsFilter.selectOption(tagValue);
+        await optionEl.click();
         await page.waitForLoadState('networkidle');
 
         // Verify filter applied (pagination should update)
         const rows = page.locator('[data-testid^="client-row-"]');
         const count = await rows.count();
         expect(count).toBeGreaterThanOrEqual(0);
+      } else {
+        // Close menu if no value found
+        await page.getByTestId('filter-tags-trigger').click();
       }
+    } else {
+      // Close menu if no non-All option found
+      await page.getByTestId('filter-tags-trigger').click();
     }
   });
 
@@ -319,8 +348,8 @@ test.describe('ClientsListPage - FilterControls', () => {
     const sourceFilter = page.getByTestId('filter-source');
     await expect(sourceFilter).toBeVisible();
 
-    const options = sourceFilter.locator('option');
-    const texts = await options.allTextContents();
+    // Open dropdown to check options
+    const texts = await getFilterOptionTexts(page, 'filter-source');
     expect(texts.some(t => t.includes('All'))).toBeTruthy();
   });
 
@@ -328,17 +357,20 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
-    const sourceFilter = page.getByTestId('filter-source');
-    const options = sourceFilter.locator('option');
-    const allTexts = await options.allTextContents();
+    // Open the source dropdown to find a non-"All" source option
+    await page.getByTestId('filter-source-trigger').click();
+    const menu = page.getByTestId('filter-source-menu');
+    await expect(menu).toBeVisible();
+    const menuOptions = menu.locator('button');
+    const allTexts = await menuOptions.allTextContents();
 
     const sourceOption = allTexts.find(t => !t.includes('All'));
     if (sourceOption) {
-      // Use the value attribute directly to avoid strict mode issues with hasText matching multiple options
-      const matchingOptions = options.filter({ hasText: sourceOption });
-      const sourceValue = await matchingOptions.first().getAttribute('value');
+      // Use the data-option-value attribute directly
+      const optionEl = menuOptions.filter({ hasText: sourceOption }).first();
+      const sourceValue = await optionEl.getAttribute('data-option-value');
       if (sourceValue) {
-        await sourceFilter.selectOption(sourceValue);
+        await optionEl.click();
 
         // Wait for filtered results to render
         await expect(async () => {
@@ -346,7 +378,11 @@ test.describe('ClientsListPage - FilterControls', () => {
           const count = await rows.count();
           expect(count).toBeGreaterThanOrEqual(0);
         }).toPass({ timeout: 10000 });
+      } else {
+        await page.getByTestId('filter-source-trigger').click();
       }
+    } else {
+      await page.getByTestId('filter-source-trigger').click();
     }
   });
 
@@ -357,8 +393,8 @@ test.describe('ClientsListPage - FilterControls', () => {
     const sortFilter = page.getByTestId('filter-sort');
     await expect(sortFilter).toBeVisible();
 
-    const options = sortFilter.locator('option');
-    const texts = await options.allTextContents();
+    // Open dropdown to check sort options
+    const texts = await getFilterOptionTexts(page, 'filter-sort');
     expect(texts.some(t => t.includes('Recently Updated'))).toBeTruthy();
     expect(texts.some(t => t.includes('Name A-Z'))).toBeTruthy();
     expect(texts.some(t => t.includes('Name Z-A'))).toBeTruthy();
@@ -369,7 +405,7 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
-    await page.getByTestId('filter-sort').selectOption('name_asc');
+    await selectFilterOption(page, 'filter-sort', 'name_asc');
 
     // Wait for sorted results to render
     await expect(async () => {
@@ -391,23 +427,30 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.waitForLoadState('networkidle');
 
     // Apply status filter and wait for results
-    await page.getByTestId('filter-status').selectOption('active');
+    await selectFilterOption(page, 'filter-status', 'active');
     await expect(async () => {
       const badges = page.locator('[data-testid="status-badge-active"]');
       const count = await badges.count();
       expect(count).toBeGreaterThan(0);
     }).toPass({ timeout: 10000 });
 
-    // Apply tag filter if available
-    const tagsFilter = page.getByTestId('filter-tags');
-    const options = tagsFilter.locator('option');
-    const allTexts = await options.allTextContents();
+    // Apply tag filter if available — open dropdown to find a non-"All" option
+    await page.getByTestId('filter-tags-trigger').click();
+    const menu = page.getByTestId('filter-tags-menu');
+    await expect(menu).toBeVisible();
+    const menuOptions = menu.locator('button');
+    const allTexts = await menuOptions.allTextContents();
     const tagOption = allTexts.find(t => !t.includes('All'));
     if (tagOption) {
-      const tagValue = await options.filter({ hasText: tagOption }).first().getAttribute('value');
+      const optionEl = menuOptions.filter({ hasText: tagOption }).first();
+      const tagValue = await optionEl.getAttribute('data-option-value');
       if (tagValue) {
-        await tagsFilter.selectOption(tagValue);
+        await optionEl.click();
+      } else {
+        await page.getByTestId('filter-tags-trigger').click();
       }
+    } else {
+      await page.getByTestId('filter-tags-trigger').click();
     }
 
     // Combined filters should show only matching clients (if any results)
@@ -548,7 +591,7 @@ test.describe('ClientsListPage - ClientsTable', () => {
     await page.waitForLoadState('networkidle');
 
     // Filter by churned status first
-    await page.getByTestId('filter-status').selectOption('churned');
+    await selectFilterOption(page, 'filter-status', 'churned');
 
     // Wait for churned clients to render
     await expect(async () => {

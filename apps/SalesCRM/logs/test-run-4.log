@@ -1,0 +1,609 @@
+Seeding database before tests...
+
+> sales-crm@0.0.0 seed-db
+> tsx scripts/seed-db.ts
+
+Seeding database with test data...
+  Created 5 clients
+  Created 5 individuals
+  Created 5 client-individual associations
+  Created 3 individual relationships
+  Created 5 contact history entries
+  Created 7 deals
+  Created 8 deal history entries
+  Created 5 deal contacts
+  Created 2 writeups with version history
+  Created 8 tasks
+  Created 5 attachments
+  Created 7 timeline events
+
+Database seeded successfully!
+  Clients: 5 (IDs: bc1382a3-5cc2-4320-829f-2b95d76dcfb9, 4518aa40-6147-4456-b8bf-f290910efb00, 01903274-b525-48ea-bd0c-9a300127f4ad, d00a7052-16d2-40c0-92ee-613c501e1d46, 602bb5a1-7f3c-4898-b21e-123a5d688cbf)
+  Individuals: 5
+  Deals: 7
+  Tasks: 8
+
+Running 183 tests using 1 worker
+
+  ✓    1 [replay-chromium] › tests/client-detail-page.spec.ts:26:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-01: Client header displays client name, type badge, and status (4.0s)
+  ✓    2 [replay-chromium] › tests/client-detail-page.spec.ts:49:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-02: Edit button opens edit mode with form fields (2.9s)
+  ✓    3 [replay-chromium] › tests/client-detail-page.spec.ts:66:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-03: Cancel edit mode restores original values (2.9s)
+  ✓    4 [replay-chromium] › tests/client-detail-page.spec.ts:87:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-04: Status dropdown shows all status options (2.9s)
+  ✓    5 [replay-chromium] › tests/client-detail-page.spec.ts:102:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-05: Tags are displayed in the header (2.8s)
+  ✓    6 [replay-chromium] › tests/client-detail-page.spec.ts:112:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-01: Quick action buttons are all visible (2.9s)
+  ✓    7 [replay-chromium] › tests/client-detail-page.spec.ts:124:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-02: Add Task button opens Add Task modal (2.8s)
+  ✓    8 [replay-chromium] › tests/client-detail-page.spec.ts:131:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-03: Add Deal button opens Add Deal modal (2.9s)
+  ✓    9 [replay-chromium] › tests/client-detail-page.spec.ts:138:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-04: Add Attachment button opens Add Attachment modal (2.9s)
+  ✓   10 [replay-chromium] › tests/client-detail-page.spec.ts:145:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-05: Add Person button opens Add Person modal (2.9s)
+  ✓   11 [replay-chromium] › tests/client-detail-page.spec.ts:154:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-01: Source info section displays with source data (2.8s)
+  ✓   12 [replay-chromium] › tests/client-detail-page.spec.ts:169:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-02: Edit button opens source info edit mode (2.8s)
+  ✓   13 [replay-chromium] › tests/client-detail-page.spec.ts:186:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-03: Cancel edit restores original source values (2.9s)
+  ✓   14 [replay-chromium] › tests/client-detail-page.spec.ts:209:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-01: Tasks section is visible (2.8s)
+  ✓   15 [replay-chromium] › tests/client-detail-page.spec.ts:224:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-02: Task items display title (2.8s)
+  ✓   16 [replay-chromium] › tests/client-detail-page.spec.ts:238:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-03: Task items have a checkbox for toggling completion (2.8s)
+  ✓   17 [replay-chromium] › tests/client-detail-page.spec.ts:252:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-01: Deals section is visible (2.8s)
+  ✓   18 [replay-chromium] › tests/client-detail-page.spec.ts:267:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-02: Deal items display name, stage, and value (2.8s)
+  ✓   19 [replay-chromium] › tests/client-detail-page.spec.ts:285:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-03: Clicking a deal navigates to deal detail page (2.8s)
+  ✓   20 [replay-chromium] › tests/client-detail-page.spec.ts:304:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-01: Attachments section is visible (2.8s)
+  ✓   21 [replay-chromium] › tests/client-detail-page.spec.ts:319:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-02: Attachment items display filename and type (2.8s)
+  ✓   22 [replay-chromium] › tests/client-detail-page.spec.ts:340:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-03: Attachment items have a delete button (2.8s)
+  ✓   23 [replay-chromium] › tests/client-detail-page.spec.ts:352:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-04: Delete attachment shows confirmation dialog (2.8s)
+  ✓   24 [replay-chromium] › tests/client-detail-page.spec.ts:375:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-01: People section is visible (2.8s)
+  ✓   25 [replay-chromium] › tests/client-detail-page.spec.ts:390:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-02: Person items display name (2.8s)
+  ✓   26 [replay-chromium] › tests/client-detail-page.spec.ts:404:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-03: Clicking a person navigates to individual detail page (2.8s)
+  ✓   27 [replay-chromium] › tests/client-detail-page.spec.ts:423:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-01: Timeline section is visible (2.8s)
+  ✓   28 [replay-chromium] › tests/client-detail-page.spec.ts:438:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-02: Timeline events are grouped by date (2.8s)
+  ✓   29 [replay-chromium] › tests/client-detail-page.spec.ts:453:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-03: Timeline events display descriptions (2.8s)
+  ✓   30 [replay-chromium] › tests/client-detail-page.spec.ts:469:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-01: Add Task modal has all required form fields (2.9s)
+  ✓   31 [replay-chromium] › tests/client-detail-page.spec.ts:488:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-02: Save button is disabled when title is empty (2.8s)
+  ✓   32 [replay-chromium] › tests/client-detail-page.spec.ts:498:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-03: Cancel button closes the modal (2.9s)
+  ✓   33 [replay-chromium] › tests/client-detail-page.spec.ts:511:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-01: Add Deal modal has all required form fields (2.8s)
+  ✓   34 [replay-chromium] › tests/client-detail-page.spec.ts:529:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-02: Save button is disabled when name is empty (2.8s)
+  ✓   35 [replay-chromium] › tests/client-detail-page.spec.ts:541:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-01: Add Person modal has all required form fields (2.9s)
+  ✓   36 [replay-chromium] › tests/client-detail-page.spec.ts:557:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-02: Save button is disabled when name is empty (2.9s)
+  ✓   37 [replay-chromium] › tests/client-detail-page.spec.ts:569:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-01: Add Attachment modal has type toggle buttons (2.9s)
+  ✓   38 [replay-chromium] › tests/client-detail-page.spec.ts:587:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-02: Link URL mode shows link name and URL inputs (2.9s)
+  ✓   39 [replay-chromium] › tests/clients-list-page.spec.ts:4:3 › ClientsListPage - SidebarNavigation › CLP-NAV-01: Sidebar displays all navigation items (1.5s)
+  ✓   40 [replay-chromium] › tests/clients-list-page.spec.ts:21:3 › ClientsListPage - SidebarNavigation › CLP-NAV-02: Sidebar navigation links route correctly (1.7s)
+  ✓   41 [replay-chromium] › tests/clients-list-page.spec.ts:43:3 › ClientsListPage - PageHeader › CLP-HDR-01: Page header displays title and action buttons (1.6s)
+  ✓   42 [replay-chromium] › tests/clients-list-page.spec.ts:63:3 › ClientsListPage - PageHeader › CLP-HDR-02: Add New Client button opens create client modal (1.6s)
+  ✘   43 [replay-chromium] › tests/clients-list-page.spec.ts:85:3 › ClientsListPage - PageHeader › CLP-HDR-03: Creating a new client persists and appears in list (1.0m)
+  ✓   44 [replay-chromium] › tests/clients-list-page.spec.ts:111:3 › ClientsListPage - PageHeader › CLP-HDR-04: Import button opens import dialog (1.7s)
+  ✓   45 [replay-chromium] › tests/clients-list-page.spec.ts:124:3 › ClientsListPage - PageHeader › CLP-HDR-05: Export button triggers data export (1.6s)
+  ✓   46 [replay-chromium] › tests/clients-list-page.spec.ts:139:3 › ClientsListPage - SearchBar › CLP-SRCH-01: Search bar is displayed with placeholder text (1.6s)
+  ✓   47 [replay-chromium] › tests/clients-list-page.spec.ts:148:3 › ClientsListPage - SearchBar › CLP-SRCH-02: Search filters clients by name (2.5s)
+  ✓   48 [replay-chromium] › tests/clients-list-page.spec.ts:170:3 › ClientsListPage - SearchBar › CLP-SRCH-03: Search filters clients by tag (2.1s)
+  ✓   49 [replay-chromium] › tests/clients-list-page.spec.ts:192:3 › ClientsListPage - SearchBar › CLP-SRCH-04: Search filters clients by contact name (2.1s)
+  ✓   50 [replay-chromium] › tests/clients-list-page.spec.ts:208:3 › ClientsListPage - SearchBar › CLP-SRCH-05: Clearing search restores full client list (2.6s)
+  ✘   51 [replay-chromium] › tests/clients-list-page.spec.ts:241:3 › ClientsListPage - FilterControls › CLP-FLT-01: Status filter dropdown shows all status options (1.6s)
+  ✘   52 [replay-chromium] › tests/clients-list-page.spec.ts:258:3 › ClientsListPage - FilterControls › CLP-FLT-02: Filtering by status shows only matching clients (1.6s)
+  ✘   53 [replay-chromium] › tests/clients-list-page.spec.ts:276:3 › ClientsListPage - FilterControls › CLP-FLT-03: Tags filter dropdown shows available tags (1.7s)
+  ✓   54 [replay-chromium] › tests/clients-list-page.spec.ts:290:3 › ClientsListPage - FilterControls › CLP-FLT-04: Filtering by tag shows only matching clients (1.6s)
+  ✘   55 [replay-chromium] › tests/clients-list-page.spec.ts:315:3 › ClientsListPage - FilterControls › CLP-FLT-05: Source filter dropdown shows available sources (1.6s)
+  ✓   56 [replay-chromium] › tests/clients-list-page.spec.ts:327:3 › ClientsListPage - FilterControls › CLP-FLT-06: Filtering by source shows only matching clients (1.6s)
+  ✘   57 [replay-chromium] › tests/clients-list-page.spec.ts:353:3 › ClientsListPage - FilterControls › CLP-FLT-07: Sort dropdown shows sort options (1.6s)
+  ✘   58 [replay-chromium] › tests/clients-list-page.spec.ts:368:3 › ClientsListPage - FilterControls › CLP-FLT-08: Sorting by name A-Z orders clients alphabetically (1.6s)
+  ✘   59 [replay-chromium] › tests/clients-list-page.spec.ts:389:3 › ClientsListPage - FilterControls › CLP-FLT-09: Multiple filters can be combined (1.6s)
+  ✓   60 [replay-chromium] › tests/clients-list-page.spec.ts:425:3 › ClientsListPage - ClientsTable › CLP-TBL-01: Table displays correct column headers (1.6s)
+  ✓   61 [replay-chromium] › tests/clients-list-page.spec.ts:441:3 › ClientsListPage - ClientsTable › CLP-TBL-02: Client rows display all required fields (1.6s)
+  ✓   62 [replay-chromium] › tests/clients-list-page.spec.ts:460:3 › ClientsListPage - ClientsTable › CLP-TBL-03: Status badges have correct colors (1.6s)
+  ✓   63 [replay-chromium] › tests/clients-list-page.spec.ts:479:3 › ClientsListPage - ClientsTable › CLP-TBL-04: Clicking a client name navigates to client detail page (1.6s)
+  ✓   64 [replay-chromium] › tests/clients-list-page.spec.ts:498:3 › ClientsListPage - ClientsTable › CLP-TBL-05: Individual type clients show self as primary contact (1.6s)
+  ✓   65 [replay-chromium] › tests/clients-list-page.spec.ts:515:3 › ClientsListPage - ClientsTable › CLP-TBL-06: Clients with no open deals show 0 (1.5s)
+  ✓   66 [replay-chromium] › tests/clients-list-page.spec.ts:531:3 › ClientsListPage - ClientsTable › CLP-TBL-07: Clients with no next task show appropriate text (1.5s)
+  ✘   67 [replay-chromium] › tests/clients-list-page.spec.ts:546:3 › ClientsListPage - ClientsTable › CLP-TBL-08: Clients with churned status show N/A for deals (1.6s)
+  ✓   68 [replay-chromium] › tests/clients-list-page.spec.ts:575:3 › ClientsListPage - RowActionMenu › CLP-ACT-01: Row action menu button is visible on each row (1.6s)
+  ✓   69 [replay-chromium] › tests/clients-list-page.spec.ts:586:3 › ClientsListPage - RowActionMenu › CLP-ACT-02: Clicking row action menu shows options (1.6s)
+  ✓   70 [replay-chromium] › tests/clients-list-page.spec.ts:603:3 › ClientsListPage - RowActionMenu › CLP-ACT-03: Row action View navigates to client detail (1.7s)
+  ✓   71 [replay-chromium] › tests/clients-list-page.spec.ts:622:3 › ClientsListPage - RowActionMenu › CLP-ACT-04: Row action Delete removes client after confirmation (3.0s)
+  ✓   72 [replay-chromium] › tests/clients-list-page.spec.ts:665:3 › ClientsListPage - Pagination › CLP-PGN-01: Pagination shows correct count (1.6s)
+  ✓   73 [replay-chromium] › tests/clients-list-page.spec.ts:683:3 › ClientsListPage - Pagination › CLP-PGN-02: Clicking next page loads next set of clients (1.6s)
+  ✓   74 [replay-chromium] › tests/clients-list-page.spec.ts:710:3 › ClientsListPage - Pagination › CLP-PGN-03: Previous button is disabled on first page (1.6s)
+  ✓   75 [replay-chromium] › tests/clients-list-page.spec.ts:720:3 › ClientsListPage - Pagination › CLP-PGN-04: Next button is disabled on last page (1.6s)
+  ✓   76 [replay-chromium] › tests/cross-cutting.spec.ts:8:3 › Cross-Cutting Navigation › NAV-01: Default route redirects to /clients (1.6s)
+  ✓   77 [replay-chromium] › tests/cross-cutting.spec.ts:19:3 › Cross-Cutting Navigation › NAV-02: Unknown routes show 404 or redirect (886ms)
+  ✓   78 [replay-chromium] › tests/cross-cutting.spec.ts:37:3 › Cross-Cutting Navigation › NAV-03: Browser back/forward navigation works correctly (1.7s)
+  ✓   79 [replay-chromium] › tests/cross-cutting.spec.ts:93:3 › Cross-Cutting Data Consistency › DATA-01: Creating a deal on ClientDetailPage shows on DealsListPage (4.3s)
+  ✓   80 [replay-chromium] › tests/cross-cutting.spec.ts:122:3 › Cross-Cutting Data Consistency › DATA-02: Completing a task on DealDetailPage reflects on ClientDetailPage and TasksListPage (5.5s)
+  ✓   81 [replay-chromium] › tests/cross-cutting.spec.ts:201:3 › Cross-Cutting Data Consistency › DATA-03: Adding a person on ClientDetailPage creates accessible PersonDetailPage (4.2s)
+  ✓   82 [replay-chromium] › tests/cross-cutting.spec.ts:236:3 › Cross-Cutting Data Consistency › DATA-04: Deleting a client removes associated data from other pages (3.9s)
+  ✓   83 [replay-chromium] › tests/cross-cutting.spec.ts:286:3 › Cross-Cutting Data Consistency › DATA-05: Uploading an attachment on DealDetailPage shows on ClientDetailPage (4.4s)
+  ✓   84 [replay-chromium] › tests/cross-cutting.spec.ts:361:3 › Cross-Cutting Timeline Atomicity › ATOM-01: Single task creation produces exactly one timeline entry (4.6s)
+  ✘   85 [replay-chromium] › tests/cross-cutting.spec.ts:400:3 › Cross-Cutting Timeline Atomicity › ATOM-02: Single deal stage change produces exactly one timeline entry (3.2s)
+  ✓   86 [replay-chromium] › tests/cross-cutting.spec.ts:465:3 › Cross-Cutting Timeline Atomicity › ATOM-03: Single status change produces exactly one timeline entry (4.6s)
+  ✓   87 [replay-chromium] › tests/deal-detail-page.spec.ts:26:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-01: Header displays deal info with editable fields (2.8s)
+  ✓   88 [replay-chromium] › tests/deal-detail-page.spec.ts:62:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-02: Editing deal fields via edit button (2.9s)
+  ✓   89 [replay-chromium] › tests/deal-detail-page.spec.ts:91:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-03: Editing value field updates the deal (3.7s)
+  ✘   90 [replay-chromium] › tests/deal-detail-page.spec.ts:123:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-04: Changing stage via dropdown and Change Stage button (2.8s)
+  ✓   91 [replay-chromium] › tests/deal-detail-page.spec.ts:169:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-01: Stage pipeline displays all stages with visual progress (2.9s)
+  ✘   92 [replay-chromium] › tests/deal-detail-page.spec.ts:193:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-02: Pipeline updates when stage changes (2.8s)
+  ✓   93 [replay-chromium] › tests/deal-detail-page.spec.ts:222:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-01: Deal history shows stage change log (2.8s)
+  ✘   94 [replay-chromium] › tests/deal-detail-page.spec.ts:248:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-02: New stage change adds history entry (2.8s)
+  ✓   95 [replay-chromium] › tests/deal-detail-page.spec.ts:277:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-01: Deal metrics displays probability and expected close (2.8s)
+  ✓   96 [replay-chromium] › tests/deal-detail-page.spec.ts:295:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-02: Metrics are editable (3.8s)
+  ✓   97 [replay-chromium] › tests/deal-detail-page.spec.ts:334:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-01: Writeups section shows existing writeups (2.8s)
+  ✓   98 [replay-chromium] › tests/deal-detail-page.spec.ts:346:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-02: New Entry button opens writeup creation form (2.8s)
+  ✓   99 [replay-chromium] › tests/deal-detail-page.spec.ts:369:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-03: Creating a writeup persists and shows in list (3.4s)
+  ✓  100 [replay-chromium] › tests/deal-detail-page.spec.ts:391:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-04: Edit button allows editing a writeup (3.6s)
+  ✓  101 [replay-chromium] › tests/deal-detail-page.spec.ts:420:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-05: Editing a writeup creates a version history entry (2.8s)
+  ✓  102 [replay-chromium] › tests/deal-detail-page.spec.ts:429:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-06: Version History button shows previous versions (3.2s)
+  ✓  103 [replay-chromium] › tests/deal-detail-page.spec.ts:450:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-01: Linked tasks section shows deal-specific tasks (2.8s)
+  ✓  104 [replay-chromium] › tests/deal-detail-page.spec.ts:462:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-02: Add Task button opens task creation form (2.9s)
+  ✓  105 [replay-chromium] › tests/deal-detail-page.spec.ts:485:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-03: Creating a task adds it to linked tasks (3.6s)
+  ✓  106 [replay-chromium] › tests/deal-detail-page.spec.ts:505:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-04: Checking a task marks it complete (3.3s)
+  ✓  107 [replay-chromium] › tests/deal-detail-page.spec.ts:539:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-01: Attachments section lists deal-specific files (2.8s)
+  ✓  108 [replay-chromium] › tests/deal-detail-page.spec.ts:550:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-02: Upload icon opens file upload dialog (2.8s)
+  ✓  109 [replay-chromium] › tests/deal-detail-page.spec.ts:569:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-03: Uploading a file adds it to attachments list (3.3s)
+  ✓  110 [replay-chromium] › tests/deal-detail-page.spec.ts:590:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-04: Download link is present on attachments (2.8s)
+  ✓  111 [replay-chromium] › tests/deal-detail-page.spec.ts:606:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-05: Delete link removes attachment after confirmation (4.3s)
+  ✓  112 [replay-chromium] › tests/deal-detail-page.spec.ts:645:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-01: Contacts section lists deal-related individuals (2.7s)
+  ✓  113 [replay-chromium] › tests/deal-detail-page.spec.ts:669:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-02: View Profile link navigates to PersonDetailPage (2.8s)
+  ✓  114 [replay-chromium] › tests/deals-list-page.spec.ts:4:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-01: Page header shows title, breadcrumb, and create button (1.6s)
+  ✓  115 [replay-chromium] › tests/deals-list-page.spec.ts:27:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-02: Create New Deal button opens deal creation modal (1.7s)
+  ✘  116 [replay-chromium] › tests/deals-list-page.spec.ts:49:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-03: Creating a deal persists and appears in table (11.6s)
+  ✓  117 [replay-chromium] › tests/deals-list-page.spec.ts:91:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-01: Summary cards display correct metrics (1.7s)
+  ✘  118 [replay-chromium] › tests/deals-list-page.spec.ts:118:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-02: Summary cards update when deals are added (11.6s)
+  ✓  119 [replay-chromium] › tests/deals-list-page.spec.ts:157:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-01: Table View is the default view (1.6s)
+  ✓  120 [replay-chromium] › tests/deals-list-page.spec.ts:174:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-02: Pipeline View shows deals organized by stage (1.7s)
+  ✓  121 [replay-chromium] › tests/deals-list-page.spec.ts:197:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-03: Switching between views preserves data (1.7s)
+  ✓  122 [replay-chromium] › tests/deals-list-page.spec.ts:221:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-01: Stage filter shows all stage options (1.6s)
+  ✓  123 [replay-chromium] › tests/deals-list-page.spec.ts:249:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-02: Filtering by stage shows only matching deals (6.8s)
+  ✓  124 [replay-chromium] › tests/deals-list-page.spec.ts:272:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-03: Client filter shows all client options (1.6s)
+  ✓  125 [replay-chromium] › tests/deals-list-page.spec.ts:299:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-04: Filtering by client shows only that client's deals (6.8s)
+  ✓  126 [replay-chromium] › tests/deals-list-page.spec.ts:335:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-05: Status filter shows status options (1.6s)
+  ✓  127 [replay-chromium] › tests/deals-list-page.spec.ts:359:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-06: Date range filter limits deals by close date (1.6s)
+  ✓  128 [replay-chromium] › tests/deals-list-page.spec.ts:379:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-07: Sort by Close Date orders deals correctly (1.6s)
+  ✓  129 [replay-chromium] › tests/deals-list-page.spec.ts:404:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-08: Search filters deals by name (2.1s)
+  ✓  130 [replay-chromium] › tests/deals-list-page.spec.ts:434:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-01: Table displays correct column headers (1.6s)
+  ✓  131 [replay-chromium] › tests/deals-list-page.spec.ts:454:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-02: Deal rows display all required fields (1.6s)
+  ✓  132 [replay-chromium] › tests/deals-list-page.spec.ts:491:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-03: Status badges have correct colors (1.6s)
+  ✓  133 [replay-chromium] › tests/deals-list-page.spec.ts:510:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-04: Clicking a deal row navigates to DealDetailPage (1.6s)
+  ✓  134 [replay-chromium] › tests/deals-list-page.spec.ts:528:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-05: Close Date column is sortable (1.7s)
+  ✓  135 [replay-chromium] › tests/deals-list-page.spec.ts:550:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-01: Row action menu shows deal actions (1.6s)
+  ✓  136 [replay-chromium] › tests/deals-list-page.spec.ts:577:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-02: Delete deal removes it after confirmation (2.1s)
+  ✓  137 [replay-chromium] › tests/deals-list-page.spec.ts:611:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-01: Pagination shows page count (1.6s)
+  ✓  138 [replay-chromium] › tests/deals-list-page.spec.ts:632:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-02: Navigating pages loads correct deals (1.6s)
+  ✘  139 [replay-chromium] › tests/person-detail-page.spec.ts:68:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-01: Header displays person name, title, and contact info (9.1s)
+  ✓  140 [replay-chromium] › tests/person-detail-page.spec.ts:85:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-02: Clicking associated client link navigates to ClientDetailPage (4.2s)
+  ✓  141 [replay-chromium] › tests/person-detail-page.spec.ts:107:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-03: Person header info is editable (4.2s)
+  ✓  142 [replay-chromium] › tests/person-detail-page.spec.ts:126:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-04: Cancel edit restores original values (4.2s)
+  ✓  143 [replay-chromium] › tests/person-detail-page.spec.ts:149:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-01: Relationships section displays with view toggle (4.0s)
+  ✓  144 [replay-chromium] › tests/person-detail-page.spec.ts:168:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-02: List View shows relationship entries (4.2s)
+  ✓  145 [replay-chromium] › tests/person-detail-page.spec.ts:200:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-03: Clicking Link on a relationship navigates to that person (4.1s)
+  ✓  146 [replay-chromium] › tests/person-detail-page.spec.ts:218:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-04: Add Entry button opens relationship creation form (4.1s)
+  ✓  147 [replay-chromium] › tests/person-detail-page.spec.ts:235:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-05: Save is disabled when person ID is empty in Add Relationship modal (4.2s)
+  ✓  148 [replay-chromium] › tests/person-detail-page.spec.ts:245:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-06: Filter button opens filter dropdown (4.1s)
+  ✓  149 [replay-chromium] › tests/person-detail-page.spec.ts:257:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-07: Graph View displays visual relationship graph (4.1s)
+  ✓  150 [replay-chromium] › tests/person-detail-page.spec.ts:274:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-01: Contact history displays section with controls (4.1s)
+  ✓  151 [replay-chromium] › tests/person-detail-page.spec.ts:285:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-02: Contact history entries show correct details (4.1s)
+  ✓  152 [replay-chromium] › tests/person-detail-page.spec.ts:316:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-03: Add Entry button opens contact history creation form (4.2s)
+  ✓  153 [replay-chromium] › tests/person-detail-page.spec.ts:335:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-04: Save is disabled when required fields are empty in Add Contact History modal (4.1s)
+  ✓  154 [replay-chromium] › tests/person-detail-page.spec.ts:345:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-05: Edit icon opens edit form for existing entry (4.1s)
+  ✓  155 [replay-chromium] › tests/person-detail-page.spec.ts:371:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-06: Cancel button closes the edit modal (4.1s)
+  ✓  156 [replay-chromium] › tests/person-detail-page.spec.ts:390:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-07: Filter button filters contact history by type (4.1s)
+  ✓  157 [replay-chromium] › tests/person-detail-page.spec.ts:404:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-01: Associated clients section shows client cards (4.1s)
+  ✓  158 [replay-chromium] › tests/person-detail-page.spec.ts:440:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-02: View Client Detail Page button navigates to client (4.1s)
+  ✓  159 [replay-chromium] › tests/task-detail-page.spec.ts:16:3 › TaskDetailPage - Header (TDP-HDR) › TDP-HDR-01: Task detail page displays task information (2.0s)
+  ✓  160 [replay-chromium] › tests/task-detail-page.spec.ts:33:3 › TaskDetailPage - Header (TDP-HDR) › TDP-HDR-02: Mark Complete changes task status (3.3s)
+  ✓  161 [replay-chromium] › tests/task-detail-page.spec.ts:75:3 › TaskDetailPage - Header (TDP-HDR) › TDP-HDR-03: Cancel Task deletes task and redirects (3.2s)
+  ✓  162 [replay-chromium] › tests/task-detail-page.spec.ts:113:3 › TaskDetailPage - Header (TDP-HDR) › TDP-HDR-04: Back button navigates to tasks list (2.0s)
+  ✓  163 [replay-chromium] › tests/task-detail-page.spec.ts:124:3 › TaskDetailPage - Notes (TDP-NTS) › TDP-NTS-01: Notes section shows empty state (2.4s)
+  ✓  164 [replay-chromium] › tests/task-detail-page.spec.ts:151:3 › TaskDetailPage - Notes (TDP-NTS) › TDP-NTS-02: Adding a note persists and shows in list (2.9s)
+  ✓  165 [replay-chromium] › tests/task-detail-page.spec.ts:169:3 › TaskDetailPage - Notes (TDP-NTS) › TDP-NTS-03: Deleting a note removes it from list (3.6s)
+  ✓  166 [replay-chromium] › tests/tasks-list-page.spec.ts:4:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-01: Page header shows title and New Task button (1.6s)
+  ✓  167 [replay-chromium] › tests/tasks-list-page.spec.ts:18:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-02: New Task button opens task creation modal (1.6s)
+  ✘  168 [replay-chromium] › tests/tasks-list-page.spec.ts:40:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-03: Creating a task persists and appears in list (1.6s)
+  ✓  169 [replay-chromium] › tests/tasks-list-page.spec.ts:79:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-01: Filter controls are displayed (1.6s)
+  ✘  170 [replay-chromium] › tests/tasks-list-page.spec.ts:90:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-02: Filter by priority shows matching tasks (1.6s)
+  ✓  171 [replay-chromium] › tests/tasks-list-page.spec.ts:112:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-03: Text filter searches task titles (2.1s)
+  ✓  172 [replay-chromium] › tests/tasks-list-page.spec.ts:140:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-04: Filter by assignee shows matching tasks (1.6s)
+  ✓  173 [replay-chromium] › tests/tasks-list-page.spec.ts:172:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-05: Filter by client shows matching tasks (1.6s)
+  ✘  174 [replay-chromium] › tests/tasks-list-page.spec.ts:197:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-06: Clearing filters restores full task list (1.6s)
+  ✓  175 [replay-chromium] › tests/tasks-list-page.spec.ts:228:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-01: Task cards display all required information (1.6s)
+  ✓  176 [replay-chromium] › tests/tasks-list-page.spec.ts:259:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-02: Priority badges have correct colors (1.6s)
+  ✓  177 [replay-chromium] › tests/tasks-list-page.spec.ts:292:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-03: Task cards are ordered by due date (soonest first) (1.6s)
+  ✓  178 [replay-chromium] › tests/tasks-list-page.spec.ts:319:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-04: Clicking a task card navigates to task detail page (1.9s)
+  ✓  179 [replay-chromium] › tests/tasks-list-page.spec.ts:339:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-05: Action menu on task card shows options (1.6s)
+  ✓  180 [replay-chromium] › tests/tasks-list-page.spec.ts:367:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-06: Mark Complete removes task from upcoming list (2.0s)
+  ✓  181 [replay-chromium] › tests/tasks-list-page.spec.ts:390:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-07: Edit opens task edit form (1.6s)
+  ✓  182 [replay-chromium] › tests/tasks-list-page.spec.ts:421:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-08: Editing a task persists changes (2.1s)
+  ✓  183 [replay-chromium] › tests/tasks-list-page.spec.ts:454:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-09: Delete task removes it after confirmation (2.0s)
+
+
+  1) [replay-chromium] › tests/clients-list-page.spec.ts:85:3 › ClientsListPage - PageHeader › CLP-HDR-03: Creating a new client persists and appears in list 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for getByTestId('add-client-modal').locator('select').first()[22m
+
+
+      94 |     // Fill form
+      95 |     await modal.getByPlaceholder('Enter client name').fill('Test Corp');
+    > 96 |     await modal.locator('select').first().selectOption('organization'); // Type
+         |                                           ^
+      97 |     await modal.locator('select').nth(1).selectOption('prospect'); // Status
+      98 |     await modal.getByPlaceholder('e.g. Enterprise, SaaS, VIP').fill('Enterprise');
+      99 |
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:96:43
+
+    Error Context: test-results/clients-list-page-ClientsL-1f855-ersists-and-appears-in-list-replay-chromium/error-context.md
+
+  2) [replay-chromium] › tests/clients-list-page.spec.ts:241:3 › ClientsListPage - FilterControls › CLP-FLT-01: Status filter dropdown shows all status options 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      249 |     const options = statusFilter.locator('option');
+      250 |     const texts = await options.allTextContents();
+    > 251 |     expect(texts.some(t => t.includes('All'))).toBeTruthy();
+          |                                                ^
+      252 |     expect(texts.some(t => t.includes('Active'))).toBeTruthy();
+      253 |     expect(texts.some(t => t.includes('Inactive'))).toBeTruthy();
+      254 |     expect(texts.some(t => t.includes('Prospect'))).toBeTruthy();
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:251:48
+
+    Error Context: test-results/clients-list-page-ClientsL-5e411-wn-shows-all-status-options-replay-chromium/error-context.md
+
+  3) [replay-chromium] › tests/clients-list-page.spec.ts:258:3 › ClientsListPage - FilterControls › CLP-FLT-02: Filtering by status shows only matching clients 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('filter-status')[22m
+    [2m    - locator resolved to <div data-value="" class="relative " data-testid="filter-status">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+      261 |
+      262 |     // Select Active status
+    > 263 |     await page.getByTestId('filter-status').selectOption('active');
+          |                                             ^
+      264 |
+      265 |     // Wait for filtered results to render
+      266 |     await expect(async () => {
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:263:45
+
+    Error Context: test-results/clients-list-page-ClientsL-dead0-shows-only-matching-clients-replay-chromium/error-context.md
+
+  4) [replay-chromium] › tests/clients-list-page.spec.ts:276:3 › ClientsListPage - FilterControls › CLP-FLT-03: Tags filter dropdown shows available tags 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      284 |     const options = tagsFilter.locator('option');
+      285 |     const texts = await options.allTextContents();
+    > 286 |     expect(texts.some(t => t.includes('All'))).toBeTruthy();
+          |                                                ^
+      287 |     expect(texts.length).toBeGreaterThanOrEqual(1);
+      288 |   });
+      289 |
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:286:48
+
+    Error Context: test-results/clients-list-page-ClientsL-c50f5-opdown-shows-available-tags-replay-chromium/error-context.md
+
+  5) [replay-chromium] › tests/clients-list-page.spec.ts:315:3 › ClientsListPage - FilterControls › CLP-FLT-05: Source filter dropdown shows available sources 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      322 |     const options = sourceFilter.locator('option');
+      323 |     const texts = await options.allTextContents();
+    > 324 |     expect(texts.some(t => t.includes('All'))).toBeTruthy();
+          |                                                ^
+      325 |   });
+      326 |
+      327 |   test('CLP-FLT-06: Filtering by source shows only matching clients', async ({ page }) => {
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:324:48
+
+    Error Context: test-results/clients-list-page-ClientsL-69c2a-own-shows-available-sources-replay-chromium/error-context.md
+
+  6) [replay-chromium] › tests/clients-list-page.spec.ts:353:3 › ClientsListPage - FilterControls › CLP-FLT-07: Sort dropdown shows sort options 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeTruthy[2m()[22m
+
+    Received: [31mfalse[39m
+
+      360 |     const options = sortFilter.locator('option');
+      361 |     const texts = await options.allTextContents();
+    > 362 |     expect(texts.some(t => t.includes('Recently Updated'))).toBeTruthy();
+          |                                                             ^
+      363 |     expect(texts.some(t => t.includes('Name A-Z'))).toBeTruthy();
+      364 |     expect(texts.some(t => t.includes('Name Z-A'))).toBeTruthy();
+      365 |     expect(texts.some(t => t.includes('Status'))).toBeTruthy();
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:362:61
+
+    Error Context: test-results/clients-list-page-ClientsL-d83f5-dropdown-shows-sort-options-replay-chromium/error-context.md
+
+  7) [replay-chromium] › tests/clients-list-page.spec.ts:368:3 › ClientsListPage - FilterControls › CLP-FLT-08: Sorting by name A-Z orders clients alphabetically 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('filter-sort')[22m
+    [2m    - locator resolved to <div class="relative " data-value="updated_at" data-testid="filter-sort">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+      370 |     await page.waitForLoadState('networkidle');
+      371 |
+    > 372 |     await page.getByTestId('filter-sort').selectOption('name_asc');
+          |                                           ^
+      373 |
+      374 |     // Wait for sorted results to render
+      375 |     await expect(async () => {
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:372:43
+
+    Error Context: test-results/clients-list-page-ClientsL-f8750-ders-clients-alphabetically-replay-chromium/error-context.md
+
+  8) [replay-chromium] › tests/clients-list-page.spec.ts:389:3 › ClientsListPage - FilterControls › CLP-FLT-09: Multiple filters can be combined 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('filter-status')[22m
+    [2m    - locator resolved to <div data-value="" class="relative " data-testid="filter-status">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+      392 |
+      393 |     // Apply status filter and wait for results
+    > 394 |     await page.getByTestId('filter-status').selectOption('active');
+          |                                             ^
+      395 |     await expect(async () => {
+      396 |       const badges = page.locator('[data-testid="status-badge-active"]');
+      397 |       const count = await badges.count();
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:394:45
+
+    Error Context: test-results/clients-list-page-ClientsL-53091-ple-filters-can-be-combined-replay-chromium/error-context.md
+
+  9) [replay-chromium] › tests/clients-list-page.spec.ts:546:3 › ClientsListPage - ClientsTable › CLP-TBL-08: Clients with churned status show N/A for deals 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('filter-status')[22m
+    [2m    - locator resolved to <div data-value="" class="relative " data-testid="filter-status">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+      549 |
+      550 |     // Filter by churned status first
+    > 551 |     await page.getByTestId('filter-status').selectOption('churned');
+          |                                             ^
+      552 |
+      553 |     // Wait for churned clients to render
+      554 |     await expect(async () => {
+        at /repo/apps/SalesCRM/tests/clients-list-page.spec.ts:551:45
+
+    Error Context: test-results/clients-list-page-ClientsL-cbed3-d-status-show-N-A-for-deals-replay-chromium/error-context.md
+
+  10) [replay-chromium] › tests/cross-cutting.spec.ts:400:3 › Cross-Cutting Timeline Atomicity › ATOM-02: Single deal stage change produces exactly one timeline entry 
+
+    Error: locator.inputValue: Error: Node is not an <input>, <textarea> or <select> element
+    Call log:
+    [2m  - waiting for getByTestId('deal-header-stage-select')[22m
+
+
+      425 |     await expect(stageSelect).toBeVisible({ timeout: 10000 });
+      426 |
+    > 427 |     const currentStage = await stageSelect.inputValue();
+          |                                            ^
+      428 |     // Pick a different stage
+      429 |     const stages = ['lead', 'qualification', 'discovery', 'proposal', 'negotiation', 'closed_won'];
+      430 |     const nextStage = stages.find(s => s !== currentStage) || 'proposal';
+        at /repo/apps/SalesCRM/tests/cross-cutting.spec.ts:427:44
+
+    Error Context: test-results/cross-cutting-Cross-Cuttin-4c42e--exactly-one-timeline-entry-replay-chromium/error-context.md
+
+  11) [replay-chromium] › tests/deal-detail-page.spec.ts:123:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-04: Changing stage via dropdown and Change Stage button 
+
+    Error: locator.inputValue: Error: Node is not an <input>, <textarea> or <select> element
+    Call log:
+    [2m  - waiting for getByTestId('deal-header-stage-select')[22m
+
+
+      131 |
+      132 |     // Get current stage
+    > 133 |     const currentStage = await stageSelect.inputValue();
+          |                                            ^
+      134 |
+      135 |     // Change Stage button should be disabled when same stage selected
+      136 |     await expect(changeStageBtn).toBeDisabled();
+        at /repo/apps/SalesCRM/tests/deal-detail-page.spec.ts:133:44
+
+    Error Context: test-results/deal-detail-page-DealDetai-d6647-own-and-Change-Stage-button-replay-chromium/error-context.md
+
+  12) [replay-chromium] › tests/deal-detail-page.spec.ts:193:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-02: Pipeline updates when stage changes 
+
+    Error: locator.inputValue: Error: Node is not an <input>, <textarea> or <select> element
+    Call log:
+    [2m  - waiting for getByTestId('deal-header-stage-select')[22m
+
+
+      196 |     // Get current stage
+      197 |     const stageSelect = page.getByTestId('deal-header-stage-select');
+    > 198 |     const currentStage = await stageSelect.inputValue();
+          |                                            ^
+      199 |
+      200 |     // Get the current indicator status
+      201 |     const currentIndicator = page.getByTestId(`pipeline-stage-indicator-${currentStage}`);
+        at /repo/apps/SalesCRM/tests/deal-detail-page.spec.ts:198:44
+
+    Error Context: test-results/deal-detail-page-DealDetai-672b2--updates-when-stage-changes-replay-chromium/error-context.md
+
+  13) [replay-chromium] › tests/deal-detail-page.spec.ts:248:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-02: New stage change adds history entry 
+
+    Error: locator.inputValue: Error: Node is not an <input>, <textarea> or <select> element
+    Call log:
+    [2m  - waiting for getByTestId('deal-header-stage-select')[22m
+
+
+      255 |     // Change stage to trigger new history entry
+      256 |     const stageSelect = page.getByTestId('deal-header-stage-select');
+    > 257 |     const currentStage = await stageSelect.inputValue();
+          |                                            ^
+      258 |     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
+      259 |     await stageSelect.selectOption(newStage);
+      260 |     await page.getByTestId('deal-header-change-stage-button').click();
+        at /repo/apps/SalesCRM/tests/deal-detail-page.spec.ts:257:44
+
+    Error Context: test-results/deal-detail-page-DealDetai-bf389-e-change-adds-history-entry-replay-chromium/error-context.md
+
+  14) [replay-chromium] › tests/deals-list-page.spec.ts:49:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-03: Creating a deal persists and appears in table 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m1[39m
+    Received:   [31m0[39m
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      65 |       const options = await clientSelect.locator('option').all();
+      66 |       expect(options.length).toBeGreaterThan(1);
+    > 67 |     }).toPass({ timeout: 10000 });
+         |        ^
+      68 |     const options = await clientSelect.locator('option').all();
+      69 |     const clientValue = await options[1].getAttribute('value');
+      70 |     await clientSelect.selectOption(clientValue!);
+        at /repo/apps/SalesCRM/tests/deals-list-page.spec.ts:67:8
+
+    Error Context: test-results/deals-list-page-DealsListP-61e21-rsists-and-appears-in-table-replay-chromium/error-context.md
+
+  15) [replay-chromium] › tests/deals-list-page.spec.ts:118:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-02: Summary cards update when deals are added 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m1[39m
+    Received:   [31m0[39m
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      137 |       const opts = await clientSelect.locator('option').all();
+      138 |       expect(opts.length).toBeGreaterThan(1);
+    > 139 |     }).toPass({ timeout: 10000 });
+          |        ^
+      140 |     const options = await clientSelect.locator('option').all();
+      141 |     const clientValue = await options[1].getAttribute('value');
+      142 |     await clientSelect.selectOption(clientValue!);
+        at /repo/apps/SalesCRM/tests/deals-list-page.spec.ts:139:8
+
+    Error Context: test-results/deals-list-page-DealsListP-45a49-update-when-deals-are-added-replay-chromium/error-context.md
+
+  16) [replay-chromium] › tests/person-detail-page.spec.ts:68:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-01: Header displays person name, title, and contact info 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  getByTestId('person-header-contact-info')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByTestId('person-header-contact-info')[22m
+    [2m    9 × locator resolved to <div class="flex flex-wrap gap-4 mb-3" data-testid="person-header-contact-info"></div>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      80 |     // Contact info area exists
+      81 |     const contactInfo = page.getByTestId('person-header-contact-info');
+    > 82 |     await expect(contactInfo).toBeVisible();
+         |                               ^
+      83 |   });
+      84 |
+      85 |   test('PDP-HDR-02: Clicking associated client link navigates to ClientDetailPage', async ({ page }) => {
+        at /repo/apps/SalesCRM/tests/person-detail-page.spec.ts:82:31
+
+    Error Context: test-results/person-detail-page-PersonD-2e2c5-name-title-and-contact-info-replay-chromium/error-context.md
+
+  17) [replay-chromium] › tests/tasks-list-page.spec.ts:40:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-03: Creating a task persists and appears in list 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('create-task-priority')[22m
+    [2m    - locator resolved to <div class="relative " data-value="normal" data-testid="create-task-priority">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+      50 |     const taskTitle = `Test Task ${Date.now()}`;
+      51 |     await page.getByTestId('create-task-title').fill(taskTitle);
+    > 52 |     await page.getByTestId('create-task-priority').selectOption('high');
+         |                                                    ^
+      53 |     await page.getByTestId('create-task-assignee-name').fill('Sarah J.');
+      54 |     await page.getByTestId('create-task-assignee-role').fill('PM');
+      55 |
+        at /repo/apps/SalesCRM/tests/tasks-list-page.spec.ts:52:52
+
+    Error Context: test-results/tasks-list-page-TasksListP-f2f7d-ersists-and-appears-in-list-replay-chromium/error-context.md
+
+  18) [replay-chromium] › tests/tasks-list-page.spec.ts:90:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-02: Filter by priority shows matching tasks 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('tasks-filter-priority')[22m
+    [2m    - locator resolved to <div data-value="" class="relative mt-1" data-testid="tasks-filter-priority">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+       97 |
+       98 |     // Select "High" priority filter (this closes the dropdown and triggers a fetch)
+    >  99 |     await page.getByTestId('tasks-filter-priority').selectOption('high');
+          |                                                     ^
+      100 |
+      101 |     // Wait for filtered results where all cards have high priority badges
+      102 |     await expect(async () => {
+        at /repo/apps/SalesCRM/tests/tasks-list-page.spec.ts:99:53
+
+    Error Context: test-results/tasks-list-page-TasksListP-719af-iority-shows-matching-tasks-replay-chromium/error-context.md
+
+  19) [replay-chromium] › tests/tasks-list-page.spec.ts:197:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-06: Clearing filters restores full task list 
+
+    Error: locator.selectOption: Error: Element is not a <select> element
+    Call log:
+    [2m  - waiting for getByTestId('tasks-filter-priority')[22m
+    [2m    - locator resolved to <div data-value="" class="relative mt-1" data-testid="tasks-filter-priority">…</div>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+
+
+      206 |     await page.getByTestId('tasks-filter-button').click();
+      207 |     await expect(page.getByTestId('tasks-filter-dropdown')).toBeVisible();
+    > 208 |     await page.getByTestId('tasks-filter-priority').selectOption('high');
+          |                                                     ^
+      209 |     await page.waitForLoadState('networkidle');
+      210 |
+      211 |     const filteredCount = await cards.count();
+        at /repo/apps/SalesCRM/tests/tasks-list-page.spec.ts:208:53
+
+    Error Context: test-results/tasks-list-page-TasksListP-d211f-ers-restores-full-task-list-replay-chromium/error-context.md
+
+  19 failed
+    [replay-chromium] › tests/clients-list-page.spec.ts:85:3 › ClientsListPage - PageHeader › CLP-HDR-03: Creating a new client persists and appears in list 
+    [replay-chromium] › tests/clients-list-page.spec.ts:241:3 › ClientsListPage - FilterControls › CLP-FLT-01: Status filter dropdown shows all status options 
+    [replay-chromium] › tests/clients-list-page.spec.ts:258:3 › ClientsListPage - FilterControls › CLP-FLT-02: Filtering by status shows only matching clients 
+    [replay-chromium] › tests/clients-list-page.spec.ts:276:3 › ClientsListPage - FilterControls › CLP-FLT-03: Tags filter dropdown shows available tags 
+    [replay-chromium] › tests/clients-list-page.spec.ts:315:3 › ClientsListPage - FilterControls › CLP-FLT-05: Source filter dropdown shows available sources 
+    [replay-chromium] › tests/clients-list-page.spec.ts:353:3 › ClientsListPage - FilterControls › CLP-FLT-07: Sort dropdown shows sort options 
+    [replay-chromium] › tests/clients-list-page.spec.ts:368:3 › ClientsListPage - FilterControls › CLP-FLT-08: Sorting by name A-Z orders clients alphabetically 
+    [replay-chromium] › tests/clients-list-page.spec.ts:389:3 › ClientsListPage - FilterControls › CLP-FLT-09: Multiple filters can be combined 
+    [replay-chromium] › tests/clients-list-page.spec.ts:546:3 › ClientsListPage - ClientsTable › CLP-TBL-08: Clients with churned status show N/A for deals 
+    [replay-chromium] › tests/cross-cutting.spec.ts:400:3 › Cross-Cutting Timeline Atomicity › ATOM-02: Single deal stage change produces exactly one timeline entry 
+    [replay-chromium] › tests/deal-detail-page.spec.ts:123:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-04: Changing stage via dropdown and Change Stage button 
+    [replay-chromium] › tests/deal-detail-page.spec.ts:193:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-02: Pipeline updates when stage changes 
+    [replay-chromium] › tests/deal-detail-page.spec.ts:248:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-02: New stage change adds history entry 
+    [replay-chromium] › tests/deals-list-page.spec.ts:49:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-03: Creating a deal persists and appears in table 
+    [replay-chromium] › tests/deals-list-page.spec.ts:118:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-02: Summary cards update when deals are added 
+    [replay-chromium] › tests/person-detail-page.spec.ts:68:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-01: Header displays person name, title, and contact info 
+    [replay-chromium] › tests/tasks-list-page.spec.ts:40:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-03: Creating a task persists and appears in list 
+    [replay-chromium] › tests/tasks-list-page.spec.ts:90:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-02: Filter by priority shows matching tasks 
+    [replay-chromium] › tests/tasks-list-page.spec.ts:197:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-06: Clearing filters restores full task list 
+  164 passed (9.8m)
