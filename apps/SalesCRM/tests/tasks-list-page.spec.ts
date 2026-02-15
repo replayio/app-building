@@ -316,7 +316,7 @@ test.describe('TasksListPage - TaskCards (TLP-CRD)', () => {
     }
   });
 
-  test('TLP-CRD-04: Clicking a task card navigates to task context', async ({ page }) => {
+  test('TLP-CRD-04: Clicking a task card navigates to task detail page', async ({ page }) => {
     await page.goto('/tasks');
     await page.waitForLoadState('networkidle');
 
@@ -324,16 +324,15 @@ test.describe('TasksListPage - TaskCards (TLP-CRD)', () => {
     const count = await cards.count();
 
     if (count > 0) {
+      const firstCardTestId = await cards.first().getAttribute('data-testid');
+      const taskId = firstCardTestId!.replace('task-card-', '');
+
       await cards.first().click();
       await page.waitForLoadState('networkidle');
 
-      // Should navigate to either /clients/:id or /deals/:id
-      const currentUrl = page.url();
-      const navigated = currentUrl.includes('/clients/') || currentUrl.includes('/deals/');
-      // If the task has no client or deal association, it may stay on the same page
-      if (navigated) {
-        expect(currentUrl).toMatch(/\/(clients|deals)\/.+/);
-      }
+      // Should navigate to /tasks/:taskId
+      await expect(page).toHaveURL(new RegExp(`/tasks/${taskId}`));
+      await expect(page.getByTestId('task-detail-page')).toBeVisible();
     }
   });
 

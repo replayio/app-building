@@ -6,6 +6,7 @@ import { PersonDetailPage } from './pages/PersonDetailPage'
 import { DealsListPage } from './pages/DealsListPage'
 import { DealDetailPage } from './pages/DealDetailPage'
 import { TasksListPage } from './pages/TasksListPage'
+import { TaskDetailPage } from './pages/TaskDetailPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/deals" element={<DealsListPage />} />
         <Route path="/deals/:dealId" element={<DealDetailPage />} />
         <Route path="/tasks" element={<TasksListPage />} />
+        <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

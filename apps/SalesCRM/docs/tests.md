@@ -953,10 +953,10 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe card order
 - Expected: Tasks are ordered with the soonest due date first (Today before Tomorrow before future dates).
 
-**TLP-CRD-04: Clicking a task card navigates to task context**
+**TLP-CRD-04: Clicking a task card navigates to task detail page**
 - Initial: Task "Finalize Q3 Marketing Plan" is shown
 - Action: Click on the card (not the ... menu)
-- Expected: Navigates to the associated client's detail page or shows task detail. If task is associated with a deal, may navigate to deal detail.
+- Expected: Navigates to /tasks/:taskId. Task detail page shows task title, description, priority, due date, assignee, status, and notes section.
 
 **TLP-CRD-05: Action menu on task card shows options**
 - Initial: User is on /tasks
@@ -982,6 +982,55 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Action menu open for a task
 - Action: Click "Delete"
 - Expected: Confirmation dialog appears. Confirming removes the task card. Deletion persisted. No longer appears on associated client or deal.
+
+---
+
+## 7. TaskDetailPage
+
+### Components
+- **TaskDetailHeader**: Back button, task title with priority badge, description, due date, assignee, client/deal links, status badge, Mark Complete and Cancel Task buttons
+- **TaskNotesSection**: Notes list with add note form, delete note button per note
+
+### Test Entries
+
+#### TaskDetailHeader
+
+**TDP-HDR-01: Task detail page displays task information**
+- Initial: User navigates to /tasks/:taskId
+- Action: Observe the header
+- Expected: Shows task title, priority badge, status (Open/Completed), due date, assignee, and associated client/deal names.
+
+**TDP-HDR-02: Mark Complete changes task status**
+- Initial: Task is in Open status
+- Action: Click "Mark Complete", confirm in dialog
+- Expected: Task status changes to "Completed". Mark Complete and Cancel Task buttons are hidden. Completed date is shown.
+
+**TDP-HDR-03: Cancel Task deletes task and redirects**
+- Initial: Task is in Open status
+- Action: Click "Cancel Task", confirm in dialog
+- Expected: Task is deleted. User is redirected to /tasks list page.
+
+**TDP-HDR-04: Back button navigates to tasks list**
+- Initial: User is on task detail page
+- Action: Click back arrow button
+- Expected: Navigates to /tasks list page.
+
+#### TaskNotesSection
+
+**TDP-NTS-01: Notes section shows empty state**
+- Initial: Task has no notes
+- Action: Observe notes section
+- Expected: Shows "No notes yet" message and an add note form.
+
+**TDP-NTS-02: Adding a note persists and shows in list**
+- Initial: Notes section with add note form
+- Action: Type "This is a test note" and click "Add"
+- Expected: Note appears in the notes list with content, author, and timestamp. Input is cleared.
+
+**TDP-NTS-03: Deleting a note removes it from list**
+- Initial: A note exists in the list
+- Action: Click the delete (trash) icon on the note
+- Expected: Note is removed from the list.
 
 ---
 

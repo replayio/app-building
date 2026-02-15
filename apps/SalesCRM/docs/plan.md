@@ -217,9 +217,9 @@
   - [x] fixBugReport.md: FixBugDealsDropdownStyling: Replaced native `<select>` with custom dropdown component in FilterSelect
   - [x] fixBugReport.md: UpdateTestsDealsDropdownStyling: Updated DLP-FLT-01 through DLP-FLT-07 tests for custom dropdown interactions. All 8 DLP-FLT tests pass.
   - [x] fixBugReport.md: ResolveBugDealsDropdownStyling: Bug moved to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: FixBugTaskDetailPage: Add task detail page with completion/cancellation and notes
-  - [ ] fixBugReport.md: UpdateTestsTaskDetailPage: Update spec and tests for task detail page
-  - [ ] fixBugReport.md: ResolveBugTaskDetailPage: Mark bug as resolved
+  - [x] fixBugReport.md: FixBugTaskDetailPage: Add task detail page with completion/cancellation and notes
+  - [x] fixBugReport.md: UpdateTestsTaskDetailPage: Update spec and tests for task detail page
+  - [x] fixBugReport.md: ResolveBugTaskDetailPage: Mark bug as resolved
   - [x] fixBugReport.md: FixBugDashboardHighlight: Removed duplicate "Dashboard" entry from sidebar (same URL as "Clients")
   - [x] fixBugReport.md: FixBugReports404: Removed "Reports" link from sidebar (no /reports route exists)
   - [x] fixBugReport.md: FixBugSettingsButton: Removed "Settings" button from sidebar (no /settings route exists)

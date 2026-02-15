@@ -60,6 +60,14 @@ export interface Task {
   updated_at: string
 }
 
+export interface TaskNote {
+  id: string
+  task_id: string
+  content: string
+  author: string
+  created_at: string
+}
+
 export interface Individual {
   id: string
   name: string
