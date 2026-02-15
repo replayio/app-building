@@ -225,7 +225,7 @@
   - [x] fixBugReport.md: FixBugSettingsButton: Removed "Settings" button from sidebar (no /settings route exists)
   - [x] fixBugReport.md: UpdateTestsSidebar: Updated CLP-NAV-01 test and test spec to match new sidebar items (Clients, Deals, Tasks only). Both CLP-NAV tests pass.
   - [x] fixBugReport.md: ResolveBugDashboardHighlight+Reports404+SettingsButton: All three sidebar bugs moved to Unreviewed in bugReports.md
-- [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
+- [x] reviewBugReport.md: UnpackReviewBugReport: Classified and reviewed 6 bugs — 3 writeApp.md (duplicate nav, native selects, generic attachment icons), 2 testSpec.md (Reports/Settings nav targets already covered by existing directive), 1 no problem stage (new functionality). Added 3 new directives to writeApp.md. All bugs moved to Finished.
 - [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
 - [ ] deployment.md: UnpackDeployment: Unpack subtasks
