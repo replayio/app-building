@@ -206,6 +206,37 @@
 - [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
 - **Maintenance Round 1 COMPLETE**: All directive violations fixed, tests passing, deployed to production
 
+### Maintenance Round 2
+
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 6 open bug reports found
+  - [x] fixBugReport.md: AnalyzeBugAttachmentPreview: Analyze attachments missing preview/thumbnail — see docs/bugs/AttachmentPreview.md
+  - [x] fixBugReport.md: FixBugAttachmentPreview: Added AttachmentPreview component with file-type-specific icons and image thumbnails, updated both AttachmentsSection and DealAttachmentsSection
+  - [x] fixBugReport.md: UpdateTestsAttachmentPreview: Updated CDP-ATT-01/02 and DDP-ATT-01 test specs with file-type-specific preview descriptions, updated CDP-ATT-02 test assertions. All 9 ATT tests pass.
+  - [x] fixBugReport.md: ResolveBugAttachmentPreview: Bug moved to Unreviewed section in bugReports.md
+  - [ ] fixBugReport.md: AnalyzeBugDealsDropdownStyling: Analyze deals page dropdown styling reverting to browser defaults
+  - [ ] fixBugReport.md: FixBugDealsDropdownStyling: Fix dropdown styling on deals page
+  - [ ] fixBugReport.md: UpdateTestsDealsDropdownStyling: Update spec and tests for dropdown styling
+  - [ ] fixBugReport.md: ResolveBugDealsDropdownStyling: Mark bug as resolved
+  - [ ] fixBugReport.md: FixBugTaskDetailPage: Add task detail page with completion/cancellation and notes
+  - [ ] fixBugReport.md: UpdateTestsTaskDetailPage: Update spec and tests for task detail page
+  - [ ] fixBugReport.md: ResolveBugTaskDetailPage: Mark bug as resolved
+  - [ ] fixBugReport.md: AnalyzeBugSettingsButton: Analyze settings button doing nothing
+  - [ ] fixBugReport.md: FixBugSettingsButton: Fix settings button to have a function
+  - [ ] fixBugReport.md: UpdateTestsSettingsButton: Update spec and tests for settings button
+  - [ ] fixBugReport.md: ResolveBugSettingsButton: Mark bug as resolved
+  - [ ] fixBugReport.md: AnalyzeBugReports404: Analyze reports link going to 404
+  - [ ] fixBugReport.md: FixBugReports404: Fix reports link to go to valid location
+  - [ ] fixBugReport.md: UpdateTestsReports404: Update spec and tests for reports link
+  - [ ] fixBugReport.md: ResolveBugReports404: Mark bug as resolved
+  - [ ] fixBugReport.md: AnalyzeBugDashboardHighlight: Analyze duplicate dashboard/clients highlight in sidebar
+  - [ ] fixBugReport.md: FixBugDashboardHighlight: Remove dashboard duplicate from sidebar
+  - [ ] fixBugReport.md: UpdateTestsDashboardHighlight: Update spec and tests for sidebar
+  - [ ] fixBugReport.md: ResolveBugDashboardHighlight: Mark bug as resolved
+- [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
+- [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
+- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+
 ## Blockers
 
-None. All stages and maintenance rounds complete.
+None.
