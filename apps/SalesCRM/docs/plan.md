@@ -237,8 +237,9 @@
   - [x] checkDirectives.md: FixViolationTDPHDR02: Added completed date and Cancel Task hidden assertions to TDP-HDR-02 test
   - [x] checkDirectives.md: RunTests: All tests passing
   - [x] checkDirectives.md: DocumentFix: Documented
-- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
-- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+- [x] polishApp.md: UnpackPolishApp: Stub with no subtasks
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200)
+- **Maintenance Round 2 COMPLETE**: All 6 bugs fixed, bug reports reviewed, directives checked, deployed to production
 
 ## Blockers
 
