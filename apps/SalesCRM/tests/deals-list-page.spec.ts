@@ -60,17 +60,21 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     await page.getByTestId('create-deal-name').fill(dealName);
 
     // Wait for client options to load, then select first available client
-    const clientSelect = page.getByTestId('create-deal-client');
+    await page.getByTestId('create-deal-client-trigger').click();
+    const clientMenu = page.getByTestId('create-deal-client-menu');
+    await expect(clientMenu).toBeVisible();
     await expect(async () => {
-      const options = await clientSelect.locator('option').all();
+      const options = await clientMenu.locator('button').all();
       expect(options.length).toBeGreaterThan(1);
     }).toPass({ timeout: 10000 });
-    const options = await clientSelect.locator('option').all();
-    const clientValue = await options[1].getAttribute('value');
-    await clientSelect.selectOption(clientValue!);
+    const clientOptions = await clientMenu.locator('button').all();
+    await clientOptions[1].click();
 
     await page.getByTestId('create-deal-value').fill('180000');
-    await page.getByTestId('create-deal-stage').selectOption('discovery');
+
+    // Select stage using custom FilterSelect
+    await page.getByTestId('create-deal-stage-trigger').click();
+    await page.getByTestId('create-deal-stage-option-discovery').click();
     await page.getByTestId('create-deal-owner').fill('Test Owner');
 
     await page.getByTestId('create-deal-save').click();
@@ -132,14 +136,15 @@ test.describe('DealsListPage - SummaryCards (DLP-SUM)', () => {
     await page.getByTestId('create-deal-name').fill(dealName);
 
     // Wait for client options to load
-    const clientSelect = page.getByTestId('create-deal-client');
+    await page.getByTestId('create-deal-client-trigger').click();
+    const clientMenu = page.getByTestId('create-deal-client-menu');
+    await expect(clientMenu).toBeVisible();
     await expect(async () => {
-      const opts = await clientSelect.locator('option').all();
+      const opts = await clientMenu.locator('button').all();
       expect(opts.length).toBeGreaterThan(1);
     }).toPass({ timeout: 10000 });
-    const options = await clientSelect.locator('option').all();
-    const clientValue = await options[1].getAttribute('value');
-    await clientSelect.selectOption(clientValue!);
+    const options = await clientMenu.locator('button').all();
+    await options[1].click();
 
     await page.getByTestId('create-deal-value').fill('50000');
     await page.getByTestId('create-deal-save').click();

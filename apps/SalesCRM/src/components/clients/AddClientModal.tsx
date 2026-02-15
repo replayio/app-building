@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 import type { ClientType, ClientStatus } from '../../types'
 
 interface AddClientModalProps {
@@ -87,30 +88,32 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
           {/* Type */}
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
-            <select
-              data-testid="client-type-select"
+            <FilterSelect
+              testId="client-type-select"
               value={type}
-              onChange={(e) => setType(e.target.value as ClientType)}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="organization">Organization</option>
-              <option value="individual">Individual</option>
-            </select>
+              onChange={(v) => setType(v as ClientType)}
+              options={[
+                { value: 'organization', label: 'Organization' },
+                { value: 'individual', label: 'Individual' },
+              ]}
+              className="w-full"
+            />
           </div>
           {/* Status */}
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Status</label>
-            <select
-              data-testid="client-status-select"
+            <FilterSelect
+              testId="client-status-select"
               value={status}
-              onChange={(e) => setStatus(e.target.value as ClientStatus)}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="prospect">Prospect</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="churned">Churned</option>
-            </select>
+              onChange={(v) => setStatus(v as ClientStatus)}
+              options={[
+                { value: 'prospect', label: 'Prospect' },
+                { value: 'active', label: 'Active' },
+                { value: 'inactive', label: 'Inactive' },
+                { value: 'churned', label: 'Churned' },
+              ]}
+              className="w-full"
+            />
           </div>
           {/* Tags */}
           <div>

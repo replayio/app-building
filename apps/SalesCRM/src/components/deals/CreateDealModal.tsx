@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { DealStage } from '../../types'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface CreateDealModalProps {
   open: boolean
@@ -73,17 +74,16 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
           </div>
           <div>
             <label className="block text-[12px] text-text-muted mb-1">Client *</label>
-            <select
-              data-testid="create-deal-client"
+            <FilterSelect
+              testId="create-deal-client"
               value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
-            >
-              <option value="">Select a client...</option>
-              {availableClients.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+              onChange={(val) => setClientId(val)}
+              placeholder="Select a client..."
+              options={[
+                { value: '', label: 'Select a client...' },
+                ...availableClients.map((c) => ({ value: c.id, label: c.name })),
+              ]}
+            />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -101,16 +101,12 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
             </div>
             <div>
               <label className="block text-[12px] text-text-muted mb-1">Stage</label>
-              <select
-                data-testid="create-deal-stage"
+              <FilterSelect
+                testId="create-deal-stage"
                 value={stage}
-                onChange={(e) => setStage(e.target.value as DealStage)}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
-              >
-                {STAGE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
+                onChange={(val) => setStage(val as DealStage)}
+                options={STAGE_OPTIONS}
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">

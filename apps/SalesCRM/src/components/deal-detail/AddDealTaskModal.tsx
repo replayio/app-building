@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface AddDealTaskModalProps {
   open: boolean
@@ -84,17 +85,17 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
             </div>
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Priority</label>
-              <select
-                data-testid="add-deal-task-priority"
+              <FilterSelect
+                testId="add-deal-task-priority"
                 value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-              >
-                <option value="normal">Normal</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
+                onChange={(val) => setPriority(val)}
+                options={[
+                  { value: 'normal', label: 'Normal' },
+                  { value: 'low', label: 'Low' },
+                  { value: 'medium', label: 'Medium' },
+                  { value: 'high', label: 'High' },
+                ]}
+              />
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import type { ContactHistoryType } from '../../types'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface AddContactHistoryModalProps {
   open: boolean
@@ -65,16 +66,12 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
             </div>
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Type *</label>
-              <select
-                data-testid="contact-history-type-select"
+              <FilterSelect
+                testId="contact-history-type-select"
                 value={type}
-                onChange={(e) => setType(e.target.value as ContactHistoryType)}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-              >
-                {TYPE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
+                onChange={(val) => setType(val as ContactHistoryType)}
+                options={TYPE_OPTIONS}
+              />
             </div>
           </div>
           <div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 import type { Deal } from '../../types'
 
 interface AddTaskModalProps {
@@ -89,32 +90,32 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
             </div>
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Priority</label>
-              <select
-                data-testid="task-priority-select"
+              <FilterSelect
+                testId="task-priority-select"
                 value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-              >
-                <option value="normal">Normal</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
+                onChange={(v) => setPriority(v)}
+                options={[
+                  { value: 'normal', label: 'Normal' },
+                  { value: 'low', label: 'Low' },
+                  { value: 'medium', label: 'Medium' },
+                  { value: 'high', label: 'High' },
+                ]}
+                className="w-full"
+              />
             </div>
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Associated Deal (optional)</label>
-            <select
-              data-testid="task-associated-deal-select"
+            <FilterSelect
+              testId="task-associated-deal-select"
               value={dealId}
-              onChange={(e) => setDealId(e.target.value)}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="">None</option>
-              {deals.map((deal) => (
-                <option key={deal.id} value={deal.id}>{deal.name}</option>
-              ))}
-            </select>
+              onChange={(v) => setDealId(v)}
+              options={[
+                { value: '', label: 'None' },
+                ...deals.map((deal) => ({ value: deal.id, label: deal.name })),
+              ]}
+              className="w-full"
+            />
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">

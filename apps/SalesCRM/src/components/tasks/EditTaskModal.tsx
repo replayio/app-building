@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import type { Task, TaskPriority } from '../../types'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface EditTaskModalProps {
   open: boolean
@@ -105,17 +106,17 @@ export function EditTaskModal({ open, task, onClose, onSave }: EditTaskModalProp
 
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Priority</label>
-                <select
-                  data-testid="edit-task-priority"
+                <FilterSelect
+                  testId="edit-task-priority"
                   value={priority}
-                  onChange={(e) => setPriority(e.target.value as TaskPriority)}
-                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] focus:outline-none focus:border-accent"
-                >
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                  <option value="normal">Normal</option>
-                </select>
+                  onChange={(val) => setPriority(val as TaskPriority)}
+                  options={[
+                    { value: 'high', label: 'High' },
+                    { value: 'medium', label: 'Medium' },
+                    { value: 'low', label: 'Low' },
+                    { value: 'normal', label: 'Normal' },
+                  ]}
+                />
               </div>
             </div>
 
