@@ -10,12 +10,16 @@
 
 2/14/2026: Add a task detail page that has all pertinent information and can be used to mark the task completed or canceled, or add notes
 
-2/14/2026: On deals page the dropdowns look good but when clicked they revert to the browser's default styling which is ugly. when clicked they should be styled appropriately
-
 ## Unreviewed
+
+2/14/2026: On deals page the dropdowns look good but when clicked they revert to the browser's default styling which is ugly. when clicked they should be styled appropriately
+- Analysis: docs/bugs/DealsDropdownStyling.md
+- Before: 0cd095c
+- After: (pending commit)
+- Fix: Replaced native `<select>` elements in DealsFilterControls with custom dropdown component using React state, styled menu, and click-outside-to-close behavior. Updated all DLP-FLT tests.
 
 2/14/2026: Attachments on clients page should show a preview with the file type and thumbnail for images. all attachment displays should look this way
 - Analysis: docs/bugs/AttachmentPreview.md
 - Before: 0301f38
-- After: (pending commit)
+- After: 0cd095c
 - Fix: Added AttachmentPreview component with file-type-specific icons (Document, Image, Spreadsheet, etc.) and image thumbnails. Updated both client and deal attachment displays. Updated test spec and tests.
