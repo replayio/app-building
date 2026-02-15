@@ -1,5 +1,7 @@
-import { FileText, Upload } from 'lucide-react'
+import { Upload } from 'lucide-react'
 import type { Attachment } from '../../types'
+import { AttachmentPreview } from '../shared/AttachmentPreview'
+import { getFileTypeLabel } from '../shared/attachmentUtils'
 
 interface DealAttachmentsSectionProps {
   attachments: Attachment[]
@@ -39,10 +41,11 @@ export function DealAttachmentsSection({ attachments, onUpload, onDelete }: Deal
               data-testid={`deal-attachment-${att.id}`}
               className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
-              <FileText size={16} strokeWidth={1.5} className="text-text-muted flex-shrink-0" />
+              <AttachmentPreview filename={att.filename} url={att.url} type={att.type} />
               <div className="flex-1 min-w-0">
                 <span className="text-[13px] text-text-primary font-medium">{att.filename}</span>
-                <span className="text-[12px] text-text-muted ml-2">{formatSize(att.size)}</span>
+                <span className="text-[12px] text-text-muted ml-2">{getFileTypeLabel(att.filename, att.type)}</span>
+                <span className="text-[12px] text-text-muted ml-1">{formatSize(att.size)}</span>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
                 <a

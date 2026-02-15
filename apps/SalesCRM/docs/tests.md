@@ -362,7 +362,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CDP-ATT-01: Attachments section lists files and links**
 - Initial: Client has attachments: "Service Agreement.pdf" (Document, 2023-02-01, linked to Acme Software License), "Project Scope.docx" (Document, 2023-02-10, no deal), "Client Website Link" (Link, 2023-01-15, no deal)
 - Action: Observe Attachments section
-- Expected: Section headed "Attachments". Each row shows: file icon, filename, type (Document/Link), created date, linked deal name (or "None"), and action icons (download/view, delete).
+- Expected: Section headed "Attachments". Each row shows: a file-type-specific preview (icon matching the file extension, or a thumbnail for image files), filename, file type label (e.g. "Document", "Image", "Spreadsheet", "Link"), created date, linked deal name (or "None"), and action icons (download/view, delete).
 
 **CDP-ATT-02: Download button downloads a document attachment**
 - Initial: "Service Agreement.pdf" is listed
@@ -841,7 +841,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **DDP-ATT-01: Attachments section lists deal-specific files**
 - Initial: Deal has attachments: "Acme_Requirements.pdf" (2.4 MB), "Meeting_Notes_Oct18.docx" (50 KB)
 - Action: Observe Attachments section
-- Expected: Section headed "Attachments" with upload icon button. Each file shows: filename, size in parentheses, "Download" link, and "Delete" link.
+- Expected: Section headed "Attachments" with upload icon button. Each file shows: a file-type-specific preview (icon matching the file extension, or a thumbnail for image files), filename, file type label, size in parentheses, "Download" link, and "Delete" link.
 
 **DDP-ATT-02: Upload icon opens file upload dialog**
 - Initial: User is on DealDetailPage

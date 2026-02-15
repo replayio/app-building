@@ -1,5 +1,7 @@
-import { FileText, Link as LinkIcon, Download, Eye, Trash2 } from 'lucide-react'
+import { Download, Eye, Trash2 } from 'lucide-react'
 import type { Attachment } from '../../types'
+import { AttachmentPreview } from '../shared/AttachmentPreview'
+import { getFileTypeLabel } from '../shared/attachmentUtils'
 
 interface AttachmentsSectionProps {
   attachments: Attachment[]
@@ -21,16 +23,10 @@ export function AttachmentsSection({ attachments, onDelete }: AttachmentsSection
               data-testid={`attachment-item-${att.id}`}
               className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
-              <span className="flex-shrink-0 text-text-muted">
-                {att.type === 'document' ? (
-                  <FileText size={16} strokeWidth={1.5} />
-                ) : (
-                  <LinkIcon size={16} strokeWidth={1.5} />
-                )}
-              </span>
+              <AttachmentPreview filename={att.filename} url={att.url} type={att.type} />
               <div className="flex-1 min-w-0 flex items-center gap-3">
                 <span className="text-[13px] text-text-primary font-medium truncate" data-testid={`attachment-filename-${att.id}`}>{att.filename}</span>
-                <span className="text-[12px] text-text-muted capitalize" data-testid={`attachment-type-${att.id}`}>{att.type === 'document' ? 'Document' : 'Link'}</span>
+                <span className="text-[12px] text-text-muted" data-testid={`attachment-type-${att.id}`}>{getFileTypeLabel(att.filename, att.type)}</span>
                 <span className="text-[12px] text-text-muted" data-testid={`attachment-date-${att.id}`}>
                   Created: {new Date(att.created_at).toLocaleDateString()}
                 </span>

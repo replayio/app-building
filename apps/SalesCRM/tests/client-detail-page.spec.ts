@@ -329,7 +329,11 @@ test.describe('ClientDetailPage - Attachments (CDP-ATT)', () => {
       const type = first.locator('[data-testid^="attachment-type-"]');
       await expect(type).toBeVisible();
       const typeText = await type.textContent();
-      expect(['Document', 'Link']).toContain(typeText!.trim());
+      expect(['Document', 'Image', 'Video', 'Audio', 'Spreadsheet', 'Presentation', 'Code', 'Archive', 'Link', 'File']).toContain(typeText!.trim());
+
+      // Attachment preview (icon or thumbnail) should be visible
+      const preview = first.getByTestId('attachment-preview');
+      await expect(preview).toBeVisible();
     }
   });
 
