@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface UploadAttachmentModalProps {
   open: boolean
@@ -59,15 +60,15 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
-            <select
-              data-testid="upload-attachment-type"
+            <FilterSelect
+              testId="upload-attachment-type"
               value={type}
-              onChange={(e) => setType(e.target.value as 'document' | 'link')}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              <option value="document">Document</option>
-              <option value="link">Link</option>
-            </select>
+              onChange={(val) => setType(val as 'document' | 'link')}
+              options={[
+                { value: 'document', label: 'Document' },
+                { value: 'link', label: 'Link' },
+              ]}
+            />
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">

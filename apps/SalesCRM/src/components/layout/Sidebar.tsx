@@ -1,19 +1,14 @@
 import { NavLink } from 'react-router-dom'
 import {
-  LayoutDashboard,
   Users,
   Handshake,
   CheckSquare,
-  BarChart3,
-  Settings,
 } from 'lucide-react'
 
 const navItems = [
-  { to: '/clients', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/clients', label: 'Clients', icon: Users },
   { to: '/deals', label: 'Deals', icon: Handshake },
   { to: '/tasks', label: 'Tasks', icon: CheckSquare },
-  { to: '/reports', label: 'Reports', icon: BarChart3 },
 ]
 
 export function Sidebar() {
@@ -42,16 +37,6 @@ export function Sidebar() {
             </NavLink>
           ))}
         </nav>
-      </div>
-      <div>
-        <NavLink
-          to="/settings"
-          data-testid="sidebar-nav-settings"
-          className="flex items-center gap-2.5 h-7 px-2 rounded-[4px] text-[13px] font-[450] text-text-secondary hover:bg-sidebar-hover transition-colors duration-100"
-        >
-          <Settings size={16} strokeWidth={1.75} />
-          Settings
-        </NavLink>
       </div>
     </aside>
   )

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { X, Search } from 'lucide-react'
 import type { RelationshipType } from '../../types'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface AddRelationshipModalProps {
   open: boolean
@@ -136,16 +137,12 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Relationship Type *</label>
-            <select
-              data-testid="relationship-type-select"
+            <FilterSelect
+              testId="relationship-type-select"
               value={relationshipType}
-              onChange={(e) => setRelationshipType(e.target.value as RelationshipType)}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              {RELATIONSHIP_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-              ))}
-            </select>
+              onChange={(val) => setRelationshipType(val as RelationshipType)}
+              options={RELATIONSHIP_OPTIONS}
+            />
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">

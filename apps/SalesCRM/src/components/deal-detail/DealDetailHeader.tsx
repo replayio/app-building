@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Pencil, Check, X } from 'lucide-react'
 import type { Deal, DealStage } from '../../types'
+import { FilterSelect } from '../shared/FilterSelect'
 
 interface DealDetailHeaderProps {
   deal: Deal
@@ -151,16 +152,12 @@ export function DealDetailHeader({ deal, onUpdate, onStageChange }: DealDetailHe
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Stage</div>
           <div className="flex items-center gap-2">
-            <select
-              data-testid="deal-header-stage-select"
+            <FilterSelect
+              testId="deal-header-stage-select"
               value={selectedStage}
-              onChange={(e) => setSelectedStage(e.target.value as DealStage)}
-              className="h-[30px] px-2 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            >
-              {stageOptions.map((s) => (
-                <option key={s} value={s}>{stageLabels[s]}</option>
-              ))}
-            </select>
+              onChange={(val) => setSelectedStage(val as DealStage)}
+              options={stageOptions.map((s) => ({ value: s, label: stageLabels[s] }))}
+            />
             <button
               data-testid="deal-header-change-stage-button"
               onClick={handleChangeStage}

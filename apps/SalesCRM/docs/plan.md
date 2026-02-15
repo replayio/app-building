@@ -206,6 +206,54 @@
 - [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
 - **Maintenance Round 1 COMPLETE**: All directive violations fixed, tests passing, deployed to production
 
+### Maintenance Round 2
+
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 6 open bug reports found
+  - [x] fixBugReport.md: AnalyzeBugAttachmentPreview: Analyze attachments missing preview/thumbnail — see docs/bugs/AttachmentPreview.md
+  - [x] fixBugReport.md: FixBugAttachmentPreview: Added AttachmentPreview component with file-type-specific icons and image thumbnails, updated both AttachmentsSection and DealAttachmentsSection
+  - [x] fixBugReport.md: UpdateTestsAttachmentPreview: Updated CDP-ATT-01/02 and DDP-ATT-01 test specs with file-type-specific preview descriptions, updated CDP-ATT-02 test assertions. All 9 ATT tests pass.
+  - [x] fixBugReport.md: ResolveBugAttachmentPreview: Bug moved to Unreviewed section in bugReports.md
+  - [x] fixBugReport.md: AnalyzeBugDealsDropdownStyling: Native `<select>` elements show browser-default dropdown menus — see docs/bugs/DealsDropdownStyling.md
+  - [x] fixBugReport.md: FixBugDealsDropdownStyling: Replaced native `<select>` with custom dropdown component in FilterSelect
+  - [x] fixBugReport.md: UpdateTestsDealsDropdownStyling: Updated DLP-FLT-01 through DLP-FLT-07 tests for custom dropdown interactions. All 8 DLP-FLT tests pass.
+  - [x] fixBugReport.md: ResolveBugDealsDropdownStyling: Bug moved to Unreviewed in bugReports.md
+  - [x] fixBugReport.md: FixBugTaskDetailPage: Add task detail page with completion/cancellation and notes
+  - [x] fixBugReport.md: UpdateTestsTaskDetailPage: Update spec and tests for task detail page
+  - [x] fixBugReport.md: ResolveBugTaskDetailPage: Mark bug as resolved
+  - [x] fixBugReport.md: FixBugDashboardHighlight: Removed duplicate "Dashboard" entry from sidebar (same URL as "Clients")
+  - [x] fixBugReport.md: FixBugReports404: Removed "Reports" link from sidebar (no /reports route exists)
+  - [x] fixBugReport.md: FixBugSettingsButton: Removed "Settings" button from sidebar (no /settings route exists)
+  - [x] fixBugReport.md: UpdateTestsSidebar: Updated CLP-NAV-01 test and test spec to match new sidebar items (Clients, Deals, Tasks only). Both CLP-NAV tests pass.
+  - [x] fixBugReport.md: ResolveBugDashboardHighlight+Reports404+SettingsButton: All three sidebar bugs moved to Unreviewed in bugReports.md
+- [x] reviewBugReport.md: UnpackReviewBugReport: Classified and reviewed 6 bugs — 3 writeApp.md (duplicate nav, native selects, generic attachment icons), 2 testSpec.md (Reports/Settings nav targets already covered by existing directive), 1 no problem stage (new functionality). Added 3 new directives to writeApp.md. All bugs moved to Finished.
+- [x] checkDirectives.md: UnpackCheckDirectives: Focused on new/changed code from Maintenance Round 2
+  - [x] checkDirectives.md: CheckTestSpecTaskDetailPage: No violations found
+  - [x] checkDirectives.md: CheckComponentsTaskDetailPage: No violations found
+  - [x] checkDirectives.md: CheckComponentsAttachmentPreview: No violations found
+  - [x] checkDirectives.md: CheckComponentsDealsFilterControls: No violations found
+  - [x] checkDirectives.md: CheckComponentsSidebar: No violations found
+  - [x] checkDirectives.md: CheckBackendTasks: No violations found
+  - [x] checkDirectives.md: CheckTestsTaskDetailPage: Violations found — TDP-HDR-02 test missing assertions for completed date and Cancel Task button hidden
+  - [x] checkDirectives.md: FixViolationTDPHDR02: Added completed date and Cancel Task hidden assertions to TDP-HDR-02 test
+  - [x] checkDirectives.md: RunTests: All tests passing
+  - [x] checkDirectives.md: DocumentFix: Documented
+- [x] polishApp.md: UnpackPolishApp: Stub with no subtasks
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200)
+- **Maintenance Round 2 COMPLETE**: All 6 bugs fixed, bug reports reviewed, directives checked, deployed to production
+
+### Maintenance Round 3
+
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — No open bug reports
+- [x] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks — No unreviewed bug reports
+- [x] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+  - [x] checkDirectives.md: CheckAllComponents: Violations found — 24 native HTML `<select>` elements across 16 files violating "never use native HTML select" directive
+  - [x] checkDirectives.md: FixViolationNativeSelects: Extracted shared FilterSelect component to `src/components/shared/FilterSelect.tsx`, replaced all 24 native `<select>` elements across 16 files with custom dropdowns
+  - [x] checkDirectives.md: RunTests: All 183 Playwright tests passing. Updated 6 test files to use custom FilterSelect interaction pattern (click trigger → click option) instead of native selectOption/inputValue
+  - [x] checkDirectives.md: DocumentFix: Documented all fixes in plan.md
+- [x] polishApp.md: UnpackPolishApp: Stub with no subtasks
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
+- **Maintenance Round 3 COMPLETE**: All directive violations fixed (24 native selects replaced), tests passing (183/183), deployed to production
+
 ## Blockers
 
-None. All stages and maintenance rounds complete.
+None.
