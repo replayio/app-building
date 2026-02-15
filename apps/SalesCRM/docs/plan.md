@@ -250,8 +250,9 @@
   - [x] checkDirectives.md: FixViolationNativeSelects: Extracted shared FilterSelect component to `src/components/shared/FilterSelect.tsx`, replaced all 24 native `<select>` elements across 16 files with custom dropdowns
   - [x] checkDirectives.md: RunTests: All 183 Playwright tests passing. Updated 6 test files to use custom FilterSelect interaction pattern (click trigger → click option) instead of native selectOption/inputValue
   - [x] checkDirectives.md: DocumentFix: Documented all fixes in plan.md
-- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
-- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+- [x] polishApp.md: UnpackPolishApp: Stub with no subtasks
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
+- **Maintenance Round 3 COMPLETE**: All directive violations fixed (24 native selects replaced), tests passing (183/183), deployed to production
 
 ## Blockers
 

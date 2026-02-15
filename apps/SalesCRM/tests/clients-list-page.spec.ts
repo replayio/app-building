@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 async function selectFilterOption(page: Page, testId: string, value: string) {
   await page.getByTestId(`${testId}-trigger`).click();
