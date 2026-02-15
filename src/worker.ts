@@ -1,11 +1,15 @@
 import { spawn } from "child_process";
-import { existsSync, mkdirSync, renameSync, createWriteStream } from "fs";
+import { existsSync, mkdirSync, renameSync } from "fs";
 import { join } from "path";
 
 const LOGS_DIR = "/repo/logs";
 
 function formatTimestamp(date: Date): string {
   return date.toISOString().replace(/[:.]/g, "-");
+}
+
+function shellQuote(s: string): string {
+  return "'" + s.replace(/'/g, "'\\''") + "'";
 }
 
 // Rotate existing worker log if present
@@ -19,29 +23,23 @@ if (existsSync(currentLog)) {
 // All args after this script are passed to claude
 const claudeArgs = process.argv.slice(2);
 
-const logStream = createWriteStream(currentLog);
+// Build properly shell-quoted command string
+let cmd = "claude";
+for (const arg of claudeArgs) {
+  cmd += " " + shellQuote(arg);
+}
 
-const child = spawn("claude", claudeArgs, {
-  stdio: ["inherit", "pipe", "pipe"],
-});
-
-child.stdout!.on("data", (data: Buffer) => {
-  process.stdout.write(data);
-  logStream.write(data);
-});
-
-child.stderr!.on("data", (data: Buffer) => {
-  process.stderr.write(data);
-  logStream.write(data);
+// Use `script` to create a pty for claude (so it detects a real TTY)
+// while capturing all output to the log file.
+const child = spawn("script", ["-q", "-f", "-c", cmd, currentLog], {
+  stdio: "inherit",
 });
 
 child.on("close", (code) => {
-  logStream.end();
   process.exit(code ?? 0);
 });
 
 child.on("error", (err) => {
-  console.error("Failed to start claude:", err);
-  logStream.end();
+  console.error("Failed to start:", err);
   process.exit(1);
 });
