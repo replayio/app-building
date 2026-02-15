@@ -64,8 +64,12 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     // Status should change to Completed
     await expect(page.getByTestId('task-detail-status')).toContainText('Completed');
 
-    // Mark Complete button should be hidden
+    // Completed date should be shown
+    await expect(page.getByTestId('task-detail-completed-at')).toBeVisible();
+
+    // Mark Complete and Cancel Task buttons should be hidden
     await expect(page.getByTestId('task-detail-mark-complete')).not.toBeVisible();
+    await expect(page.getByTestId('task-detail-mark-canceled')).not.toBeVisible();
   });
 
   test('TDP-HDR-03: Cancel Task deletes task and redirects', async ({ page }) => {
