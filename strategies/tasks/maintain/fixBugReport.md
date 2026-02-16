@@ -30,7 +30,7 @@ and update bugReports.md to refer to it.
 
 ## Fixing bugs
 
-Read the guidelines and directives in `writeApp.md` and then update the app's source to fix the bug.
+Read the guidelines and directives in `strategies/tasks/build/writeApp.md` and then update the app's source to fix the bug.
 
 ## Updating tests
 
@@ -40,7 +40,7 @@ that the bug doesn't occur.
 
 For any changes to the test spec you made, update the test files themselves to reflect those changes.
 
-After updating tests, make sure they pass. Read `testing.md` to understand how to run tests and debug failures.
+After updating tests, make sure they pass. Read `strategies/tasks/build/testing.md` to understand how to run tests and debug failures.
 
 ## Updating revisions
 

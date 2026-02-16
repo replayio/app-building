@@ -55,3 +55,10 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
   `curl -L -o <local-path> <url>` and then use the Read tool to view the downloaded image files.
 - When starting from scratch with no existing plan.md, create and commit plan.md before moving on
   to PlanPage tasks. This avoids losing the plan if the iteration runs out of turns.
+- The PlanPages task must produce output quickly. Do NOT spend excessive turns reading files
+  through Task/Explore agents or re-reading files you have already seen. Read AppSpec.md and the
+  mockup images directly, decide on pages/components, write docs/tests.md scaffolding, update
+  plan.md, commit, and exit. A zero-commit iteration is always a failure — prioritize writing
+  output over exhaustive exploration.
+- Download all mockup images in a single curl command, then read them all in parallel. Do not
+  interleave downloads and reads.

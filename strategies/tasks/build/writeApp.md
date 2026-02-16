@@ -83,3 +83,9 @@ Unpack the task for implementing a page into the following:
   `onUpdate`/`onSave` callback return a Promise, and await it before calling `setEditing(false)`.
 - If the backend supports DELETE operations for a resource, the UI must include delete buttons/actions.
   Check all backend endpoints and ensure the frontend exposes every CRUD operation.
+- When adding domain-specific colors (e.g., status badge colors), always define them as CSS variables
+  in `index.css` under the `@theme` block rather than hardcoding `rgba()`/`rgb()` values in component
+  files. This keeps all colors centralized and easy to theme.
+- Components should be layout-agnostic: do NOT include outer padding (`px-*`) or margin in component
+  root elements. Let the parent page/layout control spacing. When components embed their own padding,
+  composing them in flex rows causes double-padding conflicts that require rework.

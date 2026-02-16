@@ -17,6 +17,7 @@ Copy `.env.example` to `.env` and fill in all API keys.
 
 ```bash
 npm run agent
+npm run agent -- --resume <session-id>   # resume a previous session
 ```
 
 Chat with Claude inside a container. Output is streamed in real-time. Press ESC to interrupt. Subsequent messages continue the conversation.

@@ -3,7 +3,7 @@ import { writeFileSync, appendFileSync, mkdirSync, renameSync } from "fs";
 import { join, basename } from "path";
 
 const REPO_ROOT = "/repo";
-const STRATEGY_FILE = join(REPO_ROOT, "strategies", "performTasks.md");
+const STRATEGY_FILE = join(REPO_ROOT, "strategies", "tasks", "performTasks.md");
 const LOGS_DIR = join(REPO_ROOT, "logs");
 const ReplayMCPServer = "https://dispatch.[REDACTED].io/nut/mcp";
 
