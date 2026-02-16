@@ -185,7 +185,9 @@ async function runLoop(): Promise<void> {
     writeFileSync(currentLogFile, ""); // truncate
     log = createLogger(currentLogFile);
 
+    const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
     const initialRevision = getGitRevision(appDir);
+    log(`Container: ${containerName}`);
     log(`Initial revision: ${initialRevision}`);
 
     log(`Target: ${appDir}`);
