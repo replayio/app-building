@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless'
+import { requiresAuth, type AuthenticatedRequest } from '../utils/auth'
 
 function getDb() {
   const url = process.env.DATABASE_URL
@@ -6,7 +7,7 @@ function getDb() {
   return neon(url)
 }
 
-export default async function handler(req: Request) {
+async function handler(req: AuthenticatedRequest) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
@@ -172,7 +173,7 @@ export default async function handler(req: Request) {
     if (oldStatus) {
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name)
-        VALUES (${resourceId}::uuid, 'status_changed', ${'Status Changed: from \'' + oldStatus + '\' to \'' + (body.status as string) + '\''}, 'System')
+        VALUES (${resourceId}::uuid, 'status_changed', ${'Status Changed: from \'' + oldStatus + '\' to \'' + (body.status as string) + '\''}, ${req.user.name})
       `
     }
 
@@ -181,3 +182,5 @@ export default async function handler(req: Request) {
 
   return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
 }
+
+export default requiresAuth(handler)

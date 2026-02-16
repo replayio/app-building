@@ -14,6 +14,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:8888',
     trace: 'on-first-retry',
+    storageState: './tests/test-storage-state.json',
     launchOptions: {
       executablePath: [REDACTED]Browser,
       env: {
@@ -29,7 +30,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npx netlify dev --port 8888 --functions ./netlify/functions',
+    command: 'IS_TEST=true npx netlify dev --port 8888 --functions ./netlify/functions',
     url: 'http://localhost:8888',
     reuseExistingServer: true,
     timeout: 60000,

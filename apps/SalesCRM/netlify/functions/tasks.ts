@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless'
+import { requiresAuth, type AuthenticatedRequest } from '../utils/auth'
 
 function getDb() {
   const url = process.env.DATABASE_URL
@@ -6,7 +7,7 @@ function getDb() {
   return neon(url)
 }
 
-export default async function handler(req: Request) {
+async function handler(req: AuthenticatedRequest) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
@@ -39,7 +40,7 @@ export default async function handler(req: Request) {
     const body = await req.json() as { content: string; author?: string }
     const rows = await sql`
       INSERT INTO task_notes (task_id, content, author)
-      VALUES (${taskId}::uuid, ${body.content}, ${body.author ?? 'User'})
+      VALUES (${taskId}::uuid, ${body.content}, ${req.user.name})
       RETURNING *
     `
     return Response.json(rows[0], { status: 201 })
@@ -146,7 +147,7 @@ export default async function handler(req: Request) {
     if (body.client_id) {
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-        VALUES (${body.client_id}::uuid, 'task_created', ${'Task Created: \'' + body.title + '\''}, 'System', ${task.id}::uuid, 'task')
+        VALUES (${body.client_id}::uuid, 'task_created', ${'Task Created: \'' + body.title + '\''}, ${req.user.name}, ${task.id}::uuid, 'task')
       `
     }
 
@@ -203,7 +204,7 @@ export default async function handler(req: Request) {
     if (body.completed && task.client_id) {
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-        VALUES (${task.client_id}::uuid, 'task_completed', ${'Task Completed: \'' + task.title + '\''}, 'System', ${taskId}::uuid, 'task')
+        VALUES (${task.client_id}::uuid, 'task_completed', ${'Task Completed: \'' + task.title + '\''}, ${req.user.name}, ${taskId}::uuid, 'task')
       `
     }
 
@@ -228,3 +229,5 @@ export default async function handler(req: Request) {
 
   return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
 }
+
+export default requiresAuth(handler)
