@@ -257,10 +257,10 @@
 ### Maintenance Round 4
 
 - [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 4 open bug reports found
-  - [ ] fixBugReport.md: FixBugDealAttachmentUploads: Add file upload capability to deal attachment modal (currently URL-only, should match client attachments with file upload using blob URLs)
-  - [ ] fixBugReport.md: UpdateTestsDealAttachmentUploads: Update spec and tests for deal attachment file uploads
-  - [ ] fixBugReport.md: UpdateRevisionsDealAttachmentUploads: Record spec change for deal attachment upload
-  - [ ] fixBugReport.md: ResolveBugDealAttachmentUploads: Mark bug as resolved
+  - [x] fixBugReport.md: FixBugDealAttachmentUploads: Added file upload/link toggle to UploadAttachmentModal matching client attachment modal pattern
+  - [x] fixBugReport.md: UpdateTestsDealAttachmentUploads: Updated DDP-ATT-02, DDP-ATT-03, DDP-ATT-05 tests and test spec for new modal UI
+  - [x] fixBugReport.md: UpdateRevisionsDealAttachmentUploads: Recorded spec change in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugDealAttachmentUploads: Bug moved to Unreviewed in bugReports.md
   - [ ] fixBugReport.md: FixBugDealsPipelineDragDrop: Add drag-and-drop to pipeline view for moving deals between stages
   - [ ] fixBugReport.md: UpdateTestsDealsPipelineDragDrop: Update spec and tests for pipeline drag-and-drop
   - [ ] fixBugReport.md: UpdateRevisionsDealsPipelineDragDrop: Record spec change for pipeline drag-and-drop

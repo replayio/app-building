@@ -9,11 +9,12 @@
 
 2/16/2026: Pipeline view on the deals page should allow drag-and-drop to move deals between stages.
 
-2/16/2026: Attachment functionality on the deals page does not allow file uploads.
-
 ## Unreviewed
 
-(none)
+2/16/2026: Attachment functionality on the deals page does not allow file uploads.
+- Before: fbafcda
+- After: (this commit)
+- Fix: Updated UploadAttachmentModal on deal detail page to support both file upload and link URL modes via toggle buttons, matching the client detail page attachment modal pattern.
 
 ## Finished
 
