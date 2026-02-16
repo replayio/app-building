@@ -70,6 +70,14 @@ This will:
 4. Pipe container stdout/stderr to the host console
 5. Report exit status when the container finishes
 
+#### Testing the container environment
+
+Start a container with the same setup (volumes, env vars, network) but drop into a bash shell instead of running the worker:
+
+```bash
+npm run test-container
+```
+
 #### Building the Docker image manually
 
 ```bash

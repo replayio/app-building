@@ -1,4 +1,4 @@
-import { execFileSync, spawn } from "child_process";
+import { ChildProcess, execFileSync, spawn } from "child_process";
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 
@@ -68,7 +68,14 @@ function buildMCPConfig(envVars: Record<string, string>): string {
   return JSON.stringify(mcpConfig);
 }
 
-export function spawnContainer(prompt: string | null): Promise<void> {
+interface ContainerSetup {
+  args: string[];
+  containerName: string;
+  envVars: Record<string, string>;
+  mcpConfig: string;
+}
+
+function setupContainer(mode: "interactive" | "detached" | "attached"): ContainerSetup {
   const projectRoot = resolve(__dirname, "..");
 
   ensureImageExists();
@@ -91,17 +98,21 @@ export function spawnContainer(prompt: string | null): Promise<void> {
   // Build docker run args
   const args: string[] = ["run"];
 
-  if (prompt) {
+  if (mode === "detached") {
     args.push("-d");
-  } else {
+  } else if (mode === "interactive") {
     args.push("-it");
   }
+  // "attached" mode: no -d, no -it — runs in foreground
 
   args.push("--rm", "--name", containerName);
   args.push("-v", `${projectRoot}:/repo`);
   args.push("-w", "/repo");
   args.push("--network", "host");
   args.push("--user", `${process.getuid!()}:${process.getgid!()}`);
+
+  // Writable HOME that persists across container runs (for claude -c)
+  args.push("--env", "HOME=/repo/.agent-home");
 
   // Git identity (system gitconfig not visible to non-root user)
   args.push("--env", "GIT_AUTHOR_NAME=App Builder");
@@ -120,34 +131,64 @@ export function spawnContainer(prompt: string | null): Promise<void> {
   // Image name
   args.push(IMAGE_NAME);
 
+  return { args, containerName, envVars, mcpConfig };
+}
+
+export function spawnContainer(prompt: string): Promise<void> {
+  const { args, containerName, mcpConfig } = setupContainer("detached");
+
   // Worker wrapper (handles log rotation and output capture)
   args.push("npx", "tsx", "/app-building/src/worker.ts");
-  if (prompt) {
-    args.push("-p", prompt);
-    args.push("--model", "claude-opus-4-6");
-  }
+  args.push("-p", prompt);
+  args.push("--model", "claude-opus-4-6");
   args.push("--dangerously-skip-permissions");
   args.push("--mcp-config", mcpConfig);
 
-  if (prompt) {
-    // Detached mode: start container and exit
-    const containerId = execFileSync("docker", args, {
-      encoding: "utf-8",
-      timeout: 30000,
-    }).trim();
+  const containerId = execFileSync("docker", args, {
+    encoding: "utf-8",
+    timeout: 30000,
+  }).trim();
 
-    console.log(`Container started: ${containerId.slice(0, 12)}`);
-    console.log(`Logs: docker logs -f ${containerName}`);
-    return Promise.resolve();
-  } else {
-    // Interactive mode: attach to container and wait for exit
-    return new Promise((resolve, reject) => {
-      const child = spawn("docker", args, { stdio: "inherit" });
-      child.on("close", (code) => {
-        if (code === 0) resolve();
-        else reject(new Error(`Container exited with code ${code}`));
-      });
-      child.on("error", reject);
-    });
+  console.log(`Container started: ${containerId.slice(0, 12)}`);
+  console.log(`Logs: docker logs -f ${containerName}`);
+  return Promise.resolve();
+}
+
+export function startInteractiveContainer(): { containerName: string; mcpConfig: string } {
+  const { args, containerName, mcpConfig } = setupContainer("detached");
+  args.push("sleep", "infinity");
+
+  execFileSync("docker", args, { encoding: "utf-8", timeout: 30000 });
+
+  return { containerName, mcpConfig };
+}
+
+export function execInContainer(containerName: string, claudeArgs: string[]): ChildProcess {
+  return spawn("docker", ["exec", containerName, "claude", ...claudeArgs], {
+    stdio: ["ignore", "pipe", "inherit"],
+  });
+}
+
+export function stopContainer(containerName: string): void {
+  try {
+    execFileSync("docker", ["stop", containerName], { stdio: "ignore", timeout: 30000 });
+  } catch {
+    // Container may already be stopped
   }
+}
+
+export function spawnTestContainer(): Promise<void> {
+  const { args } = setupContainer("interactive");
+
+  // Just start bash — no worker script
+  args.push("bash");
+
+  return new Promise((resolve, reject) => {
+    const child = spawn("docker", args, { stdio: "inherit" });
+    child.on("close", (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`Container exited with code ${code}`));
+    });
+    child.on("error", reject);
+  });
 }
