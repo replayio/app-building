@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless'
+import { requiresAuth, type AuthenticatedRequest } from '../utils/auth'
 
 function getDb() {
   const url = process.env.DATABASE_URL
@@ -6,7 +7,7 @@ function getDb() {
   return neon(url)
 }
 
-export default async function handler(req: Request) {
+async function handler(req: AuthenticatedRequest) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
@@ -63,7 +64,7 @@ export default async function handler(req: Request) {
     // Create timeline event
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}, 'task_created', ${'Task Created: \'' + body.title + '\''}, 'System', ${rows[0].id}, 'task')
+      VALUES (${body.client_id}, 'task_created', ${'Task Created: \'' + body.title + '\''}, ${req.user.name}, ${rows[0].id}, 'task')
     `
 
     // Fetch deal_name if deal_id provided
@@ -111,7 +112,7 @@ export default async function handler(req: Request) {
       const task = rows[0]
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-        VALUES (${task.client_id}, 'task_completed', ${'Task Completed: \'' + task.title + '\''}, 'System', ${taskId}, 'task')
+        VALUES (${task.client_id}, 'task_completed', ${'Task Completed: \'' + task.title + '\''}, ${req.user.name}, ${taskId}, 'task')
       `
     }
 
@@ -126,3 +127,5 @@ export default async function handler(req: Request) {
 
   return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
 }
+
+export default requiresAuth(handler)

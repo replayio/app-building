@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless'
+import { requiresAuth, type AuthenticatedRequest } from '../utils/auth'
 
 function getDb() {
   const url = process.env.DATABASE_URL
@@ -6,7 +7,7 @@ function getDb() {
   return neon(url)
 }
 
-export default async function handler(req: Request) {
+async function handler(req: AuthenticatedRequest) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
@@ -75,7 +76,7 @@ export default async function handler(req: Request) {
 
     const rows = await sql`
       INSERT INTO writeups (deal_id, title, content, author, version)
-      VALUES (${body.deal_id}::uuid, ${body.title}, ${body.content}, ${body.author}, 1)
+      VALUES (${body.deal_id}::uuid, ${body.title}, ${body.content}, ${req.user.name}, 1)
       RETURNING *
     `
 
@@ -110,7 +111,7 @@ export default async function handler(req: Request) {
       UPDATE writeups SET
         title = COALESCE(${body.title ?? null}, title),
         content = COALESCE(${body.content ?? null}, content),
-        author = COALESCE(${body.author ?? null}, author),
+        author = ${req.user.name},
         version = ${newVersion},
         updated_at = NOW()
       WHERE id = ${resourceId}::uuid
@@ -170,7 +171,7 @@ export default async function handler(req: Request) {
     // Create timeline event
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}::uuid, 'task_created', ${'Task Created: \'' + body.title + '\''}, 'System', ${rows[0].id}::uuid, 'task')
+      VALUES (${body.client_id}::uuid, 'task_created', ${'Task Created: \'' + body.title + '\''}, ${req.user.name}, ${rows[0].id}::uuid, 'task')
     `
 
     return Response.json(rows[0], { status: 201 })
@@ -214,7 +215,7 @@ export default async function handler(req: Request) {
     if (body.completed && rows[0].client_id) {
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-        VALUES (${rows[0].client_id}::uuid, 'task_completed', ${'Task Completed: \'' + rows[0].title + '\''}, 'System', ${resourceId}::uuid, 'task')
+        VALUES (${rows[0].client_id}::uuid, 'task_completed', ${'Task Completed: \'' + rows[0].title + '\''}, ${req.user.name}, ${resourceId}::uuid, 'task')
       `
     }
 
@@ -280,3 +281,5 @@ export default async function handler(req: Request) {
 
   return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
 }
+
+export default requiresAuth(handler)

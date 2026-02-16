@@ -269,7 +269,7 @@
   - [x] fixBugReport.md: FixBugTaskLinks: Both sections now navigate to /tasks/:taskId
   - [x] fixBugReport.md: UpdateTestsTaskLinks: Updated CDP-TSK-03, added DDP-LTK-05 for task navigation
   - [x] fixBugReport.md: ResolveBugTaskLinks: Bug moved to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: FixBugAuthentication: Add Supabase auth system with login/register/JWT/backend protection
+  - [x] fixBugReport.md: FixBugAuthentication: Added Supabase auth system — Login/Register/AuthCallback pages, RequireAuth guard, JWT middleware (requiresAuth wrapper), fetch interceptor for token injection, AuthProvider context, user info in sidebar, IS_TEST mode for Playwright
   - [ ] fixBugReport.md: UpdateTestsAuthentication: Update spec and tests for authentication
   - [ ] fixBugReport.md: UpdateRevisionsAuthentication: Record spec change for authentication system
   - [ ] fixBugReport.md: ResolveBugAuthentication: Mark bug as resolved
