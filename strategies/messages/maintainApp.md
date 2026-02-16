@@ -1,8 +1,9 @@
 # Strategy
 
 You are maintaining an application by addressing bug reports, making sure the app follows requirements,
-and polishing it to improve quality. A single round of maintenace is done in the following stages.
-You will continue performing additional rounds of maintenance as needed.
+and polishing it to improve quality. A single round of maintenace is done in the following stages,
+with task strategy files in `strategies/tasks/maintain/` (and `strategies/tasks/` for deployment)
+for additional instructions. You will continue performing additional rounds of maintenance as needed.
 
 1. fixBugReport.md: Fix the app to resolve any open open bug reports.
 

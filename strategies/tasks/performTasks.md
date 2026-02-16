@@ -45,8 +45,9 @@ Maintain `docs/plan.md` with:
 - High-level app structure and architecture
 - Feature breakdown with status (done / in progress / todo)
 - Any blockers or decisions made
-- Pending and completed tasks. All tasks are associated with a strategy file for how to implement them,
-and a name for referring to them. Task entries must be of the form "StrategyFile: TaskName: Description"
+- Pending and completed tasks. All tasks are associated with a strategy file under `strategies/tasks/`
+for how to implement them, and a name for referring to them.
+Task entries must be of the form "StrategyFile: TaskName: Description"
 
 ## Commits
 

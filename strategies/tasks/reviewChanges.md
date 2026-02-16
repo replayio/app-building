@@ -30,8 +30,8 @@ to ALL log files: iteration logs, worker logs, and app-specific logs in each app
    - `git diff --stat <startRev>..<endRev>` for an overview of changed files
    - `git diff <startRev>..<endRev> -- <specific-file>` for details on specific changes
 5. Read the instructions file for the stage associated with the log's tasks (there should be only one).
-   Stage instruction files are at `/repo/strategies/` (the repo root), NOT inside the app directory.
-   See buildInitialApp.md for the stages and their instruction files.
+   Stage instruction files are under `/repo/strategies/tasks/` (the repo root), NOT inside the app directory.
+   See `strategies/messages/buildInitialApp.md` for the stages and their instruction files.
 6. Look for any problems described in the sections below.
 7. If any are found, make changes to the code and/or strategies to correct them.
    You MUST update the relevant stage instruction file if you found any difficulties or directive violations.

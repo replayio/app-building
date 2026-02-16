@@ -30,8 +30,9 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   writing cross-cutting tests that reference components tested in other spec files, read the existing
   spec files to use the same testid values.
 
-- Strategy files are at `/repo/strategies/` (the repo root), NOT inside the app directory. Always use
-  `/repo/strategies/reviewChanges.md`, `/repo/strategies/writeTests.md`, etc.
+- Strategy files are at `/repo/strategies/tasks/` and its subdirectories (the repo root), NOT inside
+  the app directory. Always use `/repo/strategies/tasks/reviewChanges.md`,
+  `/repo/strategies/tasks/build/writeTests.md`, etc.
 
 ## Tips
 

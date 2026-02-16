@@ -3,7 +3,7 @@
 You are building an application based on the provided AppSpec.md.
 If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
 `AppSpec.md` must NEVER be modified. All spec changes go in `AppRevisions.md`.
-You will build the app in the following stages, with strategy files to additional instructions.
+You will build the app in the following stages, with task strategy files in `strategies/tasks/build/` for additional instructions.
 
 1. testSpec.md: Create a detailed test specification for the tests the app must pass in order to match the app spec.
 

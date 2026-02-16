@@ -9,14 +9,14 @@ go through the entire app and check that its behavior is following all directive
 Read `docs/tests.md` to understand the existing application structure. Add the following subtasks
 for every page in the app:
 
-- CheckTestSpec<PageName>: Check for `testSpec.md` directive violations in the test entries for the page.
-- CheckComponents<PageName>: Check for `writeApp.md` directive violations in the components for the page.
-- CheckTests<PageName>: Check for `writeTests.md` directive violations in the playwright tests for
+- CheckTestSpec<PageName>: Check for `testSpec.md` (`strategies/tasks/build/`) directive violations in the test entries for the page.
+- CheckComponents<PageName>: Check for `writeApp.md` (`strategies/tasks/build/`) directive violations in the components for the page.
+- CheckTests<PageName>: Check for `writeTests.md` (`strategies/tasks/build/`) directive violations in the playwright tests for
   each of the page's test entries.
 
 Also add additional non-page specific subtasks:
 
-- CheckBackend: Check for `writeApp.md` directive violations in all backend functions.
+- CheckBackend: Check for `writeApp.md` (`strategies/tasks/build/`) directive violations in all backend functions.
 
 ## Checking for violations
 
@@ -40,7 +40,7 @@ and playwright tests.
 
 ## Running tests
 
-Make sure all tests pass. Read `testing.md` to understand how to run tests and debug failures.
+Make sure all tests pass. Read `strategies/tasks/build/testing.md` to understand how to run tests and debug failures.
 
 ## Documenting fixes
 

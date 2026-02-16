@@ -1,4 +1,3 @@
-import { createInterface, Interface } from "readline";
 import { Command } from "commander";
 import {
   spawnContainer,
@@ -8,14 +7,73 @@ import {
 } from "./container";
 import { formatEvent } from "./format";
 
-function askQuestion(rl: Interface): Promise<string | null> {
+// Reads input using raw mode. Enter submits, pasted text (which arrives
+// as a single chunk with embedded newlines) is preserved as multi-line.
+function readInput(): Promise<string | null> {
   return new Promise((resolve) => {
-    rl.question("> ", resolve);
-    rl.once("close", () => resolve(null));
+    let buffer = "";
+    let resolved = false;
+
+    const finish = (result: string | null) => {
+      if (resolved) return;
+      resolved = true;
+      process.stdin.removeListener("data", onData);
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(false);
+      }
+      process.stdin.pause();
+      resolve(result);
+    };
+
+    process.stdout.write("> ");
+
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+    }
+    process.stdin.resume();
+
+    const onData = (data: Buffer) => {
+      const str = data.toString("utf-8");
+
+      // Ctrl+C or Ctrl+D → EOF
+      if (data.length === 1 && (data[0] === 0x03 || data[0] === 0x04)) {
+        process.stdout.write("\n");
+        finish(null);
+        return;
+      }
+
+      // A lone Enter keypress → submit
+      if (str === "\r" || str === "\n" || str === "\r\n") {
+        process.stdout.write("\n");
+        finish(buffer);
+        return;
+      }
+
+      // Backspace
+      if (data.length === 1 && (data[0] === 0x7f || data[0] === 0x08)) {
+        if (buffer.length > 0) {
+          buffer = buffer.slice(0, -1);
+          process.stdout.write("\b \b");
+        }
+        return;
+      }
+
+      // Ignore escape sequences (arrows, etc.)
+      if (data[0] === 0x1b) {
+        return;
+      }
+
+      // Regular input or paste — normalize newlines, append and echo
+      const normalized = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+      buffer += normalized;
+      process.stdout.write(normalized);
+    };
+
+    process.stdin.on("data", onData);
   });
 }
 
-async function runInteractive(): Promise<void> {
+async function runInteractive(sessionId?: string): Promise<void> {
   const { containerName, mcpConfig } = startInteractiveContainer();
   console.log(`Container started: ${containerName}`);
 
@@ -28,11 +86,7 @@ async function runInteractive(): Promise<void> {
 
   try {
     while (true) {
-      // Create a fresh readline for each prompt
-      const rl = createInterface({ input: process.stdin, output: process.stdout });
-      const input = await askQuestion(rl);
-      rl.close();
-
+      const input = await readInput();
       if (input === null) break;
       if (!input.trim()) continue;
 
@@ -41,6 +95,8 @@ async function runInteractive(): Promise<void> {
       const claudeArgs: string[] = [];
       if (messagesSent > 0) {
         claudeArgs.push("-c");
+      } else if (sessionId) {
+        claudeArgs.push("--resume", sessionId);
       }
       claudeArgs.push("-p", input);
       claudeArgs.push("--model", "claude-opus-4-6");
@@ -122,6 +178,9 @@ async function main(): Promise<void> {
   program
     .argument("[prompt]", "prompt to pass to claude (omit for interactive mode)")
     .option("-n, --max-iterations <n>", "max iterations for detached mode", parseInt)
+    .option("-r, --resume <id>", "resume a claude session in interactive mode")
+    .allowUnknownOption(false)
+    .allowExcessArguments(false)
     .parse();
 
   const promptArg = program.args[0] || null;
@@ -130,7 +189,7 @@ async function main(): Promise<void> {
   if (promptArg) {
     await spawnContainer(promptArg, { maxIterations: opts.maxIterations });
   } else {
-    await runInteractive();
+    await runInteractive(opts.resume);
   }
 }
 
