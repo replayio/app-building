@@ -39,9 +39,7 @@
       "Bash(git config:*)",
       "Bash(docker build:*)",
       "Bash(npx tsc:*)",
-      "Bash(git -C /Users/brianhackett/record[REDACTED]/app-building status)",
-      "Bash(CLAUDECODE= claude --help)",
-      "Bash(CLAUDECODE= claude config --help)"
+      "Bash(git -C /Users/brianhackett/record[REDACTED]/app-building status)"
     ]
   }
 }

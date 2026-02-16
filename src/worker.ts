@@ -1,19 +1,8 @@
 import { spawn } from "child_process";
-import { existsSync, mkdirSync, renameSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, renameSync } from "fs";
 import { join } from "path";
-import { homedir } from "os";
 
 const LOGS_DIR = "/repo/logs";
-
-// Pre-create Claude CLI config to skip onboarding prompts (theme, login).
-// The ANTHROPIC_API_KEY env var handles auth; we just need the settings file
-// so Claude doesn't trigger the first-run flow.
-const claudeDir = join(homedir(), ".claude");
-mkdirSync(claudeDir, { recursive: true });
-const settingsPath = join(claudeDir, "settings.json");
-if (!existsSync(settingsPath)) {
-  writeFileSync(settingsPath, JSON.stringify({ theme: "light" }, null, 2));
-}
 
 function formatTimestamp(date: Date): string {
   return date.toISOString().replace(/[:.]/g, "-");
