@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
-import { FilterSelect } from '../shared/FilterSelect'
 
 interface UploadAttachmentModalProps {
   open: boolean
@@ -14,24 +13,37 @@ interface UploadAttachmentModalProps {
 }
 
 export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmentModalProps) {
-  const [filename, setFilename] = useState('')
-  const [type, setType] = useState<'document' | 'link'>('document')
-  const [url, setUrl] = useState('')
+  const [attachmentType, setAttachmentType] = useState<'document' | 'link'>('document')
+  const [file, setFile] = useState<File | null>(null)
+  const [linkUrl, setLinkUrl] = useState('')
+  const [linkName, setLinkName] = useState('')
 
   if (!open) return null
 
   function handleSave() {
-    if (!filename.trim() || !url.trim()) return
-    onSave({
-      filename: filename.trim(),
-      type,
-      url: url.trim(),
-      size: null,
-    })
-    setFilename('')
-    setType('document')
-    setUrl('')
+    if (attachmentType === 'document' && file) {
+      const url = URL.createObjectURL(file)
+      onSave({
+        filename: file.name,
+        type: 'document',
+        url,
+        size: file.size,
+      })
+    } else if (attachmentType === 'link' && linkUrl.trim()) {
+      onSave({
+        filename: linkName.trim() || linkUrl.trim(),
+        type: 'link',
+        url: linkUrl.trim(),
+        size: null,
+      })
+    }
+    setFile(null)
+    setLinkUrl('')
+    setLinkName('')
+    setAttachmentType('document')
   }
+
+  const canSave = (attachmentType === 'document' && file !== null) || (attachmentType === 'link' && linkUrl.trim() !== '')
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -48,41 +60,74 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
         </div>
         <div className="px-5 py-4 flex flex-col gap-3.5">
           <div>
-            <label className="block text-[12px] font-medium text-text-muted mb-1">File Name *</label>
-            <input
-              data-testid="upload-attachment-filename"
-              type="text"
-              value={filename}
-              onChange={(e) => setFilename(e.target.value)}
-              placeholder="e.g. Report.pdf"
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
-            />
+            <label className="block text-[12px] font-medium text-text-muted mb-1">Attachment Type</label>
+            <div className="flex gap-2">
+              <button
+                data-testid="upload-attachment-file-toggle"
+                onClick={() => setAttachmentType('document')}
+                className={`h-[34px] px-3 text-[13px] font-medium rounded-[5px] border transition-colors duration-100 ${
+                  attachmentType === 'document'
+                    ? 'bg-accent text-white border-accent'
+                    : 'border-border text-text-secondary hover:bg-hover'
+                }`}
+              >
+                File Upload
+              </button>
+              <button
+                data-testid="upload-attachment-link-toggle"
+                onClick={() => setAttachmentType('link')}
+                className={`h-[34px] px-3 text-[13px] font-medium rounded-[5px] border transition-colors duration-100 ${
+                  attachmentType === 'link'
+                    ? 'bg-accent text-white border-accent'
+                    : 'border-border text-text-secondary hover:bg-hover'
+                }`}
+              >
+                Link URL
+              </button>
+            </div>
           </div>
-          <div>
-            <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
-            <FilterSelect
-              testId="upload-attachment-type"
-              value={type}
-              onChange={(val) => setType(val as 'document' | 'link')}
-              options={[
-                { value: 'document', label: 'Document' },
-                { value: 'link', label: 'Link' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className="block text-[12px] font-medium text-text-muted mb-1">
-              {type === 'document' ? 'File URL *' : 'Link URL *'}
-            </label>
-            <input
-              data-testid="upload-attachment-url"
-              type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder={type === 'document' ? 'https://...' : 'https://example.com'}
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
-            />
-          </div>
+
+          {attachmentType === 'document' ? (
+            <div>
+              <label className="block text-[12px] font-medium text-text-muted mb-1">File</label>
+              <div className="border border-dashed border-border rounded-[5px] p-4 text-center">
+                <input
+                  data-testid="upload-attachment-file-input"
+                  type="file"
+                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  className="text-[13px] text-text-secondary"
+                />
+                {file && (
+                  <p className="text-[12px] text-text-muted mt-2">{file.name} ({(file.size / 1024).toFixed(1)} KB)</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <>
+              <div>
+                <label className="block text-[12px] font-medium text-text-muted mb-1">Link Name</label>
+                <input
+                  data-testid="upload-attachment-link-name"
+                  type="text"
+                  value={linkName}
+                  onChange={(e) => setLinkName(e.target.value)}
+                  placeholder="e.g. Client Website"
+                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
+                />
+              </div>
+              <div>
+                <label className="block text-[12px] font-medium text-text-muted mb-1">URL *</label>
+                <input
+                  data-testid="upload-attachment-url"
+                  type="url"
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                  placeholder="https://..."
+                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
+                />
+              </div>
+            </>
+          )}
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
           <button
@@ -95,7 +140,7 @@ export function UploadAttachmentModal({ open, onClose, onSave }: UploadAttachmen
           <button
             data-testid="upload-attachment-save"
             onClick={handleSave}
-            disabled={!filename.trim() || !url.trim()}
+            disabled={!canSave}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
           >
             Upload

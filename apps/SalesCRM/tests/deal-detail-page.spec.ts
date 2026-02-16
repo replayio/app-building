@@ -572,10 +572,12 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
     await expect(modal).toBeVisible();
     await expect(modal).toContainText('Upload Attachment');
 
-    // Form fields visible
-    await expect(page.getByTestId('upload-attachment-filename')).toBeVisible();
-    await expect(page.getByTestId('upload-attachment-type')).toBeVisible();
-    await expect(page.getByTestId('upload-attachment-url')).toBeVisible();
+    // File upload / link toggle visible
+    await expect(page.getByTestId('upload-attachment-file-toggle')).toBeVisible();
+    await expect(page.getByTestId('upload-attachment-link-toggle')).toBeVisible();
+
+    // File upload mode is default — file input visible
+    await expect(page.getByTestId('upload-attachment-file-input')).toBeVisible();
 
     // Close modal
     await page.getByTestId('upload-attachment-cancel').click();
@@ -590,9 +592,11 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
     const modal = page.getByTestId('upload-attachment-modal');
     await expect(modal).toBeVisible();
 
-    const filename = `TestFile_${Date.now()}.pdf`;
-    await page.getByTestId('upload-attachment-filename').fill(filename);
-    await page.getByTestId('upload-attachment-url').fill('https://example.com/test-file.pdf');
+    // Switch to link mode to test link attachment
+    await page.getByTestId('upload-attachment-link-toggle').click();
+    const linkName = `TestLink_${Date.now()}`;
+    await page.getByTestId('upload-attachment-link-name').fill(linkName);
+    await page.getByTestId('upload-attachment-url').fill('https://example.com/test-link');
 
     await page.getByTestId('upload-attachment-save').click();
     await expect(modal).not.toBeVisible();
@@ -600,7 +604,7 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
 
     // Attachment should appear in the list
     const attachmentsSection = page.getByTestId('deal-attachments-section');
-    await expect(attachmentsSection).toContainText(filename);
+    await expect(attachmentsSection).toContainText(linkName);
   });
 
   test('DDP-ATT-04: Download link is present on attachments', async ({ page }) => {
@@ -622,13 +626,14 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
   test('DDP-ATT-05: Delete link removes attachment after confirmation', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
-    // First create an attachment to delete
+    // First create an attachment to delete via link mode
     await page.getByTestId('deal-attachments-upload-button').click();
     const modal = page.getByTestId('upload-attachment-modal');
     await expect(modal).toBeVisible();
 
-    const filename = `DeleteMe_${Date.now()}.pdf`;
-    await page.getByTestId('upload-attachment-filename').fill(filename);
+    await page.getByTestId('upload-attachment-link-toggle').click();
+    const filename = `DeleteMe_${Date.now()}`;
+    await page.getByTestId('upload-attachment-link-name').fill(filename);
     await page.getByTestId('upload-attachment-url').fill('https://example.com/delete-me.pdf');
     await page.getByTestId('upload-attachment-save').click();
     await expect(modal).not.toBeVisible();

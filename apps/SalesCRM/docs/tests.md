@@ -846,12 +846,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **DDP-ATT-02: Upload icon opens file upload dialog**
 - Initial: User is on DealDetailPage
 - Action: Click the upload icon
-- Expected: File picker/upload dialog opens. User can select a file to upload.
+- Expected: Upload modal opens with "File Upload" / "Link URL" toggle buttons. File Upload mode is selected by default and shows a file input. Link URL mode shows link name and URL fields.
 
 **DDP-ATT-03: Uploading a file adds it to attachments list**
 - Initial: Upload dialog is open
-- Action: Select and upload "Pricing_Sheet.xlsx"
-- Expected: File appears in attachments list with name and size. File stored via UploadThing. Also appears in client's Attachments section linked to this deal.
+- Action: Switch to Link URL mode, enter a link name and URL, click Upload
+- Expected: Link attachment appears in attachments list with the given name. Also appears in client's Attachments section linked to this deal.
 
 **DDP-ATT-04: Download link downloads the file**
 - Initial: "Acme_Requirements.pdf" is listed
