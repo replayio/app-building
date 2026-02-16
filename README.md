@@ -29,7 +29,15 @@ npm run agent -- "<prompt>"
 npm run agent -- "<prompt>" -n 10   # limit iterations
 ```
 
-Runs Claude in a loop inside a detached container. Each iteration logs output, commits changes, and re-runs with a fresh context. Stops on `<DONE/>` or the iteration limit. Follow output with the `docker logs -f` command printed at startup.
+Runs Claude in a loop inside a detached container. Each iteration logs output, commits changes, and re-runs with a fresh context. Stops on `<DONE/>` or the iteration limit.
+
+### Checking status
+
+```bash
+npm run status
+```
+
+Shows the container name, iteration progress, cost, and the last 20 lines of formatted log output. If the agent is still running, it tails the log in real-time (Ctrl+C to stop).
 
 ## Other Commands
 
@@ -37,6 +45,6 @@ Runs Claude in a loop inside a detached container. Each iteration logs output, c
 |---------|-------------|
 | `npm run test-container` | Start a container with bash (no agent) |
 | `npm run docker:build` | Rebuild the Docker image |
-| `npm run status` | Show detached agent status |
+| `npm run status` | Show agent status, recent output, and tail if running |
 | `npm run reset-app -- <app>` | Reset an app to spec files only |
 | `npm run read-log -- <file>` | Render a log file as readable output |
