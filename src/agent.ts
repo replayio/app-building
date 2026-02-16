@@ -1,4 +1,4 @@
-import { createInterface } from "readline";
+import { createInterface, Interface } from "readline";
 import { Command } from "commander";
 import {
   spawnContainer,
@@ -8,32 +8,34 @@ import {
 } from "./container";
 import { formatEvent } from "./format";
 
+function askQuestion(rl: Interface): Promise<string | null> {
+  return new Promise((resolve) => {
+    rl.question("> ", resolve);
+    rl.once("close", () => resolve(null));
+  });
+}
+
 async function runInteractive(): Promise<void> {
   const { containerName, mcpConfig } = startInteractiveContainer();
   console.log(`Container started: ${containerName}`);
 
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
   let messagesSent = 0;
 
-  const cleanup = () => {
-    rl.close();
-    stopContainer(containerName);
-  };
   process.on("SIGINT", () => {
-    cleanup();
+    stopContainer(containerName);
     process.exit(0);
   });
 
   try {
     while (true) {
-      const input = await new Promise<string | null>((resolve) => {
-        rl.question("> ", resolve);
-        rl.once("close", () => resolve(null));
-      });
+      // Create a fresh readline for each prompt
+      const rl = createInterface({ input: process.stdin, output: process.stdout });
+      const input = await askQuestion(rl);
+      rl.close();
+
       if (input === null) break;
       if (!input.trim()) continue;
 
-      rl.pause();
       console.log("...");
 
       const claudeArgs: string[] = [];
@@ -49,6 +51,21 @@ async function runInteractive(): Promise<void> {
 
       try {
         const child = execInContainer(containerName, claudeArgs);
+
+        // Listen for ESC in raw mode to interrupt claude
+        let interrupted = false;
+        if (process.stdin.isTTY) {
+          process.stdin.setRawMode(true);
+        }
+        process.stdin.resume();
+        const onKey = (data: Buffer) => {
+          if (data[0] === 0x1b) {
+            interrupted = true;
+            child.kill("SIGINT");
+            console.log("\nInterrupted.");
+          }
+        };
+        process.stdin.on("data", onKey);
 
         let buffer = "";
         child.stdout!.on("data", (data: Buffer) => {
@@ -69,6 +86,13 @@ async function runInteractive(): Promise<void> {
 
         await new Promise<void>((resolve, reject) => {
           child.on("close", (code) => {
+            // Tear down raw mode ESC listener
+            process.stdin.removeListener("data", onKey);
+            if (process.stdin.isTTY) {
+              process.stdin.setRawMode(false);
+            }
+            process.stdin.pause();
+
             if (buffer.trim()) {
               try {
                 const event = JSON.parse(buffer);
@@ -78,7 +102,7 @@ async function runInteractive(): Promise<void> {
                 console.log(buffer);
               }
             }
-            if (code === 0) resolve();
+            if (interrupted || code === 0) resolve();
             else reject(new Error(`claude exited with code ${code}`));
           });
           child.on("error", reject);
@@ -87,11 +111,9 @@ async function runInteractive(): Promise<void> {
         console.error(e instanceof Error ? e.message : e);
       }
       messagesSent++;
-
-      rl.resume();
     }
   } finally {
-    cleanup();
+    stopContainer(containerName);
   }
 }
 

@@ -36,10 +36,18 @@ Every time you run the playwright tests, do the following:
 
 ## Debugging
 
-When debugging with a test failure whose cause isn't obvious, upload the Replay recording of the
-test failure captured while running and use the Replay MCP service to debug the failure.
+When tests fail, you MUST follow this process for each distinct failure:
 
-Make sure you understand the cause of every test failure, and fix the test and/or app in an appropriate fashion.
+1. Announce `ANALYZING TEST FAILURE: <test name>`.
+2. Upload the Replay recording of the failed test using the Replay CLI.
+3. Use Replay MCP tools to analyze the failure. Start with `mcp__replay__ConsoleMessages` and
+   `mcp__replay__NetworkRequest` to get an overview, then drill into specifics with tools like
+   `mcp__replay__SearchSources`, `mcp__replay__Logpoint`, `mcp__replay__Evaluate`,
+   `mcp__replay__GetStack`, and `mcp__replay__ReactComponents` as needed.
+4. Only after completing the Replay analysis, fix the test and/or app based on what you found.
+
+Do NOT skip Replay analysis and jump straight to reading error messages or guessing at fixes.
+The Replay recording contains the actual runtime state — use it.
 
 When testing the app after deployment, use the Replay browser to record the app and debug any problems.
 

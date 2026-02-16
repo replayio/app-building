@@ -159,10 +159,16 @@ export function spawnContainer(prompt: string, options?: { maxIterations?: numbe
 }
 
 export function startInteractiveContainer(): { containerName: string; mcpConfig: string } {
-  const { args, containerName, mcpConfig } = setupContainer("detached");
-  args.push("sleep", "infinity");
+  const { args, containerName, mcpConfig } = setupContainer("attached");
+  // -i keeps stdin open; cat exits on EOF when the parent process dies,
+  // which triggers --rm to clean up the container.
+  args.splice(1, 0, "-i");
+  args.push("cat");
 
-  execFileSync("docker", args, { encoding: "utf-8", timeout: 30000 });
+  const child = spawn("docker", args, {
+    stdio: ["pipe", "ignore", "ignore"],
+  });
+  child.on("error", () => {});
 
   return { containerName, mcpConfig };
 }

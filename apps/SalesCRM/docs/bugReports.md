@@ -2,7 +2,11 @@
 
 ## Open
 
-(none)
+2/16/2026: Links to tasks don't work. They either go to the wrong page, aren't clickable, or go to a "task not found" page.
+
+2/16/2026: Pipeline view on the deals page should allow drag-and-drop to move deals between stages.
+
+2/16/2026: Attachment functionality on the deals page does not allow file uploads.
 
 ## Unreviewed
 

@@ -1,7 +1,8 @@
 # Strategy
 
 You are writing a complete, detailed test specification for an app based on an initial app specification
-in `AppSpec.md`.
+in `AppSpec.md`. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug
+reports and must also be followed.
 
 ## Unpack Subtasks
 

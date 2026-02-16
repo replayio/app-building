@@ -18,6 +18,9 @@ Read about the stages of the structured app building process in buildInitialApp.
 You'll be identifying any problem stage whose instructions need improvements to prevent similar bugs.
 Some bugs do not have problem stages.
 
+Also review `AppRevisions.md` to verify it was updated appropriately during the bug fix.
+If the fix changed the app's behavior but no revision entry was added, add one now.
+
 Follow these steps to figure out the problem stage (if any). Once you do, update bugReports.md
 to refer to it and move onto the next task.
 
