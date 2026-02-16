@@ -254,6 +254,33 @@
 - [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
 - **Maintenance Round 3 COMPLETE**: All directive violations fixed (24 native selects replaced), tests passing (183/183), deployed to production
 
+### Maintenance Round 4
+
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 4 open bug reports found
+  - [ ] fixBugReport.md: FixBugDealAttachmentUploads: Add file upload capability to deal attachment modal (currently URL-only, should match client attachments with file upload using blob URLs)
+  - [ ] fixBugReport.md: UpdateTestsDealAttachmentUploads: Update spec and tests for deal attachment file uploads
+  - [ ] fixBugReport.md: UpdateRevisionsDealAttachmentUploads: Record spec change for deal attachment upload
+  - [ ] fixBugReport.md: ResolveBugDealAttachmentUploads: Mark bug as resolved
+  - [ ] fixBugReport.md: FixBugDealsPipelineDragDrop: Add drag-and-drop to pipeline view for moving deals between stages
+  - [ ] fixBugReport.md: UpdateTestsDealsPipelineDragDrop: Update spec and tests for pipeline drag-and-drop
+  - [ ] fixBugReport.md: UpdateRevisionsDealsPipelineDragDrop: Record spec change for pipeline drag-and-drop
+  - [ ] fixBugReport.md: ResolveBugDealsPipelineDragDrop: Mark bug as resolved
+  - [ ] fixBugReport.md: AnalyzeBugTaskLinks: Analyze broken task links — links go to wrong page, aren't clickable, or show "not found"
+  - [ ] fixBugReport.md: FixBugTaskLinks: Fix task link navigation across client detail and deal detail pages
+  - [ ] fixBugReport.md: UpdateTestsTaskLinks: Update spec and tests for task link navigation
+  - [ ] fixBugReport.md: ResolveBugTaskLinks: Mark bug as resolved
+  - [ ] fixBugReport.md: FixBugAuthentication: Add Supabase auth system with login/register/JWT/backend protection
+  - [ ] fixBugReport.md: UpdateTestsAuthentication: Update spec and tests for authentication
+  - [ ] fixBugReport.md: UpdateRevisionsAuthentication: Record spec change for authentication system
+  - [ ] fixBugReport.md: ResolveBugAuthentication: Mark bug as resolved
+- [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
+- [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
+- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+
+#### Maintenance Round 4 Notes
+
+
 ## Blockers
 
 None.
