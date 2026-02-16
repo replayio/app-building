@@ -112,6 +112,9 @@ export function spawnContainer(prompt: string | null): Promise<void> {
   // Playwright browsers installed at shared path
   args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
 
+  // Writable home directory for Claude CLI config (avoids onboarding prompts)
+  args.push("--env", "HOME=/tmp/claude-home");
+
   // Pass env vars from .env
   for (const [k, v] of Object.entries(envVars)) {
     args.push("--env", `${k}=${v}`);
