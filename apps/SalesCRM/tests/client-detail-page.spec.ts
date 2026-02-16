@@ -235,15 +235,16 @@ test.describe('ClientDetailPage - Tasks (CDP-TSK)', () => {
     }
   });
 
-  test('CDP-TSK-03: Task items have a checkbox for toggling completion', async ({ page }) => {
+  test('CDP-TSK-03: Clicking a task navigates to task detail page', async ({ page }) => {
     await navigateToFirstClientDetail(page);
 
     const taskItems = page.locator('[data-testid^="task-item-"]');
     const count = await taskItems.count();
     if (count > 0) {
       const firstTask = taskItems.first();
-      const checkbox = firstTask.locator('[data-testid^="task-checkbox-"]');
-      await expect(checkbox).toBeVisible();
+      const titleEl = firstTask.locator('[data-testid^="task-title-"]');
+      await titleEl.click();
+      await expect(page).toHaveURL(/\/tasks\//, { timeout: 5000 });
     }
   });
 });

@@ -265,10 +265,10 @@
   - [x] fixBugReport.md: UpdateTestsDealsPipelineDragDrop: Added DLP-VW-04 test and spec entry for drag-and-drop
   - [x] fixBugReport.md: UpdateRevisionsDealsPipelineDragDrop: Recorded spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugDealsPipelineDragDrop: Bug moved to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: AnalyzeBugTaskLinks: Analyze broken task links — links go to wrong page, aren't clickable, or show "not found"
-  - [ ] fixBugReport.md: FixBugTaskLinks: Fix task link navigation across client detail and deal detail pages
-  - [ ] fixBugReport.md: UpdateTestsTaskLinks: Update spec and tests for task link navigation
-  - [ ] fixBugReport.md: ResolveBugTaskLinks: Mark bug as resolved
+  - [x] fixBugReport.md: AnalyzeBugTaskLinks: Client TasksSection navigated to /deals/:dealId, deal LinkedTasksSection was not clickable
+  - [x] fixBugReport.md: FixBugTaskLinks: Both sections now navigate to /tasks/:taskId
+  - [x] fixBugReport.md: UpdateTestsTaskLinks: Updated CDP-TSK-03, added DDP-LTK-05 for task navigation
+  - [x] fixBugReport.md: ResolveBugTaskLinks: Bug moved to Unreviewed in bugReports.md
   - [ ] fixBugReport.md: FixBugAuthentication: Add Supabase auth system with login/register/JWT/backend protection
   - [ ] fixBugReport.md: UpdateTestsAuthentication: Update spec and tests for authentication
   - [ ] fixBugReport.md: UpdateRevisionsAuthentication: Record spec change for authentication system

@@ -335,10 +335,10 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click the checkbox next to the task
 - Expected: Task is marked complete (checkbox filled, text may strike through). Task disappears from unresolved list or moves to a completed section. Change is persisted. A timeline entry "Task Completed: 'Follow up on proposal'" is created.
 
-**CDP-TSK-03: Clicking a task navigates to task context**
+**CDP-TSK-03: Clicking a task navigates to task detail page**
 - Initial: Tasks are listed in the section
 - Action: Click on task title "Follow up on proposal"
-- Expected: If the task is associated with a deal, navigates to the deal detail page. Otherwise shows task detail inline or in a modal.
+- Expected: Navigates to the task detail page at /tasks/:taskId.
 
 **CDP-TSK-04: Tasks show deal association when applicable**
 - Initial: Task "Follow up on proposal" is linked to deal "Acme Software License"
@@ -840,6 +840,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Task "Prepare Proposal Draft" is unchecked
 - Action: Click the checkbox
 - Expected: Task shows as completed (checked, text may have strikethrough). Status change persisted. Timeline entry created.
+
+**DDP-LTK-05: Clicking a linked task navigates to task detail page**
+- Initial: Linked tasks are listed in the section
+- Action: Click on a task title
+- Expected: Navigates to the task detail page at /tasks/:taskId.
 
 #### AttachmentsSection
 

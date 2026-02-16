@@ -549,6 +549,21 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
       expect(taskText).toBeTruthy();
     }
   });
+
+  test('DDP-LTK-05: Clicking a linked task navigates to task detail page', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    const taskItems = page.locator('[data-testid^="deal-linked-task-"]:not([data-testid*="toggle"]):not([data-testid*="empty"])');
+    const count = await taskItems.count();
+
+    if (count > 0) {
+      // Click on the task text area (not the checkbox)
+      const firstTask = taskItems.first();
+      const taskText = firstTask.locator('.flex-1');
+      await taskText.click();
+      await expect(page).toHaveURL(/\/tasks\//, { timeout: 5000 });
+    }
+  });
 });
 
 test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {

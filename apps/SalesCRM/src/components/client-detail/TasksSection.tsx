@@ -57,11 +57,7 @@ export function TasksSection({ tasks, onToggleTask }: TasksSectionProps) {
               </button>
               <div
                 className="flex-1 min-w-0"
-                onClick={() => {
-                  if (task.deal_id) {
-                    navigate(`/deals/${task.deal_id}`)
-                  }
-                }}
+                onClick={() => navigate(`/tasks/${task.id}`)}
               >
                 <span className="text-[13px] text-text-primary" data-testid={`task-title-${task.id}`}>{task.title}</span>
                 {task.due_date && (
