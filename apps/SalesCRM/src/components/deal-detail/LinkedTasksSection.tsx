@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { Square, CheckSquare, Plus } from 'lucide-react'
 import type { Task } from '../../types'
 
@@ -25,6 +26,8 @@ function formatDueDate(dateStr: string | null): string {
 }
 
 export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTasksSectionProps) {
+  const navigate = useNavigate()
+
   return (
     <div data-testid="deal-linked-tasks-section" className="border border-border rounded-[6px] p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
@@ -47,7 +50,7 @@ export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTas
             <div
               key={task.id}
               data-testid={`deal-linked-task-${task.id}`}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100 cursor-pointer"
             >
               <button
                 data-testid={`deal-linked-task-toggle-${task.id}`}
@@ -60,7 +63,7 @@ export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTas
                   <Square size={16} strokeWidth={1.75} />
                 )}
               </button>
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0" onClick={() => navigate(`/tasks/${task.id}`)}>
                 <span
                   className={`text-[13px] ${
                     task.completed ? 'text-text-muted line-through' : 'text-text-primary'

@@ -5,9 +5,12 @@
 2/16/2026: The app has no authentication — all pages and API endpoints are accessible without logging in and there is no user identity. Add auth using the same Supabase auth service (auth.nut.new) as the appTemplate, with Login/Register/AuthCallback pages, a fetch interceptor for automatic token injection, backend JWT verification via JWKS, and a users table in the existing Neon database. The 10 existing Netlify functions need to be protected, and free-form author fields (task_notes.author, writeups.author, timeline_events.user_name, deal_history.changed_by) should use the authenticated user's name.
 - Analysis: docs/bugs/AuthenticationSystem.md
 
-2/16/2026: Links to tasks don't work. They either go to the wrong page, aren't clickable, or go to a "task not found" page.
-
 ## Unreviewed
+
+2/16/2026: Links to tasks don't work. They either go to the wrong page, aren't clickable, or go to a "task not found" page.
+- Before: ef67c9a
+- After: (this commit)
+- Fix: Client detail TasksSection now navigates to /tasks/:taskId (was /deals/:dealId or not clickable). Deal detail LinkedTasksSection now also navigates to /tasks/:taskId (was not clickable at all).
 
 2/16/2026: Pipeline view on the deals page should allow drag-and-drop to move deals between stages.
 - Before: 4e63501
