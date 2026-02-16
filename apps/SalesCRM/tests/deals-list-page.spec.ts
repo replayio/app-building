@@ -220,6 +220,45 @@ test.describe('DealsListPage - ViewToggle (DLP-VW)', () => {
     const tableRowCountAfter = await rowsAfter.count();
     expect(tableRowCountAfter).toBe(tableRowCount);
   });
+
+  test('DLP-VW-04: Pipeline View supports drag-and-drop to change deal stage', async ({ page }) => {
+    await page.goto('/deals');
+    await page.waitForLoadState('networkidle');
+
+    // Switch to Pipeline View
+    await page.getByTestId('deals-view-pipeline').click();
+    await expect(page.getByTestId('deals-pipeline-view')).toBeVisible();
+
+    // Find a column that has deals
+    const stages = ['lead', 'qualification', 'discovery', 'proposal', 'negotiation', 'closed_won'];
+    let sourceStage = '';
+    let dealId = '';
+
+    for (const stage of stages) {
+      const column = page.getByTestId(`pipeline-column-${stage}`);
+      const cards = column.locator('[data-testid^="pipeline-deal-card-"]');
+      const count = await cards.count();
+      if (count > 0) {
+        sourceStage = stage;
+        const testId = await cards.first().getAttribute('data-testid');
+        dealId = testId?.replace('pipeline-deal-card-', '') ?? '';
+        break;
+      }
+    }
+
+    if (!sourceStage || !dealId) return;
+
+    // Pick a target column that's different from source
+    const targetStage = stages.find((s) => s !== sourceStage) ?? 'proposal';
+    const targetColumn = page.getByTestId(`pipeline-column-${targetStage}`);
+    const sourceCard = page.getByTestId(`pipeline-deal-card-${dealId}`);
+
+    // Perform drag and drop
+    await sourceCard.dragTo(targetColumn);
+
+    // Wait for the deal to appear in the target column after API reload
+    await expect(targetColumn.getByTestId(`pipeline-deal-card-${dealId}`)).toBeVisible({ timeout: 10000 });
+  });
 });
 
 test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {

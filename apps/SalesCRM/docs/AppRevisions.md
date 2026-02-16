@@ -13,3 +13,5 @@ Changes to the app spec from bug reports and maintenance.
 2/14/2026: Filter dropdowns on the deals page use custom styled dropdown components instead of native HTML select elements, matching the app's design system.
 
 2/16/2026: Deal detail page attachment upload modal now supports both file upload (with file picker) and link URL modes via a toggle, matching the client detail page attachment modal pattern.
+
+2/16/2026: Pipeline view on the deals page now supports drag-and-drop to move deals between stage columns. Deal cards are draggable and dropping on a different column updates the deal's stage via the API.

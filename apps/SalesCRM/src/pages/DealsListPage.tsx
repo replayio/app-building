@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { fetchDeals, createDeal, deleteDeal, setDealsPage } from '../store/dealsSlice'
+import { fetchDeals, createDeal, deleteDeal, updateDeal, setDealsPage } from '../store/dealsSlice'
 import { DealsPageHeader } from '../components/deals/DealsPageHeader'
 import { DealsSummaryCards } from '../components/deals/DealsSummaryCards'
 import { DealsViewToggle } from '../components/deals/DealsViewToggle'
@@ -160,7 +160,12 @@ export function DealsListPage() {
         </div>
       ) : (
         <div className="border border-border rounded-[6px] bg-surface p-4">
-          <DealsPipelineView deals={items} />
+          <DealsPipelineView
+            deals={items}
+            onStageChange={(dealId, newStage) => {
+              dispatch(updateDeal({ dealId, data: { stage: newStage } })).then(() => loadDeals())
+            }}
+          />
         </div>
       )}
 
