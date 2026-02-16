@@ -261,10 +261,10 @@
   - [x] fixBugReport.md: UpdateTestsDealAttachmentUploads: Updated DDP-ATT-02, DDP-ATT-03, DDP-ATT-05 tests and test spec for new modal UI
   - [x] fixBugReport.md: UpdateRevisionsDealAttachmentUploads: Recorded spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugDealAttachmentUploads: Bug moved to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: FixBugDealsPipelineDragDrop: Add drag-and-drop to pipeline view for moving deals between stages
-  - [ ] fixBugReport.md: UpdateTestsDealsPipelineDragDrop: Update spec and tests for pipeline drag-and-drop
-  - [ ] fixBugReport.md: UpdateRevisionsDealsPipelineDragDrop: Record spec change for pipeline drag-and-drop
-  - [ ] fixBugReport.md: ResolveBugDealsPipelineDragDrop: Mark bug as resolved
+  - [x] fixBugReport.md: FixBugDealsPipelineDragDrop: Added HTML5 drag-and-drop to DealsPipelineView with visual drop targets
+  - [x] fixBugReport.md: UpdateTestsDealsPipelineDragDrop: Added DLP-VW-04 test and spec entry for drag-and-drop
+  - [x] fixBugReport.md: UpdateRevisionsDealsPipelineDragDrop: Recorded spec change in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugDealsPipelineDragDrop: Bug moved to Unreviewed in bugReports.md
   - [ ] fixBugReport.md: AnalyzeBugTaskLinks: Analyze broken task links — links go to wrong page, aren't clickable, or show "not found"
   - [ ] fixBugReport.md: FixBugTaskLinks: Fix task link navigation across client detail and deal detail pages
   - [ ] fixBugReport.md: UpdateTestsTaskLinks: Update spec and tests for task link navigation
