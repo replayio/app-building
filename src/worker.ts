@@ -148,6 +148,7 @@ async function runLoop(): Promise<void> {
 
   let iteration = 0;
   let totalCost = 0;
+  const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
 
   while (true) {
     iteration++;
@@ -161,6 +162,8 @@ async function runLoop(): Promise<void> {
     writeFileSync(currentLogFile, "");
     const log = createLogger(currentLogFile);
 
+    log(`Container: ${containerName}`);
+    log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
     log(`=== Iteration ${iteration} ===`);
     log(`Initial revision: ${getGitRevision()}`);
 

@@ -141,6 +141,9 @@ export function spawnContainer(prompt: string, options?: { maxIterations?: numbe
     args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `MAX_ITERATIONS=${options.maxIterations}`);
   }
 
+  // Pass container name so the worker can log it
+  args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `CONTAINER_NAME=${containerName}`);
+
   // Worker loop (iterates claude, logs, git commits, checks for <DONE/>)
   args.push("npx", "tsx", "/app-building/src/worker.ts");
   args.push("-p", prompt);

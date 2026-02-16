@@ -1,9 +1,72 @@
-const RESET = "\x1b[0m";
-const DIM = "\x1b[2m";
-const BOLD = "\x1b[1m";
-const GREEN = "\x1b[32m";
-const RED = "\x1b[31m";
+export const RESET = "\x1b[0m";
+export const DIM = "\x1b[2m";
+export const BOLD = "\x1b[1m";
+export const CYAN = "\x1b[36m";
+export const GREEN = "\x1b[32m";
+export const YELLOW = "\x1b[33m";
+export const RED = "\x1b[31m";
 const MAGENTA = "\x1b[35m";
+
+/**
+ * Format a single raw log line (timestamp already stripped) for display.
+ * Returns null if the line should be hidden.
+ */
+export function formatLogLine(line: string): string | null {
+  if (!line.trim()) return null;
+
+  if (line.startsWith("=== Iteration")) {
+    return `\n${BOLD}${CYAN}${line}${RESET}`;
+  }
+  if (line.startsWith("Initial revision:") || line.startsWith("Final revision:")) {
+    return `${BOLD}${line}${RESET}`;
+  }
+  if (
+    line.startsWith("Container:") ||
+    line.startsWith("Target:") ||
+    line.startsWith("Strategy:") ||
+    line.startsWith("Strategies:") ||
+    line.startsWith("Max iterations:") ||
+    line.startsWith("Log file:")
+  ) {
+    return `${DIM}${line}${RESET}`;
+  }
+  if (line.startsWith("Running Claude")) {
+    return `${DIM}${line}${RESET}`;
+  }
+  if (line.startsWith("Completed in")) {
+    return `${GREEN}${line}${RESET}`;
+  }
+  if (line.startsWith("Cost:")) {
+    return `${YELLOW}${line}${RESET}`;
+  }
+  if (line.startsWith("Turns:")) {
+    return `${DIM}${line}${RESET}`;
+  }
+  if (line.startsWith("Committed iteration")) {
+    return `${DIM}${line}${RESET}`;
+  }
+  if (
+    line.startsWith("Reached max iterations") ||
+    line.startsWith("Finished after") ||
+    line.includes("Agent signaled <DONE/>")
+  ) {
+    return `${BOLD}${GREEN}${line}${RESET}`;
+  }
+  if (line.startsWith("Error running") || line.startsWith("Warning:") || line.startsWith("[claude:err]")) {
+    return `${RED}${line}${RESET}`;
+  }
+  if (line === "--- Prompt ---" || line === "--- End prompt ---") {
+    return null;
+  }
+
+  // Try parsing as JSON stream event
+  try {
+    const event = JSON.parse(line);
+    return formatEvent(event);
+  } catch {
+    return line;
+  }
+}
 
 export function formatEvent(event: any): string | null {
   if (event.type === "system" && event.subtype === "init") {
