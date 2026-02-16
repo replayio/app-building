@@ -18,18 +18,23 @@ you must be following. If you are responding to a user message and don't know wh
 look for a suitable one. If there isn't one do your best to satisfy the user's request, and then write
 a new strategy document to help yourself in the future when similar requests are made.
 
+## Iteration Loop
+
+When running in detached mode, the worker automatically loops: after each Claude invocation it
+commits changes and re-invokes Claude with the same prompt in a fresh context.
+The loop stops when you include `<DONE/>` in your response or `MAX_ITERATIONS` is reached.
+
+Each iteration starts with a clean context. You will not have memory of previous iterations,
+so rely on the codebase, `docs/plan.md`, git history, and log files in `/repo/logs/` to
+understand what has already been done.
+
+You do not need to invoke any external task runner. Just do your work, commit when appropriate,
+and signal `<DONE/>` when all tasks are complete.
+
 ## Tasks
 
 Each app has a file `docs/plan.md` which describes pending tasks to perform on the app, among other things.
-Each task has an associated strategy file.
+Each task has an associated strategy file. Read the strategy file before implementing a task.
 
-If there are pending tasks that need to be performed, use the command below to work on these tasks
-without polluting context with other work that has been done.
-
-```
-npx tsx /app-building/src/performTasks.ts <appDir>
-```
-
-Where `<appDir>` is the absolute path to the app directory (e.g. `/repo/apps/SalesCRM`).
-This will repeatedly invoke Claude with the `performTasks.md` strategy until all tasks are
-done or `MAX_ITERATIONS` (from environment) is reached. Logs are written to `/repo/logs/`.
+When you finish a task, update `docs/plan.md` to reflect progress. After committing your changes,
+exit so the next iteration can start with a fresh context. The loop will continue automatically.

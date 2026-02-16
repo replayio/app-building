@@ -4,14 +4,15 @@ An agent loop that iteratively builds applications using the Claude Code CLI. Po
 
 ## How It Works
 
-Each iteration of the loop:
+In **detached mode**, the agent runs in a loop inside a Docker container:
 
-1. **Tells Claude** to read the strategy files and follow their instructions
-2. **Runs Claude** via the CLI (`claude -p`) in the app directory
-3. **Logs output** to `apps/<name>/logs/iteration-<timestamp>.log`
-4. **Commits changes** to git
+1. **Runs Claude** via the CLI (`claude -p`) with your prompt
+2. **Logs output** to `logs/iteration-<timestamp>.log`
+3. **Commits changes** to git
+4. **Continues** with `claude -c -p "Continue."` for subsequent iterations
+5. **Stops** when Claude includes `<DONE/>` in its response or the max iteration count is reached
 
-The loop stops when Claude includes `<DONE/>` in its response or the max iteration count is reached.
+In **interactive mode**, you chat with Claude one message at a time from your terminal, with output streamed and formatted in real-time.
 
 ## Prerequisites
 
@@ -46,57 +47,47 @@ mkdir -p apps/my-app && cd apps/my-app && git init
 # Add AppSpec.md describing what the app should do
 ```
 
-### Running with Docker containers (recommended)
+### Detached mode (background agent loop)
 
 ```bash
-npm run agent -- <appName> --load <strategies...> [--max-iterations <n>]
+npm run agent -- "<prompt>" [-n <max-iterations>]
 ```
 
-**Arguments:**
-- `<appName>` — Name of the app (must exist under `apps/<appName>/`)
-- `--load <strategies...>` — Strategy file basenames from `strategies/`
-- `--max-iterations <n>` — Stop after N iterations (default: unlimited)
+Starts a detached Docker container that runs Claude in a loop. Each iteration runs `claude -p`, logs output, commits changes, and continues until `<DONE/>` or the iteration limit.
 
-**Example:**
+**Examples:**
 
 ```bash
-npm run agent -- my-app --load buildInitialApp.md --max-iterations 10
+# Run with a strategy file, unlimited iterations
+npm run agent -- "Read strategies/performTasks.md and follow the instructions exactly."
+
+# Limit to 5 iterations
+npm run agent -- "Build the app according to AppSpec.md" -n 5
 ```
 
-This will:
-1. Build the Docker image if it doesn't exist
-2. Start a container mounting the project at `/repo`
-3. Pass env vars from `.env` into the container
-4. Pipe container stdout/stderr to the host console
-5. Report exit status when the container finishes
+Follow the container output with the `docker logs -f` command printed at startup.
 
-#### Testing the container environment
+### Interactive mode
 
-Start a container with the same setup (volumes, env vars, network) but drop into a bash shell instead of running the worker:
+```bash
+npm run agent
+```
+
+Starts a Docker container and drops you into a prompt. Each message you type is sent to Claude via `claude -p`. Subsequent messages use `claude -c -p` to continue the conversation. Output is streamed and formatted in real-time.
+
+### Testing the container environment
+
+Start a container with the same setup (volumes, env vars, network) but drop into a bash shell instead of running the agent:
 
 ```bash
 npm run test-container
 ```
 
-#### Building the Docker image manually
+### Building the Docker image manually
 
 ```bash
 npm run docker:build
 ```
-
-### Running the loop directly (without Docker)
-
-For debugging or running outside containers, use `loop.ts` directly:
-
-```bash
-npm run loop -- --app <name> --repo-root <path> --load <basenames...> [--max-iterations N]
-```
-
-**Options:**
-- `--app <name>` — App name (under `apps/<name>/`)
-- `--repo-root <path>` — Repo root directory
-- `--load <basenames...>` — Strategy file basenames from `strategies/`
-- `--max-iterations N` — Stop after N iterations (default: unlimited)
 
 ### Checking status
 
@@ -118,7 +109,7 @@ npm run reset-app -- my-app
 Log files contain raw JSON stream events. Use `read-log` to render them as readable output:
 
 ```bash
-npm run read-log -- apps/my-app/logs/iteration-2026-02-13T00-00-00-000Z.log
+npm run read-log -- logs/iteration-2026-02-13T00-00-00-000Z.log
 ```
 
 ## Strategies
