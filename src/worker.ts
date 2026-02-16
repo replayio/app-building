@@ -4,6 +4,7 @@ import { join } from "path";
 
 const LOGS_DIR = "/repo/logs";
 const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
+const PERFORM_TASKS_PROMPT = "Read /repo/strategies/tasks/performTasks.md and follow the instructions exactly.";
 
 function formatTimestamp(date: Date): string {
   return date.toISOString().replace(/[:.]/g, "-");
@@ -131,9 +132,9 @@ function parseArgs(args: string[]): { prompt: string; baseArgs: string[] } {
   return { prompt, baseArgs };
 }
 
-const { prompt, baseArgs } = parseArgs(incomingArgs);
+const { prompt: initialPrompt, baseArgs } = parseArgs(incomingArgs);
 
-function buildClaudeArgs(): string[] {
+function buildClaudeArgs(prompt: string): string[] {
   const args: string[] = [];
   args.push("-p", prompt);
   args.push(...baseArgs);
@@ -146,30 +147,32 @@ function buildClaudeArgs(): string[] {
 async function runLoop(): Promise<void> {
   mkdirSync(LOGS_DIR, { recursive: true });
 
+  const logFile = join(LOGS_DIR, "worker-current.log");
+  writeFileSync(logFile, "");
+  const log = createLogger(logFile);
+
+  const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
+  log(`Container: ${containerName}`);
+  log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
+
   let iteration = 0;
   let totalCost = 0;
-  const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
 
   while (true) {
     iteration++;
 
     if (MAX_ITERATIONS !== null && iteration > MAX_ITERATIONS) {
-      console.log(`Reached max iterations (${MAX_ITERATIONS}). Stopping.`);
+      log(`Reached max iterations (${MAX_ITERATIONS}). Stopping.`);
       break;
     }
 
-    const currentLogFile = join(LOGS_DIR, "iteration-current.log");
-    writeFileSync(currentLogFile, "");
-    const log = createLogger(currentLogFile);
-
-    log(`Container: ${containerName}`);
-    log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
     log(`=== Iteration ${iteration} ===`);
     log(`Initial revision: ${getGitRevision()}`);
 
-    const claudeArgs = buildClaudeArgs();
+    // First iteration uses the provided prompt, subsequent use performTasks
+    const prompt = iteration === 1 ? initialPrompt : PERFORM_TASKS_PROMPT;
+    const claudeArgs = buildClaudeArgs(prompt);
     log(`Running Claude...`);
-    console.log(`Iteration ${iteration}, logging to ${currentLogFile}`);
 
     const startTime = Date.now();
 
@@ -199,20 +202,18 @@ async function runLoop(): Promise<void> {
     log(`Committed iteration ${iteration}`);
     log(`Final revision: ${getGitRevision()}`);
 
-    // Rename log to timestamped file
-    const timestamp = formatTimestamp(new Date());
-    const finalLogFile = join(LOGS_DIR, `iteration-${timestamp}.log`);
-    renameSync(currentLogFile, finalLogFile);
-
-    console.log(`Iteration ${iteration} completed in ${elapsed}s, cost: $${response.cost_usd?.toFixed(4) ?? "?"}`);
-
     if (response.result && response.result.includes("<DONE/>")) {
-      console.log(`Agent signaled <DONE/>. Stopping after ${iteration} iteration(s).`);
+      log(`Agent signaled <DONE/>. Stopping.`);
       break;
     }
   }
 
-  console.log(`Finished after ${iteration} iteration(s). Total cost: $${totalCost.toFixed(4)}`);
+  log(`Finished after ${iteration} iteration(s). Total cost: $${totalCost.toFixed(4)}`);
+
+  // Rename to timestamped file
+  const timestamp = formatTimestamp(new Date());
+  const finalLogFile = join(LOGS_DIR, `worker-${timestamp}.log`);
+  renameSync(logFile, finalLogFile);
 }
 
 runLoop().then(

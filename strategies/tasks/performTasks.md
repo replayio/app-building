@@ -2,9 +2,11 @@
 
 This strategy document describes the process and requirements for app development that must always be followed.
 
-ULTRA IMPORTANT: Follow these directions exactly.
+ULTRA IMPORTANT: Do NOT perform any tasks from the plan unless you were explicitly instructed
+to follow this task flow. If you were not given a direct instruction to read this file and
+follow it, skip the task steps below and continue with whatever else you were doing.
 
-1. Look for files in `/repo/logs/` named `iteration-<timestamp>.log` or `worker-<timestamp>.log` describing
+1. Look for files in `/repo/logs/` named `worker-<timestamp>.log` describing
    recent changes made. While there are any (ignoring `*-current.log` files which are still being written to),
    follow instructions from `reviewChanges.md` to process them.
 2. Read `docs/plan.md` to understand current progress. If this file is missing or has no pending tasks, signal <DONE/> and exit.

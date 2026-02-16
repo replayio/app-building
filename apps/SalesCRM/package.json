@@ -15,19 +15,25 @@
     "test:ui": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test --ui"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^0.10.4",
     "@reduxjs/toolkit": "^2.5.0",
+    "@supabase/supabase-js": "^2.95.3",
     "@uploadthing/react": "^7.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "jose": "^6.1.3",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.71.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.0",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^7.4.0"
+    "uploadthing": "^7.4.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

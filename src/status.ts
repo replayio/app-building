@@ -6,12 +6,13 @@ import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./for
 // --- Log discovery ---
 
 function getLogFile(logsDir: string): string | null {
-  const current = join(logsDir, "iteration-current.log");
-  if (existsSync(current) && statSync(current).size > 0) {
-    return current;
+  // Check for active worker log first
+  const workerCurrent = join(logsDir, "worker-current.log");
+  if (existsSync(workerCurrent) && statSync(workerCurrent).size > 0) {
+    return workerCurrent;
   }
 
-  // Fall back to most recent timestamped log
+  // Fall back to most recent completed log (worker-* or legacy iteration-*)
   const files: string[] = [];
   for (const dir of [logsDir, join(logsDir, "reviewed")]) {
     let entries: string[];
@@ -21,7 +22,7 @@ function getLogFile(logsDir: string): string | null {
       continue;
     }
     for (const f of entries) {
-      if (/^iteration-.*\.log$/.test(f) && f !== "iteration-current.log") {
+      if (/^(worker|iteration)-.*\.log$/.test(f) && !f.endsWith("-current.log")) {
         files.push(join(dir, f));
       }
     }
@@ -211,8 +212,8 @@ function tailLog(logPath: string): void {
         clearInterval(poll);
         clearInterval(containerCheck);
 
-        // The log file may have been renamed (iteration-current.log -> iteration-*.log),
-        // which means the run completed. Check if the file still exists.
+        // The log file may have been renamed (worker-current.log -> worker-*.log),
+        // which means the run completed.
       }
     } catch {
       // File may have been renamed

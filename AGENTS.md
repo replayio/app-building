@@ -8,7 +8,7 @@ Key directories:
 * `apps`: Has one subdirectory for each app that has been built or has been specified and still needs to be built.
 * `strategies/messages`: Strategies for responding to messages from the user (e.g. bug reports, log analysis).
 * `strategies/tasks`: Strategies for handling pending tasks in the plan. See `strategies/AGENTS.md` for details.
-* `logs`: Log files from work that has been performed. `iteration-current.log` is the log for
+* `logs`: Log files from work that has been performed. `worker-current.log` is the log for
   the work currently being done.
 
 You are running within a container and can run test suites for applications and connect to various
@@ -22,9 +22,11 @@ similar requests are made.
 
 ## Iteration Loop
 
-When running in detached mode, the worker automatically loops: after each Claude invocation it
-commits changes and re-invokes Claude with the same prompt in a fresh context.
+When running in detached mode, the worker automatically loops: the first iteration runs the
+user's prompt, and all subsequent iterations run `performTasks.md` to process tasks in `docs/plan.md`.
+After each iteration the worker commits changes and re-invokes Claude with a fresh context.
 The loop stops when you include `<DONE/>` in your response or `MAX_ITERATIONS` is reached.
+All iterations are logged to a single `worker-current.log` file.
 
 Each iteration starts with a clean context. You will not have memory of previous iterations,
 so rely on the codebase, `docs/plan.md`, git history, and log files in `/repo/logs/` to
