@@ -1,6 +1,6 @@
 # Strategy
 
-You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md
+You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
 
 ## Unpack Subtasks
 
@@ -61,6 +61,9 @@ Unpack the task for implementing a page into the following:
 - Attachment displays should show file-type-specific icons or thumbnails (e.g., image preview for
   images, document icon for PDFs, spreadsheet icon for CSVs). Do not use a single generic file
   icon for all attachment types.
+
+- Attachment functionality must support actual file uploads. Any UI that allows adding attachments
+  must include a working file upload mechanism (e.g., file picker, drag-and-drop), not just link entry.
 
 ## Tips
 

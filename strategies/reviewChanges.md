@@ -15,6 +15,12 @@ strategy used for the task.
 
 Follow these instructions exactly.
 
+**IMPORTANT: You MUST use `npm run read-log /path/to/log` from the repo root to read any log file.**
+Do NOT use the Read tool, cat, head, tail, or grep on raw log files. The raw content is either
+too large (exceeding the 256KB read limit) or full of ANSI escape codes that make it unreadable.
+The `read-log` script parses and formats the content into a readable conversation. This applies
+to ALL log files: iteration logs, worker logs, and app-specific logs in each app's `logs/` directory.
+
 1. Pick a file `/repo/logs/iteration-<timestamp>.log` or `/repo/logs/worker-<timestamp>.log`.
    Ignore `*-current.log` files which are still being written to.
 2. Announce 'REVIEW: <logFile>'
@@ -54,8 +60,6 @@ was unproductive and add a strategy tip to prevent the same pattern.
 
 ## Tips
 
-- Do NOT try to Read the raw JSON log file — it will exceed the 256KB read limit.
-  Always use `npm run read-log` commands.
 - When reviewing multiple accumulated logs, review each one individually by checking its git diff.
   Do not skip reviews because "we can see from the plan what was done."
 - If a review identifies directive violations, fix them BEFORE moving the log to reviewed/.

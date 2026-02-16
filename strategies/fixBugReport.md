@@ -13,7 +13,8 @@ Unpack reports starting with the oldest ones, which will be listed last.
 1. AnalyzeBug: Analyze and document the cause of the bug. Skip this for bugs asking for new functionality.
 2. FixBug: Update the app to fix the bug
 3. UpdateTests: Update the spec and tests to verify the fix and prevent regressions.
-4. ResolveBug: Mark the bug as resolved and in need of review.
+4. UpdateRevisions: Record any spec changes in AppRevisions.md.
+5. ResolveBug: Mark the bug as resolved and in need of review.
 
 ## Analyzing bugs
 
@@ -40,6 +41,18 @@ that the bug doesn't occur.
 For any changes to the test spec you made, update the test files themselves to reflect those changes.
 
 After updating tests, make sure they pass. Read `testing.md` to understand how to run tests and debug failures.
+
+## Updating revisions
+
+If the bug fix changed the app's behavior relative to the original `AppSpec.md` — for example,
+adding new functionality, removing a feature, or changing how something works — add an entry
+to `AppRevisions.md` (create the file next to `AppSpec.md` if it doesn't exist).
+
+Each entry should include the date, a reference to the bug report, and a concise description
+of what changed in the app's spec. This file is the authoritative record of how the app has
+diverged from the original spec over time.
+
+If the fix was purely a code bug that didn't change the intended behavior, skip this step.
 
 ## Resolving bugs
 
