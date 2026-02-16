@@ -4,7 +4,6 @@
   "description": "Simple agent loop for building apps with Claude Code CLI",
   "scripts": {
     "agent": "tsx src/agent.ts",
-    "perform-tasks": "tsx src/performTasks.ts",
     "status": "tsx src/status.ts",
     "read-log": "tsx src/read-log.ts",
     "reset-app": "tsx src/reset-app.ts",

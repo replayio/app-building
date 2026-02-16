@@ -17,4 +17,4 @@ You will build the app in the following stages, with task strategy files in `str
 
 Create the docs/plan.md file with one "<strategy-file>: Unpack<StrategyName>: Unpack subtasks" task for each stage.
 
-Then run the `performTasks` script according to your instructions.
+Then commit and exit. The worker loop will continue with `performTasks.md` on the next iteration.

@@ -29,7 +29,7 @@ npm run agent -- "<prompt>"
 npm run agent -- "<prompt>" -n 10   # limit iterations
 ```
 
-Runs Claude in a loop inside a detached container. Each iteration logs output, commits changes, and re-runs with a fresh context. Stops on `<DONE/>` or the iteration limit.
+Runs Claude in a loop inside a detached container. The first iteration runs the provided prompt; subsequent iterations run `performTasks.md` to process tasks from `docs/plan.md`. Each iteration commits changes and re-runs with a fresh context. Stops on `<DONE/>` or the iteration limit. All output is logged to a single `logs/worker-current.log` file.
 
 ### Checking status
 

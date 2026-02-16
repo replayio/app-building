@@ -21,4 +21,4 @@ start a new one by adding pending tasks for each of the above stages, using a
 "<strategy-file>: Unpack<StrategyName>: Unpack subtasks" format. Also add a section at
 the end of plan.md for notes about the work done during maintenance.
 
-Then run the `performTasks` script according to your instructions.
+Then commit and exit. The worker loop will continue with `performTasks.md` on the next iteration.

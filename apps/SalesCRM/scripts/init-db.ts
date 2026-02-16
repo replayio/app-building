@@ -233,6 +233,19 @@ async function main() {
     )
   `
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS users (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      auth_user_id UUID UNIQUE NOT NULL,
+      email TEXT NOT NULL,
+      name TEXT NOT NULL,
+      provider TEXT DEFAULT 'unknown',
+      avatar_url TEXT DEFAULT '',
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
+
   console.log('Database schema created successfully!')
   console.log('Database is ready for use.')
 }

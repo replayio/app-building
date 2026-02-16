@@ -14,13 +14,14 @@ build or maintain an app, or a question about logs).
 
 ## `tasks/` — Handling pending tasks in the plan
 
-These strategies are executed by the task loop (`performTasks.md`) when processing entries in
-`docs/plan.md`. They are organized into subdirectories:
+These strategies are executed by the worker loop. The first iteration runs the user's prompt
+(a message strategy), and all subsequent iterations run `performTasks.md` which processes
+entries in `docs/plan.md`. They are organized into subdirectories:
 
 ### Root — Shared infrastructure
 
-- **performTasks.md**: The main task loop. Reads `docs/plan.md`, picks the next pending task,
-  reads its strategy file, and implements it.
+- **performTasks.md**: The main task loop, run automatically by the worker on iterations 2+.
+  Reads `docs/plan.md`, picks the next pending task, reads its strategy file, and implements it.
 - **reviewChanges.md**: Reviews iteration logs for lessons learned and strategy improvements.
 - **deployment.md**: Deploy the app to production. Used by both build and maintain workflows.
 
