@@ -43,6 +43,7 @@ async function runInteractive(): Promise<void> {
       claudeArgs.push("-p", input);
       claudeArgs.push("--model", "claude-opus-4-6");
       claudeArgs.push("--output-format", "stream-json");
+      claudeArgs.push("--verbose");
       claudeArgs.push("--dangerously-skip-permissions");
       claudeArgs.push("--mcp-config", mcpConfig);
 
@@ -98,12 +99,14 @@ async function main(): Promise<void> {
   const program = new Command();
   program
     .argument("[prompt]", "prompt to pass to claude (omit for interactive mode)")
+    .option("-n, --max-iterations <n>", "max iterations for detached mode", parseInt)
     .parse();
 
   const promptArg = program.args[0] || null;
+  const opts = program.opts();
 
   if (promptArg) {
-    await spawnContainer(promptArg);
+    await spawnContainer(promptArg, { maxIterations: opts.maxIterations });
   } else {
     await runInteractive();
   }

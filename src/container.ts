@@ -134,10 +134,14 @@ function setupContainer(mode: "interactive" | "detached" | "attached"): Containe
   return { args, containerName, envVars, mcpConfig };
 }
 
-export function spawnContainer(prompt: string): Promise<void> {
+export function spawnContainer(prompt: string, options?: { maxIterations?: number }): Promise<void> {
   const { args, containerName, mcpConfig } = setupContainer("detached");
 
-  // Worker wrapper (handles log rotation and output capture)
+  if (options?.maxIterations) {
+    args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `MAX_ITERATIONS=${options.maxIterations}`);
+  }
+
+  // Worker loop (iterates claude, logs, git commits, checks for <DONE/>)
   args.push("npx", "tsx", "/app-building/src/worker.ts");
   args.push("-p", prompt);
   args.push("--model", "claude-opus-4-6");
