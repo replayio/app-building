@@ -8,7 +8,8 @@
     "status": "tsx src/status.ts",
     "read-log": "tsx src/read-log.ts",
     "reset-app": "tsx src/reset-app.ts",
-    "docker:build": "docker build --network=host -t app-building ."
+    "docker:build": "docker build --network=host -t app-building .",
+    "test-container": "tsx src/test-container.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.0",

@@ -5,5 +5,9 @@ logs/
 prompt-*.txt
 *~
 
+# Container agent home directory
+.agent-home
+.claude
+
 # Local Netlify folder
 .netlify
