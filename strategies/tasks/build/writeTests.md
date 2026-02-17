@@ -30,6 +30,11 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   writing cross-cutting tests that reference components tested in other spec files, read the existing
   spec files to use the same testid values.
 
+- When the test spec entry describes file upload functionality (e.g., "file picker opens", "select a
+  file to upload"), the test must exercise actual file upload mechanics (e.g., Playwright's
+  `setInputFiles` on a file input). Do not substitute a URL/text input test for a file upload test —
+  this masks missing upload functionality in the app.
+
 - Strategy files are at `/repo/strategies/tasks/` and its subdirectories (the repo root), NOT inside
   the app directory. Always use `/repo/strategies/tasks/reviewChanges.md`,
   `/repo/strategies/tasks/build/writeTests.md`, etc.

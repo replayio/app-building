@@ -6,28 +6,38 @@
 
 ## Unreviewed
 
+(none)
+
+## Finished
+
 2/16/2026: The app has no authentication — all pages and API endpoints are accessible without logging in and there is no user identity.
 - Analysis: docs/bugs/AuthenticationSystem.md
 - Before: df7222c
 - After: c0847d0
 - Fix: Added Supabase authentication system with Login/Register/AuthCallback pages, RequireAuth route guard, JWT verification middleware (requiresAuth wrapper) on all 10 Netlify Functions, fetch interceptor for automatic token injection, AuthProvider context, user info in sidebar, and IS_TEST mode for Playwright. Timeline events and deal history now use authenticated user's name instead of "System".
+- Problem stage: none (new functionality — authentication was not part of the original spec)
 
 2/16/2026: Links to tasks don't work. They either go to the wrong page, aren't clickable, or go to a "task not found" page.
 - Before: ef67c9a
 - After: (this commit)
 - Fix: Client detail TasksSection now navigates to /tasks/:taskId (was /deals/:dealId or not clickable). Deal detail LinkedTasksSection now also navigates to /tasks/:taskId (was not clickable at all).
+- Problem stage: none (change in app requirements — the old spec specified navigation to deal detail page, but the TaskDetailPage added in a previous maintenance round changed the expected target)
+- Note: Added missing AppRevisions.md entry for task link navigation change.
 
 2/16/2026: Pipeline view on the deals page should allow drag-and-drop to move deals between stages.
 - Before: 4e63501
 - After: (this commit)
 - Fix: Added HTML5 drag-and-drop support to DealsPipelineView. Deal cards are draggable and can be dropped on different stage columns to change the deal's stage via the API.
+- Problem stage: none (new functionality — the original spec described the pipeline view as display-only with no drag-and-drop)
 
 2/16/2026: Attachment functionality on the deals page does not allow file uploads.
 - Before: fbafcda
 - After: (this commit)
 - Fix: Updated UploadAttachmentModal on deal detail page to support both file upload and link URL modes via toggle buttons, matching the client detail page attachment modal pattern.
+- Problem stage: writeTests.md — test spec entries (DDP-ATT-02, DDP-ATT-03) specified "file picker/upload dialog" and "select and upload a file", but the Playwright tests only verified a URL input form instead of actual file upload mechanics, masking the missing upload functionality
+- Directive: Added directive to writeTests.md: when the test spec describes file upload functionality, the test must exercise actual file upload mechanics, not substitute URL/text input tests
 
-## Finished
+
 
 2/14/2026: Add a task detail page that has all pertinent information and can be used to mark the task completed or canceled, or add notes
 - Analysis: docs/bugs/TaskDetailPage.md

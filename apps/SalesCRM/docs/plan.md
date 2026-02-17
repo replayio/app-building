@@ -273,7 +273,7 @@
   - [x] fixBugReport.md: UpdateTestsAuthentication: Added AUTH-LGN-01/02, AUTH-REG-01/02, AUTH-USR-01 test entries and auth.spec.ts (5 tests). All 190 tests pass.
   - [x] fixBugReport.md: UpdateRevisionsAuthentication: Recorded auth system spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugAuthentication: Bug moved to Unreviewed in bugReports.md (df7222c → c0847d0)
-- [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
+- [x] reviewBugReport.md: UnpackReviewBugReport: Classified and reviewed 4 bugs — 3 no problem stage (authentication=new functionality, task links=requirement change, pipeline drag-drop=new functionality), 1 writeTests.md (deal attachment upload tests verified URL form instead of file upload). Added 1 new directive to writeTests.md. Added missing AppRevisions.md entry for task links. All bugs moved to Finished.
 - [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
 - [ ] deployment.md: UnpackDeployment: Unpack subtasks
