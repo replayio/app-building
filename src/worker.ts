@@ -1,5 +1,5 @@
 import { spawn, execFileSync } from "child_process";
-import { mkdirSync, writeFileSync, appendFileSync, renameSync } from "fs";
+import { mkdirSync, writeFileSync, appendFileSync, renameSync, existsSync, statSync } from "fs";
 import { join } from "path";
 
 const LOGS_DIR = "/repo/logs";
@@ -147,14 +147,7 @@ function buildClaudeArgs(prompt: string): string[] {
 async function runLoop(): Promise<void> {
   mkdirSync(LOGS_DIR, { recursive: true });
 
-  const logFile = join(LOGS_DIR, "worker-current.log");
-  writeFileSync(logFile, "");
-  const log = createLogger(logFile);
-
   const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
-  log(`Container: ${containerName}`);
-  log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
-
   let iteration = 0;
   let totalCost = 0;
 
@@ -162,10 +155,20 @@ async function runLoop(): Promise<void> {
     iteration++;
 
     if (MAX_ITERATIONS !== null && iteration > MAX_ITERATIONS) {
-      log(`Reached max iterations (${MAX_ITERATIONS}). Stopping.`);
       break;
     }
 
+    // Preserve any leftover worker-current.log from a crashed run
+    const currentLogFile = join(LOGS_DIR, "worker-current.log");
+    if (existsSync(currentLogFile) && statSync(currentLogFile).size > 0) {
+      const ts = formatTimestamp(new Date());
+      renameSync(currentLogFile, join(LOGS_DIR, `worker-${ts}.log`));
+    }
+    writeFileSync(currentLogFile, "");
+    const log = createLogger(currentLogFile);
+
+    log(`Container: ${containerName}`);
+    log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
     log(`=== Iteration ${iteration} ===`);
     log(`Initial revision: ${getGitRevision()}`);
 
@@ -198,22 +201,20 @@ async function runLoop(): Promise<void> {
       log(`Turns: ${response.num_turns}`);
     }
 
+    // Commit code changes while log is still worker-current.log (gitignored)
     gitCommit(iteration, log);
     log(`Committed iteration ${iteration}`);
     log(`Final revision: ${getGitRevision()}`);
 
+    // Rename log to timestamped file so future iterations can review it
+    const timestamp = formatTimestamp(new Date());
+    const finalLogFile = join(LOGS_DIR, `worker-${timestamp}.log`);
+    renameSync(currentLogFile, finalLogFile);
+
     if (response.result && response.result.includes("<DONE/>")) {
-      log(`Agent signaled <DONE/>. Stopping.`);
       break;
     }
   }
-
-  log(`Finished after ${iteration} iteration(s). Total cost: $${totalCost.toFixed(4)}`);
-
-  // Rename to timestamped file
-  const timestamp = formatTimestamp(new Date());
-  const finalLogFile = join(LOGS_DIR, `worker-${timestamp}.log`);
-  renameSync(logFile, finalLogFile);
 }
 
 runLoop().then(
