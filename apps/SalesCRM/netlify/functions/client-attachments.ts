@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless'
-import { requiresAuth, type AuthenticatedRequest } from '../utils/auth'
+import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
 
 function getDb() {
   const url = process.env.DATABASE_URL
@@ -7,7 +7,7 @@ function getDb() {
   return neon(url)
 }
 
-async function handler(req: AuthenticatedRequest) {
+async function handler(req: OptionalAuthRequest) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
@@ -58,7 +58,7 @@ async function handler(req: AuthenticatedRequest) {
     // Create timeline event
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}, 'attachment_added', ${'Attachment Added: \'' + body.filename + '\''}, ${req.user.name}, ${rows[0].id}, 'attachment')
+      VALUES (${body.client_id}, 'attachment_added', ${'Attachment Added: \'' + body.filename + '\''}, ${req.user?.name ?? 'System'}, ${rows[0].id}, 'attachment')
     `
 
     // Fetch deal_name if deal_id provided
@@ -80,4 +80,4 @@ async function handler(req: AuthenticatedRequest) {
   return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
 }
 
-export default requiresAuth(handler)
+export default optionalAuth(handler)

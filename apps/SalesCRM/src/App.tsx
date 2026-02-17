@@ -8,29 +8,22 @@ import { DealDetailPage } from './pages/DealDetailPage'
 import { TasksListPage } from './pages/TasksListPage'
 import { TaskDetailPage } from './pages/TaskDetailPage'
 import { NotFoundPage } from './pages/NotFoundPage'
-import { LoginPage } from './pages/Login'
-import { RegisterPage } from './pages/Register'
 import { AuthCallbackPage } from './pages/AuthCallback'
-import { RequireAuth } from './components/auth/RequireAuth'
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
       <Route path="/auth/callback" element={<AuthCallbackPage />} />
-      <Route element={<RequireAuth />}>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Navigate to="/clients" replace />} />
-          <Route path="/clients" element={<ClientsListPage />} />
-          <Route path="/clients/:clientId" element={<ClientDetailPage />} />
-          <Route path="/individuals/:individualId" element={<PersonDetailPage />} />
-          <Route path="/deals" element={<DealsListPage />} />
-          <Route path="/deals/:dealId" element={<DealDetailPage />} />
-          <Route path="/tasks" element={<TasksListPage />} />
-          <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Navigate to="/clients" replace />} />
+        <Route path="/clients" element={<ClientsListPage />} />
+        <Route path="/clients/:clientId" element={<ClientDetailPage />} />
+        <Route path="/individuals/:individualId" element={<PersonDetailPage />} />
+        <Route path="/deals" element={<DealsListPage />} />
+        <Route path="/deals/:dealId" element={<DealDetailPage />} />
+        <Route path="/tasks" element={<TasksListPage />} />
+        <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )

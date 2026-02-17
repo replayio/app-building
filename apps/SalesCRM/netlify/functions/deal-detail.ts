@@ -1,5 +1,5 @@
 import { neon } from '@neondatabase/serverless'
-import { requiresAuth, type AuthenticatedRequest } from '../utils/auth'
+import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
 
 function getDb() {
   const url = process.env.DATABASE_URL
@@ -7,7 +7,7 @@ function getDb() {
   return neon(url)
 }
 
-async function handler(req: AuthenticatedRequest) {
+async function handler(req: OptionalAuthRequest) {
   const sql = getDb()
   const url = new URL(req.url)
   const pathParts = url.pathname.split('/').filter(Boolean)
@@ -76,7 +76,7 @@ async function handler(req: AuthenticatedRequest) {
 
     const rows = await sql`
       INSERT INTO writeups (deal_id, title, content, author, version)
-      VALUES (${body.deal_id}::uuid, ${body.title}, ${body.content}, ${req.user.name}, 1)
+      VALUES (${body.deal_id}::uuid, ${body.title}, ${body.content}, ${req.user?.name ?? 'System'}, 1)
       RETURNING *
     `
 
@@ -111,7 +111,7 @@ async function handler(req: AuthenticatedRequest) {
       UPDATE writeups SET
         title = COALESCE(${body.title ?? null}, title),
         content = COALESCE(${body.content ?? null}, content),
-        author = ${req.user.name},
+        author = ${req.user?.name ?? 'System'},
         version = ${newVersion},
         updated_at = NOW()
       WHERE id = ${resourceId}::uuid
@@ -171,7 +171,7 @@ async function handler(req: AuthenticatedRequest) {
     // Create timeline event
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}::uuid, 'task_created', ${'Task Created: \'' + body.title + '\''}, ${req.user.name}, ${rows[0].id}::uuid, 'task')
+      VALUES (${body.client_id}::uuid, 'task_created', ${'Task Created: \'' + body.title + '\''}, ${req.user?.name ?? 'System'}, ${rows[0].id}::uuid, 'task')
     `
 
     return Response.json(rows[0], { status: 201 })
@@ -215,7 +215,7 @@ async function handler(req: AuthenticatedRequest) {
     if (body.completed && rows[0].client_id) {
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-        VALUES (${rows[0].client_id}::uuid, 'task_completed', ${'Task Completed: \'' + rows[0].title + '\''}, ${req.user.name}, ${resourceId}::uuid, 'task')
+        VALUES (${rows[0].client_id}::uuid, 'task_completed', ${'Task Completed: \'' + rows[0].title + '\''}, ${req.user?.name ?? 'System'}, ${resourceId}::uuid, 'task')
       `
     }
 
@@ -282,4 +282,4 @@ async function handler(req: AuthenticatedRequest) {
   return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 })
 }
 
-export default requiresAuth(handler)
+export default optionalAuth(handler)

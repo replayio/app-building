@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
 import { auth } from '../lib/auth'
 import { useGetUserInfoQuery } from '../store/authSlice'
 import type { Session } from '@supabase/supabase-js'
@@ -11,6 +11,7 @@ interface AuthContextValue {
   isLoggedIn: boolean
   loading: boolean
   user: { id: string; email: string; name: string; avatar_url: string } | null
+  signIn: () => void
   signOut: () => Promise<void>
 }
 
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextValue>({
   isLoggedIn: false,
   loading: true,
   user: null,
+  signIn: () => {},
   signOut: async () => {},
 })
 
@@ -46,7 +48,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     auth.getSession().then(({ data: { session: s } }) => {
       setSession(s)
-      // If Supabase didn't find a session, check localStorage directly
       if (!s) {
         setHasStoredToken(getStoredSession())
       }
@@ -64,9 +65,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  // User is logged in if Supabase has a session OR we have a stored token
+  // Listen for auth-callback messages from popup window
+  useEffect(() => {
+    function handleMessage(event: MessageEvent) {
+      if (event.origin !== window.location.origin) return
+      if (event.data?.type === 'auth-callback') {
+        // Popup completed auth — refresh session
+        auth.getSession().then(({ data: { session: s } }) => {
+          setSession(s)
+          if (!s) {
+            setHasStoredToken(getStoredSession())
+          }
+        })
+      }
+    }
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
+
   const isLoggedIn = !!session || hasStoredToken
   const { data: userInfo } = useGetUserInfoQuery(undefined, { skip: !isLoggedIn })
+
+  const signIn = useCallback(() => {
+    const callbackUrl = `${window.location.origin}/auth/callback`
+    const authUrl = `https://auth.nut.new/functions/v1/oauth/start?provider=google&redirect_to=${encodeURIComponent(callbackUrl)}`
+    const width = 500
+    const height = 600
+    const left = window.screenX + (window.innerWidth - width) / 2
+    const top = window.screenY + (window.innerHeight - height) / 2
+    window.open(authUrl, 'auth-popup', `width=${width},height=${height},left=${left},top=${top}`)
+  }, [])
 
   async function signOut() {
     await auth.signOut()
@@ -81,6 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoggedIn,
         loading,
         user: userInfo ?? null,
+        signIn,
         signOut,
       }}
     >

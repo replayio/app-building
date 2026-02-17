@@ -36,7 +36,7 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 
 - Do not substitute easier-to-implement elements for what the mockup shows. If a table has columns that require joins or computed values, test for all those columns — do not replace them with simpler alternatives. If a mockup shows four filter controls, test for all four — not just the two easiest ones.
 
-- For every clickable element, the test entry must specify the exact navigation target or action result. Do not leave navigation destinations ambiguous.
+- For every clickable element, the test entry must specify the exact navigation target or action result. Do not leave navigation destinations ambiguous. For buttons that trigger external flows (OAuth, SSO, payment, etc.), specify how the flow opens (popup window, redirect, etc.) and what happens when it completes.
 
 - For any user action that mutates data, write test entries verifying that the change is persisted correctly and that exactly the right side effects occur (e.g. history/timeline entries are created, and only one per action — not duplicates).
 
