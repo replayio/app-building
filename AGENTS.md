@@ -35,6 +35,8 @@ understand what has already been done.
 You do not need to invoke any external task runner. Just do your work, commit when appropriate,
 and signal `<DONE/>` when all tasks are complete.
 
+You must NEVER signal '<DONE/>' when there are remaining pending tasks.
+
 ## Tasks
 
 Each app has a file `docs/plan.md` which describes pending tasks to perform on the app, among other things.
