@@ -274,7 +274,17 @@
   - [x] fixBugReport.md: UpdateRevisionsAuthentication: Recorded auth system spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugAuthentication: Bug moved to Unreviewed in bugReports.md (df7222c → c0847d0)
 - [x] reviewBugReport.md: UnpackReviewBugReport: Classified and reviewed 4 bugs — 3 no problem stage (authentication=new functionality, task links=requirement change, pipeline drag-drop=new functionality), 1 writeTests.md (deal attachment upload tests verified URL form instead of file upload). Added 1 new directive to writeTests.md. Added missing AppRevisions.md entry for task links. All bugs moved to Finished.
-- [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+- [x] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks — Focused on new/changed code from Maintenance Round 4
+  - [x] checkDirectives.md: CheckTestSpecAuthPages: No violations found
+  - [x] checkDirectives.md: CheckComponentsAuthPages: No violations found
+  - [x] checkDirectives.md: CheckComponentsDealDetail: No violations found
+  - [x] checkDirectives.md: CheckComponentsDealsListPage: No violations found
+  - [x] checkDirectives.md: CheckComponentsTaskLinks: No violations found
+  - [x] checkDirectives.md: CheckBackendAuth: No violations found
+  - [x] checkDirectives.md: CheckTestsAuthPages: No violations found
+  - [x] checkDirectives.md: CheckTestsDealDetail: No violations found
+  - [x] checkDirectives.md: CheckTestsDealsListPage: No violations found
+  - [x] checkDirectives.md: CheckTestsClientDetail: No violations found
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
 - [ ] deployment.md: UnpackDeployment: Unpack subtasks
 
