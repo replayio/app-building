@@ -10,6 +10,12 @@
 
 ## Finished
 
+2/17/2026: Can't login to the app — the SSO popup opens in the same window as the app instead of a new window, breaking the login flow. Authentication should be optional — the app should load and be usable without logging in, with database access not requiring auth. There should be a current user info area in the upper left that shows the logged-in user and allows for logging in.
+- Analysis: docs/bugs/SSOAuthOptional.md
+- Fix: Made authentication optional. Removed Login/Register pages and RequireAuth guard. SSO now opens in a popup window. Backend uses optionalAuth middleware (allows unauthenticated requests, user falls back to "System"). Sidebar user area moved to upper left with avatar/name/sign-out when logged in, or "Sign in with Google" button when not logged in.
+- Problem stage: testSpec.md — the old test spec specified that the login page has a "Google OAuth button" but did not specify the click behavior (should open in popup window, not navigate the current window)
+- Directive: Updated testSpec.md directive: clickable elements that trigger external flows (OAuth, SSO, payment, etc.) must specify how the flow opens and what happens on completion
+
 2/16/2026: The app has no authentication — all pages and API endpoints are accessible without logging in and there is no user identity.
 - Analysis: docs/bugs/AuthenticationSystem.md
 - Before: df7222c

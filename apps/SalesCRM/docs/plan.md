@@ -292,6 +292,25 @@
 #### Maintenance Round 4 Notes
 
 
+### Maintenance Round 5
+
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 1 open bug report found
+  - [x] fixBugReport.md: AnalyzeBugSSOAuth: Analyzed SSO popup issue — see docs/bugs/SSOAuthOptional.md
+  - [x] fixBugReport.md: FixBugSSOAuth: Made auth optional (optionalAuth middleware), SSO opens in popup window, user info area in upper left of sidebar with sign-in button
+  - [x] fixBugReport.md: UpdateTestsSSOAuth: Updated test spec (removed Login/Register entries, updated SidebarUserInfo entries), rewrote auth.spec.ts with 3 new tests
+  - [x] fixBugReport.md: UpdateRevisionsSSOAuth: Recorded auth changes in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugSSOAuth: Bug resolved
+- [x] reviewBugReport.md: UnpackReviewBugReport: 1 unreviewed bug
+  - [x] reviewBugReport.md: ClassifyBugSSOAuth: Problem stage is testSpec.md — OAuth button click behavior was underspecified
+  - [x] reviewBugReport.md: UpdateDirectivesSSOAuth: Updated testSpec.md directive for external flow buttons
+  - [x] reviewBugReport.md: FinishBugSSOAuth: Bug moved to Finished section
+- [x] checkDirectives.md: UnpackCheckDirectives: Checked all pages and backend — no directive violations found
+- [x] polishApp.md: UnpackPolishApp: Stub — no subtasks
+- [ ] deployment.md: UnpackDeployment: Deploy to production
+
+#### Maintenance Round 5 Notes
+
+
 ## Blockers
 
 None.

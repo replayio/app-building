@@ -53,82 +53,79 @@ export interface UserRecord {
   provider: string
 }
 
-export interface AuthenticatedRequest extends Request {
-  user: UserRecord
+export interface OptionalAuthRequest extends Request {
+  user: UserRecord | null
+}
+
+export function optionalAuth(
+  handler: (req: OptionalAuthRequest) => Promise<Response>
+) {
+  return async (req: Request): Promise<Response> => {
+    const authReq = req as OptionalAuthRequest
+    authReq.user = null
+
+    const authHeader = req.headers.get('authorization')
+    if (authHeader?.startsWith('Bearer ')) {
+      const token = authHeader.slice(7)
+      try {
+        let payload: jose.JWTPayload
+
+        if (process.env.IS_TEST === 'true') {
+          const key = await getTestPublicKey()
+          const result = await jose.jwtVerify(token, key)
+          payload = result.payload
+        } else {
+          const JWKS = getJWKS()
+          const result = await jose.jwtVerify(token, JWKS, {
+            issuer: 'https://auth.nut.new/auth/v1',
+          })
+          payload = result.payload
+        }
+
+        const authUserId = payload.sub
+        const email = (payload.email as string) || ''
+        const userMetadata = (payload.user_metadata as Record<string, string>) || {}
+        const appMetadata = (payload.app_metadata as Record<string, string>) || {}
+        const name = userMetadata.full_name || userMetadata.name || email.split('@')[0] || 'User'
+        const provider = appMetadata.provider || 'unknown'
+        const avatarUrl = userMetadata.avatar_url || ''
+
+        if (authUserId) {
+          const sql = getDb()
+          const rows = await sql`
+            INSERT INTO users (auth_user_id, email, name, provider, avatar_url)
+            VALUES (${authUserId}::uuid, ${email}, ${name}, ${provider}, ${avatarUrl})
+            ON CONFLICT (auth_user_id) DO UPDATE SET
+              email = EXCLUDED.email,
+              name = EXCLUDED.name,
+              provider = EXCLUDED.provider,
+              avatar_url = EXCLUDED.avatar_url,
+              updated_at = NOW()
+            RETURNING *
+          `
+          authReq.user = rows[0] as UserRecord
+        }
+      } catch {
+        // Invalid token — proceed without auth
+      }
+    }
+
+    return handler(authReq)
+  }
 }
 
 export function requiresAuth(
-  handler: (req: AuthenticatedRequest) => Promise<Response>
+  handler: (req: OptionalAuthRequest) => Promise<Response>
 ) {
-  return async (req: Request): Promise<Response> => {
-    const authHeader = req.headers.get('authorization')
-    if (!authHeader?.startsWith('Bearer ')) {
+  return optionalAuth(async (req: OptionalAuthRequest) => {
+    if (!req.user) {
       return new Response(JSON.stringify({ error: 'Missing authorization token' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' },
       })
     }
-
-    const token = authHeader.slice(7)
-
-    try {
-      let payload: jose.JWTPayload
-
-      if (process.env.IS_TEST === 'true') {
-        // Test mode: verify with local EC test key
-        const key = await getTestPublicKey()
-        const result = await jose.jwtVerify(token, key)
-        payload = result.payload
-      } else {
-        // Production mode: verify with remote JWKS
-        const JWKS = getJWKS()
-        const result = await jose.jwtVerify(token, JWKS, {
-          issuer: 'https://auth.nut.new/auth/v1',
-        })
-        payload = result.payload
-      }
-
-      const authUserId = payload.sub
-      const email = (payload.email as string) || ''
-      const userMetadata = (payload.user_metadata as Record<string, string>) || {}
-      const appMetadata = (payload.app_metadata as Record<string, string>) || {}
-      const name = userMetadata.full_name || userMetadata.name || email.split('@')[0] || 'User'
-      const provider = appMetadata.provider || 'unknown'
-      const avatarUrl = userMetadata.avatar_url || ''
-
-      if (!authUserId) {
-        return new Response(JSON.stringify({ error: 'Invalid token: missing sub' }), {
-          status: 401,
-          headers: { 'Content-Type': 'application/json' },
-        })
-      }
-
-      const sql = getDb()
-      const rows = await sql`
-        INSERT INTO users (auth_user_id, email, name, provider, avatar_url)
-        VALUES (${authUserId}::uuid, ${email}, ${name}, ${provider}, ${avatarUrl})
-        ON CONFLICT (auth_user_id) DO UPDATE SET
-          email = EXCLUDED.email,
-          name = EXCLUDED.name,
-          provider = EXCLUDED.provider,
-          avatar_url = EXCLUDED.avatar_url,
-          updated_at = NOW()
-        RETURNING *
-      `
-
-      const user = rows[0] as UserRecord
-      const authenticatedReq = req as AuthenticatedRequest
-      authenticatedReq.user = user
-
-      return handler(authenticatedReq)
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Authentication failed'
-      return new Response(JSON.stringify({ error: message }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    }
-  }
+    return handler(req)
+  })
 }
 
 // Export test key for use in test helpers

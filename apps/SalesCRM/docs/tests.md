@@ -4,47 +4,30 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 0. Authentication Pages
+## 0. Authentication
 
 ### Components
-- **LoginPage** (/login): Email/password login form with Google OAuth button, link to register page
-- **RegisterPage** (/register): Registration form with name, email, password fields, Google OAuth button, link to login page
-- **AuthCallback** (/auth/callback): OAuth callback handler that completes sign-in
-- **RequireAuth**: Route guard that redirects unauthenticated users to /login
-- **SidebarUserInfo**: Authenticated user's name and avatar displayed at the bottom of the sidebar with a sign-out button
+- **AuthCallback** (/auth/callback): OAuth callback handler that completes sign-in and posts message to opener window
+- **SidebarUserArea**: Current user info area in the upper left of the sidebar, below the app title. When logged in, shows user avatar/initial, name, and sign-out button. When not logged in, shows a "Sign in with Google" button that opens SSO in a popup window.
 
 ### Test Entries
 
-#### LoginPage
+#### SidebarUserArea
 
-**AUTH-LGN-01: Login page displays all form elements**
-- Initial: User navigates to /login (without authentication)
-- Action: Observe the login page
-- Expected: Page shows email input, password input, sign-in submit button, Google OAuth button, and a link to the register page.
+**AUTH-USR-01: Sidebar displays authenticated user info in upper left**
+- Initial: User is authenticated and on any page
+- Action: Observe the sidebar user area
+- Expected: The sidebar shows the user area (data-testid="sidebar-user-area") below the app title containing the authenticated user's name (data-testid="sidebar-user-name"), avatar or initial (data-testid="sidebar-user-avatar"), and a sign-out button (data-testid="sidebar-sign-out").
 
-**AUTH-LGN-02: Login page has link to register page**
-- Initial: User is on /login
-- Action: Click the register link
-- Expected: App navigates to /register.
+**AUTH-USR-02: Sidebar displays sign-in button when not logged in**
+- Initial: User is not authenticated and on any page
+- Action: Observe the sidebar user area
+- Expected: The sidebar shows the user area (data-testid="sidebar-user-area") below the app title containing a "Sign in with Google" button (data-testid="sidebar-sign-in").
 
-#### RegisterPage
-
-**AUTH-REG-01: Register page displays all form elements**
-- Initial: User navigates to /register (without authentication)
-- Action: Observe the register page
-- Expected: Page shows full name input, email input, password input, sign-up submit button, Google OAuth button, and a link to the login page.
-
-**AUTH-REG-02: Register page has link to login page**
-- Initial: User is on /register
-- Action: Click the login link
-- Expected: App navigates to /login.
-
-#### SidebarUserInfo
-
-**AUTH-USR-01: Sidebar displays authenticated user info**
-- Initial: User is authenticated and on any protected page
-- Action: Observe the sidebar
-- Expected: The sidebar shows the authenticated user's name and avatar (or initial) at the bottom, along with a "Sign out" button.
+**AUTH-USR-03: App loads without authentication**
+- Initial: User is not authenticated
+- Action: Navigate to /clients
+- Expected: The clients page loads and displays data without requiring login. The sidebar is visible with navigation links and the sign-in button.
 
 ---
 

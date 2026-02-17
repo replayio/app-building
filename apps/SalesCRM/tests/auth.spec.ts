@@ -1,110 +1,17 @@
 import { test, expect } from '@playwright/test';
 
 // ============================================================
-// Authentication Tests (AUTH-LGN, AUTH-REG, AUTH-USR)
+// Authentication Tests (AUTH-USR)
 // ============================================================
 
-// Login and Register pages are public routes that should be accessible
-// even without authentication. We use a fresh browser context (no storageState)
-// to test these pages as an unauthenticated user.
-
-test.describe('LoginPage', () => {
-  test('AUTH-LGN-01: Login page displays all form elements', async ({ browser }) => {
-    // Create a fresh context without storageState to simulate unauthenticated user
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
-    await page.goto('/login');
-    await page.waitForLoadState('networkidle');
-
-    // Email input
-    await expect(page.getByTestId('login-email-input')).toBeVisible();
-
-    // Password input
-    await expect(page.getByTestId('login-password-input')).toBeVisible();
-
-    // Sign in submit button
-    await expect(page.getByTestId('login-submit-button')).toBeVisible();
-
-    // Google OAuth button
-    await expect(page.getByTestId('login-google-button')).toBeVisible();
-
-    // Link to register page
-    await expect(page.getByTestId('login-register-link')).toBeVisible();
-
-    await context.close();
-  });
-
-  test('AUTH-LGN-02: Login page has link to register page', async ({ browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
-    await page.goto('/login');
-    await page.waitForLoadState('networkidle');
-
-    // Click the register link
-    await page.getByTestId('login-register-link').click();
-    await page.waitForLoadState('networkidle');
-
-    // Should navigate to /register
-    await expect(page).toHaveURL(/\/register$/);
-
-    await context.close();
-  });
-});
-
-test.describe('RegisterPage', () => {
-  test('AUTH-REG-01: Register page displays all form elements', async ({ browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
-    await page.goto('/register');
-    await page.waitForLoadState('networkidle');
-
-    // Full name input
-    await expect(page.getByTestId('register-name-input')).toBeVisible();
-
-    // Email input
-    await expect(page.getByTestId('register-email-input')).toBeVisible();
-
-    // Password input
-    await expect(page.getByTestId('register-password-input')).toBeVisible();
-
-    // Sign up submit button
-    await expect(page.getByTestId('register-submit-button')).toBeVisible();
-
-    // Google OAuth button
-    await expect(page.getByTestId('register-google-button')).toBeVisible();
-
-    // Link to login page
-    await expect(page.getByTestId('register-login-link')).toBeVisible();
-
-    await context.close();
-  });
-
-  test('AUTH-REG-02: Register page has link to login page', async ({ browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
-    await page.goto('/register');
-    await page.waitForLoadState('networkidle');
-
-    // Click the login link
-    await page.getByTestId('register-login-link').click();
-    await page.waitForLoadState('networkidle');
-
-    // Should navigate to /login
-    await expect(page).toHaveURL(/\/login$/);
-
-    await context.close();
-  });
-});
-
-test.describe('SidebarUserInfo', () => {
-  test('AUTH-USR-01: Sidebar displays authenticated user info', async ({ page }) => {
+test.describe('SidebarUserArea', () => {
+  test('AUTH-USR-01: Sidebar displays authenticated user info in upper left', async ({ page }) => {
     // This test uses the default authenticated context (storageState)
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
+
+    // User area should be visible
+    await expect(page.getByTestId('sidebar-user-area')).toBeVisible();
 
     // Sidebar should show user avatar (or initial)
     await expect(page.getByTestId('sidebar-user-avatar')).toBeVisible();
@@ -115,5 +22,46 @@ test.describe('SidebarUserInfo', () => {
 
     // Sign out button should be visible
     await expect(page.getByTestId('sidebar-sign-out')).toBeVisible();
+  });
+
+  test('AUTH-USR-02: Sidebar displays sign-in button when not logged in', async ({ browser }) => {
+    // Create a fresh context with empty storageState to simulate unauthenticated user
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    // User area should be visible
+    await expect(page.getByTestId('sidebar-user-area')).toBeVisible();
+
+    // Sign-in button should be visible
+    await expect(page.getByTestId('sidebar-sign-in')).toBeVisible();
+
+    // User name and avatar should NOT be visible
+    await expect(page.getByTestId('sidebar-user-name')).not.toBeVisible();
+    await expect(page.getByTestId('sidebar-user-avatar')).not.toBeVisible();
+
+    await context.close();
+  });
+
+  test('AUTH-USR-03: App loads without authentication', async ({ browser }) => {
+    // Create a fresh context with empty storageState to simulate unauthenticated user
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    // Page should load and show the sidebar with navigation
+    await expect(page.getByTestId('sidebar')).toBeVisible();
+    await expect(page.getByTestId('sidebar-nav-clients')).toBeVisible();
+    await expect(page.getByTestId('sidebar-nav-deals')).toBeVisible();
+    await expect(page.getByTestId('sidebar-nav-tasks')).toBeVisible();
+
+    // Sign-in button should be visible (not redirected to login page)
+    await expect(page.getByTestId('sidebar-sign-in')).toBeVisible();
+
+    await context.close();
   });
 });
