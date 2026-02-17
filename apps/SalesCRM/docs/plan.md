@@ -306,7 +306,8 @@
   - [x] reviewBugReport.md: FinishBugSSOAuth: Bug moved to Finished section
 - [x] checkDirectives.md: UnpackCheckDirectives: Checked all pages and backend — no directive violations found
 - [x] polishApp.md: UnpackPolishApp: Stub — no subtasks
-- [ ] deployment.md: UnpackDeployment: Deploy to production
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (200 with data)
+- **Maintenance Round 5 COMPLETE**: SSO auth bug fixed (popup login, optional auth, user info area), bug report reviewed, directives checked, deployed to production
 
 #### Maintenance Round 5 Notes
 
