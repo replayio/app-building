@@ -25,17 +25,11 @@ similar requests are made.
 When running in detached mode, the worker automatically loops: the first iteration runs the
 user's prompt, and all subsequent iterations run `performTasks.md` to process tasks in `docs/plan.md`.
 After each iteration the worker commits changes and re-invokes Claude with a fresh context.
-The loop stops when you include `<DONE/>` in your response or `MAX_ITERATIONS` is reached.
-All iterations are logged to a single `worker-current.log` file.
+The current worker iteration log is in the `worker-current.log` file.
 
 Each iteration starts with a clean context. You will not have memory of previous iterations,
 so rely on the codebase, `docs/plan.md`, git history, and log files in `/repo/logs/` to
 understand what has already been done.
-
-You do not need to invoke any external task runner. Just do your work, commit when appropriate,
-and signal `<DONE/>` when all tasks are complete.
-
-You must NEVER signal '<DONE/>' when there are remaining pending tasks.
 
 ## Tasks
 
