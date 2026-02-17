@@ -76,3 +76,7 @@ When testing the app after deployment, use the Replay browser to record the app 
   create/modify/delete data operate on their own isolated records.
 - When test IDs differ between spec files (cross-cutting vs page-specific), decide on ONE canonical
   set of IDs in the component and update whichever test file has fewer references.
+- When testing unauthenticated scenarios with `browser.newContext()`, always pass
+  `storageState: { cookies: [], origins: [] }` to ensure a truly empty context. Without this,
+  Supabase or other auth libraries may detect cached sessions from previous test runs, causing
+  "unauthenticated" tests to appear authenticated.
