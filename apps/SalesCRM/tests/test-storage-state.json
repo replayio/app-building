@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "sb-auth-auth-token",
-          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1c2VyX21ldGFkYXRhIjp7ImZ1bGxfbmFtZSI6IlRlc3QgVXNlciJ9LCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImlhdCI6MTc3MTI4NTQ0MiwiZXhwIjoxNzcxMzcxODQyfQ.PgfBMhP4X_7uJWmKGtghUlvxJxw_S8tBKIEVAwS70orJBhpwuQvq8QrRbVjKfO27gdOsGsLzj0yKQXcsZCWXcA\",\"refresh_token\":\"test-refresh-token\",\"expires_in\":86400,\"expires_at\":1771371842,\"token_type\":\"bearer\",\"user\":{\"id\":\"00000000-0000-0000-0000-000000000001\",\"email\":\"test@example.com\",\"user_metadata\":{\"full_name\":\"Test User\"},\"app_metadata\":{\"provider\":\"email\"},\"role\":\"authenticated\",\"aud\":\"authenticated\"}}"
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1c2VyX21ldGFkYXRhIjp7ImZ1bGxfbmFtZSI6IlRlc3QgVXNlciJ9LCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImlhdCI6MTc3MTI4NjMxNCwiZXhwIjoxNzcxMzcyNzE0fQ.xJAUXhyFRjU9sCAX422inS5Xm5ouW7jlO6ZI7a64j_rrRY8sQcVLpUkGTe495TO_LmbXyS9vurQFzTxQftNtWg\",\"refresh_token\":\"test-refresh-token\",\"expires_in\":86400,\"expires_at\":1771372714,\"token_type\":\"bearer\",\"user\":{\"id\":\"00000000-0000-0000-0000-000000000001\",\"email\":\"test@example.com\",\"user_metadata\":{\"full_name\":\"Test User\"},\"app_metadata\":{\"provider\":\"email\"},\"role\":\"authenticated\",\"aud\":\"authenticated\"}}"
         }
       ]
     }

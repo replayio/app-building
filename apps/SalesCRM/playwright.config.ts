@@ -1,6 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const [REDACTED]Browser = '/home/node/.[REDACTED]/runtimes/chrome-linux/chrome';
+import { homedir } from 'os';
+import { join } from 'path';
+
+const [REDACTED]Browser = join(homedir(), '.[REDACTED]', 'runtimes', 'chrome-linux', 'chrome');
 
 export default defineConfig({
   globalSetup: './tests/global-setup.ts',
