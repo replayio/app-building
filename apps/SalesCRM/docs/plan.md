@@ -285,8 +285,9 @@
   - [x] checkDirectives.md: CheckTestsDealDetail: No violations found
   - [x] checkDirectives.md: CheckTestsDealsListPage: No violations found
   - [x] checkDirectives.md: CheckTestsClientDetail: No violations found
-- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
-- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+- [x] polishApp.md: UnpackPolishApp: Stub with no subtasks
+- [x] deployment.md: UnpackDeployment: Redeployed to production at https://sales-crm-1771041441.netlify.app — verified frontend (200) and API functions (401 auth required, correct behavior)
+- **Maintenance Round 4 COMPLETE**: All 4 bugs fixed, bug reports reviewed, directives checked (no violations), deployed to production
 
 #### Maintenance Round 4 Notes
 
