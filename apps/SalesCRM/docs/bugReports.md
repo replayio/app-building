@@ -2,10 +2,15 @@
 
 ## Open
 
-2/16/2026: The app has no authentication — all pages and API endpoints are accessible without logging in and there is no user identity. Add auth using the same Supabase auth service (auth.nut.new) as the appTemplate, with Login/Register/AuthCallback pages, a fetch interceptor for automatic token injection, backend JWT verification via JWKS, and a users table in the existing Neon database. The 10 existing Netlify functions need to be protected, and free-form author fields (task_notes.author, writeups.author, timeline_events.user_name, deal_history.changed_by) should use the authenticated user's name.
-- Analysis: docs/bugs/AuthenticationSystem.md
+(none)
 
 ## Unreviewed
+
+2/16/2026: The app has no authentication — all pages and API endpoints are accessible without logging in and there is no user identity.
+- Analysis: docs/bugs/AuthenticationSystem.md
+- Before: df7222c
+- After: c0847d0
+- Fix: Added Supabase authentication system with Login/Register/AuthCallback pages, RequireAuth route guard, JWT verification middleware (requiresAuth wrapper) on all 10 Netlify Functions, fetch interceptor for automatic token injection, AuthProvider context, user info in sidebar, and IS_TEST mode for Playwright. Timeline events and deal history now use authenticated user's name instead of "System".
 
 2/16/2026: Links to tasks don't work. They either go to the wrong page, aren't clickable, or go to a "task not found" page.
 - Before: ef67c9a

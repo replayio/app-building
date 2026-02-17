@@ -4,6 +4,50 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
+## 0. Authentication Pages
+
+### Components
+- **LoginPage** (/login): Email/password login form with Google OAuth button, link to register page
+- **RegisterPage** (/register): Registration form with name, email, password fields, Google OAuth button, link to login page
+- **AuthCallback** (/auth/callback): OAuth callback handler that completes sign-in
+- **RequireAuth**: Route guard that redirects unauthenticated users to /login
+- **SidebarUserInfo**: Authenticated user's name and avatar displayed at the bottom of the sidebar with a sign-out button
+
+### Test Entries
+
+#### LoginPage
+
+**AUTH-LGN-01: Login page displays all form elements**
+- Initial: User navigates to /login (without authentication)
+- Action: Observe the login page
+- Expected: Page shows email input, password input, sign-in submit button, Google OAuth button, and a link to the register page.
+
+**AUTH-LGN-02: Login page has link to register page**
+- Initial: User is on /login
+- Action: Click the register link
+- Expected: App navigates to /register.
+
+#### RegisterPage
+
+**AUTH-REG-01: Register page displays all form elements**
+- Initial: User navigates to /register (without authentication)
+- Action: Observe the register page
+- Expected: Page shows full name input, email input, password input, sign-up submit button, Google OAuth button, and a link to the login page.
+
+**AUTH-REG-02: Register page has link to login page**
+- Initial: User is on /register
+- Action: Click the login link
+- Expected: App navigates to /login.
+
+#### SidebarUserInfo
+
+**AUTH-USR-01: Sidebar displays authenticated user info**
+- Initial: User is authenticated and on any protected page
+- Action: Observe the sidebar
+- Expected: The sidebar shows the authenticated user's name and avatar (or initial) at the bottom, along with a "Sign out" button.
+
+---
+
 ## 1. ClientsListPage (/clients)
 
 ### Components
