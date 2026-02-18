@@ -33,7 +33,10 @@ Unpack the task for implementing a page into the following:
 
 - In a monorepo where the app is in a subdirectory (e.g., `apps/SalesCRM`), add `base = "apps/SalesCRM"`
   to `netlify.toml` so that Netlify CLI resolves the functions directory relative to the app root,
-  not the git repository root.
+  not the git repository root. IMPORTANT: even with `base` set, `netlify dev` may still resolve the
+  functions directory incorrectly. The Playwright config's `webServer` must pass `--functions ./netlify/functions`
+  explicitly. When curling endpoints manually, start the server the same way:
+  `npx netlify dev --port 8888 --functions ./netlify/functions`.
 
 - When using the neon serverless driver (`@neondatabase/serverless`), ONLY use tagged template literal
   syntax for queries: `` sql`SELECT * FROM table WHERE id = ${id}` ``. NEVER use `sql(queryString, paramsArray)`.

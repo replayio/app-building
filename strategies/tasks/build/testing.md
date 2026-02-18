@@ -53,14 +53,21 @@ When testing the app after deployment, use the Replay browser to record the app 
 
 ## Directives
 
-- Before running tests for the first time, verify that Netlify Functions are reachable by curling a
-  known endpoint (e.g., `curl http://localhost:8888/.netlify/functions/clients`). If you get
-  "Function not found", debug the functions directory resolution FIRST before investigating individual
-  test failures. Use `npx netlify dev --debug` to check the `functionsDirectory` setting.
+- Do NOT manually start `netlify dev` for testing. Let Playwright's built-in `webServer` config
+  handle the dev server — it starts and stops the server automatically per test run, avoiding
+  zombie processes and port conflicts. Only use manual `netlify dev` for one-off curl checks.
+
+- If you do manually start `netlify dev` for curl testing, you MUST pass `--functions ./netlify/functions`
+  to avoid 404 errors on function endpoints. The `base` setting in `netlify.toml` causes the functions
+  directory to resolve incorrectly without this flag. Example:
+  `npx netlify dev --port 8888 --functions ./netlify/functions`
 
 - After making code changes to Netlify Functions or frontend code during a testing session, ALWAYS
   restart the dev server before re-running tests. The dev server may cache old function bundles.
   Kill background processes with `pkill -f "netlify"` and `pkill -f "vite"` before restarting.
+
+- All browsers must run headless. Never use Xvfb, never set `DISPLAY`, never use the `replayio record`
+  CLI (it launches a headed browser). Use `@replayio/playwright` for recordings.
 
 ## Tips
 
@@ -80,3 +87,10 @@ When testing the app after deployment, use the Replay browser to record the app 
   `storageState: { cookies: [], origins: [] }` to ensure a truly empty context. Without this,
   Supabase or other auth libraries may detect cached sessions from previous test runs, causing
   "unauthenticated" tests to appear authenticated.
+- If many tests suddenly fail with `net::ERR_CONNECTION_REFUSED` or `ERR_CONNECTION_RESET` partway
+  through a test run, the dev server crashed mid-suite. Do NOT debug individual test failures —
+  they are all caused by the same server crash. Re-run the full suite. If the crash recurs, check
+  for memory pressure or port conflicts from zombie processes.
+- Zombie processes (`<defunct>`) from previous `vite` or `netlify` runs are harmless and cannot be
+  killed (they are orphaned child processes waiting for PID 1 to reap them). Ignore them. The
+  Playwright `webServer` config starts fresh processes on different ports and is not affected.
