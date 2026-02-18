@@ -127,7 +127,7 @@ export function ClientDetailPage() {
     stage: string
     owner: string
     probability: number
-    expected_close_date: string
+    expected_close_date: string | null
   }) {
     if (!clientId) return
     const res = await fetch('/.netlify/functions/client-deals', {

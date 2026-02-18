@@ -370,8 +370,9 @@
   - [x] checkDirectives.md: FixViolationTestPatterns: Fixed `.first()` usage in STP-WH-04 (target specific webhook item), UDP-DL-01 and UDP-TSK-01 (use user-card- locator instead of parent traversal). Added URL assertions to UDP-DL-01 and UDP-TSK-01.
   - [x] checkDirectives.md: RunTests: All 209 tests pass
   - [x] checkDirectives.md: DocumentFix: Documented fixes in plan.md
-- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
-- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+- [x] polishApp.md: UnpackPolishApp: Stub — no subtasks
+- [x] deployment.md: UnpackDeployment: Synced production database schema (users, webhooks tables), built, deployed to production at https://sales-crm-1771041441.netlify.app — deployment test passes, Replay recording 1a1874a8-35a7-4bdb-b3a4-8df9d00dd39d confirms data displays and updates work
+- **Maintenance Round 9 COMPLETE**: All 4 bugs fixed (CSV format, CSV all entities, Settings page, Users page), bug reports reviewed, directives checked and fixed, deployed to production
 
 #### Maintenance Round 9 Notes
 

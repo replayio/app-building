@@ -74,9 +74,9 @@ export function DealsListPage() {
     value: number
     stage: DealStage
     owner: string
-    expected_close_date: string
+    expected_close_date: string | null
   }) {
-    dispatch(createDeal(data)).then(() => {
+    dispatch(createDeal({ ...data, expected_close_date: data.expected_close_date ?? undefined })).then(() => {
       setCreateModalOpen(false)
       return dispatch(fetchDeals({
         page,

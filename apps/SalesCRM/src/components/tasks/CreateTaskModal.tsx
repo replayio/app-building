@@ -9,12 +9,12 @@ interface CreateTaskModalProps {
   onSave: (data: {
     title: string
     description: string
-    due_date: string
+    due_date: string | null
     priority: TaskPriority
     assignee_name: string
     assignee_role: string
-    client_id: string
-    deal_id: string
+    client_id: string | null
+    deal_id: string | null
   }) => void
   availableClients: { id: string; name: string }[]
   availableDeals: { id: string; name: string; client_id: string }[]

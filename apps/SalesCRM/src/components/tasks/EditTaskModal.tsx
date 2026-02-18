@@ -11,7 +11,7 @@ interface EditTaskModalProps {
   onSave: (taskId: string, data: {
     title: string
     description: string
-    due_date: string
+    due_date: string | null
     priority: TaskPriority
     assignee_name: string
     assignee_role: string
