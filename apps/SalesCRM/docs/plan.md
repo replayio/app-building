@@ -346,9 +346,9 @@
 
 - [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 4 open bug reports (all new functionality, no AnalyzeBug needed)
   - [x] fixBugReport.md: FixBugCSVImportFormat: Added CSV column format table, download template button, working CSV parsing/import with backend bulk endpoint, error reporting with row-level validation
-  - [ ] fixBugReport.md: UpdateTestsCSVImportFormat: Update spec and tests for CSV import format improvements
-  - [ ] fixBugReport.md: UpdateRevisionsCSVImportFormat: Record spec change in AppRevisions.md
-  - [ ] fixBugReport.md: ResolveBugCSVImportFormat: Move bug to Unreviewed in bugReports.md
+  - [x] fixBugReport.md: UpdateTestsCSVImportFormat: Updated CLP-HDR-04 test spec and test to verify CSV format info table, download template button, file input, and disabled import button. Added CLP-HDR-06 test spec and test for end-to-end CSV import (upload file → verify import result → verify client appears in table). All tests pass.
+  - [x] fixBugReport.md: UpdateRevisionsCSVImportFormat: Recorded spec change in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugCSVImportFormat: Bug moved to Unreviewed in bugReports.md
   - [ ] fixBugReport.md: FixBugCSVImportAllEntities: Add CSV import support for deals, contacts/individuals, and tasks
   - [ ] fixBugReport.md: UpdateTestsCSVImportAllEntities: Update spec and tests for multi-entity CSV import
   - [ ] fixBugReport.md: UpdateRevisionsCSVImportAllEntities: Record spec change in AppRevisions.md
