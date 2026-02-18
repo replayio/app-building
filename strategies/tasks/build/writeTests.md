@@ -25,6 +25,9 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
 - Avoid using `getByText()` with common words that may appear as substrings in other elements (labels,
   options, buttons). Playwright's `getByText` is case-insensitive and uses substring matching by default.
   Prefer `getByTestId` for precise element targeting, or use `getByRole`/`getByLabel` with exact matching.
+  A `strict mode violation: getByText(...) resolved to N elements` error means the selector is ambiguous —
+  never work around it with `.first()`, instead use a more specific selector like `getByTestId` or
+  `getByRole` with `{ exact: true }`.
 
 - All `data-testid` values used across all test files for the same component must be consistent. Before
   writing cross-cutting tests that reference components tested in other spec files, read the existing

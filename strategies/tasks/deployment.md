@@ -47,6 +47,13 @@ Failure to sync the schema will cause serverless functions that reference new ta
 crash with `relation "..." does not exist` errors at runtime — and these errors will NOT
 be caught by the integration test suite (which uses a freshly seeded local database).
 
+If the app has a `migrate-db.ts` script, run that too: `DATABASE_URL=<prod-url> npx tsx scripts/migrate-db.ts`.
+This handles ALTER TABLE changes and column additions that `init-db.ts` (CREATE TABLE IF NOT EXISTS) cannot detect.
+
+A common symptom of schema drift is a 502 "error decoding lambda response" from Netlify when
+a function queries a missing table or column. If other functions work but one returns 502,
+check whether that function references a table added after the last production schema sync.
+
 ## Build Configuration
 
 Production builds must enable source maps, disable minification, and use the React development
@@ -81,11 +88,10 @@ testIgnore: ['**/deployment.spec.ts'],
 
 The deployment test has its own config at `playwright.deployment.config.ts` which uses
 `@[REDACTED]io/playwright` to launch the Replay browser and auto-upload recordings.
-The Replay browser requires an X display. Start Xvfb before running the test:
+All browsers must run headless — never use Xvfb or set `DISPLAY`.
 
 ```
-Xvfb :99 -screen 0 1280x1024x24 &>/dev/null &
-DISPLAY=:99 npx playwright test --config playwright.deployment.config.ts
+npx playwright test --config playwright.deployment.config.ts
 ```
 
 ### Functional Test Requirements
@@ -124,8 +130,9 @@ https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[RE
 
 ## Tips
 
-- Do NOT use the `[REDACTED]io record <url>` CLI to create recordings of the deployed app. The CLI
-  launches the Replay browser directly, but the recording driver requires `libcrypto.so.1.1`
-  (OpenSSL 1.1) loaded via `LD_LIBRARY_PATH`, and the CLI doesn't set this up. Use the Playwright
-  deployment test config instead (`playwright.deployment.config.ts`), which handles the Replay
-  browser setup correctly via `executablePath` and environment variables.
+- Do NOT use the `[REDACTED]io record <url>` CLI to create recordings. It launches a headed browser
+  which will crash in this headless container (`Missing X server or $DISPLAY`). Always use the
+  Playwright deployment test config (`playwright.deployment.config.ts`) which runs headless with
+  `@[REDACTED]io/playwright` and handles browser setup correctly.
+- Do NOT install or start Xvfb. All browsers must run headless. If a browser complains about
+  a missing display, the fix is to ensure it runs headless, not to add a virtual display.

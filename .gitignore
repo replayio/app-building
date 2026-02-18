@@ -2,6 +2,7 @@ node_modules/
 dist/
 .env
 prompt-*.txt
+worker-current.log
 *~
 
 # Container agent home directory
