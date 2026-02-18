@@ -1,6 +1,6 @@
 [build]
   base = "apps/SalesCRM"
-  command = "npm run build"
+  command = "npm run migrate-db && npm run build"
   publish = "dist"
   functions = "netlify/functions"
 

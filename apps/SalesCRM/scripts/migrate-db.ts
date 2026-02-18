@@ -34,6 +34,18 @@ async function main() {
   try { await sql`ALTER TABLE users ALTER COLUMN auth_user_id SET DEFAULT gen_random_uuid()` } catch { /* already set */ }
   try { await sql`CREATE UNIQUE INDEX IF NOT EXISTS users_email_unique ON users (email)` } catch { /* already exists */ }
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS webhooks (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name TEXT NOT NULL,
+      url TEXT NOT NULL,
+      events TEXT[] NOT NULL DEFAULT '{}',
+      enabled BOOLEAN DEFAULT true,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
+
   console.log('Migrations applied successfully.')
 }
 
