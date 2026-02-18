@@ -342,6 +342,22 @@
 - [x] deployment.md: UnpackDeployment: Deployed to production, deployment test passes, Replay recording 15504b44-6cef-49d2-8768-c0d013d0c924
 - **Maintenance Round 8 COMPLETE**: Supabase removed, custom auth backend built, signup+login works, all tests pass, deployed
 
+### Maintenance Round 9
+
+- [ ] fixBugReport.md: UnpackFixBugReport: Unpack subtasks
+- [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
+- [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+- [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
+- [ ] deployment.md: UnpackDeployment: Unpack subtasks
+
+#### Maintenance Round 9 Notes
+
+Open bug reports to address:
+1. CSV import format documentation needed
+2. CSV import should support deals, contacts, and tasks (not just clients)
+3. Add settings page with import/export and webhook configuration
+4. Add users page with user management and user selection dropdowns
+
 ## Blockers
 
 None.
