@@ -159,3 +159,10 @@ export interface DealContact {
   role: string
   company: string | null
 }
+
+export interface UserSummary {
+  id: string
+  name: string
+  email: string
+  avatar_url: string
+}

@@ -5,6 +5,7 @@ import { FilterSelect } from '../shared/FilterSelect'
 interface CreateDealModalProps {
   open: boolean
   availableClients: { id: string; name: string }[]
+  availableUsers?: { name: string }[]
   onClose: () => void
   onSave: (data: {
     name: string
@@ -25,7 +26,7 @@ const STAGE_OPTIONS: { value: DealStage; label: string }[] = [
   { value: 'closed_won', label: 'Closed Won' },
 ]
 
-export function CreateDealModal({ open, availableClients, onClose, onSave }: CreateDealModalProps) {
+export function CreateDealModal({ open, availableClients, availableUsers = [], onClose, onSave }: CreateDealModalProps) {
   const [name, setName] = useState('')
   const [clientId, setClientId] = useState('')
   const [value, setValue] = useState('')
@@ -112,14 +113,27 @@ export function CreateDealModal({ open, availableClients, onClose, onSave }: Cre
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-[12px] text-text-muted mb-1">Owner</label>
-              <input
-                type="text"
-                data-testid="create-deal-owner"
-                value={owner}
-                onChange={(e) => setOwner(e.target.value)}
-                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
-                placeholder="Deal owner"
-              />
+              {availableUsers.length > 0 ? (
+                <FilterSelect
+                  testId="create-deal-owner"
+                  value={owner}
+                  onChange={(val) => setOwner(val)}
+                  placeholder="Select owner..."
+                  options={[
+                    { value: '', label: '— None —' },
+                    ...availableUsers.map((u) => ({ value: u.name, label: u.name })),
+                  ]}
+                />
+              ) : (
+                <input
+                  type="text"
+                  data-testid="create-deal-owner"
+                  value={owner}
+                  onChange={(e) => setOwner(e.target.value)}
+                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent transition-colors duration-100"
+                  placeholder="Deal owner"
+                />
+              )}
             </div>
             <div>
               <label className="block text-[12px] text-text-muted mb-1">Expected Close Date</label>

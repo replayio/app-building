@@ -31,6 +31,14 @@ export function DealsListPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const [importDialogOpen, setImportDialogOpen] = useState(false)
+  const [availableUsers, setAvailableUsers] = useState<{ name: string }[]>([])
+
+  useEffect(() => {
+    fetch('/.netlify/functions/users')
+      .then(r => r.json())
+      .then((data: { users: { name: string }[] }) => setAvailableUsers(data.users))
+      .catch(() => {})
+  }, [])
 
   const loadDeals = useCallback(() => {
     dispatch(
@@ -175,6 +183,7 @@ export function DealsListPage() {
       <CreateDealModal
         open={createModalOpen}
         availableClients={allClients}
+        availableUsers={availableUsers}
         onClose={() => setCreateModalOpen(false)}
         onSave={handleCreateDeal}
       />

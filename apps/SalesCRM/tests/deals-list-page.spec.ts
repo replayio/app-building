@@ -75,7 +75,14 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     // Select stage using custom FilterSelect
     await page.getByTestId('create-deal-stage-trigger').click();
     await page.getByTestId('create-deal-stage-option-discovery').click();
-    await page.getByTestId('create-deal-owner').fill('Test Owner');
+    // Select owner from dropdown
+    await page.getByTestId('create-deal-owner-trigger').click();
+    const ownerMenu = page.getByTestId('create-deal-owner-menu');
+    await expect(ownerMenu).toBeVisible();
+    const ownerOptions = await ownerMenu.locator('button').all();
+    // Pick the second option (first is "— None —")
+    if (ownerOptions.length > 1) await ownerOptions[1].click();
+    else await ownerMenu.locator('button').first().click();
 
     await page.getByTestId('create-deal-save').click();
 

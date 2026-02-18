@@ -31,6 +31,14 @@ export function TasksListPage() {
   // All clients for the create modal
   const [allClients, setAllClients] = useState<{ id: string; name: string }[]>([])
   const [allDeals, setAllDeals] = useState<{ id: string; name: string; client_id: string }[]>([])
+  const [availableUsers, setAvailableUsers] = useState<{ name: string }[]>([])
+
+  useEffect(() => {
+    fetch('/.netlify/functions/users')
+      .then(r => r.json())
+      .then((data: { users: { name: string }[] }) => setAvailableUsers(data.users))
+      .catch(() => {})
+  }, [])
 
   const loadTasks = useCallback(() => {
     dispatch(
@@ -182,11 +190,13 @@ export function TasksListPage() {
         onSave={handleCreateTask}
         availableClients={allClients}
         availableDeals={allDeals}
+        availableUsers={availableUsers}
       />
 
       <EditTaskModal
         open={editTask !== null}
         task={editTask}
+        availableUsers={availableUsers}
         onClose={() => setEditTask(null)}
         onSave={handleEditTask}
       />

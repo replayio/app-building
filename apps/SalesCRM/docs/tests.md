@@ -53,12 +53,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CLP-NAV-01: Sidebar displays all navigation items**
 - Initial: User navigates to /clients
 - Action: Observe the sidebar
-- Expected: Sidebar shows navigation links: Clients, Deals, Tasks. The "Clients" link is visually highlighted as active.
+- Expected: Sidebar shows navigation links: Clients, Deals, Tasks, Team, Settings. The "Clients" link is visually highlighted as active.
 
 **CLP-NAV-02: Sidebar navigation links route correctly**
 - Initial: User is on /clients
 - Action: Click "Deals" in sidebar
-- Expected: App navigates to /deals. Click "Tasks" → navigates to /tasks. Click "Clients" → navigates to /clients.
+- Expected: App navigates to /deals. Click "Tasks" → navigates to /tasks. Click "Team" → navigates to /users. Click "Settings" → navigates to /settings. Click "Clients" → navigates to /clients.
 
 #### PageHeader
 
@@ -1107,6 +1107,119 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: A note exists in the list
 - Action: Click the delete (trash) icon on the note
 - Expected: Note is removed from the list.
+
+---
+
+## 8. SettingsPage (/settings)
+
+### Components
+- **SettingsPageHeader**: Settings icon and "Settings" title
+- **ImportExportSection**: "Import & Export" section with Import from CSV buttons (Clients, Deals, Tasks, Contacts) and Export to CSV buttons (Clients, Deals, Tasks)
+- **WebhookSection**: "Webhooks" section with Add Webhook button, list of configured webhooks with name, URL, event badges, enable/disable toggle, edit and delete buttons. Empty state when no webhooks.
+- **WebhookModal**: Modal for adding/editing a webhook with name input, URL input, event checkboxes, and save/cancel buttons.
+
+### Test Entries
+
+#### SettingsPageHeader
+
+**STP-HDR-01: Settings page displays header and sections**
+- Initial: User navigates to /settings
+- Action: Observe the page
+- Expected: Page header (data-testid="settings-page-header") shows "Settings" title. Import & Export section (data-testid="import-export-section") and Webhooks section (data-testid="webhook-section") are both visible.
+
+#### ImportExportSection
+
+**STP-IE-01: Import & Export section displays all buttons**
+- Initial: User is on /settings
+- Action: Observe the Import & Export section
+- Expected: Import from CSV column shows buttons: "Import Clients" (data-testid="settings-import-clients"), "Import Deals" (data-testid="settings-import-deals"), "Import Tasks" (data-testid="settings-import-tasks"), "Import Contacts" (data-testid="settings-import-contacts"). Export to CSV column shows buttons: "Export Clients" (data-testid="settings-export-clients"), "Export Deals" (data-testid="settings-export-deals"), "Export Tasks" (data-testid="settings-export-tasks").
+
+**STP-IE-02: Import Clients button opens import dialog**
+- Initial: User is on /settings
+- Action: Click "Import Clients" button (data-testid="settings-import-clients")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Clients" and CSV format info.
+
+#### WebhookSection
+
+**STP-WH-01: Webhook section shows empty state**
+- Initial: User navigates to /settings with no webhooks configured
+- Action: Observe the Webhooks section
+- Expected: Webhooks section (data-testid="webhook-section") shows heading "Webhooks" with description text. "Add Webhook" button (data-testid="add-webhook-button") is visible. Empty state message (data-testid="webhook-empty-state") reads "No webhooks configured."
+
+**STP-WH-02: Add Webhook button opens webhook modal**
+- Initial: User is on /settings
+- Action: Click "Add Webhook" button (data-testid="add-webhook-button")
+- Expected: A modal (data-testid="webhook-modal") opens with title "Add Webhook". Contains name input (data-testid="webhook-name-input"), URL input (data-testid="webhook-url-input"), event checkboxes, Cancel button (data-testid="webhook-cancel-button"), and Save button (data-testid="webhook-save-button") which is disabled until name, URL, and at least one event are provided.
+
+**STP-WH-03: Creating a webhook persists and shows in list**
+- Initial: Webhook modal is open on /settings
+- Action: Fill name "Zapier Integration", URL "https://hooks.zapier.com/test", check "New Client Created" and "Deal Stage Changed" events, click "Add Webhook"
+- Expected: Modal closes. New webhook appears in the webhooks list showing name "Zapier Integration", URL "https://hooks.zapier.com/test", and event badges for "New Client Created" and "Deal Stage Changed". Empty state message is gone. Webhook is persisted (page reload still shows it).
+
+**STP-WH-04: Delete webhook removes it after confirmation**
+- Initial: A webhook exists in the list
+- Action: Click the delete button on the webhook, confirm in dialog
+- Expected: Webhook is removed from the list. Deletion is persisted. Empty state message reappears if no webhooks remain.
+
+---
+
+## 9. UsersListPage (/users)
+
+### Components
+- **UsersPageHeader**: "Team Members" title with Users icon
+- **User Cards**: Grid of user cards showing avatar, name, email, active deals count, and open tasks count. Clicking a card navigates to /users/:userId.
+
+### Test Entries
+
+#### UsersPageHeader
+
+**ULP-HDR-01: Users page displays header and team members**
+- Initial: User navigates to /users
+- Action: Observe the page
+- Expected: Page header (data-testid="users-page-header") shows "Team Members" title. Users grid (data-testid="users-grid") displays user cards with names, emails, deal counts, and task counts.
+
+**ULP-HDR-02: Clicking a user card navigates to user detail page**
+- Initial: User is on /users with team members listed
+- Action: Click on a user card
+- Expected: App navigates to /users/:userId. The user detail page displays the selected user's name, email, and activity sections.
+
+---
+
+## 10. UserDetailPage (/users/:userId)
+
+### Components
+- **UserDetailHeader**: Back button, user avatar, name, email, join date, summary stats (Active Deals, Open Tasks, Total Deals)
+- **UserDealsSection**: List of deals owned by the user with name, client, value, and stage badge
+- **UserTasksSection**: List of tasks assigned to the user with completion status, title, client, and due date
+- **UserActivitySection**: Recent timeline activity by the user
+
+### Test Entries
+
+#### UserDetailHeader
+
+**UDP-HDR-01: User detail page displays user info and stats**
+- Initial: User navigates to /users/:userId for a known user
+- Action: Observe the page header
+- Expected: Header (data-testid="user-detail-header") shows user name (data-testid="user-detail-name"), email, join date, and summary stats. Back button (data-testid="user-detail-back") is visible.
+
+**UDP-HDR-02: Back button returns to users list**
+- Initial: User is on /users/:userId
+- Action: Click "Back to Team Members" button
+- Expected: App navigates to /users.
+
+#### UserDealsSection
+
+**UDP-DL-01: Deals section shows deals owned by user**
+- Initial: User detail page for a user who owns deals
+- Action: Observe the Deals section
+- Expected: Deals section (data-testid="user-deals-section") lists deals with name, client, value, and stage. Deal links navigate to /deals/:dealId.
+
+#### UserTasksSection
+
+**UDP-TSK-01: Tasks section shows tasks assigned to user**
+- Initial: User detail page for a user who has tasks
+- Action: Observe the Tasks section
+- Expected: Tasks section (data-testid="user-tasks-section") lists tasks with title, client, and due date. Task links navigate to /tasks/:taskId.
 
 ---
 

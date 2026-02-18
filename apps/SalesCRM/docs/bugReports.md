@@ -2,11 +2,17 @@
 
 ## Open
 
-2/18/2026: Add a settings page and move the import/export buttons there. The settings page should also have webhook settings where you can configure webhooks to send to Zapier / n8n / Discord on different events selected from a list (e.g., new client created, deal stage changed, task completed, etc.).
+## Unreviewed
 
 2/18/2026: There should be a users page where you can see everyone that has an account, and a user detail page where you can see their activity and what they are managing. Everywhere in the app that refers to users with accounts should allow selecting them from a dropdown (e.g., deal owner, task assignee).
+- Before: 1e5a771
+- After: (this commit)
+- Fix: Added Team page (UsersListPage at /users) with user card grid showing avatar, name, email, active deals, and open tasks. Added User Detail page (UserDetailPage at /users/:userId) with user info, summary stats, owned deals list, assigned tasks list, and recent activity. Created /.netlify/functions/users API (GET list with stats, GET detail with deals/tasks/activity). Seeded 9 team members matching existing owner/assignee names. Added "Team" sidebar nav item. Replaced free-form text inputs for deal owner and task assignee with FilterSelect dropdowns populated from users API in CreateDealModal, AddDealModal, DealDetailHeader, CreateTaskModal, and EditTaskModal. Added 6 Playwright tests (ULP-HDR-01/02, UDP-HDR-01/02, UDP-DL-01, UDP-TSK-01) and updated CLP-NAV-01/02.
 
-## Unreviewed
+2/18/2026: Add a settings page and move the import/export buttons there. The settings page should also have webhook settings where you can configure webhooks to send to Zapier / n8n / Discord on different events selected from a list (e.g., new client created, deal stage changed, task completed, etc.).
+- Before: 1e5a771
+- After: (this commit)
+- Fix: Added Settings page at /settings with sidebar navigation link. Import & Export section has buttons to import clients, deals, tasks, and contacts from CSV, and export clients, deals, and tasks to CSV (reusing shared ImportDialog). Webhooks section has full CRUD — add/edit modal with name, URL, and event checkboxes (10 events: client_created, client_updated, deal_created, deal_stage_changed, deal_closed_won, deal_closed_lost, task_created, task_completed, contact_created, note_added); enable/disable toggle; delete with confirmation. Added webhooks database table and /.netlify/functions/webhooks API endpoint. Sidebar now includes Settings nav item. Added 7 new Playwright tests (STP-HDR-01, STP-IE-01/02, STP-WH-01/02/03/04) and updated CLP-NAV-01/02.
 
 2/18/2026: Import from CSV needs to support importing deals, contacts, and tasks as well — not just clients.
 - Before: cc0d9ad

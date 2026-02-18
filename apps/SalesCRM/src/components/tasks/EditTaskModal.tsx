@@ -6,6 +6,7 @@ import { FilterSelect } from '../shared/FilterSelect'
 interface EditTaskModalProps {
   open: boolean
   task: Task | null
+  availableUsers?: { name: string }[]
   onClose: () => void
   onSave: (taskId: string, data: {
     title: string
@@ -17,7 +18,7 @@ interface EditTaskModalProps {
   }) => void
 }
 
-export function EditTaskModal({ open, task, onClose, onSave }: EditTaskModalProps) {
+export function EditTaskModal({ open, task, availableUsers = [], onClose, onSave }: EditTaskModalProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -122,15 +123,28 @@ export function EditTaskModal({ open, task, onClose, onSave }: EditTaskModalProp
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee Name</label>
-                <input
-                  type="text"
-                  data-testid="edit-task-assignee-name-input"
-                  value={assigneeName}
-                  onChange={(e) => setAssigneeName(e.target.value)}
-                  placeholder="e.g., Sarah J."
-                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent"
-                />
+                <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee</label>
+                {availableUsers.length > 0 ? (
+                  <FilterSelect
+                    testId="edit-task-assignee-name-input"
+                    value={assigneeName}
+                    onChange={(val) => setAssigneeName(val)}
+                    placeholder="Select assignee..."
+                    options={[
+                      { value: '', label: '— None —' },
+                      ...availableUsers.map((u) => ({ value: u.name, label: u.name })),
+                    ]}
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    data-testid="edit-task-assignee-name-input"
+                    value={assigneeName}
+                    onChange={(e) => setAssigneeName(e.target.value)}
+                    placeholder="e.g., Sarah J."
+                    className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent"
+                  />
+                )}
               </div>
 
               <div>

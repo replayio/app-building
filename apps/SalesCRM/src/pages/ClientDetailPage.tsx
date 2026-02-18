@@ -42,6 +42,14 @@ export function ClientDetailPage() {
   const [addAttachmentOpen, setAddAttachmentOpen] = useState(false)
   const [addPersonOpen, setAddPersonOpen] = useState(false)
   const [deleteAttachmentId, setDeleteAttachmentId] = useState<string | null>(null)
+  const [availableUsers, setAvailableUsers] = useState<{ name: string }[]>([])
+
+  useEffect(() => {
+    fetch('/.netlify/functions/users')
+      .then(r => r.json())
+      .then((data: { users: { name: string }[] }) => setAvailableUsers(data.users))
+      .catch(() => {})
+  }, [])
 
   const loadClientData = useCallback(async () => {
     if (!clientId) return
@@ -273,6 +281,7 @@ export function ClientDetailPage() {
       />
       <AddDealModal
         open={addDealOpen}
+        availableUsers={availableUsers}
         onClose={() => setAddDealOpen(false)}
         onSave={handleAddDeal}
       />

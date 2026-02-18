@@ -29,6 +29,8 @@ test.describe('ClientsListPage - SidebarNavigation', () => {
     await expect(sidebar.getByText('Clients')).toBeVisible();
     await expect(sidebar.getByText('Deals')).toBeVisible();
     await expect(sidebar.getByText('Tasks')).toBeVisible();
+    await expect(sidebar.getByText('Team')).toBeVisible();
+    await expect(sidebar.getByText('Settings')).toBeVisible();
 
     // "Clients" link should be visually highlighted as active (on /clients page)
     const clientsLink = page.getByTestId('sidebar-nav-clients');
@@ -48,6 +50,16 @@ test.describe('ClientsListPage - SidebarNavigation', () => {
     await page.getByTestId('sidebar-nav-tasks').click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/\/tasks/);
+
+    // Click "Team" → navigates to /users
+    await page.getByTestId('sidebar-nav-team').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/users/);
+
+    // Click "Settings" → navigates to /settings
+    await page.getByTestId('sidebar-nav-settings').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/settings/);
 
     // Click "Clients" → navigates back to /clients
     await page.getByTestId('sidebar-nav-clients').click();

@@ -7,6 +7,9 @@ import { DealsListPage } from './pages/DealsListPage'
 import { DealDetailPage } from './pages/DealDetailPage'
 import { TasksListPage } from './pages/TasksListPage'
 import { TaskDetailPage } from './pages/TaskDetailPage'
+import { SettingsPage } from './pages/SettingsPage'
+import { UsersListPage } from './pages/UsersListPage'
+import { UserDetailPage } from './pages/UserDetailPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 export default function App() {
@@ -21,6 +24,9 @@ export default function App() {
         <Route path="/deals/:dealId" element={<DealDetailPage />} />
         <Route path="/tasks" element={<TasksListPage />} />
         <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/users" element={<UsersListPage />} />
+        <Route path="/users/:userId" element={<UserDetailPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

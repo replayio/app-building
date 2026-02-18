@@ -35,7 +35,7 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
     await expect(modal.getByText('Description')).toBeVisible();
     await expect(modal.getByText('Due Date')).toBeVisible();
     await expect(modal.getByText('Priority')).toBeVisible();
-    await expect(modal.getByText('Assignee Name')).toBeVisible();
+    await expect(page.getByTestId('create-task-assignee-name')).toBeVisible();
     await expect(modal.getByText('Client')).toBeVisible();
 
     // Save and Cancel buttons
@@ -56,16 +56,27 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
     const taskTitle = `Test Task ${Date.now()}`;
     await page.getByTestId('create-task-title').fill(taskTitle);
     await selectFilterOption(page, 'create-task-priority', 'high');
-    await page.getByTestId('create-task-assignee-name').fill('Sarah J.');
+    // Select assignee from dropdown
+    await page.getByTestId('create-task-assignee-name-trigger').click();
+    const assigneeMenu = page.getByTestId('create-task-assignee-name-menu');
+    await expect(assigneeMenu).toBeVisible();
+    // Find "Sarah J." option or pick any user
+    const sarahOption = assigneeMenu.locator('button', { hasText: 'Sarah J.' });
+    if (await sarahOption.count() > 0) {
+      await sarahOption.click();
+    } else {
+      const options = await assigneeMenu.locator('button').all();
+      if (options.length > 1) await options[1].click();
+    }
     await page.getByTestId('create-task-assignee-role').fill('PM');
 
     // Select a client if available
-    const clientSelect = page.getByTestId('create-task-client');
-    const clientOptions = await clientSelect.locator('option').all();
-    if (clientOptions.length > 1) {
-      const clientValue = await clientOptions[1].getAttribute('value');
-      await clientSelect.selectOption(clientValue!);
-    }
+    await page.getByTestId('create-task-client-trigger').click();
+    const clientMenu = page.getByTestId('create-task-client-menu');
+    await expect(clientMenu).toBeVisible();
+    const clientOptions = await clientMenu.locator('button').all();
+    if (clientOptions.length > 1) await clientOptions[1].click();
+    else await clientMenu.locator('button').first().click();
 
     await page.getByTestId('create-task-save').click();
 
