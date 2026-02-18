@@ -5,8 +5,8 @@
       "origin": "http://localhost:8888",
       "localStorage": [
         {
-          "name": "sb-auth-auth-token",
-          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1c2VyX21ldGFkYXRhIjp7ImZ1bGxfbmFtZSI6IlRlc3QgVXNlciJ9LCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImlhdCI6MTc3MTM0NTQzNSwiZXhwIjoxNzcxNDMxODM1fQ.TPcRQeSdd1mq0VsueOroc5bEYSlgP9FjPXNR5I1d3ICZok6C5zsoUE6--ezrS_c6NBUJmXbSHX1oBzxUfy1Qew\",\"refresh_token\":\"test-refresh-token\",\"expires_in\":86400,\"expires_at\":1771431835,\"token_type\":\"bearer\",\"user\":{\"id\":\"00000000-0000-0000-0000-000000000001\",\"email\":\"test@example.com\",\"user_metadata\":{\"full_name\":\"Test User\"},\"app_metadata\":{\"provider\":\"email\"},\"role\":\"authenticated\",\"aud\":\"authenticated\"}}"
+          "name": "auth-token",
+          "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJpYXQiOjE3NzEzNjA0ODYsImV4cCI6MTc3MTQ0Njg4Nn0.NWhx7PW8zMvq6NGO6ZDnwsSnnnYd3lCZvBRCaimtET0"
         }
       ]
     }

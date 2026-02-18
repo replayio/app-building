@@ -35,6 +35,14 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
 RUN npx playwright install --with-deps chromium
 RUN [REDACTED]io update
 
+# Replay browser needs OpenSSL 1.1 to load its recording driver.
+# Bookworm only has OpenSSL 3, so fetch the 1.1 libs from Ubuntu 18.04.
+RUN curl -sL -o /tmp/libssl1.1.deb \
+      http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1-1ubuntu2.1~18.04.23_amd64.deb && \
+    dpkg-deb -x /tmp/libssl1.1.deb /opt/openssl11 && \
+    rm /tmp/libssl1.1.deb
+ENV LD_LIBRARY_PATH=/opt/openssl11/usr/lib/x86_64-linux-gnu
+
 # Git identity for commits inside container (system-level so it works for any uid)
 RUN git config --system user.name "App Builder" && \
     git config --system user.email "app-builder@localhost"

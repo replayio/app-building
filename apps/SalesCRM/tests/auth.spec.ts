@@ -38,6 +38,14 @@ test.describe('SidebarUserArea', () => {
     // Sign-in button should be visible
     await expect(page.getByTestId('sidebar-sign-in')).toBeVisible();
 
+    // Clicking sign-in should reveal the email/password auth form
+    await page.getByTestId('sidebar-sign-in').click();
+    await expect(page.getByTestId('sidebar-auth-form')).toBeVisible();
+    await expect(page.getByTestId('auth-email-input')).toBeVisible();
+    await expect(page.getByTestId('auth-password-input')).toBeVisible();
+    await expect(page.getByTestId('auth-submit-button')).toBeVisible();
+    await expect(page.getByTestId('auth-toggle-mode')).toBeVisible();
+
     // User name and avatar should NOT be visible
     await expect(page.getByTestId('sidebar-user-name')).not.toBeVisible();
     await expect(page.getByTestId('sidebar-user-avatar')).not.toBeVisible();
@@ -61,6 +69,48 @@ test.describe('SidebarUserArea', () => {
 
     // Sign-in button should be visible (not redirected to login page)
     await expect(page.getByTestId('sidebar-sign-in')).toBeVisible();
+
+    await context.close();
+  });
+
+  test('AUTH-E2E-01: Full signup and login flow works end-to-end', async ({ browser }) => {
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    // 1. Open auth form and switch to sign-up mode
+    await page.getByTestId('sidebar-sign-in').click();
+    await page.getByTestId('auth-toggle-mode').click();
+    await expect(page.getByTestId('auth-submit-button')).toContainText('Sign Up');
+
+    // 2. Sign up with a unique email
+    const testEmail = `e2e-${Date.now()}@test.com`;
+    const testPassword = 'testpass123';
+    await page.getByTestId('auth-email-input').fill(testEmail);
+    await page.getByTestId('auth-password-input').fill(testPassword);
+    await page.getByTestId('auth-submit-button').click();
+
+    // 3. Should be logged in immediately after signup (user name visible)
+    await expect(page.getByTestId('sidebar-user-name')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('sidebar-user-avatar')).toBeVisible();
+    await expect(page.getByTestId('sidebar-sign-out')).toBeVisible();
+
+    // 4. Sign out
+    await page.getByTestId('sidebar-sign-out').click();
+    await expect(page.getByTestId('sidebar-sign-in')).toBeVisible({ timeout: 5000 });
+
+    // 5. Sign in with the same credentials
+    await page.getByTestId('sidebar-sign-in').click();
+    await expect(page.getByTestId('auth-submit-button')).toContainText('Sign In');
+    await page.getByTestId('auth-email-input').fill(testEmail);
+    await page.getByTestId('auth-password-input').fill(testPassword);
+    await page.getByTestId('auth-submit-button').click();
+
+    // 6. Should be logged in again
+    await expect(page.getByTestId('sidebar-user-name')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('sidebar-sign-out')).toBeVisible();
 
     await context.close();
   });

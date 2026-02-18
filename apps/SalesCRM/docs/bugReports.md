@@ -2,11 +2,30 @@
 
 ## Open
 
-(none)
+2/18/2026: CSV import functionality should specify the required format. The import from CSV button doesn't tell the user what columns or format the CSV file needs to be in.
+
+2/18/2026: Import from CSV needs to support importing deals, contacts, and tasks as well — not just clients.
+
+2/18/2026: Add a settings page and move the import/export buttons there. The settings page should also have webhook settings where you can configure webhooks to send to Zapier / n8n / Discord on different events selected from a list (e.g., new client created, deal stage changed, task completed, etc.).
+
+2/18/2026: There should be a users page where you can see everyone that has an account, and a user detail page where you can see their activity and what they are managing. Everywhere in the app that refers to users with accounts should allow selecting them from a dropdown (e.g., deal owner, task assignee).
 
 ## Unreviewed
 
-(none)
+2/17/2026: Sign-in flow doesn't work — after signing up with email/password, attempting to sign in returns "invalid login credentials".
+- The shared Supabase auth server at `auth.nut.new` has email confirmation enabled. When `auth.signUp()` is called, it creates the user but does not return a session (because the email is unverified). The user then tries to sign in with `auth.signInWithPassword()`, which fails because the account is unconfirmed.
+- Fix: Ripped out the entire Supabase dependency. Built custom auth backend (`netlify/functions/auth.ts`) with signup, login, and session endpoints using scrypt password hashing and HS256 JWT tokens. Signup immediately returns a session — no email confirmation required. Rewrote frontend `src/lib/auth.ts` (simple token management + fetch interceptor), `AuthProvider.tsx` (calls custom backend), `authSlice.ts` (removed Supabase). Removed `@supabase/supabase-js` package, Supabase env vars, dead Login/Register/AuthCallback pages. Updated backend `netlify/utils/auth.ts` to verify HS256 JWTs. Added AUTH-E2E-01 test that exercises full signup → sign-out → sign-in flow. Bundle size reduced from 1308KB to 881KB.
+- Problem stage: build/writeApp.md — used an external auth provider (Supabase) whose email confirmation behavior couldn't be controlled, causing signup to silently fail to establish a session
+- Directive: Added directive to writeTests.md: apps with login/signup must have a complete e2e test exercising the full sign-up and sign-in flow against the real auth backend
+
+2/17/2026: Rip out Google OAuth and replace with email/password login.
+- Superseded by the fix above — the entire Supabase dependency has been removed and replaced with a custom auth backend.
+
+2/17/2026: App doesn't work after deployment — clients page doesn't load or display any data.
+- Investigation: API endpoint returns 200 with data. Frontend loads. Issue was transient. Deployment test (Replay recording 15504b44-6cef-49d2-8768-c0d013d0c924) confirms everything works.
+
+2/17/2026: Login flow doesn't work — clicking "Sign in with Google" opens the OAuth popup and the Google sign-in flow completes, but after returning the user is still not logged in with no apparent errors.
+- Superseded by the Supabase removal above. The entire OAuth flow has been removed.
 
 ## Finished
 

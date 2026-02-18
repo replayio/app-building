@@ -10,4 +10,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    sourcemap: true,
+    minify: false,
+  },
+  define: {
+    'process.env.NODE_ENV': '"development"',
+  },
 })

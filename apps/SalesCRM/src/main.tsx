@@ -1,4 +1,4 @@
-import './lib/auth' // Must be first - patches window.fetch
+import './lib/auth' // Must be first — patches window.fetch with auth token injection
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
