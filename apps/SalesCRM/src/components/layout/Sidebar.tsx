@@ -4,6 +4,8 @@ import {
   Users,
   Handshake,
   CheckSquare,
+  UserCircle,
+  Settings,
   LogOut,
   LogIn,
 } from 'lucide-react'
@@ -13,6 +15,8 @@ const navItems = [
   { to: '/clients', label: 'Clients', icon: Users },
   { to: '/deals', label: 'Deals', icon: Handshake },
   { to: '/tasks', label: 'Tasks', icon: CheckSquare },
+  { to: '/users', label: 'Team', icon: UserCircle },
+  { to: '/settings', label: 'Settings', icon: Settings },
 ]
 
 export function Sidebar() {

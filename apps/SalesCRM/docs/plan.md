@@ -353,14 +353,14 @@
   - [x] fixBugReport.md: UpdateTestsCSVImportAllEntities: Added DLP-HDR-04/05, TLP-HDR-04/05, CLP-HDR-07/08 test specs and tests. All 6 new tests pass.
   - [x] fixBugReport.md: UpdateRevisionsCSVImportAllEntities: Recorded spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugCSVImportAllEntities: Bug moved to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: FixBugSettingsPage: Add settings page with import/export and webhook configuration (Zapier/n8n/Discord)
-  - [ ] fixBugReport.md: UpdateTestsSettingsPage: Update spec and tests for settings page
-  - [ ] fixBugReport.md: UpdateRevisionsSettingsPage: Record spec change in AppRevisions.md
-  - [ ] fixBugReport.md: ResolveBugSettingsPage: Move bug to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: FixBugUsersPage: Add users page, user detail page, and user selection dropdowns throughout app
-  - [ ] fixBugReport.md: UpdateTestsUsersPage: Update spec and tests for users page
-  - [ ] fixBugReport.md: UpdateRevisionsUsersPage: Record spec change in AppRevisions.md
-  - [ ] fixBugReport.md: ResolveBugUsersPage: Move bug to Unreviewed in bugReports.md
+  - [x] fixBugReport.md: FixBugSettingsPage: Added Settings page at /settings with sidebar nav link. Import & Export section (import clients/deals/tasks/contacts, export clients/deals/tasks). Webhooks section with CRUD (name, URL, events, enable/disable, delete). Added webhooks table to init-db/seed-db, CRUD API at /.netlify/functions/webhooks.
+  - [x] fixBugReport.md: UpdateTestsSettingsPage: Added SettingsPage section to tests.md (STP-HDR-01, STP-IE-01/02, STP-WH-01/02/03/04). Updated CLP-NAV-01/02 for Settings nav item. Created settings-page.spec.ts with 7 tests. All 9 targeted tests pass.
+  - [x] fixBugReport.md: UpdateRevisionsSettingsPage: Recorded spec change in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugSettingsPage: Bug moved to Unreviewed in bugReports.md
+  - [x] fixBugReport.md: FixBugUsersPage: Added Team page (UsersListPage at /users) with user card grid, User Detail page (UserDetailPage at /users/:userId) with deals/tasks/activity, /.netlify/functions/users API, seeded 9 users, added Team sidebar nav. Replaced owner/assignee text inputs with user dropdown (FilterSelect) in 5 modals/components.
+  - [x] fixBugReport.md: UpdateTestsUsersPage: Added UsersListPage and UserDetailPage sections to tests.md (ULP-HDR-01/02, UDP-HDR-01/02, UDP-DL-01, UDP-TSK-01). Updated CLP-NAV-01/02 for Team nav item. Created users-page.spec.ts with 6 tests. All pass.
+  - [x] fixBugReport.md: UpdateRevisionsUsersPage: Recorded spec change in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugUsersPage: Bug moved to Unreviewed in bugReports.md
 - [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
 - [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks

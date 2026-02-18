@@ -5,6 +5,7 @@ import { FilterSelect } from '../shared/FilterSelect'
 
 interface DealDetailHeaderProps {
   deal: Deal
+  availableUsers?: { name: string }[]
   onUpdate: (data: Record<string, unknown>) => void | Promise<void>
   onStageChange: (newStage: DealStage) => void
 }
@@ -25,7 +26,7 @@ function formatValue(value: number): string {
   return `$${Number(value).toLocaleString()}`
 }
 
-export function DealDetailHeader({ deal, onUpdate, onStageChange }: DealDetailHeaderProps) {
+export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageChange }: DealDetailHeaderProps) {
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(deal.name)
   const [value, setValue] = useState(String(deal.value))
@@ -138,13 +139,25 @@ export function DealDetailHeader({ deal, onUpdate, onStageChange }: DealDetailHe
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Owner</div>
           {editing ? (
-            <input
-              data-testid="deal-header-owner-input"
-              type="text"
-              value={owner}
-              onChange={(e) => setOwner(e.target.value)}
-              className="w-full h-[30px] px-2 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
-            />
+            availableUsers.length > 0 ? (
+              <FilterSelect
+                testId="deal-header-owner-input"
+                value={owner}
+                onChange={(val) => setOwner(val)}
+                options={[
+                  { value: '', label: '— None —' },
+                  ...availableUsers.map((u) => ({ value: u.name, label: u.name })),
+                ]}
+              />
+            ) : (
+              <input
+                data-testid="deal-header-owner-input"
+                type="text"
+                value={owner}
+                onChange={(e) => setOwner(e.target.value)}
+                className="w-full h-[30px] px-2 text-[13px] text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
+              />
+            )
           ) : (
             <div data-testid="deal-header-owner" className="text-[13px] text-text-primary">{deal.owner ?? '—'}</div>
           )}

@@ -247,6 +247,18 @@ async function main() {
     )
   `
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS webhooks (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name TEXT NOT NULL,
+      url TEXT NOT NULL,
+      events TEXT[] NOT NULL DEFAULT '{}',
+      enabled BOOLEAN DEFAULT true,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
+
   console.log('Database schema created successfully!')
   console.log('Database is ready for use.')
 }

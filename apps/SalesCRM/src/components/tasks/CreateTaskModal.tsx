@@ -18,9 +18,10 @@ interface CreateTaskModalProps {
   }) => void
   availableClients: { id: string; name: string }[]
   availableDeals: { id: string; name: string; client_id: string }[]
+  availableUsers?: { name: string }[]
 }
 
-export function CreateTaskModal({ open, onClose, onSave, availableClients, availableDeals }: CreateTaskModalProps) {
+export function CreateTaskModal({ open, onClose, onSave, availableClients, availableDeals, availableUsers = [] }: CreateTaskModalProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -135,15 +136,28 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee Name</label>
-                <input
-                  type="text"
-                  data-testid="create-task-assignee-name"
-                  value={assigneeName}
-                  onChange={(e) => setAssigneeName(e.target.value)}
-                  placeholder="e.g., Sarah J."
-                  className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent"
-                />
+                <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee</label>
+                {availableUsers.length > 0 ? (
+                  <FilterSelect
+                    testId="create-task-assignee-name"
+                    value={assigneeName}
+                    onChange={(val) => setAssigneeName(val)}
+                    placeholder="Select assignee..."
+                    options={[
+                      { value: '', label: '— None —' },
+                      ...availableUsers.map((u) => ({ value: u.name, label: u.name })),
+                    ]}
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    data-testid="create-task-assignee-name"
+                    value={assigneeName}
+                    onChange={(e) => setAssigneeName(e.target.value)}
+                    placeholder="e.g., Sarah J."
+                    className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent"
+                  />
+                )}
               </div>
 
               <div>

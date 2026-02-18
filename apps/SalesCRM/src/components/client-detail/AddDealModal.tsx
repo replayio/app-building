@@ -4,6 +4,7 @@ import { FilterSelect } from '../shared/FilterSelect'
 
 interface AddDealModalProps {
   open: boolean
+  availableUsers?: { name: string }[]
   onClose: () => void
   onSave: (data: {
     name: string
@@ -15,7 +16,7 @@ interface AddDealModalProps {
   }) => void
 }
 
-export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
+export function AddDealModal({ open, availableUsers = [], onClose, onSave }: AddDealModalProps) {
   const [name, setName] = useState('')
   const [value, setValue] = useState('')
   const [stage, setStage] = useState('lead')
@@ -100,14 +101,27 @@ export function AddDealModal({ open, onClose, onSave }: AddDealModalProps) {
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Owner</label>
-            <input
-              data-testid="deal-owner-input"
-              type="text"
-              value={owner}
-              onChange={(e) => setOwner(e.target.value)}
-              placeholder="Deal owner name"
-              className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
-            />
+            {availableUsers.length > 0 ? (
+              <FilterSelect
+                testId="deal-owner-input"
+                value={owner}
+                onChange={(val) => setOwner(val)}
+                placeholder="Select owner..."
+                options={[
+                  { value: '', label: '— None —' },
+                  ...availableUsers.map((u) => ({ value: u.name, label: u.name })),
+                ]}
+              />
+            ) : (
+              <input
+                data-testid="deal-owner-input"
+                type="text"
+                value={owner}
+                onChange={(e) => setOwner(e.target.value)}
+                placeholder="Deal owner name"
+                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
+              />
+            )}
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>

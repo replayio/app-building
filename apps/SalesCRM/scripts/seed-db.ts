@@ -45,6 +45,34 @@ async function main() {
   await sql`DELETE FROM deals`
   await sql`DELETE FROM individuals`
   await sql`DELETE FROM clients`
+  await sql`CREATE TABLE IF NOT EXISTS webhooks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    url TEXT NOT NULL,
+    events TEXT[] NOT NULL DEFAULT '{}',
+    enabled BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+  )`
+  await sql`DELETE FROM webhooks`
+  await sql`DELETE FROM users`
+
+  // ============================================================
+  // USERS (team members)
+  // ============================================================
+  await sql`
+    INSERT INTO users (email, name, avatar_url) VALUES
+    ('sarah.lee@salescrm.com', 'Sarah Lee', ''),
+    ('john.doe@salescrm.com', 'John Doe', ''),
+    ('sarah.k@salescrm.com', 'Sarah K.', ''),
+    ('chris.b@salescrm.com', 'Chris B.', ''),
+    ('maria.r@salescrm.com', 'Maria R.', ''),
+    ('john.d@salescrm.com', 'John D.', ''),
+    ('sarah.j@salescrm.com', 'Sarah J.', ''),
+    ('michael.b@salescrm.com', 'Michael B.', ''),
+    ('emily.d@salescrm.com', 'Emily D.', '')
+  `
+  console.log('  Created 9 users')
 
   // ============================================================
   // CLIENTS
