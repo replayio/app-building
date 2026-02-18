@@ -2,8 +2,6 @@
 
 ## Open
 
-2/18/2026: CSV import functionality should specify the required format. The import from CSV button doesn't tell the user what columns or format the CSV file needs to be in.
-
 2/18/2026: Import from CSV needs to support importing deals, contacts, and tasks as well — not just clients.
 
 2/18/2026: Add a settings page and move the import/export buttons there. The settings page should also have webhook settings where you can configure webhooks to send to Zapier / n8n / Discord on different events selected from a list (e.g., new client created, deal stage changed, task completed, etc.).
@@ -11,6 +9,11 @@
 2/18/2026: There should be a users page where you can see everyone that has an account, and a user detail page where you can see their activity and what they are managing. Everywhere in the app that refers to users with accounts should allow selecting them from a dropdown (e.g., deal owner, task assignee).
 
 ## Unreviewed
+
+2/18/2026: CSV import functionality should specify the required format. The import from CSV button doesn't tell the user what columns or format the CSV file needs to be in.
+- Before: cc0d9ad
+- After: (this commit)
+- Fix: Added CSV column format specification table to import dialog showing all 9 supported columns with required/optional indicators and value descriptions. Added "Download CSV template" button. Implemented CSV parsing with proper quote handling, header mapping, and per-row validation errors. Backend bulk import endpoint validates types, statuses, and required fields.
 
 2/17/2026: Sign-in flow doesn't work — after signing up with email/password, attempting to sign in returns "invalid login credentials".
 - The shared Supabase auth server at `auth.nut.new` has email confirmation enabled. When `auth.signUp()` is called, it creates the user but does not return a session (because the email is unverified). The user then tries to sign in with `auth.signInWithPassword()`, which fails because the account is unconfirmed.

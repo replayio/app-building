@@ -129,17 +129,70 @@ test.describe('ClientsListPage - PageHeader', () => {
     await expect(page.getByText('Test Corp')).toBeVisible();
   });
 
-  test('CLP-HDR-04: Import button opens import dialog', async ({ page }) => {
+  test('CLP-HDR-04: Import button opens import dialog with CSV format info', async ({ page }) => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
     await page.getByTestId('import-button').click();
 
-    // Import dialog should appear
+    // Import dialog should appear with full CSV format info
     const dialog = page.getByTestId('import-dialog');
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText('Import Clients')).toBeVisible();
-    await expect(dialog.getByText('Upload a CSV file')).toBeVisible();
+
+    // CSV column format specification table
+    const formatInfo = dialog.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo.getByText('CSV Column Format')).toBeVisible();
+    await expect(formatInfo.getByText('Client name')).toBeVisible();
+
+    // Download template button
+    await expect(dialog.getByTestId('download-template-button')).toBeVisible();
+
+    // File input
+    await expect(dialog.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button should be disabled when no file selected
+    await expect(dialog.getByTestId('import-submit-button')).toBeDisabled();
+
+    // Cancel button
+    await expect(dialog.getByTestId('import-cancel-button')).toBeVisible();
+  });
+
+  test('CLP-HDR-06: CSV import creates clients from uploaded file', async ({ page }) => {
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('import-button').click();
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+
+    // Create a CSV file and upload it
+    const csvContent = 'Name,Type,Status,Tags\nImport Test Corp,organization,active,Enterprise';
+    const fileInput = dialog.getByTestId('csv-file-input');
+    await fileInput.setInputFiles({
+      name: 'test-import.csv',
+      mimeType: 'text/csv',
+      buffer: Buffer.from(csvContent),
+    });
+
+    // Import button should now be enabled
+    await expect(dialog.getByTestId('import-submit-button')).toBeEnabled();
+    await dialog.getByTestId('import-submit-button').click();
+
+    // Wait for import result
+    const result = dialog.getByTestId('import-result');
+    await expect(result).toBeVisible();
+    await expect(result).toContainText('Successfully imported 1 client');
+
+    // Close dialog
+    await dialog.getByTestId('import-cancel-button').click();
+    await expect(dialog).not.toBeVisible();
+
+    // Verify imported client appears in the table
+    await expect(async () => {
+      await expect(page.getByText('Import Test Corp')).toBeVisible();
+    }).toPass({ timeout: 5000 });
   });
 
   test('CLP-HDR-05: Export button triggers data export', async ({ page }) => {

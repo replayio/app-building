@@ -77,10 +77,15 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Fill in client name "Test Corp", select type "Organization", select status "Prospect", add tag "Enterprise", fill source info, click Save
 - Expected: Modal closes. The new client "Test Corp" appears in the clients table with the correct type, status badge, and tags. The client is persisted to the database (page reload still shows it).
 
-**CLP-HDR-04: Import button opens import dialog**
+**CLP-HDR-04: Import button opens import dialog with CSV format info**
 - Initial: User is on /clients
-- Action: Click "Import" button
-- Expected: An import dialog/modal opens allowing the user to upload client data (e.g., CSV file upload).
+- Action: Click "Import" button (data-testid="import-button")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Clients". The dialog contains: a CSV column format specification table (data-testid="csv-format-info") showing column names and descriptions including required "Name" column, a "Download CSV template" button (data-testid="download-template-button"), a file input for .csv files (data-testid="csv-file-input"), Cancel button (data-testid="import-cancel-button"), and Import button (data-testid="import-submit-button") which is disabled until a file is selected.
+
+**CLP-HDR-06: CSV import creates clients from uploaded file**
+- Initial: User has opened the import dialog on /clients
+- Action: Upload a valid CSV file with headers "Name,Type,Status,Tags" and one data row "Import Test Corp,organization,active,Enterprise", then click Import
+- Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 client." The imported client "Import Test Corp" appears in the clients table after closing the dialog.
 
 **CLP-HDR-05: Export button triggers data export**
 - Initial: User is on /clients with existing clients

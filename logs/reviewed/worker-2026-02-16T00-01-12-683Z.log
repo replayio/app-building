@@ -1,0 +1,4 @@
+Script started on 2026-02-15 23:29:02+00:00 [COMMAND="claude '-p' 'Say "hello world" and nothing else' '--model' 'claude-opus-4-6' '--dangerously-skip-permissions' '--mcp-config' '{"mcpServers":{"replay":{"type":"http","url":"https://dispatch.replay.io/nut/mcp"}}}'" <not executed on terminal>]
+hello world
+[<u[?1004l[?2004l[?25h]9;4;0;[?25h
+Script done on 2026-02-15 23:29:05+00:00 [COMMAND_EXIT_CODE="0"]
