@@ -1,79 +1,50 @@
 # app-building
 
-An agent loop that iteratively builds applications using the Claude Code CLI. Point it at an app directory with an `AppSpec.md` and a set of strategy files, and it will plan, implement, and review your project across multiple iterations — running in a Docker container.
+Simple and extensible platform for dark factory agentic app building: creating apps
+according to a spec without human involvement along the way. Example use cases:
 
-## How It Works
+* `npm run agent -- "Build me an app XYZ based on this spec: ..."`
+* `npm run agent -- "Continue maintaining app XYZ and fix these bugs: ..."`
+* `npm run agent` for interactive access to the agent.
 
-Each iteration of the loop:
+Core ideas:
 
-1. **Gathers context** from the app directory (AppSpec.md, docs/, git history, file tree)
-2. **Builds a prompt** combining the strategy instructions with the current repo context
-3. **Runs Claude** via the CLI (`claude -p`) in the app directory
-4. **Logs output** to `apps/<name>/logs/iteration-<timestamp>.log`
-5. **Commits changes** to git
+* The agent runs within a docker container and has access to the repo and the internet.
+* The agent builds by following a set of strategy documents with guides and directives
+  for breaking its work down into tasks and performing those tasks.
+* The agent reviews its own changes and improves the strategies based on this.
+* All code changes and agent trajectories are tracked in git for later automated review.
 
-The loop stops when Claude includes `<DONE/>` in its response or the max iteration count is reached.
+## Strategies
 
-## Prerequisites
+The provided strategy documents emphasize a structured approach for autonomously building
+high quality, well tested apps from the initial spec. During the initial app build
+it does the following:
 
-- [Node.js](https://nodejs.org/)
-- [Docker](https://www.docker.com/)
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
+1. Designs a comprehensive test specification based on the initial spec.
+2. Builds the app and writes tests to match the spec.
+3. Gets all the tests to pass, deploys to production, and does further testing.
+
+The initial build will not come out perfect. The agent can followup with maintenance passes
+where it checks to make sure it closely followed the spec and strategy directives and fixes
+any issues it finds. It will also fix reported bugs and update the strategies to avoid
+similar problems in the future.
+
+As long as each individual step the agent takes is within its capabilities (it can usually
+do it but not always) the agent will converge on an app that follows the initial spec
+and strategy directives.
+
+Key things to watch out for:
+
+* Best suited for CRUD and API-calling apps up to a medium level of complexity.
+  Overly complicated or specialized apps will not work as well yet.
+* Make sure to get a Replay API key and configure it. The agent will use Replay to identify
+  and debug problems it encounters in tests or the deployed app.
 
 ## Setup
 
 ```bash
 npm install
-```
-
-Create a `.env` file in the project root with your API keys:
-
-```
-ANTHROPIC_API_KEY=sk-ant-...
-NETLIFY_AUTH_TOKEN=...
-NEON_API_KEY=...
-```
-
-Required environment variables declared in strategy files (plus `ANTHROPIC_API_KEY`) are checked at startup.
-
-## Usage
-
-### Creating an app
-
-Apps live under `apps/<name>/`. Create one with a git repo and an `AppSpec.md`:
-
-```bash
-mkdir -p apps/my-app && cd apps/my-app && git init
-# Add AppSpec.md describing what the app should do
-```
-
-### Running with Docker containers (recommended)
-
-```bash
-npm run agent -- <appName> --load <strategies...> [--max-iterations <n>]
-```
-
-**Arguments:**
-- `<appName>` — Name of the app (must exist under `apps/<appName>/`)
-- `--load <strategies...>` — Strategy file basenames from `strategies/`
-- `--max-iterations <n>` — Stop after N iterations (default: unlimited)
-
-**Example:**
-
-```bash
-npm run agent -- my-app --load buildInitialApp.md --max-iterations 10
-```
-
-This will:
-1. Build the Docker image if it doesn't exist
-2. Start a container mounting the project at `/repo`
-3. Pass env vars from `.env` into the container
-4. Pipe container stdout/stderr to the host console
-5. Report exit status when the container finishes
-
-#### Building the Docker image manually
-
-```bash
 npm run docker:build
 ```
 
@@ -84,20 +55,17 @@ Copy `.env.example` to `.env` and fill in all API keys.
 ### Interactive mode
 
 ```bash
-npm run loop -- --app <name> --repo-root <path> --load <basenames...> [--max-iterations N]
+npm run agent
+npm run agent -- --resume <session-id>   # resume a previous session
 ```
 
-**Options:**
-- `--app <name>` — App name (under `apps/<name>/`)
-- `--repo-root <path>` — Repo root directory
-- `--load <basenames...>` — Strategy file basenames from `strategies/`
-- `--max-iterations N` — Stop after N iterations (default: unlimited)
+Chat with Claude inside a container. Output is streamed in real-time. Press ESC to interrupt. Subsequent messages continue the conversation.
 
-### Checking status
+### Detached mode
 
 ```bash
-npm run status              # Show status for all apps
-npm run status -- my-app    # Show status for one app
+npm run agent -- "<prompt>"
+npm run agent -- "<prompt>" -n 10   # limit iterations
 ```
 
 Runs Claude in a loop inside a detached container. The first iteration runs the provided prompt; subsequent iterations run `performTasks.md` to process tasks from `docs/plan.md`. Each iteration commits changes and re-runs with a fresh context. Stops on `<DONE/>` or the iteration limit. All output is logged to a single `logs/worker-current.log` file.
@@ -105,19 +73,7 @@ Runs Claude in a loop inside a detached container. The first iteration runs the 
 ### Checking status
 
 ```bash
-npm run read-log -- apps/my-app/logs/iteration-2026-02-13T00-00-00-000Z.log
+npm run status
 ```
 
-## Strategies
-
-Strategy files are Markdown documents in `strategies/` that tell Claude what to do each iteration. You can write your own strategy files to customize the agent's behavior.
-
-Strategy files can declare required environment variables under a `## Required Environment Variables` heading with a code block. The loop checks these at startup and exits if any are missing.
-
-## App Directory Structure
-
-The agent expects the app directory to have:
-
-- `AppSpec.md` — Describes what the application should do
-- `AppStyle.md` — Describes the styling of the app
-- `docs/plan.md` — Created/updated by the strategy
+Shows the container name, iteration progress, cost, and the last 20 lines of formatted log output. If the agent is still running, it tails the log in real-time (Ctrl+C to stop).
