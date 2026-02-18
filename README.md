@@ -77,9 +77,11 @@ This will:
 npm run docker:build
 ```
 
-### Running the loop directly (without Docker)
+Copy `.env.example` to `.env` and fill in all API keys.
 
-For debugging or running outside containers, use `loop.ts` directly:
+## Running the Agent
+
+### Interactive mode
 
 ```bash
 npm run loop -- --app <name> --repo-root <path> --load <basenames...> [--max-iterations N]
@@ -98,9 +100,9 @@ npm run status              # Show status for all apps
 npm run status -- my-app    # Show status for one app
 ```
 
-### Reading Logs
+Runs Claude in a loop inside a detached container. The first iteration runs the provided prompt; subsequent iterations run `performTasks.md` to process tasks from `docs/plan.md`. Each iteration commits changes and re-runs with a fresh context. Stops on `<DONE/>` or the iteration limit. All output is logged to a single `logs/worker-current.log` file.
 
-Log files contain raw JSON stream events. Use `read-log` to render them as readable output:
+### Checking status
 
 ```bash
 npm run read-log -- apps/my-app/logs/iteration-2026-02-13T00-00-00-000Z.log

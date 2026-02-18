@@ -1,4 +1,13 @@
 node_modules/
 dist/
-apps/
 .env
+prompt-*.txt
+*/worker-current.log
+*~
+
+# Container agent home directory
+.agent-home
+.claude
+
+# Local Netlify folder
+.netlify

@@ -1,41 +1,20 @@
 # Strategy
 
-You are building an application based on the provided AppSpec.md.
-You will build the app in the following stages, with strategy files to additional instructions.
+This strategy document describes the process and requirements for app development that must always be followed.
 
-1. testSpec.md: Create a detailed test specification for the tests the app must pass in order to match the app spec.
+ULTRA IMPORTANT: Do NOT perform any tasks from the plan unless you were explicitly instructed
+to follow this task flow. If you were not given a direct instruction to read this file and
+follow it, skip the task steps below and continue with whatever else you were doing.
 
-2. writeApp.md: Write the app's code according to the two specs.
-
-3. writeTests.md: Write the tests according to the two specs.
-
-4. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
-
-5. deployment.md: Deploy the app to production.
-
-## Development Process
-
-ULTRA IMPORTANT: Follow these directions exactly.
-
-1. Look for files `logs/iteration-...` describing recent changes made. While there are any,
-   follow instructions from this file to process them
-   reviewChanges.md
-2. Read `docs/plan.md` (if it exists) to understand current progress. If there is no plan, create the file with one "Unpack Subtasks" task for each stage.
+1. Look for files in `/repo/logs/` named `worker-<timestamp>.log` describing
+   recent changes made. While there are any (ignoring `*-current.log` files which are still being written to),
+   follow instructions from `reviewChanges.md` to process them.
+2. Read `docs/plan.md` to understand current progress. If this file is missing or has no pending tasks, signal <DONE/> and exit. You must NEVER signal <DONE/> at any other time.
 3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
-4. Read the instructions for the associated stage (if you haven't already) and implement the task.
+4. Read the strategy file for the task (if you haven't already) and implement the task.
 5. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
 6. Update `docs/plan.md` to reflect progress.
 7. If any changes were committed, you ABSOLUTELY MUST IMMEDIATELY EXIT. You will restart afterwards with a fresh context.
-
-## Required Environment Variables
-
-```
-NETLIFY_ACCOUNT_SLUG
-NETLIFY_AUTH_TOKEN
-NEON_API_KEY
-UPLOADTHING_TOKEN
-RECORD_REPLAY_API_KEY
-```
 
 ## Tech Stack
 
@@ -68,7 +47,9 @@ Maintain `docs/plan.md` with:
 - High-level app structure and architecture
 - Feature breakdown with status (done / in progress / todo)
 - Any blockers or decisions made
-- Pending and completed tasks. All tasks must be of the form "TaskName: Description"
+- Pending and completed tasks. All tasks are associated with a strategy file under `strategies/tasks/`
+for how to implement them, and a name for referring to them.
+Task entries must be of the form "StrategyFile: TaskName: Description"
 
 ## Commits
 
@@ -80,7 +61,7 @@ Maintain `docs/plan.md` with:
 
 Pick an unfinished task and start working on it.
 
-Focus on one task at a time. Do it well rather than rushing through multiple tasks. If the task is associated with one of the stages of app development, read the additional instructions for that stage from the files listed above.
+Focus on one task at a time. Do it well rather than rushing through multiple tasks. Make sure to read the strategy file for the task before implementing it.
 
 When you finish a task, mark it completed in the plan. Your work is not finished until all remaining tasks are addressed.
 
