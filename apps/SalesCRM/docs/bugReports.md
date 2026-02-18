@@ -2,13 +2,16 @@
 
 ## Open
 
-2/18/2026: Import from CSV needs to support importing deals, contacts, and tasks as well — not just clients.
-
 2/18/2026: Add a settings page and move the import/export buttons there. The settings page should also have webhook settings where you can configure webhooks to send to Zapier / n8n / Discord on different events selected from a list (e.g., new client created, deal stage changed, task completed, etc.).
 
 2/18/2026: There should be a users page where you can see everyone that has an account, and a user detail page where you can see their activity and what they are managing. Everywhere in the app that refers to users with accounts should allow selecting them from a dropdown (e.g., deal owner, task assignee).
 
 ## Unreviewed
+
+2/18/2026: Import from CSV needs to support importing deals, contacts, and tasks as well — not just clients.
+- Before: cc0d9ad
+- After: (this commit)
+- Fix: Added CSV import support for deals, contacts/individuals, and tasks. Deals page has Import button with bulk import endpoint (POST /deals?action=import) supporting Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status columns with client lookup by name. Tasks page has Import button with bulk import endpoint (POST /tasks?action=import) supporting Title, Description, Due Date, Priority, Client Name, Assignee columns. Clients page has new "Import Contacts" button with bulk import endpoint (POST /individuals?action=import) supporting Name, Title, Email, Phone, Location, Client Name columns that creates individuals and optionally associates with clients. Extracted shared ImportDialog component for reuse. Added 6 new Playwright tests (DLP-HDR-04/05, TLP-HDR-04/05, CLP-HDR-07/08).
 
 2/18/2026: CSV import functionality should specify the required format. The import from CSV button doesn't tell the user what columns or format the CSV file needs to be in.
 - Before: cc0d9ad

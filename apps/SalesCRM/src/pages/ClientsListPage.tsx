@@ -8,6 +8,7 @@ import { ClientsTable } from '../components/clients/ClientsTable'
 import { ClientsPagination } from '../components/clients/ClientsPagination'
 import { AddClientModal } from '../components/clients/AddClientModal'
 import { ConfirmDialog } from '../components/shared/ConfirmDialog'
+import { ImportDialog } from '../components/shared/ImportDialog'
 import type { ClientType, ClientStatus } from '../types'
 
 export function ClientsListPage() {
@@ -24,6 +25,7 @@ export function ClientsListPage() {
   const [addModalOpen, setAddModalOpen] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const [importDialogOpen, setImportDialogOpen] = useState(false)
+  const [importContactsDialogOpen, setImportContactsDialogOpen] = useState(false)
 
   const loadClients = useCallback(() => {
     dispatch(
@@ -104,6 +106,7 @@ export function ClientsListPage() {
       <ClientsPageHeader
         onAddClient={() => setAddModalOpen(true)}
         onImport={() => setImportDialogOpen(true)}
+        onImportContacts={() => setImportContactsDialogOpen(true)}
         onExport={handleExport}
       />
 
@@ -160,53 +163,39 @@ export function ClientsListPage() {
 
       {/* Import Dialog */}
       {importDialogOpen && (
-        <ImportDialog onClose={() => setImportDialogOpen(false)} onImported={loadClients} />
+        <ImportDialog
+          entityName="Client"
+          entityNamePlural="Clients"
+          columns={CLIENT_CSV_COLUMNS}
+          headerMap={CLIENT_HEADER_MAP}
+          templateFilename="clients-import-template.csv"
+          templateExample='Acme Corp,organization,active,"Enterprise; SaaS",Referral,John Smith,Q1 Campaign,Direct Sales,2024-01-15'
+          apiEndpoint="/.netlify/functions/clients?action=import"
+          apiBodyKey="clients"
+          onClose={() => setImportDialogOpen(false)}
+          onImported={loadClients}
+        />
+      )}
+
+      {importContactsDialogOpen && (
+        <ImportDialog
+          entityName="Contact"
+          entityNamePlural="Contacts"
+          columns={CONTACT_CSV_COLUMNS}
+          headerMap={CONTACT_HEADER_MAP}
+          templateFilename="contacts-import-template.csv"
+          templateExample="Sarah Johnson,CEO,sarah@acmecorp.com,+1 555-100-0001,New York,Acme Corp"
+          apiEndpoint="/.netlify/functions/individuals?action=import"
+          apiBodyKey="contacts"
+          onClose={() => setImportContactsDialogOpen(false)}
+          onImported={loadClients}
+        />
       )}
     </div>
   )
 }
 
-function parseCSV(text: string): Record<string, string>[] {
-  const lines = text.split(/\r?\n/).filter(l => l.trim())
-  if (lines.length < 2) return []
-  const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase())
-  return lines.slice(1).map(line => {
-    const values = parseCSVLine(line)
-    const row: Record<string, string> = {}
-    headers.forEach((h, i) => { row[h] = (values[i] ?? '').trim() })
-    return row
-  })
-}
-
-function parseCSVLine(line: string): string[] {
-  const result: string[] = []
-  let current = ''
-  let inQuotes = false
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i]
-    if (inQuotes) {
-      if (ch === '"' && line[i + 1] === '"') {
-        current += '"'
-        i++
-      } else if (ch === '"') {
-        inQuotes = false
-      } else {
-        current += ch
-      }
-    } else if (ch === '"') {
-      inQuotes = true
-    } else if (ch === ',') {
-      result.push(current)
-      current = ''
-    } else {
-      current += ch
-    }
-  }
-  result.push(current)
-  return result
-}
-
-const CSV_COLUMNS = [
+const CLIENT_CSV_COLUMNS = [
   { name: 'Name', required: true, description: 'Client name' },
   { name: 'Type', required: false, description: '"organization" or "individual" (default: organization)' },
   { name: 'Status', required: false, description: '"active", "inactive", "prospect", or "churned" (default: prospect)' },
@@ -218,7 +207,7 @@ const CSV_COLUMNS = [
   { name: 'Date Acquired', required: false, description: 'Date in YYYY-MM-DD format' },
 ]
 
-const HEADER_MAP: Record<string, string> = {
+const CLIENT_HEADER_MAP: Record<string, string> = {
   'name': 'name',
   'type': 'type',
   'status': 'status',
@@ -233,141 +222,22 @@ const HEADER_MAP: Record<string, string> = {
   'date_acquired': 'date_acquired',
 }
 
-function ImportDialog({ onClose, onImported }: { onClose: () => void; onImported: () => void }) {
-  const [file, setFile] = useState<File | null>(null)
-  const [importing, setImporting] = useState(false)
-  const [result, setResult] = useState<{ imported: number; errors: string[] } | null>(null)
+const CONTACT_CSV_COLUMNS = [
+  { name: 'Name', required: true, description: 'Contact name' },
+  { name: 'Title', required: false, description: 'Job title, e.g. "CEO", "VP Engineering"' },
+  { name: 'Email', required: false, description: 'Email address' },
+  { name: 'Phone', required: false, description: 'Phone number' },
+  { name: 'Location', required: false, description: 'City, state, or address' },
+  { name: 'Client Name', required: false, description: 'Name of an existing client to associate with' },
+]
 
-  function handleDownloadTemplate() {
-    const headers = CSV_COLUMNS.map(c => c.name).join(',')
-    const example = 'Acme Corp,organization,active,"Enterprise; SaaS",Referral,John Smith,Q1 Campaign,Direct Sales,2024-01-15'
-    const csv = headers + '\n' + example
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const csvUrl = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = csvUrl
-    a.download = 'clients-import-template.csv'
-    a.click()
-    URL.revokeObjectURL(csvUrl)
-  }
-
-  async function handleImport() {
-    if (!file) return
-    setImporting(true)
-    try {
-      const text = await file.text()
-      const rows = parseCSV(text)
-      if (rows.length === 0) {
-        setResult({ imported: 0, errors: ['CSV file is empty or has no data rows.'] })
-        setImporting(false)
-        return
-      }
-      const clients = rows.map(row => {
-        const mapped: Record<string, string> = {}
-        for (const [key, value] of Object.entries(row)) {
-          const field = HEADER_MAP[key.toLowerCase()]
-          if (field) mapped[field] = value
-        }
-        return mapped
-      })
-      const res = await fetch('/.netlify/functions/clients?action=import', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clients }),
-      })
-      const data = await res.json() as { imported: number; errors: string[] }
-      setResult(data)
-      if (data.imported > 0) onImported()
-    } catch {
-      setResult({ imported: 0, errors: ['Failed to read or process the CSV file.'] })
-    }
-    setImporting(false)
-  }
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div data-testid="import-dialog" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-h-[80vh] flex flex-col">
-        <div className="px-5 py-4 border-b border-border">
-          <h2 className="text-[14px] font-semibold text-text-primary">Import Clients</h2>
-        </div>
-        <div className="px-5 py-4 overflow-y-auto">
-          <p className="text-[13px] text-text-muted mb-3">Upload a CSV file to import client data. The first row must be column headers.</p>
-
-          <div data-testid="csv-format-info" className="mb-4 border border-border rounded-[5px]">
-            <div className="px-3 py-2 bg-hover border-b border-border">
-              <span className="text-[12px] font-semibold text-text-secondary">CSV Column Format</span>
-            </div>
-            <div className="px-3 py-2">
-              <table className="w-full text-[12px]">
-                <tbody>
-                  {CSV_COLUMNS.map(col => (
-                    <tr key={col.name} className="border-b border-border last:border-0">
-                      <td className="py-1 pr-2 font-medium text-text-primary whitespace-nowrap">
-                        {col.name}{col.required && <span className="text-red-500 ml-0.5">*</span>}
-                      </td>
-                      <td className="py-1 text-text-muted">{col.description}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <button
-            data-testid="download-template-button"
-            onClick={handleDownloadTemplate}
-            className="mb-3 text-[12px] text-accent hover:underline"
-          >
-            Download CSV template
-          </button>
-
-          <div className="mb-2">
-            <input
-              data-testid="csv-file-input"
-              type="file"
-              accept=".csv"
-              onChange={(e) => { setFile(e.target.files?.[0] ?? null); setResult(null) }}
-              className="text-[13px] text-text-secondary"
-            />
-          </div>
-
-          {result && (
-            <div data-testid="import-result" className="mt-3 p-3 rounded-[5px] border border-border bg-hover">
-              <p className="text-[13px] font-medium text-text-primary mb-1">
-                {result.imported > 0 ? `Successfully imported ${result.imported} client${result.imported !== 1 ? 's' : ''}.` : 'No clients were imported.'}
-              </p>
-              {result.errors.length > 0 && (
-                <div className="mt-1">
-                  <p className="text-[12px] text-red-500 font-medium mb-1">{result.errors.length} error{result.errors.length !== 1 ? 's' : ''}:</p>
-                  <ul className="text-[12px] text-red-500 list-disc pl-4 max-h-[100px] overflow-y-auto">
-                    {result.errors.map((err, i) => <li key={i}>{err}</li>)}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-border">
-          <button
-            data-testid="import-cancel-button"
-            onClick={onClose}
-            className="h-[34px] px-3.5 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] hover:bg-hover transition-colors duration-100"
-          >
-            {result ? 'Close' : 'Cancel'}
-          </button>
-          {!result && (
-            <button
-              data-testid="import-submit-button"
-              onClick={handleImport}
-              disabled={!file || importing}
-              className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
-            >
-              {importing ? 'Importing...' : 'Import'}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  )
+const CONTACT_HEADER_MAP: Record<string, string> = {
+  'name': 'name',
+  'title': 'title',
+  'email': 'email',
+  'phone': 'phone',
+  'location': 'location',
+  'client name': 'client_name',
+  'client_name': 'client_name',
+  'client': 'client_name',
 }

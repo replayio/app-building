@@ -8,6 +8,7 @@ import { TaskCard } from '../components/tasks/TaskCard'
 import { CreateTaskModal } from '../components/tasks/CreateTaskModal'
 import { EditTaskModal } from '../components/tasks/EditTaskModal'
 import { ConfirmDialog } from '../components/shared/ConfirmDialog'
+import { ImportDialog } from '../components/shared/ImportDialog'
 import type { Task, TaskPriority } from '../types'
 
 export function TasksListPage() {
@@ -25,6 +26,7 @@ export function TasksListPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [editTask, setEditTask] = useState<Task | null>(null)
   const [deleteConfirm, setDeleteConfirm] = useState<Task | null>(null)
+  const [importDialogOpen, setImportDialogOpen] = useState(false)
 
   // All clients for the create modal
   const [allClients, setAllClients] = useState<{ id: string; name: string }[]>([])
@@ -136,7 +138,7 @@ export function TasksListPage() {
 
   return (
     <div className="p-6">
-      <TasksPageHeader onCreateTask={() => setCreateModalOpen(true)} />
+      <TasksPageHeader onCreateTask={() => setCreateModalOpen(true)} onImport={() => setImportDialogOpen(true)} />
 
       <TasksFilterBar
         searchValue={searchInput}
@@ -197,6 +199,44 @@ export function TasksListPage() {
         onConfirm={handleDeleteTask}
         onCancel={() => setDeleteConfirm(null)}
       />
+
+      {importDialogOpen && (
+        <ImportDialog
+          entityName="Task"
+          entityNamePlural="Tasks"
+          columns={TASK_CSV_COLUMNS}
+          headerMap={TASK_HEADER_MAP}
+          templateFilename="tasks-import-template.csv"
+          templateExample="Follow up with client,Review Q1 proposal details,2024-03-15,high,Acme Corp,Jane Smith"
+          apiEndpoint="/.netlify/functions/tasks?action=import"
+          apiBodyKey="tasks"
+          onClose={() => setImportDialogOpen(false)}
+          onImported={loadTasks}
+        />
+      )}
     </div>
   )
+}
+
+const TASK_CSV_COLUMNS = [
+  { name: 'Title', required: true, description: 'Task title' },
+  { name: 'Description', required: false, description: 'Task description' },
+  { name: 'Due Date', required: false, description: 'Date in YYYY-MM-DD format' },
+  { name: 'Priority', required: false, description: '"high", "medium", "low", or "normal" (default: normal)' },
+  { name: 'Client Name', required: false, description: 'Name of an existing client to associate' },
+  { name: 'Assignee', required: false, description: 'Name of the person assigned' },
+]
+
+const TASK_HEADER_MAP: Record<string, string> = {
+  'title': 'title',
+  'description': 'description',
+  'due date': 'due_date',
+  'due_date': 'due_date',
+  'priority': 'priority',
+  'client name': 'client_name',
+  'client_name': 'client_name',
+  'client': 'client_name',
+  'assignee': 'assignee_name',
+  'assignee name': 'assignee_name',
+  'assignee_name': 'assignee_name',
 }

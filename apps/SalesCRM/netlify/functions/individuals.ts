@@ -55,6 +55,55 @@ async function handler(req: OptionalAuthRequest) {
   const subResource = pathParts.length >= 5 ? pathParts[4] : null
   const subId = pathParts.length >= 6 ? pathParts[5] : null
 
+  // POST /individuals?action=import (bulk CSV import)
+  if (req.method === 'POST' && !individualId && url.searchParams.get('action') === 'import') {
+    const body = await req.json() as {
+      contacts: Array<{
+        name: string
+        title?: string
+        email?: string
+        phone?: string
+        location?: string
+        client_name?: string
+      }>
+    }
+
+    const results = { imported: 0, errors: [] as string[] }
+
+    for (let i = 0; i < body.contacts.length; i++) {
+      const row = body.contacts[i]
+      if (!row.name?.trim()) {
+        results.errors.push(`Row ${i + 1}: Name is required`)
+        continue
+      }
+      try {
+        const individualRows = await sql`
+          INSERT INTO individuals (name, title, email, phone, location)
+          VALUES (${row.name.trim()}, ${row.title?.trim() || null}, ${row.email?.trim() || null}, ${row.phone?.trim() || null}, ${row.location?.trim() || null})
+          RETURNING id
+        `
+        const individualId = individualRows[0].id
+        // Associate with client if client_name provided
+        if (row.client_name?.trim()) {
+          const clientRows = await sql`SELECT id FROM clients WHERE LOWER(name) = LOWER(${row.client_name.trim()}) LIMIT 1`
+          if (clientRows.length > 0) {
+            await sql`
+              INSERT INTO client_individuals (client_id, individual_id)
+              VALUES (${clientRows[0].id}::uuid, ${individualId}::uuid)
+            `
+          } else {
+            results.errors.push(`Row ${i + 1}: Contact imported but client "${row.client_name.trim()}" not found — not associated`)
+          }
+        }
+        results.imported++
+      } catch (err) {
+        results.errors.push(`Row ${i + 1}: ${err instanceof Error ? err.message : 'Database error'}`)
+      }
+    }
+
+    return Response.json(results, { status: 200 })
+  }
+
   // GET /individuals — list/search all individuals
   if (req.method === 'GET' && !individualId) {
     const search = url.searchParams.get('search') ?? ''

@@ -1,12 +1,13 @@
-import { Download, Upload, Plus } from 'lucide-react'
+import { Download, Upload, Plus, Users } from 'lucide-react'
 
 interface ClientsPageHeaderProps {
   onAddClient: () => void
   onImport: () => void
+  onImportContacts: () => void
   onExport: () => void
 }
 
-export function ClientsPageHeader({ onAddClient, onImport, onExport }: ClientsPageHeaderProps) {
+export function ClientsPageHeader({ onAddClient, onImport, onImportContacts, onExport }: ClientsPageHeaderProps) {
   return (
     <div data-testid="clients-page-header" className="flex items-center justify-between mb-6">
       <h1 className="text-[24px] font-semibold text-text-primary">Clients</h1>
@@ -18,6 +19,14 @@ export function ClientsPageHeader({ onAddClient, onImport, onExport }: ClientsPa
         >
           <Download size={14} strokeWidth={1.75} />
           Import
+        </button>
+        <button
+          data-testid="import-contacts-button"
+          onClick={onImportContacts}
+          className="inline-flex items-center gap-1.5 h-[34px] px-3 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] bg-surface hover:bg-hover transition-colors duration-100"
+        >
+          <Users size={14} strokeWidth={1.75} />
+          Import Contacts
         </button>
         <button
           data-testid="export-button"

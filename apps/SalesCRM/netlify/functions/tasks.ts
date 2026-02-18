@@ -113,6 +113,56 @@ async function handler(req: OptionalAuthRequest) {
     return Response.json({ tasks, total, assignees, clients })
   }
 
+  // POST /tasks?action=import (bulk CSV import)
+  if (req.method === 'POST' && !taskId && url.searchParams.get('action') === 'import') {
+    const body = await req.json() as {
+      tasks: Array<{
+        title: string
+        description?: string
+        due_date?: string
+        priority?: string
+        client_name?: string
+        assignee_name?: string
+      }>
+    }
+
+    const results = { imported: 0, errors: [] as string[] }
+    const validPriorities = ['high', 'medium', 'low', 'normal']
+
+    for (let i = 0; i < body.tasks.length; i++) {
+      const row = body.tasks[i]
+      if (!row.title?.trim()) {
+        results.errors.push(`Row ${i + 1}: Title is required`)
+        continue
+      }
+      const priority = row.priority?.trim().toLowerCase() || 'normal'
+      if (!validPriorities.includes(priority)) {
+        results.errors.push(`Row ${i + 1}: Priority must be one of: ${validPriorities.join(', ')}`)
+        continue
+      }
+      let clientId: string | null = null
+      if (row.client_name?.trim()) {
+        const clientRows = await sql`SELECT id FROM clients WHERE LOWER(name) = LOWER(${row.client_name.trim()}) LIMIT 1`
+        if (clientRows.length === 0) {
+          results.errors.push(`Row ${i + 1}: Client "${row.client_name.trim()}" not found`)
+          continue
+        }
+        clientId = clientRows[0].id as string
+      }
+      try {
+        await sql`
+          INSERT INTO tasks (title, description, due_date, priority, client_id, assignee_name)
+          VALUES (${row.title.trim()}, ${row.description?.trim() || null}, ${row.due_date?.trim() || null}, ${priority}, ${clientId}, ${row.assignee_name?.trim() || null})
+        `
+        results.imported++
+      } catch (err) {
+        results.errors.push(`Row ${i + 1}: ${err instanceof Error ? err.message : 'Database error'}`)
+      }
+    }
+
+    return Response.json(results, { status: 200 })
+  }
+
   // POST /tasks — create a new task
   if (req.method === 'POST' && !taskId) {
     const body = await req.json() as {
