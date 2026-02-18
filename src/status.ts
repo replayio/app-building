@@ -1,48 +1,19 @@
 import { execFileSync } from "child_process";
-import { readFileSync, readdirSync, statSync } from "fs";
+import { readFileSync, readdirSync, existsSync, statSync, openSync, readSync, closeSync } from "fs";
 import { join, resolve } from "path";
+import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 
-const RESET = "\x1b[0m";
-const DIM = "\x1b[2m";
-const BOLD = "\x1b[1m";
-const CYAN = "\x1b[36m";
-const GREEN = "\x1b[32m";
-const YELLOW = "\x1b[33m";
-const RED = "\x1b[31m";
+// --- Log discovery ---
 
-interface TargetStatus {
-  name: string;
-  dir: string;
-  containerRunning: boolean;
-  logFile: string | null;
-  completedIterations: number;
-  currentIteration: number | null;
-  maxIterations: string | null;
-  totalCost: number;
-  finished: boolean;
-  finishReason: string | null;
-  lastError: string | null;
-  lastActivity: string | null;
-}
-
-function isContainerRunning(appName: string): boolean {
-  try {
-    const out = execFileSync(
-      "docker",
-      ["ps", "--filter", `name=app-building-${appName}`, "--format", "{{.Names}}"],
-      { encoding: "utf-8", timeout: 5000 },
-    ).trim();
-    return out.includes(`app-building-${appName}`);
-  } catch {
-    return false;
+function getLogFile(logsDir: string): string | null {
+  // Check for active worker log first
+  const workerCurrent = join(logsDir, "worker-current.log");
+  if (existsSync(workerCurrent) && statSync(workerCurrent).size > 0) {
+    return workerCurrent;
   }
-}
 
-function getIterationLogFiles(appDir: string): string[] {
-  const logsDir = join(appDir, "logs");
+  // Fall back to most recent completed log (worker-* or legacy iteration-*)
   const files: string[] = [];
-
-  // Collect from logs/ and logs/reviewed/
   for (const dir of [logsDir, join(logsDir, "reviewed")]) {
     let entries: string[];
     try {
@@ -51,84 +22,112 @@ function getIterationLogFiles(appDir: string): string[] {
       continue;
     }
     for (const f of entries) {
-      if (/^iteration-.*\.log$/.test(f)) {
+      if (/^(worker|iteration)-.*\.log$/.test(f) && !f.endsWith("-current.log")) {
         files.push(join(dir, f));
       }
     }
   }
 
-  return files.sort();
+  files.sort();
+  return files.length > 0 ? files[files.length - 1] : null;
 }
 
-function parseIterationLogs(logPaths: string[]): Omit<TargetStatus, "name" | "dir" | "containerRunning" | "logFile"> {
-  let completedIterations = 0;
-  let currentIteration: number | null = null;
-  let maxIterations: string | null = null;
-  let totalCost = 0;
-  let finished = false;
-  let finishReason: string | null = null;
-  let lastError: string | null = null;
-  let lastActivity: string | null = null;
+// --- Log parsing ---
 
-  for (const logPath of logPaths) {
-    const content = readFileSync(logPath, "utf-8");
-    const lines = content.split("\n");
+interface LogInfo {
+  containerName: string | null;
+  currentIteration: number | null;
+  maxIterations: string | null;
+  completedIterations: number;
+  totalCost: number;
+  finished: boolean;
+  finishReason: string | null;
+  lastError: string | null;
+  lastActivity: string | null;
+}
 
-    for (const rawLine of lines) {
-      if (!rawLine.trim()) continue;
+function parseLogFile(logPath: string): LogInfo {
+  const content = readFileSync(logPath, "utf-8");
+  const lines = content.split("\n");
 
-      const tsMatch = rawLine.match(/^\[(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\]\s*(.*)/);
-      const timestamp = tsMatch ? tsMatch[1] : null;
-      const line = tsMatch ? tsMatch[2] : rawLine;
+  const info: LogInfo = {
+    containerName: null,
+    currentIteration: null,
+    maxIterations: null,
+    completedIterations: 0,
+    totalCost: 0,
+    finished: false,
+    finishReason: null,
+    lastError: null,
+    lastActivity: null,
+  };
 
-      if (timestamp) lastActivity = timestamp;
+  for (const rawLine of lines) {
+    if (!rawLine.trim()) continue;
 
-      const iterMatch = line.match(/^=== Iteration (\d+) ===/);
-      if (iterMatch) {
-        currentIteration = parseInt(iterMatch[1], 10);
-      }
+    const tsMatch = rawLine.match(/^\[(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\]\s*(.*)/);
+    const timestamp = tsMatch ? tsMatch[1] : null;
+    const line = tsMatch ? tsMatch[2] : rawLine;
 
-      if (line.startsWith("Max iterations:")) {
-        maxIterations = line.replace("Max iterations:", "").trim();
-      }
+    if (timestamp) info.lastActivity = timestamp;
 
-      if (line.startsWith("Committed iteration")) {
-        completedIterations++;
-      }
+    if (line.startsWith("Container:")) {
+      info.containerName = line.replace("Container:", "").trim();
+    }
 
-      const costMatch = line.match(/Cost: \$[\d.]+ \(total: \$([\d.]+)\)/);
-      if (costMatch) {
-        totalCost = parseFloat(costMatch[1]);
-      }
+    const iterMatch = line.match(/^=== Iteration (\d+) ===/);
+    if (iterMatch) {
+      info.currentIteration = parseInt(iterMatch[1], 10);
+    }
 
-      if (line.includes("Agent signaled <DONE/>")) {
-        finished = true;
-        finishReason = "done";
-      } else if (line.startsWith("Reached max iterations")) {
-        finished = true;
-        finishReason = "max iterations";
-      } else if (line.startsWith("Finished after")) {
-        finished = true;
-        if (!finishReason) finishReason = "finished";
-      }
+    if (line.startsWith("Max iterations:")) {
+      info.maxIterations = line.replace("Max iterations:", "").trim();
+    }
 
-      if (line.startsWith("Error running") || line.startsWith("[claude:err]")) {
-        lastError = line;
-      }
+    if (line.startsWith("Committed iteration")) {
+      info.completedIterations++;
+    }
+
+    const costMatch = line.match(/Cost: \$[\d.]+ \(total: \$([\d.]+)\)/);
+    if (costMatch) {
+      info.totalCost = parseFloat(costMatch[1]);
+    }
+
+    if (line.includes("Agent signaled <DONE/>")) {
+      info.finished = true;
+      info.finishReason = "done";
+    } else if (line.startsWith("Reached max iterations")) {
+      info.finished = true;
+      info.finishReason = "max iterations";
+    } else if (line.startsWith("Finished after")) {
+      info.finished = true;
+      if (!info.finishReason) info.finishReason = "finished";
+    }
+
+    if (line.startsWith("Error running") || line.startsWith("[claude:err]")) {
+      info.lastError = line;
     }
   }
 
-  return {
-    completedIterations,
-    currentIteration,
-    maxIterations,
-    totalCost,
-    finished,
-    finishReason,
-    lastError,
-    lastActivity,
-  };
+  return info;
 }
+
+// --- Container check ---
+
+function isContainerRunning(containerName: string): boolean {
+  try {
+    const out = execFileSync(
+      "docker",
+      ["ps", "--filter", `name=^${containerName}$`, "--format", "{{.Names}}"],
+      { encoding: "utf-8", timeout: 5000 },
+    ).trim();
+    return out === containerName;
+  } catch {
+    return false;
+  }
+}
+
+// --- Display helpers ---
 
 function formatTimeSince(isoTimestamp: string): string {
   const then = new Date(isoTimestamp).getTime();
@@ -141,129 +140,164 @@ function formatTimeSince(isoTimestamp: string): string {
   return `${Math.floor(diffSec / 86400)}d ago`;
 }
 
-function printStatus(status: TargetStatus): void {
-  const nameLabel = `${BOLD}${CYAN}${status.name}${RESET}`;
-
-  let stateLabel: string;
-  if (status.finished && status.finishReason === "done") {
-    stateLabel = `${BOLD}${GREEN}DONE${RESET}`;
-  } else if (status.finished) {
-    stateLabel = `${YELLOW}STOPPED${RESET} ${DIM}(${status.finishReason})${RESET}`;
-  } else if (status.containerRunning) {
-    stateLabel = `${BOLD}${GREEN}RUNNING${RESET}`;
-  } else if (status.logFile) {
-    stateLabel = `${RED}NOT RUNNING${RESET}`;
-  } else {
-    stateLabel = `${DIM}NO LOGS${RESET}`;
-  }
-
-  console.log(`\n${nameLabel}  ${stateLabel}`);
-
-  if (!status.logFile) {
-    console.log(`  ${DIM}No log files found in ${status.dir}/logs/${RESET}`);
-    return;
-  }
-
-  const iterInfo = status.maxIterations
-    ? `${status.completedIterations}/${status.maxIterations} iterations`
-    : `${status.completedIterations} iterations`;
-
-  console.log(`  ${DIM}Progress:${RESET}  ${iterInfo}`);
-
-  if (status.totalCost > 0) {
-    console.log(`  ${DIM}Cost:${RESET}      $${status.totalCost.toFixed(4)}`);
-  }
-
-  if (status.lastActivity) {
-    console.log(`  ${DIM}Last log:${RESET}  ${formatTimeSince(status.lastActivity)}`);
-  }
-
-  if (status.containerRunning && status.currentIteration != null) {
-    console.log(`  ${DIM}Working on:${RESET} iteration ${status.currentIteration}`);
-  }
-
-  if (status.lastError) {
-    console.log(`  ${RED}Last error: ${status.lastError}${RESET}`);
-  }
-
-  console.log(`  ${DIM}Log: ${status.logFile}${RESET}`);
+function stripTimestamp(rawLine: string): string {
+  const tsMatch = rawLine.match(/^\[\d{4}-\d{2}-\d{2}T[\d:.]+Z\]\s*(.*)/);
+  return tsMatch ? tsMatch[1] : rawLine;
 }
 
-function getAppStatus(appName: string, appsDir: string): TargetStatus {
-  const appDir = join(appsDir, appName);
-  const running = isContainerRunning(appName);
-  const logFiles = getIterationLogFiles(appDir);
-
-  if (logFiles.length > 0) {
-    const parsed = parseIterationLogs(logFiles);
-    return {
-      name: appName,
-      dir: appDir,
-      containerRunning: running,
-      logFile: logFiles[logFiles.length - 1],
-      ...parsed,
-    };
-  }
-
-  return {
-    name: appName,
-    dir: appDir,
-    containerRunning: running,
-    logFile: null,
-    completedIterations: 0,
-    currentIteration: null,
-    maxIterations: null,
-    totalCost: 0,
-    finished: false,
-    finishReason: null,
-    lastError: null,
-    lastActivity: null,
-  };
+function getLastNLines(logPath: string, n: number): string[] {
+  const content = readFileSync(logPath, "utf-8");
+  const lines = content.split("\n").filter((l) => l.trim());
+  return lines.slice(-n);
 }
 
-function listAppNames(appsDir: string): string[] {
-  let entries: string[];
-  try {
-    entries = readdirSync(appsDir);
-  } catch {
-    return [];
+function displayFormattedLines(rawLines: string[]): void {
+  for (const rawLine of rawLines) {
+    const line = stripTimestamp(rawLine);
+    const formatted = formatLogLine(line);
+    if (formatted) console.log(formatted);
   }
-  return entries
-    .filter((e) => {
-      try {
-        return statSync(join(appsDir, e)).isDirectory();
-      } catch {
-        return false;
+}
+
+// --- Tailing ---
+
+function tailLog(logPath: string): void {
+  let offset = existsSync(logPath) ? statSync(logPath).size : 0;
+  let partial = "";
+
+  const poll = setInterval(() => {
+    let size: number;
+    try {
+      size = statSync(logPath).size;
+    } catch {
+      return;
+    }
+
+    if (size <= offset) return;
+
+    const fd = openSync(logPath, "r");
+    const buf = Buffer.alloc(size - offset);
+    readSync(fd, buf, 0, buf.length, offset);
+    closeSync(fd);
+    offset = size;
+
+    const chunk = partial + buf.toString();
+    const lines = chunk.split("\n");
+    partial = lines.pop() ?? "";
+
+    for (const rawLine of lines) {
+      if (!rawLine.trim()) continue;
+      const line = stripTimestamp(rawLine);
+      const formatted = formatLogLine(line);
+      if (formatted) console.log(formatted);
+    }
+  }, 500);
+
+  // Also check if container is still running; stop tailing when it exits
+  const containerCheck = setInterval(() => {
+    // Re-read the log to check if it signals completion
+    try {
+      const content = readFileSync(logPath, "utf-8");
+      if (
+        content.includes("Agent signaled <DONE/>") ||
+        content.includes("Reached max iterations") ||
+        content.includes("Finished after")
+      ) {
+        // Flush remaining
+        if (partial.trim()) {
+          const line = stripTimestamp(partial);
+          const formatted = formatLogLine(line);
+          if (formatted) console.log(formatted);
+        }
+        clearInterval(poll);
+        clearInterval(containerCheck);
+
+        // The log file may have been renamed (worker-current.log -> worker-*.log),
+        // which means the run completed.
       }
-    })
-    .sort();
+    } catch {
+      // File may have been renamed
+      clearInterval(poll);
+      clearInterval(containerCheck);
+    }
+  }, 3000);
+
+  process.on("SIGINT", () => {
+    clearInterval(poll);
+    clearInterval(containerCheck);
+    process.exit(0);
+  });
 }
+
+// --- Main ---
 
 function main(): void {
   const projectRoot = resolve(__dirname, "..");
-  const appsDir = join(projectRoot, "apps");
-  const appName = process.argv[2];
+  const logsDir = join(projectRoot, "logs");
 
-  console.log(`${BOLD}Container Status${RESET}`);
+  const logFile = getLogFile(logsDir);
 
-  if (appName) {
-    // Show status for a single app
-    const status = getAppStatus(appName, appsDir);
-    printStatus(status);
-  } else {
-    // Show status for all apps
-    const appNames = listAppNames(appsDir);
-    if (appNames.length === 0) {
-      console.log(`\n${DIM}No apps found in ${appsDir}/${RESET}`);
-    } else {
-      for (const name of appNames) {
-        const status = getAppStatus(name, appsDir);
-        printStatus(status);
-      }
-    }
+  if (!logFile) {
+    console.log(`${DIM}No log files found in ${logsDir}/${RESET}`);
+    return;
   }
 
-  console.log();
+  const info = parseLogFile(logFile);
+  const running = info.containerName ? isContainerRunning(info.containerName) : false;
+
+  // --- Status header ---
+  let stateLabel: string;
+  if (info.finished && info.finishReason === "done") {
+    stateLabel = `${BOLD}${GREEN}DONE${RESET}`;
+  } else if (info.finished) {
+    stateLabel = `${YELLOW}STOPPED${RESET} ${DIM}(${info.finishReason})${RESET}`;
+  } else if (running) {
+    stateLabel = `${BOLD}${GREEN}RUNNING${RESET}`;
+  } else {
+    stateLabel = `${RED}NOT RUNNING${RESET}`;
+  }
+
+  console.log(`\n  ${stateLabel}`);
+
+  if (info.containerName) {
+    console.log(`  ${DIM}Container:${RESET} ${info.containerName}`);
+  }
+
+  const iterInfo = info.maxIterations
+    ? `${info.completedIterations}/${info.maxIterations} iterations`
+    : `${info.completedIterations} iterations`;
+  console.log(`  ${DIM}Progress:${RESET}  ${iterInfo}`);
+
+  if (info.totalCost > 0) {
+    console.log(`  ${DIM}Cost:${RESET}      $${info.totalCost.toFixed(4)}`);
+  }
+
+  if (info.lastActivity) {
+    console.log(`  ${DIM}Last log:${RESET}  ${formatTimeSince(info.lastActivity)}`);
+  }
+
+  if (running && info.currentIteration != null) {
+    console.log(`  ${DIM}Working on:${RESET} iteration ${info.currentIteration}`);
+  }
+
+  if (info.lastError) {
+    console.log(`  ${RED}Last error: ${info.lastError}${RESET}`);
+  }
+
+  console.log(`  ${DIM}Log: ${logFile}${RESET}`);
+
+  // --- Last 20 lines ---
+  console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
+  const lastLines = getLastNLines(logFile, 20);
+  displayFormattedLines(lastLines);
+
+  // --- Tail if running ---
+  if (running) {
+    console.log(`\n${DIM}Tailing log (Ctrl+C to stop)...${RESET}\n`);
+    tailLog(logFile);
+  } else {
+    console.log();
+  }
 }
 
 main();

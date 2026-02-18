@@ -1,7 +1,8 @@
 # Strategy
 
 You are writing a complete, detailed test specification for an app based on an initial app specification
-in `AppSpec.md`.
+in `AppSpec.md`. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug
+reports and must also be followed.
 
 ## Unpack Subtasks
 
@@ -35,7 +36,7 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 
 - Do not substitute easier-to-implement elements for what the mockup shows. If a table has columns that require joins or computed values, test for all those columns — do not replace them with simpler alternatives. If a mockup shows four filter controls, test for all four — not just the two easiest ones.
 
-- For every clickable element, the test entry must specify the exact navigation target or action result. Do not leave navigation destinations ambiguous.
+- For every clickable element, the test entry must specify the exact navigation target or action result. Do not leave navigation destinations ambiguous. For buttons that trigger external flows (OAuth, SSO, payment, etc.), specify how the flow opens (popup window, redirect, etc.) and what happens when it completes.
 
 - For any user action that mutates data, write test entries verifying that the change is persisted correctly and that exactly the right side effects occur (e.g. history/timeline entries are created, and only one per action — not duplicates).
 
@@ -45,7 +46,21 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 
 - Attachment functionality should support file uploads unless the mockup specifically indicates something else.
 
+- Import/upload dialogs must specify the expected data format (e.g., required columns, accepted values, file type). Test entries should verify that format documentation is visible to the user before they attempt the import.
+
 - State-changing actions must have tests that when performed other parts of the app update appropriately. For example:
 * If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry. Ensure this happens atomically to avoid duplicates from re-renders. Think through every field that can change and whether it needs history tracking.
 
 ## Tips
+
+- Mockup images hosted on utfs.io cannot be fetched via WebFetch. Download them with
+  `curl -L -o <local-path> <url>` and then use the Read tool to view the downloaded image files.
+- When starting from scratch with no existing plan.md, create and commit plan.md before moving on
+  to PlanPage tasks. This avoids losing the plan if the iteration runs out of turns.
+- The PlanPages task must produce output quickly. Do NOT spend excessive turns reading files
+  through Task/Explore agents or re-reading files you have already seen. Read AppSpec.md and the
+  mockup images directly, decide on pages/components, write docs/tests.md scaffolding, update
+  plan.md, commit, and exit. A zero-commit iteration is always a failure — prioritize writing
+  output over exhaustive exploration.
+- Download all mockup images in a single curl command, then read them all in parallel. Do not
+  interleave downloads and reads.
