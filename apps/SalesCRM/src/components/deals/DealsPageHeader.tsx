@@ -1,12 +1,13 @@
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, Download } from 'lucide-react'
 
 interface DealsPageHeaderProps {
   searchValue: string
   onSearchChange: (value: string) => void
   onCreateDeal: () => void
+  onImport: () => void
 }
 
-export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal }: DealsPageHeaderProps) {
+export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal, onImport }: DealsPageHeaderProps) {
   return (
     <div className="mb-6" data-testid="deals-page-header">
       <div className="flex items-center gap-2 text-[12px] text-text-muted mb-2" data-testid="deals-breadcrumb">
@@ -30,6 +31,14 @@ export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal }: D
               className="h-[34px] w-[220px] pl-8 pr-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent transition-colors duration-100"
             />
           </div>
+          <button
+            data-testid="deals-import-button"
+            onClick={onImport}
+            className="inline-flex items-center gap-1.5 h-[34px] px-3 text-[13px] font-medium text-text-secondary border border-border rounded-[5px] bg-surface hover:bg-hover transition-colors duration-100"
+          >
+            <Download size={14} strokeWidth={1.75} />
+            Import
+          </button>
           <button
             data-testid="create-new-deal-button"
             onClick={onCreateDeal}

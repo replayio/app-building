@@ -39,7 +39,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ### Components
 - **SidebarNavigation**: Left sidebar with nav links (Clients, Deals, Tasks)
-- **PageHeader**: "Clients" title with Import, Export, and "+ Add New Client" buttons
+- **PageHeader**: "Clients" title with Import, Import Contacts, Export, and "+ Add New Client" buttons
 - **SearchBar**: Text input for searching clients by name, tag, or contact
 - **FilterControls**: Dropdown filters for Status (All/Active/Inactive/Prospect/Churned), Tags (All/specific tags), Source (All/specific sources), and Sort (Recently Updated, Name A-Z, etc.)
 - **ClientsTable**: Tabular list with columns: Client Name, Type, Status (colored badge), Tags (badges), Primary Contact, Open Deals (count + value), Next Task
@@ -86,6 +86,16 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: User has opened the import dialog on /clients
 - Action: Upload a valid CSV file with headers "Name,Type,Status,Tags" and one data row "Import Test Corp,organization,active,Enterprise", then click Import
 - Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 client." The imported client "Import Test Corp" appears in the clients table after closing the dialog.
+
+**CLP-HDR-07: Import Contacts button opens contacts import dialog**
+- Initial: User is on /clients
+- Action: Click "Import Contacts" button (data-testid="import-contacts-button")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Contacts". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns including required "Name" and optional "Client Name", a file input (data-testid="csv-file-input"), and an Import button (data-testid="import-submit-button") that is disabled until a file is selected.
+
+**CLP-HDR-08: CSV import creates contacts from uploaded file**
+- Initial: User has opened the contacts import dialog on /clients and an existing client "Acme Corp" exists
+- Action: Upload a valid CSV file with headers "Name,Title,Email,Client Name" and one data row "Import Test Contact,Manager,test@example.com,Acme Corp", then click Import
+- Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 contact."
 
 **CLP-HDR-05: Export button triggers data export**
 - Initial: User is on /clients with existing clients
@@ -622,6 +632,16 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Fill deal name "New Platform Migration", client "Delta Systems", value "$180,000", owner "Chris B.", stage "Discovery", close date "2024-01-10", click Save
 - Expected: Modal closes. Deal appears in the table with correct values. Deal is persisted.
 
+**DLP-HDR-04: Import button opens import dialog with CSV format info**
+- Initial: User is on /deals
+- Action: Click "Import" button (data-testid="deals-import-button")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Deals". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns including required "Name" and "Client Name", a "Download CSV template" button (data-testid="download-template-button"), a file input (data-testid="csv-file-input"), and an Import button (data-testid="import-submit-button") that is disabled until a file is selected.
+
+**DLP-HDR-05: CSV import creates deals from uploaded file**
+- Initial: User has opened the import dialog on /deals and an existing client "Acme Corp" exists in the database
+- Action: Upload a valid CSV file with headers "Name,Client Name,Value,Stage" and one data row "Import Test Deal,Acme Corp,25000,proposal", then click Import
+- Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 deal." The imported deal "Import Test Deal" appears in the deals table after closing the dialog.
+
 #### SummaryCards
 
 **DLP-SUM-01: Summary cards display correct metrics**
@@ -949,6 +969,16 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Task creation modal is open
 - Action: Fill title "Finalize Q3 Marketing Plan", due "Today, 5:00 PM", priority "High", assignee "Sarah J. (PM)", client "Acme Corp", click Save
 - Expected: Modal closes. New task card appears in the list at appropriate position. Task persisted. Shows correct priority badge, title, due date, and assignee.
+
+**TLP-HDR-04: Import button opens import dialog with CSV format info**
+- Initial: User is on /tasks
+- Action: Click "Import" button (data-testid="tasks-import-button")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Tasks". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns including required "Title", a "Download CSV template" button (data-testid="download-template-button"), a file input (data-testid="csv-file-input"), and an Import button (data-testid="import-submit-button") that is disabled until a file is selected.
+
+**TLP-HDR-05: CSV import creates tasks from uploaded file**
+- Initial: User has opened the import dialog on /tasks
+- Action: Upload a valid CSV file with headers "Title,Priority,Due Date" and one data row "Import Test Task,high,2024-06-15", then click Import
+- Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 task." The imported task "Import Test Task" appears in the task list after closing the dialog.
 
 #### FilterBar
 

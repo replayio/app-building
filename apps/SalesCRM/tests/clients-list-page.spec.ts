@@ -207,6 +207,59 @@ test.describe('ClientsListPage - PageHeader', () => {
     // Verify download filename
     expect(download.suggestedFilename()).toBe('clients-export.csv');
   });
+
+  test('CLP-HDR-07: Import Contacts button opens contacts import dialog', async ({ page }) => {
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('import-contacts-button').click();
+
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Import Contacts')).toBeVisible();
+
+    // CSV column format specification table
+    const formatInfo = dialog.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo.getByText('CSV Column Format')).toBeVisible();
+    await expect(formatInfo.getByText('Contact name')).toBeVisible();
+
+    // File input
+    await expect(dialog.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button should be disabled when no file selected
+    await expect(dialog.getByTestId('import-submit-button')).toBeDisabled();
+
+    // Cancel button
+    await expect(dialog.getByTestId('import-cancel-button')).toBeVisible();
+  });
+
+  test('CLP-HDR-08: CSV import creates contacts from uploaded file', async ({ page }) => {
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('import-contacts-button').click();
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+
+    // Create a CSV file and upload it — associate with "Acme Corp" from seed data
+    const csvContent = 'Name,Title,Email,Client Name\nImport Test Contact,Manager,test@example.com,Acme Corp';
+    const fileInput = dialog.getByTestId('csv-file-input');
+    await fileInput.setInputFiles({
+      name: 'test-contacts-import.csv',
+      mimeType: 'text/csv',
+      buffer: Buffer.from(csvContent),
+    });
+
+    // Import button should now be enabled
+    await expect(dialog.getByTestId('import-submit-button')).toBeEnabled();
+    await dialog.getByTestId('import-submit-button').click();
+
+    // Wait for import result
+    const result = dialog.getByTestId('import-result');
+    await expect(result).toBeVisible();
+    await expect(result).toContainText('Successfully imported 1 contact');
+  });
 });
 
 test.describe('ClientsListPage - SearchBar', () => {

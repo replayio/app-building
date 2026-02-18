@@ -10,6 +10,7 @@ import { DealsPipelineView } from '../components/deals/DealsPipelineView'
 import { DealsPagination } from '../components/deals/DealsPagination'
 import { CreateDealModal } from '../components/deals/CreateDealModal'
 import { ConfirmDialog } from '../components/shared/ConfirmDialog'
+import { ImportDialog } from '../components/shared/ImportDialog'
 import type { DealStage } from '../types'
 
 export function DealsListPage() {
@@ -29,6 +30,7 @@ export function DealsListPage() {
   const [dateTo, setDateTo] = useState('')
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
+  const [importDialogOpen, setImportDialogOpen] = useState(false)
 
   const loadDeals = useCallback(() => {
     dispatch(
@@ -110,6 +112,7 @@ export function DealsListPage() {
         searchValue={searchInput}
         onSearchChange={setSearchInput}
         onCreateDeal={() => setCreateModalOpen(true)}
+        onImport={() => setImportDialogOpen(true)}
       />
 
       <DealsSummaryCards
@@ -184,6 +187,48 @@ export function DealsListPage() {
         onConfirm={handleDeleteDeal}
         onCancel={() => setDeleteConfirm(null)}
       />
+
+      {importDialogOpen && (
+        <ImportDialog
+          entityName="Deal"
+          entityNamePlural="Deals"
+          columns={DEAL_CSV_COLUMNS}
+          headerMap={DEAL_HEADER_MAP}
+          templateFilename="deals-import-template.csv"
+          templateExample="Enterprise License,Acme Corp,50000,proposal,Jane Smith,75,2024-06-15,active"
+          apiEndpoint="/.netlify/functions/deals?action=import"
+          apiBodyKey="deals"
+          onClose={() => setImportDialogOpen(false)}
+          onImported={loadDeals}
+        />
+      )}
     </div>
   )
+}
+
+const DEAL_CSV_COLUMNS = [
+  { name: 'Name', required: true, description: 'Deal name' },
+  { name: 'Client Name', required: true, description: 'Name of an existing client' },
+  { name: 'Value', required: false, description: 'Deal value in dollars (default: 0)' },
+  { name: 'Stage', required: false, description: '"lead", "qualification", "discovery", "proposal", "negotiation", "closed_won", or "closed_lost" (default: lead)' },
+  { name: 'Owner', required: false, description: 'Deal owner name' },
+  { name: 'Probability', required: false, description: 'Win probability 0-100 (default: 0)' },
+  { name: 'Expected Close Date', required: false, description: 'Date in YYYY-MM-DD format' },
+  { name: 'Status', required: false, description: '"active", "on_track", "at_risk", or "stalled" (default: active)' },
+]
+
+const DEAL_HEADER_MAP: Record<string, string> = {
+  'name': 'name',
+  'client name': 'client_name',
+  'client_name': 'client_name',
+  'client': 'client_name',
+  'value': 'value',
+  'stage': 'stage',
+  'owner': 'owner',
+  'probability': 'probability',
+  'expected close date': 'expected_close_date',
+  'expected_close_date': 'expected_close_date',
+  'close date': 'expected_close_date',
+  'close_date': 'expected_close_date',
+  'status': 'status',
 }

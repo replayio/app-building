@@ -79,6 +79,71 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
     const pageContent = await page.textContent('body');
     expect(pageContent).toContain(taskTitle);
   });
+
+  test('TLP-HDR-04: Import button opens import dialog with CSV format info', async ({ page }) => {
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('tasks-import-button').click();
+
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Import Tasks')).toBeVisible();
+
+    // CSV column format specification table
+    const formatInfo = dialog.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo.getByText('CSV Column Format')).toBeVisible();
+    await expect(formatInfo.getByText('Task title')).toBeVisible();
+
+    // Download template button
+    await expect(dialog.getByTestId('download-template-button')).toBeVisible();
+
+    // File input
+    await expect(dialog.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button should be disabled when no file selected
+    await expect(dialog.getByTestId('import-submit-button')).toBeDisabled();
+
+    // Cancel button
+    await expect(dialog.getByTestId('import-cancel-button')).toBeVisible();
+  });
+
+  test('TLP-HDR-05: CSV import creates tasks from uploaded file', async ({ page }) => {
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('tasks-import-button').click();
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+
+    // Create a CSV file and upload it
+    const csvContent = 'Title,Priority,Due Date\nImport Test Task,high,2024-06-15';
+    const fileInput = dialog.getByTestId('csv-file-input');
+    await fileInput.setInputFiles({
+      name: 'test-tasks-import.csv',
+      mimeType: 'text/csv',
+      buffer: Buffer.from(csvContent),
+    });
+
+    // Import button should now be enabled
+    await expect(dialog.getByTestId('import-submit-button')).toBeEnabled();
+    await dialog.getByTestId('import-submit-button').click();
+
+    // Wait for import result
+    const result = dialog.getByTestId('import-result');
+    await expect(result).toBeVisible();
+    await expect(result).toContainText('Successfully imported 1 task');
+
+    // Close dialog
+    await dialog.getByTestId('import-cancel-button').click();
+    await expect(dialog).not.toBeVisible();
+
+    // Verify imported task appears in the list
+    await expect(async () => {
+      await expect(page.getByText('Import Test Task')).toBeVisible();
+    }).toPass({ timeout: 5000 });
+  });
 });
 
 test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {

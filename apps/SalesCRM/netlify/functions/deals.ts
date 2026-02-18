@@ -133,6 +133,76 @@ async function handler(req: OptionalAuthRequest) {
     return Response.json(rows[0])
   }
 
+  // POST /deals?action=import (bulk CSV import)
+  if (req.method === 'POST' && !dealId && url.searchParams.get('action') === 'import') {
+    const body = await req.json() as {
+      deals: Array<{
+        name: string
+        client_name?: string
+        value?: string
+        stage?: string
+        owner?: string
+        probability?: string
+        expected_close_date?: string
+        status?: string
+      }>
+    }
+
+    const results = { imported: 0, errors: [] as string[] }
+    const validStages = ['lead', 'qualification', 'discovery', 'proposal', 'negotiation', 'closed_won', 'closed_lost']
+    const validStatuses = ['active', 'on_track', 'at_risk', 'stalled']
+
+    for (let i = 0; i < body.deals.length; i++) {
+      const row = body.deals[i]
+      if (!row.name?.trim()) {
+        results.errors.push(`Row ${i + 1}: Name is required`)
+        continue
+      }
+      if (!row.client_name?.trim()) {
+        results.errors.push(`Row ${i + 1}: Client Name is required`)
+        continue
+      }
+      // Look up client by name
+      const clientRows = await sql`SELECT id FROM clients WHERE LOWER(name) = LOWER(${row.client_name.trim()}) LIMIT 1`
+      if (clientRows.length === 0) {
+        results.errors.push(`Row ${i + 1}: Client "${row.client_name.trim()}" not found`)
+        continue
+      }
+      const clientId = clientRows[0].id
+      const stage = row.stage?.trim().toLowerCase() || 'lead'
+      if (!validStages.includes(stage)) {
+        results.errors.push(`Row ${i + 1}: Stage must be one of: ${validStages.join(', ')}`)
+        continue
+      }
+      const status = row.status?.trim().toLowerCase() || 'active'
+      if (!validStatuses.includes(status)) {
+        results.errors.push(`Row ${i + 1}: Status must be one of: ${validStatuses.join(', ')}`)
+        continue
+      }
+      const value = row.value ? parseFloat(row.value) : 0
+      if (isNaN(value)) {
+        results.errors.push(`Row ${i + 1}: Value must be a number`)
+        continue
+      }
+      const probability = row.probability ? parseInt(row.probability) : 0
+      if (isNaN(probability)) {
+        results.errors.push(`Row ${i + 1}: Probability must be a number`)
+        continue
+      }
+      try {
+        await sql`
+          INSERT INTO deals (name, client_id, value, stage, owner, probability, expected_close_date, status)
+          VALUES (${row.name.trim()}, ${clientId}::uuid, ${value}, ${stage}, ${row.owner?.trim() || null}, ${probability}, ${row.expected_close_date?.trim() || null}, ${status})
+        `
+        results.imported++
+      } catch (err) {
+        results.errors.push(`Row ${i + 1}: ${err instanceof Error ? err.message : 'Database error'}`)
+      }
+    }
+
+    return Response.json(results, { status: 200 })
+  }
+
   // POST /deals — create a new deal
   if (req.method === 'POST' && !dealId) {
     const body = await req.json() as {

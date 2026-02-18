@@ -89,6 +89,71 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     const tableContent = await page.getByTestId('deals-table').textContent();
     expect(tableContent).toContain(dealName);
   });
+
+  test('DLP-HDR-04: Import button opens import dialog with CSV format info', async ({ page }) => {
+    await page.goto('/deals');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('deals-import-button').click();
+
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Import Deals')).toBeVisible();
+
+    // CSV column format specification table
+    const formatInfo = dialog.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo.getByText('CSV Column Format')).toBeVisible();
+    await expect(formatInfo.getByText('Deal name')).toBeVisible();
+
+    // Download template button
+    await expect(dialog.getByTestId('download-template-button')).toBeVisible();
+
+    // File input
+    await expect(dialog.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button should be disabled when no file selected
+    await expect(dialog.getByTestId('import-submit-button')).toBeDisabled();
+
+    // Cancel button
+    await expect(dialog.getByTestId('import-cancel-button')).toBeVisible();
+  });
+
+  test('DLP-HDR-05: CSV import creates deals from uploaded file', async ({ page }) => {
+    await page.goto('/deals');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('deals-import-button').click();
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+
+    // Create a CSV file and upload it — use "Acme Corp" which exists in seed data
+    const csvContent = 'Name,Client Name,Value,Stage\nImport Test Deal,Acme Corp,25000,proposal';
+    const fileInput = dialog.getByTestId('csv-file-input');
+    await fileInput.setInputFiles({
+      name: 'test-deals-import.csv',
+      mimeType: 'text/csv',
+      buffer: Buffer.from(csvContent),
+    });
+
+    // Import button should now be enabled
+    await expect(dialog.getByTestId('import-submit-button')).toBeEnabled();
+    await dialog.getByTestId('import-submit-button').click();
+
+    // Wait for import result
+    const result = dialog.getByTestId('import-result');
+    await expect(result).toBeVisible();
+    await expect(result).toContainText('Successfully imported 1 deal');
+
+    // Close dialog
+    await dialog.getByTestId('import-cancel-button').click();
+    await expect(dialog).not.toBeVisible();
+
+    // Verify imported deal appears in the table
+    await expect(async () => {
+      await expect(page.getByText('Import Test Deal')).toBeVisible();
+    }).toPass({ timeout: 5000 });
+  });
 });
 
 test.describe('DealsListPage - SummaryCards (DLP-SUM)', () => {

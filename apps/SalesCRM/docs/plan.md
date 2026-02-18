@@ -349,10 +349,10 @@
   - [x] fixBugReport.md: UpdateTestsCSVImportFormat: Updated CLP-HDR-04 test spec and test to verify CSV format info table, download template button, file input, and disabled import button. Added CLP-HDR-06 test spec and test for end-to-end CSV import (upload file → verify import result → verify client appears in table). All tests pass.
   - [x] fixBugReport.md: UpdateRevisionsCSVImportFormat: Recorded spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugCSVImportFormat: Bug moved to Unreviewed in bugReports.md
-  - [ ] fixBugReport.md: FixBugCSVImportAllEntities: Add CSV import support for deals, contacts/individuals, and tasks
-  - [ ] fixBugReport.md: UpdateTestsCSVImportAllEntities: Update spec and tests for multi-entity CSV import
-  - [ ] fixBugReport.md: UpdateRevisionsCSVImportAllEntities: Record spec change in AppRevisions.md
-  - [ ] fixBugReport.md: ResolveBugCSVImportAllEntities: Move bug to Unreviewed in bugReports.md
+  - [x] fixBugReport.md: FixBugCSVImportAllEntities: Added CSV import for deals (Import button on deals page, POST /deals?action=import with client lookup), tasks (Import button on tasks page, POST /tasks?action=import), and contacts (Import Contacts button on clients page, POST /individuals?action=import with client association). Extracted shared ImportDialog component.
+  - [x] fixBugReport.md: UpdateTestsCSVImportAllEntities: Added DLP-HDR-04/05, TLP-HDR-04/05, CLP-HDR-07/08 test specs and tests. All 6 new tests pass.
+  - [x] fixBugReport.md: UpdateRevisionsCSVImportAllEntities: Recorded spec change in AppRevisions.md
+  - [x] fixBugReport.md: ResolveBugCSVImportAllEntities: Bug moved to Unreviewed in bugReports.md
   - [ ] fixBugReport.md: FixBugSettingsPage: Add settings page with import/export and webhook configuration (Zapier/n8n/Discord)
   - [ ] fixBugReport.md: UpdateTestsSettingsPage: Update spec and tests for settings page
   - [ ] fixBugReport.md: UpdateRevisionsSettingsPage: Record spec change in AppRevisions.md
