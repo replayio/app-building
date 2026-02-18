@@ -139,10 +139,9 @@ test.describe('SettingsPage - WebhookSection', () => {
     // Wait for the webhook to appear in the list
     await expect(page.getByTestId('webhook-section')).toContainText('Temp Webhook');
 
-    // Find and click the delete button for this webhook
-    // The webhook items have dynamic IDs, so we find the one containing our text
-    const webhookSection = page.getByTestId('webhook-section');
-    const deleteButton = webhookSection.locator('[data-testid^="webhook-delete-"]').first();
+    // Find the webhook item containing "Temp Webhook" and click its delete button
+    const webhookItem = page.locator('[data-testid^="webhook-item-"]', { hasText: 'Temp Webhook' });
+    const deleteButton = webhookItem.locator('[data-testid^="webhook-delete-"]');
     await deleteButton.click();
 
     // Confirm dialog should appear

@@ -361,8 +361,15 @@
   - [x] fixBugReport.md: UpdateTestsUsersPage: Added UsersListPage and UserDetailPage sections to tests.md (ULP-HDR-01/02, UDP-HDR-01/02, UDP-DL-01, UDP-TSK-01). Updated CLP-NAV-01/02 for Team nav item. Created users-page.spec.ts with 6 tests. All pass.
   - [x] fixBugReport.md: UpdateRevisionsUsersPage: Recorded spec change in AppRevisions.md
   - [x] fixBugReport.md: ResolveBugUsersPage: Bug moved to Unreviewed in bugReports.md
-- [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
-- [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
+- [x] reviewBugReport.md: UnpackReviewBugReport: Classified and reviewed 4 bugs — 3 no problem stage (users page=new functionality, settings page=new functionality, CSV import all entities=new functionality), 1 testSpec.md (CSV import format — test spec didn't require format documentation in import dialog). Added 1 new directive to testSpec.md. All bugs moved to Finished.
+- [x] checkDirectives.md: UnpackCheckDirectives: Checked new/changed code from Round 9
+  - [x] checkDirectives.md: CheckTestSpecNewPages: Checked test spec for Settings, Users, CSV import entries — minor gaps in test coverage for activity section and some modal details (acceptable for new functionality)
+  - [x] checkDirectives.md: CheckComponentsNewPages: Violations found — 6 instances of empty string not converted to null for DATE/UUID columns in CreateDealModal (1), AddDealModal (1), CreateTaskModal (3), EditTaskModal (1)
+  - [x] checkDirectives.md: CheckTestsNewPages: Violations found — 3 uses of `.first()` to resolve ambiguity (STP-WH-04, UDP-DL-01, UDP-TSK-01), 2 missing URL assertions (UDP-DL-01, UDP-TSK-01)
+  - [x] checkDirectives.md: FixViolationEmptyStringNull: Fixed 6 empty-string-to-null violations — CreateDealModal (expected_close_date), AddDealModal (expected_close_date), CreateTaskModal (due_date, client_id, deal_id), EditTaskModal (due_date)
+  - [x] checkDirectives.md: FixViolationTestPatterns: Fixed `.first()` usage in STP-WH-04 (target specific webhook item), UDP-DL-01 and UDP-TSK-01 (use user-card- locator instead of parent traversal). Added URL assertions to UDP-DL-01 and UDP-TSK-01.
+  - [x] checkDirectives.md: RunTests: All 209 tests pass
+  - [x] checkDirectives.md: DocumentFix: Documented fixes in plan.md
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
 - [ ] deployment.md: UnpackDeployment: Unpack subtasks
 

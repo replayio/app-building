@@ -96,11 +96,13 @@ test.describe('UserDetailPage - Deals', () => {
 
     // Find and click the Sarah Lee card
     const grid = page.getByTestId('users-grid');
-    const sarahCard = grid.locator('[data-testid^="user-name-"]', { hasText: 'Sarah Lee' }).first();
+    const sarahCard = grid.locator('[data-testid^="user-card-"]', { hasText: 'Sarah Lee' });
     await expect(sarahCard).toBeVisible();
-    // Click the parent card
-    await sarahCard.locator('..').locator('..').click();
+    await sarahCard.click();
     await page.waitForLoadState('networkidle');
+
+    // Should navigate to user detail page
+    await expect(page).toHaveURL(/\/users\/[a-f0-9-]+/);
 
     // Deals section should show her deals
     const dealsSection = page.getByTestId('user-deals-section');
@@ -115,13 +117,15 @@ test.describe('UserDetailPage - Tasks', () => {
     await page.goto('/users');
     await page.waitForLoadState('networkidle');
 
-    // Find Sarah J.
+    // Find and click Sarah J.'s card
     const grid = page.getByTestId('users-grid');
-    const sarahJCard = grid.locator('[data-testid^="user-name-"]', { hasText: 'Sarah J.' }).first();
+    const sarahJCard = grid.locator('[data-testid^="user-card-"]', { hasText: 'Sarah J.' });
     await expect(sarahJCard).toBeVisible();
-    // Click the parent card
-    await sarahJCard.locator('..').locator('..').click();
+    await sarahJCard.click();
     await page.waitForLoadState('networkidle');
+
+    // Should navigate to user detail page
+    await expect(page).toHaveURL(/\/users\/[a-f0-9-]+/);
 
     // Tasks section should show her tasks
     const tasksSection = page.getByTestId('user-tasks-section');
