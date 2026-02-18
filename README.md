@@ -39,7 +39,8 @@ Key things to watch out for:
 * Best suited for CRUD and API-calling apps up to a medium level of complexity.
   Overly complicated or specialized apps will not work as well yet.
 * Make sure to get a Replay API key and configure it. The agent will use Replay to identify
-  and debug problems it encounters in tests or the deployed app.
+  and debug problems it encounters in tests or the deployed app. These tasks become much
+  easier and reliably within the agent's capabilities.
 
 ## Setup
 
