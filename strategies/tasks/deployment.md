@@ -121,3 +121,11 @@ Read these skills to learn how to use these:
 
 https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-playwright/SKILL.md
 https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-mcp/SKILL.md
+
+## Tips
+
+- Do NOT use the `replayio record <url>` CLI to create recordings of the deployed app. The CLI
+  launches the Replay browser directly, but the recording driver requires `libcrypto.so.1.1`
+  (OpenSSL 1.1) loaded via `LD_LIBRARY_PATH`, and the CLI doesn't set this up. Use the Playwright
+  deployment test config instead (`playwright.deployment.config.ts`), which handles the Replay
+  browser setup correctly via `executablePath` and environment variables.
