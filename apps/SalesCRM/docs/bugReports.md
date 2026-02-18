@@ -4,25 +4,32 @@
 
 ## Unreviewed
 
+## Finished
+
 2/18/2026: There should be a users page where you can see everyone that has an account, and a user detail page where you can see their activity and what they are managing. Everywhere in the app that refers to users with accounts should allow selecting them from a dropdown (e.g., deal owner, task assignee).
 - Before: 1e5a771
 - After: (this commit)
 - Fix: Added Team page (UsersListPage at /users) with user card grid showing avatar, name, email, active deals, and open tasks. Added User Detail page (UserDetailPage at /users/:userId) with user info, summary stats, owned deals list, assigned tasks list, and recent activity. Created /.netlify/functions/users API (GET list with stats, GET detail with deals/tasks/activity). Seeded 9 team members matching existing owner/assignee names. Added "Team" sidebar nav item. Replaced free-form text inputs for deal owner and task assignee with FilterSelect dropdowns populated from users API in CreateDealModal, AddDealModal, DealDetailHeader, CreateTaskModal, and EditTaskModal. Added 6 Playwright tests (ULP-HDR-01/02, UDP-HDR-01/02, UDP-DL-01, UDP-TSK-01) and updated CLP-NAV-01/02.
+- Problem stage: none (new functionality — users/team management was not part of the original spec)
 
 2/18/2026: Add a settings page and move the import/export buttons there. The settings page should also have webhook settings where you can configure webhooks to send to Zapier / n8n / Discord on different events selected from a list (e.g., new client created, deal stage changed, task completed, etc.).
 - Before: 1e5a771
 - After: (this commit)
 - Fix: Added Settings page at /settings with sidebar navigation link. Import & Export section has buttons to import clients, deals, tasks, and contacts from CSV, and export clients, deals, and tasks to CSV (reusing shared ImportDialog). Webhooks section has full CRUD — add/edit modal with name, URL, and event checkboxes (10 events: client_created, client_updated, deal_created, deal_stage_changed, deal_closed_won, deal_closed_lost, task_created, task_completed, contact_created, note_added); enable/disable toggle; delete with confirmation. Added webhooks database table and /.netlify/functions/webhooks API endpoint. Sidebar now includes Settings nav item. Added 7 new Playwright tests (STP-HDR-01, STP-IE-01/02, STP-WH-01/02/03/04) and updated CLP-NAV-01/02.
+- Problem stage: none (new functionality — settings page with webhooks was not part of the original spec)
 
 2/18/2026: Import from CSV needs to support importing deals, contacts, and tasks as well — not just clients.
 - Before: cc0d9ad
 - After: (this commit)
 - Fix: Added CSV import support for deals, contacts/individuals, and tasks. Deals page has Import button with bulk import endpoint (POST /deals?action=import) supporting Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status columns with client lookup by name. Tasks page has Import button with bulk import endpoint (POST /tasks?action=import) supporting Title, Description, Due Date, Priority, Client Name, Assignee columns. Clients page has new "Import Contacts" button with bulk import endpoint (POST /individuals?action=import) supporting Name, Title, Email, Phone, Location, Client Name columns that creates individuals and optionally associates with clients. Extracted shared ImportDialog component for reuse. Added 6 new Playwright tests (DLP-HDR-04/05, TLP-HDR-04/05, CLP-HDR-07/08).
+- Problem stage: none (new functionality — CSV import for deals/contacts/tasks was not part of the original spec)
 
 2/18/2026: CSV import functionality should specify the required format. The import from CSV button doesn't tell the user what columns or format the CSV file needs to be in.
 - Before: cc0d9ad
 - After: (this commit)
 - Fix: Added CSV column format specification table to import dialog showing all 9 supported columns with required/optional indicators and value descriptions. Added "Download CSV template" button. Implemented CSV parsing with proper quote handling, header mapping, and per-row validation errors. Backend bulk import endpoint validates types, statuses, and required fields.
+- Problem stage: testSpec.md — the test spec for the import dialog (CLP-HDR-04) only required "an import dialog/modal opens allowing the user to upload client data" without specifying that the dialog should show the expected CSV format or required columns
+- Directive: Added directive to testSpec.md: import/upload dialogs must specify the expected data format, and test entries should verify that format documentation is visible to the user
 
 2/17/2026: Sign-in flow doesn't work — after signing up with email/password, attempting to sign in returns "invalid login credentials".
 - The shared Supabase auth server at `auth.nut.new` has email confirmation enabled. When `auth.signUp()` is called, it creates the user but does not return a session (because the email is unverified). The user then tries to sign in with `auth.signInWithPassword()`, which fails because the account is unconfirmed.
@@ -38,8 +45,6 @@
 
 2/17/2026: Login flow doesn't work — clicking "Sign in with Google" opens the OAuth popup and the Google sign-in flow completes, but after returning the user is still not logged in with no apparent errors.
 - Superseded by the Supabase removal above. The entire OAuth flow has been removed.
-
-## Finished
 
 2/17/2026: Can't login to the app — the SSO popup opens in the same window as the app instead of a new window, breaking the login flow. Authentication should be optional — the app should load and be usable without logging in, with database access not requiring auth. There should be a current user info area in the upper left that shows the logged-in user and allows for logging in.
 - Analysis: docs/bugs/SSOAuthOptional.md

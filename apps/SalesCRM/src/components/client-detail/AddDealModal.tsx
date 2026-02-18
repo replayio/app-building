@@ -34,7 +34,7 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
       stage,
       owner,
       probability: parseInt(probability) || 0,
-      expected_close_date: closeDate,
+      expected_close_date: closeDate || null,
     })
     setName('')
     setValue('')

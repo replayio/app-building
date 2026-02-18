@@ -56,12 +56,12 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
     onSave({
       title: title.trim(),
       description: description.trim(),
-      due_date: dueDate,
+      due_date: dueDate || null,
       priority,
       assignee_name: assigneeName.trim(),
       assignee_role: assigneeRole.trim(),
-      client_id: clientId,
-      deal_id: dealId,
+      client_id: clientId || null,
+      deal_id: dealId || null,
     })
   }
 

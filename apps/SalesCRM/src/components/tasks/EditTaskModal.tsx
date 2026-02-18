@@ -45,7 +45,7 @@ export function EditTaskModal({ open, task, availableUsers = [], onClose, onSave
     onSave(task.id, {
       title: title.trim(),
       description: description.trim(),
-      due_date: dueDate,
+      due_date: dueDate || null,
       priority,
       assignee_name: assigneeName.trim(),
       assignee_role: assigneeRole.trim(),

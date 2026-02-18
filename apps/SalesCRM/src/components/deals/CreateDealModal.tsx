@@ -44,7 +44,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
       value: parseFloat(value) || 0,
       stage,
       owner: owner.trim(),
-      expected_close_date: closeDate,
+      expected_close_date: closeDate || null,
     })
     setName('')
     setClientId('')
