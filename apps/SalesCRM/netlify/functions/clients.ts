@@ -108,6 +108,54 @@ async function handler(req: OptionalAuthRequest) {
     })
   }
 
+  // POST /clients?action=import (bulk CSV import)
+  if (req.method === 'POST' && url.searchParams.get('action') === 'import') {
+    const body = await req.json() as {
+      clients: Array<{
+        name: string
+        type?: string
+        status?: string
+        tags?: string
+        source_type?: string
+        source_detail?: string
+        campaign?: string
+        channel?: string
+        date_acquired?: string
+      }>
+    }
+
+    const results = { imported: 0, errors: [] as string[] }
+    for (let i = 0; i < body.clients.length; i++) {
+      const row = body.clients[i]
+      if (!row.name?.trim()) {
+        results.errors.push(`Row ${i + 1}: Name is required`)
+        continue
+      }
+      const type = row.type?.trim().toLowerCase() || 'organization'
+      if (type !== 'organization' && type !== 'individual') {
+        results.errors.push(`Row ${i + 1}: Type must be "organization" or "individual"`)
+        continue
+      }
+      const status = row.status?.trim().toLowerCase() || 'prospect'
+      if (!['active', 'inactive', 'prospect', 'churned'].includes(status)) {
+        results.errors.push(`Row ${i + 1}: Status must be one of: active, inactive, prospect, churned`)
+        continue
+      }
+      const tags = row.tags ? row.tags.split(';').map(t => t.trim()).filter(Boolean) : []
+      try {
+        await sql`
+          INSERT INTO clients (name, type, status, tags, source_type, source_detail, campaign, channel, date_acquired)
+          VALUES (${row.name.trim()}, ${type}, ${status}, ${tags}, ${row.source_type?.trim() || null}, ${row.source_detail?.trim() || null}, ${row.campaign?.trim() || null}, ${row.channel?.trim() || null}, ${row.date_acquired?.trim() || null})
+        `
+        results.imported++
+      } catch (err) {
+        results.errors.push(`Row ${i + 1}: ${err instanceof Error ? err.message : 'Database error'}`)
+      }
+    }
+
+    return Response.json(results, { status: 200 })
+  }
+
   // POST /clients
   if (req.method === 'POST') {
     const body = await req.json() as {
