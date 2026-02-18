@@ -83,12 +83,12 @@ export function TasksListPage() {
   function handleCreateTask(data: {
     title: string
     description: string
-    due_date: string
+    due_date: string | null
     priority: TaskPriority
     assignee_name: string
     assignee_role: string
-    client_id: string
-    deal_id: string
+    client_id: string | null
+    deal_id: string | null
   }) {
     const payload: Record<string, unknown> = { title: data.title }
     if (data.description) payload.description = data.description
@@ -108,7 +108,7 @@ export function TasksListPage() {
   function handleEditTask(taskId: string, data: {
     title: string
     description: string
-    due_date: string
+    due_date: string | null
     priority: TaskPriority
     assignee_name: string
     assignee_role: string

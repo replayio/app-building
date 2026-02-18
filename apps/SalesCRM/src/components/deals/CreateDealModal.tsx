@@ -13,7 +13,7 @@ interface CreateDealModalProps {
     value: number
     stage: DealStage
     owner: string
-    expected_close_date: string
+    expected_close_date: string | null
   }) => void
 }
 
