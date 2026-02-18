@@ -67,6 +67,20 @@ Unpack the task for implementing a page into the following:
 
 ## Tips
 
+- Production builds must use `sourcemap: true`, `minify: false`, and the React development build in
+  `vite.config.ts` so that Replay recordings show readable source code with full React component names
+  and developer warnings. Configure this with:
+  ```ts
+  build: {
+    sourcemap: true,
+    minify: false,
+  },
+  define: {
+    'process.env.NODE_ENV': '"development"',
+  },
+  ```
+  The `define` setting forces React to use its development bundle in production builds, which preserves
+  component display names and enables React DevTools support in Replay recordings. Never remove these settings.
 - When scaffolding a new Vite project, the target directory must be empty. Scaffold in a temp directory
   (`/tmp/<name>`) and copy the needed files to the app directory.
 - Plan the complete data flow before writing code: what the backend endpoint returns, what the Redux

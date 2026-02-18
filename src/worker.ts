@@ -1,21 +1,9 @@
 import { spawn, execFileSync } from "child_process";
-import { mkdirSync, writeFileSync, appendFileSync, renameSync, existsSync, statSync } from "fs";
-import { join } from "path";
+import { createLogFile, archiveCurrentLog } from "./log";
 
 const LOGS_DIR = "/repo/logs";
 const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
 const PERFORM_TASKS_PROMPT = "Read /repo/strategies/tasks/performTasks.md and follow the instructions exactly.";
-
-function formatTimestamp(date: Date): string {
-  return date.toISOString().replace(/[:.]/g, "-");
-}
-
-function createLogger(logFilePath: string) {
-  return (message: string): void => {
-    const line = `[${new Date().toISOString()}] ${message}\n`;
-    appendFileSync(logFilePath, line);
-  };
-}
 
 function getGitRevision(): string {
   try {
@@ -145,8 +133,6 @@ function buildClaudeArgs(prompt: string): string[] {
 // --- Main loop ---
 
 async function runLoop(): Promise<void> {
-  mkdirSync(LOGS_DIR, { recursive: true });
-
   const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
   let iteration = 0;
   let totalCost = 0;
@@ -158,14 +144,7 @@ async function runLoop(): Promise<void> {
       break;
     }
 
-    // Preserve any leftover worker-current.log from a crashed run
-    const currentLogFile = join(LOGS_DIR, "worker-current.log");
-    if (existsSync(currentLogFile) && statSync(currentLogFile).size > 0) {
-      const ts = formatTimestamp(new Date());
-      renameSync(currentLogFile, join(LOGS_DIR, `worker-${ts}.log`));
-    }
-    writeFileSync(currentLogFile, "");
-    const log = createLogger(currentLogFile);
+    const log = createLogFile(LOGS_DIR);
 
     log(`Container: ${containerName}`);
     log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
@@ -207,9 +186,7 @@ async function runLoop(): Promise<void> {
     log(`Final revision: ${getGitRevision()}`);
 
     // Rename log to timestamped file so future iterations can review it
-    const timestamp = formatTimestamp(new Date());
-    const finalLogFile = join(LOGS_DIR, `worker-${timestamp}.log`);
-    renameSync(currentLogFile, finalLogFile);
+    archiveCurrentLog(LOGS_DIR);
 
     if (response.result && response.result.includes("<DONE/>")) {
       break;

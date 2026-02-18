@@ -1,115 +1,117 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
-import { auth } from '../lib/auth'
-import { useGetUserInfoQuery } from '../store/authSlice'
-import type { Session } from '@supabase/supabase-js'
+import { getToken, setToken, removeToken } from '../lib/auth'
 
-// The Supabase storage key — matches the one in auth.ts
-const supabaseUrl = import.meta.env.VITE_AUTH_SUPABASE_URL
-const SUPABASE_STORAGE_KEY = `sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`
+interface AuthUser {
+  id: string
+  email: string
+  name: string
+  avatar_url: string
+}
+
+interface AuthResult {
+  error: string | null
+}
 
 interface AuthContextValue {
   isLoggedIn: boolean
   loading: boolean
-  user: { id: string; email: string; name: string; avatar_url: string } | null
-  signIn: () => void
-  signOut: () => Promise<void>
+  user: AuthUser | null
+  signIn: (email: string, password: string) => Promise<AuthResult>
+  signUp: (email: string, password: string) => Promise<AuthResult>
+  signOut: () => void
 }
 
 const AuthContext = createContext<AuthContextValue>({
   isLoggedIn: false,
   loading: true,
   user: null,
-  signIn: () => {},
-  signOut: async () => {},
+  signIn: async () => ({ error: null }),
+  signUp: async () => ({ error: null }),
+  signOut: () => {},
 })
 
-/**
- * Check localStorage for a session token (used as fallback in test mode
- * where tokens aren't set via real Supabase auth).
- */
-function getStoredSession(): boolean {
-  try {
-    const stored = localStorage.getItem(SUPABASE_STORAGE_KEY)
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      return !!parsed.access_token
-    }
-  } catch {
-    // ignore
-  }
-  return false
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null)
-  const [hasStoredToken, setHasStoredToken] = useState(false)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // On mount, check if we have a stored token and fetch user info
   useEffect(() => {
-    auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s)
-      if (!s) {
-        setHasStoredToken(getStoredSession())
-      }
+    const token = getToken()
+    if (!token) {
       setLoading(false)
-    })
-
-    const { data: { subscription } } = auth.onAuthStateChange((_event, s) => {
-      setSession(s)
-      if (!s) {
-        setHasStoredToken(getStoredSession())
-      }
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  // Listen for auth-callback messages from popup window
-  useEffect(() => {
-    function handleMessage(event: MessageEvent) {
-      if (event.origin !== window.location.origin) return
-      if (event.data?.type === 'auth-callback') {
-        // Popup completed auth — refresh session
-        auth.getSession().then(({ data: { session: s } }) => {
-          setSession(s)
-          if (!s) {
-            setHasStoredToken(getStoredSession())
-          }
-        })
-      }
+      return
     }
-    window.addEventListener('message', handleMessage)
-    return () => window.removeEventListener('message', handleMessage)
+
+    fetch('/.netlify/functions/auth?action=me')
+      .then((res) => {
+        if (res.ok) return res.json()
+        removeToken()
+        return null
+      })
+      .then((data) => {
+        if (data && data.id) {
+          setUser(data)
+        }
+      })
+      .catch(() => {
+        removeToken()
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [])
 
-  const isLoggedIn = !!session || hasStoredToken
-  const { data: userInfo } = useGetUserInfoQuery(undefined, { skip: !isLoggedIn })
-
-  const signIn = useCallback(() => {
-    const callbackUrl = `${window.location.origin}/auth/callback`
-    const authUrl = `https://auth.nut.new/functions/v1/oauth/start?provider=google&redirect_to=${encodeURIComponent(callbackUrl)}`
-    const width = 500
-    const height = 600
-    const left = window.screenX + (window.innerWidth - width) / 2
-    const top = window.screenY + (window.innerHeight - height) / 2
-    window.open(authUrl, 'auth-popup', `width=${width},height=${height},left=${left},top=${top}`)
+  const signUp = useCallback(async (email: string, password: string): Promise<AuthResult> => {
+    try {
+      const res = await fetch('/.netlify/functions/auth?action=signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        return { error: data.error || 'Sign up failed' }
+      }
+      setToken(data.access_token)
+      setUser(data.user)
+      return { error: null }
+    } catch {
+      return { error: 'Sign up failed' }
+    }
   }, [])
 
-  async function signOut() {
-    await auth.signOut()
-    localStorage.removeItem(SUPABASE_STORAGE_KEY)
-    setSession(null)
-    setHasStoredToken(false)
-  }
+  const signIn = useCallback(async (email: string, password: string): Promise<AuthResult> => {
+    try {
+      const res = await fetch('/.netlify/functions/auth?action=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        return { error: data.error || 'Sign in failed' }
+      }
+      setToken(data.access_token)
+      setUser(data.user)
+      return { error: null }
+    } catch {
+      return { error: 'Sign in failed' }
+    }
+  }, [])
+
+  const signOut = useCallback(() => {
+    removeToken()
+    setUser(null)
+  }, [])
 
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn,
+        isLoggedIn: !!user,
         loading,
-        user: userInfo ?? null,
+        user,
         signIn,
+        signUp,
         signOut,
       }}
     >

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   Users,
@@ -15,7 +16,30 @@ const navItems = [
 ]
 
 export function Sidebar() {
-  const { user, isLoggedIn, signIn, signOut } = useAuth()
+  const { user, isLoggedIn, signIn, signUp, signOut } = useAuth()
+  const [showAuthForm, setShowAuthForm] = useState(false)
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [authError, setAuthError] = useState<string | null>(null)
+  const [authLoading, setAuthLoading] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setAuthError(null)
+    setAuthLoading(true)
+    const result = isSignUp
+      ? await signUp(email, password)
+      : await signIn(email, password)
+    setAuthLoading(false)
+    if (result.error) {
+      setAuthError(result.error)
+    } else {
+      setShowAuthForm(false)
+      setEmail('')
+      setPassword('')
+    }
+  }
 
   return (
     <aside data-testid="sidebar" className="w-[244px] min-h-screen bg-sidebar flex flex-col justify-between py-3 px-3">
@@ -51,14 +75,62 @@ export function Sidebar() {
                 <LogOut size={14} strokeWidth={1.75} />
               </button>
             </div>
+          ) : showAuthForm ? (
+            <form onSubmit={handleSubmit} data-testid="sidebar-auth-form" className="flex flex-col gap-2">
+              <input
+                data-testid="auth-email-input"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-7 px-2 rounded-[4px] bg-surface border border-border text-[12px] text-text-primary placeholder:text-text-muted outline-none focus:border-accent"
+              />
+              <input
+                data-testid="auth-password-input"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="h-7 px-2 rounded-[4px] bg-surface border border-border text-[12px] text-text-primary placeholder:text-text-muted outline-none focus:border-accent"
+              />
+              {authError && (
+                <p data-testid="auth-error" className="text-[11px] text-red-400">{authError}</p>
+              )}
+              <button
+                data-testid="auth-submit-button"
+                type="submit"
+                disabled={authLoading}
+                className="h-7 rounded-[4px] bg-accent text-[12px] font-medium text-white hover:bg-accent/90 transition-colors duration-100 disabled:opacity-50"
+              >
+                {authLoading ? '...' : isSignUp ? 'Sign Up' : 'Sign In'}
+              </button>
+              <button
+                data-testid="auth-toggle-mode"
+                type="button"
+                onClick={() => { setIsSignUp(!isSignUp); setAuthError(null) }}
+                className="text-[11px] text-text-muted hover:text-text-secondary transition-colors duration-100"
+              >
+                {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowAuthForm(false); setAuthError(null) }}
+                className="text-[11px] text-text-muted hover:text-text-secondary transition-colors duration-100"
+              >
+                Cancel
+              </button>
+            </form>
           ) : (
             <button
               data-testid="sidebar-sign-in"
-              onClick={signIn}
+              onClick={() => { setShowAuthForm(true); setIsSignUp(false); setAuthError(null) }}
               className="flex items-center gap-2 h-7 px-0 rounded-[4px] text-[12px] font-[450] text-text-muted hover:text-text-secondary transition-colors duration-100"
             >
               <LogIn size={14} strokeWidth={1.75} />
-              Sign in with Google
+              Sign in
             </button>
           )}
         </div>

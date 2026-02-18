@@ -8,12 +8,10 @@ import { DealDetailPage } from './pages/DealDetailPage'
 import { TasksListPage } from './pages/TasksListPage'
 import { TaskDetailPage } from './pages/TaskDetailPage'
 import { NotFoundPage } from './pages/NotFoundPage'
-import { AuthCallbackPage } from './pages/AuthCallback'
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/auth/callback" element={<AuthCallbackPage />} />
       <Route element={<AppLayout />}>
         <Route path="/" element={<Navigate to="/clients" replace />} />
         <Route path="/clients" element={<ClientsListPage />} />

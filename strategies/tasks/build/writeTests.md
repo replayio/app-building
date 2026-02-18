@@ -39,6 +39,13 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   the app directory. Always use `/repo/strategies/tasks/reviewChanges.md`,
   `/repo/strategies/tasks/build/writeTests.md`, etc.
 
+- Apps with login/signup functionality must have a complete e2e test that exercises the full
+  sign-up and sign-in flow against the real auth backend. The test must create a new account,
+  verify the post-signup state (session established or confirmation required), then sign in
+  with the new credentials and verify the authenticated state. This catches issues like email
+  confirmation requirements, incorrect error handling, and session establishment failures that
+  unit-level or mocked tests miss.
+
 ## Tips
 
 - Before writing tests that interact with shared UI components (ConfirmDialog, modals, dropdowns),

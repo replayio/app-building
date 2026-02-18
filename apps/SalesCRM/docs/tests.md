@@ -7,8 +7,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 ## 0. Authentication
 
 ### Components
-- **AuthCallback** (/auth/callback): OAuth callback handler that completes sign-in and posts message to opener window
-- **SidebarUserArea**: Current user info area in the upper left of the sidebar, below the app title. When logged in, shows user avatar/initial, name, and sign-out button. When not logged in, shows a "Sign in with Google" button that opens SSO in a popup window.
+- **SidebarUserArea**: Current user info area in the upper left of the sidebar, below the app title. When logged in, shows user avatar/initial, name, and sign-out button. When not logged in, shows a "Sign in" button that expands to an email/password form with sign-in and sign-up modes.
 
 ### Test Entries
 
@@ -22,12 +21,17 @@ This document defines behavior-driven test entries for the Sales CRM application
 **AUTH-USR-02: Sidebar displays sign-in button when not logged in**
 - Initial: User is not authenticated and on any page
 - Action: Observe the sidebar user area
-- Expected: The sidebar shows the user area (data-testid="sidebar-user-area") below the app title containing a "Sign in with Google" button (data-testid="sidebar-sign-in").
+- Expected: The sidebar shows the user area (data-testid="sidebar-user-area") below the app title containing a "Sign in" button (data-testid="sidebar-sign-in"). Clicking it reveals an email/password form (data-testid="sidebar-auth-form") with email input (data-testid="auth-email-input"), password input (data-testid="auth-password-input"), submit button (data-testid="auth-submit-button"), and a toggle to switch between sign-in and sign-up modes (data-testid="auth-toggle-mode").
 
 **AUTH-USR-03: App loads without authentication**
 - Initial: User is not authenticated
 - Action: Navigate to /clients
 - Expected: The clients page loads and displays data without requiring login. The sidebar is visible with navigation links and the sign-in button.
+
+**AUTH-E2E-01: Full signup and login flow works end-to-end**
+- Initial: User is not authenticated
+- Action: Click "Sign in", toggle to sign-up mode, enter a new email/password, submit. Then sign out. Then sign back in with the same credentials.
+- Expected: After signup, user is immediately logged in (user name and avatar visible, sign-out button visible). After signing out, the sign-in button reappears. After signing in with the same credentials, user is logged in again with name and sign-out visible.
 
 ---
 

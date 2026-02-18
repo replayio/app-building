@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { resolve } from "path";
 import {
   spawnContainer,
   startInteractiveContainer,
@@ -6,6 +7,9 @@ import {
   stopContainer,
 } from "./container";
 import { formatEvent } from "./format";
+import { createLogFile } from "./log";
+
+const LOGS_DIR = resolve(__dirname, "..", "logs");
 
 // Reads input using raw mode. Enter submits, pasted text (which arrives
 // as a single chunk with embedded newlines) is preserved as multi-line.
@@ -76,6 +80,9 @@ function readInput(): Promise<string | null> {
 async function runInteractive(sessionId?: string): Promise<void> {
   const { containerName, mcpConfig } = startInteractiveContainer();
   console.log(`Container started: ${containerName}`);
+  const log = createLogFile(LOGS_DIR);
+  log(`Container: ${containerName}`);
+  log(`Mode: interactive`);
 
   let messagesSent = 0;
 
@@ -130,6 +137,7 @@ async function runInteractive(sessionId?: string): Promise<void> {
           buffer = lines.pop() ?? "";
           for (const line of lines) {
             if (!line.trim()) continue;
+            log(line);
             try {
               const event = JSON.parse(line);
               const formatted = formatEvent(event);
@@ -150,6 +158,7 @@ async function runInteractive(sessionId?: string): Promise<void> {
             process.stdin.pause();
 
             if (buffer.trim()) {
+              log(buffer);
               try {
                 const event = JSON.parse(buffer);
                 const formatted = formatEvent(event);

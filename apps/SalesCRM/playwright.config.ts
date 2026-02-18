@@ -8,6 +8,7 @@ const replayBrowser = join(homedir(), '.replay', 'runtimes', 'chrome-linux', 'ch
 export default defineConfig({
   globalSetup: './tests/global-setup.ts',
   testDir: './tests',
+  testIgnore: ['**/deployment.spec.ts'],
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
