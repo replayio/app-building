@@ -344,7 +344,23 @@
 
 ### Maintenance Round 9
 
-- [ ] fixBugReport.md: UnpackFixBugReport: Unpack subtasks
+- [x] fixBugReport.md: UnpackFixBugReport: Unpack subtasks — 4 open bug reports (all new functionality, no AnalyzeBug needed)
+  - [x] fixBugReport.md: FixBugCSVImportFormat: Added CSV column format table, download template button, working CSV parsing/import with backend bulk endpoint, error reporting with row-level validation
+  - [ ] fixBugReport.md: UpdateTestsCSVImportFormat: Update spec and tests for CSV import format improvements
+  - [ ] fixBugReport.md: UpdateRevisionsCSVImportFormat: Record spec change in AppRevisions.md
+  - [ ] fixBugReport.md: ResolveBugCSVImportFormat: Move bug to Unreviewed in bugReports.md
+  - [ ] fixBugReport.md: FixBugCSVImportAllEntities: Add CSV import support for deals, contacts/individuals, and tasks
+  - [ ] fixBugReport.md: UpdateTestsCSVImportAllEntities: Update spec and tests for multi-entity CSV import
+  - [ ] fixBugReport.md: UpdateRevisionsCSVImportAllEntities: Record spec change in AppRevisions.md
+  - [ ] fixBugReport.md: ResolveBugCSVImportAllEntities: Move bug to Unreviewed in bugReports.md
+  - [ ] fixBugReport.md: FixBugSettingsPage: Add settings page with import/export and webhook configuration (Zapier/n8n/Discord)
+  - [ ] fixBugReport.md: UpdateTestsSettingsPage: Update spec and tests for settings page
+  - [ ] fixBugReport.md: UpdateRevisionsSettingsPage: Record spec change in AppRevisions.md
+  - [ ] fixBugReport.md: ResolveBugSettingsPage: Move bug to Unreviewed in bugReports.md
+  - [ ] fixBugReport.md: FixBugUsersPage: Add users page, user detail page, and user selection dropdowns throughout app
+  - [ ] fixBugReport.md: UpdateTestsUsersPage: Update spec and tests for users page
+  - [ ] fixBugReport.md: UpdateRevisionsUsersPage: Record spec change in AppRevisions.md
+  - [ ] fixBugReport.md: ResolveBugUsersPage: Move bug to Unreviewed in bugReports.md
 - [ ] reviewBugReport.md: UnpackReviewBugReport: Unpack subtasks
 - [ ] checkDirectives.md: UnpackCheckDirectives: Unpack subtasks
 - [ ] polishApp.md: UnpackPolishApp: Unpack subtasks
