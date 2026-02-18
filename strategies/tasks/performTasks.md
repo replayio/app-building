@@ -9,7 +9,7 @@ follow it, skip the task steps below and continue with whatever else you were do
 1. Look for files in `/repo/logs/` named `worker-<timestamp>.log` describing
    recent changes made. While there are any (ignoring `*-current.log` files which are still being written to),
    follow instructions from `reviewChanges.md` to process them.
-2. Read `docs/plan.md` to understand current progress. If this file is missing or has no pending tasks, signal <DONE/> and exit.
+2. Read `docs/plan.md` to understand current progress. If this file is missing or has no pending tasks, signal <DONE/> and exit. You must NEVER signal <DONE/> at any other time.
 3. Pick the next task and announce `IMPLEMENT: <TaskName>`.
 4. Read the strategy file for the task (if you haven't already) and implement the task.
 5. After every significant change or when the task requires it, run typecheck and lint, fix any errors, then commit.
