@@ -1,11 +1,6 @@
 [
   {
     "strategy": "strategies/jobs/maintain/fixBugReport.md",
-    "description": "FixBug: Fix WebhookDialogInstructions — Add platform-specific setup guides to webhook modal",
-    "timestamp": "2026-02-19T23:40:19.212Z"
-  },
-  {
-    "strategy": "strategies/jobs/maintain/fixBugReport.md",
     "description": "UpdateTests: Update tests for WebhookDialogInstructions",
     "timestamp": "2026-02-19T23:40:18.655Z"
   },
