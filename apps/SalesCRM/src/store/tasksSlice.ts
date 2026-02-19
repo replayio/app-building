@@ -105,9 +105,9 @@ export const tasksSlice = createSlice({
     builder
       .addCase(fetchTasks.pending, (state, action) => {
         state._lastFetchRequestId = action.meta.requestId
-        state.loading = true
-        state.items = []
-        state.total = 0
+        if (state.items.length === 0) {
+          state.loading = true
+        }
         state.error = null
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {

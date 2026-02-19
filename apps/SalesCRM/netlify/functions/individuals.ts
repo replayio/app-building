@@ -242,7 +242,7 @@ async function handler(req: OptionalAuthRequest) {
 
     const rows = await sql`
       UPDATE contact_history SET
-        date = COALESCE(${body.date ?? null}, date),
+        date = COALESCE(${body.date || null}, date),
         type = COALESCE(${body.type ?? null}, type),
         summary = COALESCE(${body.summary ?? null}, summary),
         team_member = COALESCE(${body.team_member ?? null}, team_member),

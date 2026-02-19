@@ -234,3 +234,10 @@ When testing the app after deployment, use the Replay browser to record the app 
 - Zombie processes (`<defunct>`) from previous `vite` or `netlify` runs are harmless and cannot be
   killed (they are orphaned child processes waiting for PID 1 to reap them). Ignore them. The
   Playwright `webServer` config starts fresh processes on different ports and is not affected.
+- Commit incrementally during debugging sessions. If you improve test results (e.g., 81→207 passing)
+  or fix a meaningful issue, commit those changes immediately even if other failures remain. An
+  iteration that produces zero commits despite significant work (strategy updates, code fixes,
+  debugging progress) is wasted effort because the next iteration starts from scratch.
+- Before running tests, verify `NEON_PROJECT_ID` is set in the environment. The test script
+  requires it for creating ephemeral Neon branches. The project ID for SalesCRM is
+  `rough-lake-81841975` — set it with `export NEON_PROJECT_ID=rough-lake-81841975`.
