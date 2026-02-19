@@ -1,7 +1,172 @@
 [
   {
     "strategy": "strategies/jobs/maintain/checkDirectives.md",
-    "description": "CheckDirectives: Run full directive compliance check on SalesCRM app",
-    "timestamp": "2026-02-19T23:28:10.846Z"
+    "description": "CheckBackend: Check writeApp.md directive violations in all backend functions",
+    "timestamp": "2026-02-19T23:44:57.615Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication test entries",
+    "timestamp": "2026-02-19T23:44:57.059Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsAuth: Check writeApp.md directive violations in Authentication components",
+    "timestamp": "2026-02-19T23:44:56.499Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsAuth: Check writeTests.md directive violations in Authentication tests",
+    "timestamp": "2026-02-19T23:44:55.936Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
+    "timestamp": "2026-02-19T23:44:55.370Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
+    "timestamp": "2026-02-19T23:44:54.811Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests",
+    "timestamp": "2026-02-19T23:44:54.241Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
+    "timestamp": "2026-02-19T23:44:53.680Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
+    "timestamp": "2026-02-19T23:44:53.113Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests",
+    "timestamp": "2026-02-19T23:44:52.550Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecPersonDetailPage: Check testSpec.md directive violations in PersonDetailPage test entries",
+    "timestamp": "2026-02-19T23:44:51.991Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsPersonDetailPage: Check writeApp.md directive violations in PersonDetailPage components",
+    "timestamp": "2026-02-19T23:44:51.438Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsPersonDetailPage: Check writeTests.md directive violations in PersonDetailPage tests",
+    "timestamp": "2026-02-19T23:44:50.881Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
+    "timestamp": "2026-02-19T23:44:50.325Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
+    "timestamp": "2026-02-19T23:44:49.765Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests",
+    "timestamp": "2026-02-19T23:44:49.210Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
+    "timestamp": "2026-02-19T23:44:48.654Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
+    "timestamp": "2026-02-19T23:44:48.095Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests",
+    "timestamp": "2026-02-19T23:44:47.539Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
+    "timestamp": "2026-02-19T23:44:46.979Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
+    "timestamp": "2026-02-19T23:44:46.422Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests",
+    "timestamp": "2026-02-19T23:44:45.860Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecTaskDetailPage: Check testSpec.md directive violations in TaskDetailPage test entries",
+    "timestamp": "2026-02-19T23:44:45.304Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsTaskDetailPage: Check writeApp.md directive violations in TaskDetailPage components",
+    "timestamp": "2026-02-19T23:44:44.740Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsTaskDetailPage: Check writeTests.md directive violations in TaskDetailPage tests",
+    "timestamp": "2026-02-19T23:44:44.177Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecSettingsPage: Check testSpec.md directive violations in SettingsPage test entries",
+    "timestamp": "2026-02-19T23:44:43.619Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsSettingsPage: Check writeApp.md directive violations in SettingsPage components",
+    "timestamp": "2026-02-19T23:44:43.058Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsSettingsPage: Check writeTests.md directive violations in SettingsPage tests",
+    "timestamp": "2026-02-19T23:44:42.500Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecUsersListPage: Check testSpec.md directive violations in UsersListPage test entries",
+    "timestamp": "2026-02-19T23:44:41.939Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsUsersListPage: Check writeApp.md directive violations in UsersListPage components",
+    "timestamp": "2026-02-19T23:44:41.386Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsUsersListPage: Check writeTests.md directive violations in UsersListPage tests",
+    "timestamp": "2026-02-19T23:44:40.832Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestSpecUserDetailPage: Check testSpec.md directive violations in UserDetailPage test entries",
+    "timestamp": "2026-02-19T23:44:40.274Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckComponentsUserDetailPage: Check writeApp.md directive violations in UserDetailPage components",
+    "timestamp": "2026-02-19T23:44:39.712Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "CheckTestsUserDetailPage: Check writeTests.md directive violations in UserDetailPage tests",
+    "timestamp": "2026-02-19T23:44:39.158Z"
   }
 ]
