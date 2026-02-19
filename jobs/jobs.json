@@ -1,8 +1,23 @@
 [
   {
     "strategy": "strategies/jobs/maintain/fixBugReport.md",
-    "description": "Fix bug report: WebhookDialogInstructions — Add webhook setup instructions for Zapier, n8n, and custom endpoints",
-    "timestamp": "2026-02-19T23:27:24.777Z"
+    "description": "FixBug: Fix WebhookDialogInstructions — Add platform-specific setup guides to webhook modal",
+    "timestamp": "2026-02-19T23:40:19.212Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/fixBugReport.md",
+    "description": "UpdateTests: Update tests for WebhookDialogInstructions",
+    "timestamp": "2026-02-19T23:40:18.655Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/fixBugReport.md",
+    "description": "UpdateRevisions: Record spec changes for WebhookDialogInstructions",
+    "timestamp": "2026-02-19T23:40:18.098Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/fixBugReport.md",
+    "description": "ResolveBug: Mark WebhookDialogInstructions as resolved",
+    "timestamp": "2026-02-19T23:40:17.539Z"
   },
   {
     "strategy": "strategies/jobs/maintain/checkDirectives.md",
