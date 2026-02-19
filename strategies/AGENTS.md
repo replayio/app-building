@@ -5,13 +5,14 @@ Strategies are divided into two categories:
 ## `messages/` — Responding to user messages
 
 These strategies are triggered when a user sends a message (e.g. a bug report, a request to
-build or maintain an app, or a question about logs).
+build or maintain an app, or a question about logs). They add jobs to the queue using the
+`add-trailing-job` script, then commit and exit so the worker loop picks up the jobs.
 
 - **addBugReport.md**: Record a user-reported bug in `docs/bugReports.md`.
 - **analyzeLogs.md**: Search through log files to find specific information.
-- **buildInitialApp.md**: Build a new app from an AppSpec. Sets up the plan with build stage tasks.
-- **maintainApp.md**: Run a maintenance cycle on an existing app. Sets up the plan with maintain stage tasks.
-- **updateScripts.md**: Write a design doc for a new package script, then set up a plan task to implement it.
+- **buildInitialApp.md**: Build a new app from an AppSpec. Adds build stage jobs to the queue.
+- **maintainApp.md**: Run a maintenance cycle on an existing app. Adds maintain stage jobs to the queue.
+- **updateScripts.md**: Write a design doc for a new package script, then add a job to implement it.
 
 ## `scripts/` — Design docs for package scripts
 
@@ -22,21 +23,21 @@ written by the `messages/updateScripts.md` strategy before the script is impleme
 Design docs are prescriptive — they define how a script should work and are created before
 implementation. The implementing agent reads the design doc and follows it.
 
-## `tasks/` — Handling pending tasks in the plan
+## `jobs/` — Job strategies
 
-These strategies are executed by the worker loop. The first iteration runs the user's prompt
-(a message strategy), and all subsequent iterations run `performTasks.md` which processes
-entries in `docs/plan.md`. They are organized into subdirectories:
+These strategies are referenced by jobs in the queue. The worker loop calls `get-next-job` to
+pull the next job, which tells the agent which strategy to read and what work to do. Strategies
+that need to "unpack" into sub-jobs use `add-next-job` (in reverse order) to insert them at
+the front of the queue.
 
 ### Root — Shared infrastructure
 
-- **performTasks.md**: The main task loop, run automatically by the worker on iterations 2+.
-  Reads `docs/plan.md`, picks the next pending task, reads its strategy file, and implements it.
 - **reviewChanges.md**: Reviews iteration logs for lessons learned and strategy improvements.
+  Automatically prioritized by `get-next-job` when unreviewed logs exist.
 - **deployment.md**: Deploy the app to production. Used by both build and maintain workflows.
 - **writeScript.md**: Implement a package script from its design doc in `strategies/scripts/`.
 
-### `build/` — Build stage tasks
+### `build/` — Build stage jobs
 
 Used when building a new app (see `messages/buildInitialApp.md` for stage ordering):
 
@@ -45,7 +46,7 @@ Used when building a new app (see `messages/buildInitialApp.md` for stage orderi
 - **writeTests.md**: Write Playwright tests matching the test specification.
 - **testing.md**: Run tests and debug/fix failures using Replay.
 
-### `maintain/` — Maintenance stage tasks
+### `maintain/` — Maintenance stage jobs
 
 Used when maintaining an existing app (see `messages/maintainApp.md` for stage ordering):
 

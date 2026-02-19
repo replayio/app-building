@@ -2,12 +2,14 @@
 
 During this stage you will deploy the app to production and test it to make sure it works.
 
-## Unpack Subtasks
+## Unpack Sub-Jobs
 
-Unpack the initial deployment task into the following subtasks:
+Unpack the initial deployment job into sub-jobs using `add-next-job` (in reverse order):
 
-- DoDeploy: Deploy the app to production using `npm run deploy` (see `strategies/scripts/deploy.md`).
-- TestDeploy: Test the app as described below.
+```
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/deployment.md" --description "TestDeploy: Test the deployed app"
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/deployment.md" --description "DoDeploy: Deploy the app to production"
+```
 
 ## Deployment
 
@@ -41,7 +43,7 @@ The functional test must verify:
 1. **Data displays**: Navigate to the main page and confirm that real data (e.g. client records) loads and renders visibly.
 2. **Data can be updated**: Perform a write operation (e.g. add or edit a record) and confirm the change persists.
 
-If either check fails, the deployment is broken and must be investigated and fixed before marking the task complete.
+If either check fails, the deployment is broken and must be investigated and fixed before marking the job complete.
 
 ### Recording with Replay
 

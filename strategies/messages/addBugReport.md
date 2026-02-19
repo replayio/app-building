@@ -24,11 +24,11 @@ Guidelines for the description:
 - Include observable symptoms (what happens) rather than speculated causes.
 - Preserve the user's own wording when it is clear and specific.
 - If the user mentions multiple distinct symptoms of the same problem, include them all.
-- Do not add analysis, root cause, or fix suggestions — those belong to the `strategies/tasks/maintain/fixBugReport.md` workflow.
+- Do not add analysis, root cause, or fix suggestions — those belong to the `strategies/jobs/maintain/fixBugReport.md` workflow.
 
 If the "Open" section currently says "(none)", replace that placeholder with the new entry.
 
 ## After adding the report
 
-The bug will be addressed during the next maintenance cycle via `strategies/tasks/maintain/fixBugReport.md`.
+The bug will be addressed during the next maintenance cycle via `strategies/jobs/maintain/fixBugReport.md`.
 No further action is needed at this stage.

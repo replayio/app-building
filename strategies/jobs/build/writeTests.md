@@ -2,11 +2,14 @@
 
 You are writing playwright tests which check that all the different entries in docs/tests.md are satisfied by the app.
 
-## Unpack Subtasks
+## Unpack Sub-Jobs
 
-Unpack the initial write tests task into WriteTest<Name> subtasks for every test entry name in docs/tests.md
+Unpack the initial write tests job into WriteTest<Name> sub-jobs using `add-next-job` (in REVERSE order)
+for every test entry name in docs/tests.md.
 
-IMPORTANT: The last subtask for the tests on each page must require committing and exiting afterwards.
+IMPORTANT: The last sub-job for the tests on each page must require committing and exiting afterwards.
+
+All sub-jobs should use `--strategy "strategies/jobs/build/writeTests.md"`.
 
 ## Guidelines
 
@@ -38,9 +41,9 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   `setInputFiles` on a file input). Do not substitute a URL/text input test for a file upload test —
   this masks missing upload functionality in the app.
 
-- Strategy files are at `/repo/strategies/tasks/` and its subdirectories (the repo root), NOT inside
-  the app directory. Always use `/repo/strategies/tasks/reviewChanges.md`,
-  `/repo/strategies/tasks/build/writeTests.md`, etc.
+- Strategy files are at `/repo/strategies/jobs/` and its subdirectories (the repo root), NOT inside
+  the app directory. Always use `/repo/strategies/jobs/reviewChanges.md`,
+  `/repo/strategies/jobs/build/writeTests.md`, etc.
 
 - Apps with login/signup functionality must have a complete e2e test that exercises the full
   sign-up and sign-in flow against the real auth backend. The test must create a new account,

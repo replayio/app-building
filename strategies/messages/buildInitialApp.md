@@ -3,7 +3,7 @@
 You are building an application based on the provided AppSpec.md.
 If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
 `AppSpec.md` must NEVER be modified. All spec changes go in `AppRevisions.md`.
-You will build the app in the following stages, with task strategy files in `strategies/tasks/build/` for additional instructions.
+You will build the app in the following stages, with job strategy files in `strategies/jobs/build/` for additional instructions.
 
 1. testSpec.md: Create a detailed test specification for the tests the app must pass in order to match the app spec.
 
@@ -17,6 +17,15 @@ You will build the app in the following stages, with task strategy files in `str
 
 6. deployment.md: Deploy the app to production.
 
-Create the docs/plan.md file with one "<strategy-file>: Unpack<StrategyName>: Unpack subtasks" task for each stage.
+Add jobs to the queue for each stage:
 
-Then commit and exit. The worker loop will continue with `performTasks.md` on the next iteration.
+```
+npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/build/testSpec.md" --description "Unpack: Write test specification"
+npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/build/writeApp.md" --description "Unpack: Write the app"
+npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/writeScript.md" --description "Unpack: Implement package scripts"
+npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/build/writeTests.md" --description "Unpack: Write Playwright tests"
+npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/build/testing.md" --description "Unpack: Get all tests passing"
+npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/deployment.md" --description "Unpack: Deploy to production"
+```
+
+Then commit and exit. The worker loop will continue with the first job on the next iteration.

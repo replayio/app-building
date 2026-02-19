@@ -9,7 +9,10 @@
     "reset-app": "tsx src/reset-app.ts",
     "docker:build": "docker build --no-cache --network=host -t app-building .",
     "test-container": "tsx src/test-container.ts",
-    "stop": "tsx src/stop.ts"
+    "stop": "tsx src/stop.ts",
+    "get-next-job": "tsx scripts/get-next-job.ts",
+    "add-next-job": "tsx scripts/add-next-job.ts",
+    "add-trailing-job": "tsx scripts/add-trailing-job.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.0",

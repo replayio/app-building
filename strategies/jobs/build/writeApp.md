@@ -2,18 +2,20 @@
 
 You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
 
-## Unpack Subtasks
+## Unpack Sub-Jobs
 
-Unpack the initial write app task into the following:
+Unpack the initial write app job into sub-jobs using `add-next-job` (in REVERSE order):
 
 - SetupApp: Setup the app.
 - DesignDatabase: Design the database.
-- (For each page) UnpackWritePage<Name>: Setup the tasks to implement each page.
+- (For each page) UnpackWritePage<Name>: Setup the sub-jobs to implement each page.
 
-Unpack the task for implementing a page into the following:
+Unpack the job for implementing a page into sub-jobs using `add-next-job` (in REVERSE order):
 
 - (For each component) WriteComponent<Name>: Write the specified page component.
 - WritePage<Name>: Write the page itself, then commit changes and exit.
+
+All sub-jobs should use `--strategy "strategies/jobs/build/writeApp.md"`.
 
 ## Guidelines
 

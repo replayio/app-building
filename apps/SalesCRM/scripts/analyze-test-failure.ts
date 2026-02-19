@@ -128,10 +128,10 @@ function main() {
         '--dangerously-skip-permissions',
         '--model',
         'sonnet',
-        userPrompt,
       ],
       {
-        stdio: 'inherit',
+        input: userPrompt,
+        stdio: ['pipe', 'inherit', 'inherit'],
         cwd: APP_DIR,
         env,
         timeout: 600_000, // 10 minutes

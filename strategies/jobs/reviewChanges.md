@@ -1,17 +1,17 @@
 # Strategy
 
 Changes you make are divided into iterations: during each iteration some significant amount
-of work will be done to complete one or more tasks, but you will remain focused on those tasks
+of work will be done to complete one or more jobs, but you will remain focused on those jobs
 and their requirements.
 
-Once you complete a task, working on other tasks pollutes your context and makes you less effective,
-so you will exit and start fresh on the next task. Before you start that next task, the results of
-the previous task are reviewed for lessons learned that can be applied to improve performance on
-similar tasks in the future.
+Once you complete a job, working on other jobs pollutes your context and makes you less effective,
+so you will exit and start fresh on the next job. Before you start that next job, the results of
+the previous job are reviewed for lessons learned that can be applied to improve performance on
+similar jobs in the future.
 
 Your strategy here is to review the logs and changes made during a previous iteration, and identify
 any revisions that need to be made to those changes or changes that need to be made to the
-strategy used for the task.
+strategy used for the job.
 
 Follow these instructions exactly.
 
@@ -29,8 +29,8 @@ to ALL log files: iteration logs, worker logs, and app-specific logs in each app
    - `git log --oneline <startRev>..<endRev>` to see commits
    - `git diff --stat <startRev>..<endRev>` for an overview of changed files
    - `git diff <startRev>..<endRev> -- <specific-file>` for details on specific changes
-5. Read the instructions file for the stage associated with the log's tasks (there should be only one).
-   Stage instruction files are under `/repo/strategies/tasks/` (the repo root), NOT inside the app directory.
+5. Read the instructions file for the stage associated with the log's jobs (there should be only one).
+   Stage instruction files are under `/repo/strategies/jobs/` (the repo root), NOT inside the app directory.
    See `strategies/messages/buildInitialApp.md` for the stages and their instruction files.
 6. Look for any problems described in the sections below.
 7. If any are found, make changes to the code and/or strategies to correct them.
@@ -50,7 +50,7 @@ correct those.
 Read the log for any place where you had difficulty, e.g. going down the wrong path and having
 to correct, or taking a while to figure something out. Identify a suitable strategy you could have
 followed to handle the situation better, and update either the directives or tips in the stage
-instructions. Directives must be followed, while tips are hints that will help perform tasks more easily.
+instructions. Directives must be followed, while tips are hints that will help perform jobs more easily.
 
 Pay particular attention to documenting ways in which you used the Replay MCP tools
 to debug test failures or other problems.

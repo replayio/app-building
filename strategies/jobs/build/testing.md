@@ -2,11 +2,21 @@
 
 You will run all the tests in the app and get them to pass..
 
-## Unpack Subtasks
+## Unpack Sub-Jobs
 
-Unpack the initial stage task into a single FixTests task to get all tests passing.
+Unpack the initial testing job into a single FixTests sub-job to get all tests passing:
 
-After running tests and there are failures, pick a specific failing test and add a subtask to fix that test without regressing any tests that passed in previous runs. The subtask must require committing and exiting afterwards. Focus on that subtask until finished.
+```
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/build/testing.md" --description "FixTests: Get all tests passing"
+```
+
+After running tests and there are failures, pick a specific failing test and add a sub-job to fix
+that test without regressing any tests that passed in previous runs. The sub-job must require
+committing and exiting afterwards. Focus on that sub-job until finished.
+
+```
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/build/testing.md" --description "Fix: <failing test name>"
+```
 
 ## Requirements
 

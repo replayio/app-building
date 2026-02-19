@@ -4,15 +4,17 @@ You are writing a complete, detailed test specification for an app based on an i
 in `AppSpec.md`. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug
 reports and must also be followed.
 
-## Unpack Subtasks
+## Unpack Sub-Jobs
 
-Unpack the initial test specification task into the following:
+Unpack the initial test specification job into sub-jobs using `add-next-job` (in REVERSE order):
 
-- PlanPages: Read the spec, decide on the pages the app needs, and add a PlanPage<Name> subtask for each page.
+- PlanPages: Read the spec, decide on the pages the app needs, and add PlanPage<Name> sub-jobs for each page.
 
-- PlanPage<Name>: Decide on the components the page needs, add sections for the page and its components to docs/tests.md, and add a PlanComponent<Name> subtask for each of those components. IMPORTANT: The last task done to specify the test entries for each page must require committing and exiting afterwards.
+- PlanPage<Name>: Decide on the components the page needs, add sections for the page and its components to docs/tests.md, and add PlanComponent<Name> sub-jobs for each of those components. IMPORTANT: The last sub-job done to specify the test entries for each page must require committing and exiting afterwards.
 
 - PlanComponent<Name>: Add test entries to comprehensively test the component's behavior.
+
+All sub-jobs should use `--strategy "strategies/jobs/build/testSpec.md"`.
 
 ## Requirements
 
@@ -55,12 +57,12 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 
 - Mockup images hosted on utfs.io cannot be fetched via WebFetch. Download them with
   `curl -L -o <local-path> <url>` and then use the Read tool to view the downloaded image files.
-- When starting from scratch with no existing plan.md, create and commit plan.md before moving on
-  to PlanPage tasks. This avoids losing the plan if the iteration runs out of turns.
-- The PlanPages task must produce output quickly. Do NOT spend excessive turns reading files
+- When starting from scratch with no existing docs/plan.md, create and commit it before moving on
+  to PlanPage jobs. This avoids losing the architecture docs if the iteration runs out of turns.
+- The PlanPages job must produce output quickly. Do NOT spend excessive turns reading files
   through Task/Explore agents or re-reading files you have already seen. Read AppSpec.md and the
   mockup images directly, decide on pages/components, write docs/tests.md scaffolding, update
-  plan.md, commit, and exit. A zero-commit iteration is always a failure — prioritize writing
+  commit, and exit. A zero-commit iteration is always a failure — prioritize writing
   output over exhaustive exploration.
 - Download all mockup images in a single curl command, then read them all in parallel. Do not
   interleave downloads and reads.

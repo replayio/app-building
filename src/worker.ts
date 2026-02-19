@@ -1,9 +1,12 @@
 import { spawn, execFileSync } from "child_process";
+import { readFileSync, writeFileSync, existsSync } from "fs";
 import { createLogFile, archiveCurrentLog } from "./log";
 
 const LOGS_DIR = "/repo/logs";
 const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
-const PERFORM_TASKS_PROMPT = "Read /repo/strategies/tasks/performTasks.md and follow the instructions exactly.";
+const GET_NEXT_JOB_SCRIPT = "/repo/scripts/get-next-job.ts";
+const CONTAINER_STARTED_AT = new Date().toISOString().replace(/[:.]/g, "-");
+const COMPLETED_FILE = `/repo/jobs/completed-${CONTAINER_STARTED_AT}.json`;
 
 function getGitRevision(): string {
   try {
@@ -130,12 +133,48 @@ function buildClaudeArgs(prompt: string): string[] {
   return args;
 }
 
+// --- Job system ---
+
+interface Job {
+  strategy: string;
+  description: string;
+  timestamp: string;
+}
+
+function appendCompleted(job: Job): void {
+  let completed: Job[] = [];
+  if (existsSync(COMPLETED_FILE)) {
+    const content = readFileSync(COMPLETED_FILE, "utf-8").trim();
+    if (content) completed = JSON.parse(content);
+  }
+  completed.push(job);
+  writeFileSync(COMPLETED_FILE, JSON.stringify(completed, null, 2) + "\n");
+}
+
+function getNextJob(lastStrategy: string | null, log: (msg: string) => void): string {
+  const args = ["tsx", GET_NEXT_JOB_SCRIPT];
+  if (lastStrategy) {
+    args.push("--last-strategy", lastStrategy);
+  }
+  try {
+    return execFileSync("npx", args, {
+      encoding: "utf-8",
+      cwd: "/repo",
+      timeout: 30000,
+    }).trim();
+  } catch (e: any) {
+    log(`Error running get-next-job: ${e.message}`);
+    return "<DONE/>";
+  }
+}
+
 // --- Main loop ---
 
 async function runLoop(): Promise<void> {
   const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
   let iteration = 0;
   let totalCost = 0;
+  let lastStrategy: string | null = null;
 
   while (true) {
     iteration++;
@@ -151,8 +190,41 @@ async function runLoop(): Promise<void> {
     log(`=== Iteration ${iteration} ===`);
     log(`Initial revision: ${getGitRevision()}`);
 
-    // First iteration uses the provided prompt, subsequent use performTasks
-    const prompt = iteration === 1 ? initialPrompt : PERFORM_TASKS_PROMPT;
+    // First iteration uses the provided prompt; subsequent iterations pull from the job queue
+    let prompt: string;
+    if (iteration === 1) {
+      prompt = initialPrompt;
+    } else {
+      const jobOutput = getNextJob(lastStrategy, log);
+      log(`get-next-job output: ${jobOutput}`);
+
+      if (jobOutput.includes("<DONE/>")) {
+        log("No more jobs. Exiting.");
+        break;
+      }
+
+      // Detect strategy switch (don't update lastStrategy so next iteration retries cleanly)
+      if (jobOutput.includes("different strategy")) {
+        prompt = jobOutput;
+        lastStrategy = null;
+      } else {
+        // Extract the strategy and description from the job output for tracking
+        const strategyMatch = jobOutput.match(/Read strategy file: (.+)/);
+        const descriptionMatch = jobOutput.match(/Job description: (.+)/);
+        if (strategyMatch) {
+          lastStrategy = strategyMatch[1].trim();
+        }
+        if (strategyMatch && descriptionMatch) {
+          appendCompleted({
+            strategy: strategyMatch[1].trim(),
+            description: descriptionMatch[1].trim(),
+            timestamp: new Date().toISOString(),
+          });
+        }
+        prompt = jobOutput;
+      }
+    }
+
     const claudeArgs = buildClaudeArgs(prompt);
     log(`Running Claude...`);
 
@@ -188,6 +260,7 @@ async function runLoop(): Promise<void> {
     // Rename log to timestamped file so future iterations can review it
     archiveCurrentLog(LOGS_DIR);
 
+    // Also check Claude's output for <DONE/> (e.g. from the first iteration)
     if (response.result && response.result.includes("<DONE/>")) {
       break;
     }

@@ -4,17 +4,28 @@ Bug reported by users for the app are tracked in `docs/bugReports.md`.
 Open bug reports are listed at the start of this file, with later sections for reports that
 were fixed and later reviewed.
 
-## Unpack subtasks
+## Unpack Sub-Jobs
 
-If there are any open bug reports in the file, unpack each one into the following series of subtasks,
-which will be performed in order to make sure you thoroughly understand the problem and fix it correctly.
-Unpack reports starting with the oldest ones, which will be listed last.
+If there are any open bug reports in the file, unpack each one into sub-jobs using `add-next-job`.
+Each bug gets the following series of sub-jobs, performed in order. Unpack reports starting with
+the oldest ones, which will be listed last.
 
 1. AnalyzeBug: Analyze and document the cause of the bug. Skip this for bugs asking for new functionality.
 2. FixBug: Update the app to fix the bug
 3. UpdateTests: Update the spec and tests to verify the fix and prevent regressions.
 4. UpdateRevisions: Record any spec changes in AppRevisions.md.
 5. ResolveBug: Mark the bug as resolved and in need of review.
+
+Since `add-next-job` prepends, add the sub-jobs for each bug in REVERSE order (ResolveBug first,
+AnalyzeBug last) so they execute in the correct sequence. For example:
+
+```
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "ResolveBug: Mark <BugName> as resolved"
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "UpdateRevisions: Record spec changes for <BugName>"
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "UpdateTests: Update tests for <BugName>"
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "FixBug: Fix <BugName>"
+npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "AnalyzeBug: Analyze <BugName>"
+```
 
 ## Analyzing bugs
 
@@ -30,7 +41,7 @@ and update bugReports.md to refer to it.
 
 ## Fixing bugs
 
-Read the guidelines and directives in `strategies/tasks/build/writeApp.md` and then update the app's source to fix the bug.
+Read the guidelines and directives in `strategies/jobs/build/writeApp.md` and then update the app's source to fix the bug.
 
 ## Updating tests
 
@@ -40,7 +51,7 @@ that the bug doesn't occur.
 
 For any changes to the test spec you made, update the test files themselves to reflect those changes.
 
-After updating tests, make sure they pass. Read `strategies/tasks/build/testing.md` to understand how to run tests and debug failures.
+After updating tests, make sure they pass. Read `strategies/jobs/build/testing.md` to understand how to run tests and debug failures.
 
 ## Updating revisions
 
@@ -58,7 +69,5 @@ If the fix was purely a code bug that didn't change the intended behavior, skip 
 
 Now that the bug is fixed, move it from the top section of the file to an "Unreviewed" section lower down.
 Label the bug with the git revision before / after the bug was fixed and tests updated.
-
-Update the section for the current round of maintenance in `docs/plan.md` with a note about the bug fix.
 
 Commit all changes and exit.
