@@ -1,11 +1,6 @@
 [
   {
     "strategy": "strategies/jobs/maintain/fixBugReport.md",
-    "description": "UpdateRevisions: Record spec changes for WebhookDialogInstructions",
-    "timestamp": "2026-02-19T23:40:18.098Z"
-  },
-  {
-    "strategy": "strategies/jobs/maintain/fixBugReport.md",
     "description": "ResolveBug: Mark WebhookDialogInstructions as resolved",
     "timestamp": "2026-02-19T23:40:17.539Z"
   },
