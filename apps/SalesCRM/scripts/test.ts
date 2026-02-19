@@ -242,7 +242,7 @@ async function main() {
     try {
       execSync(
         `npx playwright test ${testFile} --retries 0`,
-        { stdio: 'inherit', cwd: APP_DIR, env: { ...process.env, PLAYWRIGHT_BROWSERS_PATH: '/home/node/.cache/ms-playwright' } },
+        { stdio: 'inherit', cwd: APP_DIR, env: { ...process.env } },
       )
     } catch (err: unknown) {
       const exitErr = err as { status?: number }

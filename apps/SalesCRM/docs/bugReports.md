@@ -2,6 +2,8 @@
 
 ## Open
 
+2/19/2026: WebhookDialogInstructions — The "Add Webhook" dialog needs actual setup instructions for each supported platform. Currently the dialog only has a name field, a generic URL field (placeholder: "https://hooks.zapier.com/..."), and event checkboxes. There are no instructions explaining how to actually configure a webhook with Zapier, n8n, or a custom endpoint. Users need to know: (1) where to find the webhook URL in each platform (e.g., in Zapier: create a Zap → choose "Webhooks by Zapier" trigger → "Catch Hook" → copy the URL; in n8n: add a Webhook node → copy the test/production URL), (2) what JSON payload format the webhook sends so they can configure their automation, and (3) any platform-specific tips (e.g., Zapier needs the first event sent to detect the schema, n8n has separate test vs production URLs). The dialog should show platform-specific setup guides — not just a bare URL input. The WebhookSection description mentions "Zapier, n8n, Discord" but the modal gives no guidance for any of them.
+
 ## Unreviewed
 
 ## Finished

@@ -155,10 +155,10 @@ mandatory — do NOT skip or reorder steps.
    `npx [REDACTED]io list --json` to find recordings and upload them manually:
    `npx [REDACTED]io upload <id>`.
 3. Announce `TEST FAILURE UPLOADED: <recordingId>` before doing anything else.
-4. Use Replay MCP tools to analyze the failure. Start with `mcp__[REDACTED]__ConsoleMessages` and
-   `mcp__[REDACTED]__NetworkRequest` to get an overview, then drill into specifics with tools like
-   `mcp__[REDACTED]__SearchSources`, `mcp__[REDACTED]__Logpoint`, `mcp__[REDACTED]__Evaluate`,
-   `mcp__[REDACTED]__GetStack`, and `mcp__[REDACTED]__ReactComponents` as needed.
+4. Use Replay MCP tools to analyze the failure. Pick the tool that fits the failure:
+   `PlaywrightSteps`, `ConsoleMessages`, `NetworkRequest`, `SearchSources`, `Logpoint`,
+   `Evaluate`, `GetStack`, `ReactComponents`, `Screenshot`, etc. Use as many as needed to
+   understand what actually happened before making any changes.
 5. Only after completing the Replay analysis, fix the test and/or app based on what you found.
 
 Do NOT skip Replay analysis and jump straight to reading error messages or guessing at fixes.
@@ -204,6 +204,12 @@ When testing the app after deployment, use the Replay browser to record the app 
 
 ## Tips
 
+- When a test times out inside a `.toPass()` block, use `mcp__[REDACTED]__PlaywrightSteps` first. It
+  shows the exact sequence of Playwright actions with timestamps and return values. Look for a
+  step that is stuck auto-waiting for an element — this reveals nested-wait deadlocks where the
+  DOM changed mid-iteration and an inner `textContent()` or `count()` call is waiting on an
+  element that was removed. The fix is always in the test: replace the iteration loop with a
+  single atomic Playwright assertion (see the nested-wait directive in writeTests.md).
 - When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.
 - When many detail-page tests fail with "expected count > 0, received 0", the root cause is almost
   always that the database has no seed data OR the API functions are not working. Check both before

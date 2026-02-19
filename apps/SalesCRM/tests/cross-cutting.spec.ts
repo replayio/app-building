@@ -8,12 +8,12 @@ async function gotoClientDetail(page: import('@playwright/test').Page, clientId:
   await page.goto(`/clients/${clientId}`);
   await page.waitForLoadState('networkidle');
 
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let attempt = 0; attempt < 8; attempt++) {
     const header = page.getByTestId('client-header-title');
-    const visible = await header.isVisible({ timeout: 3000 }).catch(() => false);
+    const visible = await header.waitFor({ state: 'visible', timeout: 5000 }).then(() => true).catch(() => false);
     if (visible) return;
     const retryBtn = page.getByRole('button', { name: 'Retry' });
-    if (await retryBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
+    if (await retryBtn.isVisible().catch(() => false)) {
       await retryBtn.click();
       await page.waitForLoadState('networkidle');
     } else {
@@ -21,6 +21,8 @@ async function gotoClientDetail(page: import('@playwright/test').Page, clientId:
       await page.waitForLoadState('networkidle');
     }
   }
+  // If we exhausted retries, fail fast instead of letting the test time out later
+  throw new Error('gotoClientDetail: client header never became visible after 8 retries');
 }
 
 // ============================================================
@@ -204,20 +206,10 @@ test.describe('Cross-Cutting Data Consistency', () => {
     }
 
     // Wait for debounce + network request + verify the completed task does not appear
-    await expect(async () => {
-      const taskCards = page.locator('[data-testid^="task-card-"]');
-      const visibleTasks = await taskCards.count();
-      let found = false;
-      for (let i = 0; i < visibleTasks; i++) {
-        const text = await taskCards.nth(i).textContent();
-        if (text?.includes(taskName)) {
-          found = true;
-          break;
-        }
-      }
-      // The completed task should not appear in the upcoming list
-      expect(found).toBeFalsy();
-    }).toPass({ timeout: 15000 });
+    // Use a single atomic assertion — no nested auto-waits that can deadlock inside .toPass()
+    await expect(
+      page.locator('[data-testid^="task-card-"]').filter({ hasText: taskName })
+    ).toHaveCount(0, { timeout: 15000 });
   });
 
   test('DATA-03: Adding a person on ClientDetailPage creates accessible PersonDetailPage', async ({ page }) => {
@@ -454,24 +446,10 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
     // Navigate back to client detail to check timeline
     await gotoClientDetail(page, clientId);
 
-    // Wait for timeline entries to load and verify stage change entry exists
-    await expect(async () => {
-      const timelineEntries = page.locator('[data-testid^="timeline-entry-"]');
-      const totalCount = await timelineEntries.count();
-      expect(totalCount).toBeGreaterThan(0);
-
-      // Find entries related to stage change
-      let stageChangeCount = 0;
-      for (let i = 0; i < Math.min(totalCount, 5); i++) {
-        const text = await timelineEntries.nth(i).textContent();
-        if (text?.toLowerCase().includes('stage')) {
-          stageChangeCount++;
-        }
-      }
-
-      // The most recent stage change should produce exactly one entry
-      expect(stageChangeCount).toBeGreaterThanOrEqual(1);
-    }).toPass({ timeout: 10000 });
+    // Wait for timeline entries to load and verify at least one stage change entry exists
+    await expect(
+      page.locator('[data-testid^="timeline-entry-"]').filter({ hasText: /stage/i }).first()
+    ).toBeVisible({ timeout: 10000 });
   });
 
   test('ATOM-03: Single status change produces exactly one timeline entry', async ({ page }) => {
@@ -509,9 +487,6 @@ test.describe('Cross-Cutting Timeline Atomicity', () => {
       hasText: new RegExp(`Status Changed:.*from '${currentStatus?.trim().toLowerCase()}' to '${targetStatus}'`)
     });
 
-    await expect(async () => {
-      const count = await matchingEntries.count();
-      expect(count).toBeGreaterThanOrEqual(1);
-    }).toPass({ timeout: 10000 });
+    await expect(matchingEntries.first()).toBeVisible({ timeout: 10000 });
   });
 });

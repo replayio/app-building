@@ -8,6 +8,7 @@ interface TasksState {
   total: number
   availableAssignees: { assignee_name: string; assignee_role: string | null }[]
   availableClients: { id: string; name: string }[]
+  _lastFetchRequestId: string | null
 }
 
 const initialState: TasksState = {
@@ -17,6 +18,7 @@ const initialState: TasksState = {
   total: 0,
   availableAssignees: [],
   availableClients: [],
+  _lastFetchRequestId: null,
 }
 
 export const fetchTasks = createAsyncThunk(
@@ -101,13 +103,15 @@ export const tasksSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTasks.pending, (state) => {
-        if (state.items.length === 0) {
-          state.loading = true
-        }
+      .addCase(fetchTasks.pending, (state, action) => {
+        state._lastFetchRequestId = action.meta.requestId
+        state.loading = true
+        state.items = []
+        state.total = 0
         state.error = null
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
+        if (action.meta.requestId !== state._lastFetchRequestId) return
         state.loading = false
         state.items = action.payload.tasks
         state.total = action.payload.total
@@ -115,6 +119,7 @@ export const tasksSlice = createSlice({
         state.availableClients = action.payload.clients
       })
       .addCase(fetchTasks.rejected, (state, action) => {
+        if (action.meta.requestId !== state._lastFetchRequestId) return
         state.loading = false
         state.error = action.error.message ?? 'Unknown error'
       })

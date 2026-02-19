@@ -50,6 +50,13 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 
 - Import/upload dialogs must specify the expected data format (e.g., required columns, accepted values, file type). Test entries should verify that format documentation is visible to the user before they attempt the import.
 
+- Backend integrations that the user can configure (webhooks, API connections, OAuth apps, etc.) must include
+  complete setup instructions visible in the configuration UI. The instructions must be specific to each
+  supported external service (e.g., Zapier, n8n, Slack, Discord) — not just a generic URL field. Show the
+  user where to find the webhook/endpoint URL in the external service, what payload format they will receive,
+  and any required configuration on the external side. Test entries should verify that these instructions are
+  visible and accurate for each supported platform.
+
 - State-changing actions must have tests that when performed other parts of the app update appropriately. For example:
 * If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry. Ensure this happens atomically to avoid duplicates from re-renders. Think through every field that can change and whether it needs history tracking.
 

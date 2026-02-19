@@ -41,6 +41,36 @@ All sub-jobs should use `--strategy "strategies/jobs/build/writeTests.md"`.
   `setInputFiles` on a file input). Do not substitute a URL/text input test for a file upload test —
   this masks missing upload functionality in the app.
 
+- NEVER put Playwright locator calls with auto-wait semantics (e.g. `count()`, `textContent()`,
+  `isVisible()`) inside a `.toPass()` retry block in a way that iterates over dynamic elements.
+  If the DOM changes mid-iteration, an inner locator call will auto-wait for an element that no
+  longer exists, and `.toPass()` cannot interrupt that inner wait to retry the block — the test
+  deadlocks. Instead, use a single atomic Playwright assertion that has built-in retry:
+
+  BAD — nested waits deadlock when DOM changes mid-loop:
+  ```ts
+  await expect(async () => {
+    const cards = page.locator('[data-testid^="card-"]');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      const text = await cards.nth(i).textContent(); // hangs if DOM shrinks
+      if (text?.includes(name)) found = true;
+    }
+    expect(found).toBeFalsy();
+  }).toPass({ timeout: 15000 });
+  ```
+
+  GOOD — single atomic assertion with built-in retry, no nested waits:
+  ```ts
+  await expect(
+    page.locator('[data-testid^="card-"]').filter({ hasText: name })
+  ).toHaveCount(0, { timeout: 15000 });
+  ```
+
+  The same principle applies to any `.toPass()` block: keep the body free of Playwright auto-waiting
+  calls that can block indefinitely. Use locator chaining (`.filter()`, `.locator()`) and
+  single-assertion expect matchers (`.toHaveCount()`, `.toContainText()`, `.toBeVisible()`) instead.
+
 - Strategy files are at `/repo/strategies/jobs/` and its subdirectories (the repo root), NOT inside
   the app directory. Always use `/repo/strategies/jobs/reviewChanges.md`,
   `/repo/strategies/jobs/build/writeTests.md`, etc.
