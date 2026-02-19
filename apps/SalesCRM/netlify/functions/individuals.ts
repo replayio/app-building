@@ -224,7 +224,7 @@ async function handler(req: OptionalAuthRequest) {
 
     const rows = await sql`
       INSERT INTO contact_history (individual_id, date, type, summary, team_member)
-      VALUES (${individualId}, ${body.date}, ${body.type}, ${body.summary}, ${body.team_member || null})
+      VALUES (${individualId}, ${body.date || null}, ${body.type}, ${body.summary}, ${body.team_member || null})
       RETURNING *
     ` as ContactHistoryRow[]
 

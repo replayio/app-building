@@ -1,11 +1,6 @@
 [
   {
     "strategy": "strategies/jobs/maintain/checkDirectives.md",
-    "description": "CheckBackend: Check writeApp.md directive violations in all backend functions",
-    "timestamp": "2026-02-19T23:44:57.615Z"
-  },
-  {
-    "strategy": "strategies/jobs/maintain/checkDirectives.md",
     "description": "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication test entries",
     "timestamp": "2026-02-19T23:44:57.059Z"
   },
