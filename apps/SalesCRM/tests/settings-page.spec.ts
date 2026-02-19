@@ -64,7 +64,7 @@ test.describe('SettingsPage - WebhookSection', () => {
     await expect(page.getByTestId('webhook-empty-state')).toContainText('No webhooks configured');
   });
 
-  test('STP-WH-02: Add Webhook button opens webhook modal', async ({ page }) => {
+  test('STP-WH-02: Add Webhook button opens webhook modal with setup guide', async ({ page }) => {
     await page.goto('/settings');
     await page.waitForLoadState('networkidle');
 
@@ -74,9 +74,18 @@ test.describe('SettingsPage - WebhookSection', () => {
     await expect(modal).toBeVisible();
     await expect(modal).toContainText('Add Webhook');
 
+    // Setup guide with platform buttons
+    await expect(page.getByTestId('webhook-setup-guide')).toBeVisible();
+    await expect(page.getByTestId('webhook-platform-zapier')).toBeVisible();
+    await expect(page.getByTestId('webhook-platform-n8n')).toBeVisible();
+    await expect(page.getByTestId('webhook-platform-custom')).toBeVisible();
+
     // Form inputs
     await expect(page.getByTestId('webhook-name-input')).toBeVisible();
     await expect(page.getByTestId('webhook-url-input')).toBeVisible();
+
+    // Payload toggle
+    await expect(page.getByTestId('webhook-payload-toggle')).toBeVisible();
 
     // Cancel and Save buttons
     await expect(page.getByTestId('webhook-cancel-button')).toBeVisible();
@@ -124,7 +133,57 @@ test.describe('SettingsPage - WebhookSection', () => {
     await expect(page.getByTestId('webhook-section')).toContainText('Zapier Integration');
   });
 
-  test('STP-WH-04: Delete webhook removes it after confirmation', async ({ page }) => {
+  test('STP-WH-04: Platform setup guide shows instructions when clicked', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('add-webhook-button').click();
+    await expect(page.getByTestId('webhook-modal')).toBeVisible();
+
+    // Click Zapier — instructions should appear
+    await page.getByTestId('webhook-platform-zapier').click();
+    const instructions = page.getByTestId('webhook-platform-instructions');
+    await expect(instructions).toBeVisible();
+    await expect(instructions).toContainText('Zapier');
+    await expect(page.getByTestId('webhook-platform-tip')).toBeVisible();
+
+    // Click n8n — instructions should switch
+    await page.getByTestId('webhook-platform-n8n').click();
+    await expect(instructions).toContainText('n8n');
+
+    // Click Custom Endpoint — instructions should switch
+    await page.getByTestId('webhook-platform-custom').click();
+    await expect(instructions).toContainText('POST');
+
+    // Click Custom again to collapse
+    await page.getByTestId('webhook-platform-custom').click();
+    await expect(instructions).not.toBeVisible();
+  });
+
+  test('STP-WH-05: Payload format toggle shows JSON example', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('add-webhook-button').click();
+    await expect(page.getByTestId('webhook-modal')).toBeVisible();
+
+    // Payload example should be hidden initially
+    await expect(page.getByTestId('webhook-payload-example')).not.toBeVisible();
+
+    // Click toggle to show
+    await page.getByTestId('webhook-payload-toggle').click();
+    const payload = page.getByTestId('webhook-payload-example');
+    await expect(payload).toBeVisible();
+    await expect(payload).toContainText('"event"');
+    await expect(payload).toContainText('"timestamp"');
+    await expect(payload).toContainText('"data"');
+
+    // Click toggle to hide
+    await page.getByTestId('webhook-payload-toggle').click();
+    await expect(payload).not.toBeVisible();
+  });
+
+  test('STP-WH-06: Delete webhook removes it after confirmation', async ({ page }) => {
     await page.goto('/settings');
     await page.waitForLoadState('networkidle');
 

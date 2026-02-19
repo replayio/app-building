@@ -1116,7 +1116,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 - **SettingsPageHeader**: Settings icon and "Settings" title
 - **ImportExportSection**: "Import & Export" section with Import from CSV buttons (Clients, Deals, Tasks, Contacts) and Export to CSV buttons (Clients, Deals, Tasks)
 - **WebhookSection**: "Webhooks" section with Add Webhook button, list of configured webhooks with name, URL, event badges, enable/disable toggle, edit and delete buttons. Empty state when no webhooks.
-- **WebhookModal**: Modal for adding/editing a webhook with name input, URL input, event checkboxes, and save/cancel buttons.
+- **WebhookModal**: Modal for adding/editing a webhook with platform setup guide (Zapier, n8n, Custom tabs showing step-by-step instructions), name input, URL input, event checkboxes, payload format toggle, and save/cancel buttons.
 
 ### Test Entries
 
@@ -1146,17 +1146,27 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe the Webhooks section
 - Expected: Webhooks section (data-testid="webhook-section") shows heading "Webhooks" with description text. "Add Webhook" button (data-testid="add-webhook-button") is visible. Empty state message (data-testid="webhook-empty-state") reads "No webhooks configured."
 
-**STP-WH-02: Add Webhook button opens webhook modal**
+**STP-WH-02: Add Webhook button opens webhook modal with setup guide**
 - Initial: User is on /settings
 - Action: Click "Add Webhook" button (data-testid="add-webhook-button")
-- Expected: A modal (data-testid="webhook-modal") opens with title "Add Webhook". Contains name input (data-testid="webhook-name-input"), URL input (data-testid="webhook-url-input"), event checkboxes, Cancel button (data-testid="webhook-cancel-button"), and Save button (data-testid="webhook-save-button") which is disabled until name, URL, and at least one event are provided.
+- Expected: A modal (data-testid="webhook-modal") opens with title "Add Webhook". Contains a setup guide section (data-testid="webhook-setup-guide") with platform buttons for Zapier (data-testid="webhook-platform-zapier"), n8n (data-testid="webhook-platform-n8n"), and Custom Endpoint (data-testid="webhook-platform-custom"). Also contains name input (data-testid="webhook-name-input"), URL input (data-testid="webhook-url-input"), event checkboxes, a "Show payload format" toggle (data-testid="webhook-payload-toggle"), Cancel button (data-testid="webhook-cancel-button"), and Save button (data-testid="webhook-save-button") which is disabled until name, URL, and at least one event are provided.
 
 **STP-WH-03: Creating a webhook persists and shows in list**
 - Initial: Webhook modal is open on /settings
 - Action: Fill name "Zapier Integration", URL "https://hooks.zapier.com/test", check "New Client Created" and "Deal Stage Changed" events, click "Add Webhook"
 - Expected: Modal closes. New webhook appears in the webhooks list showing name "Zapier Integration", URL "https://hooks.zapier.com/test", and event badges for "New Client Created" and "Deal Stage Changed". Empty state message is gone. Webhook is persisted (page reload still shows it).
 
-**STP-WH-04: Delete webhook removes it after confirmation**
+**STP-WH-04: Platform setup guide shows instructions when clicked**
+- Initial: Webhook modal is open on /settings
+- Action: Click the "Zapier" platform button (data-testid="webhook-platform-zapier")
+- Expected: Platform-specific instructions (data-testid="webhook-platform-instructions") appear showing numbered setup steps for Zapier. A tip (data-testid="webhook-platform-tip") is visible with platform-specific advice. Click "n8n" button to switch — instructions update to show n8n-specific steps. Click "Custom Endpoint" to see custom endpoint instructions. Click the active platform button again to collapse the instructions.
+
+**STP-WH-05: Payload format toggle shows JSON example**
+- Initial: Webhook modal is open on /settings
+- Action: Click "Show payload format" (data-testid="webhook-payload-toggle")
+- Expected: A JSON payload example (data-testid="webhook-payload-example") appears showing the webhook event structure with fields like "event", "timestamp", and "data". Click the toggle again to hide the payload example.
+
+**STP-WH-06: Delete webhook removes it after confirmation**
 - Initial: A webhook exists in the list
 - Action: Click the delete button on the webhook, confirm in dialog
 - Expected: Webhook is removed from the list. Deletion is persisted. Empty state message reappears if no webhooks remain.
