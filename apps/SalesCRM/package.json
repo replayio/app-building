@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "check": "tsx scripts/check.ts",
     "test": "tsx scripts/test.ts",
-    "deploy": "tsx scripts/deploy.ts"
+    "deploy": "tsx scripts/deploy.ts",
+    "analyze-test-failure": "tsx scripts/analyze-test-failure.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
