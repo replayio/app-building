@@ -29,7 +29,7 @@ export function ClientDetailPage() {
   const { clientId } = useParams()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { currentClient, loading } = useAppSelector((state) => state.clients)
+  const { currentClient, loading, error } = useAppSelector((state) => state.clients)
 
   const [tasks, setTasks] = useState<Task[]>([])
   const [deals, setDeals] = useState<Deal[]>([])
@@ -212,10 +212,24 @@ export function ClientDetailPage() {
     }
   }
 
-  if (loading || !currentClient) {
+  if (loading) {
     return (
       <div className="p-6">
         <div className="text-[13px] text-text-muted">Loading client...</div>
+      </div>
+    )
+  }
+
+  if (!currentClient) {
+    return (
+      <div className="p-6">
+        <div className="text-[13px] text-text-muted">{error || 'Client not found.'}</div>
+        <button
+          onClick={() => { if (clientId) dispatch(fetchClient(clientId)) }}
+          className="mt-2 text-[13px] text-accent hover:underline"
+        >
+          Retry
+        </button>
       </div>
     )
   }

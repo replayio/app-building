@@ -3,3 +3,5 @@ dist
 .env
 .netlify
 *.local
+tests/test-branch-data.json
+tests/test-storage-state.json

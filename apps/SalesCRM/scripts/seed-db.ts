@@ -1,34 +1,13 @@
 /**
- * seed-db script: Seeds the database with test data.
- * Usage: DATABASE_URL=... npx tsx scripts/seed-db.ts
- *
- * This script populates the database with realistic sample data
- * required by the Playwright test suite.
+ * Database seed module.
+ * Populates the database with realistic sample data required by the Playwright test suite.
  */
 
 import { neon } from '@neondatabase/serverless'
-import { readFileSync } from 'fs'
 
-// Read DATABASE_URL from .env if not set
-let DATABASE_URL = process.env.DATABASE_URL
-if (!DATABASE_URL) {
-  try {
-    const env = readFileSync('.env', 'utf-8')
-    const match = env.match(/DATABASE_URL=(.+)/)
-    if (match) DATABASE_URL = match[1].trim()
-  } catch {
-    // ignore
-  }
-}
+export async function seedDatabase(databaseUrl: string): Promise<void> {
+  const sql = neon(databaseUrl)
 
-if (!DATABASE_URL) {
-  console.error('Error: DATABASE_URL environment variable is required')
-  process.exit(1)
-}
-
-const sql = neon(DATABASE_URL)
-
-async function main() {
   console.log('Seeding database with test data...')
 
   // Clear existing data (reverse order of foreign keys)
@@ -38,6 +17,7 @@ async function main() {
   await sql`DELETE FROM deal_contacts`
   await sql`DELETE FROM timeline_events`
   await sql`DELETE FROM attachments`
+  await sql`DELETE FROM task_notes`
   await sql`DELETE FROM tasks`
   await sql`DELETE FROM contact_history`
   await sql`DELETE FROM individual_relationships`
@@ -45,15 +25,6 @@ async function main() {
   await sql`DELETE FROM deals`
   await sql`DELETE FROM individuals`
   await sql`DELETE FROM clients`
-  await sql`CREATE TABLE IF NOT EXISTS webhooks (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name TEXT NOT NULL,
-    url TEXT NOT NULL,
-    events TEXT[] NOT NULL DEFAULT '{}',
-    enabled BOOLEAN DEFAULT true,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-  )`
   await sql`DELETE FROM webhooks`
   await sql`DELETE FROM users`
 
@@ -315,8 +286,3 @@ async function main() {
   console.log(`  Deals: 7`)
   console.log(`  Tasks: 8`)
 }
-
-main().catch((err) => {
-  console.error('Failed to seed database:', err)
-  process.exit(1)
-})

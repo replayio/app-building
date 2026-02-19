@@ -49,6 +49,24 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   confirmation requirements, incorrect error handling, and session establishment failures that
   unit-level or mocked tests miss.
 
+## Parallel Test Design
+
+Tests run in parallel across multiple Playwright workers, each with its own isolated database branch.
+Write tests with this in mind:
+
+- Tests within the same spec file share a worker and therefore a database branch. Tests across
+  different spec files may run in separate workers with separate databases.
+- Tests that create, modify, or delete records must not rely on a fixed total count of records
+  in the database (e.g., "expect 5 clients"). Other tests in the same worker may have already
+  created or deleted records. Instead, assert on specific records by name/ID, or use relative
+  assertions ("at least N", "contains this item").
+- Tests that need a pristine dataset should create their own records in `beforeAll`/`beforeEach`
+  and clean them up in `afterAll`/`afterEach`, rather than depending on the global seed data
+  being unmodified.
+- Never hardcode database IDs in tests. Query the UI or API to discover IDs for the records
+  you need to interact with.
+- The Playwright config must use `fullyParallel: true`. Do not set `workers: 1`.
+
 ## Tips
 
 - Before writing tests that interact with shared UI components (ConfirmDialog, modals, dropdowns),

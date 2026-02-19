@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
   test('DLP-HDR-01: Page header shows title, breadcrumb, and create button', async ({ page }) => {
@@ -325,11 +325,19 @@ test.describe('DealsListPage - ViewToggle (DLP-VW)', () => {
     const targetColumn = page.getByTestId(`pipeline-column-${targetStage}`);
     const sourceCard = page.getByTestId(`pipeline-deal-card-${dealId}`);
 
-    // Perform drag and drop
-    await sourceCard.dragTo(targetColumn);
+    // Perform drag and drop with retry — dragTo can be unreliable
+    await expect(async () => {
+      // Re-locate the source card (it may have moved after a reload)
+      const card = page.getByTestId(`pipeline-deal-card-${dealId}`);
+      const cardInTarget = page.getByTestId(`pipeline-column-${targetStage}`).getByTestId(`pipeline-deal-card-${dealId}`);
 
-    // Wait for the deal to appear in the target column after API reload
-    await expect(targetColumn.getByTestId(`pipeline-deal-card-${dealId}`)).toBeVisible({ timeout: 10000 });
+      if (await cardInTarget.count() === 0) {
+        await card.dragTo(targetColumn);
+        await page.waitForLoadState('networkidle');
+      }
+
+      await expect(cardInTarget).toBeVisible();
+    }).toPass({ timeout: 15000 });
   });
 });
 

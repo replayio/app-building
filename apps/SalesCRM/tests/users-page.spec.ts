@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 test.describe('UsersListPage - Header', () => {
   test('ULP-HDR-01: Users page displays header and team members', async ({ page }) => {

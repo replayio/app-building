@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 async function navigateToFirstTaskDetail(page: import('@playwright/test').Page) {
   await page.goto('/tasks');

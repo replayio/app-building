@@ -1,4 +1,3 @@
-import { execSync } from 'child_process'
 import * as jose from 'jose'
 import { writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
@@ -29,17 +28,11 @@ async function generateTestJWT(): Promise<string> {
 }
 
 export default async function globalSetup() {
-  console.log('Running database migrations...')
-  execSync('npm run migrate-db', { stdio: 'inherit', cwd: process.cwd() })
-
-  console.log('Seeding database before tests...')
-  execSync('npm run seed-db', { stdio: 'inherit', cwd: process.cwd() })
-
+  // Generate test JWT
   console.log('Generating test auth token...')
   const testJWT = await generateTestJWT()
 
   // Write storageState file for Playwright
-  // Token is stored as a plain string under auth-token key (matches src/lib/auth.ts)
   const storageState = {
     cookies: [],
     origins: [

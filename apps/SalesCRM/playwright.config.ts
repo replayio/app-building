@@ -1,31 +1,26 @@
 import { defineConfig, devices } from '@playwright/test';
-
-import { homedir } from 'os';
-import { join } from 'path';
-
-const [REDACTED]Browser = join(homedir(), '.[REDACTED]', 'runtimes', 'chrome-linux', 'chrome');
+import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
 
 export default defineConfig({
   globalSetup: './tests/global-setup.ts',
+  globalTeardown: './tests/global-teardown.ts',
   testDir: './tests',
   testIgnore: ['**/deployment.spec.ts'],
-  fullyParallel: false,
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 1,
-  reporter: [['html'], ['list']],
+  workers: process.env.CI ? undefined : 8,
+  reporter: [
+    [REDACTED]Reporter({ apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY, upload: false }),
+    ['html', { open: 'never' }],
+    ['./tests/json-log-reporter.ts'],
+  ],
   timeout: 60000,
   use: {
     baseURL: 'http://localhost:8888',
     trace: 'on-first-retry',
     storageState: './tests/test-storage-state.json',
-    launchOptions: {
-      executablePath: [REDACTED]Browser,
-      env: {
-        ...process.env,
-        RECORD_ALL_CONTENT: '1',
-      },
-    },
+    ...[REDACTED]Devices['Replay Chromium'],
   },
   projects: [
     {
@@ -34,7 +29,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'IS_TEST=true npx netlify dev --port 8888 --functions ./netlify/functions',
+    command: 'env -u DATABASE_URL IS_TEST=true npx netlify dev --port 8888 --functions ./netlify/functions',
     url: 'http://localhost:8888',
     reuseExistingServer: true,
     timeout: 60000,

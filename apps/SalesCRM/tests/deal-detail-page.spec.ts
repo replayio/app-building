@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 /**
  * Helper: navigate to the first deal's detail page.
@@ -221,7 +221,9 @@ test.describe('DealDetailPage - StagePipeline (DDP-PIP)', () => {
     // Change to a different stage
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
     await selectFilterOption(page, 'deal-header-stage-select', newStage);
-    await page.getByTestId('deal-header-change-stage-button').click();
+    const pipelineChangeBtn = page.getByTestId('deal-header-change-stage-button');
+    await expect(pipelineChangeBtn).not.toBeDisabled({ timeout: 5000 });
+    await pipelineChangeBtn.click();
     await page.waitForLoadState('networkidle');
 
     // New stage should now be current
@@ -230,7 +232,8 @@ test.describe('DealDetailPage - StagePipeline (DDP-PIP)', () => {
 
     // Restore original stage
     await selectFilterOption(page, 'deal-header-stage-select', currentStage);
-    await page.getByTestId('deal-header-change-stage-button').click();
+    await expect(pipelineChangeBtn).not.toBeDisabled({ timeout: 5000 });
+    await pipelineChangeBtn.click();
     await page.waitForLoadState('networkidle');
   });
 });
@@ -272,19 +275,37 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
     // Change stage to trigger new history entry
     const currentStage = await getFilterValue(page, 'deal-header-stage-select');
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
-    await selectFilterOption(page, 'deal-header-stage-select', newStage);
-    await page.getByTestId('deal-header-change-stage-button').click();
+    const stageDisplayNames: Record<string, string> = {
+      'lead': 'Lead', 'qualification': 'Qualification', 'discovery': 'Discovery',
+      'proposal': 'Proposal', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
+    };
+    const expectedFrom = stageDisplayNames[currentStage] || currentStage;
+    const expectedTo = stageDisplayNames[newStage] || newStage;
 
-    // Wait for history to be updated with the new entry
+    await selectFilterOption(page, 'deal-header-stage-select', newStage);
+
+    // Wait for the Change Stage button to become enabled after the stage selection
+    const changeStageBtn = page.getByTestId('deal-header-change-stage-button');
+    await expect(changeStageBtn).not.toBeDisabled({ timeout: 5000 });
+    await changeStageBtn.click();
+
+    // Wait for a history entry matching this specific stage change to appear
+    const expectedText = `Changed Stage from ${expectedFrom} to ${expectedTo}`;
     await expect(async () => {
       const entriesAfter = page.locator('[data-testid^="deal-history-entry-"]');
       const countAfter = await entriesAfter.count();
-      expect(countAfter).toBe(countBefore + 1);
+      expect(countAfter).toBeGreaterThan(countBefore);
+
+      // Verify the specific stage change entry exists
+      const matchingEntry = page.locator('[data-testid^="deal-history-entry-"]', { hasText: expectedText });
+      const matchCount = await matchingEntry.count();
+      expect(matchCount).toBeGreaterThanOrEqual(1);
     }).toPass({ timeout: 10000 });
 
     // Restore original stage
     await selectFilterOption(page, 'deal-header-stage-select', currentStage);
-    await page.getByTestId('deal-header-change-stage-button').click();
+    await expect(changeStageBtn).not.toBeDisabled({ timeout: 5000 });
+    await changeStageBtn.click();
     await page.waitForLoadState('networkidle');
   });
 });

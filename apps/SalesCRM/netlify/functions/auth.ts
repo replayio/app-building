@@ -1,12 +1,6 @@
-import { neon } from '@neondatabase/serverless'
+import { getDb } from '../utils/db'
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto'
 import * as jose from 'jose'
-
-function getDb() {
-  const url = process.env.DATABASE_URL
-  if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
-}
 
 const TEST_JWT_SECRET = 'test-jwt-secret-for-playwright'
 

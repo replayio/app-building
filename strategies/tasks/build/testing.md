@@ -26,27 +26,133 @@ https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[RE
 
 RECORD_REPLAY_API_KEY is already set in the environment for using the Replay CLI.
 
+## Replay.io Playwright Installation and Configuration
+
+Every app MUST use the Replay browser to record Playwright test runs. This section describes
+the exact installation steps and configuration required.
+
+### 1. Install dependencies
+
+The app's `package.json` must include these dev dependencies:
+
+```bash
+npm install --save-dev @[REDACTED]io/playwright @playwright/test
+```
+
+`@[REDACTED]io/playwright` (currently v5.0.1) provides the `[REDACTED]Reporter` and `devices` exports
+for integrating Replay recordings into Playwright.
+
+### 2. Install the Replay browser
+
+Run once in the container (or as part of CI setup):
+
+```bash
+npx [REDACTED]io install
+```
+
+This downloads the Replay Chromium browser to `~/.[REDACTED]/runtimes/chrome-linux/chrome`.
+Verify it exists:
+
+```bash
+ls ~/.[REDACTED]/runtimes/chrome-linux/chrome
+```
+
+### 3. API key
+
+`RECORD_REPLAY_API_KEY` must be set in the environment. It is already available in this
+container. The Playwright config passes it to the reporter via:
+
+```ts
+apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY
+```
+
+### 4. Playwright config
+
+The Playwright config MUST:
+
+1. Import BOTH `[REDACTED]Reporter` and `devices as [REDACTED]Devices` from `@[REDACTED]io/playwright`.
+2. Include `[REDACTED]Reporter(...)` in the `reporter` array with `upload: false`. Uploads are
+   handled by the test script, NOT by the reporter.
+3. Spread `[REDACTED]Devices['Replay Chromium']` into the global `use` config. This sets
+   `executablePath`, `RECORD_ALL_CONTENT`, and critically `RECORD_REPLAY_METADATA_FILE` which
+   is required for the reporter to attach test metadata (pass/fail result) to recordings.
+   Without `RECORD_REPLAY_METADATA_FILE`, the recording driver cannot read the per-test
+   metadata written by the fixture, and all recordings will have empty `testResult`.
+
+**IMPORTANT**: Do NOT manually set `launchOptions.executablePath` and `env` instead of using
+`[REDACTED]Devices['Replay Chromium']`. Manual config misses `RECORD_REPLAY_METADATA_FILE`,
+which breaks the recording-to-test metadata association.
+
+Example:
+
+```ts
+import { defineConfig, devices } from '@playwright/test';
+import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
+
+export default defineConfig({
+  reporter: [
+    [REDACTED]Reporter({
+      apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY,
+      upload: false,
+    }),
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['list'],
+  ],
+  use: {
+    ...[REDACTED]Devices['Replay Chromium'],
+  },
+});
+```
+
+### 5. Replay CLI commands reference
+
+- `npx [REDACTED]io list` — List all local recordings (ID, host, date, duration, status).
+- `npx [REDACTED]io list --json` — Full JSON metadata for all recordings. Each entry includes:
+  `id`, `buildId`, `date`, `duration`, `metadata` (host, URI, sourceMaps, processType),
+  `path`, `recordingStatus` (one of `"recording"`, `"finished"`, `"crashed"`).
+- `npx [REDACTED]io upload <id>` — Upload a single recording by ID. Returns the viewable URL.
+- `npx [REDACTED]io upload --all` — Upload all local recordings.
+- `npx [REDACTED]io remove --all` — Delete all local recordings (use between runs to avoid stale
+  data accumulating).
+
+### 6. OpenSSL 1.1 requirement
+
+The Replay browser's recording driver requires `libcrypto.so.1.1` (OpenSSL 1.1). If the
+container only has OpenSSL 3, the browser will run but silently fail to record (no error in
+test output, just `DoLoadDriverHandle: dlopen failed` in stderr). Fix: download Ubuntu 18.04's
+`libssl1.1` deb, extract it, and set `LD_LIBRARY_PATH` to point at the extracted libs. See
+the deployment Playwright config for a working example.
+
 ## Running Tests
 
-Every time you run the playwright tests, do the following:
-- Restart any existing development servers to pick up the latest changes. There might be development servers running from previous runs.
-- Use the Replay browser to record test executions.
+Run tests via `npm run test <testFile>` from the app directory (see `strategies/scripts/test.md`
+for the full script specification). Do NOT manually run playwright or start dev servers.
+
 - Write the results to a logs/test-run-N.log file.
-- Use a single worker, to avoid tests interfering with each other.
+- Tests MUST run in parallel with multiple workers (use `fullyParallel: true` in playwright config).
 
 ## Debugging
 
-When tests fail, you MUST follow this process for each distinct failure:
+When tests fail, you MUST follow this process for each distinct failure. Every step is
+mandatory — do NOT skip or reorder steps.
 
 1. Announce `ANALYZING TEST FAILURE: <test name>`.
-2. Upload the Replay recording of the failed test using the Replay CLI.
-3. Use Replay MCP tools to analyze the failure. Start with `mcp__[REDACTED]__ConsoleMessages` and
+2. Find the uploaded recording IDs in the `npm run test` output. The test script automatically
+   uploads failed recordings and logs full metadata for each one. Look for the
+   `=== REPLAY RECORDINGS METADATA ===` block and the `REPLAY UPLOADED: <recordingId>` lines
+   in the output. Choose the recording whose URI and duration best match the failing test. If
+   the upload did not happen (e.g., the script was misconfigured), use
+   `npx [REDACTED]io list --json` to find recordings and upload them manually:
+   `npx [REDACTED]io upload <id>`.
+3. Announce `TEST FAILURE UPLOADED: <recordingId>` before doing anything else.
+4. Use Replay MCP tools to analyze the failure. Start with `mcp__[REDACTED]__ConsoleMessages` and
    `mcp__[REDACTED]__NetworkRequest` to get an overview, then drill into specifics with tools like
    `mcp__[REDACTED]__SearchSources`, `mcp__[REDACTED]__Logpoint`, `mcp__[REDACTED]__Evaluate`,
    `mcp__[REDACTED]__GetStack`, and `mcp__[REDACTED]__ReactComponents` as needed.
-4. Only after completing the Replay analysis, fix the test and/or app based on what you found.
+5. Only after completing the Replay analysis, fix the test and/or app based on what you found.
 
 Do NOT skip Replay analysis and jump straight to reading error messages or guessing at fixes.
+Do NOT stop or cancel a recording upload because it is "taking a while" — wait for it to complete.
 The Replay recording contains the actual runtime state — use it.
 
 When testing the app after deployment, use the Replay browser to record the app and debug any problems.
@@ -69,6 +175,23 @@ When testing the app after deployment, use the Replay browser to record the app 
 - All browsers must run headless. Never use Xvfb, never set `DISPLAY`, never use the `[REDACTED]io record`
   CLI (it launches a headed browser). Use `@[REDACTED]io/playwright` for recordings.
 
+- The Playwright config MUST use `fullyParallel: true` and `workers` > 1 (or the default). Do NOT
+  set `workers: 1` — tests must be designed to run concurrently. If tests interfere with each other,
+  fix the isolation (database branches, unique test data), not the parallelism.
+
+- Tests MUST NOT run against the production database or the main Neon branch. The test script
+  creates ephemeral Neon branches for test runs and deletes them afterwards.
+
+- NEVER stop, cancel, or skip a Replay recording upload that is in progress. The upload is a
+  prerequisite for Replay MCP analysis, which is mandatory for debugging failures. If the upload
+  is taking a long time, WAIT for it to finish. Do NOT proceed with fixes based on "enough
+  information" — you must complete the full upload → MCP analysis → fix cycle. Stopping an
+  upload to "save time" violates the debugging process and leads to guesswork-based fixes.
+
+- Always run tests via `npm run test <testFile>` (from the app directory), never by calling
+  `npx playwright test` directly. The test script includes essential pre-test setup (branch
+  creation, schema init, seeding, stale cleanup) that is skipped when running Playwright directly.
+
 ## Tips
 
 - When debugging history/timeline tests, check for duplicate entries caused by React re-renders triggering multiple API calls, and check for missing entries from mutation handlers that skip history writes.
@@ -79,8 +202,9 @@ When testing the app after deployment, use the Replay browser to record the app 
   the root cause may be that the SQL query is silently broken. Verify the API returns correctly
   filtered results by curling the endpoint directly with filter parameters.
 - Tests that pass individually but fail in the full suite usually indicate data contamination between
-  tests. Consider adding database re-seeding in `globalSetup` or `beforeAll`, or make tests that
-  create/modify/delete data operate on their own isolated records.
+  tests. With per-worker database branches, cross-worker contamination is impossible. If tests within
+  the same worker interfere, make tests that create/modify/delete data operate on their own isolated
+  records or re-seed the worker's branch in `beforeAll`.
 - When test IDs differ between spec files (cross-cutting vs page-specific), decide on ONE canonical
   set of IDs in the component and update whichever test file has fewer references.
 - When testing unauthenticated scenarios with `browser.newContext()`, always pass

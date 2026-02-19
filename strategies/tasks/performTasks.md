@@ -29,17 +29,12 @@ follow it, skip the task steps below and continue with whatever else you were do
 
 ## Database
 
-The app must support `npm run init-db` which creates a new Neon database and configures the app to connect to it. This should read NEON_API_KEY from the environment. Use this database for all testing, do not set up a local copy of anything or any proxies.
-
 All database accesses must happen in backend Netlify functions. Netlify functions should be focused and operate on specific parts of the database corresponding to the needs of one or more specific frontend components.
 
 ## Quality Gates
 
-Before each commit:
-- `npx tsc --noEmit` must pass with no errors
-- `npx eslint .` must pass with no errors
-
-Do not commit code that fails typecheck or lint.
+Before each commit, run `npm run check` (see `strategies/scripts/check.md`). Do not commit
+code that fails typecheck or lint.
 
 ## Documentation
 

@@ -11,3 +11,7 @@ prompt-*.txt
 
 # Local Netlify folder
 .netlify
+
+# Artifacts
+logs/test-run-*
+**/playwright-report/*

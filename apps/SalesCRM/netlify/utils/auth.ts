@@ -1,14 +1,8 @@
-import { neon } from '@neondatabase/serverless'
+import { getDb } from './db'
 import * as jose from 'jose'
 
 // Test mode: fixed HMAC secret for Playwright test JWTs
 const TEST_JWT_SECRET = 'test-jwt-secret-for-playwright'
-
-function getDb() {
-  const url = process.env.DATABASE_URL
-  if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
-}
 
 function getJwtSecret(): Uint8Array {
   if (process.env.IS_TEST === 'true') {

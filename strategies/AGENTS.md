@@ -11,6 +11,16 @@ build or maintain an app, or a question about logs).
 - **analyzeLogs.md**: Search through log files to find specific information.
 - **buildInitialApp.md**: Build a new app from an AppSpec. Sets up the plan with build stage tasks.
 - **maintainApp.md**: Run a maintenance cycle on an existing app. Sets up the plan with maintain stage tasks.
+- **updateScripts.md**: Write a design doc for a new package script, then set up a plan task to implement it.
+
+## `scripts/` — Design docs for package scripts
+
+Design docs that define the contract for package scripts (`npm run <name>`). Each file covers
+the script's purpose, usage, behavior, inputs, outputs, and implementation tips. These are
+written by the `messages/updateScripts.md` strategy before the script is implemented.
+
+Design docs are prescriptive — they define how a script should work and are created before
+implementation. The implementing agent reads the design doc and follows it.
 
 ## `tasks/` — Handling pending tasks in the plan
 
@@ -24,6 +34,7 @@ entries in `docs/plan.md`. They are organized into subdirectories:
   Reads `docs/plan.md`, picks the next pending task, reads its strategy file, and implements it.
 - **reviewChanges.md**: Reviews iteration logs for lessons learned and strategy improvements.
 - **deployment.md**: Deploy the app to production. Used by both build and maintain workflows.
+- **writeScript.md**: Implement a package script from its design doc in `strategies/scripts/`.
 
 ### `build/` — Build stage tasks
 

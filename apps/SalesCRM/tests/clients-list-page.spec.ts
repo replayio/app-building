@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from './base';
+import type { Page } from '@playwright/test';
 
 async function selectFilterOption(page: Page, testId: string, value: string) {
   await page.getByTestId(`${testId}-trigger`).click();
@@ -138,7 +139,7 @@ test.describe('ClientsListPage - PageHeader', () => {
 
     // New client should appear in the table
     await page.waitForLoadState('networkidle');
-    await expect(page.getByText('Test Corp')).toBeVisible();
+    await expect(page.getByText('Test Corp', { exact: true })).toBeVisible();
   });
 
   test('CLP-HDR-04: Import button opens import dialog with CSV format info', async ({ page }) => {

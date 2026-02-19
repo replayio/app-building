@@ -7,13 +7,10 @@
     "dev": "netlify dev",
     "dev:vite": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "init-db": "tsx scripts/init-db.ts",
-    "migrate-db": "tsx scripts/migrate-db.ts",
-    "seed-db": "tsx scripts/seed-db.ts",
-    "test": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test",
-    "test:ui": "PLAYWRIGHT_BROWSERS_PATH=/home/node/.cache/ms-playwright npx playwright test --ui"
+    "check": "tsx scripts/check.ts",
+    "test": "tsx scripts/test.ts",
+    "deploy": "tsx scripts/deploy.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -39,7 +36,7 @@
     "@eslint/js": "^9.17.0",
     "@netlify/functions": "^3.0.0",
     "@playwright/test": "^1.58.2",
-    "@[REDACTED]io/playwright": "^5.0.1",
+    "@[REDACTED]io/playwright": "^5.0.2",
     "@tailwindcss/vite": "^4.1.0",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.14",

@@ -9,11 +9,13 @@ You will build the app in the following stages, with task strategy files in `str
 
 2. writeApp.md: Write the app's code according to the two specs.
 
-3. writeTests.md: Write the tests according to the two specs.
+3. writeScript.md: For each design doc in `strategies/scripts/`, implement the script.
 
-4. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
+4. writeTests.md: Write the tests according to the two specs.
 
-5. deployment.md: Deploy the app to production.
+5. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
+
+6. deployment.md: Deploy the app to production.
 
 Create the docs/plan.md file with one "<strategy-file>: Unpack<StrategyName>: Unpack subtasks" task for each stage.
 

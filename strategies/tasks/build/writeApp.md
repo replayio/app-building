@@ -21,6 +21,25 @@ Unpack the task for implementing a page into the following:
 - All JSX rendered on a page must be abstracted into other React components with their own files.
 - If AppStyle.md is present, use it to style the pages and components appropriately. Prefer using CSS files with style variables instead of hardcoded styles.
 
+## Database Schema
+
+The app MUST have a reusable `initSchema` function exported from a shared module (e.g.,
+`scripts/schema.ts`). This is the single source of truth for the database schema, used by
+the test and deploy scripts (see `strategies/scripts/test.md` and `strategies/scripts/deploy.md`).
+
+**Requirements for `initSchema`**:
+
+- Exported function that accepts a database URL string and returns a Promise. It must NOT read
+  `DATABASE_URL` from the environment or `.env` — the caller passes the URL.
+- Must use `CREATE TABLE IF NOT EXISTS` for all tables, making it idempotent and safe to re-run.
+- Must create all tables, indices, and constraints needed by the app.
+- When a new table or column is added to the app, it MUST be added to `initSchema`. There must be
+  exactly one place where the schema is defined.
+
+The app should also have migration logic for `ALTER TABLE` changes (new columns, new indices)
+that `CREATE TABLE IF NOT EXISTS` cannot detect. Migrations run after `initSchema` in all
+contexts (testing, deployment).
+
 ## Directives
 
 - When working on a component, identify the test entries in the spec relevant to that component, and make sure that the entry requirements are satisfied by the app code.

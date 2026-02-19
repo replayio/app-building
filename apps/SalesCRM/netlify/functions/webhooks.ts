@@ -1,11 +1,5 @@
-import { neon } from '@neondatabase/serverless'
+import { getDb } from '../utils/db'
 import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
-
-function getDb() {
-  const url = process.env.DATABASE_URL
-  if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
-}
 
 const VALID_EVENTS = [
   'client_created',

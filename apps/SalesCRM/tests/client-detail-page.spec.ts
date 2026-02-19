@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 /**
  * Helper: navigate to the first client's detail page.
