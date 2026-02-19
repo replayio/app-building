@@ -1,10 +1,5 @@
 [
   {
-    "strategy": "strategies/jobs/build/testing.md",
-    "description": "FixTests: Get cross-cutting tests passing (tests/cross-cutting.spec.ts). ATOM-01 and ATOM-02 fail — gotoClientDetail and nested-wait issues already fixed, may need further investigation. DATA-02 fix already applied.",
-    "timestamp": "2026-02-19T23:27:30.501Z"
-  },
-  {
     "strategy": "strategies/jobs/maintain/fixBugReport.md",
     "description": "Fix bug report: WebhookDialogInstructions — Add webhook setup instructions for Zapier, n8n, and custom endpoints",
     "timestamp": "2026-02-19T23:27:24.777Z"
