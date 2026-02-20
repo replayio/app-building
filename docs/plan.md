@@ -8,6 +8,6 @@
 - [x] DealDetailPage
 - [x] TasksListPage
 - [x] TaskDetailPage
-- [ ] SettingsPage
+- [x] SettingsPage
 - [ ] UsersListPage
 - [ ] UserDetailPage

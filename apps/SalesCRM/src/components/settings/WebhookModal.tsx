@@ -120,12 +120,12 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div data-testid="webhook-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-sm:max-w-[calc(100%-24px)] max-h-[85vh] flex flex-col">
-        <div className="px-5 py-4 border-b border-border">
+        <div className="px-5 max-sm:px-3 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">
             {webhook ? 'Edit Webhook' : 'Add Webhook'}
           </h2>
         </div>
-        <div className="px-5 py-4 overflow-y-auto flex flex-col gap-4">
+        <div className="px-5 max-sm:px-3 py-4 overflow-y-auto flex flex-col gap-4">
           {/* Setup Guide */}
           <div data-testid="webhook-setup-guide">
             <label className="block text-[12px] font-medium text-text-secondary mb-2">Setup Guide</label>
@@ -152,9 +152,9 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
                     <li key={i}>{step}</li>
                   ))}
                 </ol>
-                <div className="flex items-center gap-1.5 text-[11px] text-text-disabled mb-1">
+                <div className="flex items-center gap-1.5 text-[11px] text-text-disabled mb-1 flex-wrap">
                   <span>URL format:</span>
-                  <code className="font-mono bg-surface px-1 py-0.5 rounded text-[11px]">{guide.urlHint}</code>
+                  <code className="font-mono bg-surface px-1 py-0.5 rounded text-[11px] break-all">{guide.urlHint}</code>
                 </div>
                 <div data-testid="webhook-platform-tip" className="text-[11px] text-accent/80 mt-1.5">
                   Tip: {guide.tip}
@@ -222,7 +222,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
             )}
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-border">
+        <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-3 border-t border-border">
           <button
             data-testid="webhook-cancel-button"
             onClick={onClose}

@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
-        "MakeResponsiveSettingsPage: Make SettingsPage responsive"
-      ],
-      "timestamp": "2026-02-20T10:02:00.648Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/polishApp.md",
-      "jobs": [
         "MakeResponsiveUsersListPage: Make UsersListPage responsive"
       ],
       "timestamp": "2026-02-20T10:02:00.089Z"

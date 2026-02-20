@@ -58,7 +58,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
               <div
                 key={webhook.id}
                 data-testid={`webhook-item-${webhook.id}`}
-                className="border border-border rounded-[5px] p-4"
+                className="border border-border rounded-[5px] p-4 max-sm:p-3"
               >
                 <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
                   <div className="flex items-center gap-3">

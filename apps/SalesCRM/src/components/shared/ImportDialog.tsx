@@ -123,11 +123,11 @@ export function ImportDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div data-testid="import-dialog" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-h-[80vh] flex flex-col">
+      <div data-testid="import-dialog" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-sm:max-w-[calc(100%-24px)] max-h-[80vh] flex flex-col">
         <div className="px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Import {entityNamePlural}</h2>
         </div>
-        <div className="px-5 py-4 overflow-y-auto">
+        <div className="px-5 max-sm:px-3 py-4 overflow-y-auto">
           <p className="text-[13px] text-text-muted mb-3">Upload a CSV file to import {entityName.toLowerCase()} data. The first row must be column headers.</p>
 
           <div data-testid="csv-format-info" className="mb-4 border border-border rounded-[5px]">
@@ -184,7 +184,7 @@ export function ImportDialog({
             </div>
           )}
         </div>
-        <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-border">
+        <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-3 border-t border-border">
           <button
             data-testid="import-cancel-button"
             onClick={onClose}

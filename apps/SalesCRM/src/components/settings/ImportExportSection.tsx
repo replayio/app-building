@@ -21,11 +21,11 @@ export function ImportExportSection({
 }: ImportExportSectionProps) {
   return (
     <div data-testid="import-export-section" className="border border-border rounded-[6px] bg-surface">
-      <div className="px-5 py-4 border-b border-border">
+      <div className="px-5 max-sm:px-3 py-4 border-b border-border">
         <h2 className="text-[14px] font-semibold text-text-primary">Import & Export</h2>
         <p className="text-[12px] text-text-muted mt-1">Import data from CSV files or export your data.</p>
       </div>
-      <div className="px-5 py-4">
+      <div className="px-5 max-sm:px-3 py-4">
         <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-6">
           <div>
             <h3 className="text-[13px] font-medium text-text-secondary mb-3">Import from CSV</h3>
