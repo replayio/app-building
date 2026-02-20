@@ -35,7 +35,7 @@ export function RelationshipsSection({ relationships, onAddEntry, onDeleteRelati
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Users size={16} strokeWidth={1.5} className="text-text-muted" />
-          <h2 className="text-[14px] font-semibold text-text-primary max-sm:text-[13px]">Relationships</h2>
+          <h2 className="text-[14px] font-semibold text-text-primary max-sm:text-[13px]">Relationships with Other Individuals</h2>
         </div>
         <div className="flex items-center gap-1">
           <div className="relative">
