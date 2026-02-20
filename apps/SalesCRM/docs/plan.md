@@ -396,8 +396,8 @@ Open bug reports to address:
 ### Responsive UI
 - [ ] ClientsListPage
 - [ ] ClientDetailPage
-- [ ] PersonDetailPage
-- [ ] DealsListPage
+- [x] PersonDetailPage
+- [x] DealsListPage
 - [x] DealDetailPage
 - [x] TasksListPage
 - [x] TaskDetailPage

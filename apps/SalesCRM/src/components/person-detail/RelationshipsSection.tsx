@@ -32,7 +32,7 @@ export function RelationshipsSection({ relationships, onAddEntry, onDeleteRelati
 
   return (
     <div data-testid="relationships-section" className="border border-border rounded-[6px] p-4 mb-4">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Users size={16} strokeWidth={1.5} className="text-text-muted" />
           <h2 className="text-[14px] font-semibold text-text-primary">Relationships with Other Individuals</h2>

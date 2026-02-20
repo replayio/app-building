@@ -87,7 +87,8 @@ export function DealsPipelineView({ deals, onStageChange }: DealsPipelineViewPro
   }
 
   return (
-    <div className="grid grid-cols-6 gap-3 min-h-[400px]" data-testid="deals-pipeline-view">
+    <div className="overflow-x-auto">
+    <div className="grid grid-cols-6 gap-3 min-h-[400px] min-w-[720px]" data-testid="deals-pipeline-view">
       {dealsByStage.map((column) => (
         <div
           key={column.key}
@@ -115,6 +116,7 @@ export function DealsPipelineView({ deals, onStageChange }: DealsPipelineViewPro
           </div>
         </div>
       ))}
+    </div>
     </div>
   )
 }

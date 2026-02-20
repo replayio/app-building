@@ -40,7 +40,7 @@ export function ContactHistorySection({ entries, onAddEntry, onEditEntry, onDele
 
   return (
     <div data-testid="contact-history-section" className="border border-border rounded-[6px] p-4 mb-4">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Clock size={16} strokeWidth={1.5} className="text-text-muted" />
           <h2 className="text-[14px] font-semibold text-text-primary">History of Contact</h2>

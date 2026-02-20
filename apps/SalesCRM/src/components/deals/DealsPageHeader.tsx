@@ -13,10 +13,10 @@ export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal, onI
       <div className="flex items-center gap-2 text-[12px] text-text-muted mb-2" data-testid="deals-breadcrumb">
         <span>/deals</span>
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-[24px] font-semibold text-text-primary">Deals List</h1>
-        <div className="flex items-center gap-3">
-          <div className="relative">
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="relative max-sm:w-full">
             <Search
               size={14}
               strokeWidth={1.75}
@@ -28,7 +28,7 @@ export function DealsPageHeader({ searchValue, onSearchChange, onCreateDeal, onI
               value={searchValue}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search deals..."
-              className="h-[34px] w-[220px] pl-8 pr-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent transition-colors duration-100"
+              className="h-[34px] w-[220px] max-sm:w-full pl-8 pr-3 text-[13px] text-text-primary bg-surface border border-border rounded-[5px] placeholder-text-disabled focus:outline-none focus:border-accent transition-colors duration-100"
             />
           </div>
           <button

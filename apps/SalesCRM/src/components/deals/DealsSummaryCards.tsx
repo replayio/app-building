@@ -56,7 +56,7 @@ export function DealsSummaryCards({
   lostValue,
 }: DealsSummaryCardsProps) {
   return (
-    <div className="grid grid-cols-4 gap-4 mb-6" data-testid="deals-summary-cards">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6" data-testid="deals-summary-cards">
       <SummaryCard
         icon={<TrendingUp size={18} className="text-accent" />}
         iconBg="bg-accent/10"

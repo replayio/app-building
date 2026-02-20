@@ -84,7 +84,7 @@ export function PersonHeader({ individual, onUpdate }: PersonHeaderProps) {
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
             />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Email</label>
               <input

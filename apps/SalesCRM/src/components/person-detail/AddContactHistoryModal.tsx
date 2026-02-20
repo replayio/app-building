@@ -54,7 +54,7 @@ export function AddContactHistoryModal({ open, onClose, onSave }: AddContactHist
           </button>
         </div>
         <div className="px-5 py-4 flex flex-col gap-3.5">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Date/Time *</label>
               <input

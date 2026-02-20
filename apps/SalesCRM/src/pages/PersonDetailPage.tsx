@@ -111,7 +111,7 @@ export function PersonDetailPage() {
   }
 
   return (
-    <div className="p-6" data-testid="person-detail-page">
+    <div className="p-6 max-sm:p-3" data-testid="person-detail-page">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="person-detail-breadcrumb">
         <span
@@ -130,7 +130,7 @@ export function PersonDetailPage() {
       <PersonHeader individual={currentIndividual} onUpdate={handleUpdatePerson} />
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           {/* Relationships */}
           <RelationshipsSection
