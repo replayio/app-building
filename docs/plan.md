@@ -5,7 +5,7 @@
 - [x] ClientDetailPage
 - [ ] PersonDetailPage
 - [x] DealsListPage
-- [ ] DealDetailPage
+- [x] DealDetailPage
 - [ ] TasksListPage
 - [ ] TaskDetailPage
 - [ ] SettingsPage

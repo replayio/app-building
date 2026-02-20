@@ -32,7 +32,7 @@ export function DealContactsSection({ contacts }: DealContactsSectionProps) {
             <div
               key={contact.id}
               data-testid={`deal-contact-${contact.id}`}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
+              className="flex items-center gap-3 max-sm:flex-wrap px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
               <div className="w-8 h-8 rounded-full bg-sidebar flex items-center justify-center flex-shrink-0">
                 <User size={14} strokeWidth={1.75} className="text-text-muted" />
@@ -49,7 +49,7 @@ export function DealContactsSection({ contacts }: DealContactsSectionProps) {
               <button
                 data-testid={`deal-contact-view-profile-${contact.id}`}
                 onClick={() => navigate(`/individuals/${contact.individual_id}`)}
-                className="text-[12px] text-accent hover:underline flex-shrink-0"
+                className="text-[12px] text-accent hover:underline flex-shrink-0 max-sm:ml-auto"
               >
                 View Profile
               </button>

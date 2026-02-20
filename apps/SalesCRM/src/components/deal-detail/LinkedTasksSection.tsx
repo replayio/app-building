@@ -50,7 +50,7 @@ export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTas
             <div
               key={task.id}
               data-testid={`deal-linked-task-${task.id}`}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100 cursor-pointer"
+              className="flex items-start gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100 cursor-pointer"
             >
               <button
                 data-testid={`deal-linked-task-toggle-${task.id}`}

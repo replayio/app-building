@@ -165,7 +165,7 @@ export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageC
         </div>
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Stage</div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <FilterSelect
               testId="deal-header-stage-select"
               value={selectedStage}
