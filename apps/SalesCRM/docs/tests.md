@@ -1190,6 +1190,16 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click "Mark Complete", then click Cancel in the confirm dialog
 - Expected: Confirm dialog closes. Task status remains "Open". Mark Complete and Cancel Task buttons remain visible.
 
+**TDP-HDR-06: Client link navigates to client detail page**
+- Initial: Task has an associated client displayed in the header
+- Action: Click the client name link (data-testid="task-detail-client-link")
+- Expected: App navigates to /clients/:clientId for the associated client. The ClientDetailPage loads with the client's information.
+
+**TDP-HDR-07: Deal link navigates to deal detail page**
+- Initial: Task has an associated deal displayed in the header
+- Action: Click the deal name link (data-testid="task-detail-deal-link")
+- Expected: App navigates to /deals/:dealId for the associated deal. The DealDetailPage loads with the deal's information.
+
 #### TaskNotesSection
 
 **TDP-NTS-01: Notes section shows empty state**

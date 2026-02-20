@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Make client/deal names in TaskDetailHeader navigable links to /clients/:clientId and /deals/:dealId, update test spec components section, add navigation test entries, and add Playwright tests for link navigation",
-        "RunTests: Verify tests pass after client/deal link fix"
-      ],
-      "timestamp": "2026-02-20T08:56:53.791Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Replace 5 instances of .toPass() wrapping single auto-wait Playwright assertions in task-detail-page.spec.ts with direct assertion timeouts (e.g. .toBeVisible({ timeout: 10000 }) instead of expect(async () => { await expect(x).toBeVisible() }).toPass())",
         "RunTests: Verify tests pass after .toPass() pattern fix"
       ],

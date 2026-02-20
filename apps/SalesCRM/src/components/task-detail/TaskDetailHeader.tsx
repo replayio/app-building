@@ -1,5 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import type { Task } from '../../types'
 import { TaskPriorityBadge } from '../tasks/TaskPriorityBadge'
 
@@ -47,10 +47,14 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
           </span>
         )}
         {task.client_name && (
-          <span data-testid="task-detail-client">Client: {task.client_name}</span>
+          <span data-testid="task-detail-client">Client: {task.client_id ? (
+            <Link to={`/clients/${task.client_id}`} className="text-accent hover:underline" data-testid="task-detail-client-link">{task.client_name}</Link>
+          ) : task.client_name}</span>
         )}
         {task.deal_name && (
-          <span data-testid="task-detail-deal">Deal: {task.deal_name}</span>
+          <span data-testid="task-detail-deal">Deal: {task.deal_id ? (
+            <Link to={`/deals/${task.deal_id}`} className="text-accent hover:underline" data-testid="task-detail-deal-link">{task.deal_name}</Link>
+          ) : task.deal_name}</span>
         )}
       </div>
 

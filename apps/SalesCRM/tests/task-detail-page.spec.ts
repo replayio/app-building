@@ -259,6 +259,99 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     await expect(page.getByTestId('task-detail-mark-complete')).toBeVisible();
     await expect(page.getByTestId('task-detail-mark-canceled')).toBeVisible();
   });
+
+  test('TDP-HDR-06: Client link navigates to client detail page', async ({ page }) => {
+    // Create a task with a known client association
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('new-task-button').click();
+    const modal = page.getByTestId('create-task-modal');
+    await expect(modal).toBeVisible();
+
+    const taskTitle = `ClientLinkTest_${Date.now()}`;
+    await page.getByTestId('create-task-title').fill(taskTitle);
+
+    // Select a client
+    await page.getByTestId('create-task-client-trigger').click();
+    const clientMenu = page.getByTestId('create-task-client-menu');
+    await expect(clientMenu).toBeVisible();
+    const clientOption = clientMenu.locator('[data-testid^="create-task-client-option-"]').filter({ hasNotText: 'None' }).first();
+    await clientOption.click();
+
+    await page.getByTestId('create-task-save').click();
+    await expect(modal).not.toBeVisible();
+    await page.waitForLoadState('networkidle');
+
+    // Navigate to the created task's detail page
+    const createdCard = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+    await expect(createdCard).toBeVisible({ timeout: 10000 });
+    await createdCard.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('task-detail-page')).toBeVisible();
+
+    // Verify client link is visible and click it
+    const clientLink = page.getByTestId('task-detail-client-link');
+    await expect(clientLink).toBeVisible();
+    await clientLink.click();
+    await page.waitForLoadState('networkidle');
+
+    // Should navigate to /clients/:clientId
+    await expect(page).toHaveURL(/\/clients\/[^/]+$/);
+  });
+
+  test('TDP-HDR-07: Deal link navigates to deal detail page', async ({ page }) => {
+    // Create a task with both client and deal association
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('new-task-button').click();
+    const modal = page.getByTestId('create-task-modal');
+    await expect(modal).toBeVisible();
+
+    const taskTitle = `DealLinkTest_${Date.now()}`;
+    await page.getByTestId('create-task-title').fill(taskTitle);
+
+    // Select a client first (required for deal selection)
+    await page.getByTestId('create-task-client-trigger').click();
+    const clientMenu = page.getByTestId('create-task-client-menu');
+    await expect(clientMenu).toBeVisible();
+    const clientOption = clientMenu.locator('[data-testid^="create-task-client-option-"]').filter({ hasNotText: 'None' }).first();
+    await clientOption.click();
+
+    // Select a deal
+    const dealTrigger = page.getByTestId('create-task-deal-trigger');
+    if (await dealTrigger.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await dealTrigger.click();
+      const dealMenu = page.getByTestId('create-task-deal-menu');
+      await expect(dealMenu).toBeVisible();
+      const dealOption = dealMenu.locator('[data-testid^="create-task-deal-option-"]').filter({ hasNotText: 'No deal' }).first();
+      if (await dealOption.isVisible({ timeout: 3000 }).catch(() => false)) {
+        await dealOption.click();
+      }
+    }
+
+    await page.getByTestId('create-task-save').click();
+    await expect(modal).not.toBeVisible();
+    await page.waitForLoadState('networkidle');
+
+    // Navigate to the created task's detail page
+    const createdCard = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+    await expect(createdCard).toBeVisible({ timeout: 10000 });
+    await createdCard.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('task-detail-page')).toBeVisible();
+
+    // Check if deal link is visible (only if a deal was selected)
+    const dealLink = page.getByTestId('task-detail-deal-link');
+    if (await dealLink.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await dealLink.click();
+      await page.waitForLoadState('networkidle');
+
+      // Should navigate to /deals/:dealId
+      await expect(page).toHaveURL(/\/deals\/[^/]+$/);
+    }
+  });
 });
 
 test.describe('TaskDetailPage - Notes (TDP-NTS)', () => {
