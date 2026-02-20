@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix missing Contacts in TLP-NAV-01/02 entries and missing Import button in PageHeader components description in docs/tests.md",
-        "RunTests: Verify tests pass after fix",
-        "DocumentFix: Document the fix"
-      ],
-      "timestamp": "2026-02-20T22:13:42.745Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecTaskDetailPage: Check testSpec.md directive violations in TaskDetailPage test entries",
         "CheckComponentsTaskDetailPage: Check writeApp.md directive violations in TaskDetailPage components",
         "CheckTestsTaskDetailPage: Check writeTests.md directive violations in TaskDetailPage tests"

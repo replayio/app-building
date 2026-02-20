@@ -32,6 +32,12 @@
 - Fix: Added email confirmation requirement for new signups (auto-confirmed in IS_TEST mode). Signup now creates unconfirmed user, sends confirmation email via Resend API, and returns needsConfirmation status. Added "Forgot password?" link in sidebar auth form that navigates to /auth/forgot-password. Created three new pages: ForgotPasswordPage (/auth/forgot-password), ResetPasswordPage (/auth/reset-password?token=...), and ConfirmEmailPage (/auth/confirm-email?token=...). Added confirm-email, forgot-password, and reset-password API endpoints to auth function. Login now checks email_confirmed (bypassed in test mode). Added email_tokens table migration and email_confirmed column migration to migrate-db.ts. Added 5 new Playwright tests (AUTH-FP-01, AUTH-FP-02, AUTH-RP-01, AUTH-RP-02, AUTH-CE-01). All 9 auth tests pass.
 - Problem stage: none (enhancement — email confirmation and forgot password were not part of the previous auth implementation)
 
+2/20/2026: Directive violations — TLP-NAV-01/02 missing Contacts, PageHeader descriptions missing Import button
+- Before: 2cc96fc
+- After: (this commit)
+- Fix: Fixed TLP-NAV-01 and TLP-NAV-02 test entries in docs/tests.md to include "Contacts" in the sidebar navigation links (matching CLP-NAV-01/02 which already had it). Updated PageHeader component descriptions for TasksListPage and DealsListPage to mention the Import button (which existed in code and had test entries but was missing from the Components section). Updated Playwright tests for TLP-NAV-01 (added Contacts visibility check) and TLP-NAV-02 (added Contacts navigation check). All 23 tasks-list-page tests pass.
+- Problem stage: testSpec.md — the Contacts nav item and Import buttons were omitted from TLP-NAV-01/02 entries and PageHeader component descriptions when those sections were originally written
+
 2/20/2026: DDP-HDR-02 violation — Client field in DealDetailHeader was not editable
 - Before: edc5279
 - After: (this commit)

@@ -17,6 +17,7 @@ test.describe('TasksListPage - Navigation (TLP-NAV)', () => {
 
     // Verify all navigation items are present
     await expect(sidebar.getByText('Clients')).toBeVisible();
+    await expect(sidebar.getByText('Contacts')).toBeVisible();
     await expect(sidebar.getByText('Deals')).toBeVisible();
     await expect(sidebar.getByText('Tasks')).toBeVisible();
     await expect(sidebar.getByText('Team')).toBeVisible();
@@ -35,6 +36,11 @@ test.describe('TasksListPage - Navigation (TLP-NAV)', () => {
     await page.getByTestId('sidebar-nav-clients').click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/\/clients/);
+
+    // Click "Contacts" → navigates to /contacts
+    await page.getByTestId('sidebar-nav-contacts').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/contacts/);
 
     // Click "Deals" → navigates to /deals
     await page.getByTestId('sidebar-nav-deals').click();

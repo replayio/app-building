@@ -808,7 +808,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ### Components
 - **SidebarNavigation**: Left sidebar (same as ClientsListPage, "Deals" highlighted)
-- **PageHeader**: Breadcrumb "/deals", title "Deals List", "Create New Deal" button, search bar
+- **PageHeader**: Breadcrumb "/deals", title "Deals List", Import button, "Create New Deal" button, search bar
 - **SummaryCards**: Four metric cards: Total Active Deals (count), Pipeline Value (total $), Won (quarter) (count + value), Lost (quarter) (count + value)
 - **ViewToggle**: Tabs for "Table View" and "Pipeline View"
 - **FilterControls**: Dropdowns for Stage (All Stages), Client (All Clients), Status (Active), Date Range picker, Sort by (Close Date Newest), and a search input
@@ -1191,7 +1191,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 ## 7. TasksListPage (/tasks)
 
 ### Components
-- **PageHeader**: "Upcoming Tasks" title with "New Task" button (accent/primary styled)
+- **PageHeader**: "Upcoming Tasks" title with Import button, and "New Task" button (accent/primary styled)
 - **FilterBar**: Filter dropdown/icon and text filter input with "Filter..." placeholder
 - **TaskCards**: Card-based layout. Each card shows: priority badge (High/Medium/Low/Normal with color), task title, due date/time, assignee avatar + name + role, and "..." action menu
 - **Navigation**: Top navigation bar (consistent with app sidebar or horizontal nav)
@@ -1203,12 +1203,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **TLP-NAV-01: Sidebar displays all navigation items with Tasks highlighted**
 - Initial: User navigates to /tasks
 - Action: Observe the sidebar
-- Expected: Sidebar shows navigation links: Clients, Deals, Tasks, Team, Settings. The "Tasks" link is visually highlighted as active.
+- Expected: Sidebar shows navigation links: Clients, Contacts, Deals, Tasks, Team, Settings. The "Tasks" link is visually highlighted as active.
 
 **TLP-NAV-02: Sidebar navigation links route correctly from tasks page**
 - Initial: User is on /tasks
 - Action: Click "Clients" in sidebar
-- Expected: App navigates to /clients. Click "Deals" → navigates to /deals. Click "Team" → navigates to /users. Click "Settings" → navigates to /settings. Click "Tasks" → navigates to /tasks.
+- Expected: App navigates to /clients. Click "Contacts" → navigates to /contacts. Click "Deals" → navigates to /deals. Click "Team" → navigates to /users. Click "Settings" → navigates to /settings. Click "Tasks" → navigates to /tasks.
 
 #### PageHeader
 
