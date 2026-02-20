@@ -65,10 +65,9 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
                     <span data-testid={`webhook-name-${webhook.id}`} className="text-[13px] font-medium text-text-primary">
                       {webhook.name}
                     </span>
-                    <label className="relative inline-flex items-center cursor-pointer">
+                    <label data-testid={`webhook-toggle-${webhook.id}`} className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
-                        data-testid={`webhook-toggle-${webhook.id}`}
                         checked={webhook.enabled}
                         onChange={() => onToggle(webhook.id, !webhook.enabled)}
                         className="sr-only peer"

@@ -1280,6 +1280,16 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click the delete button on the webhook, confirm in dialog
 - Expected: Webhook is removed from the list. Deletion is persisted. Empty state message reappears if no webhooks remain.
 
+**STP-WH-07: Enable/disable toggle changes webhook state**
+- Initial: A webhook exists in the list with enabled state (toggle is on)
+- Action: Click the enable/disable toggle (data-testid="webhook-toggle-{id}") on the webhook
+- Expected: The toggle switches to off (unchecked). The change is persisted to the database (page reload confirms the toggle remains off). Click the toggle again to re-enable — the toggle switches back to on (checked) and the change is persisted.
+
+**STP-WH-08: Edit webhook flow updates webhook details**
+- Initial: A webhook "Original Name" exists in the list with URL "https://example.com/original" and event "New Client Created"
+- Action: Click the edit button (data-testid="webhook-edit-{id}") on the webhook
+- Expected: The webhook modal (data-testid="webhook-modal") opens with title "Edit Webhook". The name input (data-testid="webhook-name-input") is pre-filled with "Original Name", the URL input (data-testid="webhook-url-input") is pre-filled with "https://example.com/original", and the "New Client Created" event checkbox is checked. Change the name to "Updated Name", click "Save Changes" (data-testid="webhook-save-button"). Modal closes. The webhook list shows "Updated Name" instead of "Original Name". The change is persisted (page reload confirms it).
+
 ---
 
 ## 9. UsersListPage (/users)

@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing test entries for webhook enable/disable toggle (STP-WH-07) and edit webhook flow (STP-WH-08), add corresponding Playwright tests, and update components if needed",
-        "RunTests: Verify tests pass after webhook lifecycle fix"
-      ],
-      "timestamp": "2026-02-20T09:01:42.773Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing test entries for Import Deals/Tasks/Contacts buttons (STP-IE-03/04/05), Export buttons (STP-IE-06/07/08), and make STP-IE-02 specify expected CSV columns. Add corresponding Playwright tests",
         "RunTests: Verify tests pass after import/export fix"
       ],

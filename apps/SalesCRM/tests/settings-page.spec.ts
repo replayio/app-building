@@ -210,4 +210,109 @@ test.describe('SettingsPage - WebhookSection', () => {
     // Webhook should be removed
     await expect(page.getByTestId('webhook-section')).not.toContainText('Temp Webhook');
   });
+
+  test('STP-WH-07: Enable/disable toggle changes webhook state', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    // Create a webhook to toggle
+    await page.getByTestId('add-webhook-button').click();
+    await page.getByTestId('webhook-name-input').fill('Toggle Test Webhook');
+    await page.getByTestId('webhook-url-input').fill('https://example.com/toggle-test');
+    await page.getByTestId('webhook-event-client_created').click();
+    await page.getByTestId('webhook-save-button').click();
+    await expect(page.getByTestId('webhook-modal')).not.toBeVisible();
+
+    // Wait for webhook to appear
+    await expect(page.getByTestId('webhook-section')).toContainText('Toggle Test Webhook');
+
+    // Locate the webhook item — all locators are lazy and re-evaluate on each use
+    const webhookItem = page.locator('[data-testid^="webhook-item-"]', { hasText: 'Toggle Test Webhook' });
+    const toggleLabel = webhookItem.locator('[data-testid^="webhook-toggle-"]');
+    const toggleInput = toggleLabel.locator('input[type="checkbox"]');
+
+    // Toggle should be checked (enabled by default)
+    await expect(toggleInput).toBeChecked();
+
+    // Click the visible label to disable (clicking label toggles the sr-only checkbox)
+    await toggleLabel.click();
+    await expect(toggleInput).not.toBeChecked({ timeout: 10000 });
+
+    // Verify persistence — reload and confirm toggle stays off
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    await expect(
+      page.locator('[data-testid^="webhook-item-"]', { hasText: 'Toggle Test Webhook' })
+        .locator('[data-testid^="webhook-toggle-"] input[type="checkbox"]')
+    ).not.toBeChecked();
+
+    // Click toggle label to re-enable
+    await page.locator('[data-testid^="webhook-item-"]', { hasText: 'Toggle Test Webhook' })
+      .locator('[data-testid^="webhook-toggle-"]').click();
+    await expect(
+      page.locator('[data-testid^="webhook-item-"]', { hasText: 'Toggle Test Webhook' })
+        .locator('[data-testid^="webhook-toggle-"] input[type="checkbox"]')
+    ).toBeChecked({ timeout: 10000 });
+
+    // Verify re-enable persists
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    await expect(
+      page.locator('[data-testid^="webhook-item-"]', { hasText: 'Toggle Test Webhook' })
+        .locator('[data-testid^="webhook-toggle-"] input[type="checkbox"]')
+    ).toBeChecked();
+  });
+
+  test('STP-WH-08: Edit webhook flow updates webhook details', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    // Create a webhook to edit
+    await page.getByTestId('add-webhook-button').click();
+    await page.getByTestId('webhook-name-input').fill('Original Name');
+    await page.getByTestId('webhook-url-input').fill('https://example.com/original');
+    await page.getByTestId('webhook-event-client_created').click();
+    await page.getByTestId('webhook-save-button').click();
+    await expect(page.getByTestId('webhook-modal')).not.toBeVisible();
+
+    // Wait for webhook to appear
+    await expect(page.getByTestId('webhook-section')).toContainText('Original Name');
+
+    // Click edit button on the webhook
+    const webhookItem = page.locator('[data-testid^="webhook-item-"]', { hasText: 'Original Name' });
+    const editButton = webhookItem.locator('[data-testid^="webhook-edit-"]');
+    await editButton.click();
+
+    // Modal should open with "Edit Webhook" title and pre-filled values
+    const modal = page.getByTestId('webhook-modal');
+    await expect(modal).toBeVisible();
+    await expect(modal).toContainText('Edit Webhook');
+    await expect(page.getByTestId('webhook-name-input')).toHaveValue('Original Name');
+    await expect(page.getByTestId('webhook-url-input')).toHaveValue('https://example.com/original');
+
+    // Verify the event checkbox is checked
+    const eventCheckbox = page.getByTestId('webhook-event-client_created').locator('input[type="checkbox"]');
+    await expect(eventCheckbox).toBeChecked();
+
+    // Update the name
+    await page.getByTestId('webhook-name-input').clear();
+    await page.getByTestId('webhook-name-input').fill('Updated Name');
+
+    // Save changes
+    const saveButton = page.getByTestId('webhook-save-button');
+    await expect(saveButton).toContainText('Save Changes');
+    await saveButton.click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // Updated name should appear in the list
+    await expect(page.getByTestId('webhook-section')).toContainText('Updated Name');
+    await expect(page.locator('[data-testid^="webhook-name-"]', { hasText: 'Original Name' })).toHaveCount(0);
+
+    // Verify persistence
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('webhook-section')).toContainText('Updated Name');
+  });
 });
