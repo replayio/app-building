@@ -93,15 +93,19 @@ function parseLogFile(logPath: string): LogInfo {
       info.totalCost = parseFloat(costMatch[1]);
     }
 
-    if (line.includes("Agent signaled <DONE/>")) {
-      info.finished = true;
-      info.finishReason = "done";
-    } else if (line.startsWith("Reached max iterations")) {
-      info.finished = true;
-      info.finishReason = "max iterations";
-    } else if (line.startsWith("Finished after")) {
-      info.finished = true;
-      if (!info.finishReason) info.finishReason = "finished";
+    // Only check finish signals on plain-text log lines, not JSON event lines
+    // (JSON events may contain these strings inside tool result content)
+    if (!line.startsWith("{")) {
+      if (line.includes("Agent signaled <DONE/>")) {
+        info.finished = true;
+        info.finishReason = "done";
+      } else if (line.startsWith("Reached max iterations")) {
+        info.finished = true;
+        info.finishReason = "max iterations";
+      } else if (line.startsWith("Finished after")) {
+        info.finished = true;
+        if (!info.finishReason) info.finishReason = "finished";
+      }
     }
 
     if (line.startsWith("Error running") || line.startsWith("[claude:err]")) {
@@ -246,13 +250,14 @@ function main(): void {
   const running = info.containerName ? isContainerRunning(info.containerName) : false;
 
   // --- Status header ---
+  // Container running check is the source of truth
   let stateLabel: string;
-  if (info.finished && info.finishReason === "done") {
+  if (running) {
+    stateLabel = `${BOLD}${GREEN}RUNNING${RESET}`;
+  } else if (info.finished && info.finishReason === "done") {
     stateLabel = `${BOLD}${GREEN}DONE${RESET}`;
   } else if (info.finished) {
     stateLabel = `${YELLOW}STOPPED${RESET} ${DIM}(${info.finishReason})${RESET}`;
-  } else if (running) {
-    stateLabel = `${BOLD}${GREEN}RUNNING${RESET}`;
   } else {
     stateLabel = `${RED}NOT RUNNING${RESET}`;
   }
