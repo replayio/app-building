@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix deals.ts line 293 using ?? null instead of || null for UUID column client_id",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-20T23:00:42.009Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationCDPTestsIncomplete: Fix ClientDetailPage Playwright tests - fix incomplete field assertions in CDP-QA-02 (missing description/duedate/priority/deal), CDP-QA-04 (missing value/owner), CDP-ATT-01 (missing date/deal columns), fix CDP-ATT-02 (test download not just filename visibility), fix CDP-ATT-03 (test view button not delete button), fix CDP-TL-03 title mismatch, fix CDP-HDR-02 through CDP-HDR-05 to use atomic timeline assertions (count before/after instead of .not.toHaveCount(0))",
         "FixViolationCDPTestsMissing: Add missing ClientDetailPage Playwright tests - CDP-QA-10 through CDP-QA-13 (cancel button tests), CDP-TL-04 through CDP-TL-08 (timeline entry format and atomicity tests)",
         "RunTestsCDPTests: Verify tests pass after Playwright test fixes"
