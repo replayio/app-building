@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationDealAttachmentUpload: Fix DealDetailPage attachment upload - UploadAttachmentModal uses blob URLs instead of actual file upload; DDP-ATT-03 test only exercises Link URL mode, not file upload (setInputFiles); add test spec entry for file upload mode",
-        "RunTests: Verify tests pass after DealDetailPage attachment upload fix"
-      ],
-      "timestamp": "2026-02-20T08:27:14.815Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationToPassAutoWait: Fix DDP-HIS-02 test which uses count() auto-wait calls inside .toPass() block - replace with atomic toHaveCount() assertions to prevent deadlock",
         "RunTests: Verify tests pass after .toPass() fix"
       ],

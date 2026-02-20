@@ -735,7 +735,7 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
     await expect(modal).not.toBeVisible();
   });
 
-  test('DDP-ATT-03: Uploading a file adds it to attachments list', async ({ page }) => {
+  test('DDP-ATT-03: Uploading a link attachment adds it to attachments list', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
     // Open upload modal

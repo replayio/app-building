@@ -971,7 +971,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click the upload icon
 - Expected: Upload modal opens with "File Upload" / "Link URL" toggle buttons. File Upload mode is selected by default and shows a file input. Link URL mode shows link name and URL fields.
 
-**DDP-ATT-03: Uploading a file adds it to attachments list**
+**DDP-ATT-03: Uploading a link attachment adds it to attachments list**
 - Initial: Upload dialog is open
 - Action: Switch to Link URL mode, enter a link name and URL, click Upload
 - Expected: Link attachment appears in attachments list with the given name. Also appears in client's Attachments section linked to this deal.
