@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationPersonDetailTests: Fix 8 writeTests.md violations in person-detail-page.spec.ts — rename mismatched test titles (PDP-HDR-04, PDP-REL-05, PDP-REL-06, PDP-CH-04, PDP-CH-06, PDP-CH-07) to match spec entries, add missing tests (PDP-REL-08, PDP-CH-08), and implement actual persistence/mutation/filtering assertions instead of UI-only checks",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-20T07:13:47.987Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationClientEditing: Implement client field editing in DealDetailHeader component — add searchable client dropdown so DDP-HDR-02 spec requirement is met",
         "RunTests: Verify tests pass after fix",
         "DocumentFix: Document the fix"

@@ -123,25 +123,48 @@ test.describe('PersonDetailPage - PersonHeader (PDP-HDR)', () => {
     await expect(page.getByTestId('person-header-cancel-button')).toBeVisible();
   });
 
-  test('PDP-HDR-04: Cancel edit restores original values', async ({ page }) => {
-    await navigateToFirstPersonDetail(page);
+  test('PDP-HDR-04: Saving edited person info persists the change', async ({ page }) => {
+    const personId = await navigateToFirstPersonDetail(page);
 
-    // Get original name
-    const originalName = await page.getByTestId('person-header-name').textContent();
+    // Get original phone to restore later
+    const originalPhone = await page.getByTestId('person-header-phone').textContent().catch(() => '');
 
     // Enter edit mode
     await page.getByTestId('person-header-edit-button').click();
+    await expect(page.getByTestId('person-header-edit-form')).toBeVisible();
 
-    // Change name
-    const nameInput = page.getByTestId('person-header-name-input');
-    await nameInput.clear();
-    await nameInput.fill('Changed Name XYZ');
+    // Change phone number
+    const newPhone = '+1 (555) 999-8888';
+    const phoneInput = page.getByTestId('person-header-phone-input');
+    await phoneInput.clear();
+    await phoneInput.fill(newPhone);
 
-    // Cancel
-    await page.getByTestId('person-header-cancel-button').click();
+    // Intercept the PUT request to verify persistence
+    const [updateRequest] = await Promise.all([
+      page.waitForRequest(req =>
+        req.method() === 'PUT' && req.url().includes(`/.netlify/functions/individuals`)
+      ),
+      page.getByTestId('person-header-save-button').click(),
+    ]);
 
-    // Name should be restored to original
-    await expect(page.getByTestId('person-header-name')).toHaveText(originalName!);
+    // Verify the API was called with the new phone value
+    const body = updateRequest.postDataJSON();
+    expect(body.phone).toBe(newPhone);
+
+    // Verify the UI shows the updated phone
+    await expect(page.getByTestId('person-header-phone')).toContainText(newPhone);
+
+    // Verify persistence: reload page and check phone is still updated
+    await page.goto(`/individuals/${personId}`);
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('person-header-phone')).toContainText(newPhone);
+
+    // Restore original phone
+    await page.getByTestId('person-header-edit-button').click();
+    await page.getByTestId('person-header-phone-input').clear();
+    await page.getByTestId('person-header-phone-input').fill(originalPhone || '');
+    await page.getByTestId('person-header-save-button').click();
+    await page.waitForLoadState('networkidle');
   });
 });
 
@@ -232,26 +255,106 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
     await expect(modal.getByRole('button', { name: 'Cancel' })).toBeVisible();
   });
 
-  test('PDP-REL-05: Save is disabled when person ID is empty in Add Relationship modal', async ({ page }) => {
-    await navigateToFirstPersonDetail(page);
+  test('PDP-REL-05: Adding a relationship persists and shows in list', async ({ page }) => {
+    const personId = await navigateToFirstPersonDetail(page);
 
+    // Switch to list view
+    await page.getByTestId('relationships-list-view-tab').click();
+
+    // Count existing relationships
+    const itemsBefore = page.locator('[data-testid^="relationship-item-"]');
+    const countBefore = await itemsBefore.count();
+
+    // Open Add Relationship modal
     await page.getByTestId('relationships-add-entry-button').click();
     const modal = page.getByTestId('add-relationship-modal');
+    await expect(modal).toBeVisible();
 
-    const saveBtn = modal.getByRole('button', { name: 'Save' });
-    await expect(saveBtn).toBeDisabled();
+    // Search for a person to add as relationship
+    const searchInput = page.getByTestId('relationship-person-search');
+    await searchInput.fill('a');
+    // Wait for search results to appear and select the first person option
+    const personOption = page.locator('[data-testid^="person-option-"]').first();
+    await personOption.waitFor({ state: 'visible', timeout: 10000 });
+    await personOption.click();
+
+    // Select relationship type via custom FilterSelect dropdown
+    await page.getByTestId('relationship-type-select-trigger').click();
+    await page.getByTestId('relationship-type-select-option-manager').click();
+
+    // Intercept the POST request to verify persistence
+    const [createRequest] = await Promise.all([
+      page.waitForRequest(req =>
+        req.method() === 'POST' && req.url().includes('/relationships')
+      ),
+      page.getByTestId('relationship-save-button').click(),
+    ]);
+
+    // Verify the API was called with correct payload
+    const body = createRequest.postDataJSON();
+    expect(body.relationship_type).toBe('manager');
+    expect(body.related_individual_id).toBeTruthy();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // Verify the new relationship appears in the list
+    const itemsAfter = page.locator('[data-testid^="relationship-item-"]');
+    await expect(itemsAfter).toHaveCount(countBefore + 1, { timeout: 10000 });
+
+    // Clean up: delete the newly added relationship
+    const newItem = itemsAfter.last();
+    const deleteBtn = newItem.locator('[data-testid^="relationship-delete-"]');
+    const isDeleteVisible = await deleteBtn.isVisible().catch(() => false);
+    if (isDeleteVisible) {
+      await deleteBtn.click();
+      await page.waitForLoadState('networkidle');
+    }
   });
 
-  test('PDP-REL-06: Filter button opens filter dropdown', async ({ page }) => {
+  test('PDP-REL-06: Filter button filters relationships', async ({ page }) => {
     await navigateToFirstPersonDetail(page);
 
-    await page.getByTestId('relationships-filter-button').click();
+    // Switch to list view
+    await page.getByTestId('relationships-list-view-tab').click();
 
-    const dropdown = page.getByTestId('relationships-filter-dropdown');
-    await expect(dropdown).toBeVisible();
+    const items = page.locator('[data-testid^="relationship-item-"]');
+    const totalCount = await items.count();
 
-    // Should have "All" option
-    await expect(page.getByTestId('relationships-filter-option-all')).toBeVisible();
+    if (totalCount > 0) {
+      // Get the type of the first relationship to use as filter
+      const firstTypeEl = items.first().locator('[data-testid^="relationship-type-"]');
+      const firstTypeText = await firstTypeEl.textContent();
+      const filterType = firstTypeText!.replace(/[()]/g, '').trim().toLowerCase().replace(/\s+/g, '_');
+
+      // Open the filter dropdown
+      await page.getByTestId('relationships-filter-button').click();
+      const dropdown = page.getByTestId('relationships-filter-dropdown');
+      await expect(dropdown).toBeVisible();
+
+      // Click a specific filter type option
+      const filterOption = page.getByTestId(`relationships-filter-option-${filterType}`);
+      await filterOption.click();
+
+      // Verify all remaining items have the selected type
+      const filteredItems = page.locator('[data-testid^="relationship-item-"]');
+      const filteredCount = await filteredItems.count();
+      expect(filteredCount).toBeGreaterThan(0);
+      expect(filteredCount).toBeLessThanOrEqual(totalCount);
+
+      for (let i = 0; i < filteredCount; i++) {
+        const typeEl = filteredItems.nth(i).locator('[data-testid^="relationship-type-"]');
+        const typeText = await typeEl.textContent();
+        expect(typeText!.toLowerCase().replace(/[()]/g, '').trim().replace(/\s+/g, '_')).toBe(filterType);
+      }
+
+      // Reset filter to "All"
+      await page.getByTestId('relationships-filter-button').click();
+      await page.getByTestId('relationships-filter-option-all').click();
+
+      // All items should be visible again
+      await expect(page.locator('[data-testid^="relationship-item-"]')).toHaveCount(totalCount);
+    }
   });
 
   test('PDP-REL-07: Graph View displays visual relationship graph', async ({ page }) => {
@@ -267,6 +370,47 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
     const centerNode = page.getByTestId('relationships-graph-center');
     await expect(centerNode).toBeVisible();
     await expect(centerNode).toContainText('You');
+  });
+
+  test('PDP-REL-08: Delete button removes a relationship', async ({ page }) => {
+    const personId = await navigateToFirstPersonDetail(page);
+
+    // Switch to list view
+    await page.getByTestId('relationships-list-view-tab').click();
+
+    const items = page.locator('[data-testid^="relationship-item-"]');
+    const countBefore = await items.count();
+
+    if (countBefore > 0) {
+      // Get the last relationship's info so we can re-add it if needed
+      const lastItem = items.last();
+      const lastItemTestId = await lastItem.getAttribute('data-testid');
+      const relId = lastItemTestId!.replace('relationship-item-', '');
+
+      // Click the delete button on the last relationship
+      const deleteBtn = page.getByTestId(`relationship-delete-${relId}`);
+      await expect(deleteBtn).toBeVisible();
+
+      // Intercept the DELETE request to verify persistence
+      const [deleteRequest] = await Promise.all([
+        page.waitForRequest(req =>
+          req.method() === 'DELETE' && req.url().includes('/relationships/')
+        ),
+        deleteBtn.click(),
+      ]);
+
+      // Verify the DELETE API was called
+      expect(deleteRequest.url()).toContain(`/relationships/${relId}`);
+
+      // Verify the item is removed from the list
+      await expect(items).toHaveCount(countBefore - 1, { timeout: 10000 });
+
+      // Verify persistence: reload and confirm the relationship is gone
+      await page.goto(`/individuals/${personId}`);
+      await page.waitForLoadState('networkidle');
+      await page.getByTestId('relationships-list-view-tab').click();
+      await expect(page.locator('[data-testid^="relationship-item-"]')).toHaveCount(countBefore - 1, { timeout: 10000 });
+    }
   });
 });
 
@@ -332,14 +476,66 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
     await expect(modal.getByRole('button', { name: 'Cancel' })).toBeVisible();
   });
 
-  test('PDP-CH-04: Save is disabled when required fields are empty in Add Contact History modal', async ({ page }) => {
-    await navigateToFirstPersonDetail(page);
+  test('PDP-CH-04: Adding a contact history entry persists and shows in log', async ({ page }) => {
+    const personId = await navigateToFirstPersonDetail(page);
 
+    // Count existing entries
+    const entriesBefore = page.locator('[data-testid^="contact-history-entry-"]');
+    const countBefore = await entriesBefore.count();
+
+    // Open Add Contact History modal
     await page.getByTestId('contact-history-add-entry-button').click();
     const modal = page.getByTestId('add-contact-history-modal');
+    await expect(modal).toBeVisible();
 
-    const saveBtn = modal.getByRole('button', { name: 'Save' });
-    await expect(saveBtn).toBeDisabled();
+    // Fill in the form fields
+    const dateInput = page.getByTestId('contact-history-date-input');
+    await dateInput.fill('2024-10-28T15:00');
+
+    // Select type via custom FilterSelect dropdown
+    await page.getByTestId('contact-history-type-select-trigger').click();
+    await page.getByTestId('contact-history-type-select-option-phone_call').click();
+
+    const summaryInput = page.getByTestId('contact-history-summary-input');
+    await summaryInput.fill('Discussed pricing options for Q4');
+
+    const teamMemberInput = page.getByTestId('contact-history-team-member-input');
+    await teamMemberInput.fill('Sarah K.');
+
+    // Intercept the POST request to verify persistence
+    const [createRequest] = await Promise.all([
+      page.waitForRequest(req =>
+        req.method() === 'POST' && req.url().includes('/contact-history')
+      ),
+      page.getByTestId('contact-history-save-button').click(),
+    ]);
+
+    // Verify the API was called with correct payload
+    const body = createRequest.postDataJSON();
+    expect(body.type).toBe('phone_call');
+    expect(body.summary).toBe('Discussed pricing options for Q4');
+    expect(body.team_member).toBe('Sarah K.');
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // Verify the new entry appears in the list
+    const entriesAfter = page.locator('[data-testid^="contact-history-entry-"]');
+    await expect(entriesAfter).toHaveCount(countBefore + 1, { timeout: 10000 });
+
+    // Verify the new entry contains the summary text
+    await expect(
+      page.locator('[data-testid^="contact-history-summary-"]').filter({ hasText: 'Discussed pricing options for Q4' })
+    ).toHaveCount(1);
+
+    // Clean up: delete the newly added entry
+    const newEntry = entriesAfter.filter({ hasText: 'Discussed pricing options for Q4' });
+    const deleteBtn = newEntry.locator('[data-testid^="contact-history-delete-"]');
+    const isDeleteVisible = await deleteBtn.isVisible().catch(() => false);
+    if (isDeleteVisible) {
+      await deleteBtn.click();
+      await page.waitForLoadState('networkidle');
+    }
   });
 
   test('PDP-CH-05: Edit icon opens edit form for existing entry', async ({ page }) => {
@@ -368,35 +564,144 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
     }
   });
 
-  test('PDP-CH-06: Cancel button closes the edit modal', async ({ page }) => {
-    await navigateToFirstPersonDetail(page);
+  test('PDP-CH-06: Editing a contact history entry persists the change', async ({ page }) => {
+    const personId = await navigateToFirstPersonDetail(page);
 
     const entries = page.locator('[data-testid^="contact-history-entry-"]');
     const count = await entries.count();
 
     if (count > 0) {
       const first = entries.first();
+
+      // Get the entry's ID from the data-testid
+      const entryTestId = await first.getAttribute('data-testid');
+      const entryId = entryTestId!.replace('contact-history-entry-', '');
+
+      // Open the edit modal
       const editBtn = first.locator('[data-testid^="contact-history-edit-"]');
       await editBtn.click();
 
       const editModal = page.getByTestId('edit-contact-history-modal');
       await expect(editModal).toBeVisible();
 
-      await editModal.getByRole('button', { name: 'Cancel' }).click();
+      // Get original summary to restore later
+      const summaryInput = page.getByTestId('edit-contact-history-summary-input');
+      const originalSummary = await summaryInput.inputValue();
+
+      // Change the summary text
+      const newSummary = 'Updated summary for persistence test';
+      await summaryInput.clear();
+      await summaryInput.fill(newSummary);
+
+      // Intercept the PUT request to verify persistence
+      const [updateRequest] = await Promise.all([
+        page.waitForRequest(req =>
+          req.method() === 'PUT' && req.url().includes('/contact-history/')
+        ),
+        page.getByTestId('edit-contact-history-save-button').click(),
+      ]);
+
+      // Verify the API was called with the updated summary
+      const body = updateRequest.postDataJSON();
+      expect(body.summary).toBe(newSummary);
+
+      // Modal should close
       await expect(editModal).not.toBeVisible();
+
+      // Verify the updated summary is shown in the UI
+      await expect(
+        page.locator(`[data-testid="contact-history-summary-${entryId}"]`)
+      ).toContainText(newSummary);
+
+      // Restore original summary
+      const restoreEditBtn = page.locator(`[data-testid="contact-history-edit-${entryId}"]`);
+      await restoreEditBtn.click();
+      await expect(editModal).toBeVisible();
+      const restoreSummaryInput = page.getByTestId('edit-contact-history-summary-input');
+      await restoreSummaryInput.clear();
+      await restoreSummaryInput.fill(originalSummary);
+      await page.getByTestId('edit-contact-history-save-button').click();
+      await page.waitForLoadState('networkidle');
     }
   });
 
   test('PDP-CH-07: Filter button filters contact history by type', async ({ page }) => {
     await navigateToFirstPersonDetail(page);
 
-    await page.getByTestId('contact-history-filter-button').click();
+    const entries = page.locator('[data-testid^="contact-history-entry-"]');
+    const totalCount = await entries.count();
 
-    const dropdown = page.getByTestId('contact-history-filter-dropdown');
-    await expect(dropdown).toBeVisible();
+    if (totalCount > 0) {
+      // Get the type of the first entry to use as filter
+      const firstTypeEl = entries.first().locator('[data-testid^="contact-history-type-"]');
+      const firstTypeText = await firstTypeEl.textContent();
+      const filterType = firstTypeText!.trim().toLowerCase().replace(/\s+/g, '_');
 
-    // Should have "All" option
-    await expect(page.getByTestId('contact-history-filter-option-all')).toBeVisible();
+      // Open the filter dropdown
+      await page.getByTestId('contact-history-filter-button').click();
+      const dropdown = page.getByTestId('contact-history-filter-dropdown');
+      await expect(dropdown).toBeVisible();
+
+      // Click a specific filter type option
+      const filterOption = page.getByTestId(`contact-history-filter-option-${filterType}`);
+      await filterOption.click();
+
+      // Verify all remaining entries have the selected type
+      const filteredEntries = page.locator('[data-testid^="contact-history-entry-"]');
+      const filteredCount = await filteredEntries.count();
+      expect(filteredCount).toBeGreaterThan(0);
+      expect(filteredCount).toBeLessThanOrEqual(totalCount);
+
+      for (let i = 0; i < filteredCount; i++) {
+        const typeEl = filteredEntries.nth(i).locator('[data-testid^="contact-history-type-"]');
+        const typeText = await typeEl.textContent();
+        expect(typeText!.trim().toLowerCase().replace(/\s+/g, '_')).toBe(filterType);
+      }
+
+      // Reset filter to "All"
+      await page.getByTestId('contact-history-filter-button').click();
+      await page.getByTestId('contact-history-filter-option-all').click();
+
+      // All entries should be visible again
+      await expect(page.locator('[data-testid^="contact-history-entry-"]')).toHaveCount(totalCount);
+    }
+  });
+
+  test('PDP-CH-08: Delete button removes a contact history entry', async ({ page }) => {
+    const personId = await navigateToFirstPersonDetail(page);
+
+    const entries = page.locator('[data-testid^="contact-history-entry-"]');
+    const countBefore = await entries.count();
+
+    if (countBefore > 0) {
+      // Get the last entry's ID
+      const lastEntry = entries.last();
+      const lastEntryTestId = await lastEntry.getAttribute('data-testid');
+      const entryId = lastEntryTestId!.replace('contact-history-entry-', '');
+
+      // Click the delete button on the last entry
+      const deleteBtn = page.getByTestId(`contact-history-delete-${entryId}`);
+      await expect(deleteBtn).toBeVisible();
+
+      // Intercept the DELETE request to verify persistence
+      const [deleteRequest] = await Promise.all([
+        page.waitForRequest(req =>
+          req.method() === 'DELETE' && req.url().includes('/contact-history/')
+        ),
+        deleteBtn.click(),
+      ]);
+
+      // Verify the DELETE API was called
+      expect(deleteRequest.url()).toContain(`/contact-history/${entryId}`);
+
+      // Verify the entry is removed from the list
+      await expect(entries).toHaveCount(countBefore - 1, { timeout: 10000 });
+
+      // Verify persistence: reload and confirm the entry is gone
+      await page.goto(`/individuals/${personId}`);
+      await page.waitForLoadState('networkidle');
+      await expect(page.locator('[data-testid^="contact-history-entry-"]')).toHaveCount(countBefore - 1, { timeout: 10000 });
+    }
   });
 });
 
