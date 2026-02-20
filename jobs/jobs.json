@@ -3,11 +3,11 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
-        "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
-        "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"
+        "FixViolationCDPTestSpec: Fix ClientDetailPage test spec violations - remove unspecified 'clickable link' from timeline user attribution (CDP-TL-01/02/04/06), add timeline entry verification to CDP-QA-07, move FollowButton entries from SettingsPage to ClientDetailPage section and add to Components list",
+        "RunTestsCDPTestSpec: Verify tests pass after test spec fixes",
+        "DocumentFixCDPTestSpec: Document the test spec fixes"
       ],
-      "timestamp": "2026-02-20T19:53:11.699Z"
+      "timestamp": "2026-02-20T20:34:21.742Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
@@ -96,6 +96,15 @@
         "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
       "timestamp": "2026-02-20T19:53:23.392Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationCDPTestsIncomplete: Fix ClientDetailPage Playwright tests - fix incomplete field assertions in CDP-QA-02 (missing description/duedate/priority/deal), CDP-QA-04 (missing value/owner), CDP-ATT-01 (missing date/deal columns), fix CDP-ATT-02 (test download not just filename visibility), fix CDP-ATT-03 (test view button not delete button), fix CDP-TL-03 title mismatch, fix CDP-HDR-02 through CDP-HDR-05 to use atomic timeline assertions (count before/after instead of .not.toHaveCount(0))",
+        "FixViolationCDPTestsMissing: Add missing ClientDetailPage Playwright tests - CDP-QA-10 through CDP-QA-13 (cancel button tests), CDP-TL-04 through CDP-TL-08 (timeline entry format and atomicity tests)",
+        "RunTestsCDPTests: Verify tests pass after Playwright test fixes"
+      ],
+      "timestamp": "2026-02-20T20:34:29.483Z"
     }
   ]
 }
