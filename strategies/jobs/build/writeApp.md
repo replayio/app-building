@@ -2,20 +2,24 @@
 
 You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-Unpack the initial write app job into sub-jobs using `add-next-job` (in REVERSE order):
+Unpack the initial write app job into groups using `add-next-group`:
 
-- SetupApp: Setup the app.
-- DesignDatabase: Design the database.
-- (For each page) UnpackWritePage<Name>: Setup the sub-jobs to implement each page.
+First, add a setup group:
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/writeApp.md" \
+  --job "SetupApp: Setup the app" \
+  --job "DesignDatabase: Design the database"
+```
 
-Unpack the job for implementing a page into sub-jobs using `add-next-job` (in REVERSE order):
-
-- (For each component) WriteComponent<Name>: Write the specified page component.
-- WritePage<Name>: Write the page itself, then commit changes and exit.
-
-All sub-jobs should use `--strategy "strategies/jobs/build/writeApp.md"`.
+Then add one group per page, containing all components and the page itself:
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/writeApp.md" \
+  --job "WriteComponent<Component1>: Write the <Component1> component" \
+  --job "WriteComponent<Component2>: Write the <Component2> component" \
+  --job "WritePage<Name>: Write the page itself"
+```
 
 ## Guidelines
 

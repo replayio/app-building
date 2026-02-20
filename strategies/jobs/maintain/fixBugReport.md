@@ -4,10 +4,10 @@ Bug reported by users for the app are tracked in `docs/bugReports.md`.
 Open bug reports are listed at the start of this file, with later sections for reports that
 were fixed and later reviewed.
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-If there are any open bug reports in the file, unpack each one into sub-jobs using `add-next-job`.
-Each bug gets the following series of sub-jobs, performed in order. Unpack reports starting with
+If there are any open bug reports in the file, add one group per bug using `add-next-group`.
+Each bug gets the following jobs in the group, performed in order. Unpack reports starting with
 the oldest ones, which will be listed last.
 
 1. AnalyzeBug: Analyze and document the cause of the bug. Skip this for bugs asking for new functionality.
@@ -16,15 +16,14 @@ the oldest ones, which will be listed last.
 4. UpdateRevisions: Record any spec changes in AppRevisions.md.
 5. ResolveBug: Mark the bug as resolved and in need of review.
 
-Since `add-next-job` prepends, add the sub-jobs for each bug in REVERSE order (ResolveBug first,
-AnalyzeBug last) so they execute in the correct sequence. For example:
-
+Example:
 ```
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "ResolveBug: Mark <BugName> as resolved"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "UpdateRevisions: Record spec changes for <BugName>"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "UpdateTests: Update tests for <BugName>"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "FixBug: Fix <BugName>"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --description "AnalyzeBug: Analyze <BugName>"
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/fixBugReport.md" \
+  --job "AnalyzeBug: Analyze <BugName>" \
+  --job "FixBug: Fix <BugName>" \
+  --job "UpdateTests: Update tests for <BugName>" \
+  --job "UpdateRevisions: Record spec changes for <BugName>" \
+  --job "ResolveBug: Mark <BugName> as resolved"
 ```
 
 ## Analyzing bugs

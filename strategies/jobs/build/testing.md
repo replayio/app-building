@@ -2,20 +2,22 @@
 
 You will run all the tests in the app and get them to pass..
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-Unpack the initial testing job into a single FixTests sub-job to get all tests passing:
-
-```
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/build/testing.md" --description "FixTests: Get all tests passing"
-```
-
-After running tests and there are failures, pick a specific failing test and add a sub-job to fix
-that test without regressing any tests that passed in previous runs. The sub-job must require
-committing and exiting afterwards. Focus on that sub-job until finished.
+Unpack the initial testing job into a single group:
 
 ```
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/build/testing.md" --description "Fix: <failing test name>"
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testing.md" \
+  --job "FixTests: Get all tests passing"
+```
+
+After running tests and there are failures, pick specific failing tests and add a group to fix
+them without regressing any tests that passed in previous runs:
+
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testing.md" \
+  --job "Fix: <failing test name 1>" \
+  --job "Fix: <failing test name 2>"
 ```
 
 ## Requirements

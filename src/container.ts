@@ -134,7 +134,7 @@ function setupContainer(mode: "interactive" | "detached" | "attached"): Containe
   return { args, containerName, envVars, mcpConfig };
 }
 
-export function spawnContainer(prompt: string, options?: { maxIterations?: number }): Promise<void> {
+export function spawnContainer(options?: { prompt?: string; maxIterations?: number }): Promise<void> {
   const { args, containerName, mcpConfig } = setupContainer("detached");
 
   if (options?.maxIterations) {
@@ -144,9 +144,11 @@ export function spawnContainer(prompt: string, options?: { maxIterations?: numbe
   // Pass container name so the worker can log it
   args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `CONTAINER_NAME=${containerName}`);
 
-  // Worker loop (iterates claude, logs, git commits, checks for <DONE/>)
+  // Worker (consumes job groups, optionally preceded by a prompt)
   args.push("npx", "tsx", "/app-building/src/worker.ts");
-  args.push("-p", prompt);
+  if (options?.prompt) {
+    args.push("-p", options.prompt);
+  }
   args.push("--model", "claude-opus-4-6");
   args.push("--dangerously-skip-permissions");
   args.push("--mcp-config", mcpConfig);

@@ -21,43 +21,56 @@ look for a suitable one in `strategies/messages/`. If there isn't one do your be
 user's request, and then write a new strategy document there to help yourself in the future when
 similar requests are made.
 
-## Iteration Loop
+## Worker Execution
 
-When running in detached mode, the worker automatically loops: the first iteration runs the
-user's prompt, and all subsequent iterations pull the next job from `jobs/jobs.json`
-via the `get-next-job` script. After each iteration the worker commits changes and re-invokes
-Claude with a fresh context. The current worker iteration log is in the `worker-current.log` file.
+Each worker invocation handles exactly one job group. The worker reads the first group
+from `jobs/jobs.json`, passes all jobs in the group to Claude as a single prompt, and
+checks for a `<DONE>` signal in the output.
 
-Each iteration starts with a clean context. You will not have memory of previous iterations,
-so rely on the codebase, git history, and log files in `/repo/logs/` to understand what has
-already been done.
+- If `<DONE>` is signaled: the group is dequeued and the worker exits successfully.
+- If `<DONE>` is NOT signaled: the group remains in the queue for retry on the next
+  worker invocation.
 
-The loop exits when `get-next-job` reports no jobs remaining, or when the agent outputs `<DONE/>`.
+Each invocation starts with a clean context. You will not have memory of previous
+invocations, so rely on the codebase, git history, and log files in `/repo/logs/` to
+understand what has already been done.
+
+When you have completed ALL jobs in your group, output `<DONE>` to signal completion.
 
 ## Job System
 
-Work is managed through a JSON job queue at `jobs/jobs.json`. The agent NEVER reads or
-writes this file directly. Instead, use these scripts:
+Work is managed through a JSON job queue at `jobs/jobs.json`. The file contains an object
+with a `groups` array. Each group has a `strategy`, an array of `jobs` (description strings),
+and a `timestamp`:
 
-* **`npx tsx /repo/scripts/get-next-job.ts`**: Returns the next job's strategy and description.
-  Called by the worker loop to determine each iteration's prompt. Also checks for unreviewed
-  logs (prioritized over queued jobs) and handles strategy switching between jobs.
+```json
+{
+  "groups": [
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication",
+        "CheckComponentsAuth: Check writeApp.md directive violations in Authentication",
+        "CheckTestsAuth: Check writeTests.md directive violations in Authentication"
+      ],
+      "timestamp": "2026-02-20T00:00:00.000Z"
+    }
+  ]
+}
+```
 
-* **`npx tsx /repo/scripts/add-next-job.ts --strategy "<path>" --description "<text>"`**:
-  Adds a job to the FRONT of the queue (next to be processed). Since this prepends, add
-  sub-jobs in REVERSE order for correct sequencing.
+The agent NEVER reads or writes `jobs.json` directly. Instead, use these scripts:
 
-* **`npx tsx /repo/scripts/add-trailing-job.ts --strategy "<path>" --description "<text>"`**:
-  Adds a job to the END of the queue.
+* **`npx tsx /repo/scripts/add-next-group.ts --strategy "<path>" --job "desc1" --job "desc2"`**:
+  Adds a job group to the FRONT of the queue (next to be processed). Each `--job` flag
+  adds one job to the group. Jobs execute in the order listed.
 
-Each job is an object with `{ strategy, description, timestamp }`. The strategy is a path to a
-strategy file under `strategies/jobs/` that defines how to perform the work.
+* **`npx tsx /repo/scripts/add-trailing-group.ts --strategy "<path>" --job "desc1" --job "desc2"`**:
+  Adds a job group to the END of the queue. Same interface as `add-next-group`.
 
-When a strategy needs to "unpack" into sub-jobs, use `add-next-job` (in reverse order) to insert
-the sub-jobs at the front of the queue, so they run before any remaining jobs.
-
-After completing a job, commit your changes and exit. The worker loop will start the next
-iteration with the next job.
+All jobs in a group share the same strategy. Group related jobs together — for example,
+all checks for a single page go in one group. When a strategy needs to "unpack" into
+sub-groups, use `add-next-group` to insert them at the front of the queue.
 
 ## Tech Stack
 

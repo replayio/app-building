@@ -1,12 +1,28 @@
 import { spawn, execFileSync } from "child_process";
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync } from "fs";
+import { resolve, join } from "path";
 import { createLogFile, archiveCurrentLog } from "./log";
 
-const LOGS_DIR = "/repo/logs";
+const REPO_ROOT = "/repo";
+const LOGS_DIR = resolve(REPO_ROOT, "logs");
+const JOBS_FILE = resolve(REPO_ROOT, "jobs/jobs.json");
+const COMPLETE_GROUP_SCRIPT = resolve(REPO_ROOT, "scripts/complete-group.ts");
 const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
-const GET_NEXT_JOB_SCRIPT = "/repo/scripts/get-next-job.ts";
-const CONTAINER_STARTED_AT = new Date().toISOString().replace(/[:.]/g, "-");
-const COMPLETED_FILE = `/repo/jobs/completed-${CONTAINER_STARTED_AT}.json`;
+const MAX_GROUP_RETRIES = 3;
+
+// --- Types ---
+
+interface Group {
+  strategy: string;
+  jobs: string[];
+  timestamp: string;
+}
+
+interface JobsFile {
+  groups: Group[];
+}
+
+// --- Git helpers ---
 
 function getGitRevision(): string {
   try {
@@ -19,10 +35,10 @@ function getGitRevision(): string {
   }
 }
 
-function gitCommit(iteration: number, log: (msg: string) => void): void {
+function gitCommit(label: string, log: (msg: string) => void): void {
   try {
     execFileSync("git", ["add", "-A"], { encoding: "utf-8", timeout: 30000 });
-    execFileSync("git", ["commit", "-m", `Agent iteration ${iteration}`, "--allow-empty"], {
+    execFileSync("git", ["commit", "-m", label, "--allow-empty"], {
       encoding: "utf-8",
       timeout: 30000,
     });
@@ -105,8 +121,6 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
 
 // --- Arg parsing ---
 
-// Incoming args: -p <prompt> --model ... --dangerously-skip-permissions --mcp-config ...
-// We extract the prompt and treat the rest as base claude args.
 const incomingArgs = process.argv.slice(2);
 
 function parseArgs(args: string[]): { prompt: string; baseArgs: string[] } {
@@ -135,37 +149,62 @@ function buildClaudeArgs(prompt: string): string[] {
 
 // --- Job system ---
 
-interface Job {
-  strategy: string;
-  description: string;
-  timestamp: string;
+function readJobsFile(): JobsFile {
+  if (!existsSync(JOBS_FILE)) return { groups: [] };
+  const content = readFileSync(JOBS_FILE, "utf-8").trim();
+  if (!content) return { groups: [] };
+  return JSON.parse(content);
 }
 
-function appendCompleted(job: Job): void {
-  let completed: Job[] = [];
-  if (existsSync(COMPLETED_FILE)) {
-    const content = readFileSync(COMPLETED_FILE, "utf-8").trim();
-    if (content) completed = JSON.parse(content);
-  }
-  completed.push(job);
-  writeFileSync(COMPLETED_FILE, JSON.stringify(completed, null, 2) + "\n");
+function getUnreviewedLogs(): string[] {
+  if (!existsSync(LOGS_DIR)) return [];
+  const files = readdirSync(LOGS_DIR);
+  return files.filter(
+    (f) =>
+      (f.startsWith("worker-") || f.startsWith("iteration-")) &&
+      f.endsWith(".log") &&
+      !f.includes("-current")
+  );
 }
 
-function getNextJob(lastStrategy: string | null, log: (msg: string) => void): string {
-  const args = ["tsx", GET_NEXT_JOB_SCRIPT];
-  if (lastStrategy) {
-    args.push("--last-strategy", lastStrategy);
-  }
+function completeGroup(log: (msg: string) => void): void {
   try {
-    return execFileSync("npx", args, {
+    execFileSync("npx", ["tsx", COMPLETE_GROUP_SCRIPT], {
       encoding: "utf-8",
-      cwd: "/repo",
+      cwd: REPO_ROOT,
       timeout: 30000,
-    }).trim();
+    });
   } catch (e: any) {
-    log(`Error running get-next-job: ${e.message}`);
-    return "<DONE/>";
+    log(`Error completing group: ${e.message}`);
   }
+}
+
+function buildGroupPrompt(group: Group): string {
+  const jobList = group.jobs.map((j, i) => `${i + 1}. ${j}`).join("\n");
+  return (
+    `Read strategy file: ${group.strategy}\n` +
+    `\n` +
+    `Jobs to complete:\n${jobList}\n` +
+    `\n` +
+    `Work through each job following the strategy. When you have completed ALL jobs,\n` +
+    `output <DONE> to signal completion.\n` +
+    `\n` +
+    `When you need to add new job groups, use:\n` +
+    `- Add to front: npx tsx /repo/scripts/add-next-group.ts --strategy "<path>" --job "desc1" --job "desc2"\n` +
+    `- Add to end: npx tsx /repo/scripts/add-trailing-group.ts --strategy "<path>" --job "desc1" --job "desc2"`
+  );
+}
+
+function buildReviewPrompt(unreviewedLogs: string[]): string {
+  const logPaths = unreviewedLogs.map((f) => join(LOGS_DIR, f)).join("\n  ");
+  return (
+    `There are unreviewed iteration logs that need to be processed first.\n` +
+    `\n` +
+    `Unreviewed logs:\n  ${logPaths}\n` +
+    `\n` +
+    `Read /repo/strategies/jobs/reviewChanges.md and follow the instructions to review these logs.\n` +
+    `After reviewing, commit your changes and exit.`
+  );
 }
 
 // --- Main loop ---
@@ -174,7 +213,7 @@ async function runLoop(): Promise<void> {
   const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
   let iteration = 0;
   let totalCost = 0;
-  let lastStrategy: string | null = null;
+  let consecutiveRetries = 0;
 
   while (true) {
     iteration++;
@@ -190,44 +229,41 @@ async function runLoop(): Promise<void> {
     log(`=== Iteration ${iteration} ===`);
     log(`Initial revision: ${getGitRevision()}`);
 
-    // First iteration uses the provided prompt; subsequent iterations pull from the job queue
+    // First iteration uses the provided prompt; subsequent iterations consume job groups
     let prompt: string;
-    if (iteration === 1) {
+    let isGroup = false;
+
+    if (iteration === 1 && initialPrompt) {
       prompt = initialPrompt;
+      log(`Running initial prompt`);
     } else {
-      const jobOutput = getNextJob(lastStrategy, log);
-      log(`get-next-job output: ${jobOutput}`);
-
-      if (jobOutput.includes("<DONE/>")) {
-        log("No more jobs. Exiting.");
-        break;
-      }
-
-      // Detect strategy switch (don't update lastStrategy so next iteration retries cleanly)
-      if (jobOutput.includes("different strategy")) {
-        prompt = jobOutput;
-        lastStrategy = null;
+      // Check for unreviewed logs first
+      const unreviewedLogs = getUnreviewedLogs();
+      if (unreviewedLogs.length > 0) {
+        prompt = buildReviewPrompt(unreviewedLogs);
+        log(`Running log review (${unreviewedLogs.length} unreviewed logs)`);
       } else {
-        // Extract the strategy and description from the job output for tracking
-        const strategyMatch = jobOutput.match(/Read strategy file: (.+)/);
-        const descriptionMatch = jobOutput.match(/Job description: (.+)/);
-        if (strategyMatch) {
-          lastStrategy = strategyMatch[1].trim();
+        // Read next group from jobs.json
+        const data = readJobsFile();
+        if (data.groups.length === 0) {
+          log("No groups remaining. Exiting.");
+          archiveCurrentLog(LOGS_DIR);
+          break;
         }
-        if (strategyMatch && descriptionMatch) {
-          appendCompleted({
-            strategy: strategyMatch[1].trim(),
-            description: descriptionMatch[1].trim(),
-            timestamp: new Date().toISOString(),
-          });
+
+        const group = data.groups[0];
+        prompt = buildGroupPrompt(group);
+        isGroup = true;
+        log(`Running group: ${group.jobs.length} job(s) (strategy: ${group.strategy})`);
+        for (const job of group.jobs) {
+          log(`  - ${job}`);
         }
-        prompt = jobOutput;
       }
     }
 
+    // Run Claude
     const claudeArgs = buildClaudeArgs(prompt);
     log(`Running Claude...`);
-
     const startTime = Date.now();
 
     let response: ClaudeResult;
@@ -235,11 +271,9 @@ async function runLoop(): Promise<void> {
       response = await runClaude(claudeArgs, log);
     } catch (e: any) {
       log(`Error running claude: ${e.message}`);
-      if (MAX_ITERATIONS !== null) {
-        log(`Have remaining iterations, retrying...`);
-        continue;
-      }
-      break;
+      gitCommit("Agent error recovery", log);
+      archiveCurrentLog(LOGS_DIR);
+      continue;
     }
 
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -252,18 +286,30 @@ async function runLoop(): Promise<void> {
       log(`Turns: ${response.num_turns}`);
     }
 
-    // Commit code changes while log is still worker-current.log (gitignored)
-    gitCommit(iteration, log);
-    log(`Committed iteration ${iteration}`);
-    log(`Final revision: ${getGitRevision()}`);
+    // Check for <DONE> signal
+    const done = response.result?.includes("<DONE");
 
-    // Rename log to timestamped file so future iterations can review it
-    archiveCurrentLog(LOGS_DIR);
-
-    // Also check Claude's output for <DONE/> (e.g. from the first iteration)
-    if (response.result && response.result.includes("<DONE/>")) {
-      break;
+    if (isGroup) {
+      if (done) {
+        log(`Group signaled <DONE>. Completing group.`);
+        completeGroup(log);
+        consecutiveRetries = 0;
+      } else {
+        consecutiveRetries++;
+        if (consecutiveRetries >= MAX_GROUP_RETRIES) {
+          log(`Group failed ${MAX_GROUP_RETRIES} times. Skipping.`);
+          completeGroup(log);
+          consecutiveRetries = 0;
+        } else {
+          log(`Group did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}.`);
+        }
+      }
     }
+
+    // Commit and archive
+    gitCommit(`Agent iteration ${iteration}`, log);
+    log(`Final revision: ${getGitRevision()}`);
+    archiveCurrentLog(LOGS_DIR);
   }
 }
 

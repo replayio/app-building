@@ -2,13 +2,14 @@
 
 During this stage you will deploy the app to production and test it to make sure it works.
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-Unpack the initial deployment job into sub-jobs using `add-next-job` (in reverse order):
+Unpack the initial deployment job into a single group:
 
 ```
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/deployment.md" --description "TestDeploy: Test the deployed app"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/deployment.md" --description "DoDeploy: Deploy the app to production"
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/deployment.md" \
+  --job "DoDeploy: Deploy the app to production" \
+  --job "TestDeploy: Test the deployed app"
 ```
 
 ## Deployment

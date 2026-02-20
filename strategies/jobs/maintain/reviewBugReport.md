@@ -3,20 +3,21 @@
 After being fixed, bug reports from users in `docs/bugReports.md` go into an "Unreviewed" section.
 These are then reviewed for improvements that can be made to the app building process.
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-If there are any unreviewed bug reports in bugReports.md, unpack each of them into sub-jobs
-using `add-next-job` (in REVERSE order for correct sequencing):
+If there are any unreviewed bug reports in bugReports.md, add one group per bug
+using `add-next-group`:
 
 1. ClassifyBug: Classify the app building stage to improve to prevent similar bugs.
 2. UpdateDirectives: Update the directives to avoid the buggy behavior.
 3. FinishBug: Mark the bug as reviewed.
 
-Example (reverse order):
+Example:
 ```
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/reviewBugReport.md" --description "FinishBug: Mark <BugName> as reviewed"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/reviewBugReport.md" --description "UpdateDirectives: Update directives for <BugName>"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/reviewBugReport.md" --description "ClassifyBug: Classify <BugName>"
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/reviewBugReport.md" \
+  --job "ClassifyBug: Classify <BugName>" \
+  --job "UpdateDirectives: Update directives for <BugName>" \
+  --job "FinishBug: Mark <BugName> as reviewed"
 ```
 
 ## Classifying bugs

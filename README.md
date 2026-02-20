@@ -13,23 +13,32 @@ Copy `.env.example` to `.env` and fill in all API keys.
 
 ## Running the Agent
 
-### Interactive mode
+### Consume pending jobs (default)
 
 ```bash
 npm run agent
-npm run agent -- --resume <session-id>   # resume a previous session
+npm run agent -- -n 10   # limit iterations
+```
+
+Consumes pending job groups from `jobs/jobs.json`. Errors if no groups are queued. Each iteration handles one group — all jobs in the group are passed to Claude, which signals `<DONE>` on completion. Groups that don't get `<DONE>` are retried (up to 3 times). All output is logged to `logs/worker-current.log`.
+
+### Prompt mode
+
+```bash
+npm run agent -- -p "<prompt>"
+npm run agent -- -p "<prompt>" -n 10
+```
+
+Handles the prompt first, then consumes any pending job groups.
+
+### Interactive mode
+
+```bash
+npm run agent -- -i
+npm run agent -- -i --resume <session-id>
 ```
 
 Chat with Claude inside a container. Output is streamed in real-time. Press ESC to interrupt. Subsequent messages continue the conversation.
-
-### Detached mode
-
-```bash
-npm run agent -- "<prompt>"
-npm run agent -- "<prompt>" -n 10   # limit iterations
-```
-
-Runs Claude in a loop inside a detached container. The first iteration runs the provided prompt; subsequent iterations pull the next job from `jobs/jobs.json` via the `get-next-job` script. Each iteration commits changes and re-runs with a fresh context. Stops when no jobs remain or the iteration limit is reached. All output is logged to `logs/worker-current.log`.
 
 ### Checking status
 

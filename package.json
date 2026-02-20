@@ -10,9 +10,9 @@
     "docker:build": "docker build --no-cache --network=host -t app-building .",
     "test-container": "tsx src/test-container.ts",
     "stop": "tsx src/stop.ts",
-    "get-next-job": "tsx scripts/get-next-job.ts",
-    "add-next-job": "tsx scripts/add-next-job.ts",
-    "add-trailing-job": "tsx scripts/add-trailing-job.ts"
+    "add-next-group": "tsx scripts/add-next-group.ts",
+    "add-trailing-group": "tsx scripts/add-trailing-group.ts",
+    "complete-group": "tsx scripts/complete-group.ts"
   },
   "devDependencies": {
     "tsx": "^4.19.0",

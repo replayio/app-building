@@ -1,5 +1,6 @@
 import { Command } from "commander";
 import { resolve } from "path";
+import { readFileSync, existsSync } from "fs";
 import {
   spawnContainer,
   startInteractiveContainer,
@@ -10,6 +11,7 @@ import { formatEvent } from "./format";
 import { createLogFile } from "./log";
 
 const LOGS_DIR = resolve(__dirname, "..", "logs");
+const JOBS_FILE = resolve(__dirname, "..", "jobs", "jobs.json");
 
 // Reads input using raw mode. Enter submits, pasted text (which arrives
 // as a single chunk with embedded newlines) is preserved as multi-line.
@@ -75,6 +77,18 @@ function readInput(): Promise<string | null> {
 
     process.stdin.on("data", onData);
   });
+}
+
+function countPendingGroups(): number {
+  if (!existsSync(JOBS_FILE)) return 0;
+  try {
+    const content = readFileSync(JOBS_FILE, "utf-8").trim();
+    if (!content) return 0;
+    const data = JSON.parse(content);
+    return data.groups?.length ?? 0;
+  } catch {
+    return 0;
+  }
 }
 
 async function runInteractive(sessionId?: string): Promise<void> {
@@ -185,20 +199,29 @@ async function runInteractive(sessionId?: string): Promise<void> {
 async function main(): Promise<void> {
   const program = new Command();
   program
-    .argument("[prompt]", "prompt to pass to claude (omit for interactive mode)")
-    .option("-n, --max-iterations <n>", "max iterations for detached mode", parseInt)
-    .option("-r, --resume <id>", "resume a claude session in interactive mode")
+    .option("-i, --interactive", "interactive mode")
+    .option("-p, --prompt <text>", "handle a prompt, then consume pending job groups")
+    .option("-n, --max-iterations <n>", "max iterations", parseInt)
+    .option("-r, --resume <id>", "resume a claude session (interactive mode)")
     .allowUnknownOption(false)
     .allowExcessArguments(false)
     .parse();
 
-  const promptArg = program.args[0] || null;
   const opts = program.opts();
 
-  if (promptArg) {
-    await spawnContainer(promptArg, { maxIterations: opts.maxIterations });
-  } else {
+  if (opts.interactive) {
     await runInteractive(opts.resume);
+  } else {
+    // Default mode or -p mode: consume pending job groups
+    if (!opts.prompt) {
+      const pending = countPendingGroups();
+      if (pending === 0) {
+        console.error("No pending job groups in jobs/jobs.json");
+        process.exit(1);
+      }
+      console.log(`${pending} pending job group(s)`);
+    }
+    await spawnContainer({ prompt: opts.prompt, maxIterations: opts.maxIterations });
   }
 }
 

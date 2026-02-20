@@ -4,17 +4,23 @@ You are writing a complete, detailed test specification for an app based on an i
 in `AppSpec.md`. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug
 reports and must also be followed.
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-Unpack the initial test specification job into sub-jobs using `add-next-job` (in REVERSE order):
+Unpack the initial test specification job into groups using `add-next-group`:
 
-- PlanPages: Read the spec, decide on the pages the app needs, and add PlanPage<Name> sub-jobs for each page.
+First, add a group for planning pages:
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testSpec.md" \
+  --job "PlanPages: Read the spec, decide on pages, and add PlanPage groups for each page"
+```
 
-- PlanPage<Name>: Decide on the components the page needs, add sections for the page and its components to docs/tests.md, and add PlanComponent<Name> sub-jobs for each of those components. IMPORTANT: The last sub-job done to specify the test entries for each page must require committing and exiting afterwards.
-
-- PlanComponent<Name>: Add test entries to comprehensively test the component's behavior.
-
-All sub-jobs should use `--strategy "strategies/jobs/build/testSpec.md"`.
+Then during PlanPages, add one group per page containing the page plan and all its component plans:
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testSpec.md" \
+  --job "PlanPage<Name>: Decide on components, add sections to docs/tests.md" \
+  --job "PlanComponent<Component1>: Add test entries for <Component1>" \
+  --job "PlanComponent<Component2>: Add test entries for <Component2>"
+```
 
 ## Requirements
 

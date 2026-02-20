@@ -4,22 +4,24 @@ The strategy documents used to build the app have directives sections for requir
 be adhered to when performing that stage of development. During this stage you will systematically
 go through the entire app and check that its behavior is following all directives.
 
-## Unpack Sub-Jobs
+## Unpack Sub-Groups
 
-Read `docs/tests.md` to understand the existing application structure. Add sub-jobs using
-`add-next-job` (in REVERSE order) for every page in the app:
+Read `docs/tests.md` to understand the existing application structure. Add one job group per
+page using `add-next-group`, with all checks for that page in the same group:
 
-- CheckTestSpec<PageName>: Check for `testSpec.md` (`strategies/jobs/build/`) directive violations in the test entries for the page.
-- CheckComponents<PageName>: Check for `writeApp.md` (`strategies/jobs/build/`) directive violations in the components for the page.
-- CheckTests<PageName>: Check for `writeTests.md` (`strategies/jobs/build/`) directive violations in the playwright tests for
-  each of the page's test entries.
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
+  --job "CheckTestSpec<PageName>: Check testSpec.md directive violations in <PageName> test entries" \
+  --job "CheckComponents<PageName>: Check writeApp.md directive violations in <PageName> components" \
+  --job "CheckTests<PageName>: Check writeTests.md directive violations in <PageName> tests"
+```
 
-Also add additional non-page specific sub-jobs:
+Also add a separate group for non-page specific checks:
 
-- CheckBackend: Check for `writeApp.md` (`strategies/jobs/build/`) directive violations in all backend functions.
-
-Use `add-next-job` in reverse order for correct sequencing. All sub-jobs should use
-`--strategy "strategies/jobs/maintain/checkDirectives.md"`.
+```
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
+  --job "CheckBackend: Check writeApp.md directive violations in all backend functions"
+```
 
 ## Checking for violations
 
@@ -27,17 +29,14 @@ During each checking job you need to read the strategy document and all the dire
 and then go through all the documentation / code you are checking to look for violations of those directives.
 You must do this systematically and announce each entry name / file you are checking.
 
-For any violations you find, add fix jobs using `add-next-job` (in reverse order). Do not fix them immediately.
-
-1. FixViolation: Fix the directive violation.
-2. RunTests: Make sure tests are passing.
-3. DocumentFix: Document the fix appropriately.
+For any violations you find, add a fix group using `add-next-group`. Do not fix them immediately.
 
 Example:
 ```
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/checkDirectives.md" --description "DocumentFix: Document the fix"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/checkDirectives.md" --description "RunTests: Verify tests pass after fix"
-npx tsx /repo/scripts/add-next-job.ts --strategy "strategies/jobs/maintain/checkDirectives.md" --description "FixViolation: Fix <violation description>"
+npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
+  --job "FixViolation: Fix <violation description>" \
+  --job "RunTests: Verify tests pass after fix" \
+  --job "DocumentFix: Document the fix"
 ```
 
 ## Fixing violations

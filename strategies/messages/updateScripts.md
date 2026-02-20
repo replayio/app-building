@@ -17,12 +17,12 @@ design doc is written, the agent implements the script for the app.
    described below. The script name should match the `package.json` script key (e.g., if the
    script will be `npm run setup-test-branch`, the file is `strategies/scripts/setup-test-branch.md`).
 
-4. **Add the implementation job**: Add a job to the queue:
+4. **Add the implementation group**: Add a group to the queue:
    ```
-   npx tsx /repo/scripts/add-trailing-job.ts --strategy "strategies/jobs/writeScript.md" --description "Implement <script-name> script"
+   npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/writeScript.md" --job "Implement <script-name> script"
    ```
 
-5. Commit and exit. The worker loop will pick up the implementation job.
+5. Commit and exit. The next worker invocation will pick up the group.
 
 ## Design Doc Structure
 
