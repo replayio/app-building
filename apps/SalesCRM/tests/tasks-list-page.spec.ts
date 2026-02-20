@@ -301,15 +301,18 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
     await page.getByTestId('tasks-filter-button').click();
     await expect(page.getByTestId('tasks-filter-dropdown')).toBeVisible();
 
-    // Check assignee dropdown has options
-    const assigneeSelect = page.getByTestId('tasks-filter-assignee');
-    const options = await assigneeSelect.locator('option').all();
+    // Open assignee FilterSelect trigger to see options
+    await page.getByTestId('tasks-filter-assignee-trigger').click();
+    const assigneeMenu = page.getByTestId('tasks-filter-assignee-menu');
+    await expect(assigneeMenu).toBeVisible();
+
+    // Get all option buttons (first is "All Assignees", rest are real assignees)
+    const options = await assigneeMenu.locator('button').all();
 
     if (options.length > 1) {
-      // Pick the first real assignee option
+      // Pick the first real assignee option (skip "All Assignees")
       const assigneeName = await options[1].textContent();
-      const assigneeValue = await options[1].getAttribute('value');
-      await assigneeSelect.selectOption(assigneeValue!);
+      await options[1].click();
 
       // Wait for filtered results — atomic assertions avoid nested-wait deadlocks
       await expect(
@@ -329,13 +332,16 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
     await page.getByTestId('tasks-filter-button').click();
     await expect(page.getByTestId('tasks-filter-dropdown')).toBeVisible();
 
-    // Check client dropdown has options
-    const clientSelect = page.getByTestId('tasks-filter-client');
-    const options = await clientSelect.locator('option').all();
+    // Open client FilterSelect trigger to see options
+    await page.getByTestId('tasks-filter-client-trigger').click();
+    const clientMenu = page.getByTestId('tasks-filter-client-menu');
+    await expect(clientMenu).toBeVisible();
+
+    // Get all option buttons (first is "All Clients", rest are real clients)
+    const options = await clientMenu.locator('button').all();
 
     if (options.length > 1) {
-      const clientValue = await options[1].getAttribute('value');
-      await clientSelect.selectOption(clientValue!);
+      await options[1].click();
       await page.waitForLoadState('networkidle');
 
       // Tasks should be filtered (at least the page should still be functional)

@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix TLP-FLT-04 and TLP-FLT-05 tests that use native select API (selectOption/locator option) on custom FilterSelect components - must use trigger/menu/option testid pattern instead",
-        "RunTests: Verify tests pass after fixing filter tests"
-      ],
-      "timestamp": "2026-02-20T08:44:41.560Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing TLP-HDR-06 test spec entry for Cancel button on Create Task modal (like DLP-HDR-06 for deals) and write the corresponding Playwright test",
         "RunTests: Verify tests pass after adding cancel modal test"
       ],
