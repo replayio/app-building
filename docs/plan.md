@@ -7,7 +7,7 @@
 - [x] DealsListPage
 - [x] DealDetailPage
 - [x] TasksListPage
-- [ ] TaskDetailPage
+- [x] TaskDetailPage
 - [ ] SettingsPage
 - [ ] UsersListPage
 - [ ] UserDetailPage

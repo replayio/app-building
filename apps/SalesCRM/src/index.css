@@ -163,6 +163,22 @@ body {
   }
 }
 
+/* Task detail metadata */
+.task-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .task-detail-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
 /* Responsive: Source info section */
 @media (max-width: 768px) {
   .source-info-grid {

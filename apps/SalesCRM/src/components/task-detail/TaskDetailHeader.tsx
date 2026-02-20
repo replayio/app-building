@@ -18,12 +18,12 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
         <button
           data-testid="task-detail-back"
           onClick={() => navigate('/tasks')}
-          className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
+          className="inline-flex items-center justify-center w-7 h-7 shrink-0 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
           title="Back to tasks"
         >
           <ArrowLeft size={16} strokeWidth={1.75} />
         </button>
-        <h1 className="text-[18px] max-sm:text-[16px] font-semibold text-text-primary flex-1 min-w-0" data-testid="task-detail-title">
+        <h1 className="text-[18px] max-sm:text-[16px] font-semibold text-text-primary flex-1 min-w-0 break-words" data-testid="task-detail-title">
           {task.title}
         </h1>
         <TaskPriorityBadge priority={task.priority} />
@@ -35,7 +35,7 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
         </p>
       )}
 
-      <div className="flex items-center gap-4 ml-9 max-sm:ml-0 text-[12px] text-text-muted flex-wrap">
+      <div className="task-detail-meta ml-9 max-sm:ml-0 text-[12px] text-text-muted">
         {task.due_date && (
           <span data-testid="task-detail-due-date">
             Due: {new Date(task.due_date).toLocaleDateString()} {new Date(task.due_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -72,7 +72,7 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
         )}
       </div>
 
-      <div className="flex items-center gap-2 mt-4 ml-9 max-sm:ml-0 flex-wrap">
+      <div className="flex items-center gap-2 mt-4 ml-9 max-sm:ml-0 max-sm:flex-col max-sm:items-stretch flex-wrap">
         {!task.completed && (
           <>
             <button

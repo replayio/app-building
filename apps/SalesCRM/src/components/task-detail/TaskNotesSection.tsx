@@ -53,10 +53,10 @@ export function TaskNotesSection({ notes, onAddNote, onDeleteNote }: TaskNotesSe
               className="flex gap-3 px-3 py-2.5 rounded-[4px] bg-hover"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] text-text-primary whitespace-pre-wrap" data-testid={`task-note-content-${note.id}`}>
+                <p className="text-[13px] text-text-primary whitespace-pre-wrap break-words" data-testid={`task-note-content-${note.id}`}>
                   {note.content}
                 </p>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <span className="text-[11px] text-text-muted">{note.author}</span>
                   <span className="text-[11px] text-text-muted">
                     {new Date(note.created_at).toLocaleDateString()} {new Date(note.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
