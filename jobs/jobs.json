@@ -3,9 +3,11 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
-        "Unpack: Review fixed bug reports"
+        "ClassifyBug: Classify WebhookDialogInstructions",
+        "UpdateDirectives: Update directives for WebhookDialogInstructions",
+        "FinishBug: Mark WebhookDialogInstructions as reviewed"
       ],
-      "timestamp": "2026-02-20T18:13:55.445Z"
+      "timestamp": "2026-02-20T19:50:50.725Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",

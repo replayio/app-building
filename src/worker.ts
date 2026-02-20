@@ -200,11 +200,22 @@ function writeJobsFile(data: JobsFile): void {
   writeFileSync(JOBS_FILE, JSON.stringify(data, null, 2) + "\n");
 }
 
-function completeGroup(log: (msg: string) => void): void {
+function groupsMatch(a: Group, b: Group): boolean {
+  return a.strategy === b.strategy && a.timestamp === b.timestamp &&
+    a.jobs.length === b.jobs.length && a.jobs.every((j, i) => j === b.jobs[i]);
+}
+
+function completeGroup(assignedGroup: Group, log: (msg: string) => void): void {
   const data = readJobsFile();
-  if (data.groups.length === 0) return;
-  const completed = data.groups.shift()!;
+  const idx = data.groups.findIndex((g) => groupsMatch(g, assignedGroup));
+  if (idx === -1) {
+    debug(`completeGroup: assigned group not found in jobs.json (strategy=${assignedGroup.strategy})`);
+    log(`Warning: assigned group not found in jobs.json, may have already been removed`);
+    return;
+  }
+  const [completed] = data.groups.splice(idx, 1);
   writeJobsFile(data);
+  debug(`completeGroup: removed group at index ${idx} (strategy=${completed.strategy})`);
   log(`Dequeued group: ${completed.jobs.length} job(s) (strategy: ${completed.strategy})`);
 }
 
@@ -248,7 +259,7 @@ async function runLoop(): Promise<void> {
 
     // First iteration uses the provided prompt; subsequent iterations consume job groups
     let prompt: string;
-    let isGroup = false;
+    let assignedGroup: Group | null = null;
 
     if (iteration === 1 && initialPrompt) {
       prompt = initialPrompt;
@@ -268,11 +279,12 @@ async function runLoop(): Promise<void> {
         break;
       }
 
-      const group = data.groups[0];
-      prompt = buildGroupPrompt(group);
-      isGroup = true;
-      log(`Running group: ${group.jobs.length} job(s) (strategy: ${group.strategy})`);
-      for (const job of group.jobs) {
+      // Snapshot the group we're assigning so we can remove it by identity later
+      // (Claude may prepend new groups to the queue during its run via add-group)
+      assignedGroup = { ...data.groups[0], jobs: [...data.groups[0].jobs] };
+      prompt = buildGroupPrompt(assignedGroup);
+      log(`Running group: ${assignedGroup.jobs.length} job(s) (strategy: ${assignedGroup.strategy})`);
+      for (const job of assignedGroup.jobs) {
         log(`  - ${job}`);
       }
     }
@@ -304,21 +316,21 @@ async function runLoop(): Promise<void> {
 
     // Check for <DONE> signal (scanned across all streamed output, not just the result summary)
     const done = response.doneSignaled;
-    debug(`iteration ${iteration}: done=${done} isGroup=${isGroup} result.length=${response.result.length}`);
+    debug(`iteration ${iteration}: done=${done} assignedGroup=${!!assignedGroup} result.length=${response.result.length}`);
     debug(`iteration ${iteration}: response.result first 500 chars: ${JSON.stringify(response.result.slice(0, 500))}`);
 
-    if (isGroup) {
+    if (assignedGroup) {
       if (done) {
         log(`Group signaled <DONE>. Completing group.`);
         debug(`iteration ${iteration}: completing group`);
-        completeGroup(log);
+        completeGroup(assignedGroup, log);
         consecutiveRetries = 0;
       } else {
         consecutiveRetries++;
         if (consecutiveRetries >= MAX_GROUP_RETRIES) {
           log(`Group failed ${MAX_GROUP_RETRIES} times. Skipping.`);
           debug(`iteration ${iteration}: max retries reached, skipping group`);
-          completeGroup(log);
+          completeGroup(assignedGroup, log);
           consecutiveRetries = 0;
         } else {
           log(`Group did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}.`);
