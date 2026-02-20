@@ -324,6 +324,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 - **AttachmentsSection**: "Attachments" heading, list of files/links with name, type (Document/Link), created date, linked deal, download/view and delete icons
 - **PeopleSection**: "People" heading, list of individuals with avatar, name, and role/title
 - **TimelineSection**: "Timeline" heading, chronological feed of events (task created, note added, deal stage changed, email sent, contact added) with dates, descriptions, and user attribution
+- **FollowButton**: Follow/unfollow button in the header area, visible only when authenticated, toggles between "Follow" and "Following" states
 
 ### Test Entries
 
@@ -389,7 +390,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CDP-QA-07: Uploading an attachment persists and shows in Attachments section**
 - Initial: Attachment dialog is open
 - Action: Upload a file "Report.pdf", optionally link to deal, click Save
-- Expected: Dialog closes. "Report.pdf" appears in Attachments section with type "Document", today's date, and linked deal (if any). Attachment is persisted via UploadThing.
+- Expected: Dialog closes. "Report.pdf" appears in Attachments section with type "Document", today's date, and linked deal (if any). Attachment is persisted via UploadThing. A timeline entry is created for the attachment upload.
 
 **CDP-QA-08: Add Person opens person creation/association modal**
 - Initial: User is on ClientDetailPage
@@ -511,12 +512,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CDP-TL-01: Timeline shows chronological events**
 - Initial: Client has recent events: task created today, note added yesterday, deal stage changed 2 days ago, email sent last week, contact added last month
 - Action: Observe Timeline section
-- Expected: Section headed "Timeline". Events shown in reverse chronological order. Each event shows: date/time group, event type and description, user attribution with link.
+- Expected: Section headed "Timeline". Events shown in reverse chronological order. Each event shows: date/time group, event type and description, user attribution.
 
 **CDP-TL-02: Timeline entries for task creation are accurate**
 - Initial: A task "Follow up on proposal" was created today by User A
 - Action: Observe timeline
-- Expected: Entry shows "Today - Task Created: 'Follow up on proposal' by User A". "User A" is a clickable link.
+- Expected: Entry shows "Today - Task Created: 'Follow up on proposal' by User A".
 
 **CDP-TL-03: Timeline entries for deal stage changes are accurate**
 - Initial: Deal "Acme Software License" changed from Qualification to Proposal Sent 2 days ago by User A
@@ -547,6 +548,23 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Deal exists for the client
 - Action: Change the deal's stage (via DealDetailPage or inline)
 - Expected: Exactly one timeline entry is created for the stage change on the client's timeline.
+
+#### FollowButton
+
+**CDP-FOL-01: Follow button appears on client detail page when authenticated**
+- Initial: User is authenticated and navigates to a client's detail page
+- Action: Observe the page header area
+- Expected: A follow button (data-testid="client-follow-button") is visible with text "Follow".
+
+**CDP-FOL-02: Clicking follow button toggles follow state**
+- Initial: User is authenticated and on a client detail page with the follow button showing "Follow"
+- Action: Click the follow button
+- Expected: The button text changes to "Following" with a different visual style (accent color). Click again — the button changes back to "Follow".
+
+**CDP-FOL-03: Follow button is not visible when not authenticated**
+- Initial: User is not authenticated and navigates to a client's detail page
+- Action: Observe the page header area
+- Expected: The follow button (data-testid="client-follow-button") is NOT visible.
 
 ---
 
@@ -1446,23 +1464,6 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: User is not authenticated and navigates to /settings
 - Action: Observe the page
 - Expected: The notification preferences section (data-testid="notification-preferences-section") is NOT visible. The Import & Export and Webhooks sections are still visible.
-
-#### ClientFollowButton
-
-**CDP-FOL-01: Follow button appears on client detail page when authenticated**
-- Initial: User is authenticated and navigates to a client's detail page
-- Action: Observe the page header area
-- Expected: A follow button (data-testid="client-follow-button") is visible with text "Follow".
-
-**CDP-FOL-02: Clicking follow button toggles follow state**
-- Initial: User is authenticated and on a client detail page with the follow button showing "Follow"
-- Action: Click the follow button
-- Expected: The button text changes to "Following" with a different visual style (accent color). Click again — the button changes back to "Follow".
-
-**CDP-FOL-03: Follow button is not visible when not authenticated**
-- Initial: User is not authenticated and navigates to a client's detail page
-- Action: Observe the page header area
-- Expected: The follow button (data-testid="client-follow-button") is NOT visible.
 
 ---
 
