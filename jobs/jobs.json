@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
-        "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
-        "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests"
-      ],
-      "timestamp": "2026-02-19T23:44:48.654Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
         "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
         "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
@@ -127,6 +118,38 @@
         "DocumentFix: Document the fix"
       ],
       "timestamp": "2026-02-20T08:21:23.725Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationDealAttachmentUpload: Fix DealDetailPage attachment upload - UploadAttachmentModal uses blob URLs instead of actual file upload; DDP-ATT-03 test only exercises Link URL mode, not file upload (setInputFiles); add test spec entry for file upload mode",
+        "RunTests: Verify tests pass after DealDetailPage attachment upload fix"
+      ],
+      "timestamp": "2026-02-20T08:27:14.815Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationToPassAutoWait: Fix DDP-HIS-02 test which uses count() auto-wait calls inside .toPass() block - replace with atomic toHaveCount() assertions to prevent deadlock",
+        "RunTests: Verify tests pass after .toPass() fix"
+      ],
+      "timestamp": "2026-02-20T08:27:19.620Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationMissingModalCancelTests: Add test spec entries for DealDetailPage modal cancel buttons (AddWriteup, AddTask, UploadAttachment modals) and corresponding Playwright tests - directive requires complete modal dialog testing",
+        "RunTests: Verify tests pass after modal cancel test additions"
+      ],
+      "timestamp": "2026-02-20T08:27:24.778Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationTaskCompleteSideEffect: Fix DDP-LTK-04 test to verify timeline entry side effect when completing a task - the test currently only checks visual completion state but doesn't assert timeline entry is created exactly once",
+        "RunTests: Verify tests pass after task completion side effect fix"
+      ],
+      "timestamp": "2026-02-20T08:27:29.642Z"
     }
   ]
 }
