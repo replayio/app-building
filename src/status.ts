@@ -165,7 +165,7 @@ function displayFormattedLines(rawLines: string[]): void {
 
 // --- Tailing ---
 
-function tailLog(logPath: string): void {
+function tailLog(logPath: string, containerName: string): void {
   let offset = existsSync(logPath) ? statSync(logPath).size : 0;
   let partial = "";
 
@@ -197,32 +197,18 @@ function tailLog(logPath: string): void {
     }
   }, 500);
 
-  // Also check if container is still running; stop tailing when it exits
+  // Check if container is still running; stop tailing when it exits
   const containerCheck = setInterval(() => {
-    // Re-read the log to check if it signals completion
-    try {
-      const content = readFileSync(logPath, "utf-8");
-      if (
-        content.includes("Agent signaled <DONE/>") ||
-        content.includes("Reached max iterations") ||
-        content.includes("Finished after")
-      ) {
-        // Flush remaining
-        if (partial.trim()) {
-          const line = stripTimestamp(partial);
-          const formatted = formatLogLine(line);
-          if (formatted) console.log(formatted);
-        }
-        clearInterval(poll);
-        clearInterval(containerCheck);
-
-        // The log file may have been renamed (worker-current.log -> worker-*.log),
-        // which means the run completed.
+    if (!isContainerRunning(containerName)) {
+      // Flush remaining
+      if (partial.trim()) {
+        const line = stripTimestamp(partial);
+        const formatted = formatLogLine(line);
+        if (formatted) console.log(formatted);
       }
-    } catch {
-      // File may have been renamed
       clearInterval(poll);
       clearInterval(containerCheck);
+      console.log(`\n${DIM}Container stopped.${RESET}\n`);
     }
   }, 3000);
 
@@ -299,7 +285,7 @@ function main(): void {
   // --- Tail if running ---
   if (running) {
     console.log(`\n${DIM}Tailing log (Ctrl+C to stop)...${RESET}\n`);
-    tailLog(logFile);
+    tailLog(logFile, info.containerName!);
   } else {
     console.log();
   }
