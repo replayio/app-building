@@ -3,6 +3,42 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
+        "ClassifyBug: Classify DealDetailClientField",
+        "UpdateDirectives: Update directives for DealDetailClientField",
+        "FinishBug: Mark DealDetailClientField as reviewed"
+      ],
+      "timestamp": "2026-02-20T19:19:01.705Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "ClassifyBug: Classify AuthEmailConfirmation",
+        "UpdateDirectives: Update directives for AuthEmailConfirmation",
+        "FinishBug: Mark AuthEmailConfirmation as reviewed"
+      ],
+      "timestamp": "2026-02-20T19:19:00.643Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "ClassifyBug: Classify EmailNotifications",
+        "UpdateDirectives: Update directives for EmailNotifications",
+        "FinishBug: Mark EmailNotifications as reviewed"
+      ],
+      "timestamp": "2026-02-20T19:18:59.503Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "ClassifyBug: Classify ContactsPage",
+        "UpdateDirectives: Update directives for ContactsPage",
+        "FinishBug: Mark ContactsPage as reviewed"
+      ],
+      "timestamp": "2026-02-20T19:18:58.733Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
         "Unpack: Review fixed bug reports"
       ],
       "timestamp": "2026-02-20T18:13:55.445Z"
