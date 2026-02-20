@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationActivityTestIds: Add missing data-testid to client links in UserActivitySection and update UDP-ACT-02 test to use testid instead of CSS selector",
-        "FixViolationIncompleteTests: Strengthen UDP-HDR-01 to verify email/join date/stats, UDP-DL-01 to verify value/stage, UDP-TSK-01 to verify client/due date, and UDP-ACT-01 to verify activity event content (dates/descriptions/links)",
-        "RunTests: Verify tests pass after fixes"
-      ],
-      "timestamp": "2026-02-20T22:53:16.223Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
       "timestamp": "2026-02-20T19:53:23.392Z"

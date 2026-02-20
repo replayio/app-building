@@ -97,6 +97,22 @@ test.describe('UserDetailPage - Header', () => {
     const nameText = await name.textContent();
     expect(nameText!.length).toBeGreaterThan(0);
 
+    // Email visible (contains @ symbol)
+    const email = page.getByTestId('user-detail-email');
+    await expect(email).toBeVisible();
+    const emailText = await email.textContent();
+    expect(emailText).toMatch(/@/);
+
+    // Join date visible
+    const joined = page.getByTestId('user-detail-joined');
+    await expect(joined).toBeVisible();
+    await expect(joined).toContainText('Joined');
+
+    // Summary stats visible
+    await expect(header).toContainText('Active Deals');
+    await expect(header).toContainText('Open Tasks');
+    await expect(header).toContainText('Total Deals');
+
     // Back button visible
     await expect(page.getByTestId('user-detail-back')).toBeVisible();
 
@@ -147,8 +163,14 @@ test.describe('UserDetailPage - Deals', () => {
     await expect(dealsSection).toBeVisible();
     await expect(dealsSection).toContainText('Acme Software License');
 
-    // Click a deal link and verify it navigates to /deals/:dealId
+    // Verify deal shows value (dollar amount) and stage
     const dealLink = dealsSection.locator('[data-testid^="user-deal-"]').first();
+    const dealText = await dealLink.textContent();
+    expect(dealText).toMatch(/\$/); // value displayed
+    // Stage should be one of the known stage labels
+    expect(dealText).toMatch(/Lead|Qualification|Discovery|Proposal|Negotiation|Closed Won|Closed Lost/);
+
+    // Click a deal link and verify it navigates to /deals/:dealId
     await dealLink.click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/\/deals\/[a-f0-9-]+/);
@@ -176,8 +198,16 @@ test.describe('UserDetailPage - Tasks', () => {
     await expect(tasksSection).toBeVisible();
     await expect(tasksSection).toContainText('Follow up on proposal');
 
+    // Verify task shows client name and due date
+    const taskLink = tasksSection.locator('[data-testid^="user-task-"]', { hasText: 'Follow up on proposal' });
+    await expect(taskLink).toBeVisible();
+    const taskText = await taskLink.textContent();
+    // Client name should be present (non-empty text under the title)
+    expect(taskText!.length).toBeGreaterThan('Follow up on proposal'.length);
+    // Due date should be displayed (formatted as "Mon DD, YYYY" or "—" for no date)
+    expect(taskText).toMatch(/[A-Z][a-z]{2} \d{1,2}, \d{4}|—/);
+
     // Click a task link and verify it navigates to /tasks/:taskId
-    const taskLink = tasksSection.locator('[data-testid^="user-task-"]').first();
     await taskLink.click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/\/tasks\/[a-f0-9-]+/);
@@ -198,6 +228,23 @@ test.describe('UserDetailPage - Activity', () => {
     const activitySection = page.getByTestId('user-activity-section');
     await expect(activitySection).toBeVisible();
     await expect(activitySection).toContainText('Recent Activity');
+
+    // Verify activity events are listed with content
+    const activityEvents = activitySection.locator('[data-testid^="user-activity-"]');
+    const eventCount = await activityEvents.count();
+    expect(eventCount).toBeGreaterThan(0);
+
+    // Verify first activity event has relative date and description
+    const firstEvent = activityEvents.first();
+    const eventText = await firstEvent.textContent();
+    // Should contain a relative date (Today, Yesterday, X days/weeks ago, or a formatted date)
+    expect(eventText).toMatch(/Today|Yesterday|\d+ (days?|weeks?) ago|[A-Z][a-z]{2} \d{1,2}, \d{4}/);
+    // Should contain a description (non-trivial text content)
+    expect(eventText!.length).toBeGreaterThan(5);
+
+    // Verify client name links are present in activity events
+    const clientLinks = activitySection.locator('[data-testid^="user-activity-client-"]');
+    await expect(clientLinks.first()).toBeVisible();
   });
 
   test('UDP-ACT-02: Activity section client links navigate to client detail page', async ({ page }) => {
@@ -212,8 +259,8 @@ test.describe('UserDetailPage - Activity', () => {
     const activitySection = page.getByTestId('user-activity-section');
     await expect(activitySection).toBeVisible();
 
-    // Verify at least one client link exists
-    const clientLinks = activitySection.locator('a[href^="/clients/"]');
+    // Verify at least one client link exists (using data-testid)
+    const clientLinks = activitySection.locator('[data-testid^="user-activity-client-"]');
     await expect(clientLinks.first()).toBeVisible();
 
     // Click the first client link and verify navigation

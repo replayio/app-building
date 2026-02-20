@@ -48,7 +48,7 @@ export function UserActivitySection({ activity }: UserActivitySectionProps) {
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] text-text-primary">{event.description}</div>
                   {event.client_name && (
-                    <Link to={`/clients/${event.client_id}`} className="text-[12px] text-accent hover:underline">
+                    <Link to={`/clients/${event.client_id}`} data-testid={`user-activity-client-${event.id}`} className="text-[12px] text-accent hover:underline">
                       {event.client_name}
                     </Link>
                   )}

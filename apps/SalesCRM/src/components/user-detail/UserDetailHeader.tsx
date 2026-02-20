@@ -44,11 +44,11 @@ export function UserDetailHeader({ user, activeDealsCount, openTasksCount, total
             {user.name}
           </h1>
           <div className="flex items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-1 text-[13px] text-text-muted mt-1">
-            <span className="flex items-center gap-1.5 min-w-0 truncate max-w-full">
+            <span data-testid="user-detail-email" className="flex items-center gap-1.5 min-w-0 truncate max-w-full">
               <Mail size={13} strokeWidth={1.75} className="flex-shrink-0" />
               <span className="truncate">{user.email}</span>
             </span>
-            <span className="flex items-center gap-1.5">
+            <span data-testid="user-detail-joined" className="flex items-center gap-1.5">
               <Calendar size={13} strokeWidth={1.75} className="flex-shrink-0" />
               Joined {formatDate(user.created_at)}
             </span>
