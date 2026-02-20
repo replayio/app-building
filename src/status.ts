@@ -167,23 +167,37 @@ function displayFormattedLines(rawLines: string[]): void {
 
 function tailLog(logPath: string, containerName: string): void {
   let offset = existsSync(logPath) ? statSync(logPath).size : 0;
+  let inode = existsSync(logPath) ? statSync(logPath).ino : 0;
   let partial = "";
 
   const poll = setInterval(() => {
-    let size: number;
+    let stat: ReturnType<typeof statSync>;
     try {
-      size = statSync(logPath).size;
+      stat = statSync(logPath);
     } catch {
       return;
     }
 
-    if (size <= offset) return;
+    // Detect file replacement (new iteration creates a new file at the same path)
+    if (stat.ino !== inode) {
+      // Flush any partial line from the old file
+      if (partial.trim()) {
+        const line = stripTimestamp(partial);
+        const formatted = formatLogLine(line);
+        if (formatted) console.log(formatted);
+      }
+      partial = "";
+      offset = 0;
+      inode = stat.ino;
+    }
+
+    if (stat.size <= offset) return;
 
     const fd = openSync(logPath, "r");
-    const buf = Buffer.alloc(size - offset);
+    const buf = Buffer.alloc(stat.size - offset);
     readSync(fd, buf, 0, buf.length, offset);
     closeSync(fd);
-    offset = size;
+    offset = stat.size;
 
     const chunk = partial + buf.toString();
     const lines = chunk.split("\n");
