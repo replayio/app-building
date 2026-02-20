@@ -7,6 +7,57 @@ async function selectFilterOption(page: Page, testId: string, value: string) {
   await page.getByTestId(optionId).click();
 }
 
+test.describe('TasksListPage - Navigation (TLP-NAV)', () => {
+  test('TLP-NAV-01: Sidebar displays all navigation items with Tasks highlighted', async ({ page }) => {
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    const sidebar = page.getByTestId('sidebar');
+    await expect(sidebar).toBeVisible();
+
+    // Verify all navigation items are present
+    await expect(sidebar.getByText('Clients')).toBeVisible();
+    await expect(sidebar.getByText('Deals')).toBeVisible();
+    await expect(sidebar.getByText('Tasks')).toBeVisible();
+    await expect(sidebar.getByText('Team')).toBeVisible();
+    await expect(sidebar.getByText('Settings')).toBeVisible();
+
+    // "Tasks" link should be visually highlighted as active
+    const tasksLink = page.getByTestId('sidebar-nav-tasks');
+    await expect(tasksLink).toHaveClass(/bg-sidebar-active/);
+  });
+
+  test('TLP-NAV-02: Sidebar navigation links route correctly from tasks page', async ({ page }) => {
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    // Click "Clients" in sidebar → navigates to /clients
+    await page.getByTestId('sidebar-nav-clients').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/clients/);
+
+    // Click "Deals" → navigates to /deals
+    await page.getByTestId('sidebar-nav-deals').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/deals/);
+
+    // Click "Team" → navigates to /users
+    await page.getByTestId('sidebar-nav-team').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/users/);
+
+    // Click "Settings" → navigates to /settings
+    await page.getByTestId('sidebar-nav-settings').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/settings/);
+
+    // Click "Tasks" → navigates back to /tasks
+    await page.getByTestId('sidebar-nav-tasks').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/tasks/);
+  });
+});
+
 test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
   test('TLP-HDR-01: Page header shows title and New Task button', async ({ page }) => {
     await page.goto('/tasks');
@@ -153,6 +204,30 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
 
     // Verify imported task appears in the list
     await expect(page.getByText('Import Test Task')).toBeVisible({ timeout: 5000 });
+  });
+  test('TLP-HDR-06: Cancel button on task creation modal closes without creating a task', async ({ page }) => {
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
+
+    // Open create task modal
+    await page.getByTestId('new-task-button').click();
+    const modal = page.getByTestId('create-task-modal');
+    await expect(modal).toBeVisible();
+
+    // Fill in a task title
+    const taskTitle = `Cancel Test Task ${Date.now()}`;
+    await page.getByTestId('create-task-title').fill(taskTitle);
+
+    // Click Cancel
+    await page.getByTestId('create-task-cancel').click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // The task should NOT appear in the list
+    await page.waitForLoadState('networkidle');
+    const pageContent = await page.textContent('body');
+    expect(pageContent).not.toContain(taskTitle);
   });
 });
 

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing TasksListPage Navigation test entries in docs/tests.md and tasks-list-page.spec.ts (testSpec directive 2)",
-        "FixViolation: Add missing Cancel test for task creation modal in docs/tests.md and tasks-list-page.spec.ts (testSpec directive 7)",
-        "RunTests: Verify tests pass after test spec and test additions"
-      ],
-      "timestamp": "2026-02-20T08:39:24.081Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix TLP-FLT-04 and TLP-FLT-05 tests that use native select API (selectOption/locator option) on custom FilterSelect components - must use trigger/menu/option testid pattern instead",
         "RunTests: Verify tests pass after fixing filter tests"
       ],

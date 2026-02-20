@@ -1030,6 +1030,18 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ### Test Entries
 
+#### Navigation
+
+**TLP-NAV-01: Sidebar displays all navigation items with Tasks highlighted**
+- Initial: User navigates to /tasks
+- Action: Observe the sidebar
+- Expected: Sidebar shows navigation links: Clients, Deals, Tasks, Team, Settings. The "Tasks" link is visually highlighted as active.
+
+**TLP-NAV-02: Sidebar navigation links route correctly from tasks page**
+- Initial: User is on /tasks
+- Action: Click "Clients" in sidebar
+- Expected: App navigates to /clients. Click "Deals" → navigates to /deals. Click "Team" → navigates to /users. Click "Settings" → navigates to /settings. Click "Tasks" → navigates to /tasks.
+
 #### PageHeader
 
 **TLP-HDR-01: Page header shows title and New Task button**
@@ -1046,6 +1058,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Task creation modal is open
 - Action: Fill title "Finalize Q3 Marketing Plan", due "Today, 5:00 PM", priority "High", assignee "Sarah J. (PM)", client "Acme Corp", click Save
 - Expected: Modal closes. New task card appears in the list at appropriate position. Task persisted. Shows correct priority badge, title, due date, and assignee.
+
+**TLP-HDR-06: Cancel button on task creation modal closes without creating a task**
+- Initial: User is on /tasks. Task creation modal is open with title filled in.
+- Action: Click "Cancel" button on the modal
+- Expected: Modal closes. No new task is created — the task list does not contain the entered task title.
 
 **TLP-HDR-04: Import button opens import dialog with CSV format info**
 - Initial: User is on /tasks
