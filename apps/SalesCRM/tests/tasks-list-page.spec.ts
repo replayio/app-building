@@ -37,7 +37,7 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
     await expect(modal.getByText('Due Date')).toBeVisible();
     await expect(modal.getByText('Priority')).toBeVisible();
     await expect(page.getByTestId('create-task-assignee-name')).toBeVisible();
-    await expect(modal.getByText('Client')).toBeVisible();
+    await expect(modal.getByTestId('create-task-client')).toBeVisible();
 
     // Save and Cancel buttons
     await expect(page.getByTestId('create-task-save')).toBeVisible();

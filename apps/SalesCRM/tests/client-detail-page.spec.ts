@@ -518,8 +518,8 @@ test.describe('ClientDetailPage - AddDealModal (CDP-ADL)', () => {
 
     await expect(modal.getByText('Deal Name *')).toBeVisible();
     await expect(modal.getByText('Value ($)')).toBeVisible();
-    await expect(modal.getByText('Stage')).toBeVisible();
-    await expect(modal.getByText('Owner')).toBeVisible();
+    await expect(modal.getByTestId('deal-stage-select')).toBeVisible();
+    await expect(modal.getByTestId('deal-owner-input')).toBeVisible();
     await expect(modal.getByText('Probability (%)')).toBeVisible();
     await expect(modal.getByText('Expected Close Date')).toBeVisible();
 
@@ -548,8 +548,8 @@ test.describe('ClientDetailPage - AddPersonModal (CDP-APER)', () => {
 
     await expect(modal.getByText('Name *')).toBeVisible();
     await expect(modal.getByText('Role/Title')).toBeVisible();
-    await expect(modal.getByText('Email')).toBeVisible();
-    await expect(modal.getByText('Phone')).toBeVisible();
+    await expect(modal.getByTestId('person-email-input')).toBeVisible();
+    await expect(modal.getByTestId('person-phone-input')).toBeVisible();
 
     await expect(modal.getByRole('button', { name: 'Save' })).toBeVisible();
     await expect(modal.getByRole('button', { name: 'Cancel' })).toBeVisible();

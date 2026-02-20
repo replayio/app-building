@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Replace ambiguous getByText with getByTestId in test files (14 violations across 6 files)",
-        "RunTests: Verify tests pass after getByText fixes",
-        "DocumentFix: Commit getByText fixes"
-      ],
-      "timestamp": "2026-02-19T23:50:31.900Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix nested-wait deadlocks in toPass blocks (clients-list-page, deals-list-page, deal-detail-page, tasks-list-page)",
         "RunTests: Verify tests pass after nested-wait fixes",
         "DocumentFix: Commit nested-wait deadlock fixes"

@@ -37,8 +37,8 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     await expect(modal.getByText('Deal Name *')).toBeVisible();
     await expect(modal.getByText('Client *')).toBeVisible();
     await expect(modal.getByText('Value ($)')).toBeVisible();
-    await expect(modal.getByText('Stage')).toBeVisible();
-    await expect(modal.getByText('Owner')).toBeVisible();
+    await expect(modal.getByTestId('create-deal-stage')).toBeVisible();
+    await expect(modal.getByTestId('create-deal-owner')).toBeVisible();
     await expect(modal.getByText('Expected Close Date')).toBeVisible();
 
     // Save and Cancel buttons

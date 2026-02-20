@@ -57,8 +57,8 @@ export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
       {/* Header */}
       <div data-testid="clients-table-header" className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[36px] px-4 text-[12px] font-medium text-text-muted border-b border-border">
         <span>Client Name</span>
-        <span>Type</span>
-        <span>Status</span>
+        <span data-testid="clients-header-type">Type</span>
+        <span data-testid="clients-header-status">Status</span>
         <span>Tags</span>
         <span>Primary Contact</span>
         <span>Open Deals</span>

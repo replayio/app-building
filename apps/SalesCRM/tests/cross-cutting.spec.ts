@@ -240,7 +240,7 @@ test.describe('Cross-Cutting Data Consistency', () => {
     await expect(page).toHaveURL(/\/individuals\/[a-f0-9-]+/);
 
     // Person name should be visible on the PersonDetailPage
-    await expect(page.getByText(personName).first()).toBeVisible();
+    await expect(page.getByTestId('person-header-name')).toContainText(personName);
 
     // Associated Clients section should show the original client
     const associatedClients = page.getByTestId('associated-clients-section');

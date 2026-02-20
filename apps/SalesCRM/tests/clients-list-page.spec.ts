@@ -102,8 +102,8 @@ test.describe('ClientsListPage - PageHeader', () => {
 
     // Modal should have required form fields
     await expect(modal.getByText('Client Name *')).toBeVisible();
-    await expect(modal.getByText('Type')).toBeVisible();
-    await expect(modal.getByText('Status')).toBeVisible();
+    await expect(modal.getByTestId('client-type-select')).toBeVisible();
+    await expect(modal.getByTestId('client-status-select')).toBeVisible();
     await expect(modal.getByText('Tags (comma-separated)')).toBeVisible();
     await expect(modal.getByText('Acquisition Source')).toBeVisible();
 
@@ -591,8 +591,8 @@ test.describe('ClientsListPage - ClientsTable', () => {
     const tableHeader = page.getByTestId('clients-table-header');
     if (await tableHeader.isVisible()) {
       await expect(tableHeader.getByText('Client Name')).toBeVisible();
-      await expect(tableHeader.getByText('Type')).toBeVisible();
-      await expect(tableHeader.getByText('Status')).toBeVisible();
+      await expect(tableHeader.getByTestId('clients-header-type')).toBeVisible();
+      await expect(tableHeader.getByTestId('clients-header-status')).toBeVisible();
       await expect(tableHeader.getByText('Tags')).toBeVisible();
       await expect(tableHeader.getByText('Primary Contact')).toBeVisible();
       await expect(tableHeader.getByText('Open Deals')).toBeVisible();

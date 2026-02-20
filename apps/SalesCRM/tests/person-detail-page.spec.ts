@@ -325,7 +325,7 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
     await expect(modal.getByText('Date/Time *')).toBeVisible();
     await expect(modal.getByText('Type *')).toBeVisible();
     await expect(modal.getByText('Summary/Notes *')).toBeVisible();
-    await expect(modal.getByText('Team Member')).toBeVisible();
+    await expect(modal.getByTestId('contact-history-team-member-input')).toBeVisible();
 
     // Save and Cancel buttons
     await expect(modal.getByRole('button', { name: 'Save' })).toBeVisible();
@@ -360,7 +360,7 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
       await expect(editModal.getByText('Date/Time *')).toBeVisible();
       await expect(editModal.getByText('Type *')).toBeVisible();
       await expect(editModal.getByText('Summary/Notes *')).toBeVisible();
-      await expect(editModal.getByText('Team Member')).toBeVisible();
+      await expect(editModal.getByTestId('edit-contact-history-team-member-input')).toBeVisible();
 
       // Save and Cancel buttons
       await expect(editModal.getByRole('button', { name: 'Save' })).toBeVisible();
