@@ -48,9 +48,10 @@ A shared ImportDialog component is used across all entity types.
 
 ## Settings Page
 
-A Settings page exists at /settings with sidebar navigation link. Two sections:
-1. **Import & Export** — buttons to import clients, deals, tasks, and contacts from CSV, and export clients, deals, and tasks to CSV.
-2. **Webhooks** — CRUD for webhook configurations that send notifications to external services (Zapier, n8n, Discord) on events like new client created, deal stage changed, task completed, etc. Webhook management includes add/edit modal with name, URL, and event checkboxes; enable/disable toggle; and delete with confirmation. Added webhooks database table and CRUD API endpoint.
+A Settings page exists at /settings with sidebar navigation link. Three sections:
+1. **Email Notifications** — notification preference toggles for email alerts on followed clients. Seven toggleable preferences: client updated, deal created, deal stage changed, task created, task completed, contact added, note added. All default to enabled. Only visible when authenticated. Preferences stored in notification_preferences database table, managed via /.netlify/functions/notification-preferences API.
+2. **Import & Export** — buttons to import clients, deals, tasks, and contacts from CSV, and export clients, deals, and tasks to CSV.
+3. **Webhooks** — CRUD for webhook configurations that send notifications to external services (Zapier, n8n, Discord) on events like new client created, deal stage changed, task completed, etc. Webhook management includes add/edit modal with name, URL, and event checkboxes; enable/disable toggle; and delete with confirmation. Added webhooks database table and CRUD API endpoint.
 
 ## Webhook Setup Guides
 
@@ -61,3 +62,9 @@ Webhook modal includes platform-specific setup guides for Zapier, n8n, and custo
 A Team page (UsersListPage) exists at /users and a User Detail page (UserDetailPage) at /users/:userId. Team page shows a grid of user cards with avatar, name, email, active deals count, and open tasks count. User Detail page shows user info (name, email, join date), summary stats (active deals, open tasks, total deals), and three sections: owned deals list, assigned tasks list, and recent activity feed. A /.netlify/functions/users API endpoint provides GET list with stats and GET detail with deals/tasks/activity. 9 team members are seeded.
 
 Deal owner and task assignee fields in CreateDealModal, AddDealModal, DealDetailHeader, CreateTaskModal, and EditTaskModal show a user selection dropdown (FilterSelect) populated from the users API instead of free-form text input.
+
+## Client Following and Email Notifications
+
+Authenticated users can follow/unfollow clients via a toggle button on the client detail page. Following a client subscribes the user to email notifications (via Resend API) when changes occur on that client. Notification types include: client updated, deal created, deal stage changed, task created, task completed, contact added, and note added. Users can configure which notification types they receive on the Settings page via individual toggles (all enabled by default). The actor who triggered the change does not receive a notification. Notifications are sent asynchronously (fire-and-forget) and do not block API responses.
+
+Two new database tables: `client_followers` (junction table for user-client follow relationships with unique constraint) and `notification_preferences` (per-user toggle preferences with defaults of all true). Two new API endpoints: `/.netlify/functions/client-follow` (GET to check follow status, POST to toggle follow; requires auth) and `/.netlify/functions/notification-preferences` (GET/PUT for preferences; requires auth). Existing API functions for clients, deals, tasks, and contacts trigger follower notifications when creating timeline events.

@@ -1,5 +1,6 @@
-import { getDb } from '../utils/db'
+import { getDb, getDbUrl } from '../utils/db'
 import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
+import { notifyClientFollowers } from '../utils/notifications'
 
 async function handler(req: OptionalAuthRequest) {
   const sql = getDb()
@@ -234,10 +235,12 @@ async function handler(req: OptionalAuthRequest) {
     `
 
     // Create timeline event
+    const dealCreateDesc = 'Deal Created: \'' + body.name + '\''
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}::uuid, 'deal_created', ${'Deal Created: \'' + body.name + '\''}, ${req.user?.name ?? 'System'}, ${deal.id}::uuid, 'deal')
+      VALUES (${body.client_id}::uuid, 'deal_created', ${dealCreateDesc}, ${req.user?.name ?? 'System'}, ${deal.id}::uuid, 'deal')
     `
+    notifyClientFollowers(getDbUrl(), body.client_id, 'deal_created', dealCreateDesc, req.user?.id).catch(() => {})
 
     // Add client_name
     const clientRows = await sql`SELECT name FROM clients WHERE id = ${body.client_id}::uuid`
@@ -268,17 +271,19 @@ async function handler(req: OptionalAuthRequest) {
           VALUES (${dealId}::uuid, ${existing[0].stage}, ${body.stage}, ${req.user?.name ?? 'System'})
         `
         // Create timeline event for stage change
+        const stageChangeDesc = 'Deal Stage Changed: from \'' + existing[0].stage + '\' to \'' + body.stage + '\''
         await sql`
           INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
           VALUES (
             ${existing[0].client_id}::uuid,
             'deal_stage_changed',
-            ${'Deal Stage Changed: from \'' + existing[0].stage + '\' to \'' + body.stage + '\''},
+            ${stageChangeDesc},
             ${req.user?.name ?? 'System'},
             ${dealId}::uuid,
             'deal'
           )
         `
+        notifyClientFollowers(getDbUrl(), existing[0].client_id, 'deal_stage_changed', stageChangeDesc, req.user?.id).catch(() => {})
       }
     }
 

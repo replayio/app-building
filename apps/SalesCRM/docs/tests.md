@@ -1266,9 +1266,9 @@ This document defines behavior-driven test entries for the Sales CRM application
 #### SettingsPageHeader
 
 **STP-HDR-01: Settings page displays header and sections**
-- Initial: User navigates to /settings
+- Initial: User is authenticated and navigates to /settings
 - Action: Observe the page
-- Expected: Page header (data-testid="settings-page-header") shows "Settings" title. Import & Export section (data-testid="import-export-section") and Webhooks section (data-testid="webhook-section") are both visible.
+- Expected: Page header (data-testid="settings-page-header") shows "Settings" title. Email Notifications section (data-testid="notification-preferences-section"), Import & Export section (data-testid="import-export-section"), and Webhooks section (data-testid="webhook-section") are all visible.
 
 #### ImportExportSection
 
@@ -1353,6 +1353,40 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: A webhook "Original Name" exists in the list with URL "https://example.com/original" and event "New Client Created"
 - Action: Click the edit button (data-testid="webhook-edit-{id}") on the webhook
 - Expected: The webhook modal (data-testid="webhook-modal") opens with title "Edit Webhook". The name input (data-testid="webhook-name-input") is pre-filled with "Original Name", the URL input (data-testid="webhook-url-input") is pre-filled with "https://example.com/original", and the "New Client Created" event checkbox is checked. Change the name to "Updated Name", click "Save Changes" (data-testid="webhook-save-button"). Modal closes. The webhook list shows "Updated Name" instead of "Original Name". The change is persisted (page reload confirms it).
+
+#### NotificationPreferencesSection
+
+**STP-NP-01: Notification preferences section displays all toggles when authenticated**
+- Initial: User is authenticated and navigates to /settings
+- Action: Observe the Email Notifications section
+- Expected: The notification preferences section (data-testid="notification-preferences-section") is visible with heading "Email Notifications" and description text about following clients. Seven notification toggles are displayed, each with a switch and label: "Client details updated" (data-testid="notification-toggle-notify_client_updated"), "New deal created" (data-testid="notification-toggle-notify_deal_created"), "Deal stage changed" (data-testid="notification-toggle-notify_deal_stage_changed"), "New task created" (data-testid="notification-toggle-notify_task_created"), "Task completed" (data-testid="notification-toggle-notify_task_completed"), "New contact added" (data-testid="notification-toggle-notify_contact_added"), "Note added" (data-testid="notification-toggle-notify_note_added"). All toggles default to enabled (on).
+
+**STP-NP-02: Toggling a notification preference persists the change**
+- Initial: User is authenticated and on /settings
+- Action: Click the "Client details updated" toggle to disable it
+- Expected: The toggle switches to off. After reloading the page, the "Client details updated" toggle remains off while all other toggles remain on.
+
+**STP-NP-03: Notification preferences section is hidden when not authenticated**
+- Initial: User is not authenticated and navigates to /settings
+- Action: Observe the page
+- Expected: The notification preferences section (data-testid="notification-preferences-section") is NOT visible. The Import & Export and Webhooks sections are still visible.
+
+#### ClientFollowButton
+
+**CDP-FOL-01: Follow button appears on client detail page when authenticated**
+- Initial: User is authenticated and navigates to a client's detail page
+- Action: Observe the page header area
+- Expected: A follow button (data-testid="client-follow-button") is visible with text "Follow".
+
+**CDP-FOL-02: Clicking follow button toggles follow state**
+- Initial: User is authenticated and on a client detail page with the follow button showing "Follow"
+- Action: Click the follow button
+- Expected: The button text changes to "Following" with a different visual style (accent color). Click again — the button changes back to "Follow".
+
+**CDP-FOL-03: Follow button is not visible when not authenticated**
+- Initial: User is not authenticated and navigates to a client's detail page
+- Action: Observe the page header area
+- Expected: The follow button (data-testid="client-follow-button") is NOT visible.
 
 ---
 

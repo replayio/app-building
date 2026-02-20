@@ -24,10 +24,14 @@ function getTestDbUrl(): string {
   throw new Error('IS_TEST is set but tests/test-branch-data.json not found in any expected location')
 }
 
-export function getDb() {
+export function getDbUrl(): string {
   const url = process.env.IS_TEST === 'true'
     ? getTestDbUrl()
     : process.env.DATABASE_URL
   if (!url) throw new Error('DATABASE_URL not set')
-  return neon(url)
+  return url
+}
+
+export function getDb() {
+  return neon(getDbUrl())
 }

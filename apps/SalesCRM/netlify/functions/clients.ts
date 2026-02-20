@@ -1,5 +1,6 @@
-import { getDb } from '../utils/db'
+import { getDb, getDbUrl } from '../utils/db'
 import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
+import { notifyClientFollowers } from '../utils/notifications'
 
 async function handler(req: OptionalAuthRequest) {
   const sql = getDb()
@@ -247,6 +248,20 @@ async function handler(req: OptionalAuthRequest) {
         INSERT INTO timeline_events (client_id, event_type, description, user_name)
         VALUES (${resourceId}::uuid, 'type_changed', ${'Type Changed: from \'' + (old.type as string) + '\' to \'' + (body.type as string) + '\''}, ${userName})
       `
+    }
+
+    // Notify followers about client updates (fire-and-forget)
+    const changes: string[] = []
+    if (body.name && body.name !== old.name) changes.push(`Name changed to '${body.name}'`)
+    if (body.status && body.status !== old.status) changes.push(`Status changed to '${body.status}'`)
+    if (body.tags) {
+      const oldT = (old.tags as string[]).sort().join(',')
+      const newT = (body.tags as string[]).sort().join(',')
+      if (oldT !== newT) changes.push('Tags updated')
+    }
+    if (body.type && body.type !== old.type) changes.push(`Type changed to '${body.type}'`)
+    if (changes.length > 0) {
+      notifyClientFollowers(getDbUrl(), resourceId, 'client_updated', changes.join('. '), req.user?.id).catch(() => {})
     }
 
     return Response.json(rows[0])

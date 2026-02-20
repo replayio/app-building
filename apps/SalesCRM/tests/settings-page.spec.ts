@@ -10,6 +10,9 @@ test.describe('SettingsPage - Header', () => {
     await expect(header).toBeVisible();
     await expect(header).toContainText('Settings');
 
+    // Email Notifications section (visible when authenticated)
+    await expect(page.getByTestId('notification-preferences-section')).toBeVisible();
+
     // Import & Export section
     await expect(page.getByTestId('import-export-section')).toBeVisible();
 
@@ -469,5 +472,76 @@ test.describe('SettingsPage - WebhookSection', () => {
     await page.reload();
     await page.waitForLoadState('networkidle');
     await expect(page.getByTestId('webhook-section')).toContainText('Updated Name');
+  });
+});
+
+test.describe('SettingsPage - NotificationPreferencesSection', () => {
+  test('STP-NP-01: Notification preferences section displays all toggles when authenticated', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    const section = page.getByTestId('notification-preferences-section');
+    await expect(section).toBeVisible();
+    await expect(section).toContainText('Email Notifications');
+
+    // All 7 notification toggles should be visible
+    await expect(page.getByTestId('notification-toggle-notify_client_updated')).toBeVisible();
+    await expect(page.getByTestId('notification-toggle-notify_deal_created')).toBeVisible();
+    await expect(page.getByTestId('notification-toggle-notify_deal_stage_changed')).toBeVisible();
+    await expect(page.getByTestId('notification-toggle-notify_task_created')).toBeVisible();
+    await expect(page.getByTestId('notification-toggle-notify_task_completed')).toBeVisible();
+    await expect(page.getByTestId('notification-toggle-notify_contact_added')).toBeVisible();
+    await expect(page.getByTestId('notification-toggle-notify_note_added')).toBeVisible();
+
+    // All toggles should default to enabled (aria-checked="true")
+    for (const key of [
+      'notify_client_updated',
+      'notify_deal_created',
+      'notify_deal_stage_changed',
+      'notify_task_created',
+      'notify_task_completed',
+      'notify_contact_added',
+      'notify_note_added',
+    ]) {
+      const toggle = page.getByTestId(`notification-toggle-${key}`);
+      await expect(toggle).toHaveAttribute('aria-checked', 'true');
+    }
+  });
+
+  test('STP-NP-02: Toggling a notification preference persists the change', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    const toggle = page.getByTestId('notification-toggle-notify_client_updated');
+    await expect(toggle).toHaveAttribute('aria-checked', 'true');
+
+    // Click to disable
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-checked', 'false');
+
+    // Reload and verify persistence
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('notification-toggle-notify_client_updated')).toHaveAttribute('aria-checked', 'false');
+
+    // Other toggles should still be enabled
+    await expect(page.getByTestId('notification-toggle-notify_deal_created')).toHaveAttribute('aria-checked', 'true');
+  });
+
+  test('STP-NP-03: Notification preferences section is hidden when not authenticated', async ({ browser }) => {
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    // Notification section should NOT be visible
+    await expect(page.getByTestId('notification-preferences-section')).not.toBeVisible();
+
+    // Other sections should still be visible
+    await expect(page.getByTestId('import-export-section')).toBeVisible();
+    await expect(page.getByTestId('webhook-section')).toBeVisible();
+
+    await context.close();
   });
 });

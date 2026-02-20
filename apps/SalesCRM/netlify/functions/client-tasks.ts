@@ -1,5 +1,6 @@
-import { getDb } from '../utils/db'
+import { getDb, getDbUrl } from '../utils/db'
 import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
+import { notifyClientFollowers } from '../utils/notifications'
 
 async function handler(req: OptionalAuthRequest) {
   const sql = getDb()
@@ -56,10 +57,14 @@ async function handler(req: OptionalAuthRequest) {
     `
 
     // Create timeline event
+    const desc = 'Task Created: \'' + body.title + '\''
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}, 'task_created', ${'Task Created: \'' + body.title + '\''}, ${req.user?.name ?? 'System'}, ${rows[0].id}, 'task')
+      VALUES (${body.client_id}, 'task_created', ${desc}, ${req.user?.name ?? 'System'}, ${rows[0].id}, 'task')
     `
+
+    // Notify followers (fire-and-forget)
+    notifyClientFollowers(getDbUrl(), body.client_id, 'task_created', desc, req.user?.id).catch(() => {})
 
     // Fetch deal_name if deal_id provided
     const task = rows[0]
@@ -104,10 +109,12 @@ async function handler(req: OptionalAuthRequest) {
     // Create timeline event for completion
     if (body.completed) {
       const task = rows[0]
+      const completedDesc = 'Task Completed: \'' + task.title + '\''
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-        VALUES (${task.client_id}, 'task_completed', ${'Task Completed: \'' + task.title + '\''}, ${req.user?.name ?? 'System'}, ${taskId}, 'task')
+        VALUES (${task.client_id}, 'task_completed', ${completedDesc}, ${req.user?.name ?? 'System'}, ${taskId}, 'task')
       `
+      notifyClientFollowers(getDbUrl(), task.client_id, 'task_completed', completedDesc, req.user?.id).catch(() => {})
     }
 
     return Response.json(rows[0])

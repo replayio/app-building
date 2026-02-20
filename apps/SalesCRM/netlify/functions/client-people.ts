@@ -1,5 +1,6 @@
-import { getDb } from '../utils/db'
+import { getDb, getDbUrl } from '../utils/db'
 import { optionalAuth, type OptionalAuthRequest } from '../utils/auth'
+import { notifyClientFollowers } from '../utils/notifications'
 
 async function handler(req: OptionalAuthRequest) {
   const sql = getDb()
@@ -67,10 +68,12 @@ async function handler(req: OptionalAuthRequest) {
 
     // Create timeline event
     const personName = individual.name
+    const contactDesc = 'Contact Added: \'' + personName + '\''
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}, 'contact_added', ${'Contact Added: \'' + personName + '\''}, ${req.user?.name ?? 'System'}, ${individual.id}, 'individual')
+      VALUES (${body.client_id}, 'contact_added', ${contactDesc}, ${req.user?.name ?? 'System'}, ${individual.id}, 'individual')
     `
+    notifyClientFollowers(getDbUrl(), body.client_id, 'contact_added', contactDesc, req.user?.id).catch(() => {})
 
     return Response.json({
       id: individual.id,

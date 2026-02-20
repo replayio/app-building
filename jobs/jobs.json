@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/fixBugReport.md",
       "jobs": [
-        "FixBug: Add email notification preferences for client following with Resend API",
-        "UpdateTests: Update tests for email notifications and client following",
-        "UpdateRevisions: Record spec changes for email notifications",
-        "ResolveBug: Mark email notifications bug as resolved"
-      ],
-      "timestamp": "2026-02-20T18:14:28.355Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/fixBugReport.md",
-      "jobs": [
         "FixBug: Add Contacts page for searching all people/individuals",
         "UpdateTests: Update tests for Contacts page",
         "UpdateRevisions: Record spec changes for Contacts page",

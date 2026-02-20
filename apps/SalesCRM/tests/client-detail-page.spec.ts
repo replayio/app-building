@@ -932,3 +932,53 @@ test.describe('ClientDetailPage - AddAttachmentModal (CDP-AATT)', () => {
     await expect(modal.getByTestId('attachment-url-input')).toBeVisible();
   });
 });
+
+test.describe('ClientDetailPage - FollowButton (CDP-FOL)', () => {
+  test('CDP-FOL-01: Follow button appears on client detail page when authenticated', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    const followButton = page.getByTestId('client-follow-button');
+    await expect(followButton).toBeVisible();
+    await expect(followButton).toContainText('Follow');
+  });
+
+  test('CDP-FOL-02: Clicking follow button toggles follow state', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    const followButton = page.getByTestId('client-follow-button');
+    await expect(followButton).toBeVisible();
+
+    // Initially "Follow"
+    await expect(followButton).toContainText('Follow');
+
+    // Click to follow
+    await followButton.click();
+    await expect(followButton).toContainText('Following');
+
+    // Click to unfollow
+    await followButton.click();
+    await expect(followButton).toContainText('Follow');
+    await expect(followButton).not.toContainText('Following');
+  });
+
+  test('CDP-FOL-03: Follow button is not visible when not authenticated', async ({ browser }) => {
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    const rows = page.locator('[data-testid^="client-row-"]');
+    await rows.first().waitFor({ state: 'visible', timeout: 15000 });
+    const testId = await rows.first().getAttribute('data-testid');
+    const clientId = testId!.replace('client-row-', '');
+
+    await page.goto(`/clients/${clientId}`);
+    await page.waitForLoadState('networkidle');
+
+    // Follow button should NOT be visible
+    await expect(page.getByTestId('client-follow-button')).not.toBeVisible();
+
+    await context.close();
+  });
+});

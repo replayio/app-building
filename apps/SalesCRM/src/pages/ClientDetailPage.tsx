@@ -14,6 +14,7 @@ import { AddTaskModal } from '../components/client-detail/AddTaskModal'
 import { AddDealModal } from '../components/client-detail/AddDealModal'
 import { AddAttachmentModal } from '../components/client-detail/AddAttachmentModal'
 import { AddPersonModal, type AddPersonData } from '../components/client-detail/AddPersonModal'
+import { FollowButton } from '../components/client-detail/FollowButton'
 import { ConfirmDialog } from '../components/shared/ConfirmDialog'
 import type { Task, Deal, Attachment, TimelineEvent } from '../types'
 
@@ -231,15 +232,18 @@ export function ClientDetailPage() {
   return (
     <div className="p-3 sm:p-6" data-testid="client-detail-page">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="client-detail-breadcrumb">
-        <span
-          className="hover:text-accent cursor-pointer"
-          onClick={() => navigate('/clients')}
-        >
-          ClientDetailPage
-        </span>
-        <span>/</span>
-        <span>/clients/{clientId}</span>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-1 text-[12px] text-text-muted" data-testid="client-detail-breadcrumb">
+          <span
+            className="hover:text-accent cursor-pointer"
+            onClick={() => navigate('/clients')}
+          >
+            ClientDetailPage
+          </span>
+          <span>/</span>
+          <span>/clients/{clientId}</span>
+        </div>
+        {clientId && <FollowButton clientId={clientId} />}
       </div>
 
       {/* Header */}

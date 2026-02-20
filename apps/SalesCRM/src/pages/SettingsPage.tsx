@@ -3,6 +3,7 @@ import { SettingsPageHeader } from '../components/settings/SettingsPageHeader'
 import { ImportExportSection } from '../components/settings/ImportExportSection'
 import { WebhookSection } from '../components/settings/WebhookSection'
 import { WebhookModal } from '../components/settings/WebhookModal'
+import { NotificationPreferencesSection } from '../components/settings/NotificationPreferencesSection'
 import { ImportDialog } from '../components/shared/ImportDialog'
 import { ConfirmDialog } from '../components/shared/ConfirmDialog'
 
@@ -139,6 +140,8 @@ export function SettingsPage() {
       <SettingsPageHeader />
 
       <div className="flex flex-col gap-6">
+        <NotificationPreferencesSection />
+
         <ImportExportSection
           onImportClients={() => setImportType('clients')}
           onImportDeals={() => setImportType('deals')}

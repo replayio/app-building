@@ -234,4 +234,30 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       updated_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS client_followers (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      client_id UUID NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(user_id, client_id)
+    )
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS notification_preferences (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+      notify_client_updated BOOLEAN DEFAULT true,
+      notify_deal_created BOOLEAN DEFAULT true,
+      notify_deal_stage_changed BOOLEAN DEFAULT true,
+      notify_task_created BOOLEAN DEFAULT true,
+      notify_task_completed BOOLEAN DEFAULT true,
+      notify_contact_added BOOLEAN DEFAULT true,
+      notify_note_added BOOLEAN DEFAULT true,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
 }
