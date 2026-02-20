@@ -38,6 +38,10 @@ A "Forgot password?" link in the sign-in form navigates to /auth/forgot-password
 
 Three auth pages exist: ForgotPasswordPage (/auth/forgot-password), ResetPasswordPage (/auth/reset-password), and ConfirmEmailPage (/auth/confirm-email). The email_tokens database table stores confirmation and reset tokens with expiry and used-at tracking.
 
+## Close Date Sort Arrow Indicator
+
+The Close Date column header in the deals table now shows directional arrow icons that reflect the current sort direction: ArrowDown when sorted descending (newest first), ArrowUp when sorted ascending (oldest first), and ArrowUpDown when not sorted by close date. A `data-sort-direction` attribute on the sort button exposes the current direction for testing. Previously the icon was always a static ArrowUpDown regardless of sort state.
+
 ## CSV Import and Export
 
 CSV import is available for clients, deals, contacts/individuals, and tasks. Each entity type has a CSV column format specification table listing all supported columns with required/optional indicators and value descriptions, plus a "Download CSV template" button. The import parses CSV with proper quote handling, maps headers to database fields, and reports per-row validation errors. Backend bulk import endpoints validate types, statuses, and required fields.

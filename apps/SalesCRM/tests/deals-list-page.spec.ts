@@ -498,14 +498,47 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     await expect(dateFrom).toBeVisible();
     await expect(dateTo).toBeVisible();
 
-    // Set a date range
-    await dateFrom.fill('2023-10-01');
-    await dateTo.fill('2023-12-31');
-    await page.waitForLoadState('networkidle');
+    // Record deal count before filtering
+    const rowsBefore = page.locator('[data-testid^="deal-row-"]');
+    const countBefore = await rowsBefore.count();
 
-    // The filter should be applied (we just verify the inputs accepted values)
+    // Set the start date and wait for API response
+    await dateFrom.fill('2023-10-01');
+    await page.waitForResponse(resp => resp.url().includes('/.netlify/functions/deals') && resp.status() === 200);
+
+    // Set the end date and wait for API response
+    const [filterResponse] = await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('/.netlify/functions/deals') && resp.status() === 200),
+      dateTo.fill('2023-12-31'),
+    ]);
+    await filterResponse.finished();
+
+    // Verify the inputs accepted values
     await expect(dateFrom).toHaveValue('2023-10-01');
     await expect(dateTo).toHaveValue('2023-12-31');
+
+    // Verify that only deals within the date range are displayed (atomic collection)
+    const closeDateCells = page.locator('[data-testid^="deal-close-date-"]');
+    const dateTexts = await closeDateCells.allTextContents();
+    const rangeStart = new Date('2023-10-01').getTime();
+    const rangeEnd = new Date('2023-12-31').getTime();
+
+    if (dateTexts.length > 0) {
+      // Filtering should have reduced the count (seed data has deals outside this range)
+      expect(dateTexts.length).toBeLessThan(countBefore);
+
+      // Every displayed deal must have a close date within the range
+      for (const text of dateTexts) {
+        if (text && text !== '—') {
+          const cellDate = new Date(text).getTime();
+          expect(cellDate).toBeGreaterThanOrEqual(rangeStart);
+          expect(cellDate).toBeLessThanOrEqual(rangeEnd);
+        }
+      }
+    } else {
+      // If no deals match, "No deals found" should be shown
+      await expect(page.getByTestId('deals-table')).toContainText('No deals found');
+    }
   });
 
   test('DLP-FLT-07: Sort by Close Date orders deals correctly', async ({ page }) => {
@@ -665,16 +698,43 @@ test.describe('DealsListPage - DealsTable (DLP-TBL)', () => {
     await expect(sortBtn).toBeVisible();
     await expect(sortBtn).toContainText('Close Date');
 
-    // Click to toggle sort direction
-    await sortBtn.click();
-    await page.waitForLoadState('networkidle');
+    // Default sort is close_date_desc — arrow should indicate descending
+    await expect(sortBtn).toHaveAttribute('data-sort-direction', 'desc');
 
-    // Click again to toggle back
-    await sortBtn.click();
-    await page.waitForLoadState('networkidle');
+    // Click to toggle to ascending and wait for API response
+    const [ascResponse] = await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('/.netlify/functions/deals') && resp.status() === 200),
+      sortBtn.click(),
+    ]);
+    await ascResponse.finished();
 
-    // The table should still be visible and functional
-    await expect(page.getByTestId('deals-table')).toBeVisible();
+    // Arrow should now indicate ascending
+    await expect(sortBtn).toHaveAttribute('data-sort-direction', 'asc');
+
+    // Verify deals are in ascending order by close date (atomic collection)
+    const closeDateCells = page.locator('[data-testid^="deal-close-date-"]');
+    const ascTexts = await closeDateCells.allTextContents();
+    const ascDates = ascTexts.filter(t => t !== '—').map(t => new Date(t).getTime());
+    for (let i = 1; i < ascDates.length; i++) {
+      expect(ascDates[i]).toBeGreaterThanOrEqual(ascDates[i - 1]);
+    }
+
+    // Click again to toggle back to descending and wait for API response
+    const [descResponse] = await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('/.netlify/functions/deals') && resp.status() === 200),
+      sortBtn.click(),
+    ]);
+    await descResponse.finished();
+
+    // Arrow should now indicate descending
+    await expect(sortBtn).toHaveAttribute('data-sort-direction', 'desc');
+
+    // Verify deals are in descending order by close date (atomic collection)
+    const descTexts = await closeDateCells.allTextContents();
+    const descDates = descTexts.filter(t => t !== '—').map(t => new Date(t).getTime());
+    for (let i = 1; i < descDates.length; i++) {
+      expect(descDates[i]).toBeLessThanOrEqual(descDates[i - 1]);
+    }
   });
 });
 

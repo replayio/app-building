@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix DLP-TBL-05 sort test and DLP-FLT-06 date filter test — DLP-TBL-05 must verify deals actually reorder and arrow direction toggles; DLP-FLT-06 must verify that only deals within the date range are displayed after setting the filter",
-        "RunTests: Verify tests pass after DLP-TBL-05 and DLP-FLT-06 fixes",
-        "DocumentFix: Document the DLP-TBL-05 and DLP-FLT-06 test fixes"
-      ],
-      "timestamp": "2026-02-20T21:34:44.596Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix DLP-VW-04 missing history verification — update testSpec entry to include history entry verification for drag-and-drop stage changes, and update the Playwright test to navigate to deal detail page and verify a history entry was created",
         "RunTests: Verify tests pass after DLP-VW-04 history fix",
         "DocumentFix: Document the DLP-VW-04 history verification fix"

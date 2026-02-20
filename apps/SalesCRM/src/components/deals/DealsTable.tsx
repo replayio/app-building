@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react'
 import type { Deal } from '../../types'
 import { DealStageBadge } from './DealStageBadge'
 import { DealStatusBadge } from './DealStatusBadge'
@@ -46,11 +46,18 @@ export function DealsTable({ deals, sort, onSortChange, onDeleteDeal }: DealsTab
             <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted max-lg:hidden">
               <button
                 data-testid="deals-close-date-sort"
+                data-sort-direction={sort === 'close_date_asc' ? 'asc' : sort === 'close_date_desc' ? 'desc' : undefined}
                 onClick={handleCloseDateSort}
                 className="inline-flex items-center gap-1 hover:text-text-primary transition-colors duration-100"
               >
                 Close Date
-                <ArrowUpDown size={12} strokeWidth={2} />
+                {sort === 'close_date_asc' ? (
+                  <ArrowUp size={12} strokeWidth={2} />
+                ) : sort === 'close_date_desc' ? (
+                  <ArrowDown size={12} strokeWidth={2} />
+                ) : (
+                  <ArrowUpDown size={12} strokeWidth={2} />
+                )}
               </button>
             </th>
             <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted max-md:hidden">Status</th>
