@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix nested .toPass() auto-wait in CTLP-HDR-03 contacts test — replace expect(async () => expect(locator).toBeVisible()).toPass() with toBeVisible({ timeout }) directly",
-        "RunTests: Verify tests pass after .toPass() fix in contacts test"
-      ],
-      "timestamp": "2026-02-20T21:20:26.790Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing ContactsListPage test spec entries to docs/tests.md: Import dialog (open + CSV format + import), Export button action, AddContactModal Cancel, Pagination navigation (Previous/Next/page links)",
         "WriteTests: Write Playwright tests for newly added ContactsListPage test spec entries",
         "RunTests: Verify tests pass after adding missing ContactsListPage test entries"

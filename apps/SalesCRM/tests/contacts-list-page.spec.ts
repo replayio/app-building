@@ -56,9 +56,7 @@ test.describe('ContactsListPage - PageHeader', () => {
     await expect(page.getByTestId('add-contact-modal')).not.toBeVisible();
 
     // New contact should appear in table
-    await expect(async () => {
-      await expect(page.getByTestId('contacts-table').getByText('Test Person')).toBeVisible();
-    }).toPass({ timeout: 5000 });
+    await expect(page.getByTestId('contacts-table').getByText('Test Person')).toBeVisible({ timeout: 5000 });
 
     // Verify persistence by reloading
     await page.reload();
