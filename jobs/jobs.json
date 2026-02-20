@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing side effect assertions in DealDetailPage tests — DDP-HDR-04 must check client timeline entry, DDP-ATT-03 must check client attachments",
-        "RunTests: Verify tests pass after adding side effect assertions"
-      ],
-      "timestamp": "2026-02-20T22:08:23.512Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Flesh out incomplete observation tests — DDP-WRT-01 must verify writeup card details (title/date/author/content/edit+version buttons), DDP-LTK-01 must verify task checkboxes/names/due dates, DDP-ATT-01 must verify file preview/name/type/size/download/delete, DDP-CON-01 must verify role and company text",
         "RunTests: Verify tests pass after fleshing out observation tests"
       ],

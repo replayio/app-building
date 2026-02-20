@@ -239,7 +239,12 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
   });
 
   test('DDP-HDR-04: Changing stage via dropdown and Change Stage button', async ({ page }) => {
-    await navigateToFirstDealDetail(page);
+    const dealId = await navigateToFirstDealDetail(page);
+
+    // Get client_id from the deal via API to check timeline side effect
+    const dealRes = await page.request.get(`/.netlify/functions/deals/${dealId}`);
+    const dealData = await dealRes.json();
+    const clientId = dealData.client_id;
 
     // Wait for deal header to be fully loaded
     const stageSelect = page.getByTestId('deal-header-stage-select');
@@ -253,6 +258,13 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     // Count history entries before stage change
     const historyEntriesBefore = page.locator('[data-testid^="deal-history-entry-"]');
     const countBefore = await historyEntriesBefore.count();
+
+    // Count client timeline entries for stage changes before
+    const timelineResBefore = await page.request.get(`/.netlify/functions/client-timeline?clientId=${clientId}`);
+    const timelineDataBefore = await timelineResBefore.json() as { events: { description: string; event_type: string }[] };
+    const stageChangeCountBefore = timelineDataBefore.events.filter(
+      (e) => e.event_type === 'deal_stage_changed'
+    ).length;
 
     // Change Stage button should be disabled when same stage selected
     await expect(changeStageBtn).toBeDisabled();
@@ -288,6 +300,15 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     // Verify exactly one new entry was added (no duplicates)
     const historyEntriesAfter = page.locator('[data-testid^="deal-history-entry-"]');
     await expect(historyEntriesAfter).toHaveCount(countBefore + 1, { timeout: 5000 });
+
+    // Verify client timeline entry was created for stage change (side effect)
+    const timelineResAfter = await page.request.get(`/.netlify/functions/client-timeline?clientId=${clientId}`);
+    const timelineDataAfter = await timelineResAfter.json() as { events: { description: string; event_type: string }[] };
+    const stageChangeCountAfter = timelineDataAfter.events.filter(
+      (e) => e.event_type === 'deal_stage_changed'
+    ).length;
+    // Exactly one new deal_stage_changed timeline entry was added (no duplicates)
+    expect(stageChangeCountAfter).toBe(stageChangeCountBefore + 1);
 
     // Restore original stage
     await selectFilterOption(page, 'deal-header-stage-select', currentStage);
@@ -836,7 +857,12 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
   });
 
   test('DDP-ATT-03: Uploading a link attachment adds it to attachments list', async ({ page }) => {
-    await navigateToFirstDealDetail(page);
+    const dealId = await navigateToFirstDealDetail(page);
+
+    // Get client_id from the deal via API to check client attachments side effect
+    const dealRes = await page.request.get(`/.netlify/functions/deals/${dealId}`);
+    const dealData = await dealRes.json();
+    const clientId = dealData.client_id;
 
     // Open upload modal
     await page.getByTestId('deal-attachments-upload-button').click();
@@ -853,9 +879,18 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
     await expect(modal).not.toBeVisible();
     await page.waitForLoadState('networkidle');
 
-    // Attachment should appear in the list
+    // Attachment should appear in the deal's attachments list
     const attachmentsSection = page.getByTestId('deal-attachments-section');
     await expect(attachmentsSection).toContainText(linkName);
+
+    // Verify attachment also appears in client's attachments (side effect)
+    const clientAttRes = await page.request.get(`/.netlify/functions/client-attachments?clientId=${clientId}`);
+    const clientAttData = await clientAttRes.json() as { attachments: { filename: string; deal_id: string }[] };
+    const matchingAttachments = clientAttData.attachments.filter(
+      (a) => a.filename === linkName && a.deal_id === dealId
+    );
+    // Exactly one attachment linked to this deal with the given name (no duplicates)
+    expect(matchingAttachments.length).toBe(1);
   });
 
   test('DDP-ATT-04: Download link downloads the file', async ({ page }) => {
