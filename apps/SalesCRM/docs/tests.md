@@ -60,12 +60,22 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe the page
 - Expected: The page shows an error (data-testid="reset-password-error") with "No reset token provided" message and a "Go to app" button.
 
+**AUTH-RP-03: Reset password form submission and verification**
+- Initial: User navigates to /auth/reset-password?token=sometoken
+- Action: Enter a new password and confirmation, then click "Reset Password"
+- Expected: The form validates that password is at least 6 characters and that both password fields match. If validation fails, an error message appears (data-testid="reset-password-error"). If passwords do not match, the error text contains "Passwords do not match". If password is too short, the error text contains "Password must be at least 6 characters".
+
 #### ConfirmEmailPage
 
 **AUTH-CE-01: Confirm email page shows error without token**
 - Initial: User navigates to /auth/confirm-email (no token)
 - Action: Observe the page
 - Expected: The page (data-testid="confirm-email-page") shows an error (data-testid="confirm-email-error") with "No confirmation token provided" message.
+
+**AUTH-CE-02: Successful email confirmation flow**
+- Initial: User navigates to /auth/confirm-email?token=sometoken
+- Action: Wait for the confirmation process to complete
+- Expected: The page (data-testid="confirm-email-page") initially shows a loading state (data-testid="confirm-email-loading") with "Confirming your email..." text. After processing, either a success state (data-testid="confirm-email-success") with "Email Confirmed" heading appears, or an error state (data-testid="confirm-email-error") with "Confirmation Failed" heading appears if the token is invalid.
 
 ---
 

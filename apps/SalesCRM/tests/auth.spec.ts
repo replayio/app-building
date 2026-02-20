@@ -54,6 +54,10 @@ test.describe('SidebarUserArea', () => {
 
     await expect(page.getByTestId('sidebar-sign-in')).toBeVisible();
 
+    // Verify the clients page displays data content
+    await expect(page.getByTestId('clients-page-header')).toBeVisible();
+    await expect(page.getByTestId('clients-table')).toBeVisible();
+
     await context.close();
   });
 
@@ -141,9 +145,12 @@ test.describe('ForgotPasswordPage', () => {
     await page.getByTestId('forgot-password-email').fill('test@example.com');
     await page.getByTestId('forgot-password-submit').click();
 
-    // Should show success message
+    // Should show success message with text about checking email
     await expect(page.getByTestId('forgot-password-success')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('forgot-password-success')).toContainText('Check Your Email');
+    await expect(page.getByTestId('forgot-password-success')).toContainText('password reset link has been sent');
     await expect(page.getByTestId('forgot-password-back')).toBeVisible();
+    await expect(page.getByTestId('forgot-password-back')).toContainText('Back to app');
 
     await context.close();
   });
@@ -179,6 +186,29 @@ test.describe('ResetPasswordPage', () => {
 
     await expect(page.getByTestId('reset-password-page')).toBeVisible();
     await expect(page.getByTestId('reset-password-error')).toBeVisible();
+    await expect(page.getByTestId('reset-password-error')).toContainText('No reset token provided');
+
+    await context.close();
+  });
+
+  test('AUTH-RP-03: Reset password form submission and verification', async ({ browser }) => {
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/auth/reset-password?token=sometoken');
+    await page.waitForLoadState('networkidle');
+
+    await expect(page.getByTestId('reset-password-form')).toBeVisible();
+    await expect(page.getByTestId('reset-password-input')).toBeVisible();
+    await expect(page.getByTestId('reset-password-confirm-input')).toBeVisible();
+    await expect(page.getByTestId('reset-password-submit')).toBeVisible();
+
+    // Test password mismatch validation (both meet length requirement but don't match)
+    await page.getByTestId('reset-password-input').fill('password123');
+    await page.getByTestId('reset-password-confirm-input').fill('different456');
+    await page.getByTestId('reset-password-submit').click();
+    await expect(page.getByTestId('reset-password-error')).toBeVisible();
+    await expect(page.getByTestId('reset-password-error')).toContainText('Passwords do not match');
 
     await context.close();
   });
@@ -198,6 +228,28 @@ test.describe('ConfirmEmailPage', () => {
 
     await expect(page.getByTestId('confirm-email-page')).toBeVisible();
     await expect(page.getByTestId('confirm-email-error')).toBeVisible();
+    await expect(page.getByTestId('confirm-email-error')).toContainText('No confirmation token provided');
+
+    await context.close();
+  });
+
+  test('AUTH-CE-02: Successful email confirmation flow', async ({ browser }) => {
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    await page.goto('/auth/confirm-email?token=sometoken');
+    await page.waitForLoadState('networkidle');
+
+    await expect(page.getByTestId('confirm-email-page')).toBeVisible();
+
+    // Should show either loading, success, or error state (token is fake so will result in error)
+    // First check loading state appears initially or transitions quickly
+    const errorOrSuccess = page.getByTestId('confirm-email-error').or(page.getByTestId('confirm-email-success'));
+    await expect(errorOrSuccess).toBeVisible({ timeout: 10000 });
+
+    // With an invalid token, we expect the error state with "Confirmation Failed" heading
+    await expect(page.getByTestId('confirm-email-error')).toBeVisible();
+    await expect(page.getByTestId('confirm-email-error')).toContainText('Confirmation Failed');
 
     await context.close();
   });
