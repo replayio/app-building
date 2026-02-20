@@ -215,6 +215,38 @@ test.describe('ClientsListPage - PageHeader', () => {
     await expect(page.getByText('Import Test Corp')).toBeVisible({ timeout: 5000 });
   });
 
+  test('CLP-HDR-09: Download CSV template button downloads a correctly formatted template file', async ({ page }) => {
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('import-button').click();
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Import Clients')).toBeVisible();
+
+    // Click the download template button and capture the download
+    const downloadPromise = page.waitForEvent('download');
+    await dialog.getByTestId('download-template-button').click();
+    const download = await downloadPromise;
+
+    // Verify download filename
+    expect(download.suggestedFilename()).toBe('clients-import-template.csv');
+
+    // Read the downloaded file content and verify headers and example row
+    const readable = (await download.createReadStream())!;
+    let csvText = '';
+    for await (const chunk of readable) {
+      csvText += chunk.toString();
+    }
+    const lines = csvText.trim().split('\n');
+
+    // Header row should contain the expected column names
+    expect(lines[0]).toBe('Name,Type,Status,Tags,Source Type,Source Detail,Campaign,Channel,Date Acquired');
+
+    // Should have an example data row
+    expect(lines.length).toBeGreaterThanOrEqual(2);
+  });
+
   test('CLP-HDR-05: Export button triggers data export', async ({ page }) => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');

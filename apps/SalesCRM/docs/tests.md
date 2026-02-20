@@ -141,6 +141,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Upload a valid CSV file with headers "Name,Title,Email,Client Name" and one data row "Import Test Contact,Manager,test@example.com,Acme Corp", then click Import
 - Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 contact."
 
+**CLP-HDR-09: Download CSV template button downloads a correctly formatted template file**
+- Initial: User has opened the clients import dialog on /clients (data-testid="import-dialog" visible with title "Import Clients")
+- Action: Click "Download CSV template" button (data-testid="download-template-button")
+- Expected: A CSV file download is initiated with filename "clients-import-template.csv". The downloaded file contains a header row with the column names from the CSV format specification (Name, Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired) and one example data row.
+
 **CLP-HDR-05: Export button triggers data export**
 - Initial: User is on /clients with existing clients
 - Action: Click "Export" button
