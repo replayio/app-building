@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix nested-wait deadlocks in toPass blocks (clients-list-page, deals-list-page, deal-detail-page, tasks-list-page)",
-        "RunTests: Verify tests pass after nested-wait fixes",
-        "DocumentFix: Commit nested-wait deadlock fixes"
-      ],
-      "timestamp": "2026-02-19T23:50:30.226Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication test entries",
         "CheckComponentsAuth: Check writeApp.md directive violations in Authentication components",
         "CheckTestsAuth: Check writeTests.md directive violations in Authentication tests"

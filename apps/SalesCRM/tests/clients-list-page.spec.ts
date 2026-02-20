@@ -203,9 +203,7 @@ test.describe('ClientsListPage - PageHeader', () => {
     await expect(dialog).not.toBeVisible();
 
     // Verify imported client appears in the table
-    await expect(async () => {
-      await expect(page.getByText('Import Test Corp')).toBeVisible();
-    }).toPass({ timeout: 5000 });
+    await expect(page.getByText('Import Test Corp')).toBeVisible({ timeout: 5000 });
   });
 
   test('CLP-HDR-05: Export button triggers data export', async ({ page }) => {
@@ -296,15 +294,13 @@ test.describe('ClientsListPage - SearchBar', () => {
     await searchInput.fill('Acme');
 
     // Wait for debounce, network request, and React re-render
-    await expect(async () => {
-      const clientNames = page.locator('[data-testid="client-name"]');
-      const count = await clientNames.count();
-      expect(count).toBeGreaterThan(0);
-      for (let i = 0; i < count; i++) {
-        const text = await clientNames.nth(i).textContent();
-        expect(text?.toLowerCase()).toContain('acme');
-      }
-    }).toPass({ timeout: 10000 });
+    // Use atomic assertions to avoid nested-wait deadlocks inside .toPass()
+    await expect(
+      page.locator('[data-testid="client-name"]').filter({ hasText: /acme/i })
+    ).not.toHaveCount(0, { timeout: 10000 });
+    await expect(
+      page.locator('[data-testid="client-name"]').filter({ hasNotText: /acme/i })
+    ).toHaveCount(0, { timeout: 10000 });
   });
 
   test('CLP-SRCH-03: Search filters clients by tag', async ({ page }) => {
@@ -401,15 +397,13 @@ test.describe('ClientsListPage - FilterControls', () => {
     // Select Active status using FilterSelect
     await selectFilterOption(page, 'filter-status', 'active');
 
-    // Wait for filtered results to render
-    await expect(async () => {
-      const statusBadges = page.locator('[data-testid="client-status"]');
-      const count = await statusBadges.count();
-      expect(count).toBeGreaterThan(0);
-      for (let i = 0; i < count; i++) {
-        await expect(statusBadges.nth(i).locator('[data-testid="status-badge-active"]')).toBeVisible();
-      }
-    }).toPass({ timeout: 10000 });
+    // Wait for filtered results to render — atomic assertions avoid nested-wait deadlocks
+    await expect(page.locator('[data-testid="client-status"]')).not.toHaveCount(0, { timeout: 10000 });
+    await expect(
+      page.locator('[data-testid="client-status"]').filter({
+        hasNot: page.locator('[data-testid="status-badge-active"]')
+      })
+    ).toHaveCount(0, { timeout: 10000 });
   });
 
   test('CLP-FLT-03: Tags filter dropdown shows available tags', async ({ page }) => {
@@ -526,16 +520,10 @@ test.describe('ClientsListPage - FilterControls', () => {
 
     await selectFilterOption(page, 'filter-sort', 'name_asc');
 
-    // Wait for sorted results to render
+    // Wait for sorted results to render — use allTextContents() (no auto-wait) instead of nth().textContent()
     await expect(async () => {
-      const clientNames = page.locator('[data-testid="client-name"]');
-      const count = await clientNames.count();
-      expect(count).toBeGreaterThan(1);
-      const names: string[] = [];
-      for (let i = 0; i < count; i++) {
-        const text = await clientNames.nth(i).textContent();
-        if (text) names.push(text);
-      }
+      const names = await page.locator('[data-testid="client-name"]').allTextContents();
+      expect(names.length).toBeGreaterThan(1);
       const sorted = [...names].sort((a, b) => a.localeCompare(b));
       expect(names).toEqual(sorted);
     }).toPass({ timeout: 10000 });
@@ -572,14 +560,12 @@ test.describe('ClientsListPage - FilterControls', () => {
       await page.getByTestId('filter-tags-trigger').click();
     }
 
-    // Combined filters should show only matching clients (if any results)
-    await expect(async () => {
-      const statusBadges = page.locator('[data-testid="client-status"]');
-      const count = await statusBadges.count();
-      for (let i = 0; i < count; i++) {
-        await expect(statusBadges.nth(i).locator('[data-testid="status-badge-active"]')).toBeVisible();
-      }
-    }).toPass({ timeout: 10000 });
+    // Combined filters should show only matching clients — atomic assertion avoids nested-wait deadlock
+    await expect(
+      page.locator('[data-testid="client-status"]').filter({
+        hasNot: page.locator('[data-testid="status-badge-active"]')
+      })
+    ).toHaveCount(0, { timeout: 10000 });
   });
 });
 

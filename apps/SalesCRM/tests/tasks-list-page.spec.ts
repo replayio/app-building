@@ -152,9 +152,7 @@ test.describe('TasksListPage - PageHeader (TLP-HDR)', () => {
     await expect(dialog).not.toBeVisible();
 
     // Verify imported task appears in the list
-    await expect(async () => {
-      await expect(page.getByText('Import Test Task')).toBeVisible();
-    }).toPass({ timeout: 5000 });
+    await expect(page.getByText('Import Test Task')).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -238,17 +236,13 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
       const assigneeValue = await options[1].getAttribute('value');
       await assigneeSelect.selectOption(assigneeValue!);
 
-      // Wait for filtered results where all cards contain the assignee name
-      await expect(async () => {
-        const cards = page.locator('[data-testid^="task-card-"]');
-        const count = await cards.count();
-        expect(count).toBeGreaterThan(0);
-        for (let i = 0; i < count; i++) {
-          const card = cards.nth(i);
-          const cardText = await card.textContent();
-          expect(cardText).toContain(assigneeName!);
-        }
-      }).toPass({ timeout: 10000 });
+      // Wait for filtered results — atomic assertions avoid nested-wait deadlocks
+      await expect(
+        page.locator('[data-testid^="task-card-"]').first()
+      ).toBeVisible({ timeout: 10000 });
+      await expect(
+        page.locator('[data-testid^="task-card-"]').filter({ hasNotText: assigneeName! })
+      ).toHaveCount(0, { timeout: 10000 });
     }
   });
 

@@ -163,11 +163,8 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     // Click Change Stage
     await changeStageBtn.click();
 
-    // Wait for stage to be updated
-    await expect(async () => {
-      const updatedStage = await getFilterValue(page, 'deal-header-stage-select');
-      expect(updatedStage).toBe(newStage);
-    }).toPass({ timeout: 10000 });
+    // Wait for stage to be updated — use toHaveAttribute to avoid nested-wait deadlock
+    await expect(page.getByTestId('deal-header-stage-select')).toHaveAttribute('data-value', newStage, { timeout: 10000 });
 
     // Button should be disabled again (selectedStage synced back to deal.stage)
     await expect(changeStageBtn).toBeDisabled();
@@ -176,10 +173,7 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     await selectFilterOption(page, 'deal-header-stage-select', currentStage);
     await expect(changeStageBtn).not.toBeDisabled();
     await changeStageBtn.click();
-    await expect(async () => {
-      const restored = await getFilterValue(page, 'deal-header-stage-select');
-      expect(restored).toBe(currentStage);
-    }).toPass({ timeout: 10000 });
+    await expect(page.getByTestId('deal-header-stage-select')).toHaveAttribute('data-value', currentStage, { timeout: 10000 });
   });
 });
 

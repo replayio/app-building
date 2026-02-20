@@ -157,9 +157,7 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     await expect(dialog).not.toBeVisible();
 
     // Verify imported deal appears in the table
-    await expect(async () => {
-      await expect(page.getByText('Import Test Deal')).toBeVisible();
-    }).toPass({ timeout: 5000 });
+    await expect(page.getByText('Import Test Deal')).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -378,19 +376,11 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
     await page.getByTestId('deals-filter-stage-trigger').click();
     await page.getByTestId('deals-filter-stage-option-proposal').click();
 
-    // Wait for filtered results to render with all matching stages
-    await expect(async () => {
-      const rows = page.locator('[data-testid^="deal-row-"]');
-      const count = await rows.count();
-      expect(count).toBeGreaterThan(0);
-
-      for (let i = 0; i < count; i++) {
-        const rowTestId = await rows.nth(i).getAttribute('data-testid');
-        const dealId = rowTestId!.replace('deal-row-', '');
-        const stageCell = page.getByTestId(`deal-stage-${dealId}`);
-        await expect(stageCell).toContainText('Proposal Sent');
-      }
-    }).toPass({ timeout: 10000 });
+    // Wait for filtered results to render — atomic assertions avoid nested-wait deadlocks
+    await expect(page.locator('[data-testid^="deal-row-"]')).not.toHaveCount(0, { timeout: 10000 });
+    await expect(
+      page.locator('[data-testid^="deal-stage-"]').filter({ hasNotText: 'Proposal Sent' })
+    ).toHaveCount(0, { timeout: 10000 });
   });
 
   test('DLP-FLT-03: Client filter shows all client options', async ({ page }) => {
@@ -440,18 +430,12 @@ test.describe('DealsListPage - FilterControls (DLP-FLT)', () => {
 
       await options[1].click();
 
-      // Wait for filtered results to render with the correct client
+      // Wait for filtered results — use allTextContents() (no auto-wait) to avoid nested-wait deadlocks
+      await expect(page.locator('[data-testid^="deal-row-"]')).not.toHaveCount(0, { timeout: 10000 });
       await expect(async () => {
-        const rows = page.locator('[data-testid^="deal-row-"]');
-        const count = await rows.count();
-        expect(count).toBeGreaterThan(0);
-
-        for (let i = 0; i < count; i++) {
-          const rowTestId = await rows.nth(i).getAttribute('data-testid');
-          const dealId = rowTestId!.replace('deal-row-', '');
-          const clientCell = page.getByTestId(`deal-client-${dealId}`);
-          await expect(clientCell).toHaveText(clientName);
-        }
+        const texts = await page.locator('[data-testid^="deal-client-"]').allTextContents();
+        expect(texts.length).toBeGreaterThan(0);
+        texts.forEach(t => expect(t.trim()).toBe(clientName));
       }).toPass({ timeout: 10000 });
     }
   });
