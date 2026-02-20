@@ -3,11 +3,19 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
-        "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
-        "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests"
+        "FixViolationToPassBlocks: Fix writeTests.md directive 6 violations in clients-list-page.spec.ts — replace count()/textContent() calls inside .toPass() blocks with atomic Playwright assertions in CLP-FLT-06 (line 498), CLP-FLT-09 (line 548), and CLP-TBL-08 (line 712)",
+        "FixViolationWeakFilterTests: Fix writeTests.md directive 8 violations in clients-list-page.spec.ts — CLP-SRCH-03, CLP-SRCH-04, CLP-FLT-04, CLP-FLT-06 have assertions that only check rowCount >= 0 instead of verifying actual filter results",
+        "RunTests: Verify tests pass after fixes"
       ],
-      "timestamp": "2026-02-20T19:53:10.416Z"
+      "timestamp": "2026-02-20T20:19:06.326Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix SidebarNavigation component description in docs/tests.md line 85 — update from 'Clients, Deals, Tasks' to include all six nav links: Clients, Contacts, Deals, Tasks, Team, Settings",
+        "DocumentFix: Verify the SidebarNavigation description fix is consistent with tests"
+      ],
+      "timestamp": "2026-02-20T20:18:59.740Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
