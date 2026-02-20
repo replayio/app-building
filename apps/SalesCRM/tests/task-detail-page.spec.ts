@@ -235,6 +235,30 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
 
     await expect(page).toHaveURL(/\/tasks$/);
   });
+
+  test('TDP-HDR-05: Confirm dialog dismissal leaves task unchanged', async ({ page }) => {
+    await navigateToFirstTaskDetail(page);
+
+    // Verify task is in Open status before action
+    await expect(page.getByTestId('task-detail-status')).toContainText('Open');
+
+    // Click Mark Complete to trigger confirm dialog
+    await page.getByTestId('task-detail-mark-complete').click();
+    await expect(page.getByTestId('confirm-dialog')).toBeVisible();
+
+    // Click Cancel to dismiss the dialog
+    await page.getByTestId('confirm-cancel').click();
+
+    // Confirm dialog should close
+    await expect(page.getByTestId('confirm-dialog')).not.toBeVisible();
+
+    // Task status should remain Open
+    await expect(page.getByTestId('task-detail-status')).toContainText('Open');
+
+    // Mark Complete and Cancel Task buttons should still be visible
+    await expect(page.getByTestId('task-detail-mark-complete')).toBeVisible();
+    await expect(page.getByTestId('task-detail-mark-canceled')).toBeVisible();
+  });
 });
 
 test.describe('TaskDetailPage - Notes (TDP-NTS)', () => {

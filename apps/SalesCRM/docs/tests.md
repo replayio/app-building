@@ -1185,6 +1185,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click back arrow button
 - Expected: Navigates to /tasks list page.
 
+**TDP-HDR-05: Confirm dialog dismissal leaves task unchanged**
+- Initial: Task is in Open status on task detail page
+- Action: Click "Mark Complete", then click Cancel in the confirm dialog
+- Expected: Confirm dialog closes. Task status remains "Open". Mark Complete and Cancel Task buttons remain visible.
+
 #### TaskNotesSection
 
 **TDP-NTS-01: Notes section shows empty state**

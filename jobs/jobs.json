@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add confirm dialog dismissal test entry (TDP-HDR-05) and corresponding Playwright test - clicking Cancel in the confirm dialog should leave task unchanged",
-        "RunTests: Verify tests pass after confirm dialog dismissal fix"
-      ],
-      "timestamp": "2026-02-20T08:56:49.595Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Make client/deal names in TaskDetailHeader navigable links to /clients/:clientId and /deals/:dealId, update test spec components section, add navigation test entries, and add Playwright tests for link navigation",
         "RunTests: Verify tests pass after client/deal link fix"
       ],
