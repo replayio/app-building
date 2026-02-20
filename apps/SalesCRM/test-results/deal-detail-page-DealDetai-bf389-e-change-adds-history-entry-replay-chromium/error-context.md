@@ -1,0 +1,165 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: Sales CRM
+      - generic [ref=e8]:
+        - generic [ref=e9]: T
+        - generic [ref=e10]: Test User
+        - button "Sign out" [ref=e11]:
+          - img [ref=e12]
+      - navigation [ref=e15]:
+        - link "Clients" [ref=e16] [cursor=pointer]:
+          - /url: /clients
+          - img [ref=e17]
+          - text: Clients
+        - link "Deals" [ref=e22] [cursor=pointer]:
+          - /url: /deals
+          - img [ref=e23]
+          - text: Deals
+        - link "Tasks" [ref=e28] [cursor=pointer]:
+          - /url: /tasks
+          - img [ref=e29]
+          - text: Tasks
+        - link "Team" [ref=e32] [cursor=pointer]:
+          - /url: /users
+          - img [ref=e33]
+          - text: Team
+        - link "Settings" [ref=e37] [cursor=pointer]:
+          - /url: /settings
+          - img [ref=e38]
+          - text: Settings
+  - main [ref=e41]:
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44] [cursor=pointer]: Deals
+        - generic [ref=e45]: /
+        - generic [ref=e46]: Globex Platform Migration
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: Deal Details
+            - heading "Delta Systems - Globex Platform Migration" [level=1] [ref=e51]
+          - button "Edit deal" [ref=e52]:
+            - img [ref=e53]
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - generic [ref=e58]: Client
+            - generic [ref=e59]: Delta Systems
+          - generic [ref=e60]:
+            - generic [ref=e61]: Value
+            - generic [ref=e62]: $180,000
+          - generic [ref=e63]:
+            - generic [ref=e64]: Owner
+            - generic [ref=e65]: Chris B.
+          - generic [ref=e66]:
+            - generic [ref=e67]: Stage
+            - generic [ref=e68]:
+              - button "Lead" [ref=e70] [cursor=pointer]:
+                - generic [ref=e71]: Lead
+                - img [ref=e72]
+              - button "Change Stage" [disabled] [ref=e74]
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e79]: "1"
+          - generic [ref=e80]: Lead
+          - generic [ref=e81]: (Current)
+        - generic [ref=e82]:
+          - generic [ref=e84]: "2"
+          - generic [ref=e85]: Qualification
+        - generic [ref=e86]:
+          - generic [ref=e88]: "3"
+          - generic [ref=e89]: Discovery
+        - generic [ref=e90]:
+          - generic [ref=e92]: "4"
+          - generic [ref=e93]: Proposal
+        - generic [ref=e94]:
+          - generic [ref=e96]: "5"
+          - generic [ref=e97]: Negotiation
+        - generic [ref=e98]:
+          - generic [ref=e100]: "6"
+          - generic [ref=e101]: Closed Won
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - img [ref=e108]
+              - heading "Deal History" [level=2] [ref=e111]
+            - generic [ref=e112]:
+              - generic [ref=e115]:
+                - generic [ref=e116]:
+                  - text: Changed Stage from Proposal to Lead
+                  - generic [ref=e117]: (Test User)
+                - generic [ref=e118]: Feb 20, 2026, 11:55 AM
+              - generic [ref=e121]:
+                - generic [ref=e122]:
+                  - text: Changed Stage from Lead to Proposal
+                  - generic [ref=e123]: (Test User)
+                - generic [ref=e124]: Feb 20, 2026, 11:55 AM
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - text: Changed Stage from Discovery to Lead
+                  - generic [ref=e129]: (Test User)
+                - generic [ref=e130]: Feb 20, 2026, 11:55 AM
+              - generic [ref=e133]:
+                - generic [ref=e134]:
+                  - text: Changed Stage from Lead to Discovery
+                  - generic [ref=e135]: (Test User)
+                - generic [ref=e136]: Feb 20, 2026, 11:55 AM
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - img [ref=e140]
+                - heading "Deal Metrics" [level=2] [ref=e141]
+              - button "Edit metrics" [ref=e142]:
+                - img [ref=e143]
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - generic [ref=e148]: Probability
+                - generic [ref=e149]: 10%
+              - generic [ref=e150]:
+                - generic [ref=e151]: Expected Close
+                - generic [ref=e152]: Mar 15, 2024
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - img [ref=e156]
+                - heading "Writeups" [level=2] [ref=e159]
+              - button "New Entry" [ref=e160]:
+                - img [ref=e161]
+                - text: New Entry
+            - generic [ref=e162]: No writeups yet
+        - generic [ref=e163]:
+          - generic [ref=e164]:
+            - generic [ref=e165]:
+              - heading "Linked Tasks" [level=2] [ref=e166]
+              - button "Add Task" [ref=e167]:
+                - img [ref=e168]
+                - text: Add Task
+            - generic [ref=e170] [cursor=pointer]:
+              - button [ref=e171]:
+                - img [ref=e172]
+              - generic [ref=e174]:
+                - text: Review Globex proposal
+                - generic [ref=e175]: "· Due: Tomorrow"
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - heading "Attachments" [level=2] [ref=e178]
+              - button "Upload" [ref=e179]:
+                - img [ref=e180]
+            - generic [ref=e183]: No attachments
+          - generic [ref=e184]:
+            - generic [ref=e185]:
+              - img [ref=e186]
+              - heading "Contacts/Individuals" [level=2] [ref=e191]
+            - generic [ref=e193]:
+              - img [ref=e195]
+              - generic [ref=e198]:
+                - generic [ref=e199]: Emily Davis
+                - generic [ref=e200]:
+                  - generic [ref=e201]: (influencer)
+                  - generic [ref=e202]: · Globex Solutions
+              - button "View Profile" [ref=e203]
+```

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationFileUpload: Fix UploadAttachmentModal to use real file upload (UploadThing or server storage) instead of blob URL, add file upload test entry to docs/tests.md, and add Playwright test using setInputFiles",
-        "RunTests: Verify tests pass after fix",
-        "DocumentFix: Document the fix"
-      ],
-      "timestamp": "2026-02-20T08:21:18.385Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationTestCode: Fix DDP-HIS-02 toPass deadlock (replace count() inside toPass with atomic toHaveCount assertions), fix DDP-HDR-02 and DDP-ATT-04 test title mismatches to match spec, and add assertions to DDP-WRT-04 to verify edit mode elements appear",
         "RunTests: Verify tests pass after fix",
         "DocumentFix: Document the fix"

@@ -986,6 +986,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click "Delete"
 - Expected: Confirmation dialog appears. Confirming removes the file from the list and deletes from storage. Change persisted.
 
+**DDP-ATT-06: File upload via file input persists attachment**
+- Initial: User is on DealDetailPage with upload modal open in File Upload mode
+- Action: Select a file using the file input (setInputFiles with a test PDF), click Upload
+- Expected: File is uploaded via UploadThing. Upload modal closes. The uploaded file appears in the attachments list with the correct filename, type "Document", and file size. The attachment is persisted to the database.
+
 #### ContactsSection
 
 **DDP-CON-01: Contacts section lists deal-related individuals**

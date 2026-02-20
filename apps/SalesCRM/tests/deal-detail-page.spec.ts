@@ -812,6 +812,38 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
       await expect(attachmentsSection).not.toContainText(filename);
     }
   });
+
+  test('DDP-ATT-06: File upload via file input persists attachment', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Open upload modal
+    await page.getByTestId('deal-attachments-upload-button').click();
+    const modal = page.getByTestId('upload-attachment-modal');
+    await expect(modal).toBeVisible();
+
+    // File Upload mode should be selected by default
+    await expect(page.getByTestId('upload-attachment-file-input')).toBeVisible();
+
+    // Use setInputFiles to simulate file selection
+    const fileInput = page.getByTestId('upload-attachment-file-input');
+    await fileInput.setInputFiles({
+      name: 'TestReport.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from('fake pdf content for testing'),
+    });
+
+    // Click Upload
+    await page.getByTestId('upload-attachment-save').click();
+
+    // Modal should close after upload completes
+    await expect(modal).not.toBeVisible({ timeout: 30000 });
+
+    // Uploaded file should appear in the attachments list
+    const attachmentsSection = page.getByTestId('deal-attachments-section');
+    await expect(
+      attachmentsSection.locator('[data-testid^="deal-attachment-"]').filter({ hasText: 'TestReport.pdf' })
+    ).not.toHaveCount(0, { timeout: 15000 });
+  });
 });
 
 test.describe('DealDetailPage - ContactsSection (DDP-CON)', () => {
