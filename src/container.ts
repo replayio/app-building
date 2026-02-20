@@ -163,7 +163,7 @@ export function spawnContainer(options?: { prompt?: string; maxIterations?: numb
   return Promise.resolve();
 }
 
-export function startInteractiveContainer(): { containerName: string; mcpConfig: string } {
+export async function startInteractiveContainer(): Promise<{ containerName: string; mcpConfig: string }> {
   const { args, containerName, mcpConfig } = setupContainer("attached");
   // -i keeps stdin open; cat exits on EOF when the parent process dies,
   // which triggers --rm to clean up the container.
@@ -171,9 +171,47 @@ export function startInteractiveContainer(): { containerName: string; mcpConfig:
   args.push("cat");
 
   const child = spawn("docker", args, {
-    stdio: ["pipe", "ignore", "ignore"],
+    stdio: ["pipe", "ignore", "pipe"],
+  });
+
+  let startError = "";
+  child.stderr!.on("data", (data: Buffer) => {
+    startError += data.toString();
   });
   child.on("error", () => {});
+
+  // Wait for the container to be running
+  const maxWait = 30000;
+  const interval = 200;
+  const start = Date.now();
+  while (Date.now() - start < maxWait) {
+    try {
+      const status = execFileSync("docker", ["inspect", "--format", "{{.State.Running}}", containerName], {
+        encoding: "utf-8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 5000,
+      }).trim();
+      if (status === "true") break;
+    } catch {
+      // Container not found yet, keep waiting
+    }
+    await new Promise((r) => setTimeout(r, interval));
+  }
+
+  // Verify container is actually running
+  try {
+    const status = execFileSync("docker", ["inspect", "--format", "{{.State.Running}}", containerName], {
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+      timeout: 5000,
+    }).trim();
+    if (status !== "true") {
+      throw new Error(`Container failed to start: ${startError.trim() || "unknown error"}`);
+    }
+  } catch (e: any) {
+    if (e.message.includes("Container failed to start")) throw e;
+    throw new Error(`Container failed to start: ${startError.trim() || e.message}`);
+  }
 
   return { containerName, mcpConfig };
 }

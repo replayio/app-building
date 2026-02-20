@@ -185,7 +185,7 @@ async function runGroups(): Promise<void> {
     return;
   }
 
-  const { containerName, mcpConfig } = startInteractiveContainer();
+  const { containerName, mcpConfig } = await startInteractiveContainer();
   console.log(`Container started: ${containerName}`);
   const log = createLogFile(LOGS_DIR);
   log(`Container: ${containerName}`);
@@ -241,7 +241,7 @@ async function runGroups(): Promise<void> {
 }
 
 async function runInteractive(sessionId?: string): Promise<void> {
-  const { containerName, mcpConfig } = startInteractiveContainer();
+  const { containerName, mcpConfig } = await startInteractiveContainer();
   console.log(`Container started: ${containerName}`);
   const log = createLogFile(LOGS_DIR);
   log(`Container: ${containerName}`);
