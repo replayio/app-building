@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationBreadcrumb: Add breadcrumb navigation test entry to docs/tests.md for DealDetailPage and write corresponding playwright test",
-        "RunTests: Verify tests pass after breadcrumb test addition"
-      ],
-      "timestamp": "2026-02-20T07:41:01.107Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationWeakTests: Fix DDP-WRT-05 stub test to actually edit writeup and verify version history, fix DDP-LTK-04 to verify completion state, add side effect assertions to DDP-HDR-04 (deal history entry) and DDP-LTK-03 (timeline entry)",
         "RunTests: Verify tests pass after test improvements"
       ],

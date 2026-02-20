@@ -815,6 +815,13 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ### Test Entries
 
+#### Breadcrumb
+
+**DDP-BRC-01: Breadcrumb displays deal name and links back to deals list**
+- Initial: Navigate to /deals/:dealId for any existing deal
+- Action: Observe the breadcrumb area (data-testid="deal-detail-breadcrumb")
+- Expected: Breadcrumb shows "Deals / {deal name}". Clicking "Deals" navigates to /deals.
+
 #### DealHeader
 
 **DDP-HDR-01: Header displays deal info with editable fields**

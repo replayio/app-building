@@ -40,6 +40,28 @@ async function getFilterValue(page: import('@playwright/test').Page, testId: str
   return await page.getByTestId(testId).getAttribute('data-value') ?? '';
 }
 
+test.describe('DealDetailPage - Breadcrumb (DDP-BRC)', () => {
+  test('DDP-BRC-01: Breadcrumb displays deal name and links back to deals list', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Breadcrumb should be visible
+    const breadcrumb = page.getByTestId('deal-detail-breadcrumb');
+    await expect(breadcrumb).toBeVisible();
+
+    // Should contain "Deals" link text
+    await expect(breadcrumb).toContainText('Deals');
+
+    // Should contain the deal name (non-empty text after the separator)
+    const dealName = page.getByTestId('deal-header-title');
+    const dealNameText = await dealName.textContent();
+    expect(dealNameText!.length).toBeGreaterThan(0);
+
+    // Click the "Deals" link in the breadcrumb to navigate back to /deals
+    await breadcrumb.locator('span').first().click();
+    await expect(page).toHaveURL(/\/deals$/, { timeout: 10000 });
+  });
+});
+
 test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
   test('DDP-HDR-01: Header displays deal info with editable fields', async ({ page }) => {
     await navigateToFirstDealDetail(page);
