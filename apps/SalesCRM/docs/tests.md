@@ -1168,12 +1168,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **TDP-HDR-01: Task detail page displays task information**
 - Initial: User navigates to /tasks/:taskId
 - Action: Observe the header
-- Expected: Shows task title, priority badge, status (Open/Completed), due date, assignee, and associated client/deal names.
+- Expected: Shows task title, description, priority badge, status (Open/Completed), due date, assignee, and associated client/deal names.
 
 **TDP-HDR-02: Mark Complete changes task status**
 - Initial: Task is in Open status
 - Action: Click "Mark Complete", confirm in dialog
-- Expected: Task status changes to "Completed". Mark Complete and Cancel Task buttons are hidden. Completed date is shown.
+- Expected: Task status changes to "Completed". Mark Complete and Cancel Task buttons are hidden. Completed date is shown. Change is persisted to database. A timeline entry "Task Completed" is created on the associated client.
 
 **TDP-HDR-03: Cancel Task deletes task and redirects**
 - Initial: Task is in Open status
@@ -1195,12 +1195,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **TDP-NTS-02: Adding a note persists and shows in list**
 - Initial: Notes section with add note form
 - Action: Type "This is a test note" and click "Add"
-- Expected: Note appears in the notes list with content, author, and timestamp. Input is cleared.
+- Expected: Note appears in the notes list with content, author, and timestamp. Input is cleared. Note is persisted to the database (page reload still shows it).
 
 **TDP-NTS-03: Deleting a note removes it from list**
 - Initial: A note exists in the list
 - Action: Click the delete (trash) icon on the note
-- Expected: Note is removed from the list.
+- Expected: Note is removed from the list. Deletion is persisted to the database (page reload confirms removal).
 
 ---
 

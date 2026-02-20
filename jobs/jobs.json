@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationTaskDetailSpecPersistence: Update test spec entries TDP-HDR-01 (add description check), TDP-HDR-02/TDP-NTS-02/TDP-NTS-03 (add persistence verification language), TDP-HDR-02 (add timeline side effect)",
-        "RunTests: Verify tests pass after TaskDetail spec persistence fix"
-      ],
-      "timestamp": "2026-02-20T08:49:55.811Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationTaskDetailTestCompleteness: Fix TDP-HDR-01 test to verify priority badge, due date, assignee, client/deal names; Fix TDP-NTS-02 test to verify author and timestamp; Fix TDP-HDR-02 test to verify timeline side effect on client",
         "RunTests: Verify tests pass after TaskDetail test completeness fix"
       ],
