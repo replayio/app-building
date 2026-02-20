@@ -12,9 +12,13 @@ A TaskDetailPage exists at /tasks/:taskId. Clicking a task card navigates to thi
 
 Task links on client detail page and deal detail page navigate to /tasks/:taskId.
 
+## Contacts Page
+
+A Contacts page (ContactsListPage) exists at /contacts, accessible from the sidebar. It lists all individuals/contacts in the system with a searchable table showing Name, Title, Email, Phone, Location, and Associated Clients columns. Search filters across name, email, title, phone, and location fields with debounced input. Supports pagination (50 per page), CSV import/export, and adding new contacts via a modal form. Clicking a contact row navigates to the PersonDetailPage at /individuals/:id. The backend individuals list endpoint returns enriched data including associated client names for display.
+
 ## Sidebar Navigation
 
-Sidebar navigation contains Clients, Deals, Tasks, Team, and Settings links. Dashboard, Reports, and other placeholder links were removed as they had no corresponding pages.
+Sidebar navigation contains Clients, Contacts, Deals, Tasks, Team, and Settings links. Dashboard, Reports, and other placeholder links were removed as they had no corresponding pages.
 
 ## Filter Dropdowns
 

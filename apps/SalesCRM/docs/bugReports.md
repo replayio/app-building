@@ -2,9 +2,15 @@
 
 ## Open
 
-2/20/2026: Add a Contacts page for searching all people/individuals that have been added to the system. This should be a dedicated page accessible from the sidebar that lists all contacts with search functionality.
-
 ## Unreviewed
+
+2/20/2026: Add a Contacts page for searching all people/individuals that have been added to the system. This should be a dedicated page accessible from the sidebar that lists all contacts with search functionality.
+- Before: 6d387c9
+- After: (this commit)
+- Fix: Added ContactsListPage at /contacts with sidebar navigation link (Contact icon). Page features a searchable table of all individuals with columns: Name, Title, Email, Phone, Location, and Associated Clients (badges). Search filters across name, email, title, phone, and location fields with 300ms debounce. Includes pagination (50 per page), CSV import/export, and Add Contact modal (name, title, email, phone, location fields). Clicking a contact row navigates to /individuals/:id (PersonDetailPage). Enhanced backend individuals list endpoint to return email, phone, location, associated client names, pagination support, and multi-field search. Expanded individualsSlice with list state management (items, total, page). Created 6 new components (ContactsPageHeader, ContactsSearchBar, ContactsTable, ContactsPagination, AddContactModal, ContactsListPage). Added 9 new Playwright tests (CTLP-HDR-01/02/03, CTLP-SRCH-01/02/03, CTLP-TBL-01/02, CTLP-PGN-01). Updated CLP-NAV-01/02 to include Contacts nav item.
+- Problem stage: none (enhancement — Contacts page was not part of the original spec)
+
+
 
 2/20/2026: Add email integration for client follow notifications. Logged-in users should be able to go to the Settings page and configure their email notification preferences for when changes happen to a client they are following. "Following" a client means the user has opted in on that client's detail page (add a follow/unfollow button). Notifications should cover any changes affecting the client, including changes to the client's contacts or deals. Use the Resend API for sending emails.
 - Before: e4b5f26

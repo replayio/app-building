@@ -101,14 +101,58 @@ async function handler(req: OptionalAuthRequest) {
   // GET /individuals — list/search all individuals
   if (req.method === 'GET' && !individualId) {
     const search = url.searchParams.get('search') ?? ''
+    const page = parseInt(url.searchParams.get('page') ?? '1', 10)
+    const pageSize = 50
+    const offset = (page - 1) * pageSize
     const searchPattern = search ? '%' + search + '%' : null
+
+    const countRows = await sql`
+      SELECT COUNT(*)::int AS total FROM individuals
+      WHERE (${searchPattern}::text IS NULL
+        OR name ILIKE ${searchPattern}
+        OR email ILIKE ${searchPattern}
+        OR title ILIKE ${searchPattern}
+        OR phone ILIKE ${searchPattern}
+        OR location ILIKE ${searchPattern})
+    ` as { total: number }[]
+    const total = countRows[0].total
+
     const rows = await sql`
-      SELECT id, name, title FROM individuals
-      WHERE (${searchPattern}::text IS NULL OR name ILIKE ${searchPattern})
-      ORDER BY name ASC
-      LIMIT 50
-    ` as { id: string; name: string; title: string | null }[]
-    return Response.json({ individuals: rows })
+      SELECT i.id, i.name, i.title, i.email, i.phone, i.location, i.created_at, i.updated_at,
+        (
+          SELECT json_agg(json_build_object('client_id', c.id, 'client_name', c.name))
+          FROM client_individuals ci
+          JOIN clients c ON ci.client_id = c.id
+          WHERE ci.individual_id = i.id
+        ) AS associated_clients
+      FROM individuals i
+      WHERE (${searchPattern}::text IS NULL
+        OR i.name ILIKE ${searchPattern}
+        OR i.email ILIKE ${searchPattern}
+        OR i.title ILIKE ${searchPattern}
+        OR i.phone ILIKE ${searchPattern}
+        OR i.location ILIKE ${searchPattern})
+      ORDER BY i.name ASC
+      LIMIT ${pageSize} OFFSET ${offset}
+    ` as Array<{
+      id: string
+      name: string
+      title: string | null
+      email: string | null
+      phone: string | null
+      location: string | null
+      created_at: string
+      updated_at: string
+      associated_clients: Array<{ client_id: string; client_name: string }> | null
+    }>
+
+    return Response.json({
+      individuals: rows.map(r => ({
+        ...r,
+        associated_clients: r.associated_clients ?? [],
+      })),
+      total,
+    })
   }
 
   // GET /individuals/:id — fetch individual with associations, relationships, and contact history

@@ -8,11 +8,13 @@ import {
   Settings,
   LogOut,
   LogIn,
+  Contact,
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthProvider'
 
 const navItems = [
   { to: '/clients', label: 'Clients', icon: Users },
+  { to: '/contacts', label: 'Contacts', icon: Contact },
   { to: '/deals', label: 'Deals', icon: Handshake },
   { to: '/tasks', label: 'Tasks', icon: CheckSquare },
   { to: '/users', label: 'Team', icon: UserCircle },

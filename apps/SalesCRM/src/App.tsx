@@ -10,6 +10,7 @@ import { TaskDetailPage } from './pages/TaskDetailPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { UsersListPage } from './pages/UsersListPage'
 import { UserDetailPage } from './pages/UserDetailPage'
+import { ContactsListPage } from './pages/ContactsListPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { ConfirmEmailPage } from './pages/ConfirmEmailPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/clients" replace />} />
         <Route path="/clients" element={<ClientsListPage />} />
         <Route path="/clients/:clientId" element={<ClientDetailPage />} />
+        <Route path="/contacts" element={<ContactsListPage />} />
         <Route path="/individuals/:individualId" element={<PersonDetailPage />} />
         <Route path="/deals" element={<DealsListPage />} />
         <Route path="/deals/:dealId" element={<DealDetailPage />} />

@@ -28,6 +28,7 @@ test.describe('ClientsListPage - SidebarNavigation', () => {
 
     // Verify all navigation items are present
     await expect(sidebar.getByText('Clients')).toBeVisible();
+    await expect(sidebar.getByText('Contacts')).toBeVisible();
     await expect(sidebar.getByText('Deals')).toBeVisible();
     await expect(sidebar.getByText('Tasks')).toBeVisible();
     await expect(sidebar.getByText('Team')).toBeVisible();
@@ -61,6 +62,11 @@ test.describe('ClientsListPage - SidebarNavigation', () => {
     await page.getByTestId('sidebar-nav-settings').click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/\/settings/);
+
+    // Click "Contacts" → navigates to /contacts
+    await page.getByTestId('sidebar-nav-contacts').click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/contacts/);
 
     // Click "Clients" → navigates back to /clients
     await page.getByTestId('sidebar-nav-clients').click();

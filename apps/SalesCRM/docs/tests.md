@@ -87,12 +87,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CLP-NAV-01: Sidebar displays all navigation items**
 - Initial: User navigates to /clients
 - Action: Observe the sidebar
-- Expected: Sidebar shows navigation links: Clients, Deals, Tasks, Team, Settings. The "Clients" link is visually highlighted as active.
+- Expected: Sidebar shows navigation links: Clients, Contacts, Deals, Tasks, Team, Settings. The "Clients" link is visually highlighted as active.
 
 **CLP-NAV-02: Sidebar navigation links route correctly**
 - Initial: User is on /clients
 - Action: Click "Deals" in sidebar
-- Expected: App navigates to /deals. Click "Tasks" → navigates to /tasks. Click "Team" → navigates to /users. Click "Settings" → navigates to /settings. Click "Clients" → navigates to /clients.
+- Expected: App navigates to /deals. Click "Tasks" → navigates to /tasks. Click "Team" → navigates to /users. Click "Settings" → navigates to /settings. Click "Contacts" → navigates to /contacts. Click "Clients" → navigates to /clients.
 
 #### PageHeader
 
@@ -670,7 +670,73 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 4. DealsListPage (/deals)
+## 4. ContactsListPage (/contacts)
+
+### Components
+- **ContactsPageHeader**: "Contacts" title with Import, Export, and "+ Add Contact" buttons
+- **ContactsSearchBar**: Text input for searching contacts by name, email, title, or location
+- **ContactsTable**: Tabular list with columns: Name (with avatar icon), Title, Email, Phone, Location, Associated Clients (badges)
+- **ContactsPagination**: "Showing X-Y of Z contacts" text with Previous/Next buttons and page number links
+- **AddContactModal**: Modal form for creating a new contact with fields: Name (required), Title, Email, Phone, Location
+
+### Test Entries
+
+#### ContactsPageHeader
+
+**CTLP-HDR-01: Page header displays title and action buttons**
+- Initial: User navigates to /contacts
+- Action: Observe the page header area
+- Expected: "Contacts" is displayed as the page title (data-testid="contacts-page-header"). Three buttons are visible: "Import" (data-testid="contacts-import-button"), "Export" (data-testid="contacts-export-button"), and "Add Contact" (data-testid="add-new-contact-button", primary/accent styled).
+
+**CTLP-HDR-02: Add Contact button opens create contact modal**
+- Initial: User is on /contacts
+- Action: Click "Add Contact" button (data-testid="add-new-contact-button")
+- Expected: A modal (data-testid="add-contact-modal") opens with fields: Name (data-testid="contact-name-input"), Title (data-testid="contact-title-input"), Email (data-testid="contact-email-input"), Phone (data-testid="contact-phone-input"), Location (data-testid="contact-location-input"). Save (data-testid="contact-save-button") and Cancel (data-testid="contact-cancel-button") buttons are visible.
+
+**CTLP-HDR-03: Creating a new contact persists and appears in list**
+- Initial: User has opened the Add Contact modal on /contacts
+- Action: Fill in name "Test Person", title "Engineer", email "test@example.com", click Save
+- Expected: Modal closes. The new contact "Test Person" appears in the contacts table with title "Engineer" and email "test@example.com". The contact is persisted (page reload still shows it).
+
+#### ContactsSearchBar
+
+**CTLP-SRCH-01: Search bar is displayed with placeholder text**
+- Initial: User navigates to /contacts
+- Action: Observe the search bar
+- Expected: A text input (data-testid="contacts-search-input") is displayed with placeholder "Search contacts by name, email, title, or location..." and a search icon.
+
+**CTLP-SRCH-02: Search filters contacts by name**
+- Initial: Contacts list contains multiple contacts
+- Action: Type part of a known contact's name in the search bar
+- Expected: Only contacts matching the search term are displayed. Other contacts are filtered out.
+
+**CTLP-SRCH-03: Clearing search restores full contact list**
+- Initial: Search bar has text typed and list is filtered
+- Action: Clear the search bar (click clear button, data-testid="contacts-search-clear")
+- Expected: Full unfiltered contact list is displayed again.
+
+#### ContactsTable
+
+**CTLP-TBL-01: Contacts table displays all columns**
+- Initial: User navigates to /contacts with existing contacts
+- Action: Observe the contacts table
+- Expected: Table (data-testid="contacts-table") shows header row with columns: Name, Title, Email, Phone, Location, Associated Clients. Contact rows display corresponding data.
+
+**CTLP-TBL-02: Clicking a contact row navigates to person detail page**
+- Initial: User is on /contacts with contacts visible
+- Action: Click on a contact row
+- Expected: App navigates to /individuals/:id for the clicked contact.
+
+#### ContactsPagination
+
+**CTLP-PGN-01: Pagination shows contact count**
+- Initial: User navigates to /contacts with existing contacts
+- Action: Observe the pagination area
+- Expected: Pagination (data-testid="contacts-pagination") shows "Showing X-Y of Z contacts" text.
+
+---
+
+## 5. DealsListPage (/deals)
 
 ### Components
 - **SidebarNavigation**: Left sidebar (same as ClientsListPage, "Deals" highlighted)
@@ -855,7 +921,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 5. DealDetailPage (/deals/:dealId)
+## 6. DealDetailPage (/deals/:dealId)
 
 ### Components
 - **DealHeader**: Deal title (e.g., "DEAL DETAILS: Acme Corp - $250k Expansion Deal"), editable fields for Client, Value, Owner, Stage dropdown, and "Change Stage" button
@@ -1054,7 +1120,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 6. TasksListPage (/tasks)
+## 7. TasksListPage (/tasks)
 
 ### Components
 - **PageHeader**: "Upcoming Tasks" title with "New Task" button (accent/primary styled)
@@ -1189,7 +1255,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 7. TaskDetailPage
+## 8. TaskDetailPage
 
 ### Components
 - **TaskDetailHeader**: Back button, task title with priority badge, description, due date, assignee, client/deal links, status badge, Mark Complete and Cancel Task buttons
@@ -1253,7 +1319,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 8. SettingsPage (/settings)
+## 9. SettingsPage (/settings)
 
 ### Components
 - **SettingsPageHeader**: Settings icon and "Settings" title
@@ -1390,7 +1456,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 9. UsersListPage (/users)
+## 10. UsersListPage (/users)
 
 ### Components
 - **UsersPageHeader**: "Team Members" title with Users icon
@@ -1419,7 +1485,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 ---
 
-## 10. UserDetailPage (/users/:userId)
+## 11. UserDetailPage (/users/:userId)
 
 ### Components
 - **UserDetailHeader**: Back button, user avatar, name, email, join date, summary stats (Active Deals, Open Tasks, Total Deals)

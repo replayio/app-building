@@ -110,6 +110,18 @@ export interface ContactHistoryEntry {
   updated_at: string
 }
 
+export interface ContactListItem {
+  id: string
+  name: string
+  title: string | null
+  email: string | null
+  phone: string | null
+  location: string | null
+  created_at: string
+  updated_at: string
+  associated_clients: Array<{ client_id: string; client_name: string }>
+}
+
 export interface Attachment {
   id: string
   filename: string
