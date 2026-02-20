@@ -360,6 +360,21 @@ test.describe('DealsListPage - ViewToggle (DLP-VW)', () => {
 
       await expect(cardInTarget).toBeVisible();
     }).toPass({ timeout: 15000 });
+
+    // Navigate to the deal detail page and verify a history entry was created
+    const stageDisplayNames: Record<string, string> = {
+      'lead': 'Lead', 'qualification': 'Qualification', 'discovery': 'Discovery',
+      'proposal': 'Proposal', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
+    };
+    const expectedFrom = stageDisplayNames[sourceStage] || sourceStage;
+    const expectedTo = stageDisplayNames[targetStage] || targetStage;
+
+    await page.goto(`/deals/${dealId}`);
+    await page.waitForLoadState('networkidle');
+
+    const expectedHistoryText = `Changed Stage from ${expectedFrom} to ${expectedTo}`;
+    const historyEntry = page.locator('[data-testid^="deal-history-entry-"]', { hasText: expectedHistoryText });
+    await expect(historyEntry).toHaveCount(1, { timeout: 10000 });
   });
 });
 

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix DLP-VW-04 missing history verification — update testSpec entry to include history entry verification for drag-and-drop stage changes, and update the Playwright test to navigate to deal detail page and verify a history entry was created",
-        "RunTests: Verify tests pass after DLP-VW-04 history fix",
-        "DocumentFix: Document the DLP-VW-04 history verification fix"
-      ],
-      "timestamp": "2026-02-20T21:34:39.636Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix stage naming inconsistency — standardize 'Proposal Sent' label in DealsPipelineView and DealHistorySection to match DealStageBadge, DealsFilterControls, and CreateDealModal; also fix testSpec DLP-HDR-02 to say 'Proposal Sent' instead of 'Proposal'",
         "RunTests: Verify tests pass after stage naming fix",
         "DocumentFix: Document the stage naming fix"

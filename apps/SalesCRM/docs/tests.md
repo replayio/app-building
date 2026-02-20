@@ -882,7 +882,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **DLP-VW-04: Pipeline View supports drag-and-drop to change deal stage**
 - Initial: User is in Pipeline View with deals visible in columns
 - Action: Drag a deal card from one stage column to another stage column
-- Expected: The deal moves to the new stage column. The stage change is persisted to the backend. Deal counts and values in both columns update accordingly.
+- Expected: The deal moves to the new stage column. The stage change is persisted to the backend. Deal counts and values in both columns update accordingly. A deal history entry is created for the stage change (verified on the deal detail page).
 
 #### FilterControls
 

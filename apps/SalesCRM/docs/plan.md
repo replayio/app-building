@@ -390,6 +390,7 @@ Open bug reports to address:
 - [x] fixBugReport.md: ResolveBugWebhookDialogInstructions: Bug moved to Unreviewed in bugReports.md
 - [x] checkDirectives.md: UnpackCheckDirectives: Unpacked into 34 sub-jobs for systematic compliance check across all pages
   - [x] checkDirectives.md: FixViolationFilterSelectSearchable: Added `searchable` prop to FilterSelect component — search input with auto-focus, option filtering, "No matches" empty state, and search-clear on close. Applied to all FilterSelect instances with large option lists (client, user, deal selects across DealsFilterControls, TasksFilterBar, CreateDealModal, AddDealModal, DealDetailHeader, CreateTaskModal, EditTaskModal, AddTaskModal, AddAttachmentModal).
+  - [x] checkDirectives.md: FixViolation DLP-VW-04 missing history verification: Updated test spec entry to include history entry verification for drag-and-drop stage changes. Updated Playwright test to navigate to deal detail page after drag-and-drop and verify a deal history entry was created. All 31 deals-list-page tests pass.
 
 ## Polish
 
