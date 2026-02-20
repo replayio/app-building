@@ -110,6 +110,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
               testId="task-associated-deal-select"
               value={dealId}
               onChange={(v) => setDealId(v)}
+              searchable
               options={[
                 { value: '', label: 'None' },
                 ...deals.map((deal) => ({ value: deal.id, label: deal.name })),

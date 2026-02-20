@@ -144,6 +144,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
               testId="attachment-associated-deal-select"
               value={dealId}
               onChange={(v) => setDealId(v)}
+              searchable
               options={[
                 { value: '', label: 'None' },
                 ...deals.map((deal) => ({ value: deal.id, label: deal.name })),

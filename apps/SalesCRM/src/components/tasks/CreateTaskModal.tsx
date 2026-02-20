@@ -143,6 +143,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                     value={assigneeName}
                     onChange={(val) => setAssigneeName(val)}
                     placeholder="Select assignee..."
+                    searchable
                     options={[
                       { value: '', label: '— None —' },
                       ...availableUsers.map((u) => ({ value: u.name, label: u.name })),
@@ -182,6 +183,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                   setClientId(val)
                   setDealId('')
                 }}
+                searchable
                 options={[
                   { value: '', label: '\u2014 None \u2014' },
                   ...availableClients.map((c) => ({ value: c.id, label: c.name })),
@@ -196,6 +198,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
                   testId="create-task-deal"
                   value={dealId}
                   onChange={(val) => setDealId(val)}
+                  searchable
                   options={[
                     { value: '', label: 'No deal' },
                     ...filteredDeals.map((d) => ({ value: d.id, label: d.name })),

@@ -107,6 +107,7 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
                 value={owner}
                 onChange={(val) => setOwner(val)}
                 placeholder="Select owner..."
+                searchable
                 options={[
                   { value: '', label: '— None —' },
                   ...availableUsers.map((u) => ({ value: u.name, label: u.name })),

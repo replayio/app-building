@@ -84,6 +84,7 @@ export function TasksFilterBar({
                 value={assigneeFilter}
                 onChange={(val) => { onAssigneeChange(val); setFilterOpen(false) }}
                 className="mt-1"
+                searchable
                 options={[
                   { value: '', label: 'All Assignees' },
                   ...availableAssignees.map((a) => ({ value: a.assignee_name, label: a.assignee_name })),
@@ -98,6 +99,7 @@ export function TasksFilterBar({
                 value={clientFilter}
                 onChange={(val) => { onClientChange(val); setFilterOpen(false) }}
                 className="mt-1"
+                searchable
                 options={[
                   { value: '', label: 'All Clients' },
                   ...availableClients.map((c) => ({ value: c.id, label: c.name })),

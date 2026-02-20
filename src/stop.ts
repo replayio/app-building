@@ -14,22 +14,31 @@ function getContainerFromLog(logsDir: string): string | null {
   return null;
 }
 
-function findWorkerPid(containerName: string): number | null {
+function isContainerRunning(containerName: string): boolean {
   try {
     const out = execFileSync(
       "docker",
-      ["exec", containerName, "ps", "aux"],
+      ["inspect", "-f", "{{.State.Running}}", containerName],
+      { encoding: "utf-8", timeout: 5000, stdio: ["pipe", "pipe", "pipe"] },
+    );
+    return out.trim() === "true";
+  } catch {
+    return false;
+  }
+}
+
+function getContainerPid(containerName: string): number | null {
+  try {
+    const out = execFileSync(
+      "docker",
+      ["inspect", "-f", "{{.State.Pid}}", containerName],
       { encoding: "utf-8", timeout: 5000 },
     );
-    for (const line of out.split("\n")) {
-      if (line.includes("/app-building/src/worker.ts") && line.includes("/usr/local/bin/node")) {
-        const parts = line.trim().split(/\s+/);
-        const pid = parseInt(parts[1], 10);
-        if (!isNaN(pid)) return pid;
-      }
-    }
-  } catch {}
-  return null;
+    const pid = parseInt(out.trim(), 10);
+    return pid > 0 ? pid : null;
+  } catch {
+    return null;
+  }
 }
 
 function main(): void {
@@ -41,23 +50,36 @@ function main(): void {
     process.exit(1);
   }
 
-  const pid = findWorkerPid(containerName);
+  if (!isContainerRunning(containerName)) {
+    console.log(`Container ${containerName} is not running.`);
+    return;
+  }
+
+  const pid = getContainerPid(containerName);
   if (pid === null) {
-    console.error(`No worker.ts node process found in container ${containerName}.`);
+    console.error(`Could not find host PID for container ${containerName}.`);
     process.exit(1);
   }
 
-  console.log(`Killing worker.ts node process (PID ${pid}) in ${containerName}`);
+  console.log(`Killing container ${containerName} (host PID ${pid})...`);
   try {
-    execFileSync("docker", ["exec", containerName, "kill", String(pid)], {
-      encoding: "utf-8",
-      timeout: 5000,
-    });
-    console.log("Done.");
+    process.kill(pid, "SIGKILL");
   } catch (e: any) {
     console.error(`Failed to kill PID ${pid}: ${e.message}`);
     process.exit(1);
   }
+
+  // Wait for container to disappear
+  for (let i = 0; i < 10; i++) {
+    if (!isContainerRunning(containerName)) {
+      console.log("Container stopped.");
+      return;
+    }
+    execFileSync("sleep", ["0.5"]);
+  }
+
+  console.error("Container did not stop within 5 seconds.");
+  process.exit(1);
 }
 
 main();

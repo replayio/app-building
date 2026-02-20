@@ -130,6 +130,7 @@ export function EditTaskModal({ open, task, availableUsers = [], onClose, onSave
                     value={assigneeName}
                     onChange={(val) => setAssigneeName(val)}
                     placeholder="Select assignee..."
+                    searchable
                     options={[
                       { value: '', label: '— None —' },
                       ...availableUsers.map((u) => ({ value: u.name, label: u.name })),

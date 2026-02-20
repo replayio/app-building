@@ -144,6 +144,7 @@ export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageC
                 testId="deal-header-owner-input"
                 value={owner}
                 onChange={(val) => setOwner(val)}
+                searchable
                 options={[
                   { value: '', label: '— None —' },
                   ...availableUsers.map((u) => ({ value: u.name, label: u.name })),

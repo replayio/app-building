@@ -80,6 +80,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
               value={clientId}
               onChange={(val) => setClientId(val)}
               placeholder="Select a client..."
+              searchable
               options={[
                 { value: '', label: 'Select a client...' },
                 ...availableClients.map((c) => ({ value: c.id, label: c.name })),
@@ -119,6 +120,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
                   value={owner}
                   onChange={(val) => setOwner(val)}
                   placeholder="Select owner..."
+                  searchable
                   options={[
                     { value: '', label: '— None —' },
                     ...availableUsers.map((u) => ({ value: u.name, label: u.name })),

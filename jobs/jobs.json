@@ -1,6 +1,56 @@
 [
   {
     "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "DocumentFix: Commit FilterSelect searchable fix",
+    "timestamp": "2026-02-19T23:50:34.143Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "FixViolation: Add missing data-testid attributes to page containers, modal close buttons, breadcrumbs, and badges (~30 locations)",
+    "timestamp": "2026-02-19T23:50:33.584Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "RunTests: Verify tests pass after data-testid additions",
+    "timestamp": "2026-02-19T23:50:33.031Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "DocumentFix: Commit missing data-testid fixes",
+    "timestamp": "2026-02-19T23:50:32.457Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "FixViolation: Replace ambiguous getByText with getByTestId in test files (14 violations across 6 files)",
+    "timestamp": "2026-02-19T23:50:31.900Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "RunTests: Verify tests pass after getByText fixes",
+    "timestamp": "2026-02-19T23:50:31.344Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "DocumentFix: Commit getByText fixes",
+    "timestamp": "2026-02-19T23:50:30.787Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "FixViolation: Fix nested-wait deadlocks in toPass blocks (clients-list-page, deals-list-page, deal-detail-page, tasks-list-page)",
+    "timestamp": "2026-02-19T23:50:30.226Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "RunTests: Verify tests pass after nested-wait fixes",
+    "timestamp": "2026-02-19T23:50:29.670Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
+    "description": "DocumentFix: Commit nested-wait deadlock fixes",
+    "timestamp": "2026-02-19T23:50:29.109Z"
+  },
+  {
+    "strategy": "strategies/jobs/maintain/checkDirectives.md",
     "description": "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication test entries",
     "timestamp": "2026-02-19T23:44:57.059Z"
   },

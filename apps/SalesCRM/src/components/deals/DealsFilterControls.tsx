@@ -70,7 +70,7 @@ export function DealsFilterControls({
   return (
     <div className="flex items-center gap-2 mb-4 flex-wrap" data-testid="deals-filter-controls">
       <FilterSelect label="Stage" value={stage} options={stageOptions} onChange={onStageChange} testId="deals-filter-stage" />
-      <FilterSelect label="Client" value={client} options={clientOptions} onChange={onClientChange} testId="deals-filter-client" />
+      <FilterSelect label="Client" value={client} options={clientOptions} onChange={onClientChange} testId="deals-filter-client" searchable />
       <FilterSelect label="Status" value={status} options={statusOptions} onChange={onStatusChange} testId="deals-filter-status" />
       <FilterSelect label="Sort by" value={sort} options={sortOptions} onChange={onSortChange} testId="deals-filter-sort" />
       <div className="flex items-center gap-1.5">
