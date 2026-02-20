@@ -46,8 +46,11 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     await expect(statusDropdown).toBeVisible();
   });
 
-  test('CDP-HDR-02: Edit button opens edit mode with form fields', async ({ page }) => {
+  test('CDP-HDR-02: Edit button opens edit mode and saving name persists the change', async ({ page }) => {
     await navigateToFirstClientDetail(page);
+
+    // Get original name
+    const originalName = await page.getByTestId('client-header-title').textContent();
 
     // Click edit button
     await page.getByTestId('client-header-edit-button').click();
@@ -61,6 +64,26 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     // Save and Cancel buttons visible
     await expect(page.getByTestId('client-header-save-button')).toBeVisible();
     await expect(page.getByTestId('client-header-cancel-button')).toBeVisible();
+
+    // Change name and save
+    const nameInput = page.getByTestId('client-header-name-input');
+    await nameInput.clear();
+    await nameInput.fill('Acme Corporation');
+    await page.getByTestId('client-header-save-button').click();
+
+    // Verify name updated in header
+    await expect(page.getByTestId('client-header-title')).toHaveText('Acme Corporation');
+
+    // Verify persistence by reloading
+    await page.reload();
+    await expect(page.getByTestId('client-header-title')).toHaveText('Acme Corporation');
+
+    // Restore original name
+    await page.getByTestId('client-header-edit-button').click();
+    await page.getByTestId('client-header-name-input').clear();
+    await page.getByTestId('client-header-name-input').fill(originalName!);
+    await page.getByTestId('client-header-save-button').click();
+    await expect(page.getByTestId('client-header-title')).toHaveText(originalName!);
   });
 
   test('CDP-HDR-03: Cancel edit mode restores original values', async ({ page }) => {

@@ -290,10 +290,10 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe the header
 - Expected: "Acme Corp" displayed as large heading. "Organization" badge. "Active" status badge. Tags: "Enterprise", "Software", "High Priority" displayed as clickable badges. "Referral" source badge with edit icon.
 
-**CDP-HDR-02: Clicking edit on header allows editing client name**
+**CDP-HDR-02: Clicking edit on header allows editing and saving client name**
 - Initial: User is on ClientDetailPage for Acme Corp
-- Action: Click the edit icon/pencil on the header area
-- Expected: Client name becomes editable (inline text field). User can type a new name.
+- Action: Click the edit icon/pencil on the header area, change the name to "Acme Corporation", click Save
+- Expected: Client name becomes editable (inline text field). User can type a new name. After saving, the heading displays "Acme Corporation". Change is persisted to database. A timeline entry is created for the name change.
 
 **CDP-HDR-03: Editing client status persists the change**
 - Initial: Client "Acme Corp" has status "Active"
@@ -330,7 +330,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CDP-QA-04: Add Deal opens deal creation modal**
 - Initial: User is on ClientDetailPage
 - Action: Click "Add Deal"
-- Expected: A modal opens with fields: deal name, value ($), stage (dropdown: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won), owner. Has Save/Cancel buttons.
+- Expected: A modal opens with fields: deal name, value ($), stage (dropdown: Lead, Qualification, Discovery, Proposal Sent, Negotiation, Closed Won), owner. Has Save/Cancel buttons.
 
 **CDP-QA-05: Creating a deal via quick action persists and shows in Deals section**
 - Initial: Add Deal modal is open
