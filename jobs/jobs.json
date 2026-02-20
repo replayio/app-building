@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing TLP-HDR-06 test spec entry for Cancel button on Create Task modal (like DLP-HDR-06 for deals) and write the corresponding Playwright test",
-        "RunTests: Verify tests pass after adding cancel modal test"
-      ],
-      "timestamp": "2026-02-20T08:44:46.823Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix TaskPriorityBadge to use CSS variables for priority colors (add --color-priority-high etc to index.css @theme block like status colors) and remove outer margins from TasksPageHeader (mb-6) and TasksFilterBar (mb-4) root elements, moving spacing to parent TasksListPage",
         "RunTests: Verify tests pass after component fixes"
       ],
