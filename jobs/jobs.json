@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "DocumentFix: Commit FilterSelect searchable fix"
-      ],
-      "timestamp": "2026-02-19T23:50:34.143Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing data-testid attributes to page containers, modal close buttons, breadcrumbs, and badges (~30 locations)",
         "RunTests: Verify tests pass after data-testid additions",
         "DocumentFix: Commit missing data-testid fixes"

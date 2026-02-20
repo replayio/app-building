@@ -6,7 +6,7 @@ Strategies are divided into two categories:
 
 These strategies are triggered when a user sends a message (e.g. a bug report, a request to
 build or maintain an app, or a question about logs). They add job groups to the queue using
-`add-group --trailing`, then commit and exit so the next worker invocation picks up the group.
+`add-group --trailing`.
 
 - **addBugReport.md**: Record a user-reported bug in `docs/bugReports.md`.
 - **analyzeLogs.md**: Search through log files to find specific information.
@@ -31,8 +31,6 @@ into sub-groups use `add-group` to insert them at the front of the queue.
 
 ### Root — Shared infrastructure
 
-- **reviewChanges.md**: Reviews iteration logs for lessons learned and strategy improvements.
-  Automatically prioritized by the worker when unreviewed logs exist.
 - **deployment.md**: Deploy the app to production. Used by both build and maintain workflows.
 - **writeScript.md**: Implement a package script from its design doc in `strategies/scripts/`.
 

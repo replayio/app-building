@@ -28,4 +28,4 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testing.md"
 npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/deployment.md" --job "Unpack: Deploy to production" --trailing
 ```
 
-Then commit and exit. The next worker invocation will pick up the first group.
+The worker will pick up and process each group in order.

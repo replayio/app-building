@@ -1,6 +1,6 @@
 import { spawn, execFileSync } from "child_process";
-import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "fs";
-import { resolve, join } from "path";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import { resolve } from "path";
 import { createLogFile, archiveCurrentLog } from "./log";
 
 const REPO_ROOT = "/repo";
@@ -160,17 +160,6 @@ function writeJobsFile(data: JobsFile): void {
   writeFileSync(JOBS_FILE, JSON.stringify(data, null, 2) + "\n");
 }
 
-function getUnreviewedLogs(): string[] {
-  if (!existsSync(LOGS_DIR)) return [];
-  const files = readdirSync(LOGS_DIR);
-  return files.filter(
-    (f) =>
-      (f.startsWith("worker-") || f.startsWith("iteration-")) &&
-      f.endsWith(".log") &&
-      !f.includes("-current")
-  );
-}
-
 function completeGroup(log: (msg: string) => void): void {
   const data = readJobsFile();
   if (data.groups.length === 0) return;
@@ -192,18 +181,6 @@ function buildGroupPrompt(group: Group): string {
     `When you need to add new job groups, use:\n` +
     `- Add to front (default): npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2"\n` +
     `- Add to end: npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2" --trailing`
-  );
-}
-
-function buildReviewPrompt(unreviewedLogs: string[]): string {
-  const logPaths = unreviewedLogs.map((f) => join(LOGS_DIR, f)).join("\n  ");
-  return (
-    `There are unreviewed iteration logs that need to be processed first.\n` +
-    `\n` +
-    `Unreviewed logs:\n  ${logPaths}\n` +
-    `\n` +
-    `Read /repo/strategies/jobs/reviewChanges.md and follow the instructions to review these logs.\n` +
-    `After reviewing, commit your changes and exit.`
   );
 }
 
@@ -237,27 +214,20 @@ async function runLoop(): Promise<void> {
       prompt = initialPrompt;
       log(`Running initial prompt`);
     } else {
-      // Check for unreviewed logs first
-      const unreviewedLogs = getUnreviewedLogs();
-      if (unreviewedLogs.length > 0) {
-        prompt = buildReviewPrompt(unreviewedLogs);
-        log(`Running log review (${unreviewedLogs.length} unreviewed logs)`);
-      } else {
-        // Read next group from jobs.json
-        const data = readJobsFile();
-        if (data.groups.length === 0) {
-          log("No groups remaining. Exiting.");
-          archiveCurrentLog(LOGS_DIR);
-          break;
-        }
+      // Read next group from jobs.json
+      const data = readJobsFile();
+      if (data.groups.length === 0) {
+        log("No groups remaining. Exiting.");
+        archiveCurrentLog(LOGS_DIR);
+        break;
+      }
 
-        const group = data.groups[0];
-        prompt = buildGroupPrompt(group);
-        isGroup = true;
-        log(`Running group: ${group.jobs.length} job(s) (strategy: ${group.strategy})`);
-        for (const job of group.jobs) {
-          log(`  - ${job}`);
-        }
+      const group = data.groups[0];
+      prompt = buildGroupPrompt(group);
+      isGroup = true;
+      log(`Running group: ${group.jobs.length} job(s) (strategy: ${group.strategy})`);
+      for (const job of group.jobs) {
+        log(`  - ${job}`);
       }
     }
 

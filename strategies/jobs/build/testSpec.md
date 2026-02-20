@@ -75,7 +75,6 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 - The PlanPages job must produce output quickly. Do NOT spend excessive turns reading files
   through Task/Explore agents or re-reading files you have already seen. Read AppSpec.md and the
   mockup images directly, decide on pages/components, write docs/tests.md scaffolding, update
-  commit, and exit. A zero-commit iteration is always a failure — prioritize writing
-  output over exhaustive exploration.
+  Prioritize writing output over exhaustive exploration.
 - Download all mockup images in a single curl command, then read them all in parallel. Do not
   interleave downloads and reads.

@@ -49,15 +49,7 @@ and playwright tests.
 
 Make sure all tests pass. Read `strategies/jobs/build/testing.md` to understand how to run tests and debug failures.
 
-## Documenting fixes
-
-Commit all changes and exit.
-
 ## Tips
 
-- When fixing violations, commit after each logical group of fixes (e.g. all SQL fixes together,
-  all data-testid fixes together) rather than trying to fix everything in one pass. Each job
-  should commit and exit, and attempting to fix all violations without committing
-  leads to unproductive iterations with zero commits.
 - Group related fix tasks into a single FixViolation job when they share the same root cause
   (e.g. "FixViolationMissingTestIds" for all modals missing data-testid attributes).

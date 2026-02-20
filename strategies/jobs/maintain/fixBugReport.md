@@ -69,4 +69,4 @@ If the fix was purely a code bug that didn't change the intended behavior, skip 
 Now that the bug is fixed, move it from the top section of the file to an "Unreviewed" section lower down.
 Label the bug with the git revision before / after the bug was fixed and tests updated.
 
-Commit all changes and exit.
+Move the report to the appropriate section in `docs/bugReports.md`.

@@ -382,6 +382,15 @@ Open bug reports to address:
 3. Add settings page with import/export and webhook configuration
 4. Add users page with user management and user selection dropdowns
 
+### Maintenance Round 10
+
+- [x] fixBugReport.md: FixBugWebhookDialogInstructions: Added platform-specific setup guides (Zapier, n8n, custom) to webhook modal with step-by-step instructions, URL format hints, and toggleable payload format preview
+- [x] fixBugReport.md: UpdateTestsWebhookDialogInstructions: Added tests for webhook setup guide and payload format toggle
+- [x] fixBugReport.md: UpdateRevisionsWebhookDialogInstructions: Recorded spec change in AppRevisions.md
+- [x] fixBugReport.md: ResolveBugWebhookDialogInstructions: Bug moved to Unreviewed in bugReports.md
+- [x] checkDirectives.md: UnpackCheckDirectives: Unpacked into 34 sub-jobs for systematic compliance check across all pages
+  - [x] checkDirectives.md: FixViolationFilterSelectSearchable: Added `searchable` prop to FilterSelect component — search input with auto-focus, option filtering, "No matches" empty state, and search-clear on close. Applied to all FilterSelect instances with large option lists (client, user, deal selects across DealsFilterControls, TasksFilterBar, CreateDealModal, AddDealModal, DealDetailHeader, CreateTaskModal, EditTaskModal, AddTaskModal, AddAttachmentModal).
+
 ## Blockers
 
 None.

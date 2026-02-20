@@ -69,4 +69,4 @@ Directives should be general purpose and not include details or examples specifi
 Update `docs/bugReports.md` to move the report from the "Unreviewed" section to the "Finished" section,
 creating it at the end if necessary.
 
-Commit all changes and exit.
+Move the report from "Unreviewed" to "Finished" in `docs/bugReports.md`.

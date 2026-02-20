@@ -75,8 +75,7 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeTests.
   single-assertion expect matchers (`.toHaveCount()`, `.toContainText()`, `.toBeVisible()`) instead.
 
 - Strategy files are at `/repo/strategies/jobs/` and its subdirectories (the repo root), NOT inside
-  the app directory. Always use `/repo/strategies/jobs/reviewChanges.md`,
-  `/repo/strategies/jobs/build/writeTests.md`, etc.
+  the app directory. Always use `/repo/strategies/jobs/build/writeTests.md`, etc.
 
 - Apps with login/signup functionality must have a complete e2e test that exercises the full
   sign-up and sign-in flow against the real auth backend. The test must create a new account,

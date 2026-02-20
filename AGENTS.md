@@ -23,17 +23,14 @@ similar requests are made.
 
 ## Worker Execution
 
-Each worker invocation handles exactly one job group. The worker reads the first group
-from `jobs/jobs.json`, passes all jobs in the group to Claude as a single prompt, and
-checks for a `<DONE>` signal in the output.
+The worker processes job groups from `jobs/jobs.json` sequentially. For each group,
+it passes all jobs to Claude as a single prompt and checks for a `<DONE>` signal.
 
-- If `<DONE>` is signaled: the group is dequeued and the worker exits successfully.
-- If `<DONE>` is NOT signaled: the group remains in the queue for retry on the next
-  worker invocation.
+- If `<DONE>` is signaled: the group is dequeued and the worker moves to the next group.
+- If `<DONE>` is NOT signaled: the group is retried (up to 3 times before being skipped).
 
-Each invocation starts with a clean context. You will not have memory of previous
-invocations, so rely on the codebase, git history, and log files in `/repo/logs/` to
-understand what has already been done.
+The worker commits changes after each group automatically. Focus on completing the
+jobs — do not worry about committing or exiting.
 
 When you have completed ALL jobs in your group, output `<DONE>` to signal completion.
 
@@ -94,6 +91,5 @@ code that fails typecheck or lint.
 
 ## Commits
 
-- Commit after every significant change (new feature, bug fix, refactor).
-- Write clear commit messages describing what changed and why.
-- Never commit code that fails typecheck or lint.
+The worker commits automatically after each iteration. Do not commit manually unless
+explicitly asked to by a strategy or prompt.

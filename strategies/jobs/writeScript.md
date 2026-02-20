@@ -21,7 +21,7 @@ You are implementing a package script based on its design doc in `strategies/scr
 
 6. **Typecheck and lint**: Run `npx tsc --noEmit` and `npx eslint .` to verify no errors.
 
-7. Commit and exit.
+7. Verify the script works end-to-end.
 
 ## Guidelines
 

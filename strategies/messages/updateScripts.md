@@ -22,7 +22,7 @@ design doc is written, the agent implements the script for the app.
    npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/writeScript.md" --job "Implement <script-name> script" --trailing
    ```
 
-5. Commit and exit. The next worker invocation will pick up the group.
+5. The worker will pick up and process the group.
 
 ## Design Doc Structure
 
