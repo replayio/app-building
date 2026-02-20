@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication test entries",
-        "CheckComponentsAuth: Check writeApp.md directive violations in Authentication components",
-        "CheckTestsAuth: Check writeTests.md directive violations in Authentication tests"
-      ],
-      "timestamp": "2026-02-19T23:44:57.059Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
         "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
         "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests"
