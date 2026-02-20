@@ -14,12 +14,66 @@ async function navigateToFirstTaskDetail(page: import('@playwright/test').Page) 
 
 test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
   test('TDP-HDR-01: Task detail page displays task information', async ({ page }) => {
-    await navigateToFirstTaskDetail(page);
+    // Create a task with known fields so all info elements are present
+    await page.goto('/tasks');
+    await page.waitForLoadState('networkidle');
 
-    // Title and priority badge visible
+    await page.getByTestId('new-task-button').click();
+    const modal = page.getByTestId('create-task-modal');
+    await expect(modal).toBeVisible();
+
+    const taskTitle = `InfoTest_${Date.now()}`;
+    await page.getByTestId('create-task-title').fill(taskTitle);
+
+    // Set priority
+    await page.getByTestId('create-task-priority-trigger').click();
+    const priorityMenu = page.getByTestId('create-task-priority-menu');
+    await expect(priorityMenu).toBeVisible();
+    await priorityMenu.locator('[data-testid="create-task-priority-option-high"]').click();
+
+    // Set due date (input is type="date", expects YYYY-MM-DD)
+    const dueDateInput = page.getByTestId('create-task-due-date');
+    await dueDateInput.fill('2025-12-31');
+
+    // Set assignee — use FilterSelect if available, otherwise text input
+    const assigneeTrigger = page.getByTestId('create-task-assignee-name-trigger');
+    const assigneeInput = page.getByTestId('create-task-assignee-name');
+    if (await assigneeTrigger.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await assigneeTrigger.click();
+      const assigneeMenu = page.getByTestId('create-task-assignee-name-menu');
+      await expect(assigneeMenu).toBeVisible();
+      const assigneeOption = assigneeMenu.locator('[data-testid^="create-task-assignee-name-option-"]').filter({ hasNotText: 'None' }).first();
+      await assigneeOption.click();
+    } else {
+      await assigneeInput.fill('Test User');
+    }
+
+    // Set client
+    await page.getByTestId('create-task-client-trigger').click();
+    const clientMenu = page.getByTestId('create-task-client-menu');
+    await expect(clientMenu).toBeVisible();
+    const clientOption = clientMenu.locator('[data-testid^="create-task-client-option-"]').filter({ hasNotText: 'None' }).first();
+    await clientOption.click();
+
+    await page.getByTestId('create-task-save').click();
+    await expect(modal).not.toBeVisible();
+    await page.waitForLoadState('networkidle');
+
+    // Navigate to the created task's detail page
+    await expect(async () => {
+      const card = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+      await expect(card).toBeVisible();
+    }).toPass({ timeout: 10000 });
+    await page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle }).click();
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('task-detail-page')).toBeVisible();
+
+    // Title visible
     await expect(page.getByTestId('task-detail-title')).toBeVisible();
-    const title = await page.getByTestId('task-detail-title').textContent();
-    expect(title!.trim().length).toBeGreaterThan(0);
+    await expect(page.getByTestId('task-detail-title')).toContainText(taskTitle);
+
+    // Priority badge visible
+    await expect(page.locator('[data-testid^="task-priority-badge-"]')).toBeVisible();
 
     // Description visible (if present on the task)
     const descriptionEl = page.getByTestId('task-detail-description');
@@ -32,6 +86,15 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     await expect(page.getByTestId('task-detail-status')).toBeVisible();
     const status = await page.getByTestId('task-detail-status').textContent();
     expect(['Open', 'Completed']).toContain(status!.trim());
+
+    // Due date visible
+    await expect(page.getByTestId('task-detail-due-date')).toBeVisible();
+
+    // Assignee visible
+    await expect(page.getByTestId('task-detail-assignee')).toBeVisible();
+
+    // Client name visible
+    await expect(page.getByTestId('task-detail-client')).toBeVisible();
 
     // Notes section visible
     await expect(page.getByTestId('task-notes-section')).toBeVisible();
@@ -96,19 +159,24 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     await expect(page.getByTestId('task-detail-status')).toContainText('Completed');
 
     // Verify timeline side effect: navigate to associated client and check timeline
+    // The task was created with a client association, so the client link must be present
     const clientSpan = page.getByTestId('task-detail-client');
-    if (await clientSpan.isVisible()) {
-      const clientText = await clientSpan.textContent();
-      const clientName = clientText!.replace('Client:', '').trim();
-      // Navigate to the clients list and find this client
-      await page.goto('/clients');
-      await page.waitForLoadState('networkidle');
-      const clientRow = page.locator('[data-testid^="client-row-"]', { hasText: clientName }).first();
-      await clientRow.click();
-      await page.waitForLoadState('networkidle');
-      const timeline = page.getByTestId('timeline-section');
-      await expect(timeline).toContainText('Task Completed');
-    }
+    await expect(clientSpan).toBeVisible();
+    const clientText = await clientSpan.textContent();
+    const clientName = clientText!.replace('Client:', '').trim();
+
+    // Navigate to the clients list and find this client
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+    const clientRow = page.locator('[data-testid^="client-row-"]', { hasText: clientName }).first();
+    await clientRow.click();
+    await page.waitForLoadState('networkidle');
+
+    // Verify exactly one "Task Completed" timeline entry for this task
+    const timeline = page.getByTestId('timeline-section');
+    await expect(timeline).toContainText('Task Completed');
+    const completedEntries = timeline.locator('[data-testid^="timeline-entry-"]').filter({ hasText: 'Task Completed' }).filter({ hasText: taskTitle });
+    await expect(completedEntries).toHaveCount(1);
   });
 
   test('TDP-HDR-03: Cancel Task deletes task and redirects', async ({ page }) => {
@@ -195,11 +263,21 @@ test.describe('TaskDetailPage - Notes (TDP-NTS)', () => {
     await page.getByTestId('task-note-add').click();
     await page.waitForLoadState('networkidle');
 
-    // Note should appear in the list
-    await expect(async () => {
-      const notesSection = page.getByTestId('task-notes-section');
-      await expect(notesSection).toContainText(noteContent);
-    }).toPass({ timeout: 10000 });
+    // Note should appear in the list with content
+    const noteEl = page.locator('[data-testid^="task-note-"]').filter({ hasText: noteContent }).first();
+    await expect(noteEl).toBeVisible({ timeout: 10000 });
+
+    // Verify author is displayed on the note
+    const noteAuthor = noteEl.locator('[data-testid^="task-note-author-"]');
+    await expect(noteAuthor).toBeVisible();
+    const authorText = await noteAuthor.textContent();
+    expect(authorText!.trim().length).toBeGreaterThan(0);
+
+    // Verify timestamp is displayed on the note
+    const noteTimestamp = noteEl.locator('[data-testid^="task-note-timestamp-"]');
+    await expect(noteTimestamp).toBeVisible();
+    const timestampText = await noteTimestamp.textContent();
+    expect(timestampText!.trim().length).toBeGreaterThan(0);
 
     // Input should be cleared
     await expect(page.getByTestId('task-note-input')).toHaveValue('');

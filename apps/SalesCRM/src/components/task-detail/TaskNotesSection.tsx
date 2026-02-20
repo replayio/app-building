@@ -57,8 +57,8 @@ export function TaskNotesSection({ notes, onAddNote, onDeleteNote }: TaskNotesSe
                   {note.content}
                 </p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-[11px] text-text-muted">{note.author}</span>
-                  <span className="text-[11px] text-text-muted">
+                  <span className="text-[11px] text-text-muted" data-testid={`task-note-author-${note.id}`}>{note.author}</span>
+                  <span className="text-[11px] text-text-muted" data-testid={`task-note-timestamp-${note.id}`}>
                     {new Date(note.created_at).toLocaleDateString()} {new Date(note.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
