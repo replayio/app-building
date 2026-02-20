@@ -9,7 +9,7 @@ interface QuickActionsProps {
 
 export function QuickActions({ onAddTask, onAddDeal, onAddAttachment, onAddPerson }: QuickActionsProps) {
   return (
-    <div className="flex items-center gap-2 mb-6" data-testid="quick-actions">
+    <div className="flex flex-wrap items-center gap-2 mb-6" data-testid="quick-actions">
       <QuickActionButton icon={<CheckSquare size={18} strokeWidth={1.5} />} label="Add Task" onClick={onAddTask} testId="quick-action-add-task" />
       <QuickActionButton icon={<Clock size={18} strokeWidth={1.5} />} label="Add Deal" onClick={onAddDeal} testId="quick-action-add-deal" />
       <QuickActionButton icon={<Paperclip size={18} strokeWidth={1.5} />} label="Add Attachment" onClick={onAddAttachment} testId="quick-action-add-attachment" />

@@ -27,7 +27,7 @@ export function ClientsPagination({ page, pageSize, total, onPageChange }: Clien
   }
 
   return (
-    <div data-testid="clients-pagination" className="flex items-center justify-end gap-3 mt-4 px-4 py-3">
+    <div data-testid="clients-pagination" className="flex flex-wrap items-center justify-end gap-3 mt-4 px-4 py-3">
       <span data-testid="pagination-info" className="text-[12px] text-text-muted">
         Showing {start}-{end} of {total} clients
       </span>

@@ -41,6 +41,8 @@ function formatOpenDeals(client: Client): string {
   return `${count} (Value: ${formatDealsValue(value)})`
 }
 
+const gridClass = 'clients-table-grid grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px]'
+
 export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
   const navigate = useNavigate()
 
@@ -55,14 +57,14 @@ export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
   return (
     <div data-testid="clients-table" className="w-full">
       {/* Header */}
-      <div data-testid="clients-table-header" className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[36px] px-4 text-[12px] font-medium text-text-muted border-b border-border">
+      <div data-testid="clients-table-header" className={`clients-table-header ${gridClass} items-center h-[36px] px-4 text-[12px] font-medium text-text-muted border-b border-border`}>
         <span>Client Name</span>
-        <span data-testid="clients-header-type">Type</span>
-        <span data-testid="clients-header-status">Status</span>
-        <span>Tags</span>
-        <span>Primary Contact</span>
-        <span>Open Deals</span>
-        <span>Next Task</span>
+        <span data-testid="clients-header-type" className="clients-col-type">Type</span>
+        <span data-testid="clients-header-status" className="clients-col-status">Status</span>
+        <span className="clients-col-tags">Tags</span>
+        <span className="clients-col-contact">Primary Contact</span>
+        <span className="clients-col-deals">Open Deals</span>
+        <span className="clients-col-task">Next Task</span>
         <span></span>
       </div>
 
@@ -72,36 +74,38 @@ export function ClientsTable({ clients, onDeleteClient }: ClientsTableProps) {
           key={client.id}
           data-testid={`client-row-${client.id}`}
           onClick={() => navigate(`/clients/${client.id}`)}
-          className="grid grid-cols-[1.2fr_0.8fr_0.7fr_1.2fr_1.1fr_0.9fr_1.3fr_40px] items-center h-[44px] px-4 cursor-pointer hover:bg-hover transition-colors duration-100 border-b border-border/50"
+          className={`${gridClass} items-center h-[44px] px-4 cursor-pointer hover:bg-hover transition-colors duration-100 border-b border-border/50`}
         >
-          <span data-testid="client-name" className="text-[13px] font-medium text-text-primary truncate pr-2">
+          <span data-testid="client-name" className="clients-col-name text-[13px] font-medium text-text-primary truncate pr-2">
             {client.name}
           </span>
-          <span data-testid="client-type" className="text-[13px] text-text-secondary">
+          <span data-testid="client-type" className="clients-col-type text-[13px] text-text-secondary">
             {client.type === 'organization' ? 'Organization' : 'Individual'}
           </span>
-          <span data-testid="client-status">
+          <span data-testid="client-status" className="clients-col-status">
             <StatusBadge status={client.status} />
           </span>
-          <div data-testid="client-tags" className="flex items-center gap-1 overflow-hidden">
+          <div data-testid="client-tags" className="clients-col-tags flex items-center gap-1 overflow-hidden">
             {client.tags.map((tag) => (
               <TagBadge key={tag} tag={tag} />
             ))}
           </div>
-          <span data-testid="client-primary-contact" className="text-[13px] text-text-secondary truncate pr-2">
+          <span data-testid="client-primary-contact" className="clients-col-contact text-[13px] text-text-secondary truncate pr-2">
             {formatPrimaryContact(client)}
           </span>
-          <span data-testid="client-open-deals" className="text-[13px] text-text-secondary">
+          <span data-testid="client-open-deals" className="clients-col-deals text-[13px] text-text-secondary">
             {formatOpenDeals(client)}
           </span>
-          <span data-testid="client-next-task" className="text-[13px] text-text-secondary truncate pr-2">
+          <span data-testid="client-next-task" className="clients-col-task text-[13px] text-text-secondary truncate pr-2">
             {formatNextTask(client)}
           </span>
-          <ClientRowActionMenu
-            onView={() => navigate(`/clients/${client.id}`)}
-            onEdit={() => navigate(`/clients/${client.id}`)}
-            onDelete={() => onDeleteClient(client.id)}
-          />
+          <span className="clients-col-actions">
+            <ClientRowActionMenu
+              onView={() => navigate(`/clients/${client.id}`)}
+              onEdit={() => navigate(`/clients/${client.id}`)}
+              onDelete={() => onDeleteClient(client.id)}
+            />
+          </span>
         </div>
       ))}
     </div>

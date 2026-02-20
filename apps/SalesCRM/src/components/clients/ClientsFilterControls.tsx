@@ -52,7 +52,7 @@ export function ClientsFilterControls({
   ]
 
   return (
-    <div data-testid="clients-filter-controls" className="flex items-center gap-2">
+    <div data-testid="clients-filter-controls" className="flex flex-wrap items-center gap-2">
       <FilterSelect label="Status" value={status} options={statusOptions} onChange={onStatusChange} testId="filter-status" />
       <FilterSelect label="Tags" value={tag} options={tagOptions} onChange={onTagChange} testId="filter-tags" />
       <FilterSelect label="Source" value={source} options={sourceOptions} onChange={onSourceChange} testId="filter-source" />

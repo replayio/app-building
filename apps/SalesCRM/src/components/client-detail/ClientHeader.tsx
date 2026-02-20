@@ -41,13 +41,13 @@ export function ClientHeader({ client, onUpdate }: ClientHeaderProps) {
   if (editing) {
     return (
       <div className="mb-6" data-testid="client-header">
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex flex-wrap items-center gap-3 mb-3">
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             data-testid="client-header-name-input"
-            className="text-[24px] font-semibold text-text-primary bg-base border border-border rounded-[5px] px-2 py-1 focus:outline-none focus:border-accent"
+            className="text-[24px] font-semibold text-text-primary bg-base border border-border rounded-[5px] px-2 py-1 focus:outline-none focus:border-accent min-w-0 max-w-full"
           />
           <button
             onClick={handleSave}
@@ -64,7 +64,7 @@ export function ClientHeader({ client, onUpdate }: ClientHeaderProps) {
             <X size={16} strokeWidth={2} />
           </button>
         </div>
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex flex-wrap items-center gap-3 mb-3">
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Type</label>
             <FilterSelect
@@ -111,7 +111,7 @@ export function ClientHeader({ client, onUpdate }: ClientHeaderProps) {
     <div className="mb-6" data-testid="client-header">
       <div className="flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
             <h1 className="text-[24px] font-semibold text-text-primary" data-testid="client-header-title">{client.name}</h1>
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-border/50 text-text-secondary capitalize" data-testid="client-header-type-badge">
               {client.type === 'organization' ? 'Organization' : 'Individual'}

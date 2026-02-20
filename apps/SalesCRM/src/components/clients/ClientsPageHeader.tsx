@@ -9,9 +9,9 @@ interface ClientsPageHeaderProps {
 
 export function ClientsPageHeader({ onAddClient, onImport, onImportContacts, onExport }: ClientsPageHeaderProps) {
   return (
-    <div data-testid="clients-page-header" className="flex items-center justify-between mb-6">
+    <div data-testid="clients-page-header" className="flex flex-wrap items-center justify-between gap-3 mb-6">
       <h1 className="text-[24px] font-semibold text-text-primary">Clients</h1>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           data-testid="import-button"
           onClick={onImport}

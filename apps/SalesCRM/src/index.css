@@ -73,3 +73,63 @@ body {
   display: flex;
   width: 100%;
 }
+
+/* Responsive: Clients table */
+@media (max-width: 1024px) {
+  .clients-col-tags,
+  .clients-col-contact,
+  .clients-col-task {
+    display: none !important;
+  }
+  .clients-table-grid {
+    grid-template-columns: 1.5fr 0.8fr 0.7fr 0.9fr 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .clients-col-type,
+  .clients-col-deals {
+    display: none !important;
+  }
+  .clients-table-grid {
+    grid-template-columns: 1fr auto 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .clients-table-header {
+    display: none !important;
+  }
+  .clients-table-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .clients-col-name {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+  .clients-col-status {
+    flex: 0 0 auto;
+  }
+  .clients-col-actions {
+    flex: 0 0 auto;
+  }
+}
+
+/* Responsive: Source info section */
+@media (max-width: 768px) {
+  .source-info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .source-info-grid {
+    grid-template-columns: 1fr;
+  }
+}

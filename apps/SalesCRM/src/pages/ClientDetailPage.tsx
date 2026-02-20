@@ -229,7 +229,7 @@ export function ClientDetailPage() {
   }
 
   return (
-    <div className="p-6" data-testid="client-detail-page">
+    <div className="p-3 sm:p-6" data-testid="client-detail-page">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="client-detail-breadcrumb">
         <span
@@ -257,7 +257,7 @@ export function ClientDetailPage() {
       <SourceInfoSection client={currentClient} onUpdate={handleUpdateClient} />
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           {/* Tasks */}
           <TasksSection tasks={tasks} onToggleTask={handleToggleTask} />

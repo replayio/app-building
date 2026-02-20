@@ -102,7 +102,7 @@ export function ClientsListPage() {
   }
 
   return (
-    <div className="p-6" data-testid="clients-list-page">
+    <div className="p-3 sm:p-6" data-testid="clients-list-page">
       <ClientsPageHeader
         onAddClient={() => setAddModalOpen(true)}
         onImport={() => setImportDialogOpen(true)}
@@ -111,7 +111,7 @@ export function ClientsListPage() {
       />
 
       {/* Search + Filters row */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex flex-wrap items-center gap-3 mb-4">
         <ClientsSearchBar value={searchInput} onChange={setSearchInput} />
         <ClientsFilterControls
           status={statusFilter}
@@ -128,7 +128,7 @@ export function ClientsListPage() {
       </div>
 
       {/* Table */}
-      <div className="border border-border rounded-[6px] bg-surface">
+      <div className="border border-border rounded-[6px] bg-surface overflow-x-auto">
         {loading ? (
           <div className="flex items-center justify-center py-12 text-[13px] text-text-muted">
             Loading clients...

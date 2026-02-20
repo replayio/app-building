@@ -69,7 +69,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
       </div>
 
       {editing ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Acquisition Source</label>
             <input
@@ -126,7 +126,7 @@ export function SourceInfoSection({ client, onUpdate }: SourceInfoSectionProps) 
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-4" data-testid="source-info-display">
+        <div className="source-info-grid grid grid-cols-2 sm:grid-cols-4 gap-4" data-testid="source-info-display">
           <div>
             <div className="text-[12px] text-text-muted mb-0.5">Acquisition Source</div>
             <div className="text-[13px] text-text-primary" data-testid="source-info-source-value">
