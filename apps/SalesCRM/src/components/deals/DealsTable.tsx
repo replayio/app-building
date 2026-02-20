@@ -35,8 +35,8 @@ export function DealsTable({ deals, sort, onSortChange, onDeleteDeal }: DealsTab
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full" data-testid="deals-table">
-        <thead>
+      <table className="w-full deals-table" data-testid="deals-table">
+        <thead className="deals-table-head">
           <tr className="border-b border-border">
             <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted">Deal Name</th>
             <th className="text-left px-4 py-2.5 text-[12px] font-medium text-text-muted max-md:hidden">Client</th>
@@ -72,18 +72,18 @@ export function DealsTable({ deals, sort, onSortChange, onDeleteDeal }: DealsTab
                 onClick={() => navigate(`/deals/${deal.id}`)}
                 className="border-b border-border last:border-b-0 cursor-pointer hover:bg-hover transition-colors duration-100"
               >
-                <td className="px-4 py-3 text-[13px] font-medium text-text-primary" data-testid={`deal-name-${deal.id}`}>{deal.name}</td>
+                <td className="deals-col-name px-4 py-3 text-[13px] font-medium text-text-primary" data-testid={`deal-name-${deal.id}`}>{deal.name}</td>
                 <td className="px-4 py-3 text-[13px] text-text-secondary max-md:hidden" data-testid={`deal-client-${deal.id}`}>{deal.client_name}</td>
-                <td className="px-4 py-3" data-testid={`deal-stage-${deal.id}`}>
+                <td className="deals-col-stage px-4 py-3" data-testid={`deal-stage-${deal.id}`}>
                   <DealStageBadge stage={deal.stage} />
                 </td>
                 <td className="px-4 py-3 text-[13px] text-text-secondary max-lg:hidden" data-testid={`deal-owner-${deal.id}`}>{deal.owner || '—'}</td>
-                <td className="px-4 py-3 text-[13px] text-text-primary font-medium" data-testid={`deal-value-${deal.id}`}>{formatCurrency(deal.value)}</td>
+                <td className="deals-col-value px-4 py-3 text-[13px] text-text-primary font-medium" data-testid={`deal-value-${deal.id}`}>{formatCurrency(deal.value)}</td>
                 <td className="px-4 py-3 text-[13px] text-text-secondary max-lg:hidden" data-testid={`deal-close-date-${deal.id}`}>{formatDate(deal.expected_close_date)}</td>
                 <td className="px-4 py-3 max-md:hidden" data-testid={`deal-status-${deal.id}`}>
                   <DealStatusBadge status={deal.status} />
                 </td>
-                <td className="px-4 py-3">
+                <td className="deals-col-actions px-4 py-3">
                   <DealRowActionMenu dealId={deal.id} onDelete={onDeleteDeal} />
                 </td>
               </tr>

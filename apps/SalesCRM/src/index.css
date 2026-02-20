@@ -121,6 +121,48 @@ body {
   }
 }
 
+/* Responsive: Deals table */
+@media (max-width: 480px) {
+  .deals-table-head {
+    display: none !important;
+  }
+  .deals-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  .deals-table tbody td {
+    padding: 0 !important;
+  }
+  .deals-col-name {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .deals-col-stage {
+    flex: 0 0 auto;
+  }
+  .deals-col-value {
+    flex: 0 0 auto;
+  }
+  .deals-col-actions {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
+/* Responsive: Deals filter controls */
+@media (max-width: 480px) {
+  .deals-date-range {
+    width: 100%;
+  }
+  .deals-date-range input[type="date"] {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
 /* Responsive: Source info section */
 @media (max-width: 768px) {
   .source-info-grid {

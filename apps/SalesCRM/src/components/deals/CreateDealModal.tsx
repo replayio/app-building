@@ -57,7 +57,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center" data-testid="create-deal-modal">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px]">
+      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] mx-3 max-h-[90vh] overflow-y-auto">
         <div className="px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Create New Deal</h2>
         </div>
@@ -87,7 +87,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
               ]}
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[12px] text-text-muted mb-1">Value ($)</label>
               <input
@@ -111,7 +111,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[12px] text-text-muted mb-1">Owner</label>
               {availableUsers.length > 0 ? (

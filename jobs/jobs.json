@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
-        "MakeResponsiveDealsListPage: Make DealsListPage responsive"
-      ],
-      "timestamp": "2026-02-20T10:02:02.879Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/polishApp.md",
-      "jobs": [
         "MakeResponsiveDealDetailPage: Make DealDetailPage responsive"
       ],
       "timestamp": "2026-02-20T10:02:02.320Z"

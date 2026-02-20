@@ -73,7 +73,7 @@ export function DealsFilterControls({
       <FilterSelect label="Client" value={client} options={clientOptions} onChange={onClientChange} testId="deals-filter-client" searchable />
       <FilterSelect label="Status" value={status} options={statusOptions} onChange={onStatusChange} testId="deals-filter-status" />
       <FilterSelect label="Sort by" value={sort} options={sortOptions} onChange={onSortChange} testId="deals-filter-sort" />
-      <div className="flex items-center gap-1.5">
+      <div className="deals-date-range flex items-center gap-1.5">
         <input
           type="date"
           data-testid="deals-filter-date-from"
