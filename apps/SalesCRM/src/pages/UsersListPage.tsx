@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { UsersPageHeader } from '../components/users/UsersPageHeader'
-import { Briefcase, CheckSquare, Mail } from 'lucide-react'
+import { UserCard } from '../components/users/UserCard'
 
 interface UserSummary {
   id: string
@@ -15,7 +14,6 @@ interface UserSummary {
 
 export function UsersListPage() {
   const [users, setUsers] = useState<UserSummary[]>([])
-  const navigate = useNavigate()
 
   useEffect(() => {
     async function loadUsers() {
@@ -36,45 +34,15 @@ export function UsersListPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="users-grid">
         {users.map((user) => (
-          <div
+          <UserCard
             key={user.id}
-            data-testid={`user-card-${user.id}`}
-            onClick={() => navigate(`/users/${user.id}`)}
-            className="border border-border rounded-[6px] bg-surface p-4 cursor-pointer hover:border-accent/40 transition-colors duration-100"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              {user.avatar_url ? (
-                <img
-                  src={user.avatar_url}
-                  alt={user.name}
-                  className="w-10 h-10 rounded-full"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-[15px] font-medium text-accent">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div data-testid={`user-name-${user.id}`} className="text-[13px] font-medium text-text-primary truncate">
-                  {user.name}
-                </div>
-                <div className="flex items-center gap-1 text-[12px] text-text-muted truncate">
-                  <Mail size={11} strokeWidth={1.75} />
-                  {user.email}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-text-secondary">
-              <div className="flex items-center gap-1.5">
-                <Briefcase size={12} strokeWidth={1.75} />
-                <span>{user.active_deals_count} active deal{user.active_deals_count !== 1 ? 's' : ''}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckSquare size={12} strokeWidth={1.75} />
-                <span>{user.open_tasks_count} open task{user.open_tasks_count !== 1 ? 's' : ''}</span>
-              </div>
-            </div>
-          </div>
+            id={user.id}
+            name={user.name}
+            email={user.email}
+            avatar_url={user.avatar_url}
+            active_deals_count={user.active_deals_count}
+            open_tasks_count={user.open_tasks_count}
+          />
         ))}
       </div>
 
