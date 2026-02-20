@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Replace 5 instances of .toPass() wrapping single auto-wait Playwright assertions in task-detail-page.spec.ts with direct assertion timeouts (e.g. .toBeVisible({ timeout: 10000 }) instead of expect(async () => { await expect(x).toBeVisible() }).toPass())",
-        "RunTests: Verify tests pass after .toPass() pattern fix"
-      ],
-      "timestamp": "2026-02-20T08:56:58.636Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing test entries for webhook enable/disable toggle (STP-WH-07) and edit webhook flow (STP-WH-08), add corresponding Playwright tests, and update components if needed",
         "RunTests: Verify tests pass after webhook lifecycle fix"
       ],
