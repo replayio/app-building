@@ -398,8 +398,8 @@ Open bug reports to address:
 - [ ] ClientDetailPage
 - [ ] PersonDetailPage
 - [ ] DealsListPage
-- [ ] DealDetailPage
-- [ ] TasksListPage
+- [x] DealDetailPage
+- [x] TasksListPage
 - [x] TaskDetailPage
 - [x] SettingsPage
 - [ ] UsersListPage

@@ -39,15 +39,15 @@ export function DealAttachmentsSection({ attachments, onUpload, onDelete }: Deal
             <div
               key={att.id}
               data-testid={`deal-attachment-${att.id}`}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
+              className="flex items-center gap-3 max-sm:flex-wrap px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
               <AttachmentPreview filename={att.filename} url={att.url} type={att.type} />
               <div className="flex-1 min-w-0">
-                <span className="text-[13px] text-text-primary font-medium">{att.filename}</span>
-                <span className="text-[12px] text-text-muted ml-2">{getFileTypeLabel(att.filename, att.type)}</span>
+                <span className="text-[13px] text-text-primary font-medium truncate block">{att.filename}</span>
+                <span className="text-[12px] text-text-muted">{getFileTypeLabel(att.filename, att.type)}</span>
                 <span className="text-[12px] text-text-muted ml-1">{formatSize(att.size)}</span>
               </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
+              <div className="flex items-center gap-1 flex-shrink-0 max-sm:ml-auto">
                 <a
                   data-testid={`deal-attachment-download-${att.id}`}
                   href={att.url}

@@ -117,7 +117,7 @@ export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageC
         )}
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4">
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Client</div>
           <div data-testid="deal-header-client" className="text-[13px] text-text-primary">{deal.client_name}</div>

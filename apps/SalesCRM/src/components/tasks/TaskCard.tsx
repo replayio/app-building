@@ -56,24 +56,36 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
   return (
     <div
       data-testid={`task-card-${task.id}`}
-      className="border border-border rounded-[6px] bg-surface px-5 py-4 hover:shadow-[var(--shadow-elevation-1)] transition-shadow duration-150 cursor-pointer"
+      className="border border-border rounded-[6px] bg-surface px-5 max-sm:px-3 py-4 hover:shadow-[var(--shadow-elevation-1)] transition-shadow duration-150 cursor-pointer"
       onClick={() => onClick(task)}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 max-sm:gap-3">
         <TaskPriorityBadge priority={task.priority} />
 
         <div className="flex-1 min-w-0">
           <div data-testid={`task-title-${task.id}`} className="text-[14px] font-medium text-text-primary leading-snug">
             {task.title}
           </div>
+          <div className="hidden max-sm:flex items-center gap-2 mt-1 flex-wrap">
+            {task.due_date && (
+              <span data-testid={`task-due-date-mobile-${task.id}`} className="text-[12px] text-text-muted">
+                {formatDueDate(task.due_date)}
+              </span>
+            )}
+            {task.assignee_name && (
+              <span className="text-[12px] text-text-muted">
+                · {task.assignee_name}
+              </span>
+            )}
+          </div>
         </div>
 
-        <div data-testid={`task-due-date-${task.id}`} className="text-[13px] text-text-muted whitespace-nowrap flex-shrink-0">
+        <div data-testid={`task-due-date-${task.id}`} className="text-[13px] text-text-muted whitespace-nowrap flex-shrink-0 max-sm:hidden">
           {formatDueDate(task.due_date)}
         </div>
 
         {task.assignee_name && (
-          <div data-testid={`task-assignee-${task.id}`} className="flex items-center gap-2 flex-shrink-0">
+          <div data-testid={`task-assignee-${task.id}`} className="flex items-center gap-2 flex-shrink-0 max-sm:hidden">
             <div className="w-8 h-8 rounded-full bg-sidebar flex items-center justify-center">
               <User size={14} strokeWidth={1.75} className="text-text-muted" />
             </div>

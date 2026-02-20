@@ -21,41 +21,44 @@ export function StagePipeline({ currentStage }: StagePipelineProps) {
   const progressPercent = isClosedLost ? 0 : Math.min(100, ((currentIndex + 1) / stages.length) * 100)
 
   return (
-    <div data-testid="deal-stage-pipeline" className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="deal-stage-pipeline" className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4 overflow-x-auto">
       {/* Stage indicators */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 min-w-0">
         {stages.map((stage, index) => {
           const isCompleted = !isClosedLost && index < currentIndex
           const isCurrent = !isClosedLost && index === currentIndex
 
           return (
-            <div key={stage.key} data-testid={`pipeline-stage-${stage.key}`} className="flex flex-col items-center flex-1">
+            <div key={stage.key} data-testid={`pipeline-stage-${stage.key}`} className="flex flex-col items-center flex-1 min-w-0">
               <div
                 data-testid={`pipeline-stage-indicator-${stage.key}`}
                 data-completed={isCompleted ? 'true' : 'false'}
                 data-current={isCurrent ? 'true' : 'false'}
                 className={`
-                  w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-medium mb-1.5
+                  w-8 h-8 max-sm:w-6 max-sm:h-6 rounded-full flex items-center justify-center text-[11px] max-sm:text-[9px] font-medium mb-1.5
                   ${isCompleted ? 'bg-status-active text-white' : ''}
                   ${isCurrent ? 'bg-accent text-white' : ''}
                   ${!isCompleted && !isCurrent ? 'bg-sidebar text-text-muted border border-border' : ''}
                 `}
               >
                 {isCompleted ? (
-                  <Check size={14} strokeWidth={2} />
+                  <Check size={14} strokeWidth={2} className="max-sm:hidden" />
                 ) : (
                   <span>{index + 1}</span>
                 )}
+                {isCompleted && (
+                  <Check size={10} strokeWidth={2} className="hidden max-sm:block" />
+                )}
               </div>
               <span
-                className={`text-[11px] text-center ${
+                className={`text-[11px] max-sm:text-[9px] text-center truncate max-w-full px-0.5 ${
                   isCurrent ? 'text-accent font-medium' : isCompleted ? 'text-text-primary' : 'text-text-muted'
                 }`}
               >
                 {stage.label}
               </span>
               {isCurrent && (
-                <span className="text-[10px] text-accent mt-0.5">(Current)</span>
+                <span className="text-[10px] max-sm:text-[8px] text-accent mt-0.5">(Current)</span>
               )}
             </div>
           )

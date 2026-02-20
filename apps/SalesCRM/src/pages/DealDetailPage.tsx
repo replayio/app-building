@@ -211,7 +211,7 @@ export function DealDetailPage() {
   }
 
   return (
-    <div className="p-6" data-testid="deal-detail-page">
+    <div className="p-6 max-sm:p-3" data-testid="deal-detail-page">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="deal-detail-breadcrumb">
         <span
@@ -236,7 +236,7 @@ export function DealDetailPage() {
       <StagePipeline currentStage={currentDeal.stage} />
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 max-md:grid-cols-1 gap-4">
         <div>
           {/* Deal History */}
           <DealHistorySection history={history} />

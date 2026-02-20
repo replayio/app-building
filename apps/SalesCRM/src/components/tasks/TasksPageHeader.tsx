@@ -7,8 +7,8 @@ interface TasksPageHeaderProps {
 
 export function TasksPageHeader({ onCreateTask, onImport }: TasksPageHeaderProps) {
   return (
-    <div className="flex items-center justify-between mb-6" data-testid="tasks-page-header">
-      <h1 className="text-[24px] font-semibold text-text-primary">Upcoming Tasks</h1>
+    <div className="flex items-center justify-between mb-6 gap-3 flex-wrap" data-testid="tasks-page-header">
+      <h1 className="text-[24px] max-sm:text-[20px] font-semibold text-text-primary">Upcoming Tasks</h1>
       <div className="flex items-center gap-3">
         <button
           onClick={onImport}

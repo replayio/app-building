@@ -38,7 +38,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div data-testid="add-deal-task-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
+      <div data-testid="add-deal-task-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto mx-4">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add Task</h2>
           <button
@@ -72,7 +72,7 @@ export function AddDealTaskModal({ open, onClose, onSave }: AddDealTaskModalProp
               className="w-full px-3 py-2 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent resize-none"
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Due Date</label>
               <input

@@ -68,7 +68,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div data-testid="create-task-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px]">
+      <div data-testid="create-task-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto mx-4">
         <div className="flex items-center justify-between px-5 py-3 border-b border-border">
           <h3 className="text-[14px] font-semibold text-text-primary">New Task</h3>
           <button
@@ -107,7 +107,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Due Date</label>
                 <input
@@ -135,7 +135,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
               <div>
                 <label className="text-[12px] font-medium text-text-muted mb-1 block">Assignee</label>
                 {availableUsers.length > 0 ? (
