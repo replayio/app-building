@@ -3,9 +3,10 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+        "FixViolation: Fix deals.ts line 293 using ?? null instead of || null for UUID column client_id",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-20T19:53:23.392Z"
+      "timestamp": "2026-02-20T23:00:42.009Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
