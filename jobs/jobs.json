@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix stage naming inconsistency — standardize 'Proposal Sent' label in DealsPipelineView and DealHistorySection to match DealStageBadge, DealsFilterControls, and CreateDealModal; also fix testSpec DLP-HDR-02 to say 'Proposal Sent' instead of 'Proposal'",
-        "RunTests: Verify tests pass after stage naming fix",
-        "DocumentFix: Document the stage naming fix"
-      ],
-      "timestamp": "2026-02-20T21:34:33.814Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
         "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
         "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests"

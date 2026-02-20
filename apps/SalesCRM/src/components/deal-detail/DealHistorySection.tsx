@@ -10,7 +10,7 @@ const stageLabels: Record<string, string> = {
   lead: 'Lead',
   qualification: 'Qualification',
   discovery: 'Discovery',
-  proposal: 'Proposal',
+  proposal: 'Proposal Sent',
   negotiation: 'Negotiation',
   closed_won: 'Closed Won',
   closed_lost: 'Closed Lost',

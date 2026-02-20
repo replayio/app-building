@@ -9,7 +9,7 @@ const stages: { key: DealStage; label: string }[] = [
   { key: 'lead', label: 'Lead' },
   { key: 'qualification', label: 'Qualification' },
   { key: 'discovery', label: 'Discovery' },
-  { key: 'proposal', label: 'Proposal' },
+  { key: 'proposal', label: 'Proposal Sent' },
   { key: 'negotiation', label: 'Negotiation' },
   { key: 'closed_won', label: 'Closed Won' },
 ]

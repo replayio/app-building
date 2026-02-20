@@ -211,7 +211,7 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
     const stageDisplayNames: Record<string, string> = {
       'lead': 'Lead', 'qualification': 'Qualification', 'discovery': 'Discovery',
-      'proposal': 'Proposal', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
+      'proposal': 'Proposal Sent', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
     };
     const expectedFrom = stageDisplayNames[currentStage] || currentStage;
     const expectedTo = stageDisplayNames[newStage] || newStage;
@@ -339,7 +339,7 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
     const newStage = currentStage === 'negotiation' ? 'qualification' : 'negotiation';
     const stageDisplayNames: Record<string, string> = {
       'lead': 'Lead', 'qualification': 'Qualification', 'discovery': 'Discovery',
-      'proposal': 'Proposal', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
+      'proposal': 'Proposal Sent', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
     };
     const expectedFrom = stageDisplayNames[currentStage] || currentStage;
     const expectedTo = stageDisplayNames[newStage] || newStage;

@@ -12,7 +12,7 @@ const PIPELINE_STAGES: { key: DealStage; label: string; color: string }[] = [
   { key: 'lead', label: 'Lead', color: 'border-t-gray-400' },
   { key: 'qualification', label: 'Qualification', color: 'border-t-accent-blue' },
   { key: 'discovery', label: 'Discovery', color: 'border-t-accent-purple' },
-  { key: 'proposal', label: 'Proposal', color: 'border-t-accent' },
+  { key: 'proposal', label: 'Proposal Sent', color: 'border-t-accent' },
   { key: 'negotiation', label: 'Negotiation', color: 'border-t-yellow-500' },
   { key: 'closed_won', label: 'Closed Won', color: 'border-t-status-active' },
 ]

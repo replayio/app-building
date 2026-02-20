@@ -828,7 +828,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **DLP-HDR-02: Create New Deal button opens deal creation modal**
 - Initial: User is on /deals
 - Action: Click "Create New Deal"
-- Expected: A modal opens with fields: deal name, client (dropdown/search), value, owner, stage (dropdown: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won), expected close date. Save/Cancel buttons.
+- Expected: A modal opens with fields: deal name, client (dropdown/search), value, owner, stage (dropdown: Lead, Qualification, Discovery, Proposal Sent, Negotiation, Closed Won), expected close date. Save/Cancel buttons.
 
 **DLP-HDR-03: Creating a deal persists and appears in table**
 - Initial: Create deal modal is open
@@ -872,7 +872,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **DLP-VW-02: Pipeline View shows deals organized by stage**
 - Initial: User is on /deals
 - Action: Click "Pipeline View" tab
-- Expected: Deals are displayed in a Kanban/board layout with columns for each stage (Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won). Deal cards are shown in appropriate columns.
+- Expected: Deals are displayed in a Kanban/board layout with columns for each stage (Lead, Qualification, Discovery, Proposal Sent, Negotiation, Closed Won). Deal cards are shown in appropriate columns.
 
 **DLP-VW-03: Switching between views preserves data**
 - Initial: User is in Table View
@@ -1029,20 +1029,20 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 **DDP-HDR-04: Changing stage via dropdown and Change Stage button**
 - Initial: Deal stage is "Discovery"
-- Action: Select "Proposal" from stage dropdown, click "Change Stage"
-- Expected: Stage updates to "Proposal". Pipeline visual updates (Proposal now highlighted as current). A deal history entry is created: "Changed Stage from Discovery to Proposal (User)". Deal metrics probability may update. Change persisted. Client timeline entry also created.
+- Action: Select "Proposal Sent" from stage dropdown, click "Change Stage"
+- Expected: Stage updates to "Proposal Sent". Pipeline visual updates (Proposal Sent now highlighted as current). A deal history entry is created: "Changed Stage from Discovery to Proposal Sent (User)". Deal metrics probability may update. Change persisted. Client timeline entry also created.
 
 #### StagePipeline
 
 **DDP-PIP-01: Stage pipeline displays all stages with visual progress**
 - Initial: Deal is at "Discovery" stage
 - Action: Observe the pipeline section
-- Expected: Horizontal pipeline shows stages: Lead, Qualification, Discovery (Current), Proposal, Negotiation, Closed Won. Lead and Qualification have checkmarks (completed). Discovery is highlighted as "(Current)". Remaining stages are grayed/unfilled. A progress bar underneath shows progress proportional to current stage.
+- Expected: Horizontal pipeline shows stages: Lead, Qualification, Discovery (Current), Proposal Sent, Negotiation, Closed Won. Lead and Qualification have checkmarks (completed). Discovery is highlighted as "(Current)". Remaining stages are grayed/unfilled. A progress bar underneath shows progress proportional to current stage.
 
 **DDP-PIP-02: Pipeline updates when stage changes**
 - Initial: Deal is at Discovery
-- Action: Change stage to Proposal
-- Expected: Discovery now shows a checkmark. Proposal is highlighted as current. Progress bar advances.
+- Action: Change stage to Proposal Sent
+- Expected: Discovery now shows a checkmark. Proposal Sent is highlighted as current. Progress bar advances.
 
 #### DealHistorySection
 
@@ -1053,8 +1053,8 @@ This document defines behavior-driven test entries for the Sales CRM application
 
 **DDP-HIS-02: New stage change adds history entry**
 - Initial: History has 2 entries
-- Action: Change stage from Discovery to Proposal
-- Expected: A third entry appears at the top: "Changed Stage from Discovery to Proposal" with current date/time and current user.
+- Action: Change stage from Discovery to Proposal Sent
+- Expected: A third entry appears at the top: "Changed Stage from Discovery to Proposal Sent" with current date/time and current user.
 
 #### DealMetricsSection
 
