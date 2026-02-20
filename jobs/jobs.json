@@ -3,11 +3,29 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+        "RunTests: Verify all TasksListPage tests pass after test code fixes",
+        "DocumentFix: Document the test code fixes"
       ],
-      "timestamp": "2026-02-20T19:53:17.695Z"
+      "timestamp": "2026-02-20T22:13:51.786Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix TLP-FLT-02 test using .count() inside .toPass() - replace with atomic assertion",
+        "FixViolation: Fix TLP-CRD-08 test exercising title instead of due date as spec entry requires",
+        "FixViolation: Fix TLP-CRD-06 test to verify timeline entry on associated client after Mark Complete",
+        "FixViolation: Fix TLP-CRD-09 test to verify deleted task no longer appears on associated client/deal"
+      ],
+      "timestamp": "2026-02-20T22:13:47.980Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix missing Contacts in TLP-NAV-01/02 entries and missing Import button in PageHeader components description in docs/tests.md",
+        "RunTests: Verify tests pass after fix",
+        "DocumentFix: Document the fix"
+      ],
+      "timestamp": "2026-02-20T22:13:42.745Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
