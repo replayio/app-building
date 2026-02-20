@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 function getDeployedUrl(): string {
   const deploymentFile = resolve(__dirname, '..', 'deployment.txt');
   const content = readFileSync(deploymentFile, 'utf-8');
-  const match = content.match(/Deployed URL:\s*(\S+)/);
+  const match = content.match(/url=(\S+)/);
   if (!match) throw new Error('Could not find deployed URL in deployment.txt');
   return match[1];
 }

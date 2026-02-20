@@ -1,4 +1,3 @@
-Deployed URL: https://sales-crm-1771041441.netlify.app
-Netlify Site: sales-crm-1771041441
-Site ID: 7ecd17c5-336d-45ec-ba63-5d0a0317c7cf
-Replay Recording: 1a1874a8-35a7-4bdb-b3a4-8df9d00dd39d
+url=https://sales-crm-1771358279.netlify.app
+site_id=3b377776-215e-4bd7-8c23-7cf589bd8551
+deployed_at=2026-02-20T16:05:20.442Z

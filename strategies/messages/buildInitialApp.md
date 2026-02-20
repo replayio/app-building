@@ -1,7 +1,7 @@
 # Strategy
 
 You are building an application based on the provided AppSpec.md.
-If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
+If `AppRevisions.md` exists, it describes new functionality and spec changes organized by topic section, and must also be followed.
 `AppSpec.md` must NEVER be modified. All spec changes go in `AppRevisions.md`.
 You will build the app in the following stages, with job strategy files in `strategies/jobs/build/` for additional instructions.
 

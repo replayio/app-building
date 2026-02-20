@@ -8,6 +8,7 @@ import {
 import { formatEvent } from "./format";
 import { createLogFile } from "./log";
 import { resolve } from "path";
+import { readFileSync } from "fs";
 
 const LOGS_DIR = resolve(__dirname, "..", "logs");
 
@@ -198,6 +199,12 @@ async function main(): Promise<void> {
   if (opts.interactive) {
     await runInteractive(opts.resume);
   } else {
+    const jobsPath = resolve(__dirname, "..", "jobs", "jobs.json");
+    const jobsData = JSON.parse(readFileSync(jobsPath, "utf-8"));
+    if (!jobsData.groups || jobsData.groups.length === 0) {
+      console.log("No jobs available. Add jobs to jobs/jobs.json before running the agent.");
+      return;
+    }
     await spawnContainer();
   }
 }

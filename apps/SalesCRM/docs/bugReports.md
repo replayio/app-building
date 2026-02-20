@@ -2,6 +2,12 @@
 
 ## Open
 
+2/20/2026: Add email integration for client follow notifications. Logged-in users should be able to go to the Settings page and configure their email notification preferences for when changes happen to a client they are following. "Following" a client means the user has opted in on that client's detail page (add a follow/unfollow button). Notifications should cover any changes affecting the client, including changes to the client's contacts or deals. Use the Resend API for sending emails.
+
+2/20/2026: Add a Contacts page for searching all people/individuals that have been added to the system. This should be a dedicated page accessible from the sidebar that lists all contacts with search functionality.
+
+2/20/2026: Improve the auth system: require email confirmation for new user signups before they can log in, and add a "Forgot password" link on the login page that sends a password reset email. Use the Resend API for sending emails.
+
 ## Unreviewed
 
 2/20/2026: DDP-HDR-02 violation — Client field in DealDetailHeader was not editable

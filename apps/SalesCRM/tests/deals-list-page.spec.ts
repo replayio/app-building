@@ -346,7 +346,6 @@ test.describe('DealsListPage - ViewToggle (DLP-VW)', () => {
     // Pick a target column that's different from source
     const targetStage = stages.find((s) => s !== sourceStage) ?? 'proposal';
     const targetColumn = page.getByTestId(`pipeline-column-${targetStage}`);
-    const sourceCard = page.getByTestId(`pipeline-deal-card-${dealId}`);
 
     // Perform drag and drop with retry — dragTo can be unreliable
     await expect(async () => {

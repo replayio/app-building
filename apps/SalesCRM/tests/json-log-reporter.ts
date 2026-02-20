@@ -13,7 +13,7 @@ export default class JsonLogReporter implements Reporter {
     log({ event: 'run_start', totalTests: suite.allTests().length });
   }
 
-  onTestBegin(test: TestCase, _result: TestResult) {
+  onTestBegin(test: TestCase) {
     log({
       event: 'test_start',
       title: test.title,

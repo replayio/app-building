@@ -1,6 +1,6 @@
 # Strategy
 
-You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
+You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it describes new functionality and spec changes organized by topic section, and must also be followed.
 
 ## Unpack Sub-Groups
 

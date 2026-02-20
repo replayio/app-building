@@ -94,7 +94,7 @@ async function ensureNeonProject(neonApiKey: string): Promise<{ projectId: strin
   return { projectId, databaseUrl }
 }
 
-function ensureNetlifySite(netlifyAccountSlug: string): string {
+async function ensureNetlifySite(netlifyAccountSlug: string): Promise<string> {
   const envVars = readEnvFile()
 
   if (envVars.NETLIFY_SITE_ID) {
@@ -103,12 +103,26 @@ function ensureNetlifySite(netlifyAccountSlug: string): string {
   }
 
   console.log('Creating new Netlify site...')
-  const output = execSync(
-    `npx netlify sites:create --account-slug ${netlifyAccountSlug} --json`,
-    { cwd: APP_DIR, encoding: 'utf-8' },
-  )
+  const netlifyToken = process.env.NETLIFY_AUTH_TOKEN!
+  const res = await fetch('https://api.netlify.com/api/v1/sites', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${netlifyToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: `sales-crm-${Date.now()}`,
+      account_slug: netlifyAccountSlug,
+    }),
+  })
 
-  const siteData = JSON.parse(output) as { id: string; ssl_url?: string; url?: string }
+  if (!res.ok) {
+    const err = await res.text()
+    console.error(`Failed to create Netlify site: ${res.status} ${err}`)
+    process.exit(1)
+  }
+
+  const siteData = await res.json() as { id: string; ssl_url?: string; url?: string }
   const siteId = siteData.id
 
   writeEnvValue('NETLIFY_SITE_ID', siteId)
@@ -131,7 +145,7 @@ async function main() {
   console.log('Schema sync complete.')
 
   // Step 3: Netlify site setup
-  const siteId = ensureNetlifySite(netlifyAccountSlug)
+  const siteId = await ensureNetlifySite(netlifyAccountSlug)
 
   // Step 4: Build
   console.log('Building app...')

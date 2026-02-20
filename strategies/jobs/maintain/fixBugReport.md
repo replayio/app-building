@@ -55,12 +55,19 @@ After updating tests, make sure they pass. Read `strategies/jobs/build/testing.m
 ## Updating revisions
 
 If the bug fix changed the app's behavior relative to the original `AppSpec.md` — for example,
-adding new functionality, removing a feature, or changing how something works — add an entry
-to `AppRevisions.md` (create the file next to `AppSpec.md` if it doesn't exist).
+adding new functionality, removing a feature, or changing how something works — update
+`AppRevisions.md` (create the file next to `AppSpec.md` if it doesn't exist).
 
-Each entry should include the date, a reference to the bug report, and a concise description
-of what changed in the app's spec. This file is the authoritative record of how the app has
-diverged from the original spec over time.
+`AppRevisions.md` is NOT a changelog. It is organized by topic sections that describe either
+new functionality added to the app or changes made to the app spec in particular areas. Each
+section has a heading describing the area (e.g., "## Attachment Uploads", "## Authentication",
+"## CSV Import") and a description of the current state of that functionality.
+
+When updating revisions:
+- If an existing section covers the area you changed, update that section's description to
+  reflect the current behavior.
+- If the change introduces a new area of functionality, add a new section.
+- Keep descriptions focused on **what the app does now**, not a history of changes.
 
 If the fix was purely a code bug that didn't change the intended behavior, skip this step.
 

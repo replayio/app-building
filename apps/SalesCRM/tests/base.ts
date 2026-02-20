@@ -4,7 +4,7 @@ export { expect };
 
 export const test = baseTest.extend({});
 
-test.beforeEach(async ({}, testInfo) => {
+test.beforeEach(async (_fixtures, testInfo) => {
   const msg = {
     event: 'test:start',
     test: testInfo.title,
@@ -14,7 +14,7 @@ test.beforeEach(async ({}, testInfo) => {
   console.log(JSON.stringify(msg));
 });
 
-test.afterEach(async ({}, testInfo) => {
+test.afterEach(async (_fixtures, testInfo) => {
   const msg = {
     event: 'test:end',
     test: testInfo.title,

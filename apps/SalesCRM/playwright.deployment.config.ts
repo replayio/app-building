@@ -1,9 +1,5 @@
-import { defineConfig, devices } from '@playwright/test';
-import { [REDACTED]Reporter } from '@[REDACTED]io/playwright';
-import { homedir } from 'os';
-import { join } from 'path';
-
-const [REDACTED]Browser = join(homedir(), '.[REDACTED]', 'runtimes', 'chrome-linux', 'chrome');
+import { defineConfig } from '@playwright/test';
+import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
 
 export default defineConfig({
   testDir: './tests',
@@ -13,14 +9,7 @@ export default defineConfig({
     {
       name: '[REDACTED]-chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        launchOptions: {
-          executablePath: [REDACTED]Browser,
-          env: {
-            ...process.env,
-            RECORD_ALL_CONTENT: '1',
-          },
-        },
+        ...[REDACTED]Devices['Replay Chromium'],
       },
     },
   ],

@@ -256,7 +256,7 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
   });
 
   test('PDP-REL-05: Adding a relationship persists and shows in list', async ({ page }) => {
-    const personId = await navigateToFirstPersonDetail(page);
+    await navigateToFirstPersonDetail(page);
 
     // Switch to list view
     await page.getByTestId('relationships-list-view-tab').click();
@@ -477,7 +477,7 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
   });
 
   test('PDP-CH-04: Adding a contact history entry persists and shows in log', async ({ page }) => {
-    const personId = await navigateToFirstPersonDetail(page);
+    await navigateToFirstPersonDetail(page);
 
     // Count existing entries
     const entriesBefore = page.locator('[data-testid^="contact-history-entry-"]');
@@ -565,7 +565,7 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
   });
 
   test('PDP-CH-06: Editing a contact history entry persists the change', async ({ page }) => {
-    const personId = await navigateToFirstPersonDetail(page);
+    await navigateToFirstPersonDetail(page);
 
     const entries = page.locator('[data-testid^="contact-history-entry-"]');
     const count = await entries.count();
