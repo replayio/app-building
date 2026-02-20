@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { X, Search } from 'lucide-react'
+import { X, Search, UserPlus } from 'lucide-react'
 import type { RelationshipType } from '../../types'
 import { FilterSelect } from '../shared/FilterSelect'
 
@@ -32,6 +32,9 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
   const [options, setOptions] = useState<IndividualOption[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [creatingNew, setCreatingNew] = useState(false)
+  const [newPersonName, setNewPersonName] = useState('')
+  const [saving, setSaving] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -61,16 +64,50 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
 
   if (!open) return null
 
-  function handleSave() {
+  function resetForm() {
+    setSelectedId('')
+    setSelectedName('')
+    setSearchQuery('')
+    setRelationshipType('colleague')
+    setCreatingNew(false)
+    setNewPersonName('')
+    setSaving(false)
+  }
+
+  async function handleSave() {
+    if (saving) return
+
+    if (creatingNew) {
+      if (!newPersonName.trim()) return
+      setSaving(true)
+      try {
+        const res = await fetch('/.netlify/functions/individuals', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: newPersonName.trim() }),
+        })
+        if (!res.ok) {
+          setSaving(false)
+          return
+        }
+        const newPerson = await res.json() as { id: string }
+        onSave({
+          related_individual_id: newPerson.id,
+          relationship_type: relationshipType,
+        })
+        resetForm()
+      } catch {
+        setSaving(false)
+      }
+      return
+    }
+
     if (!selectedId) return
     onSave({
       related_individual_id: selectedId,
       relationship_type: relationshipType,
     })
-    setSelectedId('')
-    setSelectedName('')
-    setSearchQuery('')
-    setRelationshipType('colleague')
+    resetForm()
   }
 
   function handleSelect(person: IndividualOption) {
@@ -79,6 +116,21 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
     setSearchQuery(person.name)
     setShowDropdown(false)
   }
+
+  function handleCreateNew() {
+    setCreatingNew(true)
+    setNewPersonName(searchQuery)
+    setSelectedId('')
+    setSelectedName('')
+    setShowDropdown(false)
+  }
+
+  function handleBackToSearch() {
+    setCreatingNew(false)
+    setNewPersonName('')
+  }
+
+  const canSave = creatingNew ? newPersonName.trim().length > 0 : !!selectedId
 
   return (
     <div data-testid="add-relationship-modal" className="fixed inset-0 z-50 flex items-center justify-center">
@@ -95,47 +147,76 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
           </button>
         </div>
         <div className="px-5 py-4 flex flex-col gap-3.5">
-          <div ref={dropdownRef} className="relative">
-            <label className="block text-[12px] font-medium text-text-muted mb-1">Person *</label>
-            <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-disabled" />
+          {creatingNew ? (
+            <div>
+              <label className="block text-[12px] font-medium text-text-muted mb-1">New Person Name *</label>
               <input
-                data-testid="relationship-person-search"
+                data-testid="relationship-new-person-name"
                 type="text"
-                value={showDropdown ? searchQuery : selectedName || searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  setSelectedId('')
-                  setSelectedName('')
-                  setShowDropdown(true)
-                }}
-                onFocus={() => setShowDropdown(true)}
-                placeholder="Search by name..."
-                className="w-full h-[34px] pl-8 pr-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
+                value={newPersonName}
+                onChange={(e) => setNewPersonName(e.target.value)}
+                placeholder="Enter person name..."
+                autoFocus
+                className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
               />
+              <button
+                data-testid="relationship-back-to-search"
+                onClick={handleBackToSearch}
+                className="mt-2 text-[12px] text-accent hover:underline"
+              >
+                Back to search
+              </button>
             </div>
-            {showDropdown && (
-              <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-surface border border-border rounded-[5px] shadow-[var(--shadow-elevation-2)] max-h-[200px] overflow-auto">
-                {loading && (
-                  <div className="px-3 py-2 text-[12px] text-text-muted">Searching...</div>
-                )}
-                {!loading && options.length === 0 && (
-                  <div className="px-3 py-2 text-[12px] text-text-muted">No individuals found</div>
-                )}
-                {!loading && options.map((person) => (
-                  <button
-                    key={person.id}
-                    data-testid={`person-option-${person.id}`}
-                    onClick={() => handleSelect(person)}
-                    className="w-full text-left px-3 py-2 text-[13px] text-text-primary hover:bg-hover transition-colors duration-75"
-                  >
-                    <span className="font-medium">{person.name}</span>
-                    {person.title && <span className="text-text-muted ml-1.5">— {person.title}</span>}
-                  </button>
-                ))}
+          ) : (
+            <div ref={dropdownRef} className="relative">
+              <label className="block text-[12px] font-medium text-text-muted mb-1">Person *</label>
+              <div className="relative">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-disabled" />
+                <input
+                  data-testid="relationship-person-search"
+                  type="text"
+                  value={showDropdown ? searchQuery : selectedName || searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value)
+                    setSelectedId('')
+                    setSelectedName('')
+                    setShowDropdown(true)
+                  }}
+                  onFocus={() => setShowDropdown(true)}
+                  placeholder="Search by name..."
+                  className="w-full h-[34px] pl-8 pr-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
+                />
               </div>
-            )}
-          </div>
+              {showDropdown && (
+                <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-surface border border-border rounded-[5px] shadow-[var(--shadow-elevation-2)] max-h-[200px] overflow-auto">
+                  {loading && (
+                    <div className="px-3 py-2 text-[12px] text-text-muted">Searching...</div>
+                  )}
+                  {!loading && options.map((person) => (
+                    <button
+                      key={person.id}
+                      data-testid={`person-option-${person.id}`}
+                      onClick={() => handleSelect(person)}
+                      className="w-full text-left px-3 py-2 text-[13px] text-text-primary hover:bg-hover transition-colors duration-75"
+                    >
+                      <span className="font-medium">{person.name}</span>
+                      {person.title && <span className="text-text-muted ml-1.5">— {person.title}</span>}
+                    </button>
+                  ))}
+                  {!loading && (
+                    <button
+                      data-testid="relationship-create-new-person"
+                      onClick={handleCreateNew}
+                      className="w-full text-left px-3 py-2 text-[13px] text-accent hover:bg-hover transition-colors duration-75 border-t border-border flex items-center gap-1.5"
+                    >
+                      <UserPlus size={13} strokeWidth={1.75} />
+                      <span>Create New Person</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Relationship Type *</label>
             <FilterSelect
@@ -157,10 +238,10 @@ export function AddRelationshipModal({ open, onClose, onSave }: AddRelationshipM
           <button
             data-testid="relationship-save-button"
             onClick={handleSave}
-            disabled={!selectedId}
+            disabled={!canSave || saving}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
           >
-            Save
+            {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
       </div>

@@ -620,7 +620,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **PDP-REL-04: Add Entry button opens relationship creation form**
 - Initial: User is on PersonDetailPage
 - Action: Click "+ Add Entry" in Relationships section
-- Expected: A modal/form opens with fields: person (select/search existing or create new), relationship type (dropdown: Colleague, Decision Maker, Influencer, Manager, Report, etc.). Save/Cancel buttons.
+- Expected: A modal/form opens with fields: person (select/search existing or create new), relationship type (dropdown: Colleague, Decision Maker, Influencer, Manager, Report, etc.). Save/Cancel buttons. The person search dropdown includes a "Create New Person" option at the bottom.
+
+**PDP-REL-04a: Create new person from relationship modal**
+- Initial: Add relationship form is open, search dropdown is visible
+- Action: Click "Create New Person" option in the dropdown, enter name "Test New Contact", select relationship type "Colleague", click Save
+- Expected: A new individual is created via API, relationship is added with that individual. The new relationship appears in the list. The created individual persists in the database.
 
 **PDP-REL-05: Adding a relationship persists and shows in list**
 - Initial: Add relationship form is open

@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationCreateNewPerson: Add 'create new person' option to AddRelationshipModal (PDP-REL-04 spec says 'select/search existing or create new' but modal only searches existing). Add a test spec entry exercising the create-new path and implement the corresponding Playwright test",
-        "RunTests: Verify tests pass after AddRelationshipModal create-new fix"
-      ],
-      "timestamp": "2026-02-20T20:50:30.073Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationCH01Test: Fix PDP-CH-01 test title from 'Contact history displays section with controls' to 'Contact history displays chronological log' to match spec, and add assertions verifying entry rows show date/time, type, summary, team member, and edit icon",
         "RunTests: Verify tests pass after PDP-CH-01 fix"
       ],

@@ -253,6 +253,69 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
     // Save and Cancel buttons
     await expect(modal.getByRole('button', { name: 'Save' })).toBeVisible();
     await expect(modal.getByRole('button', { name: 'Cancel' })).toBeVisible();
+
+    // Search dropdown should include "Create New Person" option
+    const searchInput = page.getByTestId('relationship-person-search');
+    await searchInput.click();
+    await expect(page.getByTestId('relationship-create-new-person')).toBeVisible();
+  });
+
+  test('PDP-REL-04a: Create new person from relationship modal', async ({ page }) => {
+    await navigateToFirstPersonDetail(page);
+
+    // Switch to list view
+    await page.getByTestId('relationships-list-view-tab').click();
+
+    // Open Add Relationship modal
+    await page.getByTestId('relationships-add-entry-button').click();
+    const modal = page.getByTestId('add-relationship-modal');
+    await expect(modal).toBeVisible();
+
+    // Open search dropdown and click "Create New Person"
+    const searchInput = page.getByTestId('relationship-person-search');
+    await searchInput.click();
+    await page.getByTestId('relationship-create-new-person').click();
+
+    // Should show new person name input
+    const nameInput = page.getByTestId('relationship-new-person-name');
+    await expect(nameInput).toBeVisible();
+
+    // Enter new person name
+    await nameInput.clear();
+    await nameInput.fill('Test New Contact');
+
+    // Select relationship type
+    await page.getByTestId('relationship-type-select-trigger').click();
+    await page.getByTestId('relationship-type-select-option-colleague').click();
+
+    // Click Save — should create individual then relationship
+    const [createIndividualReq] = await Promise.all([
+      page.waitForRequest(req =>
+        req.method() === 'POST' && req.url().includes('/individuals') && !req.url().includes('/relationships')
+      ),
+      page.getByTestId('relationship-save-button').click(),
+    ]);
+
+    // Verify the individual creation API was called
+    const createBody = createIndividualReq.postDataJSON();
+    expect(createBody.name).toBe('Test New Contact');
+
+    // Modal should close
+    await expect(modal).not.toBeVisible({ timeout: 15000 });
+
+    // Verify the new relationship appears in the list by name
+    await expect(
+      page.locator('[data-testid^="relationship-item-"]').filter({ hasText: 'Test New Contact' })
+    ).toHaveCount(1, { timeout: 15000 });
+
+    // Clean up: delete the newly added relationship
+    const newItem = page.locator('[data-testid^="relationship-item-"]').filter({ hasText: 'Test New Contact' });
+    const deleteBtn = newItem.locator('[data-testid^="relationship-delete-"]');
+    const isDeleteVisible = await deleteBtn.isVisible().catch(() => false);
+    if (isDeleteVisible) {
+      await deleteBtn.click();
+      await page.waitForLoadState('networkidle');
+    }
   });
 
   test('PDP-REL-05: Adding a relationship persists and shows in list', async ({ page }) => {
@@ -260,10 +323,6 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
 
     // Switch to list view
     await page.getByTestId('relationships-list-view-tab').click();
-
-    // Count existing relationships
-    const itemsBefore = page.locator('[data-testid^="relationship-item-"]');
-    const countBefore = await itemsBefore.count();
 
     // Open Add Relationship modal
     await page.getByTestId('relationships-add-entry-button').click();
@@ -273,9 +332,10 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
     // Search for a person to add as relationship
     const searchInput = page.getByTestId('relationship-person-search');
     await searchInput.fill('a');
-    // Wait for search results to appear and select the first person option
+    // Wait for search results to appear and capture the name of the selected person
     const personOption = page.locator('[data-testid^="person-option-"]').first();
     await personOption.waitFor({ state: 'visible', timeout: 10000 });
+    const selectedPersonName = await personOption.locator('span').first().textContent();
     await personOption.click();
 
     // Select relationship type via custom FilterSelect dropdown
@@ -298,12 +358,13 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
     // Modal should close
     await expect(modal).not.toBeVisible();
 
-    // Verify the new relationship appears in the list
-    const itemsAfter = page.locator('[data-testid^="relationship-item-"]');
-    await expect(itemsAfter).toHaveCount(countBefore + 1, { timeout: 10000 });
+    // Verify the new relationship appears in the list by the selected person's name
+    await expect(
+      page.locator('[data-testid^="relationship-item-"]').filter({ hasText: selectedPersonName! })
+    ).toHaveCount(1, { timeout: 15000 });
 
     // Clean up: delete the newly added relationship
-    const newItem = itemsAfter.last();
+    const newItem = page.locator('[data-testid^="relationship-item-"]').filter({ hasText: selectedPersonName! });
     const deleteBtn = newItem.locator('[data-testid^="relationship-delete-"]');
     const isDeleteVisible = await deleteBtn.isVisible().catch(() => false);
     if (isDeleteVisible) {

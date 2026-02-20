@@ -98,6 +98,20 @@ async function handler(req: OptionalAuthRequest) {
     return Response.json(results, { status: 200 })
   }
 
+  // POST /individuals — create a single individual
+  if (req.method === 'POST' && !individualId && !url.searchParams.get('action')) {
+    const body = await req.json() as { name: string; title?: string }
+    if (!body.name?.trim()) {
+      return Response.json({ error: 'Name is required' }, { status: 400 })
+    }
+    const rows = await sql`
+      INSERT INTO individuals (name, title)
+      VALUES (${body.name.trim()}, ${body.title?.trim() || null})
+      RETURNING *
+    ` as IndividualRow[]
+    return Response.json(rows[0], { status: 201 })
+  }
+
   // GET /individuals — list/search all individuals
   if (req.method === 'GET' && !individualId) {
     const search = url.searchParams.get('search') ?? ''
