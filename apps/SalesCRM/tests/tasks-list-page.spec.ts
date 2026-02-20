@@ -254,15 +254,15 @@ test.describe('TasksListPage - FilterBar (TLP-FLT)', () => {
     // Select "High" priority filter (this closes the dropdown and triggers a fetch)
     await selectFilterOption(page, 'tasks-filter-priority', 'high');
 
-    // Wait for filtered results where all cards have high priority badges
-    await expect(async () => {
-      const highBadges = page.locator('[data-testid="task-priority-badge-high"]');
-      const cards = page.locator('[data-testid^="task-card-"]');
-      const cardCount = await cards.count();
-      expect(cardCount).toBeGreaterThan(0);
-      const badgeCount = await highBadges.count();
-      expect(badgeCount).toBe(cardCount);
-    }).toPass({ timeout: 10000 });
+    // Wait for filtered results — at least one card visible, and no card without a high priority badge
+    await expect(
+      page.locator('[data-testid^="task-card-"]').first()
+    ).toBeVisible({ timeout: 10000 });
+    await expect(
+      page.locator('[data-testid^="task-card-"]').filter({
+        hasNot: page.locator('[data-testid="task-priority-badge-high"]')
+      })
+    ).toHaveCount(0, { timeout: 10000 });
   });
 
   test('TLP-FLT-03: Text filter searches task titles', async ({ page }) => {
@@ -523,25 +523,56 @@ test.describe('TasksListPage - TaskCards (TLP-CRD)', () => {
   });
 
   test('TLP-CRD-06: Mark Complete removes task from upcoming list', async ({ page }) => {
+    // Create a task with a client association so we can verify the timeline side effect
     await page.goto('/tasks');
     await page.waitForLoadState('networkidle');
 
-    const cards = page.locator('[data-testid^="task-card-"]');
-    const initialCount = await cards.count();
+    await page.getByTestId('new-task-button').click();
+    const modal = page.getByTestId('create-task-modal');
+    await expect(modal).toBeVisible();
 
-    if (initialCount > 0) {
-      // Use the last card to avoid interfering with other tests
-      const lastCard = cards.last();
-      const cardTestId = await lastCard.getAttribute('data-testid');
-      const taskId = cardTestId!.replace('task-card-', '');
+    const taskTitle = `MarkCompleteTest_${Date.now()}`;
+    await page.getByTestId('create-task-title').fill(taskTitle);
 
-      // Open action menu and click "Mark Complete"
-      await page.getByTestId(`task-action-menu-button-${taskId}`).click();
-      await page.getByTestId(`task-action-complete-${taskId}`).click();
-      await page.waitForLoadState('networkidle');
+    // Select a client so timeline entry can be verified
+    await page.getByTestId('create-task-client-trigger').click();
+    const clientMenu = page.getByTestId('create-task-client-menu');
+    await expect(clientMenu).toBeVisible();
+    const clientOptions = await clientMenu.locator('button').all();
+    if (clientOptions.length > 1) await clientOptions[1].click();
+    else await clientMenu.locator('button').first().click();
 
-      // Task should no longer be visible
-      await expect(page.getByTestId(`task-card-${taskId}`)).not.toBeVisible();
+    await page.getByTestId('create-task-save').click();
+    await expect(modal).not.toBeVisible();
+    await page.waitForLoadState('networkidle');
+
+    // Find the newly created task card
+    const newCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: taskTitle });
+    await expect(newCard).toBeVisible({ timeout: 10000 });
+    const cardTestId = await newCard.getAttribute('data-testid');
+    const taskId = cardTestId!.replace('task-card-', '');
+
+    // Get the task details via API to find the client_id
+    const taskRes = await page.request.get(`/.netlify/functions/tasks/${taskId}`);
+    const taskData = await taskRes.json() as { task: { client_id: string; title: string } };
+    const clientId = taskData.task.client_id;
+
+    // Open action menu and click "Mark Complete"
+    await page.getByTestId(`task-action-menu-button-${taskId}`).click();
+    await page.getByTestId(`task-action-complete-${taskId}`).click();
+    await page.waitForLoadState('networkidle');
+
+    // Task should no longer be visible
+    await expect(page.getByTestId(`task-card-${taskId}`)).not.toBeVisible();
+
+    // Verify timeline entry created on associated client
+    if (clientId) {
+      const timelineRes = await page.request.get(`/.netlify/functions/client-timeline?clientId=${clientId}`);
+      const timelineData = await timelineRes.json() as { events: { description: string; event_type: string }[] };
+      const matchingEntries = timelineData.events.filter(
+        (e) => e.event_type === 'task_completed' && e.description.includes(taskTitle)
+      );
+      expect(matchingEntries).toHaveLength(1);
     }
   });
 
@@ -594,48 +625,89 @@ test.describe('TasksListPage - TaskCards (TLP-CRD)', () => {
       const editModal = page.getByTestId('edit-task-modal');
       await expect(editModal).toBeVisible();
 
-      // Change the title
-      const newTitle = `Updated Task ${Date.now()}`;
-      await page.getByTestId('edit-task-title').fill(newTitle);
+      // Change due date to tomorrow per spec
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toISOString().split('T')[0];
+      await page.getByTestId('edit-task-due-date').fill(tomorrowStr);
 
       // Save
       await page.getByTestId('edit-task-save').click();
       await expect(editModal).not.toBeVisible();
       await page.waitForLoadState('networkidle');
 
-      // The updated title should appear in the list
-      const pageContent = await page.textContent('body');
-      expect(pageContent).toContain(newTitle);
+      // Card should show updated due date containing "Tomorrow"
+      await expect(page.getByTestId(`task-due-date-${taskId}`)).toContainText('Tomorrow', { timeout: 10000 });
     }
   });
 
   test('TLP-CRD-09: Delete task removes it after confirmation', async ({ page }) => {
+    // Create a task with a client association so we can verify cross-entity removal
     await page.goto('/tasks');
     await page.waitForLoadState('networkidle');
 
-    const cards = page.locator('[data-testid^="task-card-"]');
-    const initialCount = await cards.count();
+    await page.getByTestId('new-task-button').click();
+    const modal = page.getByTestId('create-task-modal');
+    await expect(modal).toBeVisible();
 
-    if (initialCount > 0) {
-      // Use the last card
-      const lastCard = cards.last();
-      const cardTestId = await lastCard.getAttribute('data-testid');
-      const taskId = cardTestId!.replace('task-card-', '');
+    const taskTitle = `DeleteTest_${Date.now()}`;
+    await page.getByTestId('create-task-title').fill(taskTitle);
 
-      // Open action menu and click "Delete"
-      await page.getByTestId(`task-action-menu-button-${taskId}`).click();
-      await page.getByTestId(`task-action-delete-${taskId}`).click();
+    // Select a client so we can verify task no longer appears on client detail
+    await page.getByTestId('create-task-client-trigger').click();
+    const clientMenu = page.getByTestId('create-task-client-menu');
+    await expect(clientMenu).toBeVisible();
+    const clientOptions = await clientMenu.locator('button').all();
+    if (clientOptions.length > 1) await clientOptions[1].click();
+    else await clientMenu.locator('button').first().click();
 
-      // Confirm dialog should appear
-      const confirmDialog = page.getByTestId('confirm-dialog');
-      await expect(confirmDialog).toBeVisible();
+    await page.getByTestId('create-task-save').click();
+    await expect(modal).not.toBeVisible();
+    await page.waitForLoadState('networkidle');
 
-      // Click confirm
-      await page.getByTestId('confirm-ok').click();
+    // Find the newly created task card
+    const newCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: taskTitle });
+    await expect(newCard).toBeVisible({ timeout: 10000 });
+    const cardTestId = await newCard.getAttribute('data-testid');
+    const taskId = cardTestId!.replace('task-card-', '');
+
+    // Get the task details via API to find client_id and deal_id
+    const taskRes = await page.request.get(`/.netlify/functions/tasks/${taskId}`);
+    const taskData = await taskRes.json() as { task: { client_id: string | null; deal_id: string | null } };
+    const clientId = taskData.task.client_id;
+    const dealId = taskData.task.deal_id;
+
+    // Open action menu and click "Delete"
+    await page.getByTestId(`task-action-menu-button-${taskId}`).click();
+    await page.getByTestId(`task-action-delete-${taskId}`).click();
+
+    // Confirm dialog should appear
+    const confirmDialog = page.getByTestId('confirm-dialog');
+    await expect(confirmDialog).toBeVisible();
+
+    // Click confirm
+    await page.getByTestId('confirm-ok').click();
+    await page.waitForLoadState('networkidle');
+
+    // Task should no longer be in the tasks list
+    await expect(page.getByTestId(`task-card-${taskId}`)).not.toBeVisible();
+
+    // Verify task no longer appears on associated client detail page
+    if (clientId) {
+      await page.goto(`/clients/${clientId}`);
       await page.waitForLoadState('networkidle');
+      await expect(
+        page.locator('[data-testid^="task-item-"]').filter({ hasText: taskTitle })
+      ).toHaveCount(0, { timeout: 10000 });
+    }
 
-      // Task should no longer be in the list
-      await expect(page.getByTestId(`task-card-${taskId}`)).not.toBeVisible();
+    // Verify task no longer appears on associated deal detail page
+    if (dealId) {
+      await page.goto(`/deals/${dealId}`);
+      await page.waitForLoadState('networkidle');
+      await expect(
+        page.locator('[data-testid^="deal-linked-task-"]').filter({ hasText: taskTitle })
+      ).toHaveCount(0, { timeout: 10000 });
     }
   });
 });

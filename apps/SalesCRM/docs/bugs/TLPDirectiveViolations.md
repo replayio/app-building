@@ -4,29 +4,29 @@
 
 All 23 TasksListPage tests pass (23/23).
 
-## Violations Identified (Pending Fix)
+## Violations Identified (Fixed)
 
-The following test quality violations were identified during directive checking and are queued for fix:
+The following test quality violations were identified during directive checking and have been fixed:
 
-### 1. TLP-FLT-02: Uses .count() inside .toPass() (writeTests.md violation)
+### 1. TLP-FLT-02: Uses .count() inside .toPass() (writeTests.md violation) — FIXED
 **Directive violated**: "Never nest `.count()` or `.textContent()` inside `.toPass()` — use atomic Playwright assertions instead."
 
-The filter-by-priority test uses a pattern that can cause nested-wait deadlocks. Needs replacement with an atomic assertion.
+**Fix**: Replaced `.toPass()` block containing `.count()` calls with atomic assertions: `.toBeVisible()` to verify at least one card exists, and `.toHaveCount(0)` with `.filter({ hasNot: ... })` to verify all cards have high priority badges.
 
-### 2. TLP-CRD-08: Tests title edit instead of due date edit (testSpec.md violation)
+### 2. TLP-CRD-08: Tests title edit instead of due date edit (testSpec.md violation) — FIXED
 **Directive violated**: Test entry specifies verifying due date editing, but the test exercises title editing instead.
 
-The test does not match its spec entry's expected behavior.
+**Fix**: Changed test to edit the due date field (set to tomorrow) instead of the title, and assert the card shows "Tomorrow" in the due date element.
 
-### 3. TLP-CRD-06: Missing timeline entry verification (testSpec.md violation)
+### 3. TLP-CRD-06: Missing timeline entry verification (testSpec.md violation) — FIXED
 **Directive violated**: "If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry."
 
-Mark Complete should verify a timeline entry is created on the associated client, but the test only checks the task is removed from the list.
+**Fix**: Test now creates a task with a client association, marks it complete, then verifies via the client-timeline API that exactly one `task_completed` timeline entry was created for the task.
 
-### 4. TLP-CRD-09: Missing cross-entity verification (testSpec.md violation)
+### 4. TLP-CRD-09: Missing cross-entity verification (testSpec.md violation) — FIXED
 **Directive violated**: "Every mutation test entry must also verify that side effects on other entities are reflected."
 
-Delete task should verify the deleted task no longer appears on the associated client/deal detail pages.
+**Fix**: Test now creates a task with a client association, deletes it, then navigates to the associated client detail page to verify the task no longer appears in the tasks section.
 
 ## Current State
-All tests pass in their current form. The violations above are about test quality and completeness — the tests run successfully but do not fully exercise the behavior specified in their test entries. Fix jobs are queued to address each violation.
+All violations have been fixed. Tests now fully exercise the behavior specified in their test entries.
