@@ -51,6 +51,7 @@ export function ResetPasswordPage() {
             <h2 className="text-[18px] font-semibold text-text-primary mb-2">Invalid Link</h2>
             <p className="text-[13px] text-red-400 mb-4">No reset token provided.</p>
             <button
+              data-testid="reset-password-go-to-app"
               onClick={() => navigate('/clients')}
               className="h-8 px-4 rounded-[4px] bg-accent text-[13px] font-medium text-white hover:bg-accent/90 transition-colors duration-100"
             >

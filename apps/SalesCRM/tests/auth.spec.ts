@@ -187,6 +187,8 @@ test.describe('ResetPasswordPage', () => {
     await expect(page.getByTestId('reset-password-page')).toBeVisible();
     await expect(page.getByTestId('reset-password-error')).toBeVisible();
     await expect(page.getByTestId('reset-password-error')).toContainText('No reset token provided');
+    await expect(page.getByTestId('reset-password-go-to-app')).toBeVisible();
+    await expect(page.getByTestId('reset-password-go-to-app')).toContainText('Go to app');
 
     await context.close();
   });
@@ -229,6 +231,8 @@ test.describe('ConfirmEmailPage', () => {
     await expect(page.getByTestId('confirm-email-page')).toBeVisible();
     await expect(page.getByTestId('confirm-email-error')).toBeVisible();
     await expect(page.getByTestId('confirm-email-error')).toContainText('No confirmation token provided');
+    await expect(page.getByTestId('confirm-email-go-to-app')).toBeVisible();
+    await expect(page.getByTestId('confirm-email-go-to-app')).toContainText('Go to app');
 
     await context.close();
   });

@@ -41,12 +41,12 @@ This document defines behavior-driven test entries for the Sales CRM application
 **AUTH-FP-01: Forgot password link navigates to forgot password page**
 - Initial: User is not authenticated and on /clients
 - Action: Click "Sign in", then click "Forgot password?" link (data-testid="auth-forgot-password")
-- Expected: App navigates to /auth/forgot-password. The forgot password page (data-testid="forgot-password-page") displays a form (data-testid="forgot-password-form") with an email input (data-testid="forgot-password-email"), a submit button (data-testid="forgot-password-submit"), and a back link (data-testid="forgot-password-back-to-signin").
+- Expected: App navigates to /auth/forgot-password. The forgot password page (data-testid="forgot-password-page") displays a form (data-testid="forgot-password-form") with an email input (data-testid="forgot-password-email"), a submit button (data-testid="forgot-password-submit"), and a "Back to sign in" link (data-testid="forgot-password-back-to-signin") that navigates to /clients.
 
 **AUTH-FP-02: Forgot password form submits and shows success message**
 - Initial: User is on /auth/forgot-password
 - Action: Enter an email address and click "Send Reset Link"
-- Expected: After submission, a success message appears (data-testid="forgot-password-success") with text indicating to check email, and a "Back to app" button (data-testid="forgot-password-back").
+- Expected: After submission, a success message appears (data-testid="forgot-password-success") with text indicating to check email, and a "Back to app" button (data-testid="forgot-password-back") that navigates to /clients.
 
 #### ResetPasswordPage
 
@@ -58,7 +58,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **AUTH-RP-02: Reset password page shows error without token**
 - Initial: User navigates to /auth/reset-password (no token)
 - Action: Observe the page
-- Expected: The page shows an error (data-testid="reset-password-error") with "No reset token provided" message and a "Go to app" button.
+- Expected: The page (data-testid="reset-password-page") shows an error (data-testid="reset-password-error") with "No reset token provided" message and a "Go to app" button (data-testid="reset-password-go-to-app") that navigates to /clients.
 
 **AUTH-RP-03: Reset password form submission and verification**
 - Initial: User navigates to /auth/reset-password?token=sometoken
@@ -70,7 +70,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **AUTH-CE-01: Confirm email page shows error without token**
 - Initial: User navigates to /auth/confirm-email (no token)
 - Action: Observe the page
-- Expected: The page (data-testid="confirm-email-page") shows an error (data-testid="confirm-email-error") with "No confirmation token provided" message.
+- Expected: The page (data-testid="confirm-email-page") shows an error (data-testid="confirm-email-error") with "No confirmation token provided" message and a "Go to app" button (data-testid="confirm-email-go-to-app") that navigates to /clients.
 
 **AUTH-CE-02: Successful email confirmation flow**
 - Initial: User navigates to /auth/confirm-email?token=sometoken

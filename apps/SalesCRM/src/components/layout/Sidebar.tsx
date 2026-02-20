@@ -152,6 +152,7 @@ export function Sidebar() {
                     {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
                   </button>
                   <button
+                    data-testid="auth-cancel"
                     type="button"
                     onClick={() => { setShowAuthForm(false); setAuthError(null) }}
                     className="text-[11px] text-text-muted hover:text-text-secondary transition-colors duration-100"

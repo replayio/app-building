@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing data-testid attributes to auth buttons (ResetPasswordPage Go to app, ConfirmEmailPage Go to app, Sidebar Cancel) and update test entries AUTH-RP-02, AUTH-CE-01, AUTH-FP-01, AUTH-FP-02 with explicit navigation targets and data-testids for all clickable elements",
-        "RunTests: Verify tests pass after auth data-testid and navigation target fixes"
-      ],
-      "timestamp": "2026-02-20T20:05:34.858Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
         "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
         "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests"
