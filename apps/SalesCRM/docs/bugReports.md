@@ -12,12 +12,6 @@
 
 
 
-2/20/2026: Add email integration for client follow notifications. Logged-in users should be able to go to the Settings page and configure their email notification preferences for when changes happen to a client they are following. "Following" a client means the user has opted in on that client's detail page (add a follow/unfollow button). Notifications should cover any changes affecting the client, including changes to the client's contacts or deals. Use the Resend API for sending emails.
-- Before: e4b5f26
-- After: (this commit)
-- Fix: Added client following system with follow/unfollow toggle button on client detail page (FollowButton component, only visible when authenticated). Added email notification preferences to Settings page (NotificationPreferencesSection with 7 toggles: client updated, deal created, deal stage changed, task created, task completed, contact added, note added — all default to enabled, only visible when authenticated). Created two new database tables: client_followers (user-client junction with unique constraint) and notification_preferences (per-user toggles). Created two new API endpoints: /.netlify/functions/client-follow (GET/POST, requires auth) and /.netlify/functions/notification-preferences (GET/PUT, requires auth). Created notifications utility (netlify/utils/notifications.ts) that queries followers and their preferences, then sends emails via Resend API. Integrated fire-and-forget notification calls into existing backend functions (clients.ts, client-tasks.ts, client-deals.ts, client-people.ts, deals.ts) wherever timeline events are created. Actor is excluded from notifications. Added 6 new Playwright tests (STP-NP-01/02/03, CDP-FOL-01/02/03) and updated STP-HDR-01.
-- Problem stage: none (enhancement — client following and email notifications were not part of the original spec)
-
 2/19/2026: WebhookDialogInstructions — The "Add Webhook" dialog needs actual setup instructions for each supported platform.
 - Before: 25bd361
 - After: 7af02ba
@@ -25,6 +19,12 @@
 - Problem stage: none (enhancement to existing feature — setup guides were not part of the original webhook spec)
 
 ## Finished
+
+2/20/2026: Add email integration for client follow notifications. Logged-in users should be able to go to the Settings page and configure their email notification preferences for when changes happen to a client they are following. "Following" a client means the user has opted in on that client's detail page (add a follow/unfollow button). Notifications should cover any changes affecting the client, including changes to the client's contacts or deals. Use the Resend API for sending emails.
+- Before: e4b5f26
+- After: (this commit)
+- Fix: Added client following system with follow/unfollow toggle button on client detail page (FollowButton component, only visible when authenticated). Added email notification preferences to Settings page (NotificationPreferencesSection with 7 toggles: client updated, deal created, deal stage changed, task created, task completed, contact added, note added — all default to enabled, only visible when authenticated). Created two new database tables: client_followers (user-client junction with unique constraint) and notification_preferences (per-user toggles). Created two new API endpoints: /.netlify/functions/client-follow (GET/POST, requires auth) and /.netlify/functions/notification-preferences (GET/PUT, requires auth). Created notifications utility (netlify/utils/notifications.ts) that queries followers and their preferences, then sends emails via Resend API. Integrated fire-and-forget notification calls into existing backend functions (clients.ts, client-tasks.ts, client-deals.ts, client-people.ts, deals.ts) wherever timeline events are created. Actor is excluded from notifications. Added 6 new Playwright tests (STP-NP-01/02/03, CDP-FOL-01/02/03) and updated STP-HDR-01.
+- Problem stage: none (enhancement — client following and email notifications were not part of the original spec)
 
 2/20/2026: Improve the auth system: require email confirmation for new user signups before they can log in, and add a "Forgot password" link on the login page that sends a password reset email. Use the Resend API for sending emails.
 - Before: 837fc7f
