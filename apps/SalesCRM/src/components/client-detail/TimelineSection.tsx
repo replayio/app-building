@@ -30,6 +30,9 @@ function getEventIcon(eventType: string): string {
     case 'contact_added': return '●'
     case 'attachment_added': return '●'
     case 'status_changed': return '●'
+    case 'name_changed': return '●'
+    case 'tags_changed': return '●'
+    case 'type_changed': return '●'
     default: return '●'
   }
 }
@@ -45,6 +48,9 @@ function getEventColor(eventType: string): string {
     case 'contact_added': return 'text-status-prospect'
     case 'attachment_added': return 'text-text-muted'
     case 'status_changed': return 'text-accent'
+    case 'name_changed': return 'text-accent'
+    case 'tags_changed': return 'text-accent-blue'
+    case 'type_changed': return 'text-accent-purple'
     default: return 'text-text-muted'
   }
 }

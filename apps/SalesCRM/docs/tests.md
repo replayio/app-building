@@ -308,7 +308,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CDP-HDR-05: Editing client type persists the change**
 - Initial: Client is "Organization"
 - Action: Edit type to "Individual"
-- Expected: Type badge changes to "Individual". Change is persisted.
+- Expected: Type badge changes to "Individual". Change is persisted. A timeline entry is created for the type change.
 
 #### QuickActions
 

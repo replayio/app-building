@@ -185,14 +185,14 @@ async function handler(req: OptionalAuthRequest) {
   if (req.method === 'PUT' && resourceId) {
     const body = await req.json() as Record<string, unknown>
 
-    // If status is changing, get old status for timeline event
-    let oldStatus: string | null = null
-    if (body.status) {
-      const existing = await sql`SELECT status FROM clients WHERE id = ${resourceId}::uuid`
-      if (existing.length > 0 && existing[0].status !== body.status) {
-        oldStatus = existing[0].status as string
-      }
+    // Get existing client for change detection
+    const existing = await sql`SELECT name, type, status, tags FROM clients WHERE id = ${resourceId}::uuid`
+    if (existing.length === 0) {
+      return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 })
     }
+    const old = existing[0]
+
+    const dateAcquiredValue = body.date_acquired === '' ? null : (body.date_acquired as string | undefined) ?? null
 
     const rows = await sql`
       UPDATE clients SET
@@ -204,6 +204,7 @@ async function handler(req: OptionalAuthRequest) {
         source_detail = COALESCE(${(body.source_detail as string) ?? null}, source_detail),
         campaign = COALESCE(${(body.campaign as string) ?? null}, campaign),
         channel = COALESCE(${(body.channel as string) ?? null}, channel),
+        date_acquired = COALESCE(${dateAcquiredValue}, date_acquired),
         updated_at = NOW()
       WHERE id = ${resourceId}::uuid
       RETURNING *
@@ -213,11 +214,38 @@ async function handler(req: OptionalAuthRequest) {
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 })
     }
 
-    // Create timeline event for status change
-    if (oldStatus) {
+    const userName = req.user?.name ?? 'System'
+
+    // Create timeline events for field changes
+    if (body.name && body.name !== old.name) {
       await sql`
         INSERT INTO timeline_events (client_id, event_type, description, user_name)
-        VALUES (${resourceId}::uuid, 'status_changed', ${'Status Changed: from \'' + oldStatus + '\' to \'' + (body.status as string) + '\''}, ${req.user?.name ?? 'System'})
+        VALUES (${resourceId}::uuid, 'name_changed', ${'Name Changed: from \'' + (old.name as string) + '\' to \'' + (body.name as string) + '\''}, ${userName})
+      `
+    }
+
+    if (body.status && body.status !== old.status) {
+      await sql`
+        INSERT INTO timeline_events (client_id, event_type, description, user_name)
+        VALUES (${resourceId}::uuid, 'status_changed', ${'Status Changed: from \'' + (old.status as string) + '\' to \'' + (body.status as string) + '\''}, ${userName})
+      `
+    }
+
+    if (body.tags) {
+      const oldTags = (old.tags as string[]).sort().join(',')
+      const newTags = (body.tags as string[]).sort().join(',')
+      if (oldTags !== newTags) {
+        await sql`
+          INSERT INTO timeline_events (client_id, event_type, description, user_name)
+          VALUES (${resourceId}::uuid, 'tags_changed', ${'Tags Changed: from [' + (old.tags as string[]).join(', ') + '] to [' + (body.tags as string[]).join(', ') + ']'}, ${userName})
+        `
+      }
+    }
+
+    if (body.type && body.type !== old.type) {
+      await sql`
+        INSERT INTO timeline_events (client_id, event_type, description, user_name)
+        VALUES (${resourceId}::uuid, 'type_changed', ${'Type Changed: from \'' + (old.type as string) + '\' to \'' + (body.type as string) + '\''}, ${userName})
       `
     }
 
