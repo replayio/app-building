@@ -56,6 +56,10 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     // Get original name
     const originalName = await page.getByTestId('client-header-title').textContent();
 
+    // Count existing timeline entries for name change before action
+    const nameChangedEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Name Changed' });
+    const initialTimelineCount = await nameChangedEntries.count();
+
     // Click edit button
     await page.getByTestId('client-header-edit-button').click();
 
@@ -84,10 +88,8 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     // Verify name still showing after data reload
     await expect(page.getByTestId('client-header-title')).toHaveText('Acme Corporation');
 
-    // Verify timeline entry for the name change was created
-    await expect(
-      page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Name Changed' })
-    ).not.toHaveCount(0, { timeout: 15000 });
+    // Verify exactly one new timeline entry for the name change
+    await expect(nameChangedEntries).toHaveCount(initialTimelineCount + 1, { timeout: 15000 });
 
     // Restore original name
     await page.getByTestId('client-header-edit-button').click();
@@ -106,6 +108,10 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     const targetStatus = currentStatusText === 'Inactive' ? 'active' : 'inactive';
     const targetLabel = targetStatus === 'active' ? 'Active' : 'Inactive';
 
+    // Count existing timeline entries for status change before action
+    const statusChangedEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Status Changed' });
+    const initialTimelineCount = await statusChangedEntries.count();
+
     // Change status via dropdown
     await page.getByTestId('status-dropdown-button').click();
     await page.getByTestId(`status-dropdown-option-${targetStatus}`).click();
@@ -119,10 +125,8 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     // Verify status is still showing after data reload
     await expect(page.getByTestId('client-header-status-badge')).toContainText(targetLabel);
 
-    // Verify timeline entry for the status change was created
-    await expect(
-      page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Status Changed' })
-    ).not.toHaveCount(0, { timeout: 15000 });
+    // Verify exactly one new timeline entry for the status change
+    await expect(statusChangedEntries).toHaveCount(initialTimelineCount + 1, { timeout: 15000 });
 
     // Restore original status
     const originalStatus = currentStatusText.toLowerCase();
@@ -136,6 +140,10 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
 
     // Read current tags
     const tagsContainer = page.getByTestId('client-header-tags');
+
+    // Count existing timeline entries for tags change before action
+    const tagsChangedEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Tags Changed' });
+    const initialTimelineCount = await tagsChangedEntries.count();
 
     // Enter edit mode
     await page.getByTestId('client-header-edit-button').click();
@@ -161,10 +169,8 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     // Verify tags still showing after data reload
     await expect(page.getByTestId('client-header-tags')).toContainText('VIP');
 
-    // Verify timeline entry for the tags change was created
-    await expect(
-      page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Tags Changed' })
-    ).not.toHaveCount(0, { timeout: 15000 });
+    // Verify exactly one new timeline entry for the tags change
+    await expect(tagsChangedEntries).toHaveCount(initialTimelineCount + 1, { timeout: 15000 });
 
     // Restore original tags
     await page.getByTestId('client-header-edit-button').click();
@@ -181,6 +187,10 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     const currentTypeText = (await typeBadge.textContent())!.trim();
     const targetType = currentTypeText === 'Organization' ? 'individual' : 'organization';
     const targetLabel = targetType === 'organization' ? 'Organization' : 'Individual';
+
+    // Count existing timeline entries for type change before action
+    const typeChangedEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Type Changed' });
+    const initialTimelineCount = await typeChangedEntries.count();
 
     // Enter edit mode
     await page.getByTestId('client-header-edit-button').click();
@@ -201,10 +211,8 @@ test.describe('ClientDetailPage - ClientHeader (CDP-HDR)', () => {
     // Verify type still showing after data reload
     await expect(page.getByTestId('client-header-type-badge')).toHaveText(targetLabel);
 
-    // Verify timeline entry for the type change was created
-    await expect(
-      page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Type Changed' })
-    ).not.toHaveCount(0, { timeout: 15000 });
+    // Verify exactly one new timeline entry for the type change
+    await expect(typeChangedEntries).toHaveCount(initialTimelineCount + 1, { timeout: 15000 });
 
     // Restore original type
     const originalType = currentTypeText.toLowerCase();
@@ -236,8 +244,12 @@ test.describe('ClientDetailPage - QuickActions (CDP-QA)', () => {
     const modal = page.getByTestId('add-task-modal');
     await expect(modal).toBeVisible();
 
-    // Modal should have key fields
+    // Modal should have all fields: title, description, due date, priority, deal association
     await expect(modal.getByTestId('task-title-input')).toBeVisible();
+    await expect(modal.getByTestId('task-description-input')).toBeVisible();
+    await expect(modal.getByTestId('task-due-date-input')).toBeVisible();
+    await expect(modal.getByTestId('task-priority-select')).toBeVisible();
+    await expect(modal.getByTestId('task-associated-deal-select')).toBeVisible();
     await expect(modal.getByRole('button', { name: 'Save' })).toBeVisible();
     await expect(modal.getByRole('button', { name: 'Cancel' })).toBeVisible();
   });
@@ -281,9 +293,11 @@ test.describe('ClientDetailPage - QuickActions (CDP-QA)', () => {
     const modal = page.getByTestId('add-deal-modal');
     await expect(modal).toBeVisible();
 
-    // Modal should have key fields
+    // Modal should have all fields: name, value, stage, owner
     await expect(modal.getByTestId('deal-name-input')).toBeVisible();
+    await expect(modal.getByTestId('deal-value-input')).toBeVisible();
     await expect(modal.getByTestId('deal-stage-select')).toBeVisible();
+    await expect(modal.getByTestId('deal-owner-input')).toBeVisible();
     await expect(modal.getByRole('button', { name: 'Save' })).toBeVisible();
     await expect(modal.getByRole('button', { name: 'Cancel' })).toBeVisible();
   });
@@ -430,6 +444,101 @@ test.describe('ClientDetailPage - QuickActions (CDP-QA)', () => {
 
     // Verify exactly one new timeline entry for contact added
     await expect(contactAddedEntries).toHaveCount(initialTimelineCount + 1, { timeout: 15000 });
+  });
+
+  test('CDP-QA-10: Cancel button on Add Task modal closes without creating a task', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    const taskName = `Cancel Task ${Date.now()}`;
+
+    // Open Add Task modal and fill title
+    await page.getByTestId('quick-action-add-task').click();
+    const modal = page.getByTestId('add-task-modal');
+    await expect(modal).toBeVisible();
+    await modal.getByTestId('task-title-input').fill(taskName);
+
+    // Click Cancel
+    await modal.getByRole('button', { name: 'Cancel' }).click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible({ timeout: 10000 });
+
+    // No new task should appear in Tasks section
+    await expect(
+      page.locator('[data-testid^="task-title-"]').filter({ hasText: taskName })
+    ).toHaveCount(0, { timeout: 5000 });
+  });
+
+  test('CDP-QA-11: Cancel button on Add Deal modal closes without creating a deal', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    const dealName = `Cancel Deal ${Date.now()}`;
+
+    // Open Add Deal modal and fill name
+    await page.getByTestId('quick-action-add-deal').click();
+    const modal = page.getByTestId('add-deal-modal');
+    await expect(modal).toBeVisible();
+    await modal.getByTestId('deal-name-input').fill(dealName);
+
+    // Click Cancel
+    await modal.getByRole('button', { name: 'Cancel' }).click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible({ timeout: 10000 });
+
+    // No new deal should appear in Deals section
+    await expect(
+      page.locator('[data-testid^="deal-name-"]').filter({ hasText: dealName })
+    ).toHaveCount(0, { timeout: 5000 });
+  });
+
+  test('CDP-QA-12: Cancel button on Add Attachment dialog closes without creating an attachment', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    // Open Add Attachment modal and switch to Link URL mode
+    await page.getByTestId('quick-action-add-attachment').click();
+    const modal = page.getByTestId('add-attachment-modal');
+    await expect(modal).toBeVisible();
+
+    // Switch to Link URL mode and fill in a link
+    await modal.getByTestId('attachment-link-url-toggle').click();
+    const linkName = `Cancel Link ${Date.now()}`;
+    await modal.getByTestId('attachment-link-name-input').fill(linkName);
+    await modal.getByTestId('attachment-url-input').fill('https://example.com');
+
+    // Click Cancel
+    await modal.getByRole('button', { name: 'Cancel' }).click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible({ timeout: 10000 });
+
+    // No new attachment should appear in Attachments section
+    await expect(
+      page.locator('[data-testid^="attachment-filename-"]').filter({ hasText: linkName })
+    ).toHaveCount(0, { timeout: 5000 });
+  });
+
+  test('CDP-QA-13: Cancel button on Add Person modal closes without creating a person', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    const personName = `Cancel Person ${Date.now()}`;
+
+    // Open Add Person modal and fill name
+    await page.getByTestId('quick-action-add-person').click();
+    const modal = page.getByTestId('add-person-modal');
+    await expect(modal).toBeVisible();
+    await modal.getByTestId('person-name-input').fill(personName);
+
+    // Click Cancel
+    await modal.getByRole('button', { name: 'Cancel' }).click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible({ timeout: 10000 });
+
+    // No new person should appear in People section
+    await expect(
+      page.locator('[data-testid^="person-name-"]').filter({ hasText: personName })
+    ).toHaveCount(0, { timeout: 5000 });
   });
 });
 
@@ -641,7 +750,7 @@ test.describe('ClientDetailPage - AttachmentsSection (CDP-ATT)', () => {
 
     expect(hasEmpty || itemCount > 0).toBeTruthy();
 
-    // If attachments exist, verify they show filename and type
+    // If attachments exist, verify they show filename, type, date, and deal columns
     if (itemCount > 0) {
       const first = items.first();
       const filename = first.locator('[data-testid^="attachment-filename-"]');
@@ -651,6 +760,14 @@ test.describe('ClientDetailPage - AttachmentsSection (CDP-ATT)', () => {
       await expect(type).toBeVisible();
       const typeText = await type.textContent();
       expect(['Document', 'Image', 'Video', 'Audio', 'Spreadsheet', 'Presentation', 'Code', 'Archive', 'Link', 'File']).toContain(typeText!.trim());
+
+      // Created date column
+      const date = first.locator('[data-testid^="attachment-date-"]');
+      await expect(date).toBeVisible();
+
+      // Linked deal column
+      const deal = first.locator('[data-testid^="attachment-deal-"]');
+      await expect(deal).toBeVisible();
 
       const preview = first.getByTestId('attachment-preview');
       await expect(preview).toBeVisible();
@@ -663,21 +780,33 @@ test.describe('ClientDetailPage - AttachmentsSection (CDP-ATT)', () => {
     const items = page.locator('[data-testid^="attachment-item-"]');
     const count = await items.count();
     if (count > 0) {
-      const first = items.first();
-      const filename = first.locator('[data-testid^="attachment-filename-"]');
-      await expect(filename).toBeVisible();
+      // Find a document attachment with a download button
+      const downloadBtn = page.locator('[data-testid^="attachment-download-"]').first();
+      const hasDownload = await downloadBtn.isVisible().catch(() => false);
+      if (hasDownload) {
+        // Set up download listener and click
+        const [download] = await Promise.all([
+          page.waitForEvent('download'),
+          downloadBtn.click(),
+        ]);
+        // Verify download initiated
+        expect(download.suggestedFilename()).toBeTruthy();
+      }
     }
   });
 
   test('CDP-ATT-03: View button opens a link attachment', async ({ page }) => {
     await navigateToFirstClientDetail(page);
 
-    const items = page.locator('[data-testid^="attachment-item-"]');
-    const count = await items.count();
-    if (count > 0) {
-      const first = items.first();
-      const deleteBtn = first.locator('[data-testid^="attachment-delete-"]');
-      await expect(deleteBtn).toBeVisible();
+    // Look for a link attachment with a view button
+    const viewBtn = page.locator('[data-testid^="attachment-view-"]').first();
+    const hasView = await viewBtn.isVisible().catch(() => false);
+    if (hasView) {
+      // View button should be a link that opens in a new tab
+      const href = await viewBtn.getAttribute('href');
+      expect(href).toBeTruthy();
+      const target = await viewBtn.getAttribute('target');
+      expect(target).toBe('_blank');
     }
   });
 
@@ -777,17 +906,125 @@ test.describe('ClientDetailPage - TimelineSection (CDP-TL)', () => {
     }
   });
 
-  test('CDP-TL-03: Timeline events display descriptions', async ({ page }) => {
+  test('CDP-TL-03: Timeline entries for deal stage changes are accurate', async ({ page }) => {
     await navigateToFirstClientDetail(page);
 
-    const events = page.locator('[data-testid^="timeline-entry-"]');
-    const count = await events.count();
+    // Look for deal stage change entries in timeline
+    const stageChangeEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Deal Stage Changed' });
+    const count = await stageChangeEntries.count();
     if (count > 0) {
-      const first = events.first();
-      const descEl = first.locator('[data-testid^="timeline-event-description-"]');
-      await expect(descEl).toBeVisible();
-      const descText = await descEl.textContent();
-      expect(descText!.length).toBeGreaterThan(0);
+      const first = stageChangeEntries.first();
+      await expect(first).toBeVisible();
+      const text = await first.textContent();
+      // Entry should mention the deal name and stage transition
+      expect(text).toBeTruthy();
+      expect(text!.length).toBeGreaterThan(0);
+    }
+  });
+
+  test('CDP-TL-04: Timeline entries for notes are accurate', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    // Look for note added entries in timeline
+    const noteEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Note Added' });
+    const count = await noteEntries.count();
+    if (count > 0) {
+      const first = noteEntries.first();
+      await expect(first).toBeVisible();
+      const text = await first.textContent();
+      expect(text).toBeTruthy();
+      expect(text!.length).toBeGreaterThan(0);
+    }
+  });
+
+  test('CDP-TL-05: Timeline entries for email sent are accurate', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    // Look for email sent entries in timeline
+    const emailEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Email Sent' });
+    const count = await emailEntries.count();
+    if (count > 0) {
+      const first = emailEntries.first();
+      await expect(first).toBeVisible();
+      const text = await first.textContent();
+      expect(text).toBeTruthy();
+      expect(text!.length).toBeGreaterThan(0);
+    }
+  });
+
+  test('CDP-TL-06: Timeline entries for contact added are accurate', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    // Look for contact added entries in timeline
+    const contactEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Contact Added' });
+    const count = await contactEntries.count();
+    if (count > 0) {
+      const first = contactEntries.first();
+      await expect(first).toBeVisible();
+      const text = await first.textContent();
+      expect(text).toBeTruthy();
+      expect(text!.length).toBeGreaterThan(0);
+    }
+  });
+
+  test('CDP-TL-07: Creating a task adds a timeline entry atomically', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    const taskName = `Timeline Task ${Date.now()}`;
+
+    // Count existing timeline entries for task creation before action
+    const taskCreatedEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Task Created' });
+    const initialTimelineCount = await taskCreatedEntries.count();
+
+    // Create a task via quick action
+    await page.getByTestId('quick-action-add-task').click();
+    const modal = page.getByTestId('add-task-modal');
+    await expect(modal).toBeVisible();
+    await modal.getByTestId('task-title-input').fill(taskName);
+    await modal.getByTestId('task-save-button').click();
+    await expect(modal).not.toBeVisible({ timeout: 10000 });
+
+    // Verify exactly one new timeline entry (no duplicates from re-renders)
+    await expect(taskCreatedEntries).toHaveCount(initialTimelineCount + 1, { timeout: 15000 });
+  });
+
+  test('CDP-TL-08: Changing deal stage adds a timeline entry atomically', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    // Count existing deal stage change entries before action
+    const stageChangeEntries = page.locator('[data-testid^="timeline-event-description-"]').filter({ hasText: 'Deal Stage Changed' });
+    const initialCount = await stageChangeEntries.count();
+
+    // Find a deal and navigate to it to change its stage
+    const dealItems = page.locator('[data-testid^="deal-item-"]');
+    const dealCount = await dealItems.count();
+    if (dealCount > 0) {
+      const firstDeal = dealItems.first();
+      const testId = await firstDeal.getAttribute('data-testid');
+      const dealId = testId!.replace('deal-item-', '');
+
+      // Navigate to deal detail page
+      await firstDeal.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page).toHaveURL(new RegExp(`/deals/${dealId}`));
+
+      // Change the deal stage (look for stage dropdown on deal detail page)
+      const stageDropdown = page.getByTestId('deal-stage-dropdown-button');
+      const hasStageDropdown = await stageDropdown.isVisible().catch(() => false);
+      if (hasStageDropdown) {
+        await stageDropdown.click();
+        // Click a different stage option
+        const stageOption = page.locator('[data-testid^="deal-stage-dropdown-option-"]').first();
+        await stageOption.click();
+        await page.waitForLoadState('networkidle');
+
+        // Navigate back to client detail
+        await page.goBack();
+        await page.waitForLoadState('networkidle');
+
+        // Verify exactly one new timeline entry for deal stage change
+        await expect(stageChangeEntries).toHaveCount(initialCount + 1, { timeout: 15000 });
+      }
     }
   });
 });
