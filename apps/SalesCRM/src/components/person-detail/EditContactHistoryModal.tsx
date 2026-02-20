@@ -53,7 +53,7 @@ export function EditContactHistoryModal({ entry, onClose, onSave }: EditContactH
   return (
     <div data-testid="edit-contact-history-modal" className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
+      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] mx-3 max-h-[90vh] overflow-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Edit Contact History Entry</h2>
           <button
@@ -65,7 +65,7 @@ export function EditContactHistoryModal({ entry, onClose, onSave }: EditContactH
           </button>
         </div>
         <div className="px-5 py-4 flex flex-col gap-3.5">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Date/Time *</label>
               <input

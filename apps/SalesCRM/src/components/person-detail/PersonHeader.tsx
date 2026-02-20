@@ -41,7 +41,7 @@ export function PersonHeader({ individual, onUpdate }: PersonHeaderProps) {
   const companiesLabel = clientAssociations.map((ca: ClientAssociation) => ca.client_name).join(' & ')
 
   return (
-    <div data-testid="person-header" className="border border-border rounded-[6px] p-5 mb-4">
+    <div data-testid="person-header" className="border border-border rounded-[6px] p-5 max-sm:p-3 mb-4">
       {editing ? (
         <div data-testid="person-header-edit-form" className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
@@ -144,7 +144,7 @@ export function PersonHeader({ individual, onUpdate }: PersonHeaderProps) {
           )}
 
           {/* Contact info */}
-          <div data-testid="person-header-contact-info" className="flex flex-wrap gap-4 mb-3">
+          <div data-testid="person-header-contact-info" className="flex flex-wrap gap-4 max-sm:gap-2 mb-3">
             {individual.email && (
               <div data-testid="person-header-email" className="flex items-center gap-1.5 text-[13px] text-text-muted">
                 <Mail size={14} strokeWidth={1.5} className="text-text-disabled" />

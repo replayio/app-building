@@ -31,11 +31,11 @@ export function RelationshipsSection({ relationships, onAddEntry, onDeleteRelati
   const uniqueTypes = Array.from(new Set(relationships.map((r) => r.relationship_type)))
 
   return (
-    <div data-testid="relationships-section" className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="relationships-section" className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4">
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Users size={16} strokeWidth={1.5} className="text-text-muted" />
-          <h2 className="text-[14px] font-semibold text-text-primary">Relationships with Other Individuals</h2>
+          <h2 className="text-[14px] font-semibold text-text-primary max-sm:text-[13px]">Relationships</h2>
         </div>
         <div className="flex items-center gap-1">
           <div className="relative">
@@ -116,7 +116,7 @@ export function RelationshipsSection({ relationships, onAddEntry, onDeleteRelati
                 <div
                   key={rel.id}
                   data-testid={`relationship-item-${rel.id}`}
-                  className="flex items-center justify-between px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
+                  className="flex items-center justify-between max-sm:flex-wrap px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
                 >
                   <div className="flex-1 min-w-0">
                     <span data-testid={`relationship-name-${rel.id}`} className="text-[13px] font-medium text-text-primary">
@@ -158,9 +158,9 @@ export function RelationshipsSection({ relationships, onAddEntry, onDeleteRelati
           )}
         </div>
       ) : (
-        <div data-testid="relationships-graph-view" className="py-4">
+        <div data-testid="relationships-graph-view" className="py-4 overflow-x-auto">
           {/* Simple graph view: central node with connections */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center min-w-[320px]">
             <div className="relative w-full max-w-[400px] min-h-[200px] flex items-center justify-center">
               {/* Center node */}
               <div data-testid="relationships-graph-center" className="absolute z-10 bg-accent text-white rounded-full w-14 h-14 flex items-center justify-center text-[11px] font-semibold text-center leading-tight px-1">

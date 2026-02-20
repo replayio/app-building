@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/polishApp.md",
-      "jobs": [
-        "Unpack: Polish app quality"
-      ],
-      "timestamp": "2026-02-20T03:43:16.462Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "FixViolationTimelineEntries: Fix missing timeline entries: (1) Add timeline entry mention to CDP-HDR-05 in docs/tests.md, (2) Add name/tag/type change timeline entries to clients.ts PUT handler backend, (3) Add date_acquired to clients.ts PUT handler UPDATE query",

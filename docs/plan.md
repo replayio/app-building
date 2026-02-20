@@ -1,9 +1,9 @@
 ## Polish
 
-### Responsive UI
+### Responsive UI ✓
 - [x] ClientsListPage
 - [x] ClientDetailPage
-- [ ] PersonDetailPage
+- [x] PersonDetailPage
 - [x] DealsListPage
 - [x] DealDetailPage
 - [x] TasksListPage

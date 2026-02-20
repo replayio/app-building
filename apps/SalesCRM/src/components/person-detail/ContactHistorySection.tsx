@@ -39,7 +39,7 @@ export function ContactHistorySection({ entries, onAddEntry, onEditEntry, onDele
   const uniqueTypes = Array.from(new Set(entries.map((e) => e.type)))
 
   return (
-    <div data-testid="contact-history-section" className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="contact-history-section" className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4">
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Clock size={16} strokeWidth={1.5} className="text-text-muted" />
@@ -96,7 +96,7 @@ export function ContactHistorySection({ entries, onAddEntry, onEditEntry, onDele
             <div
               key={entry.id}
               data-testid={`contact-history-entry-${entry.id}`}
-              className="flex items-start justify-between px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
+              className="flex items-start justify-between max-sm:flex-wrap px-3 py-2.5 rounded-[4px] hover:bg-hover transition-colors duration-100"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
@@ -116,7 +116,7 @@ export function ContactHistorySection({ entries, onAddEntry, onEditEntry, onDele
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+              <div className="flex items-center gap-1 flex-shrink-0 ml-2 max-sm:ml-auto">
                 <button
                   data-testid={`contact-history-edit-${entry.id}`}
                   onClick={() => onEditEntry(entry)}

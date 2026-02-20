@@ -24,7 +24,7 @@ export function AssociatedClientsSection({ associations }: AssociatedClientsSect
   const navigate = useNavigate()
 
   return (
-    <div data-testid="associated-clients-section" className="border border-border rounded-[6px] p-4 mb-4">
+    <div data-testid="associated-clients-section" className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4">
       <h2 className="text-[14px] font-semibold text-text-primary mb-3">Associated Clients</h2>
 
       {associations.length === 0 ? (
