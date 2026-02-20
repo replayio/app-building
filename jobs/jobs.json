@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix TaskPriorityBadge to use CSS variables for priority colors (add --color-priority-high etc to index.css @theme block like status colors) and remove outer margins from TasksPageHeader (mb-6) and TasksFilterBar (mb-4) root elements, moving spacing to parent TasksListPage",
-        "RunTests: Verify tests pass after component fixes"
-      ],
-      "timestamp": "2026-02-20T08:44:52.100Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationTaskDetailSpecPersistence: Update test spec entries TDP-HDR-01 (add description check), TDP-HDR-02/TDP-NTS-02/TDP-NTS-03 (add persistence verification language), TDP-HDR-02 (add timeline side effect)",
         "RunTests: Verify tests pass after TaskDetail spec persistence fix"
       ],

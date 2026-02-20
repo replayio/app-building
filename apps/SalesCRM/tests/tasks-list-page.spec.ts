@@ -418,31 +418,31 @@ test.describe('TasksListPage - TaskCards (TLP-CRD)', () => {
     await page.goto('/tasks');
     await page.waitForLoadState('networkidle');
 
-    // Check High badge has red styling
+    // Check High badge has red styling (CSS variable --color-priority-high-bg)
     const highBadge = page.locator('[data-testid="task-priority-badge-high"]').first();
     if (await highBadge.isVisible().catch(() => false)) {
-      await expect(highBadge).toHaveClass(/bg-red/);
+      await expect(highBadge).toHaveCSS('background-color', 'rgb(254, 226, 226)');
       await expect(highBadge).toHaveText('High');
     }
 
-    // Check Medium badge has amber styling
+    // Check Medium badge has amber styling (CSS variable --color-priority-medium-bg)
     const mediumBadge = page.locator('[data-testid="task-priority-badge-medium"]').first();
     if (await mediumBadge.isVisible().catch(() => false)) {
-      await expect(mediumBadge).toHaveClass(/bg-amber/);
+      await expect(mediumBadge).toHaveCSS('background-color', 'rgb(254, 243, 199)');
       await expect(mediumBadge).toHaveText('Medium');
     }
 
-    // Check Low badge has green styling
+    // Check Low badge has green styling (CSS variable --color-priority-low-bg)
     const lowBadge = page.locator('[data-testid="task-priority-badge-low"]').first();
     if (await lowBadge.isVisible().catch(() => false)) {
-      await expect(lowBadge).toHaveClass(/bg-green/);
+      await expect(lowBadge).toHaveCSS('background-color', 'rgb(220, 252, 231)');
       await expect(lowBadge).toHaveText('Low');
     }
 
-    // Check Normal badge has blue styling
+    // Check Normal badge has blue styling (CSS variable --color-priority-normal-bg)
     const normalBadge = page.locator('[data-testid="task-priority-badge-normal"]').first();
     if (await normalBadge.isVisible().catch(() => false)) {
-      await expect(normalBadge).toHaveClass(/bg-blue/);
+      await expect(normalBadge).toHaveCSS('background-color', 'rgb(219, 234, 254)');
       await expect(normalBadge).toHaveText('Normal');
     }
   });

@@ -43,7 +43,7 @@ export function TasksFilterBar({
   const hasActiveFilters = priorityFilter || assigneeFilter || clientFilter
 
   return (
-    <div className="flex items-center gap-2 mb-4" data-testid="tasks-filter-bar">
+    <div className="flex items-center gap-2" data-testid="tasks-filter-bar">
       <div className="relative" ref={dropdownRef}>
         <button
           data-testid="tasks-filter-button"

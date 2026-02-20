@@ -146,8 +146,11 @@ export function TasksListPage() {
 
   return (
     <div className="p-6 max-sm:p-3" data-testid="tasks-list-page">
-      <TasksPageHeader onCreateTask={() => setCreateModalOpen(true)} onImport={() => setImportDialogOpen(true)} />
+      <div className="mb-6">
+        <TasksPageHeader onCreateTask={() => setCreateModalOpen(true)} onImport={() => setImportDialogOpen(true)} />
+      </div>
 
+      <div className="mb-4">
       <TasksFilterBar
         searchValue={searchInput}
         onSearchChange={setSearchInput}
@@ -160,6 +163,7 @@ export function TasksListPage() {
         availableAssignees={availableAssignees}
         availableClients={availableClients}
       />
+      </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12 text-[13px] text-text-muted">

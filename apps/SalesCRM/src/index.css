@@ -32,6 +32,16 @@
   --color-status-prospect: #3b82f6;
   --color-status-churned: #ef4444;
 
+  /* Priority colors */
+  --color-priority-high-bg: #fee2e2;
+  --color-priority-high-text: #b91c1c;
+  --color-priority-medium-bg: #fef3c7;
+  --color-priority-medium-text: #b45309;
+  --color-priority-low-bg: #dcfce7;
+  --color-priority-low-text: #15803d;
+  --color-priority-normal-bg: #dbeafe;
+  --color-priority-normal-text: #1d4ed8;
+
   /* Hover states */
   --color-hover: rgba(0, 0, 0, 0.063);
   --color-pressed: #efefef;
