@@ -3,6 +3,38 @@
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
+        "MakeResponsiveTaskDetailPage: Make TaskDetailPage responsive",
+        "MakeResponsiveSettingsPage: Make SettingsPage responsive"
+      ],
+      "timestamp": "2026-02-20T09:42:26.602Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveDealDetailPage: Make DealDetailPage responsive",
+        "MakeResponsiveTasksListPage: Make TasksListPage responsive"
+      ],
+      "timestamp": "2026-02-20T09:42:25.781Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsivePersonDetailPage: Make PersonDetailPage responsive",
+        "MakeResponsiveDealsListPage: Make DealsListPage responsive"
+      ],
+      "timestamp": "2026-02-20T09:42:24.596Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveClientsListPage: Make ClientsListPage responsive",
+        "MakeResponsiveClientDetailPage: Make ClientDetailPage responsive"
+      ],
+      "timestamp": "2026-02-20T09:42:23.590Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
         "Unpack: Polish app quality"
       ],
       "timestamp": "2026-02-20T03:43:16.462Z"

@@ -391,6 +391,20 @@ Open bug reports to address:
 - [x] checkDirectives.md: UnpackCheckDirectives: Unpacked into 34 sub-jobs for systematic compliance check across all pages
   - [x] checkDirectives.md: FixViolationFilterSelectSearchable: Added `searchable` prop to FilterSelect component — search input with auto-focus, option filtering, "No matches" empty state, and search-clear on close. Applied to all FilterSelect instances with large option lists (client, user, deal selects across DealsFilterControls, TasksFilterBar, CreateDealModal, AddDealModal, DealDetailHeader, CreateTaskModal, EditTaskModal, AddTaskModal, AddAttachmentModal).
 
+## Polish
+
+### Responsive UI
+- [ ] ClientsListPage
+- [ ] ClientDetailPage
+- [ ] PersonDetailPage
+- [ ] DealsListPage
+- [ ] DealDetailPage
+- [ ] TasksListPage
+- [ ] TaskDetailPage
+- [ ] SettingsPage
+- [ ] UsersListPage
+- [ ] UserDetailPage
+
 ## Blockers
 
 None.
