@@ -172,11 +172,22 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     // Get current stage
     const currentStage = await getFilterValue(page, 'deal-header-stage-select');
 
+    // Count history entries before stage change
+    const historyEntriesBefore = page.locator('[data-testid^="deal-history-entry-"]');
+    const countBefore = await historyEntriesBefore.count();
+
     // Change Stage button should be disabled when same stage selected
     await expect(changeStageBtn).toBeDisabled();
 
     // Select a different stage
     const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
+    const stageDisplayNames: Record<string, string> = {
+      'lead': 'Lead', 'qualification': 'Qualification', 'discovery': 'Discovery',
+      'proposal': 'Proposal', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
+    };
+    const expectedFrom = stageDisplayNames[currentStage] || currentStage;
+    const expectedTo = stageDisplayNames[newStage] || newStage;
+
     await selectFilterOption(page, 'deal-header-stage-select', newStage);
 
     // Change Stage button should now be enabled
@@ -190,6 +201,15 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
 
     // Button should be disabled again (selectedStage synced back to deal.stage)
     await expect(changeStageBtn).toBeDisabled();
+
+    // Verify a deal history entry was created for this stage change
+    const expectedHistoryText = `Changed Stage from ${expectedFrom} to ${expectedTo}`;
+    const newHistoryEntry = page.locator('[data-testid^="deal-history-entry-"]', { hasText: expectedHistoryText });
+    await expect(newHistoryEntry).toHaveCount(1, { timeout: 10000 });
+
+    // Verify exactly one new entry was added (no duplicates)
+    const historyEntriesAfter = page.locator('[data-testid^="deal-history-entry-"]');
+    await expect(historyEntriesAfter).toHaveCount(countBefore + 1, { timeout: 5000 });
 
     // Restore original stage
     await selectFilterOption(page, 'deal-header-stage-select', currentStage);
@@ -471,12 +491,54 @@ test.describe('DealDetailPage - WriteupsSection (DDP-WRT)', () => {
   });
 
   test('DDP-WRT-05: Editing a writeup creates a version history entry', async ({ page }) => {
-    // This test is covered by the combination of DDP-WRT-04 and DDP-WRT-06
-    // Just verify the version counter can increment
     await navigateToFirstDealDetail(page);
 
+    // Create a writeup to edit
+    await page.getByTestId('deal-writeups-add-button').click();
+    const addModal = page.getByTestId('add-writeup-modal');
+    await expect(addModal).toBeVisible();
+
+    const writeupTitle = `VersionTest ${Date.now()}`;
+    await page.getByTestId('add-writeup-title').fill(writeupTitle);
+    await page.getByTestId('add-writeup-content').fill('Original version content.');
+    await page.getByTestId('add-writeup-save').click();
+    await expect(addModal).not.toBeVisible();
+    await page.waitForLoadState('networkidle');
+
+    // Find the newly created writeup and click edit
+    const editButtons = page.locator('[data-testid^="deal-writeup-edit-"]');
+    await editButtons.last().click();
+
+    // Edit the content using the inline edit form
+    const contentInput = page.getByTestId('deal-writeup-edit-content-input');
+    await expect(contentInput).toBeVisible();
+    await contentInput.clear();
+    await contentInput.fill('Updated version content.');
+
+    // Save the edit
+    await page.getByTestId('deal-writeup-edit-save-button').click();
+    await page.waitForLoadState('networkidle');
+
+    // Verify the writeup shows updated content
     const writeupsSection = page.getByTestId('deal-writeups-section');
-    await expect(writeupsSection).toBeVisible();
+    await expect(writeupsSection).toContainText('Updated version content.');
+
+    // Click the version history button on the last writeup
+    const versionButtons = page.locator('[data-testid^="deal-writeup-versions-"]');
+    await versionButtons.last().click();
+
+    // Verify the version history modal shows at least 2 versions
+    const versionModal = page.getByTestId('version-history-modal');
+    await expect(versionModal).toBeVisible();
+    await expect(versionModal).toContainText('Version History');
+
+    // Should show at least 2 version entries (current v2 + original v1)
+    const versionEntries = versionModal.locator('[data-testid^="version-entry-"]');
+    await expect(versionEntries).toHaveCount(2, { timeout: 5000 });
+
+    // Close the modal
+    await versionModal.locator('button').first().click();
+    await expect(versionModal).not.toBeVisible();
   });
 
   test('DDP-WRT-06: Version History button shows previous versions', async ({ page }) => {
@@ -536,7 +598,12 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
   });
 
   test('DDP-LTK-03: Creating a task adds it to linked tasks', async ({ page }) => {
-    await navigateToFirstDealDetail(page);
+    const dealId = await navigateToFirstDealDetail(page);
+
+    // Get client_id from the deal via API to check timeline side effect
+    const dealRes = await page.request.get(`/.netlify/functions/deals/${dealId}`);
+    const dealData = await dealRes.json();
+    const clientId = dealData.client_id;
 
     // Open add task modal
     await page.getByTestId('deal-linked-tasks-add-button').click();
@@ -553,12 +620,20 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
     // Task should appear in the linked tasks list
     const tasksSection = page.getByTestId('deal-linked-tasks-section');
     await expect(tasksSection).toContainText(taskTitle);
+
+    // Verify exactly one timeline entry was created for this task (side effect)
+    const timelineRes = await page.request.get(`/.netlify/functions/client-timeline?clientId=${clientId}`);
+    const timelineData = await timelineRes.json() as { events: { description: string; event_type: string }[] };
+    const matchingEntries = timelineData.events.filter(
+      (e) => e.event_type === 'task_created' && e.description.includes(taskTitle)
+    );
+    expect(matchingEntries).toHaveLength(1);
   });
 
   test('DDP-LTK-04: Checking a task marks it complete', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
-    // First create a task to toggle
+    // Create a task to toggle
     await page.getByTestId('deal-linked-tasks-add-button').click();
     const modal = page.getByTestId('add-deal-task-modal');
     await expect(modal).toBeVisible();
@@ -569,22 +644,19 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
     await expect(modal).not.toBeVisible();
     await page.waitForLoadState('networkidle');
 
-    // Find the toggle button for the task we just created
-    const toggleButtons = page.locator('[data-testid^="deal-linked-task-toggle-"]');
-    const count = await toggleButtons.count();
+    // Verify the task appears uncompleted first
+    const tasksSection = page.getByTestId('deal-linked-tasks-section');
+    await expect(tasksSection).toContainText(taskTitle);
 
-    if (count > 0) {
-      // Toggle the last task (the one we just created)
-      await toggleButtons.last().click();
-      await page.waitForLoadState('networkidle');
+    // Find the specific task row containing our title and click its toggle button
+    const taskRow = tasksSection.locator('[data-testid^="deal-linked-task-"]:not([data-testid*="toggle"])', { hasText: taskTitle });
+    await taskRow.locator('[data-testid^="deal-linked-task-toggle-"]').click();
+    await page.waitForLoadState('networkidle');
 
-      // The task should now show as completed (line-through style)
-      const taskItems = page.locator('[data-testid^="deal-linked-task-"]:not([data-testid*="toggle"])');
-      const lastTask = taskItems.last();
-      // Check that the task element has text content
-      const taskText = await lastTask.textContent();
-      expect(taskText).toBeTruthy();
-    }
+    // Verify the task now shows as completed: line-through text on the title span
+    await expect(
+      tasksSection.locator('.line-through').filter({ hasText: taskTitle })
+    ).toBeVisible({ timeout: 10000 });
   });
 
   test('DDP-LTK-05: Clicking a linked task navigates to task detail page', async ({ page }) => {

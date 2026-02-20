@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationWeakTests: Fix DDP-WRT-05 stub test to actually edit writeup and verify version history, fix DDP-LTK-04 to verify completion state, add side effect assertions to DDP-HDR-04 (deal history entry) and DDP-LTK-03 (timeline entry)",
-        "RunTests: Verify tests pass after test improvements"
-      ],
-      "timestamp": "2026-02-20T07:40:55.491Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationMissingTestIds: Add missing data-testid attributes to WriteupsSection inline edit save/cancel buttons and LinkedTasksSection task title click area",
         "RunTests: Verify tests pass after data-testid fix"
       ],

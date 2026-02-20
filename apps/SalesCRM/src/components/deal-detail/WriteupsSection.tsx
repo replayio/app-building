@@ -72,12 +72,14 @@ export function WriteupsSection({ writeups, onAddWriteup, onEditWriteup, onViewV
               {editingId === writeup.id ? (
                 <div className="flex flex-col gap-2">
                   <input
+                    data-testid="deal-writeup-edit-title-input"
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     className="w-full h-[30px] px-2 text-[13px] font-medium text-text-primary bg-base border border-border rounded-[5px] focus:outline-none focus:border-accent"
                   />
                   <textarea
+                    data-testid="deal-writeup-edit-content-input"
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
                     rows={4}
@@ -85,12 +87,14 @@ export function WriteupsSection({ writeups, onAddWriteup, onEditWriteup, onViewV
                   />
                   <div className="flex items-center gap-1 justify-end">
                     <button
+                      data-testid="deal-writeup-edit-save-button"
                       onClick={saveEdit}
                       className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-status-active hover:bg-hover transition-colors duration-100"
                     >
                       <Check size={14} strokeWidth={1.75} />
                     </button>
                     <button
+                      data-testid="deal-writeup-edit-cancel-button"
                       onClick={cancelEdit}
                       className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-status-churned hover:bg-hover transition-colors duration-100"
                     >

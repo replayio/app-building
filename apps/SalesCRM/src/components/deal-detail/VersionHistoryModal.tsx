@@ -49,7 +49,7 @@ export function VersionHistoryModal({ open, onClose, versions }: VersionHistoryM
           ) : (
             <div className="flex flex-col gap-3">
               {versions.map((v) => (
-                <div key={v.id} className="border border-border rounded-[4px] p-3">
+                <div key={v.id} data-testid={`version-entry-${v.id}`} className="border border-border rounded-[4px] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[13px] font-medium text-text-primary">
                       v{v.version} — {v.title}
