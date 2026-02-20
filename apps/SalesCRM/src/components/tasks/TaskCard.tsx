@@ -45,21 +45,13 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
     return `Due: ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
   }
 
-  function getAssigneeDisplay(): string {
-    if (!task.assignee_name) return ''
-    if (task.assignee_role) {
-      return `${task.assignee_name} (${task.assignee_role})`
-    }
-    return task.assignee_name
-  }
-
   return (
     <div
       data-testid={`task-card-${task.id}`}
       className="border border-border rounded-[6px] bg-surface px-5 max-sm:px-3 py-4 hover:shadow-[var(--shadow-elevation-1)] transition-shadow duration-150 cursor-pointer"
       onClick={() => onClick(task)}
     >
-      <div className="flex items-center gap-4 max-sm:gap-3">
+      <div className="flex items-center gap-4 max-md:gap-3">
         <TaskPriorityBadge priority={task.priority} />
 
         <div className="flex-1 min-w-0">
@@ -78,6 +70,13 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
               </span>
             )}
           </div>
+          {task.assignee_name && (
+            <div className="hidden max-md:flex max-sm:hidden items-center gap-1 mt-1">
+              <span className="text-[12px] text-text-muted">
+                {task.assignee_name}
+              </span>
+            </div>
+          )}
         </div>
 
         <div data-testid={`task-due-date-${task.id}`} className="text-[13px] text-text-muted whitespace-nowrap flex-shrink-0 max-sm:hidden">
@@ -85,12 +84,13 @@ export function TaskCard({ task, onClick, onEdit, onMarkComplete, onDelete }: Ta
         </div>
 
         {task.assignee_name && (
-          <div data-testid={`task-assignee-${task.id}`} className="flex items-center gap-2 flex-shrink-0 max-sm:hidden">
-            <div className="w-8 h-8 rounded-full bg-sidebar flex items-center justify-center">
+          <div data-testid={`task-assignee-${task.id}`} className="flex items-center gap-2 flex-shrink-0 max-md:hidden">
+            <div className="w-8 h-8 rounded-full bg-sidebar flex items-center justify-center max-lg:hidden">
               <User size={14} strokeWidth={1.75} className="text-text-muted" />
             </div>
             <span className="text-[13px] text-text-primary whitespace-nowrap">
-              {getAssigneeDisplay()}
+              {task.assignee_name}
+              <span className="max-lg:hidden">{task.assignee_role ? ` (${task.assignee_role})` : ''}</span>
             </span>
           </div>
         )}

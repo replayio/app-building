@@ -59,7 +59,7 @@ export function TasksFilterBar({
         </button>
 
         {filterOpen && (
-          <div data-testid="tasks-filter-dropdown" className="absolute left-0 top-full mt-1 w-[240px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-50 py-1">
+          <div data-testid="tasks-filter-dropdown" className="absolute left-0 top-full mt-1 w-[240px] max-sm:w-[200px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-50 py-1">
             <div className="px-3 py-2">
               <label className="text-[11px] font-medium text-text-muted uppercase tracking-wide">Priority</label>
               <FilterSelect
