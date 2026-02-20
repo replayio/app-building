@@ -731,6 +731,26 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Fill in name "Test Person", title "Engineer", email "test@example.com", click Save
 - Expected: Modal closes. The new contact "Test Person" appears in the contacts table with title "Engineer" and email "test@example.com". The contact is persisted (page reload still shows it).
 
+**CTLP-HDR-04: Import button opens import dialog with CSV format info**
+- Initial: User is on /contacts
+- Action: Click "Import" button (data-testid="contacts-import-button")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Contacts". The dialog contains: a CSV column format specification table (data-testid="csv-format-info") showing column names and descriptions including required "Name" column, a "Download CSV template" button (data-testid="download-template-button"), a file input for .csv files (data-testid="csv-file-input"), Cancel button (data-testid="import-cancel-button"), and Import button (data-testid="import-submit-button") which is disabled until a file is selected.
+
+**CTLP-HDR-05: CSV import creates contacts from uploaded file**
+- Initial: User has opened the import dialog on /contacts
+- Action: Upload a valid CSV file with headers "Name,Title,Email,Phone,Location" and one data row "Import Test Contact,Manager,importtest@example.com,555-0199,New York", then click Import
+- Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 contact." The imported contact "Import Test Contact" appears in the contacts table after closing the dialog.
+
+**CTLP-HDR-06: Export button triggers data export**
+- Initial: User is on /contacts with existing contacts
+- Action: Click "Export" button (data-testid="contacts-export-button")
+- Expected: A file download is initiated containing the contact data as a CSV file.
+
+**CTLP-HDR-07: Cancel button on Add Contact modal closes without creating a contact**
+- Initial: User is on /contacts. Add Contact modal is open with name filled in as "Cancel Test Contact".
+- Action: Click "Cancel" button (data-testid="contact-cancel-button") on the modal
+- Expected: Modal closes. No new contact is created — the contacts table does not contain "Cancel Test Contact".
+
 #### ContactsSearchBar
 
 **CTLP-SRCH-01: Search bar is displayed with placeholder text**
@@ -766,6 +786,21 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: User navigates to /contacts with existing contacts
 - Action: Observe the pagination area
 - Expected: Pagination (data-testid="contacts-pagination") shows "Showing X-Y of Z contacts" text.
+
+**CTLP-PGN-02: Clicking next page loads next set of contacts**
+- Initial: On page 1 of contacts with enough contacts to have multiple pages
+- Action: Click "Next" button (data-testid="contacts-pagination-next") or page "2" button (data-testid="contacts-pagination-page-2")
+- Expected: Table shows the next set of contacts. Pagination text updates to reflect the new range. Page 2 button is highlighted.
+
+**CTLP-PGN-03: Previous button is disabled on first page**
+- Initial: On page 1 of contacts
+- Action: Observe Previous button (data-testid="contacts-pagination-previous")
+- Expected: Previous button is disabled.
+
+**CTLP-PGN-04: Next button is disabled on last page**
+- Initial: On the last page of contacts results
+- Action: Observe Next button (data-testid="contacts-pagination-next")
+- Expected: Next button is disabled.
 
 ---
 

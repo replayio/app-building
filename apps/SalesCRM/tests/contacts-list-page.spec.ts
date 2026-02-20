@@ -63,6 +63,107 @@ test.describe('ContactsListPage - PageHeader', () => {
     await page.waitForLoadState('networkidle');
     await expect(page.getByTestId('contacts-table').getByText('Test Person')).toBeVisible();
   });
+  test('CTLP-HDR-04: Import button opens import dialog with CSV format info', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('contacts-import-button').click();
+
+    // Import dialog should appear
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Import Contacts')).toBeVisible();
+
+    // CSV column format specification table
+    const formatInfo = dialog.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo.getByText('CSV Column Format')).toBeVisible();
+    await expect(formatInfo.getByText('Contact name')).toBeVisible();
+
+    // Download template button
+    await expect(dialog.getByTestId('download-template-button')).toBeVisible();
+
+    // File input
+    await expect(dialog.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button should be disabled when no file selected
+    await expect(dialog.getByTestId('import-submit-button')).toBeDisabled();
+
+    // Cancel button
+    await expect(dialog.getByTestId('import-cancel-button')).toBeVisible();
+  });
+
+  test('CTLP-HDR-05: CSV import creates contacts from uploaded file', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('contacts-import-button').click();
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+
+    // Create a CSV file and upload it
+    const csvContent = 'Name,Title,Email,Phone,Location\nImport Test Contact,Manager,importtest@example.com,555-0199,New York';
+    const fileInput = dialog.getByTestId('csv-file-input');
+    await fileInput.setInputFiles({
+      name: 'test-contacts-import.csv',
+      mimeType: 'text/csv',
+      buffer: Buffer.from(csvContent),
+    });
+
+    // Import button should now be enabled
+    await expect(dialog.getByTestId('import-submit-button')).toBeEnabled();
+    await dialog.getByTestId('import-submit-button').click();
+
+    // Wait for import result
+    const result = dialog.getByTestId('import-result');
+    await expect(result).toBeVisible();
+    await expect(result).toContainText('Successfully imported 1 contact');
+
+    // Close dialog
+    await dialog.getByTestId('import-cancel-button').click();
+    await expect(dialog).not.toBeVisible();
+
+    // Verify imported contact appears in the table
+    await expect(page.getByTestId('contacts-table').getByText('Import Test Contact')).toBeVisible({ timeout: 5000 });
+  });
+
+  test('CTLP-HDR-06: Export button triggers data export', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    // Listen for download event
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByTestId('contacts-export-button').click();
+    const download = await downloadPromise;
+
+    // Verify download filename
+    expect(download.suggestedFilename()).toBe('contacts-export.csv');
+  });
+
+  test('CTLP-HDR-07: Cancel button on Add Contact modal closes without creating a contact', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    // Open the Add Contact modal
+    await page.getByTestId('add-new-contact-button').click();
+    const modal = page.getByTestId('add-contact-modal');
+    await expect(modal).toBeVisible();
+
+    // Fill in a name so we can verify it doesn't get created
+    const contactName = `Cancel Test Contact ${Date.now()}`;
+    await page.getByTestId('contact-name-input').fill(contactName);
+
+    // Click Cancel
+    await page.getByTestId('contact-cancel-button').click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // The contact should NOT appear in the table
+    await expect(
+      page.locator('[data-testid="contact-name"]').filter({ hasText: contactName })
+    ).toHaveCount(0);
+  });
 });
 
 test.describe('ContactsListPage - SearchBar', () => {
@@ -183,6 +284,64 @@ test.describe('ContactsListPage - Pagination', () => {
         await expect(pagination).toBeVisible();
         await expect(paginationInfo).toContainText(/Showing \d+-\d+ of \d+ contacts/);
       }
+    }
+  });
+
+  test('CTLP-PGN-02: Clicking next page loads next set of contacts', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    const paginationInfo = page.getByTestId('contacts-pagination-info');
+    if (await paginationInfo.isVisible()) {
+      const initialText = await paginationInfo.textContent();
+
+      // Check if there's a next page
+      const nextBtn = page.getByTestId('contacts-pagination-next');
+      const isDisabled = await nextBtn.isDisabled();
+      if (!isDisabled) {
+        await nextBtn.click();
+        await page.waitForLoadState('networkidle');
+
+        const newText = await paginationInfo.textContent();
+        expect(newText).not.toBe(initialText);
+
+        // Page 2 button should be highlighted
+        const page2Btn = page.getByTestId('contacts-pagination-page-2');
+        if (await page2Btn.isVisible()) {
+          await expect(page2Btn).toHaveClass(/bg-accent/);
+        }
+      }
+    }
+  });
+
+  test('CTLP-PGN-03: Previous button is disabled on first page', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    const prevBtn = page.getByTestId('contacts-pagination-previous');
+    if (await prevBtn.isVisible()) {
+      await expect(prevBtn).toBeDisabled();
+    }
+  });
+
+  test('CTLP-PGN-04: Next button is disabled on last page', async ({ page }) => {
+    await page.goto('/contacts');
+    await page.waitForLoadState('networkidle');
+
+    const paginationInfo = page.getByTestId('contacts-pagination-info');
+    if (await paginationInfo.isVisible()) {
+      // Navigate to last page by clicking next repeatedly
+      let isNextDisabled = await page.getByTestId('contacts-pagination-next').isDisabled();
+      let maxAttempts = 20;
+      while (!isNextDisabled && maxAttempts > 0) {
+        await page.getByTestId('contacts-pagination-next').click();
+        await page.waitForLoadState('networkidle');
+        isNextDisabled = await page.getByTestId('contacts-pagination-next').isDisabled();
+        maxAttempts--;
+      }
+
+      // On the last page, Next should be disabled
+      await expect(page.getByTestId('contacts-pagination-next')).toBeDisabled();
     }
   });
 });

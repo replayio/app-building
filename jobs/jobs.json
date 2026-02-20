@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing ContactsListPage test spec entries to docs/tests.md: Import dialog (open + CSV format + import), Export button action, AddContactModal Cancel, Pagination navigation (Previous/Next/page links)",
-        "WriteTests: Write Playwright tests for newly added ContactsListPage test spec entries",
-        "RunTests: Verify tests pass after adding missing ContactsListPage test entries"
-      ],
-      "timestamp": "2026-02-20T21:20:22.299Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
         "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
         "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
