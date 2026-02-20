@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationTaskDetailToPassAntiPattern: Replace .toPass() blocks containing auto-waiting assertions with direct assertions using timeout in task-detail-page.spec.ts (5 occurrences)",
-        "RunTests: Verify tests pass after TaskDetail toPass fix"
-      ],
-      "timestamp": "2026-02-20T08:50:05.585Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix TDP-HDR-01 test entry to include description field, add missing test assertions for priority badge/due date/assignee/description/client-deal names, and add author/timestamp assertions to TDP-NTS-02 test",
         "RunTests: Verify tests pass after TDP assertion fixes"
       ],

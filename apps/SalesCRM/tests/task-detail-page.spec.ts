@@ -60,11 +60,9 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     await page.waitForLoadState('networkidle');
 
     // Navigate to the created task's detail page
-    await expect(async () => {
-      const card = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
-      await expect(card).toBeVisible();
-    }).toPass({ timeout: 10000 });
-    await page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle }).click();
+    const createdCard = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+    await expect(createdCard).toBeVisible({ timeout: 10000 });
+    await createdCard.click();
     await page.waitForLoadState('networkidle');
     await expect(page.getByTestId('task-detail-page')).toBeVisible();
 
@@ -125,12 +123,9 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     await page.waitForLoadState('networkidle');
 
     // Find and click the created task
-    await expect(async () => {
-      const card = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
-      await expect(card).toBeVisible();
-    }).toPass({ timeout: 10000 });
-
-    await page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle }).click();
+    const createdCard = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+    await expect(createdCard).toBeVisible({ timeout: 10000 });
+    await createdCard.click();
     await page.waitForLoadState('networkidle');
     await expect(page.getByTestId('task-detail-page')).toBeVisible();
 
@@ -195,12 +190,9 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     await page.waitForLoadState('networkidle');
 
     // Find and click the created task
-    await expect(async () => {
-      const card = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
-      await expect(card).toBeVisible();
-    }).toPass({ timeout: 10000 });
-
-    await page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle }).click();
+    const createdCard = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+    await expect(createdCard).toBeVisible({ timeout: 10000 });
+    await createdCard.click();
     await page.waitForLoadState('networkidle');
     await expect(page.getByTestId('task-detail-page')).toBeVisible();
 
@@ -243,12 +235,9 @@ test.describe('TaskDetailPage - Notes (TDP-NTS)', () => {
     await expect(modal).not.toBeVisible();
     await page.waitForLoadState('networkidle');
 
-    await expect(async () => {
-      const card = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
-      await expect(card).toBeVisible();
-    }).toPass({ timeout: 10000 });
-
-    await page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle }).click();
+    const createdCard = page.locator(`[data-testid^="task-card-"]`, { hasText: taskTitle });
+    await expect(createdCard).toBeVisible({ timeout: 10000 });
+    await createdCard.click();
     await page.waitForLoadState('networkidle');
 
     await expect(page.getByTestId('task-notes-empty')).toBeVisible();
@@ -298,10 +287,7 @@ test.describe('TaskDetailPage - Notes (TDP-NTS)', () => {
     await page.waitForLoadState('networkidle');
 
     // Verify it appeared
-    await expect(async () => {
-      const notesSection = page.getByTestId('task-notes-section');
-      await expect(notesSection).toContainText(noteContent);
-    }).toPass({ timeout: 10000 });
+    await expect(page.getByTestId('task-notes-section')).toContainText(noteContent, { timeout: 10000 });
 
     // Find and delete the note
     const noteEl = page.locator(`[data-testid^="task-note-"]`, { hasText: noteContent }).first();
