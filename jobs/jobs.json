@@ -1,15 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
-        "ClassifyBug: Classify WebhookDialogInstructions",
-        "UpdateDirectives: Update directives for WebhookDialogInstructions",
-        "FinishBug: Mark WebhookDialogInstructions as reviewed"
-      ],
-      "timestamp": "2026-02-20T19:50:50.725Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "Unpack: Check directive compliance"

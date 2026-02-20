@@ -4,13 +4,14 @@
 
 ## Unreviewed
 
+## Finished
+
 2/19/2026: WebhookDialogInstructions — The "Add Webhook" dialog needs actual setup instructions for each supported platform.
 - Before: 25bd361
 - After: 7af02ba
 - Fix: Added platform-specific setup guide to the WebhookModal with Zapier, n8n, and Custom Endpoint tabs. Each platform shows step-by-step instructions for obtaining the webhook URL, a URL format hint, and a platform-specific tip. Added a toggleable payload format section showing the JSON event structure. The URL input placeholder updates based on the selected platform. Added 2 new tests (STP-WH-04 for setup guide navigation, STP-WH-05 for payload format toggle) and updated STP-WH-02 to verify setup guide presence. Renumbered old STP-WH-04 (delete) to STP-WH-06.
 - Problem stage: none (enhancement to existing feature — setup guides were not part of the original webhook spec)
-
-## Finished
+- AppRevisions.md: Already updated with Webhook Setup Guides section documenting the new feature
 
 2/20/2026: Add a Contacts page for searching all people/individuals that have been added to the system. This should be a dedicated page accessible from the sidebar that lists all contacts with search functionality.
 - Before: 6d387c9
