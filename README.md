@@ -1,6 +1,45 @@
 # app-building
 
-Agentic app building platform using Claude Code CLI inside Docker containers. Apps are defined by spec files and built/maintained by strategy-driven agent iterations.
+Simple and extensible platform for dark factory agentic app building: creating apps
+according to a spec without human involvement along the way. Example use cases:
+
+* `npm run agent -- "Build me an app XYZ based on this spec: ..."`
+* `npm run agent -- "Continue maintaining app XYZ and fix these bugs: ..."`
+* `npm run agent` for interactive access to the agent.
+
+Core ideas:
+
+* The agent runs within a docker container and has access to the repo and the internet.
+* The agent builds by following a set of strategy documents with guides and directives
+  for breaking its work down into tasks and performing those tasks.
+* The agent reviews its own changes and improves the strategies based on this.
+* All code changes and agent trajectories are tracked in git for later automated review.
+
+## Strategies
+
+The provided strategy documents emphasize a structured approach for autonomously building
+high quality, well tested apps from the initial spec. During the initial app build
+it does the following:
+
+1. Designs a comprehensive test specification based on the initial spec.
+2. Builds the app and writes tests to match the spec.
+3. Gets all the tests to pass, deploys to production, and does further testing.
+
+The initial build will not come out perfect. The agent can followup with maintenance passes
+where it checks to make sure it closely followed the spec and strategy directives and fixes
+any issues it finds. It will also fix reported bugs and update the strategies to avoid
+similar problems in the future.
+
+As long as each individual step the agent takes is within its capabilities (it can usually
+do it but not always) the agent will converge on an app that follows the initial spec
+and strategy directives.
+
+Key things to watch out for:
+
+* Best suited for CRUD and API-calling apps up to a medium level of complexity.
+  Overly complicated or specialized apps will not work as well yet.
+* Make sure to get a Replay API key and configure it. The agent will use Replay to identify
+  and debug problems it encounters in tests or the deployed app.
 
 ## Setup
 
@@ -47,13 +86,3 @@ npm run status
 ```
 
 Shows the container name, iteration progress, cost, and the last 20 lines of formatted log output. If the agent is still running, it tails the log in real-time (Ctrl+C to stop).
-
-## Other Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm run test-container` | Start a container with bash (no agent) |
-| `npm run docker:build` | Rebuild the Docker image |
-| `npm run status` | Show agent status, recent output, and tail if running |
-| `npm run reset-app -- <app>` | Reset an app to spec files only |
-| `npm run read-log -- <file>` | Render a log file as readable output |
