@@ -190,6 +190,8 @@ async function main(): Promise<void> {
   program
     .option("-i, --interactive", "interactive mode")
     .option("-r, --resume <id>", "resume a claude session (interactive mode)")
+    .option("-p, --prompt <text>", "handle a prompt before consuming jobs")
+    .option("-n, --iterations <count>", "limit number of iterations", parseInt)
     .allowUnknownOption(false)
     .allowExcessArguments(false)
     .parse();
@@ -199,13 +201,16 @@ async function main(): Promise<void> {
   if (opts.interactive) {
     await runInteractive(opts.resume);
   } else {
-    const jobsPath = resolve(__dirname, "..", "jobs", "jobs.json");
-    const jobsData = JSON.parse(readFileSync(jobsPath, "utf-8"));
-    if (!jobsData.groups || jobsData.groups.length === 0) {
-      console.log("No jobs available. Add jobs to jobs/jobs.json before running the agent.");
-      return;
+    const hasPrompt = !!opts.prompt;
+    if (!hasPrompt) {
+      const jobsPath = resolve(__dirname, "..", "jobs", "jobs.json");
+      const jobsData = JSON.parse(readFileSync(jobsPath, "utf-8"));
+      if (!jobsData.groups || jobsData.groups.length === 0) {
+        console.log("No jobs available. Add jobs to jobs/jobs.json before running the agent.");
+        return;
+      }
     }
-    await spawnContainer();
+    await spawnContainer({ prompt: opts.prompt, maxIterations: opts.iterations });
   }
 }
 
