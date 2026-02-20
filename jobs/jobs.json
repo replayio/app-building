@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecTaskDetailPage: Check testSpec.md directive violations in TaskDetailPage test entries",
-        "CheckComponentsTaskDetailPage: Check writeApp.md directive violations in TaskDetailPage components",
-        "CheckTestsTaskDetailPage: Check writeTests.md directive violations in TaskDetailPage tests"
-      ],
-      "timestamp": "2026-02-19T23:44:45.304Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecSettingsPage: Check testSpec.md directive violations in SettingsPage test entries",
         "CheckComponentsSettingsPage: Check writeApp.md directive violations in SettingsPage components",
         "CheckTestsSettingsPage: Check writeTests.md directive violations in SettingsPage tests"
@@ -198,6 +189,38 @@
         "RunTests: Verify tests pass after TaskDetail toPass fix"
       ],
       "timestamp": "2026-02-20T08:50:05.585Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix TDP-HDR-01 test entry to include description field, add missing test assertions for priority badge/due date/assignee/description/client-deal names, and add author/timestamp assertions to TDP-NTS-02 test",
+        "RunTests: Verify tests pass after TDP assertion fixes"
+      ],
+      "timestamp": "2026-02-20T08:56:45.173Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Add confirm dialog dismissal test entry (TDP-HDR-05) and corresponding Playwright test - clicking Cancel in the confirm dialog should leave task unchanged",
+        "RunTests: Verify tests pass after confirm dialog dismissal fix"
+      ],
+      "timestamp": "2026-02-20T08:56:49.595Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Make client/deal names in TaskDetailHeader navigable links to /clients/:clientId and /deals/:dealId, update test spec components section, add navigation test entries, and add Playwright tests for link navigation",
+        "RunTests: Verify tests pass after client/deal link fix"
+      ],
+      "timestamp": "2026-02-20T08:56:53.791Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Replace 5 instances of .toPass() wrapping single auto-wait Playwright assertions in task-detail-page.spec.ts with direct assertion timeouts (e.g. .toBeVisible({ timeout: 10000 }) instead of expect(async () => { await expect(x).toBeVisible() }).toPass())",
+        "RunTests: Verify tests pass after .toPass() pattern fix"
+      ],
+      "timestamp": "2026-02-20T08:56:58.636Z"
     }
   ]
 }
