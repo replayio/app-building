@@ -10,4 +10,4 @@
 - [x] TaskDetailPage
 - [x] SettingsPage
 - [x] UsersListPage
-- [ ] UserDetailPage
+- [x] UserDetailPage

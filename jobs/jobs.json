@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
-        "MakeResponsiveUserDetailPage: Make UserDetailPage responsive"
-      ],
-      "timestamp": "2026-02-20T10:01:59.532Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/polishApp.md",
-      "jobs": [
         "Unpack: Polish app quality"
       ],
       "timestamp": "2026-02-20T03:43:16.462Z"

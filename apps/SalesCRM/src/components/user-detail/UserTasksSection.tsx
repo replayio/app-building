@@ -36,11 +36,11 @@ export function UserTasksSection({ tasks }: UserTasksSectionProps) {
                 key={task.id}
                 to={`/tasks/${task.id}`}
                 data-testid={`user-task-${task.id}`}
-                className="flex items-center justify-between py-2 px-3 rounded-[5px] hover:bg-hover transition-colors duration-100"
+                className="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-1 py-2 px-3 rounded-[5px] hover:bg-hover transition-colors duration-100"
               >
-                <div className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-sm ${task.completed ? 'bg-status-active' : 'border border-border'}`} />
-                  <div>
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className={`w-3 h-3 rounded-sm flex-shrink-0 ${task.completed ? 'bg-status-active' : 'border border-border'}`} />
+                  <div className="min-w-0">
                     <div className={`text-[13px] font-medium ${task.completed ? 'text-text-muted line-through' : 'text-text-primary'}`}>
                       {task.title}
                     </div>
@@ -49,7 +49,7 @@ export function UserTasksSection({ tasks }: UserTasksSectionProps) {
                     )}
                   </div>
                 </div>
-                <div className="text-[12px] text-text-muted">
+                <div className="text-[12px] text-text-muted max-sm:ml-5">
                   {task.due_date ? formatDate(task.due_date) : '—'}
                 </div>
               </Link>

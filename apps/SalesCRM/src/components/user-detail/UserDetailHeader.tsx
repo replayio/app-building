@@ -33,30 +33,30 @@ export function UserDetailHeader({ user, activeDealsCount, openTasksCount, total
 
       <div className="flex items-center gap-4">
         {user.avatar_url ? (
-          <img src={user.avatar_url} alt={user.name} className="w-14 h-14 rounded-full" />
+          <img src={user.avatar_url} alt={user.name} className="w-14 h-14 max-sm:w-10 max-sm:h-10 rounded-full" />
         ) : (
-          <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center text-[20px] font-medium text-accent">
+          <div className="w-14 h-14 max-sm:w-10 max-sm:h-10 rounded-full bg-accent/20 flex items-center justify-center text-[20px] max-sm:text-[16px] font-medium text-accent">
             {user.name.charAt(0).toUpperCase()}
           </div>
         )}
-        <div>
-          <h1 data-testid="user-detail-name" className="text-[22px] font-semibold text-text-primary">
+        <div className="min-w-0">
+          <h1 data-testid="user-detail-name" className="text-[22px] max-sm:text-[18px] font-semibold text-text-primary">
             {user.name}
           </h1>
-          <div className="flex items-center gap-4 text-[13px] text-text-muted mt-1">
-            <span className="flex items-center gap-1.5">
-              <Mail size={13} strokeWidth={1.75} />
-              {user.email}
+          <div className="flex items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-1 text-[13px] text-text-muted mt-1">
+            <span className="flex items-center gap-1.5 min-w-0 truncate max-w-full">
+              <Mail size={13} strokeWidth={1.75} className="flex-shrink-0" />
+              <span className="truncate">{user.email}</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <Calendar size={13} strokeWidth={1.75} />
+              <Calendar size={13} strokeWidth={1.75} className="flex-shrink-0" />
               Joined {formatDate(user.created_at)}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mt-5">
+      <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-4 mt-5">
         <div className="border border-border rounded-[6px] bg-surface p-3">
           <div className="text-[12px] text-text-muted mb-1">Active Deals</div>
           <div className="text-[18px] font-semibold text-text-primary">{activeDealsCount}</div>

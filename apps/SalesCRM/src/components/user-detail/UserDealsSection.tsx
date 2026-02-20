@@ -41,13 +41,13 @@ export function UserDealsSection({ deals }: UserDealsSectionProps) {
                 key={deal.id}
                 to={`/deals/${deal.id}`}
                 data-testid={`user-deal-${deal.id}`}
-                className="flex items-center justify-between py-2 px-3 rounded-[5px] hover:bg-hover transition-colors duration-100"
+                className="flex items-center justify-between max-sm:flex-col max-sm:items-start max-sm:gap-1 py-2 px-3 rounded-[5px] hover:bg-hover transition-colors duration-100"
               >
-                <div>
+                <div className="min-w-0">
                   <div className="text-[13px] font-medium text-text-primary">{deal.name}</div>
                   <div className="text-[12px] text-text-muted">{deal.client_name}</div>
                 </div>
-                <div className="flex items-center gap-3 text-[12px]">
+                <div className="flex items-center gap-3 text-[12px] max-sm:ml-0">
                   <span className="text-text-secondary">${Number(deal.value).toLocaleString()}</span>
                   <span className="px-2 py-0.5 rounded-[3px] bg-hover text-text-secondary border border-border">
                     {stageLabels[deal.stage] ?? deal.stage}

@@ -75,7 +75,7 @@ export function UserDetailPage() {
   const openTasks = tasks.filter(t => !t.completed)
 
   return (
-    <div className="p-6 max-w-[900px]" data-testid="user-detail-page">
+    <div className="p-6 max-sm:p-4 max-w-[900px]" data-testid="user-detail-page">
       <UserDetailHeader
         user={user}
         activeDealsCount={activeDeals.length}
