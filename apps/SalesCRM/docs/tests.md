@@ -357,6 +357,26 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Fill name "Emily Davis", role "Project Manager", save
 - Expected: Modal closes. "Emily Davis - Project Manager" appears in People section with avatar. Person is persisted. A timeline entry "Contact Added: 'Emily Davis'" is created.
 
+**CDP-QA-10: Cancel button on Add Task modal closes without creating a task**
+- Initial: User is on ClientDetailPage. Add Task modal is open with title filled in.
+- Action: Click "Cancel" button on the modal
+- Expected: Modal closes. No new task is created — the Tasks section does not contain the entered task title. No timeline entry is created.
+
+**CDP-QA-11: Cancel button on Add Deal modal closes without creating a deal**
+- Initial: User is on ClientDetailPage. Add Deal modal is open with deal name filled in.
+- Action: Click "Cancel" button on the modal
+- Expected: Modal closes. No new deal is created — the Deals section does not contain the entered deal name. No timeline entry is created.
+
+**CDP-QA-12: Cancel button on Add Attachment dialog closes without creating an attachment**
+- Initial: User is on ClientDetailPage. Add Attachment dialog is open with a link URL entered.
+- Action: Click "Cancel" button on the dialog
+- Expected: Dialog closes. No new attachment is created — the Attachments section does not contain the entered attachment.
+
+**CDP-QA-13: Cancel button on Add Person modal closes without creating a person**
+- Initial: User is on ClientDetailPage. Add Person modal is open with name filled in.
+- Action: Click "Cancel" button on the modal
+- Expected: Modal closes. No new person is created — the People section does not contain the entered person name. No timeline entry is created.
+
 #### SourceInfoSection
 
 **CDP-SRC-01: Source info section displays acquisition details**
