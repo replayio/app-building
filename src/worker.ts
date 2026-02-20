@@ -53,6 +53,11 @@ interface ClaudeResult {
   cost_usd?: number;
   duration_ms?: number;
   num_turns?: number;
+  doneSignaled: boolean;
+}
+
+function hasDoneSignal(text: string): boolean {
+  return /<DONE[\s/>]/.test(text);
 }
 
 function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<ClaudeResult> {
@@ -63,6 +68,7 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
     });
 
     let resultEvent: ClaudeResult | null = null;
+    let doneSignaled = false;
     let buffer = "";
 
     child.stdout!.on("data", (data: Buffer) => {
@@ -80,7 +86,21 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
               cost_usd: event.total_cost_usd,
               duration_ms: event.duration_ms,
               num_turns: event.num_turns,
+              doneSignaled: false,
             };
+            if (hasDoneSignal(event.result ?? "")) doneSignaled = true;
+          }
+          // Check assistant message content blocks for <DONE>
+          if (event.type === "assistant" && event.message?.content) {
+            for (const block of event.message.content) {
+              if (block.type === "text" && hasDoneSignal(block.text ?? "")) {
+                doneSignaled = true;
+              }
+            }
+          }
+          // Check content_block_delta for streamed text
+          if (event.type === "content_block_delta" && event.delta?.text) {
+            if (hasDoneSignal(event.delta.text)) doneSignaled = true;
           }
         } catch {}
       }
@@ -105,7 +125,9 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
               cost_usd: event.total_cost_usd,
               duration_ms: event.duration_ms,
               num_turns: event.num_turns,
+              doneSignaled: false,
             };
+            if (hasDoneSignal(event.result ?? "")) doneSignaled = true;
           }
         } catch {}
       }
@@ -113,7 +135,9 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
         reject(new Error(`claude exited with code ${code}`));
         return;
       }
-      resolve(resultEvent ?? { result: "" });
+      const result = resultEvent ?? { result: "", doneSignaled: false };
+      result.doneSignaled = doneSignaled;
+      resolve(result);
     });
   });
 }
@@ -256,8 +280,8 @@ async function runLoop(): Promise<void> {
       log(`Turns: ${response.num_turns}`);
     }
 
-    // Check for <DONE> signal
-    const done = response.result?.includes("<DONE");
+    // Check for <DONE> signal (scanned across all streamed output, not just the result summary)
+    const done = response.doneSignaled;
 
     if (isGroup) {
       if (done) {
