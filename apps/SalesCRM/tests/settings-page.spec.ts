@@ -35,7 +35,7 @@ test.describe('SettingsPage - ImportExportSection', () => {
     await expect(page.getByTestId('settings-export-tasks')).toBeVisible();
   });
 
-  test('STP-IE-02: Import Clients button opens import dialog', async ({ page }) => {
+  test('STP-IE-02: Import Clients button opens import dialog with CSV columns', async ({ page }) => {
     await page.goto('/settings');
     await page.waitForLoadState('networkidle');
 
@@ -44,7 +44,162 @@ test.describe('SettingsPage - ImportExportSection', () => {
     const dialog = page.getByTestId('import-dialog');
     await expect(dialog).toBeVisible();
     await expect(dialog).toContainText('Import Clients');
-    await expect(page.getByTestId('csv-format-info')).toBeVisible();
+
+    // CSV format info with expected columns
+    const formatInfo = page.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo).toContainText('Name');
+    await expect(formatInfo).toContainText('Type');
+    await expect(formatInfo).toContainText('Status');
+    await expect(formatInfo).toContainText('Tags');
+    await expect(formatInfo).toContainText('Source Type');
+    await expect(formatInfo).toContainText('Source Detail');
+    await expect(formatInfo).toContainText('Campaign');
+    await expect(formatInfo).toContainText('Channel');
+    await expect(formatInfo).toContainText('Date Acquired');
+
+    // Template download button
+    await expect(page.getByTestId('download-template-button')).toBeVisible();
+
+    // File input
+    await expect(page.getByTestId('csv-file-input')).toBeVisible();
+
+    // Cancel and Import buttons
+    await expect(page.getByTestId('import-cancel-button')).toBeVisible();
+    const importBtn = page.getByTestId('import-submit-button');
+    await expect(importBtn).toBeVisible();
+    await expect(importBtn).toBeDisabled();
+  });
+
+  test('STP-IE-03: Import Deals button opens import dialog with CSV columns', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('settings-import-deals').click();
+
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText('Import Deals');
+
+    // CSV format info with expected columns
+    const formatInfo = page.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo).toContainText('Name');
+    await expect(formatInfo).toContainText('Client Name');
+    await expect(formatInfo).toContainText('Value');
+    await expect(formatInfo).toContainText('Stage');
+    await expect(formatInfo).toContainText('Owner');
+    await expect(formatInfo).toContainText('Probability');
+    await expect(formatInfo).toContainText('Expected Close Date');
+    await expect(formatInfo).toContainText('Status');
+
+    // Template download button and file input
+    await expect(page.getByTestId('download-template-button')).toBeVisible();
+    await expect(page.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button disabled until file selected
+    const importBtn = page.getByTestId('import-submit-button');
+    await expect(importBtn).toBeVisible();
+    await expect(importBtn).toBeDisabled();
+  });
+
+  test('STP-IE-04: Import Tasks button opens import dialog with CSV columns', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('settings-import-tasks').click();
+
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText('Import Tasks');
+
+    // CSV format info with expected columns
+    const formatInfo = page.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo).toContainText('Title');
+    await expect(formatInfo).toContainText('Description');
+    await expect(formatInfo).toContainText('Due Date');
+    await expect(formatInfo).toContainText('Priority');
+    await expect(formatInfo).toContainText('Client Name');
+    await expect(formatInfo).toContainText('Assignee');
+
+    // Template download button and file input
+    await expect(page.getByTestId('download-template-button')).toBeVisible();
+    await expect(page.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button disabled until file selected
+    const importBtn = page.getByTestId('import-submit-button');
+    await expect(importBtn).toBeVisible();
+    await expect(importBtn).toBeDisabled();
+  });
+
+  test('STP-IE-05: Import Contacts button opens import dialog with CSV columns', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByTestId('settings-import-contacts').click();
+
+    const dialog = page.getByTestId('import-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText('Import Contacts');
+
+    // CSV format info with expected columns
+    const formatInfo = page.getByTestId('csv-format-info');
+    await expect(formatInfo).toBeVisible();
+    await expect(formatInfo).toContainText('Name');
+    await expect(formatInfo).toContainText('Title');
+    await expect(formatInfo).toContainText('Email');
+    await expect(formatInfo).toContainText('Phone');
+    await expect(formatInfo).toContainText('Location');
+    await expect(formatInfo).toContainText('Client Name');
+
+    // Template download button and file input
+    await expect(page.getByTestId('download-template-button')).toBeVisible();
+    await expect(page.getByTestId('csv-file-input')).toBeVisible();
+
+    // Import button disabled until file selected
+    const importBtn = page.getByTestId('import-submit-button');
+    await expect(importBtn).toBeVisible();
+    await expect(importBtn).toBeDisabled();
+  });
+
+  test('STP-IE-06: Export Clients button triggers CSV download', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    // Listen for download event
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByTestId('settings-export-clients').click();
+    const download = await downloadPromise;
+
+    // Verify filename
+    expect(download.suggestedFilename()).toBe('clients-export.csv');
+  });
+
+  test('STP-IE-07: Export Deals button triggers CSV download', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    // Listen for download event
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByTestId('settings-export-deals').click();
+    const download = await downloadPromise;
+
+    // Verify filename
+    expect(download.suggestedFilename()).toBe('deals-export.csv');
+  });
+
+  test('STP-IE-08: Export Tasks button triggers CSV download', async ({ page }) => {
+    await page.goto('/settings');
+    await page.waitForLoadState('networkidle');
+
+    // Listen for download event
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByTestId('settings-export-tasks').click();
+    const download = await downloadPromise;
+
+    // Verify filename
+    expect(download.suggestedFilename()).toBe('tasks-export.csv');
   });
 });
 

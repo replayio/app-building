@@ -1243,10 +1243,40 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe the Import & Export section
 - Expected: Import from CSV column shows buttons: "Import Clients" (data-testid="settings-import-clients"), "Import Deals" (data-testid="settings-import-deals"), "Import Tasks" (data-testid="settings-import-tasks"), "Import Contacts" (data-testid="settings-import-contacts"). Export to CSV column shows buttons: "Export Clients" (data-testid="settings-export-clients"), "Export Deals" (data-testid="settings-export-deals"), "Export Tasks" (data-testid="settings-export-tasks").
 
-**STP-IE-02: Import Clients button opens import dialog**
+**STP-IE-02: Import Clients button opens import dialog with CSV columns**
 - Initial: User is on /settings
 - Action: Click "Import Clients" button (data-testid="settings-import-clients")
-- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Clients" and CSV format info.
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Clients". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns: Name (required), Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired. A "Download CSV template" button (data-testid="download-template-button"), a file input (data-testid="csv-file-input"), Cancel button (data-testid="import-cancel-button"), and Import button (data-testid="import-submit-button") which is disabled until a file is selected.
+
+**STP-IE-03: Import Deals button opens import dialog with CSV columns**
+- Initial: User is on /settings
+- Action: Click "Import Deals" button (data-testid="settings-import-deals")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Deals". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns: Name (required), Client Name (required), Value, Stage, Owner, Probability, Expected Close Date, Status. A "Download CSV template" button (data-testid="download-template-button"), a file input (data-testid="csv-file-input"), and Import button (data-testid="import-submit-button") which is disabled until a file is selected.
+
+**STP-IE-04: Import Tasks button opens import dialog with CSV columns**
+- Initial: User is on /settings
+- Action: Click "Import Tasks" button (data-testid="settings-import-tasks")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Tasks". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns: Title (required), Description, Due Date, Priority, Client Name, Assignee. A "Download CSV template" button (data-testid="download-template-button"), a file input (data-testid="csv-file-input"), and Import button (data-testid="import-submit-button") which is disabled until a file is selected.
+
+**STP-IE-05: Import Contacts button opens import dialog with CSV columns**
+- Initial: User is on /settings
+- Action: Click "Import Contacts" button (data-testid="settings-import-contacts")
+- Expected: An import dialog (data-testid="import-dialog") opens with title "Import Contacts". The dialog contains a CSV column format specification table (data-testid="csv-format-info") showing columns: Name (required), Title, Email, Phone, Location, Client Name. A "Download CSV template" button (data-testid="download-template-button"), a file input (data-testid="csv-file-input"), and Import button (data-testid="import-submit-button") which is disabled until a file is selected.
+
+**STP-IE-06: Export Clients button triggers CSV download**
+- Initial: User is on /settings with existing clients in the database
+- Action: Click "Export Clients" button (data-testid="settings-export-clients")
+- Expected: A CSV file download is initiated with filename "clients-export.csv". The CSV contains columns: Name, Type, Status, Tags, Primary Contact, Open Deals.
+
+**STP-IE-07: Export Deals button triggers CSV download**
+- Initial: User is on /settings with existing deals in the database
+- Action: Click "Export Deals" button (data-testid="settings-export-deals")
+- Expected: A CSV file download is initiated with filename "deals-export.csv". The CSV contains columns: Name, Client, Value, Stage, Owner, Status.
+
+**STP-IE-08: Export Tasks button triggers CSV download**
+- Initial: User is on /settings with existing tasks in the database
+- Action: Click "Export Tasks" button (data-testid="settings-export-tasks")
+- Expected: A CSV file download is initiated with filename "tasks-export.csv". The CSV contains columns: Title, Description, Priority, Due Date, Assignee, Client, Completed.
 
 #### WebhookSection
 
