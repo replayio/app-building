@@ -1,5 +1,5 @@
 import { spawn, execFileSync } from "child_process";
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import { createLogFile, archiveCurrentLog } from "./log";
 
@@ -8,6 +8,14 @@ const LOGS_DIR = resolve(REPO_ROOT, "logs");
 const JOBS_FILE = resolve(REPO_ROOT, "jobs/jobs.json");
 const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
 const MAX_GROUP_RETRIES = 3;
+const DEBUG = !!process.env.DEBUG;
+const DEBUG_LOG = resolve(LOGS_DIR, "worker-debug.log");
+
+function debug(msg: string): void {
+  if (!DEBUG) return;
+  mkdirSync(LOGS_DIR, { recursive: true });
+  appendFileSync(DEBUG_LOG, `[${new Date().toISOString()}] ${msg}\n`);
+}
 
 // --- Types ---
 
@@ -56,8 +64,10 @@ interface ClaudeResult {
   doneSignaled: boolean;
 }
 
-function hasDoneSignal(text: string): boolean {
-  return /<DONE[\s/>]/.test(text);
+function hasDoneSignal(source: string, text: string): boolean {
+  const match = /<DONE[\s/>]/.test(text);
+  debug(`hasDoneSignal(${source}): match=${match} text=${JSON.stringify(text.slice(0, 200))}`);
+  return match;
 }
 
 function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<ClaudeResult> {
@@ -80,7 +90,9 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
         log(line);
         try {
           const event = JSON.parse(line);
+          debug(`event type=${event.type} subtype=${event.subtype ?? ""}`);
           if (event.type === "result") {
+            debug(`result event: result=${JSON.stringify((event.result ?? "").slice(0, 500))}`);
             resultEvent = {
               result: event.result ?? "",
               cost_usd: event.total_cost_usd,
@@ -88,19 +100,19 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
               num_turns: event.num_turns,
               doneSignaled: false,
             };
-            if (hasDoneSignal(event.result ?? "")) doneSignaled = true;
+            if (hasDoneSignal("result", event.result ?? "")) doneSignaled = true;
           }
           // Check assistant message content blocks for <DONE>
           if (event.type === "assistant" && event.message?.content) {
             for (const block of event.message.content) {
-              if (block.type === "text" && hasDoneSignal(block.text ?? "")) {
-                doneSignaled = true;
+              if (block.type === "text") {
+                if (hasDoneSignal("assistant-text", block.text ?? "")) doneSignaled = true;
               }
             }
           }
           // Check content_block_delta for streamed text
           if (event.type === "content_block_delta" && event.delta?.text) {
-            if (hasDoneSignal(event.delta.text)) doneSignaled = true;
+            if (hasDoneSignal("content-delta", event.delta.text)) doneSignaled = true;
           }
         } catch {}
       }
@@ -115,11 +127,14 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
     child.on("error", reject);
 
     child.on("close", (code) => {
+      debug(`claude process closed with code=${code}`);
       if (buffer.trim()) {
+        debug(`final buffer: ${buffer.slice(0, 300)}`);
         log(buffer);
         try {
           const event = JSON.parse(buffer);
           if (event.type === "result") {
+            debug(`result event (final buffer): result=${JSON.stringify((event.result ?? "").slice(0, 500))}`);
             resultEvent = {
               result: event.result ?? "",
               cost_usd: event.total_cost_usd,
@@ -127,10 +142,11 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
               num_turns: event.num_turns,
               doneSignaled: false,
             };
-            if (hasDoneSignal(event.result ?? "")) doneSignaled = true;
+            if (hasDoneSignal("result-final", event.result ?? "")) doneSignaled = true;
           }
         } catch {}
       }
+      debug(`runClaude finished: doneSignaled=${doneSignaled} hasResultEvent=${!!resultEvent}`);
       if (code !== 0 && !resultEvent) {
         reject(new Error(`claude exited with code ${code}`));
         return;
@@ -237,11 +253,17 @@ async function runLoop(): Promise<void> {
     if (iteration === 1 && initialPrompt) {
       prompt = initialPrompt;
       log(`Running initial prompt`);
+      debug(`iteration ${iteration}: using initial prompt`);
     } else {
       // Read next group from jobs.json
       const data = readJobsFile();
+      debug(`iteration ${iteration}: jobs.json has ${data.groups.length} group(s)`);
+      if (data.groups.length > 0) {
+        debug(`iteration ${iteration}: first group strategy=${data.groups[0].strategy} jobs=${JSON.stringify(data.groups[0].jobs)}`);
+      }
       if (data.groups.length === 0) {
         log("No groups remaining. Exiting.");
+        debug(`iteration ${iteration}: no groups, exiting`);
         archiveCurrentLog(LOGS_DIR);
         break;
       }
@@ -282,20 +304,25 @@ async function runLoop(): Promise<void> {
 
     // Check for <DONE> signal (scanned across all streamed output, not just the result summary)
     const done = response.doneSignaled;
+    debug(`iteration ${iteration}: done=${done} isGroup=${isGroup} result.length=${response.result.length}`);
+    debug(`iteration ${iteration}: response.result first 500 chars: ${JSON.stringify(response.result.slice(0, 500))}`);
 
     if (isGroup) {
       if (done) {
         log(`Group signaled <DONE>. Completing group.`);
+        debug(`iteration ${iteration}: completing group`);
         completeGroup(log);
         consecutiveRetries = 0;
       } else {
         consecutiveRetries++;
         if (consecutiveRetries >= MAX_GROUP_RETRIES) {
           log(`Group failed ${MAX_GROUP_RETRIES} times. Skipping.`);
+          debug(`iteration ${iteration}: max retries reached, skipping group`);
           completeGroup(log);
           consecutiveRetries = 0;
         } else {
           log(`Group did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}.`);
+          debug(`iteration ${iteration}: no DONE, retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}`);
         }
       }
     }

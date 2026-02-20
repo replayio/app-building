@@ -141,6 +141,11 @@ export function spawnContainer(options?: { prompt?: string; maxIterations?: numb
     args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `MAX_ITERATIONS=${options.maxIterations}`);
   }
 
+  // Forward DEBUG flag for worker-debug.log
+  if (process.env.DEBUG) {
+    args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `DEBUG=${process.env.DEBUG}`);
+  }
+
   // Pass container name so the worker can log it
   args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `CONTAINER_NAME=${containerName}`);
 
