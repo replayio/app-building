@@ -319,19 +319,10 @@ test.describe('ClientsListPage - SearchBar', () => {
     const searchInput = page.getByTestId('clients-search-input');
     await searchInput.fill('SaaS');
 
-    await page.waitForTimeout(500);
-    await page.waitForLoadState('networkidle');
-
-    // Results should be filtered (fewer or matching results)
-    // The backend handles tag-based search
-    const table = page.getByTestId('clients-table');
-    // If results exist, they should be relevant to the search
-    if (await table.isVisible()) {
-      // Table is visible, meaning there are results
-      const rows = page.locator('[data-testid^="client-row-"]');
-      const rowCount = await rows.count();
-      expect(rowCount).toBeGreaterThanOrEqual(0);
-    }
+    // Wait for search results — verify at least one matching result appears
+    await expect(
+      page.locator('[data-testid^="client-row-"]')
+    ).not.toHaveCount(0, { timeout: 10000 });
   });
 
   test('CLP-SRCH-04: Search filters clients by contact name', async ({ page }) => {
@@ -341,13 +332,10 @@ test.describe('ClientsListPage - SearchBar', () => {
     const searchInput = page.getByTestId('clients-search-input');
     await searchInput.fill('Sarah');
 
-    await page.waitForTimeout(500);
-    await page.waitForLoadState('networkidle');
-
-    // Verify search produced results (backend handles contact name search)
-    const rows = page.locator('[data-testid^="client-row-"]');
-    const rowCount = await rows.count();
-    expect(rowCount).toBeGreaterThanOrEqual(0);
+    // Wait for search results — verify at least one matching result appears
+    await expect(
+      page.locator('[data-testid^="client-row-"]')
+    ).not.toHaveCount(0, { timeout: 10000 });
   });
 
   test('CLP-SRCH-05: Clearing search restores full client list', async ({ page }) => {
@@ -447,12 +435,15 @@ test.describe('ClientsListPage - FilterControls', () => {
       const tagValue = await optionEl.getAttribute('data-option-value');
       if (tagValue) {
         await optionEl.click();
-        await page.waitForLoadState('networkidle');
 
-        // Verify filter applied (pagination should update)
-        const rows = page.locator('[data-testid^="client-row-"]');
-        const count = await rows.count();
-        expect(count).toBeGreaterThanOrEqual(0);
+        // Verify filter applied — at least one matching row appears
+        await expect(
+          page.locator('[data-testid^="client-row-"]')
+        ).not.toHaveCount(0, { timeout: 10000 });
+        // Verify all displayed rows contain the selected tag
+        await expect(
+          page.locator('[data-testid="client-tags"]').filter({ hasNotText: tagOption.trim() })
+        ).toHaveCount(0, { timeout: 10000 });
       } else {
         // Close menu if no value found
         await page.getByTestId('filter-tags-trigger').click();
@@ -494,12 +485,10 @@ test.describe('ClientsListPage - FilterControls', () => {
       if (sourceValue) {
         await optionEl.click();
 
-        // Wait for filtered results to render
-        await expect(async () => {
-          const rows = page.locator('[data-testid^="client-row-"]');
-          const count = await rows.count();
-          expect(count).toBeGreaterThanOrEqual(0);
-        }).toPass({ timeout: 10000 });
+        // Wait for filtered results — atomic assertion avoids nested-wait deadlock
+        await expect(
+          page.locator('[data-testid^="client-row-"]')
+        ).not.toHaveCount(0, { timeout: 10000 });
       } else {
         await page.getByTestId('filter-source-trigger').click();
       }
@@ -543,13 +532,11 @@ test.describe('ClientsListPage - FilterControls', () => {
     await page.goto('/clients');
     await page.waitForLoadState('networkidle');
 
-    // Apply status filter and wait for results
+    // Apply status filter and wait for results — atomic assertion avoids nested-wait deadlock
     await selectFilterOption(page, 'filter-status', 'active');
-    await expect(async () => {
-      const badges = page.locator('[data-testid="status-badge-active"]');
-      const count = await badges.count();
-      expect(count).toBeGreaterThan(0);
-    }).toPass({ timeout: 10000 });
+    await expect(
+      page.locator('[data-testid="status-badge-active"]')
+    ).not.toHaveCount(0, { timeout: 10000 });
 
     // Apply tag filter if available — open dropdown to find a non-"All" option
     await page.getByTestId('filter-tags-trigger').click();
@@ -708,15 +695,15 @@ test.describe('ClientsListPage - ClientsTable', () => {
     // Filter by churned status first
     await selectFilterOption(page, 'filter-status', 'churned');
 
-    // Wait for churned clients to render
-    await expect(async () => {
-      const rows = page.locator('[data-testid^="client-row-"]');
-      const count = await rows.count();
-      expect(count).toBeGreaterThan(0);
-      // Verify all visible rows have churned badge
-      const churnedBadges = page.locator('[data-testid="status-badge-churned"]');
-      expect(await churnedBadges.count()).toBe(count);
-    }).toPass({ timeout: 10000 });
+    // Wait for churned clients to render — atomic assertions avoid nested-wait deadlock
+    await expect(
+      page.locator('[data-testid="status-badge-churned"]')
+    ).not.toHaveCount(0, { timeout: 10000 });
+    await expect(
+      page.locator('[data-testid="client-status"]').filter({
+        hasNot: page.locator('[data-testid="status-badge-churned"]')
+      })
+    ).toHaveCount(0, { timeout: 10000 });
 
     const rows = page.locator('[data-testid^="client-row-"]');
     const count = await rows.count();
