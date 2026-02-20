@@ -3,6 +3,15 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
+        "FixViolationUserCardsTestSpec: Add UserCards test section in docs/tests.md with card content test entry (ULP-CRD-01), move ULP-HDR-02 under UserCards, and update ULP-HDR-01 Playwright test to verify card content",
+        "RunTestsUserCards: Verify tests pass after UserCards test spec fix",
+        "DocumentFixUserCards: Document the UserCards test spec fix in AppRevisions.md"
+      ],
+      "timestamp": "2026-02-20T09:10:46.659Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
         "CheckTestSpecUsersListPage: Check testSpec.md directive violations in UsersListPage test entries",
         "CheckComponentsUsersListPage: Check writeApp.md directive violations in UsersListPage components",
         "CheckTestsUsersListPage: Check writeTests.md directive violations in UsersListPage tests"
