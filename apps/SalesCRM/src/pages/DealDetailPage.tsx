@@ -54,11 +54,16 @@ export function DealDetailPage() {
   const [versionModalOpen, setVersionModalOpen] = useState(false)
   const [versions, setVersions] = useState<VersionEntry[]>([])
   const [availableUsers, setAvailableUsers] = useState<{ name: string }[]>([])
+  const [availableClients, setAvailableClients] = useState<{ id: string; name: string }[]>([])
 
   useEffect(() => {
     fetch('/.netlify/functions/users')
       .then(r => r.json())
       .then((data: { users: { name: string }[] }) => setAvailableUsers(data.users))
+      .catch(() => {})
+    fetch('/.netlify/functions/clients?pageSize=500')
+      .then(r => r.json())
+      .then((data: { clients: { id: string; name: string }[] }) => setAvailableClients(data.clients.map(c => ({ id: c.id, name: c.name }))))
       .catch(() => {})
   }, [])
 
@@ -228,6 +233,7 @@ export function DealDetailPage() {
       <DealDetailHeader
         deal={currentDeal}
         availableUsers={availableUsers}
+        availableClients={availableClients}
         onUpdate={handleUpdateDeal}
         onStageChange={handleStageChange}
       />

@@ -285,6 +285,7 @@ async function handler(req: OptionalAuthRequest) {
     const rows = await sql`
       UPDATE deals SET
         name = COALESCE(${body.name ?? null}, name),
+        client_id = COALESCE(${body.client_id ?? null}::uuid, client_id),
         value = COALESCE(${body.value ?? null}, value),
         stage = COALESCE(${body.stage ?? null}, stage),
         owner = COALESCE(${body.owner ?? null}, owner),

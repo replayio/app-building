@@ -99,33 +99,61 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     await expect(changeStageBtn).toContainText('Change Stage');
   });
 
-  test('DDP-HDR-02: Editing deal fields via edit button', async ({ page }) => {
+  test('DDP-HDR-02: Editing client field updates the deal', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
-    // Click edit button
+    // Get current client name
+    const clientBefore = await page.getByTestId('deal-header-client').textContent();
+
+    // Enter edit mode
     await page.getByTestId('deal-header-edit-button').click();
 
-    // Name input should appear
-    const nameInput = page.getByTestId('deal-header-name-input');
-    await expect(nameInput).toBeVisible();
+    // Client dropdown should appear
+    const clientInput = page.getByTestId('deal-header-client-input');
+    await expect(clientInput).toBeVisible();
 
-    // Value input should appear
-    const valueInput = page.getByTestId('deal-header-value-input');
-    await expect(valueInput).toBeVisible();
-
-    // Owner input should appear
-    const ownerInput = page.getByTestId('deal-header-owner-input');
-    await expect(ownerInput).toBeVisible();
-
-    // Save and Cancel buttons should appear
+    // Also verify other edit fields appear
+    await expect(page.getByTestId('deal-header-name-input')).toBeVisible();
+    await expect(page.getByTestId('deal-header-value-input')).toBeVisible();
+    await expect(page.getByTestId('deal-header-owner-input')).toBeVisible();
     await expect(page.getByTestId('deal-header-save-button')).toBeVisible();
     await expect(page.getByTestId('deal-header-cancel-button')).toBeVisible();
 
-    // Cancel to restore view
-    await page.getByTestId('deal-header-cancel-button').click();
+    // Get the current client_id from the dropdown
+    const originalClientId = await clientInput.getAttribute('data-value') ?? '';
 
-    // Title should be back
-    await expect(page.getByTestId('deal-header-title')).toBeVisible();
+    // Open the client dropdown and pick a different client
+    await page.getByTestId('deal-header-client-input-trigger').click();
+    const menu = page.getByTestId('deal-header-client-input-menu');
+    await expect(menu).toBeVisible();
+
+    // Find a different client option (not the currently selected one)
+    const options = menu.locator('button[data-option-value]');
+    const count = await options.count();
+    let targetClientName = '';
+    for (let i = 0; i < count; i++) {
+      const optVal = await options.nth(i).getAttribute('data-option-value');
+      if (optVal && optVal !== originalClientId) {
+        targetClientName = (await options.nth(i).textContent() ?? '').trim();
+        await options.nth(i).click();
+        break;
+      }
+    }
+
+    // Save
+    await page.getByTestId('deal-header-save-button').click();
+    await page.waitForLoadState('networkidle');
+
+    // Client should show new name
+    const clientAfter = await page.getByTestId('deal-header-client').textContent();
+    expect(clientAfter).toBe(targetClientName);
+    expect(clientAfter).not.toBe(clientBefore);
+
+    // Restore original client
+    await page.getByTestId('deal-header-edit-button').click();
+    await selectFilterOption(page, 'deal-header-client-input', originalClientId);
+    await page.getByTestId('deal-header-save-button').click();
+    await page.waitForLoadState('networkidle');
   });
 
   test('DDP-HDR-03: Editing value field updates the deal', async ({ page }) => {

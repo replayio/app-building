@@ -4,6 +4,12 @@
 
 ## Unreviewed
 
+2/20/2026: DDP-HDR-02 violation — Client field in DealDetailHeader was not editable
+- Before: edc5279
+- After: (this commit)
+- Fix: Added searchable client dropdown to DealDetailHeader edit mode using FilterSelect. DealDetailPage now fetches available clients and passes them as prop. Backend deals PUT endpoint now includes client_id in the UPDATE query. Updated DDP-HDR-02 test to verify client field editing per spec (select different client, save, verify persistence). All 29 deal-detail-page tests pass.
+- Problem stage: writeApp.md — the DealDetailHeader component implemented editing for name, value, and owner fields but omitted client_id editing, violating the DDP-HDR-02 spec requirement
+
 2/19/2026: WebhookDialogInstructions — The "Add Webhook" dialog needs actual setup instructions for each supported platform.
 - Before: 25bd361
 - After: 7af02ba

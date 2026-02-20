@@ -6,6 +6,7 @@ import { FilterSelect } from '../shared/FilterSelect'
 interface DealDetailHeaderProps {
   deal: Deal
   availableUsers?: { name: string }[]
+  availableClients?: { id: string; name: string }[]
   onUpdate: (data: Record<string, unknown>) => void | Promise<void>
   onStageChange: (newStage: DealStage) => void
 }
@@ -26,11 +27,12 @@ function formatValue(value: number): string {
   return `$${Number(value).toLocaleString()}`
 }
 
-export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageChange }: DealDetailHeaderProps) {
+export function DealDetailHeader({ deal, availableUsers = [], availableClients = [], onUpdate, onStageChange }: DealDetailHeaderProps) {
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState(deal.name)
   const [value, setValue] = useState(String(deal.value))
   const [owner, setOwner] = useState(deal.owner ?? '')
+  const [clientId, setClientId] = useState(deal.client_id)
   const [selectedStage, setSelectedStage] = useState<DealStage>(deal.stage)
 
   useEffect(() => {
@@ -41,14 +43,19 @@ export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageC
     setName(deal.name)
     setValue(String(deal.value))
     setOwner(deal.owner ?? '')
-  }, [deal.name, deal.value, deal.owner])
+    setClientId(deal.client_id)
+  }, [deal.name, deal.value, deal.owner, deal.client_id])
 
   async function handleSave() {
-    await onUpdate({
+    const data: Record<string, unknown> = {
       name: name.trim(),
       value: parseFloat(value) || 0,
       owner: owner.trim() || null,
-    })
+    }
+    if (clientId !== deal.client_id) {
+      data.client_id = clientId
+    }
+    await onUpdate(data)
     setEditing(false)
   }
 
@@ -56,6 +63,7 @@ export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageC
     setName(deal.name)
     setValue(String(deal.value))
     setOwner(deal.owner ?? '')
+    setClientId(deal.client_id)
     setEditing(false)
   }
 
@@ -120,7 +128,21 @@ export function DealDetailHeader({ deal, availableUsers = [], onUpdate, onStageC
       <div className="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4">
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Client</div>
-          <div data-testid="deal-header-client" className="text-[13px] text-text-primary">{deal.client_name}</div>
+          {editing ? (
+            availableClients.length > 0 ? (
+              <FilterSelect
+                testId="deal-header-client-input"
+                value={clientId}
+                onChange={(val) => setClientId(val)}
+                searchable
+                options={availableClients.map((c) => ({ value: c.id, label: c.name }))}
+              />
+            ) : (
+              <div data-testid="deal-header-client" className="text-[13px] text-text-primary">{deal.client_name}</div>
+            )
+          ) : (
+            <div data-testid="deal-header-client" className="text-[13px] text-text-primary">{deal.client_name}</div>
+          )}
         </div>
         <div>
           <div className="text-[12px] font-medium text-text-muted mb-1">Value</div>

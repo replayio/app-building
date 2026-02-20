@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationClientEditing: Implement client field editing in DealDetailHeader component — add searchable client dropdown so DDP-HDR-02 spec requirement is met",
-        "RunTests: Verify tests pass after fix",
-        "DocumentFix: Document the fix"
-      ],
-      "timestamp": "2026-02-20T08:21:13.763Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationFileUpload: Fix UploadAttachmentModal to use real file upload (UploadThing or server storage) instead of blob URL, add file upload test entry to docs/tests.md, and add Playwright test using setInputFiles",
         "RunTests: Verify tests pass after fix",
         "DocumentFix: Document the fix"
