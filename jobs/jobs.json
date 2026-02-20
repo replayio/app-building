@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
-        "ClassifyBug: Classify AuthEmailConfirmation",
-        "UpdateDirectives: Update directives for AuthEmailConfirmation",
-        "FinishBug: Mark AuthEmailConfirmation as reviewed"
-      ],
-      "timestamp": "2026-02-20T19:19:00.643Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
         "ClassifyBug: Classify EmailNotifications",
         "UpdateDirectives: Update directives for EmailNotifications",
         "FinishBug: Mark EmailNotifications as reviewed"
