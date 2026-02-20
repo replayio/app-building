@@ -1,14 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/deployment.md",
-      "jobs": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-20T19:56:31.407Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "CheckTestSpecAuthentication: Check testSpec.md directive violations in Authentication test entries",
