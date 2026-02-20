@@ -845,6 +845,86 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
   });
 });
 
+test.describe('DealDetailPage - Modal Cancel Tests', () => {
+  test('DDP-WRT-07: Cancel button on Add Writeup modal closes without creating a writeup', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Open Add Writeup modal
+    await page.getByTestId('deal-writeups-add-button').click();
+    const modal = page.getByTestId('add-writeup-modal');
+    await expect(modal).toBeVisible();
+
+    // Fill in a title so we can verify it doesn't get created
+    const writeupTitle = `Cancel Writeup ${Date.now()}`;
+    await page.getByTestId('add-writeup-title').fill(writeupTitle);
+    await page.getByTestId('add-writeup-content').fill('This should not be saved.');
+
+    // Click Cancel
+    await page.getByTestId('add-writeup-cancel').click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // The writeup should NOT appear in the section
+    const writeupsSection = page.getByTestId('deal-writeups-section');
+    await expect(
+      writeupsSection.locator('[data-testid^="deal-writeup-"]').filter({ hasText: writeupTitle })
+    ).toHaveCount(0);
+  });
+
+  test('DDP-LTK-06: Cancel button on Add Task modal closes without creating a task', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Open Add Task modal
+    await page.getByTestId('deal-linked-tasks-add-button').click();
+    const modal = page.getByTestId('add-deal-task-modal');
+    await expect(modal).toBeVisible();
+
+    // Fill in a title so we can verify it doesn't get created
+    const taskTitle = `Cancel Task ${Date.now()}`;
+    await page.getByTestId('add-deal-task-title').fill(taskTitle);
+
+    // Click Cancel
+    await page.getByTestId('add-deal-task-cancel').click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // The task should NOT appear in the section
+    const tasksSection = page.getByTestId('deal-linked-tasks-section');
+    await expect(
+      tasksSection.locator('[data-testid^="deal-linked-task-"]').filter({ hasText: taskTitle })
+    ).toHaveCount(0);
+  });
+
+  test('DDP-ATT-07: Cancel button on Upload Attachment modal closes without creating an attachment', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Open Upload Attachment modal
+    await page.getByTestId('deal-attachments-upload-button').click();
+    const modal = page.getByTestId('upload-attachment-modal');
+    await expect(modal).toBeVisible();
+
+    // Switch to link mode and enter a link name
+    await page.getByTestId('upload-attachment-link-toggle').click();
+    const linkName = `CancelLink_${Date.now()}`;
+    await page.getByTestId('upload-attachment-link-name').fill(linkName);
+    await page.getByTestId('upload-attachment-url').fill('https://example.com/should-not-save');
+
+    // Click Cancel
+    await page.getByTestId('upload-attachment-cancel').click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // The attachment should NOT appear in the section
+    const attachmentsSection = page.getByTestId('deal-attachments-section');
+    await expect(
+      attachmentsSection.locator('[data-testid^="deal-attachment-"]').filter({ hasText: linkName })
+    ).toHaveCount(0);
+  });
+});
+
 test.describe('DealDetailPage - ContactsSection (DDP-CON)', () => {
   test('DDP-CON-01: Contacts section lists deal-related individuals', async ({ page }) => {
     await navigateToFirstDealDetail(page);

@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationMissingModalCancelTests: Add test spec entries for DealDetailPage modal cancel buttons (AddWriteup, AddTask, UploadAttachment modals) and corresponding Playwright tests - directive requires complete modal dialog testing",
-        "RunTests: Verify tests pass after modal cancel test additions"
-      ],
-      "timestamp": "2026-02-20T08:27:24.778Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationTaskCompleteSideEffect: Fix DDP-LTK-04 test to verify timeline entry side effect when completing a task - the test currently only checks visual completion state but doesn't assert timeline entry is created exactly once",
         "RunTests: Verify tests pass after task completion side effect fix"
       ],

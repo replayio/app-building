@@ -991,6 +991,21 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Select a file using the file input (setInputFiles with a test PDF), click Upload
 - Expected: File is uploaded via UploadThing. Upload modal closes. The uploaded file appears in the attachments list with the correct filename, type "Document", and file size. The attachment is persisted to the database.
 
+**DDP-WRT-07: Cancel button on Add Writeup modal closes without creating a writeup**
+- Initial: User is on DealDetailPage. Add Writeup modal is open with title filled in.
+- Action: Click "Cancel" button (data-testid="add-writeup-cancel") on the modal
+- Expected: Modal closes. No new writeup is created — the Writeups section does not contain the entered writeup title.
+
+**DDP-LTK-06: Cancel button on Add Task modal closes without creating a task**
+- Initial: User is on DealDetailPage. Add Task modal is open with title filled in.
+- Action: Click "Cancel" button (data-testid="add-deal-task-cancel") on the modal
+- Expected: Modal closes. No new task is created — the Linked Tasks section does not contain the entered task title.
+
+**DDP-ATT-07: Cancel button on Upload Attachment modal closes without creating an attachment**
+- Initial: User is on DealDetailPage. Upload Attachment modal is open with a link URL entered.
+- Action: Click "Cancel" button (data-testid="upload-attachment-cancel") on the modal
+- Expected: Modal closes. No new attachment is created — the Attachments section does not contain the entered attachment.
+
 #### ContactsSection
 
 **DDP-CON-01: Contacts section lists deal-related individuals**
