@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecPersonDetailPage: Check testSpec.md directive violations in PersonDetailPage test entries",
-        "CheckComponentsPersonDetailPage: Check writeApp.md directive violations in PersonDetailPage components",
-        "CheckTestsPersonDetailPage: Check writeTests.md directive violations in PersonDetailPage tests"
-      ],
-      "timestamp": "2026-02-19T23:44:51.991Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
         "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
         "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
@@ -110,6 +101,14 @@
         "RunTests: Verify tests pass after modal cancel test spec update"
       ],
       "timestamp": "2026-02-20T06:46:50.074Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationPersonDetailTests: Fix 8 writeTests.md violations in person-detail-page.spec.ts — rename mismatched test titles (PDP-HDR-04, PDP-REL-05, PDP-REL-06, PDP-CH-04, PDP-CH-06, PDP-CH-07) to match spec entries, add missing tests (PDP-REL-08, PDP-CH-08), and implement actual persistence/mutation/filtering assertions instead of UI-only checks",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-20T07:13:47.987Z"
     }
   ]
 }
