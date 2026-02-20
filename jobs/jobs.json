@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationTestCode: Fix DDP-HIS-02 toPass deadlock (replace count() inside toPass with atomic toHaveCount assertions), fix DDP-HDR-02 and DDP-ATT-04 test title mismatches to match spec, and add assertions to DDP-WRT-04 to verify edit mode elements appear",
-        "RunTests: Verify tests pass after fix",
-        "DocumentFix: Document the fix"
-      ],
-      "timestamp": "2026-02-20T08:21:23.725Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationDealAttachmentUpload: Fix DealDetailPage attachment upload - UploadAttachmentModal uses blob URLs instead of actual file upload; DDP-ATT-03 test only exercises Link URL mode, not file upload (setInputFiles); add test spec entry for file upload mode",
         "RunTests: Verify tests pass after DealDetailPage attachment upload fix"
       ],

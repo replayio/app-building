@@ -332,13 +332,11 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
   test('DDP-HIS-02: New stage change adds history entry', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
-    // Count current history entries
-    const entriesBefore = page.locator('[data-testid^="deal-history-entry-"]');
-    const countBefore = await entriesBefore.count();
-
-    // Change stage to trigger new history entry
+    // Change stage to trigger new history entry.
+    // Use 'negotiation' as target to avoid race conditions with parallel tests
+    // (DDP-HDR-04 and DDP-PIP-02 toggle between discovery/proposal on the same deal).
     const currentStage = await getFilterValue(page, 'deal-header-stage-select');
-    const newStage = currentStage === 'discovery' ? 'proposal' : 'discovery';
+    const newStage = currentStage === 'negotiation' ? 'qualification' : 'negotiation';
     const stageDisplayNames: Record<string, string> = {
       'lead': 'Lead', 'qualification': 'Qualification', 'discovery': 'Discovery',
       'proposal': 'Proposal', 'negotiation': 'Negotiation', 'closed_won': 'Closed Won',
@@ -355,16 +353,12 @@ test.describe('DealDetailPage - DealHistorySection (DDP-HIS)', () => {
 
     // Wait for a history entry matching this specific stage change to appear
     const expectedText = `Changed Stage from ${expectedFrom} to ${expectedTo}`;
-    await expect(async () => {
-      const entriesAfter = page.locator('[data-testid^="deal-history-entry-"]');
-      const countAfter = await entriesAfter.count();
-      expect(countAfter).toBeGreaterThan(countBefore);
 
-      // Verify the specific stage change entry exists
-      const matchingEntry = page.locator('[data-testid^="deal-history-entry-"]', { hasText: expectedText });
-      const matchCount = await matchingEntry.count();
-      expect(matchCount).toBeGreaterThanOrEqual(1);
-    }).toPass({ timeout: 10000 });
+    // Use atomic assertion to verify the specific stage change entry appears.
+    // Don't assert exact total count — parallel tests may add entries concurrently.
+    await expect(
+      page.locator('[data-testid^="deal-history-entry-"]', { hasText: expectedText })
+    ).toHaveCount(1, { timeout: 10000 });
 
     // Restore original stage
     await selectFilterOption(page, 'deal-header-stage-select', currentStage);
@@ -512,9 +506,14 @@ test.describe('DealDetailPage - WriteupsSection (DDP-WRT)', () => {
       // Click the last edit button (our newly created writeup)
       await editButtons.last().click();
 
-      // Should see the edit form (inline editing with save/cancel)
-      // The inline edit mode replaces the writeup content with input fields
-      await page.waitForTimeout(300);
+      // Verify edit mode elements appear: title input, content input, save/cancel buttons
+      await expect(page.getByTestId('deal-writeup-edit-title-input')).toBeVisible();
+      await expect(page.getByTestId('deal-writeup-edit-content-input')).toBeVisible();
+      await expect(page.getByTestId('deal-writeup-edit-save-button')).toBeVisible();
+      await expect(page.getByTestId('deal-writeup-edit-cancel-button')).toBeVisible();
+
+      // Cancel to exit edit mode
+      await page.getByTestId('deal-writeup-edit-cancel-button').click();
     }
   });
 
@@ -759,7 +758,7 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
     await expect(attachmentsSection).toContainText(linkName);
   });
 
-  test('DDP-ATT-04: Download link is present on attachments', async ({ page }) => {
+  test('DDP-ATT-04: Download link downloads the file', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
     const downloadLinks = page.locator('[data-testid^="deal-attachment-download-"]');
