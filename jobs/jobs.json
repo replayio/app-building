@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationToPassAutoWait: Fix DDP-HIS-02 test which uses count() auto-wait calls inside .toPass() block - replace with atomic toHaveCount() assertions to prevent deadlock",
-        "RunTests: Verify tests pass after .toPass() fix"
-      ],
-      "timestamp": "2026-02-20T08:27:19.620Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationMissingModalCancelTests: Add test spec entries for DealDetailPage modal cancel buttons (AddWriteup, AddTask, UploadAttachment modals) and corresponding Playwright tests - directive requires complete modal dialog testing",
         "RunTests: Verify tests pass after modal cancel test additions"
       ],
