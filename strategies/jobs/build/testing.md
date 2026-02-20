@@ -161,9 +161,40 @@ mandatory — do NOT skip or reorder steps.
    `PlaywrightSteps`, `ConsoleMessages`, `NetworkRequest`, `SearchSources`, `Logpoint`,
    `Evaluate`, `GetStack`, `ReactComponents`, `Screenshot`, etc. Use as many as needed to
    understand what actually happened before making any changes.
-5. Only after completing the Replay analysis, fix the test and/or app based on what you found.
+5. Write a bug writeup to `docs/bugs/<TestName>.md` following the investigative template below.
+   You MUST fill in every section before making any code changes.
+6. Only after completing the Replay analysis AND the bug writeup, fix the test and/or app based
+   on what you found.
+
+### Bug Writeup Template
+
+For each test failure, create `docs/bugs/<TestName>.md` with exactly this structure:
+
+```
+# Bug: <test name>
+
+## Step 1: Evidence
+
+Evidence the app is broken: <describe concrete evidence from Replay analysis — wrong API
+responses, incorrect state, missing data, UI rendering issues, etc. Write "None found" if
+no evidence.>
+
+Evidence the test is broken: <describe concrete evidence from Replay analysis — wrong
+selectors, bad assertions, race conditions, incorrect test data expectations, etc. Write
+"None found" if no evidence.>
+
+## Step 2: Determination
+
+Which is broken: <APP or TEST>
+
+## Step 3: Root Cause
+
+<Completely explain the cause of the problem in the app or test. Include the specific file(s),
+function(s), and line(s) involved. Explain WHY the code is wrong, not just WHAT is wrong.>
+```
 
 Do NOT skip Replay analysis and jump straight to reading error messages or guessing at fixes.
+Do NOT skip the bug writeup and jump straight to fixing code.
 Do NOT stop or cancel a recording upload because it is "taking a while" — wait for it to complete.
 The Replay recording contains the actual runtime state — use it.
 
