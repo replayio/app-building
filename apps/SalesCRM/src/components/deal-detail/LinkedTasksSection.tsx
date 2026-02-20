@@ -63,7 +63,7 @@ export function LinkedTasksSection({ tasks, onAddTask, onToggleTask }: LinkedTas
                   <Square size={16} strokeWidth={1.75} />
                 )}
               </button>
-              <div className="flex-1 min-w-0" onClick={() => navigate(`/tasks/${task.id}`)}>
+              <div data-testid={`deal-linked-task-title-${task.id}`} className="flex-1 min-w-0" onClick={() => navigate(`/tasks/${task.id}`)}>
                 <span
                   className={`text-[13px] ${
                     task.completed ? 'text-text-muted line-through' : 'text-text-primary'

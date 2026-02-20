@@ -668,7 +668,7 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
     if (count > 0) {
       // Click on the task text area (not the checkbox)
       const firstTask = taskItems.first();
-      const taskText = firstTask.locator('.flex-1');
+      const taskText = firstTask.locator('[data-testid^="deal-linked-task-title-"]');
       await taskText.click();
       await expect(page).toHaveURL(/\/tasks\//, { timeout: 5000 });
     }

@@ -90,24 +90,24 @@
             - generic [ref=e112]:
               - generic [ref=e115]:
                 - generic [ref=e116]:
-                  - text: Changed Stage from Discovery to Lead
+                  - text: Changed Stage from Proposal to Lead
                   - generic [ref=e117]: (Test User)
-                - generic [ref=e118]: Feb 20, 2026, 8:05 AM
+                - generic [ref=e118]: Feb 20, 2026, 8:10 AM
               - generic [ref=e121]:
                 - generic [ref=e122]:
-                  - text: Changed Stage from Lead to Discovery
+                  - text: Changed Stage from Lead to Proposal
                   - generic [ref=e123]: (Test User)
-                - generic [ref=e124]: Feb 20, 2026, 8:05 AM
+                - generic [ref=e124]: Feb 20, 2026, 8:10 AM
               - generic [ref=e127]:
                 - generic [ref=e128]:
                   - text: Changed Stage from Discovery to Lead
                   - generic [ref=e129]: (Test User)
-                - generic [ref=e130]: Feb 20, 2026, 8:05 AM
+                - generic [ref=e130]: Feb 20, 2026, 8:10 AM
               - generic [ref=e133]:
                 - generic [ref=e134]:
                   - text: Changed Stage from Lead to Discovery
                   - generic [ref=e135]: (Test User)
-                - generic [ref=e136]: Feb 20, 2026, 8:05 AM
+                - generic [ref=e136]: Feb 20, 2026, 8:10 AM
           - generic [ref=e137]:
             - generic [ref=e138]:
               - generic [ref=e139]:
