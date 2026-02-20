@@ -476,7 +476,7 @@ test.describe('PersonDetailPage - RelationshipsSection (PDP-REL)', () => {
 });
 
 test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
-  test('PDP-CH-01: Contact history displays section with controls', async ({ page }) => {
+  test('PDP-CH-01: Contact history displays chronological log', async ({ page }) => {
     await navigateToFirstPersonDetail(page);
 
     const section = page.getByTestId('contact-history-section');
@@ -485,6 +485,34 @@ test.describe('PersonDetailPage - ContactHistorySection (PDP-CH)', () => {
     // Filter and Add Entry buttons should be visible
     await expect(page.getByTestId('contact-history-filter-button')).toBeVisible();
     await expect(page.getByTestId('contact-history-add-entry-button')).toBeVisible();
+
+    // Ensure at least one entry exists by creating one if the section is empty
+    const entries = page.locator('[data-testid^="contact-history-entry-"]');
+    if (await entries.count() === 0) {
+      await page.getByTestId('contact-history-add-entry-button').click();
+      const modal = page.getByTestId('add-contact-history-modal');
+      await expect(modal).toBeVisible();
+      await page.getByTestId('contact-history-date-input').fill('2024-10-26T14:30');
+      await page.getByTestId('contact-history-type-select-trigger').click();
+      await page.getByTestId('contact-history-type-select-option-video_call').click();
+      await page.getByTestId('contact-history-summary-input').fill('Discussed Q4 roadmap integration.');
+      await page.getByTestId('contact-history-team-member-input').fill('Michael B. (Sales Lead)');
+      await page.getByTestId('contact-history-save-button').click();
+      await expect(entries.first()).toBeVisible({ timeout: 10000 });
+    }
+
+    // Each entry row should show date/time, type, summary, team member, and edit icon
+    const count = await entries.count();
+    expect(count).toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const entry = entries.nth(i);
+      await expect(entry.locator('[data-testid^="contact-history-date-"]')).toBeVisible();
+      await expect(entry.locator('[data-testid^="contact-history-type-"]')).toBeVisible();
+      await expect(entry.locator('[data-testid^="contact-history-summary-"]')).toBeVisible();
+      await expect(entry.locator('[data-testid^="contact-history-team-member-"]')).toBeVisible();
+      await expect(entry.locator('[data-testid^="contact-history-edit-"]')).toBeVisible();
+    }
   });
 
   test('PDP-CH-02: Contact history entries show correct details', async ({ page }) => {

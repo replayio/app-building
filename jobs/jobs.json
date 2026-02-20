@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationCH01Test: Fix PDP-CH-01 test title from 'Contact history displays section with controls' to 'Contact history displays chronological log' to match spec, and add assertions verifying entry rows show date/time, type, summary, team member, and edit icon",
-        "RunTests: Verify tests pass after PDP-CH-01 fix"
-      ],
-      "timestamp": "2026-02-20T20:50:24.966Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationRelationshipsHeading: Fix RelationshipsSection heading from 'Relationships' to 'Relationships with Other Individuals' to match PDP-REL-01 spec, and update any affected tests",
         "RunTests: Verify tests pass after RelationshipsSection heading fix"
       ],
