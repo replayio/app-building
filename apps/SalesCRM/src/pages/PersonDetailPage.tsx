@@ -82,6 +82,26 @@ export function PersonDetailPage() {
     }
   }
 
+  async function handleDeleteRelationship(relationshipId: string) {
+    if (!individualId) return
+    const res = await fetch(`/.netlify/functions/individuals/${individualId}/relationships/${relationshipId}`, {
+      method: 'DELETE',
+    })
+    if (res.ok) {
+      loadData()
+    }
+  }
+
+  async function handleDeleteContactHistory(entryId: string) {
+    if (!individualId) return
+    const res = await fetch(`/.netlify/functions/individuals/${individualId}/contact-history/${entryId}`, {
+      method: 'DELETE',
+    })
+    if (res.ok) {
+      loadData()
+    }
+  }
+
   if (loading || !currentIndividual) {
     return (
       <div className="p-6" data-testid="person-detail-loading">
@@ -116,6 +136,7 @@ export function PersonDetailPage() {
           <RelationshipsSection
             relationships={currentIndividual.relationships ?? []}
             onAddEntry={() => setAddRelationshipOpen(true)}
+            onDeleteRelationship={handleDeleteRelationship}
           />
 
           {/* Contact History */}
@@ -123,6 +144,7 @@ export function PersonDetailPage() {
             entries={currentIndividual.contact_history ?? []}
             onAddEntry={() => setAddContactHistoryOpen(true)}
             onEditEntry={(entry) => setEditingEntry(entry)}
+            onDeleteEntry={handleDeleteContactHistory}
           />
         </div>
         <div>

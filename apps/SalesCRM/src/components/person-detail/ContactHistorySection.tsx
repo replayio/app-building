@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Clock, Filter, Plus, Pencil } from 'lucide-react'
+import { Clock, Filter, Plus, Pencil, Trash2 } from 'lucide-react'
 import type { ContactHistoryEntry, ContactHistoryType } from '../../types'
 
 interface ContactHistorySectionProps {
   entries: ContactHistoryEntry[]
   onAddEntry: () => void
   onEditEntry: (entry: ContactHistoryEntry) => void
+  onDeleteEntry: (entryId: string) => void
 }
 
 const TYPE_LABELS: Record<ContactHistoryType, string> = {
@@ -27,7 +28,7 @@ function formatDate(dateStr: string): string {
   })
 }
 
-export function ContactHistorySection({ entries, onAddEntry, onEditEntry }: ContactHistorySectionProps) {
+export function ContactHistorySection({ entries, onAddEntry, onEditEntry, onDeleteEntry }: ContactHistorySectionProps) {
   const [filterType, setFilterType] = useState<string>('all')
   const [filterOpen, setFilterOpen] = useState(false)
 
@@ -115,14 +116,24 @@ export function ContactHistorySection({ entries, onAddEntry, onEditEntry }: Cont
                   </div>
                 )}
               </div>
-              <button
-                data-testid={`contact-history-edit-${entry.id}`}
-                onClick={() => onEditEntry(entry)}
-                className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100 flex-shrink-0 ml-2"
-                title="Edit entry"
-              >
-                <Pencil size={13} strokeWidth={1.75} />
-              </button>
+              <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+                <button
+                  data-testid={`contact-history-edit-${entry.id}`}
+                  onClick={() => onEditEntry(entry)}
+                  className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
+                  title="Edit entry"
+                >
+                  <Pencil size={13} strokeWidth={1.75} />
+                </button>
+                <button
+                  data-testid={`contact-history-delete-${entry.id}`}
+                  onClick={() => onDeleteEntry(entry.id)}
+                  className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:text-status-churned hover:bg-hover transition-colors duration-100"
+                  title="Delete entry"
+                >
+                  <Trash2 size={13} strokeWidth={1.75} />
+                </button>
+              </div>
             </div>
           ))}
         </div>

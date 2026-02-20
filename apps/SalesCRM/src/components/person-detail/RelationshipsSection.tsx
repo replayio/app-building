@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Users, Filter, Plus, Link as LinkIcon } from 'lucide-react'
+import { Users, Filter, Plus, Link as LinkIcon, Trash2 } from 'lucide-react'
 import type { Relationship, RelationshipType } from '../../types'
 
 interface RelationshipsSectionProps {
   relationships: Relationship[]
   onAddEntry: () => void
+  onDeleteRelationship: (relationshipId: string) => void
 }
 
 const RELATIONSHIP_LABELS: Record<RelationshipType, string> = {
@@ -17,7 +18,7 @@ const RELATIONSHIP_LABELS: Record<RelationshipType, string> = {
   other: 'Other',
 }
 
-export function RelationshipsSection({ relationships, onAddEntry }: RelationshipsSectionProps) {
+export function RelationshipsSection({ relationships, onAddEntry, onDeleteRelationship }: RelationshipsSectionProps) {
   const navigate = useNavigate()
   const [view, setView] = useState<'list' | 'graph'>('list')
   const [filterType, setFilterType] = useState<string>('all')
@@ -133,14 +134,24 @@ export function RelationshipsSection({ relationships, onAddEntry }: Relationship
                       <span className="text-[13px] text-text-muted">, {rel.company}</span>
                     )}
                   </div>
-                  <button
-                    data-testid={`relationship-link-${rel.id}`}
-                    onClick={() => navigate(`/individuals/${rel.related_individual_id}`)}
-                    className="inline-flex items-center gap-1 text-[12px] text-accent hover:underline cursor-pointer"
-                  >
-                    <LinkIcon size={12} strokeWidth={1.75} />
-                    Link
-                  </button>
+                  <div className="flex items-center gap-1 flex-shrink-0 ml-2">
+                    <button
+                      data-testid={`relationship-link-${rel.id}`}
+                      onClick={() => navigate(`/individuals/${rel.related_individual_id}`)}
+                      className="inline-flex items-center gap-1 text-[12px] text-accent hover:underline cursor-pointer"
+                    >
+                      <LinkIcon size={12} strokeWidth={1.75} />
+                      Link
+                    </button>
+                    <button
+                      data-testid={`relationship-delete-${rel.id}`}
+                      onClick={() => onDeleteRelationship(rel.id)}
+                      className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:text-status-churned hover:bg-hover transition-colors duration-100"
+                      title="Delete relationship"
+                    >
+                      <Trash2 size={13} strokeWidth={1.75} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

@@ -555,6 +555,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Click "Graph View" tab
 - Expected: A visual graph/network diagram shows the person at center with connected individuals. Relationship types are labeled on connections.
 
+**PDP-REL-08: Delete button removes a relationship**
+- Initial: Person has a relationship entry in the list view
+- Action: Click the delete (trash) icon (data-testid="relationship-delete-{id}") on a relationship entry
+- Expected: The relationship is removed from the list. Change is persisted to the database (page reload confirms removal).
+
 #### ContactHistorySection
 
 **PDP-CH-01: Contact history displays chronological log**
@@ -591,6 +596,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Multiple contact history entries of different types exist
 - Action: Click Filter, select "Email"
 - Expected: Only entries with type "Email" are shown.
+
+**PDP-CH-08: Delete button removes a contact history entry**
+- Initial: Person has a contact history entry in the list
+- Action: Click the delete (trash) icon (data-testid="contact-history-delete-{id}") on a contact history entry
+- Expected: The entry is removed from the contact history list. Change is persisted to the database (page reload confirms removal).
 
 #### AssociatedClientsSection
 
