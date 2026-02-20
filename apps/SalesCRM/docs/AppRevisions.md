@@ -26,7 +26,13 @@ Pipeline view on the deals page supports drag-and-drop to move deals between sta
 
 ## Authentication
 
-Authentication is optional. There are no Login or Register pages. SSO (Google OAuth) opens in a popup window. The sidebar user area is in the upper left (below app title), showing avatar/name/sign-out when logged in or a "Sign in with Google" button when not logged in. Backend functions use optional auth middleware that passes user info when available but allows unauthenticated requests. Timeline events and writeup authors fall back to "System" when no user is authenticated. All Netlify Functions are wrapped with JWT verification middleware (optional mode).
+Authentication is optional. The sidebar user area is in the upper left (below app title), showing avatar/name/sign-out when logged in or a "Sign In" button when not logged in. Clicking "Sign In" reveals an inline auth form with email/password fields, a submit button, a "Forgot password?" link, and a toggle to switch between Sign In and Sign Up modes. Backend functions use optional auth middleware that passes user info when available but allows unauthenticated requests. Timeline events and writeup authors fall back to "System" when no user is authenticated. All Netlify Functions are wrapped with JWT verification middleware (optional mode).
+
+Email/password signup requires email confirmation before the user can log in. After signing up, the user receives a confirmation email (via Resend API) with a link to /auth/confirm-email?token=... that confirms the account and logs them in. In test mode (IS_TEST=true), signup auto-confirms and returns a session immediately.
+
+A "Forgot password?" link in the sign-in form navigates to /auth/forgot-password, where the user enters their email to receive a password reset link (via Resend API). The reset link goes to /auth/reset-password?token=... where they enter a new password and confirm it. On success, the password is updated and the user is logged in.
+
+Three auth pages exist: ForgotPasswordPage (/auth/forgot-password), ResetPasswordPage (/auth/reset-password), and ConfirmEmailPage (/auth/confirm-email). The email_tokens database table stores confirmation and reset tokens with expiry and used-at tracking.
 
 ## CSV Import and Export
 

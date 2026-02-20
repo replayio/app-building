@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
 
 export default defineConfig({
@@ -22,12 +22,6 @@ export default defineConfig({
     storageState: './tests/test-storage-state.json',
     ...[REDACTED]Devices['Replay Chromium'],
   },
-  projects: [
-    {
-      name: '[REDACTED]-chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
   webServer: {
     command: 'env -u DATABASE_URL IS_TEST=true npx netlify dev --port 8888 --functions ./netlify/functions',
     url: 'http://localhost:8888',

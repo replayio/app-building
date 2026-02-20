@@ -4,7 +4,8 @@ export { expect };
 
 export const test = baseTest.extend({});
 
-test.beforeEach(async (_fixtures, testInfo) => {
+// eslint-disable-next-line no-empty-pattern
+test.beforeEach(async ({}, testInfo) => {
   const msg = {
     event: 'test:start',
     test: testInfo.title,
@@ -14,7 +15,8 @@ test.beforeEach(async (_fixtures, testInfo) => {
   console.log(JSON.stringify(msg));
 });
 
-test.afterEach(async (_fixtures, testInfo) => {
+// eslint-disable-next-line no-empty-pattern
+test.afterEach(async ({}, testInfo) => {
   const msg = {
     event: 'test:end',
     test: testInfo.title,

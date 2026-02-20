@@ -7,7 +7,10 @@ This document defines behavior-driven test entries for the Sales CRM application
 ## 0. Authentication
 
 ### Components
-- **SidebarUserArea**: Current user info area in the upper left of the sidebar, below the app title. When logged in, shows user avatar/initial, name, and sign-out button. When not logged in, shows a "Sign in" button that expands to an email/password form with sign-in and sign-up modes.
+- **SidebarUserArea**: Current user info area in the upper left of the sidebar, below the app title. When logged in, shows user avatar/initial, name, and sign-out button. When not logged in, shows a "Sign in" button that expands to an email/password form with sign-in and sign-up modes. The sign-in form includes a "Forgot password?" link. Sign-up requires email confirmation before login (in production; auto-confirmed in test mode).
+- **ForgotPasswordPage**: Page at /auth/forgot-password with a form to enter email and request a password reset link.
+- **ResetPasswordPage**: Page at /auth/reset-password?token=... with a form to enter a new password.
+- **ConfirmEmailPage**: Page at /auth/confirm-email?token=... that confirms a user's email and signs them in.
 
 ### Test Entries
 
@@ -21,7 +24,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **AUTH-USR-02: Sidebar displays sign-in button when not logged in**
 - Initial: User is not authenticated and on any page
 - Action: Observe the sidebar user area
-- Expected: The sidebar shows the user area (data-testid="sidebar-user-area") below the app title containing a "Sign in" button (data-testid="sidebar-sign-in"). Clicking it reveals an email/password form (data-testid="sidebar-auth-form") with email input (data-testid="auth-email-input"), password input (data-testid="auth-password-input"), submit button (data-testid="auth-submit-button"), and a toggle to switch between sign-in and sign-up modes (data-testid="auth-toggle-mode").
+- Expected: The sidebar shows the user area (data-testid="sidebar-user-area") below the app title containing a "Sign in" button (data-testid="sidebar-sign-in"). Clicking it reveals an email/password form (data-testid="sidebar-auth-form") with email input (data-testid="auth-email-input"), password input (data-testid="auth-password-input"), submit button (data-testid="auth-submit-button"), a "Forgot password?" link (data-testid="auth-forgot-password"), and a toggle to switch between sign-in and sign-up modes (data-testid="auth-toggle-mode").
 
 **AUTH-USR-03: App loads without authentication**
 - Initial: User is not authenticated
@@ -31,7 +34,38 @@ This document defines behavior-driven test entries for the Sales CRM application
 **AUTH-E2E-01: Full signup and login flow works end-to-end**
 - Initial: User is not authenticated
 - Action: Click "Sign in", toggle to sign-up mode, enter a new email/password, submit. Then sign out. Then sign back in with the same credentials.
-- Expected: After signup, user is immediately logged in (user name and avatar visible, sign-out button visible). After signing out, the sign-in button reappears. After signing in with the same credentials, user is logged in again with name and sign-out visible.
+- Expected: After signup, user is immediately logged in (user name and avatar visible, sign-out button visible). After signing out, the sign-in button reappears. After signing in with the same credentials, user is logged in again with name and sign-out visible. (Note: in test mode, email confirmation is auto-completed.)
+
+#### ForgotPasswordPage
+
+**AUTH-FP-01: Forgot password link navigates to forgot password page**
+- Initial: User is not authenticated and on /clients
+- Action: Click "Sign in", then click "Forgot password?" link (data-testid="auth-forgot-password")
+- Expected: App navigates to /auth/forgot-password. The forgot password page (data-testid="forgot-password-page") displays a form (data-testid="forgot-password-form") with an email input (data-testid="forgot-password-email"), a submit button (data-testid="forgot-password-submit"), and a back link (data-testid="forgot-password-back-to-signin").
+
+**AUTH-FP-02: Forgot password form submits and shows success message**
+- Initial: User is on /auth/forgot-password
+- Action: Enter an email address and click "Send Reset Link"
+- Expected: After submission, a success message appears (data-testid="forgot-password-success") with text indicating to check email, and a "Back to app" button (data-testid="forgot-password-back").
+
+#### ResetPasswordPage
+
+**AUTH-RP-01: Reset password page shows form with valid token**
+- Initial: User navigates to /auth/reset-password?token=validtoken
+- Action: Observe the page
+- Expected: The reset password page (data-testid="reset-password-page") shows a form (data-testid="reset-password-form") with new password input (data-testid="reset-password-input"), confirm password input (data-testid="reset-password-confirm-input"), and a submit button (data-testid="reset-password-submit").
+
+**AUTH-RP-02: Reset password page shows error without token**
+- Initial: User navigates to /auth/reset-password (no token)
+- Action: Observe the page
+- Expected: The page shows an error (data-testid="reset-password-error") with "No reset token provided" message and a "Go to app" button.
+
+#### ConfirmEmailPage
+
+**AUTH-CE-01: Confirm email page shows error without token**
+- Initial: User navigates to /auth/confirm-email (no token)
+- Action: Observe the page
+- Expected: The page (data-testid="confirm-email-page") shows an error (data-testid="confirm-email-error") with "No confirmation token provided" message.
 
 ---
 

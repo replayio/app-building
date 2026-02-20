@@ -67,6 +67,17 @@ All jobs in a group share the same strategy. Group related jobs together — for
 all checks for a single page go in one group. When a strategy needs to "unpack" into
 sub-groups, use `add-group` to insert them at the front of the queue.
 
+**CRITICAL: Job scope rules**
+
+- You MUST only work on jobs that were assigned to you in your current prompt. Your assigned
+  jobs are the ones passed to you by the worker — nothing else.
+- When you add new job groups via `add-group`, you MUST NOT start working on those jobs.
+  They will be picked up by a future worker iteration.
+- If you have completed all of your assigned jobs and the only remaining work is jobs you
+  added to the queue, you are DONE. Commit your changes and output `<DONE>` immediately.
+  Do NOT continue working on the newly queued jobs.
+- Adding jobs to the queue is NOT the same as doing those jobs. Add them and stop.
+
 ## Tech Stack
 
 - **Vite** for build tooling

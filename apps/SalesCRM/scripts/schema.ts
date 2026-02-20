@@ -205,8 +205,21 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       password_hash TEXT,
       provider TEXT DEFAULT 'email',
       avatar_url TEXT DEFAULT '',
+      email_confirmed BOOLEAN DEFAULT false,
       created_at TIMESTAMPTZ DEFAULT NOW(),
       updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS email_tokens (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      token TEXT UNIQUE NOT NULL,
+      type TEXT NOT NULL CHECK (type IN ('confirm', 'reset')),
+      expires_at TIMESTAMPTZ NOT NULL,
+      used_at TIMESTAMPTZ,
+      created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `
 

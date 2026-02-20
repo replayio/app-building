@@ -1,3 +1,69 @@
 {
-  "groups": []
+  "groups": [
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "FixBug: Add email confirmation for signups and forgot password with Resend API",
+        "UpdateTests: Update tests for email confirmation and forgot password",
+        "UpdateRevisions: Record spec changes for auth improvements",
+        "ResolveBug: Mark auth improvements bug as resolved"
+      ],
+      "timestamp": "2026-02-20T18:14:32.203Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "FixBug: Add email notification preferences for client following with Resend API",
+        "UpdateTests: Update tests for email notifications and client following",
+        "UpdateRevisions: Record spec changes for email notifications",
+        "ResolveBug: Mark email notifications bug as resolved"
+      ],
+      "timestamp": "2026-02-20T18:14:28.355Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "FixBug: Add Contacts page for searching all people/individuals",
+        "UpdateTests: Update tests for Contacts page",
+        "UpdateRevisions: Record spec changes for Contacts page",
+        "ResolveBug: Mark Contacts page bug as resolved"
+      ],
+      "timestamp": "2026-02-20T18:14:24.123Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-20T18:13:52.367Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-20T18:13:55.445Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-20T18:13:59.380Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-20T18:14:02.487Z"
+    },
+    {
+      "strategy": "strategies/jobs/deployment.md",
+      "jobs": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-20T18:14:05.735Z"
+    }
+  ]
 }

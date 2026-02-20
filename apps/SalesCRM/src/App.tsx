@@ -11,6 +11,9 @@ import { SettingsPage } from './pages/SettingsPage'
 import { UsersListPage } from './pages/UsersListPage'
 import { UserDetailPage } from './pages/UserDetailPage'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { ConfirmEmailPage } from './pages/ConfirmEmailPage'
+import { ResetPasswordPage } from './pages/ResetPasswordPage'
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
 
 export default function App() {
   return (
@@ -27,6 +30,9 @@ export default function App() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/users" element={<UsersListPage />} />
         <Route path="/users/:userId" element={<UserDetailPage />} />
+        <Route path="/auth/confirm-email" element={<ConfirmEmailPage />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
