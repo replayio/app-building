@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationFileUpload: Fix AddAttachmentModal (apps/SalesCRM/src/components/client-detail/AddAttachmentModal.tsx) to use UploadThing for actual file uploads instead of URL.createObjectURL blob URLs that don't persist",
-        "RunTests: Verify tests pass after file upload fix"
-      ],
-      "timestamp": "2026-02-20T06:46:37.610Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationMissingTests: Fix missing ClientDetailPage tests in apps/SalesCRM/tests/client-detail-page.spec.ts: (1) Add tests for CDP-HDR-03 (status edit persist+timeline), CDP-HDR-04 (tag edit persist+timeline), CDP-HDR-05 (type edit persist), (2) Add tests for CDP-QA-03 (task create persist+timeline), CDP-QA-05 (deal create persist+timeline), CDP-QA-07 (file upload with setInputFiles), CDP-QA-09 (person create persist+timeline), (3) Add tests for CDP-SRC-03 (source info save persist), CDP-TSK-02 (checkbox completion+timeline), CDP-TSK-04 (deal association), (4) Add timeline entry side-effect assertions to existing mutation tests, (5) Fix test titles to match spec entry titles",
         "RunTests: Verify all new ClientDetailPage tests pass"
       ],

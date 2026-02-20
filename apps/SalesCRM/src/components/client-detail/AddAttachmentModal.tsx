@@ -22,21 +22,38 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
   const [linkUrl, setLinkUrl] = useState('')
   const [linkName, setLinkName] = useState('')
   const [dealId, setDealId] = useState('')
+  const [uploading, setUploading] = useState(false)
 
   if (!open) return null
 
-  function handleSave() {
+  async function handleSave() {
     if (attachmentType === 'document' && file) {
-      // For document uploads, we use the file name and a placeholder URL
-      // In production this would use UploadThing
-      const url = URL.createObjectURL(file)
-      onSave({
-        filename: file.name,
-        type: 'document',
-        url,
-        size: file.size,
-        deal_id: dealId,
-      })
+      setUploading(true)
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch('/.netlify/functions/upload', {
+          method: 'POST',
+          body: formData,
+        })
+        if (!res.ok) {
+          const err = await res.json()
+          throw new Error(err.error || 'Upload failed')
+        }
+        const data = await res.json()
+        onSave({
+          filename: file.name,
+          type: 'document',
+          url: data.url,
+          size: file.size,
+          deal_id: dealId,
+        })
+      } catch {
+        // Upload failed — stay on modal so user can retry
+        return
+      } finally {
+        setUploading(false)
+      }
     } else if (attachmentType === 'link' && linkUrl) {
       onSave({
         filename: linkName || linkUrl,
@@ -52,7 +69,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
     setDealId('')
   }
 
-  const canSave = (attachmentType === 'document' && file !== null) || (attachmentType === 'link' && linkUrl.trim() !== '')
+  const canSave = !uploading && ((attachmentType === 'document' && file !== null) || (attachmentType === 'link' && linkUrl.trim() !== ''))
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -168,7 +185,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
             disabled={!canSave}
             className="h-[34px] px-3.5 text-[13px] font-medium text-white bg-accent rounded-[5px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity duration-100"
           >
-            Save
+            {uploading ? 'Uploading...' : 'Save'}
           </button>
         </div>
       </div>
