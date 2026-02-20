@@ -90,76 +90,71 @@
             - generic [ref=e116]:
               - generic [ref=e119]:
                 - generic [ref=e120]:
-                  - text: Changed Stage from Negotiation to Lead
+                  - text: Changed Stage from Lead to Negotiation
                   - generic [ref=e121]: (Test User)
-                - generic [ref=e122]: Feb 20, 2026, 12:24 PM
+                - generic [ref=e122]: Feb 20, 2026, 12:29 PM
               - generic [ref=e125]:
                 - generic [ref=e126]:
-                  - text: Changed Stage from Lead to Negotiation
+                  - text: Changed Stage from Discovery to Lead
                   - generic [ref=e127]: (Test User)
-                - generic [ref=e128]: Feb 20, 2026, 12:24 PM
+                - generic [ref=e128]: Feb 20, 2026, 12:29 PM
               - generic [ref=e131]:
                 - generic [ref=e132]:
-                  - text: Changed Stage from Discovery to Lead
-                  - generic [ref=e133]: (Test User)
-                - generic [ref=e134]: Feb 20, 2026, 12:24 PM
-              - generic [ref=e137]:
-                - generic [ref=e138]:
                   - text: Changed Stage from Lead to Discovery
-                  - generic [ref=e139]: (Test User)
-                - generic [ref=e140]: Feb 20, 2026, 12:24 PM
-          - generic [ref=e141]:
-            - generic [ref=e142]:
-              - generic [ref=e143]:
-                - img [ref=e144]
-                - heading "Deal Metrics" [level=2] [ref=e145]
-              - button "Edit metrics" [ref=e146]:
-                - img [ref=e147]
-            - generic [ref=e150]:
-              - generic [ref=e151]:
-                - generic [ref=e152]: Probability
-                - generic [ref=e153]: 10%
-              - generic [ref=e154]:
-                - generic [ref=e155]: Expected Close
-                - generic [ref=e156]: Mar 15, 2024
-          - generic [ref=e157]:
-            - generic [ref=e158]:
-              - generic [ref=e159]:
-                - img [ref=e160]
-                - heading "Writeups" [level=2] [ref=e163]
-              - button "New Entry" [ref=e164]:
-                - img [ref=e165]
+                  - generic [ref=e133]: (Test User)
+                - generic [ref=e134]: Feb 20, 2026, 12:29 PM
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]:
+                - img [ref=e138]
+                - heading "Deal Metrics" [level=2] [ref=e139]
+              - button "Edit metrics" [ref=e140]:
+                - img [ref=e141]
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - generic [ref=e146]: Probability
+                - generic [ref=e147]: 10%
+              - generic [ref=e148]:
+                - generic [ref=e149]: Expected Close
+                - generic [ref=e150]: Mar 15, 2024
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - img [ref=e154]
+                - heading "Writeups" [level=2] [ref=e157]
+              - button "New Entry" [ref=e158]:
+                - img [ref=e159]
                 - text: New Entry
-            - generic [ref=e166]: No writeups yet
-        - generic [ref=e167]:
-          - generic [ref=e168]:
-            - generic [ref=e169]:
-              - heading "Linked Tasks" [level=2] [ref=e170]
-              - button "Add Task" [ref=e171]:
-                - img [ref=e172]
+            - generic [ref=e160]: No writeups yet
+        - generic [ref=e161]:
+          - generic [ref=e162]:
+            - generic [ref=e163]:
+              - heading "Linked Tasks" [level=2] [ref=e164]
+              - button "Add Task" [ref=e165]:
+                - img [ref=e166]
                 - text: Add Task
-            - generic [ref=e174] [cursor=pointer]:
-              - button [ref=e175]:
-                - img [ref=e176]
-              - generic [ref=e178]:
+            - generic [ref=e168] [cursor=pointer]:
+              - button [ref=e169]:
+                - img [ref=e170]
+              - generic [ref=e172]:
                 - text: Review Globex proposal
-                - generic [ref=e179]: "· Due: Tomorrow"
-          - generic [ref=e180]:
-            - generic [ref=e181]:
-              - heading "Attachments" [level=2] [ref=e182]
-              - button "Upload" [ref=e183]:
-                - img [ref=e184]
-            - generic [ref=e187]: No attachments
-          - generic [ref=e188]:
-            - generic [ref=e189]:
-              - img [ref=e190]
-              - heading "Contacts/Individuals" [level=2] [ref=e195]
-            - generic [ref=e197]:
-              - img [ref=e199]
-              - generic [ref=e202]:
-                - generic [ref=e203]: Emily Davis
-                - generic [ref=e204]:
-                  - generic [ref=e205]: (influencer)
-                  - generic [ref=e206]: · Globex Solutions
-              - button "View Profile" [ref=e207]
+                - generic [ref=e173]: "· Due: Tomorrow"
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - heading "Attachments" [level=2] [ref=e176]
+              - button "Upload" [ref=e177]:
+                - img [ref=e178]
+            - generic [ref=e181]: No attachments
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - img [ref=e184]
+              - heading "Contacts/Individuals" [level=2] [ref=e189]
+            - generic [ref=e191]:
+              - img [ref=e193]
+              - generic [ref=e196]:
+                - generic [ref=e197]: Emily Davis
+                - generic [ref=e198]:
+                  - generic [ref=e199]: (influencer)
+                  - generic [ref=e200]: · Globex Solutions
+              - button "View Profile" [ref=e201]
 ```

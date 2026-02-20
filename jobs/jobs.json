@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationTaskCompleteSideEffect: Fix DDP-LTK-04 test to verify timeline entry side effect when completing a task - the test currently only checks visual completion state but doesn't assert timeline entry is created exactly once",
-        "RunTests: Verify tests pass after task completion side effect fix"
-      ],
-      "timestamp": "2026-02-20T08:27:29.642Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing TasksListPage Navigation test entries in docs/tests.md and tasks-list-page.spec.ts (testSpec directive 2)",
         "FixViolation: Add missing Cancel test for task creation modal in docs/tests.md and tasks-list-page.spec.ts (testSpec directive 7)",
         "RunTests: Verify tests pass after test spec and test additions"

@@ -658,7 +658,12 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
   });
 
   test('DDP-LTK-04: Checking a task marks it complete', async ({ page }) => {
-    await navigateToFirstDealDetail(page);
+    const dealId = await navigateToFirstDealDetail(page);
+
+    // Get client_id from the deal via API to check timeline side effect
+    const dealRes = await page.request.get(`/.netlify/functions/deals/${dealId}`);
+    const dealData = await dealRes.json();
+    const clientId = dealData.client_id;
 
     // Create a task to toggle
     await page.getByTestId('deal-linked-tasks-add-button').click();
@@ -684,6 +689,14 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
     await expect(
       tasksSection.locator('.line-through').filter({ hasText: taskTitle })
     ).toBeVisible({ timeout: 10000 });
+
+    // Verify exactly one timeline entry was created for task completion (side effect)
+    const timelineRes = await page.request.get(`/.netlify/functions/client-timeline?clientId=${clientId}`);
+    const timelineData = await timelineRes.json() as { events: { description: string; event_type: string }[] };
+    const matchingEntries = timelineData.events.filter(
+      (e) => e.event_type === 'task_completed' && e.description.includes(taskTitle)
+    );
+    expect(matchingEntries).toHaveLength(1);
   });
 
   test('DDP-LTK-05: Clicking a linked task navigates to task detail page', async ({ page }) => {
