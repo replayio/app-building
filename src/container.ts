@@ -145,7 +145,7 @@ export function spawnContainer(options?: { prompt?: string; maxIterations?: numb
   args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `CONTAINER_NAME=${containerName}`);
 
   // Worker (consumes job groups, optionally preceded by a prompt)
-  args.push("npx", "tsx", "/app-building/src/worker.ts");
+  args.push("npx", "tsx", "/repo/src/worker.ts");
   if (options?.prompt) {
     args.push("-p", options.prompt);
   }

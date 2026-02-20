@@ -64,3 +64,12 @@ was unproductive and add a strategy tip to prevent the same pattern.
   Do not skip reviews because "we can see from the plan what was done."
 - If a review identifies directive violations, fix them BEFORE moving the log to reviewed/.
   Do not skip fixes because they seem "minor" — unfixed issues compound across iterations.
+- Zero-commit logs caused by infrastructure failures (container crash, missing prompt, race
+  conditions) do not need strategy updates — those are worker/container bugs, not job strategy
+  issues. Identify the root cause (check for errors like "Input must be provided" or empty
+  2-line logs) and verify the infrastructure bug has been fixed. Only add strategy tips for
+  zero-commit logs where the agent had time to work but failed to produce results.
+- When reviewing a batch of logs, some may be interactive sessions (no iteration tracking, no
+  git revisions) that made file changes but no commits. These are not "unproductive" — the
+  changes were committed outside the log's tracked scope. Check `git log` between the logs'
+  timestamps to see what was committed.

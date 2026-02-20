@@ -243,3 +243,7 @@ When testing the app after deployment, use the Replay browser to record the app 
 - Before running tests, verify `NEON_PROJECT_ID` is set in the environment. The test script
   requires it for creating ephemeral Neon branches. The project ID for SalesCRM is
   `rough-lake-81841975` — set it with `export NEON_PROJECT_ID=rough-lake-81841975`.
+- Running the full test suite at once (e.g., `npx playwright test` with no file argument) can
+  OOM or crash with `ERR_STRING_TOO_LONG` on large suites. Always run tests one spec file at a
+  time using `npm run test tests/<file>.spec.ts` (which uses the test script that manages
+  database branches). When verifying broad changes, pick the most relevant 2-3 spec files.
