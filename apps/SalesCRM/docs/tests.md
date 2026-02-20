@@ -1166,9 +1166,9 @@ This document defines behavior-driven test entries for the Sales CRM application
 #### TaskDetailHeader
 
 **TDP-HDR-01: Task detail page displays task information**
-- Initial: User navigates to /tasks/:taskId
+- Initial: User navigates to /tasks/:taskId for a task that has a title, description, priority, due date, assignee, associated client, and associated deal
 - Action: Observe the header
-- Expected: Shows task title, description, priority badge, status (Open/Completed), due date, assignee, and associated client/deal names.
+- Expected: Shows task title (data-testid="task-detail-title"), description (data-testid="task-detail-description"), priority badge (data-testid matching "task-priority-badge-*"), status (data-testid="task-detail-status") showing "Open" or "Completed", due date (data-testid="task-detail-due-date"), assignee (data-testid="task-detail-assignee"), associated client name (data-testid="task-detail-client"), and associated deal name (data-testid="task-detail-deal").
 
 **TDP-HDR-02: Mark Complete changes task status**
 - Initial: Task is in Open status

@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix TDP-HDR-01 test entry to include description field, add missing test assertions for priority badge/due date/assignee/description/client-deal names, and add author/timestamp assertions to TDP-NTS-02 test",
-        "RunTests: Verify tests pass after TDP assertion fixes"
-      ],
-      "timestamp": "2026-02-20T08:56:45.173Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add confirm dialog dismissal test entry (TDP-HDR-05) and corresponding Playwright test - clicking Cancel in the confirm dialog should leave task unchanged",
         "RunTests: Verify tests pass after confirm dialog dismissal fix"
       ],

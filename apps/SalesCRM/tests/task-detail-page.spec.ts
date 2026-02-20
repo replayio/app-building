@@ -25,6 +25,9 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     const taskTitle = `InfoTest_${Date.now()}`;
     await page.getByTestId('create-task-title').fill(taskTitle);
 
+    // Set description
+    await page.getByTestId('create-task-description').fill('This is a test task description');
+
     // Set priority
     await page.getByTestId('create-task-priority-trigger').click();
     const priorityMenu = page.getByTestId('create-task-priority-menu');
@@ -55,6 +58,18 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     const clientOption = clientMenu.locator('[data-testid^="create-task-client-option-"]').filter({ hasNotText: 'None' }).first();
     await clientOption.click();
 
+    // Set deal (optional, only if deals are available for the selected client)
+    const dealTrigger = page.getByTestId('create-task-deal-trigger');
+    if (await dealTrigger.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await dealTrigger.click();
+      const dealMenu = page.getByTestId('create-task-deal-menu');
+      await expect(dealMenu).toBeVisible();
+      const dealOption = dealMenu.locator('[data-testid^="create-task-deal-option-"]').filter({ hasNotText: 'No deal' }).first();
+      if (await dealOption.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await dealOption.click();
+      }
+    }
+
     await page.getByTestId('create-task-save').click();
     await expect(modal).not.toBeVisible();
     await page.waitForLoadState('networkidle');
@@ -73,12 +88,9 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
     // Priority badge visible
     await expect(page.locator('[data-testid^="task-priority-badge-"]')).toBeVisible();
 
-    // Description visible (if present on the task)
-    const descriptionEl = page.getByTestId('task-detail-description');
-    const descriptionCount = await descriptionEl.count();
-    if (descriptionCount > 0) {
-      await expect(descriptionEl).toBeVisible();
-    }
+    // Description visible
+    await expect(page.getByTestId('task-detail-description')).toBeVisible();
+    await expect(page.getByTestId('task-detail-description')).toContainText('This is a test task description');
 
     // Status visible
     await expect(page.getByTestId('task-detail-status')).toBeVisible();
@@ -93,6 +105,12 @@ test.describe('TaskDetailPage - Header (TDP-HDR)', () => {
 
     // Client name visible
     await expect(page.getByTestId('task-detail-client')).toBeVisible();
+
+    // Deal name visible (if a deal was selected during creation)
+    const dealEl = page.getByTestId('task-detail-deal');
+    if (await dealEl.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await expect(dealEl).toContainText('Deal:');
+    }
 
     // Notes section visible
     await expect(page.getByTestId('task-notes-section')).toBeVisible();
