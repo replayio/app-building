@@ -31,7 +31,7 @@ export function UsersListPage() {
   }, [])
 
   return (
-    <div className="p-6 max-w-[900px]" data-testid="users-list-page">
+    <div className="p-3 sm:p-6 max-w-[900px]" data-testid="users-list-page">
       <UsersPageHeader />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="users-grid">
@@ -64,7 +64,7 @@ export function UsersListPage() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-4 text-[12px] text-text-secondary">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-text-secondary">
               <div className="flex items-center gap-1.5">
                 <Briefcase size={12} strokeWidth={1.75} />
                 <span>{user.active_deals_count} active deal{user.active_deals_count !== 1 ? 's' : ''}</span>
