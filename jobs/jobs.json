@@ -1,12 +1,3 @@
 {
-  "groups": [
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
-        "FixViolation: Add data-testid attributes to UserActivitySection activity items for consistency with other sections",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-20T09:41:41.679Z"
-    }
-  ]
+  "groups": []
 }

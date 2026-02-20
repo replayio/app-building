@@ -43,7 +43,7 @@ export function UserActivitySection({ activity }: UserActivitySectionProps) {
         ) : (
           <div className="flex flex-col gap-3">
             {activity.map((event) => (
-              <div key={event.id} className="flex items-start gap-3 max-sm:flex-col max-sm:gap-0.5">
+              <div key={event.id} data-testid={`user-activity-${event.id}`} className="flex items-start gap-3 max-sm:flex-col max-sm:gap-0.5">
                 <div className="text-[12px] text-text-muted whitespace-nowrap mt-0.5">{formatRelativeDate(event.created_at)}</div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] text-text-primary">{event.description}</div>
