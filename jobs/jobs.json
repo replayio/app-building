@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
-        "ClassifyBug: Classify DealDetailClientField",
-        "UpdateDirectives: Update directives for DealDetailClientField",
-        "FinishBug: Mark DealDetailClientField as reviewed"
-      ],
-      "timestamp": "2026-02-20T19:19:01.705Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
         "ClassifyBug: Classify AuthEmailConfirmation",
         "UpdateDirectives: Update directives for AuthEmailConfirmation",
         "FinishBug: Mark AuthEmailConfirmation as reviewed"

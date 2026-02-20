@@ -24,12 +24,6 @@
 - Fix: Added email confirmation requirement for new signups (auto-confirmed in IS_TEST mode). Signup now creates unconfirmed user, sends confirmation email via Resend API, and returns needsConfirmation status. Added "Forgot password?" link in sidebar auth form that navigates to /auth/forgot-password. Created three new pages: ForgotPasswordPage (/auth/forgot-password), ResetPasswordPage (/auth/reset-password?token=...), and ConfirmEmailPage (/auth/confirm-email?token=...). Added confirm-email, forgot-password, and reset-password API endpoints to auth function. Login now checks email_confirmed (bypassed in test mode). Added email_tokens table migration and email_confirmed column migration to migrate-db.ts. Added 5 new Playwright tests (AUTH-FP-01, AUTH-FP-02, AUTH-RP-01, AUTH-RP-02, AUTH-CE-01). All 9 auth tests pass.
 - Problem stage: none (enhancement — email confirmation and forgot password were not part of the previous auth implementation)
 
-2/20/2026: DDP-HDR-02 violation — Client field in DealDetailHeader was not editable
-- Before: edc5279
-- After: (this commit)
-- Fix: Added searchable client dropdown to DealDetailHeader edit mode using FilterSelect. DealDetailPage now fetches available clients and passes them as prop. Backend deals PUT endpoint now includes client_id in the UPDATE query. Updated DDP-HDR-02 test to verify client field editing per spec (select different client, save, verify persistence). All 29 deal-detail-page tests pass.
-- Problem stage: writeApp.md — the DealDetailHeader component implemented editing for name, value, and owner fields but omitted client_id editing, violating the DDP-HDR-02 spec requirement
-
 2/19/2026: WebhookDialogInstructions — The "Add Webhook" dialog needs actual setup instructions for each supported platform.
 - Before: 25bd361
 - After: 7af02ba
@@ -37,6 +31,13 @@
 - Problem stage: none (enhancement to existing feature — setup guides were not part of the original webhook spec)
 
 ## Finished
+
+2/20/2026: DDP-HDR-02 violation — Client field in DealDetailHeader was not editable
+- Before: edc5279
+- After: (this commit)
+- Fix: Added searchable client dropdown to DealDetailHeader edit mode using FilterSelect. DealDetailPage now fetches available clients and passes them as prop. Backend deals PUT endpoint now includes client_id in the UPDATE query. Updated DDP-HDR-02 test to verify client field editing per spec (select different client, save, verify persistence). All 29 deal-detail-page tests pass.
+- Problem stage: writeTests.md — the test spec (DDP-HDR-02) correctly specified that editing the client field should update the deal, but the Playwright test did not actually verify client field editing, allowing the missing implementation to go undetected
+- Directive: Added directive to writeTests.md: tests must exercise each specific field interaction described in the spec entry, not just a subset
 
 2/18/2026: There should be a users page where you can see everyone that has an account, and a user detail page where you can see their activity and what they are managing. Everywhere in the app that refers to users with accounts should allow selecting them from a dropdown (e.g., deal owner, task assignee).
 - Before: 1e5a771

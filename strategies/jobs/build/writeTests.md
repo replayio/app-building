@@ -77,6 +77,12 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeTests.
 - Strategy files are at `/repo/strategies/jobs/` and its subdirectories (the repo root), NOT inside
   the app directory. Always use `/repo/strategies/jobs/build/writeTests.md`, etc.
 
+- When a test spec entry describes editing or interacting with a specific field (e.g., "edit client
+  field", "change value"), the test must exercise that exact field with corresponding actions and
+  assertions. Do not write a test that only verifies a subset of the fields or operations mentioned
+  in the spec entry — each described interaction must be tested. A common bug is implementing editing
+  for some fields but not all; only per-field testing catches this.
+
 - Apps with login/signup functionality must have a complete e2e test that exercises the full
   sign-up and sign-in flow against the real auth backend. The test must create a new account,
   verify the post-signup state (session established or confirmation required), then sign in
