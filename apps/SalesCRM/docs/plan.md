@@ -400,8 +400,8 @@ Open bug reports to address:
 - [ ] DealsListPage
 - [ ] DealDetailPage
 - [ ] TasksListPage
-- [ ] TaskDetailPage
-- [ ] SettingsPage
+- [x] TaskDetailPage
+- [x] SettingsPage
 - [ ] UsersListPage
 - [ ] UserDetailPage
 

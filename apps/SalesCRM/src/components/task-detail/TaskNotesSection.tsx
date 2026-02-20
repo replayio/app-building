@@ -24,7 +24,7 @@ export function TaskNotesSection({ notes, onAddNote, onDeleteNote }: TaskNotesSe
     <div className="border border-border rounded-[6px] p-4" data-testid="task-notes-section">
       <h2 className="text-[14px] font-semibold text-text-primary mb-3">Notes</h2>
 
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 max-sm:flex-col">
         <textarea
           data-testid="task-note-input"
           value={newNote}
@@ -36,7 +36,7 @@ export function TaskNotesSection({ notes, onAddNote, onDeleteNote }: TaskNotesSe
           data-testid="task-note-add"
           onClick={handleAdd}
           disabled={!newNote.trim() || saving}
-          className="self-end h-[30px] px-3 text-[12px] font-medium bg-accent text-white rounded-[5px] hover:opacity-90 disabled:opacity-50 transition-opacity duration-100"
+          className="self-end max-sm:self-start h-[30px] px-3 text-[12px] font-medium bg-accent text-white rounded-[5px] hover:opacity-90 disabled:opacity-50 transition-opacity duration-100"
         >
           Add
         </button>

@@ -23,19 +23,19 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
         >
           <ArrowLeft size={16} strokeWidth={1.75} />
         </button>
-        <h1 className="text-[18px] font-semibold text-text-primary flex-1" data-testid="task-detail-title">
+        <h1 className="text-[18px] max-sm:text-[16px] font-semibold text-text-primary flex-1 min-w-0" data-testid="task-detail-title">
           {task.title}
         </h1>
         <TaskPriorityBadge priority={task.priority} />
       </div>
 
       {task.description && (
-        <p className="text-[13px] text-text-secondary mb-3 ml-9" data-testid="task-detail-description">
+        <p className="text-[13px] text-text-secondary mb-3 ml-9 max-sm:ml-0" data-testid="task-detail-description">
           {task.description}
         </p>
       )}
 
-      <div className="flex items-center gap-4 ml-9 text-[12px] text-text-muted flex-wrap">
+      <div className="flex items-center gap-4 ml-9 max-sm:ml-0 text-[12px] text-text-muted flex-wrap">
         {task.due_date && (
           <span data-testid="task-detail-due-date">
             Due: {new Date(task.due_date).toLocaleDateString()} {new Date(task.due_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -54,7 +54,7 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
         )}
       </div>
 
-      <div className="flex items-center gap-4 ml-9 mt-3">
+      <div className="flex items-center gap-4 ml-9 max-sm:ml-0 mt-3">
         <span
           data-testid="task-detail-status"
           className={`text-[12px] font-medium px-2 py-0.5 rounded-[4px] ${
@@ -72,7 +72,7 @@ export function TaskDetailHeader({ task, onMarkComplete, onMarkCanceled }: TaskD
         )}
       </div>
 
-      <div className="flex items-center gap-2 mt-4 ml-9">
+      <div className="flex items-center gap-2 mt-4 ml-9 max-sm:ml-0 flex-wrap">
         {!task.completed && (
           <>
             <button

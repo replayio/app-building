@@ -119,7 +119,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div data-testid="webhook-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-h-[85vh] flex flex-col">
+      <div data-testid="webhook-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[520px] max-sm:max-w-[calc(100%-24px)] max-h-[85vh] flex flex-col">
         <div className="px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">
             {webhook ? 'Edit Webhook' : 'Add Webhook'}
@@ -129,7 +129,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           {/* Setup Guide */}
           <div data-testid="webhook-setup-guide">
             <label className="block text-[12px] font-medium text-text-secondary mb-2">Setup Guide</label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex gap-2 mb-2 flex-wrap">
               {(Object.entries(PLATFORM_GUIDES) as [Platform, typeof PLATFORM_GUIDES[Platform]][]).map(([key, { label }]) => (
                 <button
                   key={key}
@@ -187,7 +187,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-secondary mb-2">Events *</label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-2">
               {availableEvents.map((event) => (
                 <label
                   key={event}

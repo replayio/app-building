@@ -88,7 +88,7 @@ export function TaskDetailPage() {
   }
 
   return (
-    <div className="flex-1 p-6" data-testid="task-detail-page">
+    <div className="flex-1 p-6 max-sm:p-3" data-testid="task-detail-page">
       <TaskDetailHeader
         task={task}
         onMarkComplete={() => setConfirmAction('complete')}

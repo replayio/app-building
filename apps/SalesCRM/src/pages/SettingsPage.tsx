@@ -135,7 +135,7 @@ export function SettingsPage() {
   }
 
   return (
-    <div className="p-6 max-w-[900px]" data-testid="settings-page">
+    <div className="p-6 max-sm:p-3 max-w-[900px]" data-testid="settings-page">
       <SettingsPageHeader />
 
       <div className="flex flex-col gap-6">

@@ -26,7 +26,7 @@ export function ImportExportSection({
         <p className="text-[12px] text-text-muted mt-1">Import data from CSV files or export your data.</p>
       </div>
       <div className="px-5 py-4">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-6">
           <div>
             <h3 className="text-[13px] font-medium text-text-secondary mb-3">Import from CSV</h3>
             <div className="flex flex-col gap-2">

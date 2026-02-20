@@ -33,7 +33,7 @@ const EVENT_LABELS: Record<string, string> = {
 export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: WebhookSectionProps) {
   return (
     <div data-testid="webhook-section" className="border border-border rounded-[6px] bg-surface">
-      <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+      <div className="px-5 max-sm:px-3 py-4 border-b border-border flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h2 className="text-[14px] font-semibold text-text-primary">Webhooks</h2>
           <p className="text-[12px] text-text-muted mt-1">Send notifications to external services (Zapier, n8n, Discord) when events occur.</p>
@@ -47,7 +47,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
           Add Webhook
         </button>
       </div>
-      <div className="px-5 py-4">
+      <div className="px-5 max-sm:px-3 py-4">
         {webhooks.length === 0 ? (
           <p data-testid="webhook-empty-state" className="text-[13px] text-text-muted text-center py-6">
             No webhooks configured. Add a webhook to send event notifications to external services.
@@ -60,7 +60,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
                 data-testid={`webhook-item-${webhook.id}`}
                 className="border border-border rounded-[5px] p-4"
               >
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
                   <div className="flex items-center gap-3">
                     <span data-testid={`webhook-name-${webhook.id}`} className="text-[13px] font-medium text-text-primary">
                       {webhook.name}
