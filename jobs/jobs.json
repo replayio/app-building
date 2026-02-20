@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationMissingTests: Fix missing ClientDetailPage tests in apps/SalesCRM/tests/client-detail-page.spec.ts: (1) Add tests for CDP-HDR-03 (status edit persist+timeline), CDP-HDR-04 (tag edit persist+timeline), CDP-HDR-05 (type edit persist), (2) Add tests for CDP-QA-03 (task create persist+timeline), CDP-QA-05 (deal create persist+timeline), CDP-QA-07 (file upload with setInputFiles), CDP-QA-09 (person create persist+timeline), (3) Add tests for CDP-SRC-03 (source info save persist), CDP-TSK-02 (checkbox completion+timeline), CDP-TSK-04 (deal association), (4) Add timeline entry side-effect assertions to existing mutation tests, (5) Fix test titles to match spec entry titles",
-        "RunTests: Verify all new ClientDetailPage tests pass"
-      ],
-      "timestamp": "2026-02-20T06:46:44.289Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationModalCancelTests: Fix testSpec.md to add modal cancel test entries for ClientDetailPage: Add test entries for cancelling Add Task, Add Deal, Add Attachment, and Add Person modals (directive 7: completely test modal dialogs)",
         "RunTests: Verify tests pass after modal cancel test spec update"
       ],
