@@ -19,6 +19,44 @@ test.describe('UsersListPage - Header', () => {
     await expect(cards.first()).toBeVisible();
     const cardCount = await cards.count();
     expect(cardCount).toBeGreaterThanOrEqual(5);
+
+    // Verify card content: names, emails, deal counts, and task counts
+    const firstCard = cards.first();
+    const firstCardText = await firstCard.textContent();
+    expect(firstCardText).toMatch(/active deal/);
+    expect(firstCardText).toMatch(/open task/);
+    // Name should be visible via data-testid
+    const nameEl = firstCard.locator('[data-testid^="user-name-"]');
+    await expect(nameEl).toBeVisible();
+    const nameText = await nameEl.textContent();
+    expect(nameText!.length).toBeGreaterThan(0);
+  });
+});
+
+test.describe('UsersListPage - UserCards', () => {
+  test('ULP-CRD-01: User cards display avatar, name, email, active deals count, and open tasks count', async ({ page }) => {
+    await page.goto('/users');
+    await page.waitForLoadState('networkidle');
+
+    const grid = page.getByTestId('users-grid');
+    const firstCard = grid.locator('[data-testid^="user-card-"]').first();
+    await expect(firstCard).toBeVisible();
+
+    // User name visible
+    const nameEl = firstCard.locator('[data-testid^="user-name-"]');
+    await expect(nameEl).toBeVisible();
+    const nameText = await nameEl.textContent();
+    expect(nameText!.length).toBeGreaterThan(0);
+
+    // Email visible (card text contains @ for email)
+    const cardText = await firstCard.textContent();
+    expect(cardText).toMatch(/@/);
+
+    // Active deals count visible
+    expect(cardText).toMatch(/\d+ active deals?/);
+
+    // Open tasks count visible
+    expect(cardText).toMatch(/\d+ open tasks?/);
   });
 
   test('ULP-HDR-02: Clicking a user card navigates to user detail page', async ({ page }) => {

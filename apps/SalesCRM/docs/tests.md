@@ -1225,6 +1225,13 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe the page
 - Expected: Page header (data-testid="users-page-header") shows "Team Members" title. Users grid (data-testid="users-grid") displays user cards with names, emails, deal counts, and task counts.
 
+#### UserCards
+
+**ULP-CRD-01: User cards display avatar, name, email, active deals count, and open tasks count**
+- Initial: User navigates to /users with seeded team members
+- Action: Observe a user card in the grid
+- Expected: Each user card (data-testid="user-card-{id}") shows: user avatar or initial, user name (data-testid="user-name-{id}"), email with mail icon, active deals count with briefcase icon (e.g. "3 active deals"), and open tasks count with check-square icon (e.g. "2 open tasks").
+
 **ULP-HDR-02: Clicking a user card navigates to user detail page**
 - Initial: User is on /users with team members listed
 - Action: Click on a user card

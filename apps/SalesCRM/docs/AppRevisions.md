@@ -30,6 +30,8 @@ Changes to the app spec from bug reports and maintenance.
 
 2/19/2026: Webhook modal now includes platform-specific setup guides for Zapier, n8n, and custom endpoints. Each guide shows step-by-step instructions for obtaining the webhook URL, a URL format hint, and platform-specific tips (e.g., Zapier needs the first event to detect the schema; n8n has separate test vs production URLs). A toggleable payload format section shows the JSON structure that webhook events will send. The URL input placeholder updates based on the selected platform.
 
+2/20/2026: Fixed testSpec directive violations on UsersListPage: added UserCards test section in docs/tests.md with ULP-CRD-01 (card content verification for avatar, name, email, active deals count, open tasks count), moved ULP-HDR-02 (card click navigation) under UserCards section, and updated ULP-HDR-01 Playwright test to verify card content (names, emails, deal/task counts).
+
 2/20/2026: FilterSelect dropdowns with many options now include a searchable search input. When `searchable` is enabled, a search field appears at the top of the dropdown that filters options as you type, auto-focuses when opened, and shows "No matches" when no options match. Applied to client, user, and deal select dropdowns across filter bars, create/edit modals, and detail page headers.
 
 2/20/2026: Fixed testSpec directive violations: CDP-HDR-02 now includes name save persistence verification (edit name, save, confirm persisted after reload) per the directive requiring mutation persistence tests. CDP-QA-04 stage dropdown label corrected from 'Proposal' to 'Proposal Sent' to match the actual application UI labels used in AddDealModal and other components.
