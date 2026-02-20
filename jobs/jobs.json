@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
-      ],
-      "timestamp": "2026-02-19T23:44:46.979Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecTaskDetailPage: Check testSpec.md directive violations in TaskDetailPage test entries",
         "CheckComponentsTaskDetailPage: Check writeApp.md directive violations in TaskDetailPage components",
         "CheckTestsTaskDetailPage: Check writeTests.md directive violations in TaskDetailPage tests"
@@ -159,6 +150,30 @@
         "RunTests: Verify tests pass after test spec and test additions"
       ],
       "timestamp": "2026-02-20T08:39:24.081Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix TLP-FLT-04 and TLP-FLT-05 tests that use native select API (selectOption/locator option) on custom FilterSelect components - must use trigger/menu/option testid pattern instead",
+        "RunTests: Verify tests pass after fixing filter tests"
+      ],
+      "timestamp": "2026-02-20T08:44:41.560Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Add missing TLP-HDR-06 test spec entry for Cancel button on Create Task modal (like DLP-HDR-06 for deals) and write the corresponding Playwright test",
+        "RunTests: Verify tests pass after adding cancel modal test"
+      ],
+      "timestamp": "2026-02-20T08:44:46.823Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix TaskPriorityBadge to use CSS variables for priority colors (add --color-priority-high etc to index.css @theme block like status colors) and remove outer margins from TasksPageHeader (mb-6) and TasksFilterBar (mb-4) root elements, moving spacing to parent TasksListPage",
+        "RunTests: Verify tests pass after component fixes"
+      ],
+      "timestamp": "2026-02-20T08:44:52.100Z"
     }
   ]
 }
