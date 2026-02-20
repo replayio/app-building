@@ -3,11 +3,11 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecSettingsPage: Check testSpec.md directive violations in SettingsPage test entries",
-        "CheckComponentsSettingsPage: Check writeApp.md directive violations in SettingsPage components",
-        "CheckTestsSettingsPage: Check writeTests.md directive violations in SettingsPage tests"
+        "FixViolationImportTestEntries: Add test entries in docs/tests.md for the actual CSV import workflow (file selection, import execution, result verification) and CSV template download for at least one entity type",
+        "FixViolationImportTests: Write Playwright tests for the new import workflow test entries and update app code if needed",
+        "RunTestsImport: Verify tests pass after import workflow fix"
       ],
-      "timestamp": "2026-02-20T19:53:20.023Z"
+      "timestamp": "2026-02-20T22:38:02.058Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
@@ -66,6 +66,21 @@
         "RunTests: Verify tests pass after fleshing out observation tests"
       ],
       "timestamp": "2026-02-20T22:08:29.181Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationExportCSVTests: Update export CSV tests (STP-IE-06, STP-IE-07, STP-IE-08) to read downloaded CSV content and verify column headers match the test spec entries",
+        "RunTestsExport: Verify tests pass after export CSV test fix"
+      ],
+      "timestamp": "2026-02-20T22:38:06.467Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationJSXCommentsSettings: Add JSX comments next to all interactive elements in SettingsPage components (SettingsPageHeader, ImportExportSection, WebhookSection, WebhookModal, NotificationPreferencesSection, ImportDialog) linking each element to the test entry titles that exercise it"
+      ],
+      "timestamp": "2026-02-20T22:38:11.123Z"
     }
   ]
 }
