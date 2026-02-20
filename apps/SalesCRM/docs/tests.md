@@ -82,7 +82,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 ## 1. ClientsListPage (/clients)
 
 ### Components
-- **SidebarNavigation**: Left sidebar with nav links (Clients, Deals, Tasks)
+- **SidebarNavigation**: Left sidebar with nav links (Clients, Contacts, Deals, Tasks, Team, Settings)
 - **PageHeader**: "Clients" title with Import, Import Contacts, Export, and "+ Add New Client" buttons
 - **SearchBar**: Text input for searching clients by name, tag, or contact
 - **FilterControls**: Dropdown filters for Status (All/Active/Inactive/Prospect/Churned), Tags (All/specific tags), Source (All/specific sources), and Sort (Recently Updated, Name A-Z, etc.)
