@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing test entries for DealDetailPage owner editing (DDP-HDR-05) and expected close date editing in DDP-MET-02",
-        "RunTests: Verify tests pass after adding missing DealDetailPage test entries"
-      ],
-      "timestamp": "2026-02-20T22:08:18.087Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing side effect assertions in DealDetailPage tests — DDP-HDR-04 must check client timeline entry, DDP-ATT-03 must check client attachments",
         "RunTests: Verify tests pass after adding side effect assertions"
       ],

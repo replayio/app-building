@@ -1032,6 +1032,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Edit value to "$300,000", save
 - Expected: Value updates. Header title updates if it includes the value. Change persisted.
 
+**DDP-HDR-05: Editing owner field updates the deal**
+- Initial: Deal has an owner (e.g., "Sarah Lee")
+- Action: Click edit button, select a different owner from the owner dropdown, save
+- Expected: Owner field updates to the newly selected user. Change persisted.
+
 **DDP-HDR-04: Changing stage via dropdown and Change Stage button**
 - Initial: Deal stage is "Discovery"
 - Action: Select "Proposal Sent" from stage dropdown, click "Change Stage"
@@ -1068,10 +1073,15 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe Deal Metrics section
 - Expected: "Deal Metrics" section shows "Probability: 40%" and "Expected Close: Dec 15, 2023".
 
-**DDP-MET-02: Metrics are editable**
+**DDP-MET-02: Editing probability updates the deal**
 - Initial: Probability is 40%
 - Action: Edit probability to 60%, save
 - Expected: Probability updates to 60%. Change persisted.
+
+**DDP-MET-03: Editing expected close date updates the deal**
+- Initial: Deal has an expected close date
+- Action: Click edit, change the expected close date to a new date, save
+- Expected: Expected close date updates to the new date. Change persisted.
 
 #### WriteupsSection
 

@@ -188,6 +188,56 @@ test.describe('DealDetailPage - DealHeader (DDP-HDR)', () => {
     await page.waitForLoadState('networkidle');
   });
 
+  test('DDP-HDR-05: Editing owner field updates the deal', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Get current owner
+    const ownerBefore = await page.getByTestId('deal-header-owner').textContent();
+
+    // Enter edit mode
+    await page.getByTestId('deal-header-edit-button').click();
+
+    // Owner dropdown should appear
+    const ownerInput = page.getByTestId('deal-header-owner-input');
+    await expect(ownerInput).toBeVisible();
+
+    // Get the current owner value from the dropdown
+    const originalOwner = await ownerInput.getAttribute('data-value') ?? '';
+
+    // Open the owner dropdown and pick a different owner
+    await page.getByTestId('deal-header-owner-input-trigger').click();
+    const menu = page.getByTestId('deal-header-owner-input-menu');
+    await expect(menu).toBeVisible();
+
+    // Find a different owner option (not the currently selected one)
+    const options = menu.locator('button[data-option-value]');
+    const count = await options.count();
+    let targetOwnerName = '';
+    for (let i = 0; i < count; i++) {
+      const optVal = await options.nth(i).getAttribute('data-option-value');
+      if (optVal && optVal !== originalOwner) {
+        targetOwnerName = (await options.nth(i).textContent() ?? '').trim();
+        await options.nth(i).click();
+        break;
+      }
+    }
+
+    // Save
+    await page.getByTestId('deal-header-save-button').click();
+    await page.waitForLoadState('networkidle');
+
+    // Owner should show new name
+    const ownerAfter = await page.getByTestId('deal-header-owner').textContent();
+    expect(ownerAfter).toBe(targetOwnerName);
+    expect(ownerAfter).not.toBe(ownerBefore);
+
+    // Restore original owner
+    await page.getByTestId('deal-header-edit-button').click();
+    await selectFilterOption(page, 'deal-header-owner-input', originalOwner);
+    await page.getByTestId('deal-header-save-button').click();
+    await page.waitForLoadState('networkidle');
+  });
+
   test('DDP-HDR-04: Changing stage via dropdown and Change Stage button', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
@@ -387,7 +437,7 @@ test.describe('DealDetailPage - DealMetricsSection (DDP-MET)', () => {
     await expect(closeDate).toBeVisible();
   });
 
-  test('DDP-MET-02: Metrics are editable', async ({ page }) => {
+  test('DDP-MET-02: Editing probability updates the deal', async ({ page }) => {
     await navigateToFirstDealDetail(page);
 
     // Get current probability
@@ -420,6 +470,43 @@ test.describe('DealDetailPage - DealMetricsSection (DDP-MET)', () => {
     await restoreInput.clear();
     const originalProb = probBefore!.replace('%', '').trim();
     await restoreInput.fill(originalProb);
+    await page.getByTestId('deal-metrics-save-button').click();
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('DDP-MET-03: Editing expected close date updates the deal', async ({ page }) => {
+    await navigateToFirstDealDetail(page);
+
+    // Get current close date text
+    const closeDateBefore = await page.getByTestId('deal-metrics-close-date').textContent();
+
+    // Click edit
+    await page.getByTestId('deal-metrics-edit-button').click();
+
+    // Close date input should appear
+    const closeDateInput = page.getByTestId('deal-metrics-close-date-input');
+    await expect(closeDateInput).toBeVisible();
+
+    // Get original value for restoration
+    const originalDateValue = await closeDateInput.inputValue();
+
+    // Set a new date
+    const newDate = '2025-06-15';
+    await closeDateInput.fill(newDate);
+
+    // Save
+    await page.getByTestId('deal-metrics-save-button').click();
+    await page.waitForLoadState('networkidle');
+
+    // Expected close date should update
+    const closeDateAfter = await page.getByTestId('deal-metrics-close-date').textContent();
+    expect(closeDateAfter).toContain('Jun 15, 2025');
+    expect(closeDateAfter).not.toBe(closeDateBefore);
+
+    // Restore original date
+    await page.getByTestId('deal-metrics-edit-button').click();
+    const restoreInput = page.getByTestId('deal-metrics-close-date-input');
+    await restoreInput.fill(originalDateValue);
     await page.getByTestId('deal-metrics-save-button').click();
     await page.waitForLoadState('networkidle');
   });
