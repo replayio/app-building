@@ -25,7 +25,7 @@ export function DealStageBadge({ stage }: { stage: DealStage }) {
   const style = STAGE_STYLES[stage] ?? 'bg-gray-100 text-text-muted'
 
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-full ${style}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-full ${style}`} data-testid={`deal-stage-badge-${stage}`}>
       {label}
     </span>
   )

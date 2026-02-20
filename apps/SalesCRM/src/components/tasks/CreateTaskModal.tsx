@@ -74,6 +74,7 @@ export function CreateTaskModal({ open, onClose, onSave, availableClients, avail
           <button
             onClick={onClose}
             className="w-[28px] h-[28px] flex items-center justify-center rounded-[4px] hover:bg-hover transition-colors duration-100 text-text-muted"
+            data-testid="create-task-modal-close"
           >
             <X size={16} strokeWidth={1.75} />
           </button>

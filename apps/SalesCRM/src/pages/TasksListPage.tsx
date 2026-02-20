@@ -145,7 +145,7 @@ export function TasksListPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-testid="tasks-list-page">
       <TasksPageHeader onCreateTask={() => setCreateModalOpen(true)} onImport={() => setImportDialogOpen(true)} />
 
       <TasksFilterBar

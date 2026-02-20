@@ -84,16 +84,16 @@ export function PersonDetailPage() {
 
   if (loading || !currentIndividual) {
     return (
-      <div className="p-6">
+      <div className="p-6" data-testid="person-detail-loading">
         <div className="text-[13px] text-text-muted">Loading individual...</div>
       </div>
     )
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-testid="person-detail-page">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4">
+      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="person-detail-breadcrumb">
         <span
           className="hover:text-accent cursor-pointer"
           onClick={() => navigate('/clients')}

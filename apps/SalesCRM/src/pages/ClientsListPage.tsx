@@ -102,7 +102,7 @@ export function ClientsListPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-testid="clients-list-page">
       <ClientsPageHeader
         onAddClient={() => setAddModalOpen(true)}
         onImport={() => setImportDialogOpen(true)}

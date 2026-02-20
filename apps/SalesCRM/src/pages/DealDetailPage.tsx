@@ -204,16 +204,16 @@ export function DealDetailPage() {
 
   if (loading || !currentDeal) {
     return (
-      <div className="p-6">
+      <div className="p-6" data-testid="deal-detail-loading">
         <div className="text-[13px] text-text-muted">Loading deal...</div>
       </div>
     )
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-testid="deal-detail-page">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4">
+      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="deal-detail-breadcrumb">
         <span
           className="hover:text-accent cursor-pointer"
           onClick={() => navigate('/deals')}

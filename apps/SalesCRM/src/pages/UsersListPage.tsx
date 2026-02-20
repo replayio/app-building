@@ -31,7 +31,7 @@ export function UsersListPage() {
   }, [])
 
   return (
-    <div className="p-6 max-w-[900px]">
+    <div className="p-6 max-w-[900px]" data-testid="users-list-page">
       <UsersPageHeader />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="users-grid">

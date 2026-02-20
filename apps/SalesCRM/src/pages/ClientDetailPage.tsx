@@ -214,7 +214,7 @@ export function ClientDetailPage() {
 
   if (loading) {
     return (
-      <div className="p-6">
+      <div className="p-6" data-testid="client-detail-loading">
         <div className="text-[13px] text-text-muted">Loading client...</div>
       </div>
     )
@@ -222,7 +222,7 @@ export function ClientDetailPage() {
 
   if (!currentClient) {
     return (
-      <div className="p-6">
+      <div className="p-6" data-testid="client-detail-error">
         <div className="text-[13px] text-text-muted">{error || 'Client not found.'}</div>
         <button
           onClick={() => { if (clientId) dispatch(fetchClient(clientId)) }}
@@ -235,9 +235,9 @@ export function ClientDetailPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-testid="client-detail-page">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4">
+      <div className="flex items-center gap-1 text-[12px] text-text-muted mb-4" data-testid="client-detail-breadcrumb">
         <span
           className="hover:text-accent cursor-pointer"
           onClick={() => navigate('/clients')}

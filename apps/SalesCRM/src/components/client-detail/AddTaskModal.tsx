@@ -50,6 +50,7 @@ export function AddTaskModal({ open, onClose, onSave, deals }: AddTaskModalProps
           <button
             onClick={onClose}
             className="inline-flex items-center justify-center w-7 h-7 rounded-[4px] text-text-muted hover:bg-hover transition-colors duration-100"
+            data-testid="add-task-modal-close"
           >
             <X size={16} strokeWidth={1.75} />
           </button>

@@ -98,7 +98,7 @@ export function UserDetailPage() {
   }
 
   return (
-    <div className="p-6 max-w-[900px]">
+    <div className="p-6 max-w-[900px]" data-testid="user-detail-page">
       {/* Header */}
       <div data-testid="user-detail-header" className="mb-6">
         <button

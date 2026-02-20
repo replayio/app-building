@@ -115,7 +115,7 @@ export function DealsListPage() {
   }, [])
 
   return (
-    <div className="p-6">
+    <div className="p-6" data-testid="deals-list-page">
       <DealsPageHeader
         searchValue={searchInput}
         onSearchChange={setSearchInput}
