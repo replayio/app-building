@@ -3,6 +3,55 @@
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
+        "MakeResponsiveDealsListPage: Make DealsListPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:02:02.879Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveDealDetailPage: Make DealDetailPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:02:02.320Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveTasksListPage: Make TasksListPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:02:01.760Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveTaskDetailPage: Make TaskDetailPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:02:01.205Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveSettingsPage: Make SettingsPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:02:00.648Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveUsersListPage: Make UsersListPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:02:00.089Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveUserDetailPage: Make UserDetailPage responsive"
+      ],
+      "timestamp": "2026-02-20T10:01:59.532Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
         "Unpack: Polish app quality"
       ],
       "timestamp": "2026-02-20T03:43:16.462Z"
