@@ -20,12 +20,12 @@ You will build the app in the following stages, with job strategy files in `stra
 Add job groups to the queue for each stage:
 
 ```
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/build/testSpec.md" --job "Unpack: Write test specification"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/build/writeApp.md" --job "Unpack: Write the app"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/writeScript.md" --job "Unpack: Implement package scripts"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/build/writeTests.md" --job "Unpack: Write Playwright tests"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/build/testing.md" --job "Unpack: Get all tests passing"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/deployment.md" --job "Unpack: Deploy to production"
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testSpec.md" --job "Unpack: Write test specification" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeApp.md" --job "Unpack: Write the app" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/writeScript.md" --job "Unpack: Implement package scripts" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeTests.md" --job "Unpack: Write Playwright tests" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testing.md" --job "Unpack: Get all tests passing" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/deployment.md" --job "Unpack: Deploy to production" --trailing
 ```
 
 Then commit and exit. The next worker invocation will pick up the first group.

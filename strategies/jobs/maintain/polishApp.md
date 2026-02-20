@@ -40,7 +40,7 @@ If the `Responsive UI` section in `docs/plan.md` is missing or not marked `✓`,
 responsive work. Read `docs/tests.md` to identify all pages, then add one group per page:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/polishApp.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/polishApp.md" \
   --job "MakeResponsive<PageName>: Make <PageName> responsive"
 ```
 

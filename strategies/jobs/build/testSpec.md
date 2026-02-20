@@ -6,17 +6,17 @@ reports and must also be followed.
 
 ## Unpack Sub-Groups
 
-Unpack the initial test specification job into groups using `add-next-group`:
+Unpack the initial test specification job into groups using `add-group`:
 
 First, add a group for planning pages:
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testSpec.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testSpec.md" \
   --job "PlanPages: Read the spec, decide on pages, and add PlanPage groups for each page"
 ```
 
 Then during PlanPages, add one group per page containing the page plan and all its component plans:
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testSpec.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testSpec.md" \
   --job "PlanPage<Name>: Decide on components, add sections to docs/tests.md" \
   --job "PlanComponent<Component1>: Add test entries for <Component1>" \
   --job "PlanComponent<Component2>: Add test entries for <Component2>"

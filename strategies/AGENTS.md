@@ -5,8 +5,8 @@ Strategies are divided into two categories:
 ## `messages/` — Responding to user messages
 
 These strategies are triggered when a user sends a message (e.g. a bug report, a request to
-build or maintain an app, or a question about logs). They add job groups to the queue using the
-`add-trailing-group` script, then commit and exit so the next worker invocation picks up the group.
+build or maintain an app, or a question about logs). They add job groups to the queue using
+`add-group --trailing`, then commit and exit so the next worker invocation picks up the group.
 
 - **addBugReport.md**: Record a user-reported bug in `docs/bugReports.md`.
 - **analyzeLogs.md**: Search through log files to find specific information.
@@ -27,7 +27,7 @@ implementation. The implementing agent reads the design doc and follows it.
 
 These strategies are referenced by job groups in the queue. Each worker invocation reads the
 next group from `jobs.json` and runs all jobs in the group. Strategies that need to "unpack"
-into sub-groups use `add-next-group` to insert them at the front of the queue.
+into sub-groups use `add-group` to insert them at the front of the queue.
 
 ### Root — Shared infrastructure
 

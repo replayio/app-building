@@ -7,10 +7,10 @@ go through the entire app and check that its behavior is following all directive
 ## Unpack Sub-Groups
 
 Read `docs/tests.md` to understand the existing application structure. Add one job group per
-page using `add-next-group`, with all checks for that page in the same group:
+page using `add-group`, with all checks for that page in the same group:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
   --job "CheckTestSpec<PageName>: Check testSpec.md directive violations in <PageName> test entries" \
   --job "CheckComponents<PageName>: Check writeApp.md directive violations in <PageName> components" \
   --job "CheckTests<PageName>: Check writeTests.md directive violations in <PageName> tests"
@@ -19,7 +19,7 @@ npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/che
 Also add a separate group for non-page specific checks:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
   --job "CheckBackend: Check writeApp.md directive violations in all backend functions"
 ```
 
@@ -29,11 +29,11 @@ During each checking job you need to read the strategy document and all the dire
 and then go through all the documentation / code you are checking to look for violations of those directives.
 You must do this systematically and announce each entry name / file you are checking.
 
-For any violations you find, add a fix group using `add-next-group`. Do not fix them immediately.
+For any violations you find, add a fix group using `add-group`. Do not fix them immediately.
 
 Example:
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" \
   --job "FixViolation: Fix <violation description>" \
   --job "RunTests: Verify tests pass after fix" \
   --job "DocumentFix: Document the fix"

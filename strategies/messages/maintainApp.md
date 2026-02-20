@@ -15,14 +15,14 @@ for additional instructions. You will continue performing additional rounds of m
 
 5. deployment.md: Deploy the updated app to production.
 
-Add job groups to the queue for each stage using `add-trailing-group`. For example:
+Add job groups to the queue for each stage using `add-group --trailing`. For example:
 
 ```
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --job "Unpack: Fix open bug reports"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/maintain/reviewBugReport.md" --job "Unpack: Review fixed bug reports"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" --job "Unpack: Check directive compliance"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/maintain/polishApp.md" --job "Unpack: Polish app quality"
-npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/deployment.md" --job "Unpack: Deploy to production"
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/fixBugReport.md" --job "Unpack: Fix open bug reports" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/reviewBugReport.md" --job "Unpack: Review fixed bug reports" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/checkDirectives.md" --job "Unpack: Check directive compliance" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/polishApp.md" --job "Unpack: Polish app quality" --trailing
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/deployment.md" --job "Unpack: Deploy to production" --trailing
 ```
 
 Then commit and exit. The next worker invocation will pick up the first group.

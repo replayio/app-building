@@ -6,7 +6,7 @@ were fixed and later reviewed.
 
 ## Unpack Sub-Groups
 
-If there are any open bug reports in the file, add one group per bug using `add-next-group`.
+If there are any open bug reports in the file, add one group per bug using `add-group`.
 Each bug gets the following jobs in the group, performed in order. Unpack reports starting with
 the oldest ones, which will be listed last.
 
@@ -18,7 +18,7 @@ the oldest ones, which will be listed last.
 
 Example:
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/maintain/fixBugReport.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/fixBugReport.md" \
   --job "AnalyzeBug: Analyze <BugName>" \
   --job "FixBug: Fix <BugName>" \
   --job "UpdateTests: Update tests for <BugName>" \

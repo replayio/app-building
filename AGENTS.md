@@ -59,18 +59,16 @@ and a `timestamp`:
 }
 ```
 
-The agent NEVER reads or writes `jobs.json` directly. Instead, use these scripts:
+The agent NEVER reads or writes `jobs.json` directly. Instead, use:
 
-* **`npx tsx /repo/scripts/add-next-group.ts --strategy "<path>" --job "desc1" --job "desc2"`**:
+* **`npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2"`**:
   Adds a job group to the FRONT of the queue (next to be processed). Each `--job` flag
   adds one job to the group. Jobs execute in the order listed.
-
-* **`npx tsx /repo/scripts/add-trailing-group.ts --strategy "<path>" --job "desc1" --job "desc2"`**:
-  Adds a job group to the END of the queue. Same interface as `add-next-group`.
+  Add `--trailing` to append to the END of the queue instead.
 
 All jobs in a group share the same strategy. Group related jobs together — for example,
 all checks for a single page go in one group. When a strategy needs to "unpack" into
-sub-groups, use `add-next-group` to insert them at the front of the queue.
+sub-groups, use `add-group` to insert them at the front of the queue.
 
 ## Tech Stack
 

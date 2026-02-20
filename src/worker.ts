@@ -1,12 +1,11 @@
 import { spawn, execFileSync } from "child_process";
-import { readFileSync, existsSync, readdirSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "fs";
 import { resolve, join } from "path";
 import { createLogFile, archiveCurrentLog } from "./log";
 
 const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
 const JOBS_FILE = resolve(REPO_ROOT, "jobs/jobs.json");
-const COMPLETE_GROUP_SCRIPT = resolve(REPO_ROOT, "scripts/complete-group.ts");
 const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
 const MAX_GROUP_RETRIES = 3;
 
@@ -156,6 +155,11 @@ function readJobsFile(): JobsFile {
   return JSON.parse(content);
 }
 
+function writeJobsFile(data: JobsFile): void {
+  mkdirSync(resolve(REPO_ROOT, "jobs"), { recursive: true });
+  writeFileSync(JOBS_FILE, JSON.stringify(data, null, 2) + "\n");
+}
+
 function getUnreviewedLogs(): string[] {
   if (!existsSync(LOGS_DIR)) return [];
   const files = readdirSync(LOGS_DIR);
@@ -168,15 +172,11 @@ function getUnreviewedLogs(): string[] {
 }
 
 function completeGroup(log: (msg: string) => void): void {
-  try {
-    execFileSync("npx", ["tsx", COMPLETE_GROUP_SCRIPT], {
-      encoding: "utf-8",
-      cwd: REPO_ROOT,
-      timeout: 30000,
-    });
-  } catch (e: any) {
-    log(`Error completing group: ${e.message}`);
-  }
+  const data = readJobsFile();
+  if (data.groups.length === 0) return;
+  const completed = data.groups.shift()!;
+  writeJobsFile(data);
+  log(`Dequeued group: ${completed.jobs.length} job(s) (strategy: ${completed.strategy})`);
 }
 
 function buildGroupPrompt(group: Group): string {
@@ -190,8 +190,8 @@ function buildGroupPrompt(group: Group): string {
     `output <DONE> to signal completion.\n` +
     `\n` +
     `When you need to add new job groups, use:\n` +
-    `- Add to front: npx tsx /repo/scripts/add-next-group.ts --strategy "<path>" --job "desc1" --job "desc2"\n` +
-    `- Add to end: npx tsx /repo/scripts/add-trailing-group.ts --strategy "<path>" --job "desc1" --job "desc2"`
+    `- Add to front (default): npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2"\n` +
+    `- Add to end: npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2" --trailing`
   );
 }
 

@@ -7,7 +7,7 @@ You will run all the tests in the app and get them to pass..
 Unpack the initial testing job into a single group:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testing.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testing.md" \
   --job "FixTests: Get all tests passing"
 ```
 
@@ -15,7 +15,7 @@ After running tests and there are failures, pick specific failing tests and add 
 them without regressing any tests that passed in previous runs:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/testing.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/testing.md" \
   --job "Fix: <failing test name 1>" \
   --job "Fix: <failing test name 2>"
 ```

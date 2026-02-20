@@ -4,18 +4,18 @@ You are writing the database and code for the app to match the specs in AppSpec.
 
 ## Unpack Sub-Groups
 
-Unpack the initial write app job into groups using `add-next-group`:
+Unpack the initial write app job into groups using `add-group`:
 
 First, add a setup group:
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/writeApp.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeApp.md" \
   --job "SetupApp: Setup the app" \
   --job "DesignDatabase: Design the database"
 ```
 
 Then add one group per page, containing all components and the page itself:
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/writeApp.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeApp.md" \
   --job "WriteComponent<Component1>: Write the <Component1> component" \
   --job "WriteComponent<Component2>: Write the <Component2> component" \
   --job "WritePage<Name>: Write the page itself"

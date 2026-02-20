@@ -19,7 +19,7 @@ design doc is written, the agent implements the script for the app.
 
 4. **Add the implementation group**: Add a group to the queue:
    ```
-   npx tsx /repo/scripts/add-trailing-group.ts --strategy "strategies/jobs/writeScript.md" --job "Implement <script-name> script"
+   npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/writeScript.md" --job "Implement <script-name> script" --trailing
    ```
 
 5. Commit and exit. The next worker invocation will pick up the group.

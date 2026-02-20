@@ -4,11 +4,11 @@ You are writing playwright tests which check that all the different entries in d
 
 ## Unpack Sub-Groups
 
-Unpack the initial write tests job into groups using `add-next-group`. Add one group per page,
+Unpack the initial write tests job into groups using `add-group`. Add one group per page,
 containing all test entries for that page:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/build/writeTests.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeTests.md" \
   --job "WriteTest<TestEntry1>: Write test for <TestEntry1>" \
   --job "WriteTest<TestEntry2>: Write test for <TestEntry2>" \
   --job "WriteTest<TestEntry3>: Write test for <TestEntry3>"

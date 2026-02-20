@@ -7,7 +7,7 @@ During this stage you will deploy the app to production and test it to make sure
 Unpack the initial deployment job into a single group:
 
 ```
-npx tsx /repo/scripts/add-next-group.ts --strategy "strategies/jobs/deployment.md" \
+npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/deployment.md" \
   --job "DoDeploy: Deploy the app to production" \
   --job "TestDeploy: Test the deployed app"
 ```
