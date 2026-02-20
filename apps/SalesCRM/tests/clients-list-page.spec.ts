@@ -77,13 +77,16 @@ test.describe('ClientsListPage - PageHeader', () => {
     // Title "Clients" is displayed
     await expect(page.getByRole('heading', { name: 'Clients' })).toBeVisible();
 
-    // Three buttons visible
+    // Four buttons visible
     const importBtn = page.getByTestId('import-button');
+    const importContactsBtn = page.getByTestId('import-contacts-button');
     const exportBtn = page.getByTestId('export-button');
     const addBtn = page.getByTestId('add-new-client-button');
 
     await expect(importBtn).toBeVisible();
     await expect(importBtn).toContainText('Import');
+    await expect(importContactsBtn).toBeVisible();
+    await expect(importContactsBtn).toContainText('Import Contacts');
     await expect(exportBtn).toBeVisible();
     await expect(exportBtn).toContainText('Export');
     await expect(addBtn).toBeVisible();
@@ -512,6 +515,7 @@ test.describe('ClientsListPage - FilterControls', () => {
     expect(texts.some(t => t.includes('Name A-Z'))).toBeTruthy();
     expect(texts.some(t => t.includes('Name Z-A'))).toBeTruthy();
     expect(texts.some(t => t.includes('Status'))).toBeTruthy();
+    expect(texts.some(t => t.includes('Most Deals'))).toBeTruthy();
   });
 
   test('CLP-FLT-08: Sorting by name A-Z orders clients alphabetically', async ({ page }) => {
@@ -805,6 +809,25 @@ test.describe('ClientsListPage - RowActionMenu', () => {
           ).toBeTruthy();
         }
       }
+    }
+  });
+
+  test('CLP-ACT-05: Row action Edit navigates to client detail page', async ({ page }) => {
+    await page.goto('/clients');
+    await page.waitForLoadState('networkidle');
+
+    const rows = page.locator('[data-testid^="client-row-"]');
+    const count = await rows.count();
+    if (count > 0) {
+      const firstRow = rows.first();
+      const testId = await firstRow.getAttribute('data-testid');
+      const clientId = testId?.replace('client-row-', '');
+
+      await firstRow.getByTestId('row-action-trigger').click();
+      await page.getByTestId('action-edit').click();
+      await page.waitForLoadState('networkidle');
+
+      await expect(page).toHaveURL(new RegExp(`/clients/${clientId}`));
     }
   });
 });

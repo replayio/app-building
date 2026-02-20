@@ -48,6 +48,7 @@ export function ClientsFilterControls({
     { value: 'name_asc', label: 'Name A-Z' },
     { value: 'name_desc', label: 'Name Z-A' },
     { value: 'status', label: 'Status' },
+    { value: 'most_deals', label: 'Most Deals' },
   ]
 
   return (

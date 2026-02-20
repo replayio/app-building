@@ -58,6 +58,7 @@ async function handler(req: OptionalAuthRequest) {
       'name_desc': 'name_desc',
       'status': 'status',
       'updated_at': 'updated_at',
+      'most_deals': 'most_deals',
     }
     const sortKey = sortMap[sort] ?? 'updated_at'
 
@@ -84,6 +85,7 @@ async function handler(req: OptionalAuthRequest) {
         CASE WHEN ${sortKey} = 'name_desc' THEN c.name END DESC,
         CASE WHEN ${sortKey} = 'status' THEN c.status END ASC,
         CASE WHEN ${sortKey} = 'updated_at' THEN c.updated_at END DESC,
+        CASE WHEN ${sortKey} = 'most_deals' THEN (SELECT COUNT(*) FROM deals d WHERE d.client_id = c.id AND d.stage NOT IN ('closed_won', 'closed_lost')) END DESC,
         c.updated_at DESC
       LIMIT ${pageSize} OFFSET ${offset}
     `

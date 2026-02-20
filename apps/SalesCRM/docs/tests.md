@@ -65,7 +65,7 @@ This document defines behavior-driven test entries for the Sales CRM application
 **CLP-HDR-01: Page header displays title and action buttons**
 - Initial: User navigates to /clients
 - Action: Observe the page header area
-- Expected: "Clients" is displayed as the page title. Three buttons are visible: "Import" (with download icon), "Export" (with upload icon), and "+ Add New Client" (primary/accent styled button).
+- Expected: "Clients" is displayed as the page title. Four buttons are visible: "Import" (with download icon), "Import Contacts" (with contacts icon), "Export" (with upload icon), and "+ Add New Client" (primary/accent styled button).
 
 **CLP-HDR-02: Add New Client button opens create client modal**
 - Initial: User is on /clients
@@ -239,6 +239,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Row action menu is open for a client
 - Action: Click "Delete"
 - Expected: A confirmation dialog appears. Clicking "Confirm" deletes the client, which disappears from the list. The deletion is persisted (page reload confirms it).
+
+**CLP-ACT-05: Row action Edit navigates to client detail page**
+- Initial: Row action menu is open for "Acme Corp"
+- Action: Click "Edit"
+- Expected: App navigates to the ClientDetailPage for Acme Corp, where fields can be edited inline.
 
 #### Pagination
 
