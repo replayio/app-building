@@ -25,26 +25,39 @@ async function handler(req: OptionalAuthRequest) {
     return Response.json({ people })
   }
 
-  // POST /client-people — create a new person and associate with client
+  // POST /client-people — create a new person or associate existing one with client
   if (req.method === 'POST') {
     const body = await req.json() as {
-      name: string
+      name?: string
       title?: string
       email?: string
       phone?: string
       role?: string
       client_id: string
       is_primary?: boolean
+      individual_id?: string
     }
 
-    // Create the individual
-    const individualRows = await sql`
-      INSERT INTO individuals (name, title, email, phone)
-      VALUES (${body.name}, ${body.title ?? null}, ${body.email ?? null}, ${body.phone ?? null})
-      RETURNING *
-    `
+    let individual: { id: string; name: string; title: string | null; email: string | null; phone: string | null }
 
-    const individual = individualRows[0]
+    if (body.individual_id) {
+      // Associate existing individual
+      const rows = await sql`
+        SELECT id, name, title, email, phone FROM individuals WHERE id = ${body.individual_id}
+      `
+      if (rows.length === 0) {
+        return new Response(JSON.stringify({ error: 'Individual not found' }), { status: 404 })
+      }
+      individual = rows[0] as typeof individual
+    } else {
+      // Create new individual
+      const individualRows = await sql`
+        INSERT INTO individuals (name, title, email, phone)
+        VALUES (${body.name!}, ${body.title ?? null}, ${body.email ?? null}, ${body.phone ?? null})
+        RETURNING *
+      `
+      individual = individualRows[0] as typeof individual
+    }
 
     // Create the client-individual association
     await sql`
@@ -53,9 +66,10 @@ async function handler(req: OptionalAuthRequest) {
     `
 
     // Create timeline event
+    const personName = individual.name
     await sql`
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
-      VALUES (${body.client_id}, 'contact_added', ${'Contact Added: \'' + body.name + '\''}, ${req.user?.name ?? 'System'}, ${individual.id}, 'individual')
+      VALUES (${body.client_id}, 'contact_added', ${'Contact Added: \'' + personName + '\''}, ${req.user?.name ?? 'System'}, ${individual.id}, 'individual')
     `
 
     return Response.json({

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add 'associate existing person' option to AddPersonModal with searchable person lookup per CDP-QA-08 requirement",
-        "RunTests: Verify tests pass after AddPersonModal fix",
-        "DocumentFix: Document the AddPersonModal fix"
-      ],
-      "timestamp": "2026-02-20T06:27:03.299Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix testSpec CDP-HDR-02 to include name save persistence test entry, and fix CDP-QA-04 stage label from 'Proposal' to 'Proposal Sent'",
         "RunTests: Verify tests pass after testSpec fix",
         "DocumentFix: Document the testSpec fix"

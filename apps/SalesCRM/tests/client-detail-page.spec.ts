@@ -546,6 +546,11 @@ test.describe('ClientDetailPage - AddPersonModal (CDP-APER)', () => {
     const modal = page.getByTestId('add-person-modal');
     await expect(modal).toBeVisible();
 
+    // Mode toggle buttons
+    await expect(modal.getByTestId('person-mode-create')).toBeVisible();
+    await expect(modal.getByTestId('person-mode-associate')).toBeVisible();
+
+    // Create New mode fields (default)
     await expect(modal.getByText('Name *')).toBeVisible();
     await expect(modal.getByText('Role/Title')).toBeVisible();
     await expect(modal.getByTestId('person-email-input')).toBeVisible();
@@ -563,6 +568,33 @@ test.describe('ClientDetailPage - AddPersonModal (CDP-APER)', () => {
 
     const saveBtn = modal.getByRole('button', { name: 'Save' });
     await expect(saveBtn).toBeDisabled();
+  });
+
+  test('CDP-QA-08: Add Person modal has option to associate existing person', async ({ page }) => {
+    await navigateToFirstClientDetail(page);
+
+    await page.getByTestId('quick-action-add-person').click();
+    const modal = page.getByTestId('add-person-modal');
+    await expect(modal).toBeVisible();
+
+    // Switch to Associate Existing mode
+    await modal.getByTestId('person-mode-associate').click();
+
+    // Should show searchable person lookup
+    await expect(modal.getByTestId('person-search-input')).toBeVisible();
+    await expect(modal.getByText('Role/Title')).toBeVisible();
+
+    // Create New fields should not be visible
+    await expect(modal.getByTestId('person-name-input')).not.toBeVisible();
+    await expect(modal.getByTestId('person-email-input')).not.toBeVisible();
+    await expect(modal.getByTestId('person-phone-input')).not.toBeVisible();
+
+    // Save should be disabled until a person is selected
+    await expect(modal.getByRole('button', { name: 'Save' })).toBeDisabled();
+
+    // Search for a person - type in the search field
+    await modal.getByTestId('person-search-input').fill('a');
+    await expect(modal.getByTestId('person-search-results')).toBeVisible();
   });
 });
 

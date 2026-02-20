@@ -13,7 +13,7 @@ import { TimelineSection } from '../components/client-detail/TimelineSection'
 import { AddTaskModal } from '../components/client-detail/AddTaskModal'
 import { AddDealModal } from '../components/client-detail/AddDealModal'
 import { AddAttachmentModal } from '../components/client-detail/AddAttachmentModal'
-import { AddPersonModal } from '../components/client-detail/AddPersonModal'
+import { AddPersonModal, type AddPersonData } from '../components/client-detail/AddPersonModal'
 import { ConfirmDialog } from '../components/shared/ConfirmDialog'
 import type { Task, Deal, Attachment, TimelineEvent } from '../types'
 
@@ -179,21 +179,15 @@ export function ClientDetailPage() {
     }
   }
 
-  async function handleAddPerson(data: {
-    name: string
-    title: string
-    email: string
-    phone: string
-    role: string
-  }) {
+  async function handleAddPerson(data: AddPersonData) {
     if (!clientId) return
+    const body = data.mode === 'create'
+      ? { name: data.name, title: data.title, email: data.email, phone: data.phone, role: data.role, client_id: clientId }
+      : { individual_id: data.individual_id, role: data.role, client_id: clientId }
     const res = await fetch('/.netlify/functions/client-people', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...data,
-        client_id: clientId,
-      }),
+      body: JSON.stringify(body),
     })
     if (res.ok) {
       setAddPersonOpen(false)
