@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/fixBugReport.md",
       "jobs": [
-        "FixBug: Add email confirmation for signups and forgot password with Resend API",
-        "UpdateTests: Update tests for email confirmation and forgot password",
-        "UpdateRevisions: Record spec changes for auth improvements",
-        "ResolveBug: Mark auth improvements bug as resolved"
-      ],
-      "timestamp": "2026-02-20T18:14:32.203Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/fixBugReport.md",
-      "jobs": [
         "FixBug: Add email notification preferences for client following with Resend API",
         "UpdateTests: Update tests for email notifications and client following",
         "UpdateRevisions: Record spec changes for email notifications",

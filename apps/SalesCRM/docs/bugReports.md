@@ -10,7 +10,7 @@
 
 2/20/2026: Improve the auth system: require email confirmation for new user signups before they can log in, and add a "Forgot password" link on the login page that sends a password reset email. Use the Resend API for sending emails.
 - Before: 837fc7f
-- After: (this commit)
+- After: 366203c
 - Fix: Added email confirmation requirement for new signups (auto-confirmed in IS_TEST mode). Signup now creates unconfirmed user, sends confirmation email via Resend API, and returns needsConfirmation status. Added "Forgot password?" link in sidebar auth form that navigates to /auth/forgot-password. Created three new pages: ForgotPasswordPage (/auth/forgot-password), ResetPasswordPage (/auth/reset-password?token=...), and ConfirmEmailPage (/auth/confirm-email?token=...). Added confirm-email, forgot-password, and reset-password API endpoints to auth function. Login now checks email_confirmed (bypassed in test mode). Added email_tokens table migration and email_confirmed column migration to migrate-db.ts. Added 5 new Playwright tests (AUTH-FP-01, AUTH-FP-02, AUTH-RP-01, AUTH-RP-02, AUTH-CE-01). All 9 auth tests pass.
 - Problem stage: none (enhancement — email confirmation and forgot password were not part of the previous auth implementation)
 
