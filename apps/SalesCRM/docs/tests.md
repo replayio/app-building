@@ -1275,6 +1275,18 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Observe the Tasks section
 - Expected: Tasks section (data-testid="user-tasks-section") lists tasks with title, client, and due date. Task links navigate to /tasks/:taskId.
 
+#### UserActivitySection
+
+**UDP-ACT-01: Activity section shows recent activity events**
+- Initial: User detail page for a user who has recent activity
+- Action: Observe the Activity section
+- Expected: Activity section (data-testid="user-activity-section") shows "Recent Activity" heading. Lists activity events with relative date, description, and client name link.
+
+**UDP-ACT-02: Activity section client links navigate to client detail page**
+- Initial: User detail page showing activity events with client links
+- Action: Click a client name link in the activity section
+- Expected: App navigates to /clients/:clientId for that client.
+
 ---
 
 ## Cross-Cutting Test Entries

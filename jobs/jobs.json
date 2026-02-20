@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add navigation click assertions to UDP-DL-01 and UDP-TSK-01 tests to verify deal links navigate to /deals/:dealId and task links navigate to /tasks/:taskId, and write Playwright tests for new UserActivitySection test entries",
-        "RunTests: Verify tests pass after test updates"
-      ],
-      "timestamp": "2026-02-20T09:22:17.613Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecUserDetailPage: Check testSpec.md directive violations in UserDetailPage test entries",
         "CheckComponentsUserDetailPage: Check writeApp.md directive violations in UserDetailPage components",
         "CheckTestsUserDetailPage: Check writeTests.md directive violations in UserDetailPage tests"

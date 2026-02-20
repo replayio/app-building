@@ -146,6 +146,12 @@ test.describe('UserDetailPage - Deals', () => {
     const dealsSection = page.getByTestId('user-deals-section');
     await expect(dealsSection).toBeVisible();
     await expect(dealsSection).toContainText('Acme Software License');
+
+    // Click a deal link and verify it navigates to /deals/:dealId
+    const dealLink = dealsSection.locator('[data-testid^="user-deal-"]').first();
+    await dealLink.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/deals\/[a-f0-9-]+/);
   });
 });
 
@@ -169,5 +175,50 @@ test.describe('UserDetailPage - Tasks', () => {
     const tasksSection = page.getByTestId('user-tasks-section');
     await expect(tasksSection).toBeVisible();
     await expect(tasksSection).toContainText('Follow up on proposal');
+
+    // Click a task link and verify it navigates to /tasks/:taskId
+    const taskLink = tasksSection.locator('[data-testid^="user-task-"]').first();
+    await taskLink.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/tasks\/[a-f0-9-]+/);
+  });
+});
+
+test.describe('UserDetailPage - Activity', () => {
+  test('UDP-ACT-01: Activity section shows recent activity events', async ({ page }) => {
+    // Navigate to a user who has activity
+    await page.goto('/users');
+    await page.waitForLoadState('networkidle');
+
+    const firstCard = page.getByTestId('users-grid').locator('[data-testid^="user-card-"]').first();
+    await firstCard.click();
+    await page.waitForLoadState('networkidle');
+
+    // Activity section should be visible with heading
+    const activitySection = page.getByTestId('user-activity-section');
+    await expect(activitySection).toBeVisible();
+    await expect(activitySection).toContainText('Recent Activity');
+  });
+
+  test('UDP-ACT-02: Activity section client links navigate to client detail page', async ({ page }) => {
+    // Navigate to a user who has activity with client links
+    await page.goto('/users');
+    await page.waitForLoadState('networkidle');
+
+    const firstCard = page.getByTestId('users-grid').locator('[data-testid^="user-card-"]').first();
+    await firstCard.click();
+    await page.waitForLoadState('networkidle');
+
+    const activitySection = page.getByTestId('user-activity-section');
+    await expect(activitySection).toBeVisible();
+
+    // Verify at least one client link exists
+    const clientLinks = activitySection.locator('a[href^="/clients/"]');
+    await expect(clientLinks.first()).toBeVisible();
+
+    // Click the first client link and verify navigation
+    await clientLinks.first().click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/\/clients\/[a-f0-9-]+/);
   });
 });
