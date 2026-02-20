@@ -38,6 +38,7 @@ export function DealRowActionMenu({ dealId, onDelete }: DealRowActionMenuProps) 
       </button>
       {open && (
         <div data-testid={`deal-action-menu-${dealId}`} className="absolute right-0 top-full mt-1 w-[140px] bg-surface border border-border rounded-[6px] shadow-[var(--shadow-elevation-2)] z-20 py-1">
+          {/* DLP-ACT-01: Row action menu shows deal actions, DLP-ACT-03: View action navigates to deal detail page */}
           <button
             data-testid={`deal-action-view-${dealId}`}
             onClick={(e) => {
@@ -50,6 +51,7 @@ export function DealRowActionMenu({ dealId, onDelete }: DealRowActionMenuProps) 
             <Eye size={14} strokeWidth={1.75} />
             View
           </button>
+          {/* DLP-ACT-01: Row action menu shows deal actions, DLP-ACT-04: Edit action navigates to deal detail page */}
           <button
             data-testid={`deal-action-edit-${dealId}`}
             onClick={(e) => {

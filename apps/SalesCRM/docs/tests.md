@@ -657,6 +657,11 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Upload a valid CSV file with headers "Name,Client Name,Value,Stage" and one data row "Import Test Deal,Acme Corp,25000,proposal", then click Import
 - Expected: The import result area (data-testid="import-result") shows "Successfully imported 1 deal." The imported deal "Import Test Deal" appears in the deals table after closing the dialog.
 
+**DLP-HDR-06: Cancel button on Create Deal modal closes without creating a deal**
+- Initial: User is on /deals. Create Deal modal is open with deal name filled in.
+- Action: Click "Cancel" button on the modal
+- Expected: Modal closes. No new deal is created — the deals table does not contain the entered deal name.
+
 #### SummaryCards
 
 **DLP-SUM-01: Summary cards display correct metrics**
@@ -771,6 +776,16 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Initial: Action menu open for a deal
 - Action: Click Delete, confirm
 - Expected: Deal is removed from the table. Summary cards update. Deletion persisted.
+
+**DLP-ACT-03: View action navigates to deal detail page**
+- Initial: User is on deals list with action menu open for a deal
+- Action: Click "View" in the action menu
+- Expected: App navigates to /deals/<dealId> for that deal. The DealDetailPage loads with the deal's information.
+
+**DLP-ACT-04: Edit action navigates to deal detail page**
+- Initial: User is on deals list with action menu open for a deal
+- Action: Click "Edit" in the action menu
+- Expected: App navigates to /deals/<dealId> for that deal. The DealDetailPage loads with the deal's information.
 
 #### Pagination
 

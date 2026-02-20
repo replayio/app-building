@@ -159,6 +159,31 @@ test.describe('DealsListPage - PageHeader (DLP-HDR)', () => {
     // Verify imported deal appears in the table
     await expect(page.getByText('Import Test Deal')).toBeVisible({ timeout: 5000 });
   });
+
+  test('DLP-HDR-06: Cancel button on Create Deal modal closes without creating a deal', async ({ page }) => {
+    await page.goto('/deals');
+    await page.waitForLoadState('networkidle');
+
+    // Open the create deal modal
+    await page.getByTestId('create-new-deal-button').click();
+    const modal = page.getByTestId('create-deal-modal');
+    await expect(modal).toBeVisible();
+
+    // Fill in a deal name so we can verify it doesn't get created
+    const dealName = `Cancel Test Deal ${Date.now()}`;
+    await page.getByTestId('create-deal-name').fill(dealName);
+
+    // Click Cancel
+    await page.getByTestId('create-deal-cancel').click();
+
+    // Modal should close
+    await expect(modal).not.toBeVisible();
+
+    // The deal should NOT appear in the table
+    await expect(
+      page.locator('[data-testid^="deal-name-"]').filter({ hasText: dealName })
+    ).toHaveCount(0);
+  });
 });
 
 test.describe('DealsListPage - SummaryCards (DLP-SUM)', () => {
@@ -711,6 +736,56 @@ test.describe('DealsListPage - RowActionMenu (DLP-ACT)', () => {
 
       // The deal should no longer be in the table
       await expect(page.getByTestId(`deal-row-${dealId}`)).not.toBeVisible();
+    }
+  });
+
+  test('DLP-ACT-03: View action navigates to deal detail page', async ({ page }) => {
+    await page.goto('/deals');
+    await page.waitForLoadState('networkidle');
+
+    const rows = page.locator('[data-testid^="deal-row-"]');
+    const count = await rows.count();
+
+    if (count > 0) {
+      const rowTestId = await rows.first().getAttribute('data-testid');
+      const dealId = rowTestId!.replace('deal-row-', '');
+
+      // Open the action menu
+      await page.getByTestId(`deal-action-menu-button-${dealId}`).click();
+      const menu = page.getByTestId(`deal-action-menu-${dealId}`);
+      await expect(menu).toBeVisible();
+
+      // Click View
+      await page.getByTestId(`deal-action-view-${dealId}`).click();
+      await page.waitForLoadState('networkidle');
+
+      // Should navigate to the deal detail page
+      await expect(page).toHaveURL(new RegExp(`/deals/${dealId}`));
+    }
+  });
+
+  test('DLP-ACT-04: Edit action navigates to deal detail page', async ({ page }) => {
+    await page.goto('/deals');
+    await page.waitForLoadState('networkidle');
+
+    const rows = page.locator('[data-testid^="deal-row-"]');
+    const count = await rows.count();
+
+    if (count > 0) {
+      const rowTestId = await rows.first().getAttribute('data-testid');
+      const dealId = rowTestId!.replace('deal-row-', '');
+
+      // Open the action menu
+      await page.getByTestId(`deal-action-menu-button-${dealId}`).click();
+      const menu = page.getByTestId(`deal-action-menu-${dealId}`);
+      await expect(menu).toBeVisible();
+
+      // Click Edit
+      await page.getByTestId(`deal-action-edit-${dealId}`).click();
+      await page.waitForLoadState('networkidle');
+
+      // Should navigate to the deal detail page
+      await expect(page).toHaveURL(new RegExp(`/deals/${dealId}`));
     }
   });
 });

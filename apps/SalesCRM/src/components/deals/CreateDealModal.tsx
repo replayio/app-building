@@ -150,6 +150,7 @@ export function CreateDealModal({ open, availableClients, availableUsers = [], o
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-border">
+          {/* DLP-HDR-06: Cancel button on Create Deal modal closes without creating a deal */}
           <button
             data-testid="create-deal-cancel"
             onClick={onClose}
