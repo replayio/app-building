@@ -16,7 +16,7 @@ if (!existsSync(appDir)) {
   process.exit(1);
 }
 
-const keep = new Set(["AppSpec.md", "AppStyle.md", ".git"]);
+const keep = new Set(["AppSpec.md", "AppStyle.md", "AppRevisions.md", ".git"]);
 
 for (const entry of readdirSync(appDir)) {
   if (keep.has(entry)) continue;
