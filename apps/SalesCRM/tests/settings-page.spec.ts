@@ -177,6 +177,17 @@ test.describe('SettingsPage - ImportExportSection', () => {
 
     // Verify filename
     expect(download.suggestedFilename()).toBe('clients-export.csv');
+
+    // Read CSV content and verify column headers
+    const readable = await download.createReadStream();
+    const chunks: Buffer[] = [];
+    for await (const chunk of readable) {
+      chunks.push(chunk as Buffer);
+    }
+    const csvContent = Buffer.concat(chunks).toString('utf-8');
+    const headerLine = csvContent.split('\n')[0].trim();
+    const headers = headerLine.split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    expect(headers).toEqual(['Name', 'Type', 'Status', 'Tags', 'Primary Contact', 'Open Deals']);
   });
 
   test('STP-IE-07: Export Deals button triggers CSV download', async ({ page }) => {
@@ -190,6 +201,17 @@ test.describe('SettingsPage - ImportExportSection', () => {
 
     // Verify filename
     expect(download.suggestedFilename()).toBe('deals-export.csv');
+
+    // Read CSV content and verify column headers
+    const readable = await download.createReadStream();
+    const chunks: Buffer[] = [];
+    for await (const chunk of readable) {
+      chunks.push(chunk as Buffer);
+    }
+    const csvContent = Buffer.concat(chunks).toString('utf-8');
+    const headerLine = csvContent.split('\n')[0].trim();
+    const headers = headerLine.split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    expect(headers).toEqual(['Name', 'Client', 'Value', 'Stage', 'Owner', 'Status']);
   });
 
   test('STP-IE-08: Export Tasks button triggers CSV download', async ({ page }) => {
@@ -203,6 +225,17 @@ test.describe('SettingsPage - ImportExportSection', () => {
 
     // Verify filename
     expect(download.suggestedFilename()).toBe('tasks-export.csv');
+
+    // Read CSV content and verify column headers
+    const readable = await download.createReadStream();
+    const chunks: Buffer[] = [];
+    for await (const chunk of readable) {
+      chunks.push(chunk as Buffer);
+    }
+    const csvContent = Buffer.concat(chunks).toString('utf-8');
+    const headerLine = csvContent.split('\n')[0].trim();
+    const headers = headerLine.split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    expect(headers).toEqual(['Title', 'Description', 'Priority', 'Due Date', 'Assignee', 'Client', 'Completed']);
   });
 });
 

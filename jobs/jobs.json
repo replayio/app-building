@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationExportCSVTests: Update export CSV tests (STP-IE-06, STP-IE-07, STP-IE-08) to read downloaded CSV content and verify column headers match the test spec entries",
-        "RunTestsExport: Verify tests pass after export CSV test fix"
-      ],
-      "timestamp": "2026-02-20T22:38:06.467Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationJSXCommentsSettings: Add JSX comments next to all interactive elements in SettingsPage components (SettingsPageHeader, ImportExportSection, WebhookSection, WebhookModal, NotificationPreferencesSection, ImportDialog) linking each element to the test entry titles that exercise it"
       ],
       "timestamp": "2026-02-20T22:38:11.123Z"
