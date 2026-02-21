@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Flesh out incomplete observation tests — DDP-WRT-01 must verify writeup card details (title/date/author/content/edit+version buttons), DDP-LTK-01 must verify task checkboxes/names/due dates, DDP-ATT-01 must verify file preview/name/type/size/download/delete, DDP-CON-01 must verify role and company text",
-        "RunTests: Verify tests pass after fleshing out observation tests"
-      ],
-      "timestamp": "2026-02-20T22:08:29.181Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationExportCSVTests: Update export CSV tests (STP-IE-06, STP-IE-07, STP-IE-08) to read downloaded CSV content and verify column headers match the test spec entries",
         "RunTestsExport: Verify tests pass after export CSV test fix"
       ],

@@ -544,6 +544,50 @@ test.describe('DealDetailPage - WriteupsSection (DDP-WRT)', () => {
     // New Entry button visible
     await expect(page.getByTestId('deal-writeups-add-button')).toBeVisible();
     await expect(page.getByTestId('deal-writeups-add-button')).toContainText('New Entry');
+
+    // Create a writeup to ensure at least one exists for verification
+    await page.getByTestId('deal-writeups-add-button').click();
+    const addModal = page.getByTestId('add-writeup-modal');
+    await expect(addModal).toBeVisible();
+    await page.getByTestId('add-writeup-title').fill('Observation Test Writeup');
+    await page.getByTestId('add-writeup-content').fill('Content for verifying writeup card details.');
+    await page.getByTestId('add-writeup-author').fill('Test Author');
+    await page.getByTestId('add-writeup-save').click();
+    await expect(addModal).not.toBeVisible();
+
+    // Wait for the new writeup to appear in the list
+    await expect(writeupsSection).toContainText('Observation Test Writeup');
+
+    // Verify writeup cards exist with title, date/author, content, edit and version buttons
+    const writeupCards = writeupsSection.locator('[data-testid^="deal-writeup-"]').filter({ has: page.locator('[data-testid^="deal-writeup-edit-"]') });
+    await expect(writeupCards).not.toHaveCount(0);
+
+    // Check first writeup card details
+    const firstCard = writeupCards.first();
+    // Title (bold/font-medium text)
+    const title = firstCard.locator('.font-medium').first();
+    await expect(title).toBeVisible();
+    const titleText = await title.textContent();
+    expect(titleText!.length).toBeGreaterThan(0);
+
+    // Date and author line (contains " · " separator between date and author)
+    await expect(firstCard.locator('.text-text-muted').first()).toBeVisible();
+
+    // Content preview
+    const content = firstCard.locator('.text-text-secondary');
+    await expect(content).toBeVisible();
+    const contentText = await content.textContent();
+    expect(contentText!.length).toBeGreaterThan(0);
+
+    // Get the writeup id from the card's testid for button selectors
+    const cardTestId = await firstCard.getAttribute('data-testid');
+    const writeupId = cardTestId!.replace('deal-writeup-', '');
+
+    // Edit button (pencil icon)
+    await expect(page.getByTestId(`deal-writeup-edit-${writeupId}`)).toBeVisible();
+
+    // Version History button (clock icon)
+    await expect(page.getByTestId(`deal-writeup-versions-${writeupId}`)).toBeVisible();
   });
 
   test('DDP-WRT-02: New Entry button opens writeup creation form', async ({ page }) => {
@@ -707,6 +751,28 @@ test.describe('DealDetailPage - LinkedTasksSection (DDP-LTK)', () => {
     // Add Task button visible
     await expect(page.getByTestId('deal-linked-tasks-add-button')).toBeVisible();
     await expect(page.getByTestId('deal-linked-tasks-add-button')).toContainText('Add Task');
+
+    // Verify task items exist with checkboxes, names, and due dates
+    const taskItems = tasksSection.locator('[data-testid^="deal-linked-task-"]').filter({ has: page.locator('[data-testid^="deal-linked-task-toggle-"]') });
+    const taskCount = await taskItems.count();
+    expect(taskCount).toBeGreaterThan(0);
+
+    // Check first task item details
+    const firstTask = taskItems.first();
+    const taskTestId = await firstTask.getAttribute('data-testid');
+    const taskId = taskTestId!.replace('deal-linked-task-', '');
+
+    // Checkbox (toggle button) exists
+    await expect(page.getByTestId(`deal-linked-task-toggle-${taskId}`)).toBeVisible();
+
+    // Task title element with name text
+    const titleEl = page.getByTestId(`deal-linked-task-title-${taskId}`);
+    await expect(titleEl).toBeVisible();
+    const titleText = await titleEl.textContent();
+    expect(titleText!.trim().length).toBeGreaterThan(0);
+
+    // Due date or completed date is displayed (contains "Due:" or "Completed")
+    await expect(titleEl.locator('.text-text-muted')).toBeVisible();
   });
 
   test('DDP-LTK-02: Add Task button opens task creation form', async ({ page }) => {
@@ -833,6 +899,49 @@ test.describe('DealDetailPage - AttachmentsSection (DDP-ATT)', () => {
 
     // Upload button visible
     await expect(page.getByTestId('deal-attachments-upload-button')).toBeVisible();
+
+    // Create a link attachment to ensure at least one exists for verification
+    await page.getByTestId('deal-attachments-upload-button').click();
+    const uploadModal = page.getByTestId('upload-attachment-modal');
+    await expect(uploadModal).toBeVisible();
+    await page.getByTestId('upload-attachment-link-toggle').click();
+    await page.getByTestId('upload-attachment-link-name').fill('ObsTestDoc.pdf');
+    await page.getByTestId('upload-attachment-url').fill('https://example.com/obs-test-doc.pdf');
+    await page.getByTestId('upload-attachment-save').click();
+    await expect(uploadModal).not.toBeVisible();
+
+    // Wait for the new attachment to appear in the list
+    await expect(attachmentsSection).toContainText('ObsTestDoc.pdf');
+
+    // Verify attachment items exist with preview, name, type, size, download, and delete
+    const attachmentItems = attachmentsSection.locator('[data-testid^="deal-attachment-"]').filter({ has: page.locator('[data-testid^="deal-attachment-download-"]') });
+    await expect(attachmentItems).not.toHaveCount(0);
+
+    // Check first attachment item details
+    const firstAtt = attachmentItems.first();
+    const attTestId = await firstAtt.getAttribute('data-testid');
+    const attId = attTestId!.replace('deal-attachment-', '');
+
+    // File preview (AttachmentPreview component with icon or thumbnail)
+    await expect(firstAtt.getByTestId('attachment-preview')).toBeVisible();
+
+    // Filename (font-medium text)
+    const filename = firstAtt.locator('.font-medium');
+    await expect(filename).toBeVisible();
+    const filenameText = await filename.textContent();
+    expect(filenameText!.length).toBeGreaterThan(0);
+
+    // File type label
+    const typeLabel = firstAtt.locator('.text-text-muted').first();
+    await expect(typeLabel).toBeVisible();
+
+    // Download link
+    await expect(page.getByTestId(`deal-attachment-download-${attId}`)).toBeVisible();
+    await expect(page.getByTestId(`deal-attachment-download-${attId}`)).toContainText('Download');
+
+    // Delete link
+    await expect(page.getByTestId(`deal-attachment-delete-${attId}`)).toBeVisible();
+    await expect(page.getByTestId(`deal-attachment-delete-${attId}`)).toContainText('Delete');
   });
 
   test('DDP-ATT-02: Upload icon opens file upload dialog', async ({ page }) => {
@@ -1069,19 +1178,47 @@ test.describe('DealDetailPage - ContactsSection (DDP-CON)', () => {
     await expect(contactsSection).toContainText('Contacts/Individuals');
 
     // Either contacts or empty state
-    const contacts = page.locator('[data-testid^="deal-contact-"]').filter({ hasNotText: 'view-profile' }).filter({ hasNotText: 'empty' });
+    const contactItems = contactsSection.locator('[data-testid^="deal-contact-"]').filter({ has: page.locator('[data-testid^="deal-contact-view-profile-"]') });
     const emptyState = page.getByTestId('deal-contacts-empty');
-    const hasContacts = await contacts.count() > 0;
+    const hasContacts = await contactItems.count() > 0;
     const hasEmpty = await emptyState.isVisible().catch(() => false);
 
     expect(hasContacts || hasEmpty).toBeTruthy();
 
     if (hasContacts) {
-      // Each contact should have a View Profile link
-      const viewProfileLinks = page.locator('[data-testid^="deal-contact-view-profile-"]');
-      const profileCount = await viewProfileLinks.count();
-      expect(profileCount).toBeGreaterThan(0);
-      await expect(viewProfileLinks.first()).toContainText('View Profile');
+      // Check first contact item details
+      const firstContact = contactItems.first();
+      const contactTestId = await firstContact.getAttribute('data-testid');
+      const contactId = contactTestId!.replace('deal-contact-', '');
+
+      // Avatar (circle with user icon)
+      await expect(firstContact.locator('.rounded-full').first()).toBeVisible();
+
+      // Contact name
+      const nameEl = firstContact.locator('.font-medium');
+      await expect(nameEl).toBeVisible();
+      const nameText = await nameEl.textContent();
+      expect(nameText!.trim().length).toBeGreaterThan(0);
+
+      // Role and/or company info line exists
+      const infoLine = firstContact.locator('.min-w-0 > .text-text-muted');
+      await expect(infoLine).toBeVisible();
+      const infoText = await infoLine.textContent();
+
+      // Role text in parentheses (e.g., "(decision maker)")
+      if (infoText && infoText.includes('(')) {
+        expect(infoText).toMatch(/\(.+\)/);
+      }
+
+      // Company text (after the " · " separator)
+      if (infoText && infoText.includes('·')) {
+        const companyPart = infoText.split('·')[1]?.trim();
+        expect(companyPart!.length).toBeGreaterThan(0);
+      }
+
+      // View Profile link
+      await expect(page.getByTestId(`deal-contact-view-profile-${contactId}`)).toBeVisible();
+      await expect(page.getByTestId(`deal-contact-view-profile-${contactId}`)).toContainText('View Profile');
     }
   });
 
