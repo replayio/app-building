@@ -2,6 +2,9 @@
 
 ## Open
 
+2/21/2026: Adding a relationship to a contact does not update the other contact to show the reciprocal relationship.
+- When you add a relationship between two contacts (e.g., Contact A "reports to" Contact B), only Contact A shows the relationship. Contact B does not show the inverse relationship (e.g., "manages" Contact A). Relationships between contacts are inherently symmetrical/reciprocal and both sides must be kept in sync.
+
 ## Unreviewed
 
 ## Finished
