@@ -2,10 +2,15 @@
 
 ## Open
 
-2/21/2026: Adding a relationship to a contact does not update the other contact to show the reciprocal relationship.
-- When you add a relationship between two contacts (e.g., Contact A "reports to" Contact B), only Contact A shows the relationship. Contact B does not show the inverse relationship (e.g., "manages" Contact A). Relationships between contacts are inherently symmetrical/reciprocal and both sides must be kept in sync.
+(none)
 
 ## Unreviewed
+
+2/21/2026: Adding a relationship to a contact does not update the other contact to show the reciprocal relationship.
+- Before: 9441d18
+- After: (this commit)
+- Fix: Updated the GET /individuals/:id endpoint to query relationships in both directions using UNION ALL. Forward relationships (where the individual is the source) are returned as-is. Reverse relationships (where the individual is the target) are included with inverted relationship types (manager↔report; symmetric types like colleague, decision_maker, influencer, other stay the same). Updated DELETE to allow removing a relationship from either side. No schema changes needed — the fix is purely in the query layer.
+- Problem stage: writeApp.md — the backend only queried individual_relationships in one direction (WHERE individual_id = :id), ignoring rows where the individual appeared as related_individual_id
 
 ## Finished
 

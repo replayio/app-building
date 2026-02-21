@@ -190,7 +190,7 @@ async function handler(req: OptionalAuthRequest) {
       ORDER BY c.name ASC
     ` as ClientAssociationRow[]
 
-    // Fetch relationships
+    // Fetch relationships (both forward and reverse for reciprocal display)
     const relationships = await sql`
       SELECT ir.id, ir.related_individual_id, i.name AS related_individual_name,
              ir.relationship_type, ci.role, ci.industry AS company
@@ -202,7 +202,26 @@ async function handler(req: OptionalAuthRequest) {
           WHERE ci2.individual_id = ${individualId} LIMIT 1
         )
       WHERE ir.individual_id = ${individualId}
-      ORDER BY i.name ASC
+
+      UNION ALL
+
+      SELECT ir.id, ir.individual_id AS related_individual_id, i.name AS related_individual_name,
+             CASE ir.relationship_type
+               WHEN 'manager' THEN 'report'
+               WHEN 'report' THEN 'manager'
+               ELSE ir.relationship_type
+             END AS relationship_type,
+             ci.role, ci.industry AS company
+      FROM individual_relationships ir
+      JOIN individuals i ON ir.individual_id = i.id
+      LEFT JOIN client_individuals ci ON ci.individual_id = ir.individual_id
+        AND ci.client_id = (
+          SELECT ci2.client_id FROM client_individuals ci2
+          WHERE ci2.individual_id = ${individualId} LIMIT 1
+        )
+      WHERE ir.related_individual_id = ${individualId}
+
+      ORDER BY related_individual_name ASC
     ` as RelationshipRow[]
 
     // Fetch contact history
@@ -267,7 +286,7 @@ async function handler(req: OptionalAuthRequest) {
 
   // DELETE /individuals/:id/relationships/:relId — delete a relationship
   if (req.method === 'DELETE' && individualId && subResource === 'relationships' && subId) {
-    await sql`DELETE FROM individual_relationships WHERE id = ${subId} AND individual_id = ${individualId}`
+    await sql`DELETE FROM individual_relationships WHERE id = ${subId} AND (individual_id = ${individualId} OR related_individual_id = ${individualId})`
     return Response.json({ success: true })
   }
 
