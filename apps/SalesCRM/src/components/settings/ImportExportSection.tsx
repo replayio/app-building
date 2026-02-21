@@ -30,6 +30,7 @@ export function ImportExportSection({
           <div>
             <h3 className="text-[13px] font-medium text-text-secondary mb-3">Import from CSV</h3>
             <div className="flex flex-col gap-2">
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-02: Import Clients button opens import dialog with CSV columns */}
               <button
                 data-testid="settings-import-clients"
                 onClick={onImportClients}
@@ -38,6 +39,7 @@ export function ImportExportSection({
                 <Download size={14} strokeWidth={1.75} />
                 Import Clients
               </button>
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-03: Import Deals button opens import dialog with CSV columns */}
               <button
                 data-testid="settings-import-deals"
                 onClick={onImportDeals}
@@ -46,6 +48,7 @@ export function ImportExportSection({
                 <Download size={14} strokeWidth={1.75} />
                 Import Deals
               </button>
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-04: Import Tasks button opens import dialog with CSV columns */}
               <button
                 data-testid="settings-import-tasks"
                 onClick={onImportTasks}
@@ -54,6 +57,7 @@ export function ImportExportSection({
                 <Download size={14} strokeWidth={1.75} />
                 Import Tasks
               </button>
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-05: Import Contacts button opens import dialog with CSV columns */}
               <button
                 data-testid="settings-import-contacts"
                 onClick={onImportContacts}
@@ -67,6 +71,7 @@ export function ImportExportSection({
           <div>
             <h3 className="text-[13px] font-medium text-text-secondary mb-3">Export to CSV</h3>
             <div className="flex flex-col gap-2">
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-06: Export Clients button triggers CSV download */}
               <button
                 data-testid="settings-export-clients"
                 onClick={onExportClients}
@@ -75,6 +80,7 @@ export function ImportExportSection({
                 <Upload size={14} strokeWidth={1.75} />
                 Export Clients
               </button>
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-07: Export Deals button triggers CSV download */}
               <button
                 data-testid="settings-export-deals"
                 onClick={onExportDeals}
@@ -83,6 +89,7 @@ export function ImportExportSection({
                 <Upload size={14} strokeWidth={1.75} />
                 Export Deals
               </button>
+              {/* STP-IE-01: Import & Export section displays all buttons, STP-IE-08: Export Tasks button triggers CSV download */}
               <button
                 data-testid="settings-export-tasks"
                 onClick={onExportTasks}

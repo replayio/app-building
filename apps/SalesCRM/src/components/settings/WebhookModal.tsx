@@ -130,6 +130,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           <div data-testid="webhook-setup-guide">
             <label className="block text-[12px] font-medium text-text-secondary mb-2">Setup Guide</label>
             <div className="flex gap-2 mb-2 flex-wrap">
+              {/* STP-WH-02: Add Webhook button opens webhook modal with setup guide, STP-WH-04: Platform setup guide shows instructions when clicked */}
               {(Object.entries(PLATFORM_GUIDES) as [Platform, typeof PLATFORM_GUIDES[Platform]][]).map(([key, { label }]) => (
                 <button
                   key={key}
@@ -165,6 +166,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
 
           <div>
             <label className="block text-[12px] font-medium text-text-secondary mb-1">Name *</label>
+            {/* STP-WH-02: Add Webhook button opens webhook modal with setup guide, STP-WH-03: Creating a webhook persists and shows in list, STP-WH-08: Edit webhook flow updates webhook details */}
             <input
               data-testid="webhook-name-input"
               type="text"
@@ -176,6 +178,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           </div>
           <div>
             <label className="block text-[12px] font-medium text-text-secondary mb-1">Webhook URL *</label>
+            {/* STP-WH-02: Add Webhook button opens webhook modal with setup guide, STP-WH-03: Creating a webhook persists and shows in list, STP-WH-08: Edit webhook flow updates webhook details */}
             <input
               data-testid="webhook-url-input"
               type="url"
@@ -188,6 +191,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           <div>
             <label className="block text-[12px] font-medium text-text-secondary mb-2">Events *</label>
             <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-2">
+              {/* STP-WH-02: Add Webhook button opens webhook modal with setup guide, STP-WH-03: Creating a webhook persists and shows in list, STP-WH-08: Edit webhook flow updates webhook details */}
               {availableEvents.map((event) => (
                 <label
                   key={event}
@@ -208,6 +212,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
 
           {/* Payload Format */}
           <div>
+            {/* STP-WH-05: Payload format toggle shows JSON example */}
             <button
               data-testid="webhook-payload-toggle"
               onClick={() => setShowPayload(!showPayload)}
@@ -223,6 +228,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-3 border-t border-border">
+          {/* STP-WH-02: Add Webhook button opens webhook modal with setup guide */}
           <button
             data-testid="webhook-cancel-button"
             onClick={onClose}
@@ -230,6 +236,7 @@ export function WebhookModal({ open, webhook, availableEvents, onClose, onSave }
           >
             Cancel
           </button>
+          {/* STP-WH-02: Add Webhook button opens webhook modal with setup guide, STP-WH-03: Creating a webhook persists and shows in list, STP-WH-08: Edit webhook flow updates webhook details */}
           <button
             data-testid="webhook-save-button"
             onClick={handleSave}

@@ -91,6 +91,7 @@ export function NotificationPreferencesSection() {
               className="flex items-center gap-3 py-1.5 cursor-pointer"
               data-testid={`notification-pref-${key}`}
             >
+              {/* STP-NP-01: Notification preferences section displays all toggles when authenticated, STP-NP-02: Toggling a notification preference persists the change */}
               <button
                 type="button"
                 role="switch"

@@ -38,6 +38,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
           <h2 className="text-[14px] font-semibold text-text-primary">Webhooks</h2>
           <p className="text-[12px] text-text-muted mt-1">Send notifications to external services (Zapier, n8n, Discord) when events occur.</p>
         </div>
+        {/* STP-WH-01: Webhook section shows empty state, STP-WH-02: Add Webhook button opens webhook modal with setup guide */}
         <button
           data-testid="add-webhook-button"
           onClick={onAdd}
@@ -65,6 +66,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
                     <span data-testid={`webhook-name-${webhook.id}`} className="text-[13px] font-medium text-text-primary">
                       {webhook.name}
                     </span>
+                    {/* STP-WH-07: Enable/disable toggle changes webhook state */}
                     <label data-testid={`webhook-toggle-${webhook.id}`} className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
@@ -76,6 +78,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
                     </label>
                   </div>
                   <div className="flex items-center gap-2">
+                    {/* STP-WH-08: Edit webhook flow updates webhook details */}
                     <button
                       data-testid={`webhook-edit-${webhook.id}`}
                       onClick={() => onEdit(webhook)}
@@ -83,6 +86,7 @@ export function WebhookSection({ webhooks, onAdd, onEdit, onDelete, onToggle }: 
                     >
                       <Pencil size={14} strokeWidth={1.75} />
                     </button>
+                    {/* STP-WH-06: Delete webhook removes it after confirmation */}
                     <button
                       data-testid={`webhook-delete-${webhook.id}`}
                       onClick={() => onDelete(webhook.id)}

@@ -150,6 +150,7 @@ export function ImportDialog({
             </div>
           </div>
 
+          {/* STP-IE-02: Import Clients button opens import dialog, STP-IE-03: Import Deals, STP-IE-04: Import Tasks, STP-IE-05: Import Contacts */}
           <button
             data-testid="download-template-button"
             onClick={handleDownloadTemplate}
@@ -159,6 +160,7 @@ export function ImportDialog({
           </button>
 
           <div className="mb-2">
+            {/* STP-IE-02: Import Clients button opens import dialog, STP-IE-03: Import Deals, STP-IE-04: Import Tasks, STP-IE-05: Import Contacts */}
             <input
               data-testid="csv-file-input"
               type="file"
@@ -185,6 +187,7 @@ export function ImportDialog({
           )}
         </div>
         <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-3 border-t border-border">
+          {/* STP-IE-02: Import Clients button opens import dialog, STP-IE-03: Import Deals, STP-IE-04: Import Tasks, STP-IE-05: Import Contacts */}
           <button
             data-testid="import-cancel-button"
             onClick={onClose}
@@ -192,6 +195,7 @@ export function ImportDialog({
           >
             {result ? 'Close' : 'Cancel'}
           </button>
+          {/* STP-IE-02: Import Clients button opens import dialog, STP-IE-03: Import Deals, STP-IE-04: Import Tasks, STP-IE-05: Import Contacts */}
           {!result && (
             <button
               data-testid="import-submit-button"

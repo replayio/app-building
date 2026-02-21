@@ -1,11 +1,3 @@
 {
-  "groups": [
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
-        "FixViolationJSXCommentsSettings: Add JSX comments next to all interactive elements in SettingsPage components (SettingsPageHeader, ImportExportSection, WebhookSection, WebhookModal, NotificationPreferencesSection, ImportDialog) linking each element to the test entry titles that exercise it"
-      ],
-      "timestamp": "2026-02-20T22:38:11.123Z"
-    }
-  ]
+  "groups": []
 }
