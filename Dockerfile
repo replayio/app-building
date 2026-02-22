@@ -33,7 +33,7 @@ RUN npm install -g \
 # Install Playwright Chromium and Replay browser (globally accessible)
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
 RUN npx playwright install --with-deps chromium
-RUN replayio update
+RUN npx replayio update
 
 # Replay browser needs OpenSSL 1.1 to load its recording driver.
 # Bookworm only has OpenSSL 3, so fetch the 1.1 libs from Ubuntu 18.04.
