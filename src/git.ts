@@ -3,6 +3,29 @@ import type { Logger } from "./log";
 
 const REPO_DIR = "/repo";
 
+/**
+ * Convert a git remote URL to HTTPS with an embedded token.
+ * Handles SSH (git@github.com:org/repo.git) and plain HTTPS URLs.
+ * If no token is provided, returns the URL unchanged.
+ */
+export function toTokenUrl(url: string, token?: string): string {
+  if (!token) return url;
+
+  // SSH format: git@github.com:org/repo.git -> https://TOKEN@github.com/org/repo.git
+  const sshMatch = url.match(/^git@([^:]+):(.+)$/);
+  if (sshMatch) {
+    return `https://${token}@${sshMatch[1]}/${sshMatch[2]}`;
+  }
+
+  // HTTPS without token: https://github.com/org/repo.git -> https://TOKEN@github.com/org/repo.git
+  const httpsMatch = url.match(/^https:\/\/([^@]+@)?(.+)$/);
+  if (httpsMatch) {
+    return `https://${token}@${httpsMatch[2]}`;
+  }
+
+  return url;
+}
+
 /** Get the remote URL of the current repo (defaults to "origin"). */
 export function getLocalRemoteUrl(cwd: string = "."): string {
   return execFileSync("git", ["remote", "get-url", "origin"], {

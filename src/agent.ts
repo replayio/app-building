@@ -74,9 +74,10 @@ function readInput(): Promise<string | null> {
 
 async function pollEvents(
   baseUrl: string,
+  startOffset: number,
   signal: AbortSignal,
-): Promise<void> {
-  let offset = 0;
+): Promise<number> {
+  let offset = startOffset;
 
   while (!signal.aborted) {
     try {
@@ -96,6 +97,8 @@ async function pollEvents(
     }
     await new Promise((r) => setTimeout(r, 300));
   }
+
+  return offset;
 }
 
 // --- Wait for message to complete ---
@@ -142,6 +145,8 @@ async function runInteractive(opts: {
     process.exit(0);
   });
 
+  let eventOffset = 0;
+
   try {
     while (true) {
       const input = await readInput();
@@ -172,12 +177,12 @@ async function runInteractive(opts: {
       process.stdin.on("data", onKey);
 
       // Poll events and wait for completion concurrently
-      const eventPoll = pollEvents(baseUrl, abortController.signal);
+      const eventPoll = pollEvents(baseUrl, eventOffset, abortController.signal);
       await waitForMessage(baseUrl, id, abortController.signal);
 
-      // Stop event polling
+      // Stop event polling and capture final offset
       abortController.abort();
-      await eventPoll.catch(() => {});
+      eventOffset = await eventPoll.catch(() => eventOffset);
 
       // Tear down ESC listener
       process.stdin.removeListener("data", onKey);

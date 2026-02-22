@@ -67,21 +67,21 @@ function loadRequiredEnvVars(projectRoot: string): string[] {
 }
 
 function findFreePort(): number {
-  // Use a simple incrementing scheme based on existing containers
-  // Start from 3100 to avoid conflicts
   let port = 3100;
   try {
-    const out = execFileSync("docker", ["ps", "--format", "{{.Ports}}"], {
+    // With --network host, docker doesn't track port mappings.
+    // Check actual listening ports on the host via ss.
+    const out = execFileSync("ss", ["-tlnH"], {
       encoding: "utf-8",
       timeout: 5000,
     });
     const usedPorts = new Set<number>();
-    for (const match of out.matchAll(/0\.0\.0\.0:(\d+)->/g)) {
+    for (const match of out.matchAll(/:(\d+)\s/g)) {
       usedPorts.add(parseInt(match[1], 10));
     }
     while (usedPorts.has(port)) port++;
   } catch {
-    // If docker ps fails, just use default
+    // ss not available, just use default
   }
   return port;
 }
@@ -137,32 +137,16 @@ export async function startContainer(
   // Build docker run args
   const args: string[] = ["run", "-d", "--rm", "--name", containerName];
 
-  // Port mapping: host -> container
-  args.push("-p", `${hostPort}:${CONTAINER_PORT}`);
-
-  // Network for outbound access
+  // --network host: container shares host network stack (no -p needed)
   args.push("--network", "host");
 
   // Git env vars for repo clone
   args.push("--env", `REPO_URL=${opts.repoUrl}`);
   args.push("--env", `CLONE_BRANCH=${opts.cloneBranch}`);
   args.push("--env", `PUSH_BRANCH=${opts.pushBranch}`);
-
-  // When using --network host, the container uses the host's network stack,
-  // so we need to tell the server to use a specific port
   args.push("--env", `PORT=${hostPort}`);
-
-  // Container name for logging
   args.push("--env", `CONTAINER_NAME=${containerName}`);
 
-  // Writable HOME for claude -c
-  args.push("--env", "HOME=/root");
-
-  // Mount host SSH keys so git clone works with SSH remotes
-  const sshDir = resolve(process.env.HOME ?? "", ".ssh");
-  if (existsSync(sshDir)) {
-    args.push("-v", `${sshDir}:/root/.ssh:ro`);
-  }
 
   // Git identity
   args.push("--env", "GIT_AUTHOR_NAME=App Builder");

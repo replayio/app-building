@@ -1,6 +1,6 @@
 import { createServer, IncomingMessage, ServerResponse } from "http";
 import { resolve } from "path";
-import { cloneRepo, checkoutPushBranch, commitAndPush, getRevision } from "./git";
+import { cloneRepo, checkoutPushBranch, commitAndPush, getRevision, toTokenUrl } from "./git";
 import {
   processMessage,
   processJobGroups,
@@ -205,7 +205,8 @@ async function processLoop(): Promise<void> {
       }
 
       // Final commit and push after message + jobs
-      commitAndPush(`Agent iteration ${iteration}`, PUSH_BRANCH, log, REPO_DIR);
+      const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
+      commitAndPush(summary, PUSH_BRANCH, log, REPO_DIR);
       log(`Final revision: ${getRevision(REPO_DIR)}`);
 
       state = "idle";
@@ -350,9 +351,10 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  const cloneUrl = toTokenUrl(REPO_URL, process.env.GITHUB_TOKEN);
   console.log(`Cloning ${REPO_URL} (branch: ${CLONE_BRANCH})...`);
   try {
-    cloneRepo(REPO_URL, CLONE_BRANCH, REPO_DIR);
+    cloneRepo(cloneUrl, CLONE_BRANCH, REPO_DIR);
     console.log("Clone complete.");
   } catch (e: any) {
     console.error(`Fatal: clone failed: ${e.message}`);

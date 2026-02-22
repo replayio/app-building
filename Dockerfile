@@ -47,12 +47,17 @@ ENV LD_LIBRARY_PATH=/opt/openssl11/usr/lib/x86_64-linux-gnu
 RUN git config --system user.name "App Builder" && \
     git config --system user.email "app-builder@localhost"
 
+# Create non-root user (claude code refuses --dangerously-skip-permissions as root)
+RUN useradd -m -s /bin/bash agent && \
+    mkdir -p /repo && chown agent:agent /repo
+USER agent
+
 # Copy app scripts and source
 WORKDIR /app-building
-COPY package.json ./
+COPY --chown=agent:agent package.json ./
 RUN npm install --production
-COPY src/ ./src/
-COPY scripts/ ./scripts/
+COPY --chown=agent:agent src/ ./src/
+COPY --chown=agent:agent scripts/ ./scripts/
 
 EXPOSE 3000
 CMD ["npx", "tsx", "/app-building/src/server.ts"]

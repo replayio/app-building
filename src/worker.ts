@@ -297,7 +297,12 @@ export async function processJobGroups(
     }
 
     groupsProcessed++;
-    commitFn?.(`Agent iteration (group ${groupsProcessed})`);
+    const jobSummary = assignedGroup.jobs[0].length > 60
+      ? assignedGroup.jobs[0].slice(0, 57) + "..."
+      : assignedGroup.jobs[0];
+    commitFn?.(assignedGroup.jobs.length === 1
+      ? jobSummary
+      : `${jobSummary} (+${assignedGroup.jobs.length - 1} more)`);
   }
 
   return { groupsProcessed, totalCost };
