@@ -56,33 +56,68 @@ controls.
 After completing the work, check off the page in `docs/plan.md`. If all pages are done, mark the
 section heading with `✓`.
 
+### Implementation approach
+
+Use **Tailwind responsive utility classes** (max-width variants) as the primary tool. Only fall
+back to raw CSS media queries in `index.css` when Tailwind utilities cannot express the rule
+(e.g., hiding table columns rendered from mapped data, or switching `<tr>` display modes).
+
+**Do not mix min-width and max-width variants.** Use `max-*:` variants consistently so styles
+degrade from desktop down:
+- `max-lg:` — max-width 1024px
+- `max-md:` — max-width 768px
+- `max-sm:` — max-width 640px
+
+When raw CSS is needed (e.g., table column hiding via nth-child or tag selectors), use `@media
+(max-width: ...)` at 1024px, 768px, and 480px. The 480px CSS breakpoint covers the gap below
+Tailwind's 640px `max-sm:`.
+
+Do not use JavaScript-based layout switching. Do not add a hamburger menu or mobile navigation
+unless the app already has one — the sidebar stays fixed.
+
 ### Layout adjustments
 
-- Multi-column layouts (sidebars, grid panels) must stack vertically on narrow viewports.
-- Horizontal button rows and action bars must wrap or collapse into a menu.
-- Modals and dialogs must not overflow the screen — constrain max-width and add vertical scroll
-  when content is tall.
-- Form layouts with side-by-side fields must stack to single-column.
+Apply these patterns at the Tailwind breakpoints:
+
+- **Page padding**: `p-6 max-sm:p-3` on the outermost page wrapper.
+- **Multi-column grids** (detail page bodies, metadata grids): start with the desktop column
+  count and collapse at each breakpoint.
+  - Two-column body: `grid grid-cols-2 max-md:grid-cols-1 gap-4`
+  - Four-column metadata: `grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4`
+- **Section card padding**: `p-4 max-sm:p-3` or `px-5 max-sm:px-3`.
+- **Form layouts** with side-by-side fields: `grid grid-cols-2 max-sm:grid-cols-1 gap-4`.
+- **Typography scaling**: reduce heading sizes at `max-sm:`.
+  - Page titles: `text-[24px] max-sm:text-[20px]`
+  - Detail headings: `text-[18px] max-sm:text-[16px]`
+- **Button text**: on narrow viewports, hide button labels and keep only icons:
+  `<span className="max-sm:hidden">Label</span>`
+- **Horizontal button rows** and action bars: use `flex-wrap` so they wrap naturally.
+- **Modals and dialogs**: constrain with `max-sm:max-w-[calc(100%-24px)]` and ensure
+  `overflow-y-auto` for tall content.
 
 ### Data density in lists and tables
 
 Lists and tables are the most important thing to get right. On wide viewports they can show many
-columns, but on narrow viewports they must progressively hide less-important columns to avoid
-clutter.
+columns, but on narrow viewports they must progressively hide less-important columns.
 
 - Identify which columns are essential (e.g., name, status) vs secondary (e.g., created date,
   assigned user, tags).
-- Use CSS media queries or container queries to hide secondary columns at smaller breakpoints.
-- On the narrowest viewports, consider switching from a table layout to a card/list layout where
-  each row becomes a stacked card showing only the key fields.
-- Ensure sort/filter controls remain accessible — move them into a collapsible panel or dropdown
-  if horizontal space is tight.
+- **Column hiding**: Use Tailwind `max-lg:hidden` and `max-md:hidden` directly on `<th>`/`<td>`
+  elements when the table is rendered with explicit column elements. When columns are generated
+  from mapped data or use CSS Grid, define named classes in `index.css` with `@media` rules.
+- **Card mode at narrowest viewport**: At 480px (via `@media` in `index.css`), hide the table
+  header and switch rows to `display: flex; flex-wrap: wrap` so each row reads as a card with
+  key fields only.
+- Ensure sort/filter controls remain accessible — use `flex-wrap` on filter bars so controls
+  wrap naturally on narrow viewports.
 
-### Implementation approach
+### Card-based lists
 
-- Use CSS media queries (`@media (max-width: ...)`) with breakpoints at roughly 1024px, 768px,
-  and 480px.
-- Prefer responsive CSS over JavaScript-based layout switching.
-- Test at each breakpoint to make sure nothing is broken.
-- Do not add a hamburger menu or mobile navigation unless the app already has one — focus on
-  content layout, not navigation chrome.
+When the page uses cards instead of a table (e.g., task lists), adjust information density within
+each card at breakpoints:
+
+- At `max-lg:` hide secondary metadata (avatars, role text).
+- At `max-md:` relocate metadata that was in a side column to an inline row below the title
+  using `hidden max-md:flex`.
+- At `max-sm:` consolidate remaining metadata into a single compact row using
+  `hidden max-sm:flex`.
