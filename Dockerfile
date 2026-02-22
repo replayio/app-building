@@ -25,15 +25,15 @@ RUN apt-get update && apt-get install -y \
 RUN npm install -g \
     @anthropic-ai/claude-code \
     netlify-cli \
-    [REDACTED]io \
-    @[REDACTED]io/playwright \
+    @replayio/replay \
+    @replayio/playwright \
     tsx \
     typescript
 
 # Install Playwright Chromium and Replay browser (globally accessible)
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
 RUN npx playwright install --with-deps chromium
-RUN [REDACTED]io update
+RUN replayio update
 
 # Replay browser needs OpenSSL 1.1 to load its recording driver.
 # Bookworm only has OpenSSL 3, so fetch the 1.1 libs from Ubuntu 18.04.
@@ -47,10 +47,12 @@ ENV LD_LIBRARY_PATH=/opt/openssl11/usr/lib/x86_64-linux-gnu
 RUN git config --system user.name "App Builder" && \
     git config --system user.email "app-builder@localhost"
 
-# Copy app scripts (performTasks.ts etc. for use inside container)
+# Copy app scripts and source
 WORKDIR /app-building
 COPY package.json ./
 RUN npm install --production
 COPY src/ ./src/
+COPY scripts/ ./scripts/
 
-# No entrypoint - command is provided by docker run (either claude interactive or claude -p "prompt")
+EXPOSE 3000
+CMD ["npx", "tsx", "/app-building/src/server.ts"]

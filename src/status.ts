@@ -1,18 +1,18 @@
-import { execFileSync } from "child_process";
-import { readFileSync, readdirSync, existsSync, statSync, openSync, readSync, closeSync } from "fs";
-import { join, resolve } from "path";
+import { readAgentState } from "./container";
+import { httpGet } from "./http-client";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 
-// --- Log discovery ---
+// --- Local log fallback (when container is unreachable) ---
+
+import { readFileSync, readdirSync, existsSync, statSync, openSync, readSync, closeSync } from "fs";
+import { join, resolve } from "path";
+import { execFileSync } from "child_process";
 
 function getLogFile(logsDir: string): string | null {
-  // Check for active worker log first
   const workerCurrent = join(logsDir, "worker-current.log");
   if (existsSync(workerCurrent) && statSync(workerCurrent).size > 0) {
     return workerCurrent;
   }
-
-  // Fall back to most recent completed log (worker-* or legacy iteration-*)
   const files: string[] = [];
   for (const dir of [logsDir, join(logsDir, "reviewed")]) {
     let entries: string[];
@@ -27,132 +27,13 @@ function getLogFile(logsDir: string): string | null {
       }
     }
   }
-
   files.sort();
   return files.length > 0 ? files[files.length - 1] : null;
-}
-
-// --- Log parsing ---
-
-interface LogInfo {
-  containerName: string | null;
-  currentIteration: number | null;
-  maxIterations: string | null;
-  completedIterations: number;
-  totalCost: number;
-  finished: boolean;
-  finishReason: string | null;
-  lastError: string | null;
-  lastActivity: string | null;
-}
-
-function parseLogFile(logPath: string): LogInfo {
-  const content = readFileSync(logPath, "utf-8");
-  const lines = content.split("\n");
-
-  const info: LogInfo = {
-    containerName: null,
-    currentIteration: null,
-    maxIterations: null,
-    completedIterations: 0,
-    totalCost: 0,
-    finished: false,
-    finishReason: null,
-    lastError: null,
-    lastActivity: null,
-  };
-
-  for (const rawLine of lines) {
-    if (!rawLine.trim()) continue;
-
-    const tsMatch = rawLine.match(/^\[(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\]\s*(.*)/);
-    const timestamp = tsMatch ? tsMatch[1] : null;
-    const line = tsMatch ? tsMatch[2] : rawLine;
-
-    if (timestamp) info.lastActivity = timestamp;
-
-    if (line.startsWith("Container:")) {
-      info.containerName = line.replace("Container:", "").trim();
-    }
-
-    const iterMatch = line.match(/^=== Iteration (\d+) ===/);
-    if (iterMatch) {
-      info.currentIteration = parseInt(iterMatch[1], 10);
-    }
-
-    if (line.startsWith("Max iterations:")) {
-      info.maxIterations = line.replace("Max iterations:", "").trim();
-    }
-
-    if (line.startsWith("Committed iteration")) {
-      info.completedIterations++;
-    }
-
-    const costMatch = line.match(/Cost: \$[\d.]+ \(total: \$([\d.]+)\)/);
-    if (costMatch) {
-      info.totalCost = parseFloat(costMatch[1]);
-    }
-
-    // Only check finish signals on plain-text log lines, not JSON event lines
-    // (JSON events may contain these strings inside tool result content)
-    if (!line.startsWith("{")) {
-      if (line.includes("Agent signaled <DONE/>")) {
-        info.finished = true;
-        info.finishReason = "done";
-      } else if (line.startsWith("Reached max iterations")) {
-        info.finished = true;
-        info.finishReason = "max iterations";
-      } else if (line.startsWith("Finished after")) {
-        info.finished = true;
-        if (!info.finishReason) info.finishReason = "finished";
-      }
-    }
-
-    if (line.startsWith("Error running") || line.startsWith("[claude:err]")) {
-      info.lastError = line;
-    }
-  }
-
-  return info;
-}
-
-// --- Container check ---
-
-function isContainerRunning(containerName: string): boolean {
-  try {
-    const out = execFileSync(
-      "docker",
-      ["ps", "--filter", `name=^${containerName}$`, "--format", "{{.Names}}"],
-      { encoding: "utf-8", timeout: 5000 },
-    ).trim();
-    return out === containerName;
-  } catch {
-    return false;
-  }
-}
-
-// --- Display helpers ---
-
-function formatTimeSince(isoTimestamp: string): string {
-  const then = new Date(isoTimestamp).getTime();
-  const now = Date.now();
-  const diffSec = Math.floor((now - then) / 1000);
-
-  if (diffSec < 60) return `${diffSec}s ago`;
-  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
-  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ${Math.floor((diffSec % 3600) / 60)}m ago`;
-  return `${Math.floor(diffSec / 86400)}d ago`;
 }
 
 function stripTimestamp(rawLine: string): string {
   const tsMatch = rawLine.match(/^\[\d{4}-\d{2}-\d{2}T[\d:.]+Z\]\s*(.*)/);
   return tsMatch ? tsMatch[1] : rawLine;
-}
-
-function getLastNLines(logPath: string, n: number): string[] {
-  const content = readFileSync(logPath, "utf-8");
-  const lines = content.split("\n").filter((l) => l.trim());
-  return lines.slice(-n);
 }
 
 function displayFormattedLines(rawLines: string[]): void {
@@ -163,82 +44,105 @@ function displayFormattedLines(rawLines: string[]): void {
   }
 }
 
-// --- Tailing ---
+// --- HTTP-based status ---
 
-function tailLog(logPath: string, containerName: string): void {
-  let offset = existsSync(logPath) ? statSync(logPath).size : 0;
-  let inode = existsSync(logPath) ? statSync(logPath).ino : 0;
-  let partial = "";
+async function showHttpStatus(baseUrl: string): Promise<boolean> {
+  try {
+    const status = await httpGet(`${baseUrl}/status`);
 
-  const poll = setInterval(() => {
-    let stat: ReturnType<typeof statSync>;
-    try {
-      stat = statSync(logPath);
-    } catch {
-      return;
+    // State label
+    let stateLabel: string;
+    if (status.state === "processing") {
+      stateLabel = `${BOLD}${GREEN}PROCESSING${RESET}`;
+    } else if (status.state === "idle") {
+      stateLabel = `${BOLD}${GREEN}IDLE${RESET}`;
+    } else if (status.state === "starting") {
+      stateLabel = `${BOLD}${YELLOW}STARTING${RESET}`;
+    } else if (status.state === "stopping") {
+      stateLabel = `${YELLOW}STOPPING${RESET}`;
+    } else {
+      stateLabel = `${DIM}${status.state}${RESET}`;
     }
 
-    // Detect file replacement (new iteration creates a new file at the same path)
-    if (stat.ino !== inode) {
-      // Flush any partial line from the old file
-      if (partial.trim()) {
-        const line = stripTimestamp(partial);
-        const formatted = formatLogLine(line);
+    console.log(`\n  ${stateLabel}`);
+    console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
+    console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
+
+    const queueInfo = `${status.queueLength} queued, ${status.pendingGroups} groups pending`;
+    console.log(`  ${DIM}Queue:${RESET}     ${queueInfo}`);
+    console.log(`  ${DIM}Progress:${RESET}  ${status.groupsProcessed} groups processed, iteration ${status.iteration}`);
+
+    if (status.totalCost > 0) {
+      console.log(`  ${DIM}Cost:${RESET}      $${status.totalCost.toFixed(4)}`);
+    }
+
+    if (status.detachRequested) {
+      console.log(`  ${YELLOW}Detach requested — will exit when work complete${RESET}`);
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function tailHttpLogs(baseUrl: string): Promise<void> {
+  let offset = 0;
+
+  // First, get recent logs
+  try {
+    const data = await httpGet(`${baseUrl}/logs?offset=0`);
+    // Show last 20 lines
+    const lines: string[] = data.items;
+    const recent = lines.slice(-20);
+    console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
+    displayFormattedLines(recent);
+    offset = data.nextOffset;
+  } catch {
+    console.log(`\n${DIM}Could not fetch logs${RESET}`);
+    return;
+  }
+
+  console.log(`\n${DIM}Tailing logs (Ctrl+C to stop)...${RESET}\n`);
+
+  const poll = setInterval(async () => {
+    try {
+      const data = await httpGet(`${baseUrl}/logs?offset=${offset}`);
+      for (const line of data.items) {
+        const stripped = stripTimestamp(line);
+        const formatted = formatLogLine(stripped);
         if (formatted) console.log(formatted);
       }
-      partial = "";
-      offset = 0;
-      inode = stat.ino;
-    }
-
-    if (stat.size <= offset) return;
-
-    const fd = openSync(logPath, "r");
-    const buf = Buffer.alloc(stat.size - offset);
-    readSync(fd, buf, 0, buf.length, offset);
-    closeSync(fd);
-    offset = stat.size;
-
-    const chunk = partial + buf.toString();
-    const lines = chunk.split("\n");
-    partial = lines.pop() ?? "";
-
-    for (const rawLine of lines) {
-      if (!rawLine.trim()) continue;
-      const line = stripTimestamp(rawLine);
-      const formatted = formatLogLine(line);
-      if (formatted) console.log(formatted);
+      offset = data.nextOffset;
+    } catch {
+      clearInterval(poll);
+      console.log(`\n${DIM}Connection lost.${RESET}\n`);
     }
   }, 500);
 
-  // Check if container is still running; stop tailing when it exits
-  const containerCheck = setInterval(() => {
-    if (!isContainerRunning(containerName)) {
-      // Flush remaining
-      if (partial.trim()) {
-        const line = stripTimestamp(partial);
-        const formatted = formatLogLine(line);
-        if (formatted) console.log(formatted);
-      }
+  // Also check if container is still alive
+  const healthCheck = setInterval(async () => {
+    try {
+      await httpGet(`${baseUrl}/status`);
+    } catch {
       clearInterval(poll);
-      clearInterval(containerCheck);
+      clearInterval(healthCheck);
       console.log(`\n${DIM}Container stopped.${RESET}\n`);
     }
   }, 3000);
 
   process.on("SIGINT", () => {
     clearInterval(poll);
-    clearInterval(containerCheck);
+    clearInterval(healthCheck);
     process.exit(0);
   });
 }
 
-// --- Main ---
+// --- Fallback: local log file status (same as before) ---
 
-function main(): void {
+function showLocalStatus(): void {
   const projectRoot = resolve(__dirname, "..");
   const logsDir = join(projectRoot, "logs");
-
   const logFile = getLogFile(logsDir);
 
   if (!logFile) {
@@ -246,63 +150,38 @@ function main(): void {
     return;
   }
 
-  const info = parseLogFile(logFile);
-  const running = info.containerName ? isContainerRunning(info.containerName) : false;
-
-  // --- Status header ---
-  // Container running check is the source of truth
-  let stateLabel: string;
-  if (running) {
-    stateLabel = `${BOLD}${GREEN}RUNNING${RESET}`;
-  } else if (info.finished && info.finishReason === "done") {
-    stateLabel = `${BOLD}${GREEN}DONE${RESET}`;
-  } else if (info.finished) {
-    stateLabel = `${YELLOW}STOPPED${RESET} ${DIM}(${info.finishReason})${RESET}`;
-  } else {
-    stateLabel = `${RED}NOT RUNNING${RESET}`;
-  }
-
-  console.log(`\n  ${stateLabel}`);
-
-  if (info.containerName) {
-    console.log(`  ${DIM}Container:${RESET} ${info.containerName}`);
-  }
-
-  const iterInfo = info.maxIterations
-    ? `${info.completedIterations}/${info.maxIterations} iterations`
-    : `${info.completedIterations} iterations`;
-  console.log(`  ${DIM}Progress:${RESET}  ${iterInfo}`);
-
-  if (info.totalCost > 0) {
-    console.log(`  ${DIM}Cost:${RESET}      $${info.totalCost.toFixed(4)}`);
-  }
-
-  if (info.lastActivity) {
-    console.log(`  ${DIM}Last log:${RESET}  ${formatTimeSince(info.lastActivity)}`);
-  }
-
-  if (running && info.currentIteration != null) {
-    console.log(`  ${DIM}Working on:${RESET} iteration ${info.currentIteration}`);
-  }
-
-  if (info.lastError) {
-    console.log(`  ${RED}Last error: ${info.lastError}${RESET}`);
-  }
-
+  console.log(`\n  ${RED}NOT RUNNING${RESET} ${DIM}(no container endpoint found)${RESET}`);
   console.log(`  ${DIM}Log: ${logFile}${RESET}`);
 
-  // --- Last 20 lines ---
-  console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
-  const lastLines = getLastNLines(logFile, 20);
-  displayFormattedLines(lastLines);
+  const content = readFileSync(logFile, "utf-8");
+  const lines = content.split("\n").filter((l) => l.trim());
+  const lastLines = lines.slice(-20);
 
-  // --- Tail if running ---
-  if (running) {
-    console.log(`\n${DIM}Tailing log (Ctrl+C to stop)...${RESET}\n`);
-    tailLog(logFile, info.containerName!);
-  } else {
-    console.log();
-  }
+  console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
+  displayFormattedLines(lastLines);
+  console.log();
 }
 
-main();
+// --- Main ---
+
+async function main(): Promise<void> {
+  const agentState = readAgentState();
+
+  if (agentState) {
+    // Try HTTP-based status
+    const ok = await showHttpStatus(agentState.baseUrl);
+    if (ok) {
+      await tailHttpLogs(agentState.baseUrl);
+      return;
+    }
+    // Container not reachable, fall through to local
+    console.log(`${DIM}Container at ${agentState.baseUrl} not reachable${RESET}`);
+  }
+
+  showLocalStatus();
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

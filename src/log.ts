@@ -3,8 +3,17 @@ import { join, resolve } from "path";
 
 export type Logger = (message: string) => void;
 
-/** Load secret values from .env */
-function loadSecrets(): string[] {
+// --- Known secret key names (from .env.example convention) ---
+const SECRET_KEY_PATTERNS = [
+  /KEY/i,
+  /SECRET/i,
+  /TOKEN/i,
+  /PASSWORD/i,
+  /CREDENTIAL/i,
+];
+
+/** Load secret values from .env file */
+function loadSecretsFromFile(): string[] {
   const envPath = resolve(__dirname, "..", ".env");
   if (!existsSync(envPath)) return [];
   const secrets: string[] = [];
@@ -22,11 +31,25 @@ function loadSecrets(): string[] {
   return secrets;
 }
 
+/** Load secret values from environment variables (container mode) */
+function loadSecretsFromEnv(): string[] {
+  const secrets: string[] = [];
+  for (const [key, value] of Object.entries(process.env)) {
+    if (!value || value.length < 8) continue;
+    if (SECRET_KEY_PATTERNS.some((p) => p.test(key))) {
+      secrets.push(value);
+    }
+  }
+  return secrets;
+}
+
 let _secrets: string[] | null = null;
 
 /** Replace .env secret values with [REDACTED] */
 export function redactSecrets(text: string): string {
-  if (!_secrets) _secrets = loadSecrets();
+  if (!_secrets) {
+    _secrets = process.env.CONTAINER_MODE ? loadSecretsFromEnv() : loadSecretsFromFile();
+  }
   let result = text;
   for (const secret of _secrets) {
     if (result.includes(secret)) {
@@ -53,6 +76,22 @@ export function createLogFile(logsDir: string): Logger {
   return (message: string): void => {
     const line = `[${new Date().toISOString()}] ${redactSecrets(message)}\n`;
     appendFileSync(currentLogFile, line);
+  };
+}
+
+/**
+ * Create a logger that writes to both a log file and an in-memory buffer.
+ * The buffer callback receives formatted log lines (with timestamps, redacted).
+ */
+export function createBufferedLogger(
+  logsDir: string,
+  onLine: (line: string) => void,
+): Logger {
+  const fileLogger = createLogFile(logsDir);
+  return (message: string): void => {
+    fileLogger(message);
+    const line = `[${new Date().toISOString()}] ${redactSecrets(message)}`;
+    onLine(line);
   };
 }
 

@@ -1,12 +1,11 @@
-import { spawn, execFileSync } from "child_process";
+import { ChildProcess, spawn } from "child_process";
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
-import { createLogFile, archiveCurrentLog } from "./log";
+import type { Logger } from "./log";
 
 const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
 const JOBS_FILE = resolve(REPO_ROOT, "jobs/jobs.json");
-const MAX_ITERATIONS = process.env.MAX_ITERATIONS ? parseInt(process.env.MAX_ITERATIONS) : null;
 const MAX_GROUP_RETRIES = 3;
 const DEBUG = !!process.env.DEBUG;
 const DEBUG_LOG = resolve(LOGS_DIR, "worker-debug.log");
@@ -19,7 +18,7 @@ function debug(msg: string): void {
 
 // --- Types ---
 
-interface Group {
+export interface Group {
   strategy: string;
   jobs: string[];
   timestamp: string;
@@ -29,34 +28,9 @@ interface JobsFile {
   groups: Group[];
 }
 
-// --- Git helpers ---
-
-function getGitRevision(): string {
-  try {
-    return execFileSync("git", ["rev-parse", "HEAD"], {
-      encoding: "utf-8",
-      timeout: 10000,
-    }).trim();
-  } catch {
-    return "(unknown)";
-  }
-}
-
-function gitCommit(label: string, log: (msg: string) => void): void {
-  try {
-    execFileSync("git", ["add", "-A"], { encoding: "utf-8", timeout: 30000 });
-    execFileSync("git", ["commit", "-m", label, "--allow-empty"], {
-      encoding: "utf-8",
-      timeout: 30000,
-    });
-  } catch (e: any) {
-    log(`Warning: git commit failed: ${e.message}`);
-  }
-}
-
 // --- Claude invocation ---
 
-interface ClaudeResult {
+export interface ClaudeResult {
   result: string;
   cost_usd?: number;
   duration_ms?: number;
@@ -64,18 +38,37 @@ interface ClaudeResult {
   doneSignaled: boolean;
 }
 
+export type EventCallback = (line: string) => void;
+
+/** Reference to the currently running Claude child process, if any. */
+export let currentClaudeProcess: ChildProcess | null = null;
+
 function hasDoneSignal(source: string, text: string): boolean {
   const match = /<DONE[\s/>]/.test(text);
   debug(`hasDoneSignal(${source}): match=${match} text=${JSON.stringify(text.slice(0, 200))}`);
   return match;
 }
 
-function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<ClaudeResult> {
+function buildClaudeArgs(prompt: string, extraArgs: string[]): string[] {
+  const args: string[] = [];
+  args.push("-p", prompt);
+  args.push(...extraArgs);
+  args.push("--output-format", "stream-json", "--verbose");
+  return args;
+}
+
+function runClaude(
+  claudeArgs: string[],
+  log: Logger,
+  onEvent?: EventCallback,
+): Promise<ClaudeResult> {
   return new Promise((resolve, reject) => {
     const child = spawn("claude", claudeArgs, {
       env: process.env,
       stdio: ["ignore", "pipe", "pipe"],
     });
+
+    currentClaudeProcess = child;
 
     let resultEvent: ClaudeResult | null = null;
     let doneSignaled = false;
@@ -88,6 +81,7 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
       for (const line of lines) {
         if (!line.trim()) continue;
         log(line);
+        onEvent?.(line);
         try {
           const event = JSON.parse(line);
           debug(`event type=${event.type} subtype=${event.subtype ?? ""}`);
@@ -102,7 +96,6 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
             };
             if (hasDoneSignal("result", event.result ?? "")) doneSignaled = true;
           }
-          // Check assistant message content blocks for <DONE>
           if (event.type === "assistant" && event.message?.content) {
             for (const block of event.message.content) {
               if (block.type === "text") {
@@ -110,7 +103,6 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
               }
             }
           }
-          // Check content_block_delta for streamed text
           if (event.type === "content_block_delta" && event.delta?.text) {
             if (hasDoneSignal("content-delta", event.delta.text)) doneSignaled = true;
           }
@@ -124,13 +116,18 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
       }
     });
 
-    child.on("error", reject);
+    child.on("error", (err) => {
+      currentClaudeProcess = null;
+      reject(err);
+    });
 
     child.on("close", (code) => {
+      currentClaudeProcess = null;
       debug(`claude process closed with code=${code}`);
       if (buffer.trim()) {
         debug(`final buffer: ${buffer.slice(0, 300)}`);
         log(buffer);
+        onEvent?.(buffer);
         try {
           const event = JSON.parse(buffer);
           if (event.type === "result") {
@@ -158,35 +155,7 @@ function runClaude(claudeArgs: string[], log: (msg: string) => void): Promise<Cl
   });
 }
 
-// --- Arg parsing ---
-
-const incomingArgs = process.argv.slice(2);
-
-function parseArgs(args: string[]): { prompt: string; baseArgs: string[] } {
-  const baseArgs: string[] = [];
-  let prompt = "";
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === "-p" && i + 1 < args.length) {
-      prompt = args[i + 1];
-      i++;
-    } else {
-      baseArgs.push(args[i]);
-    }
-  }
-  return { prompt, baseArgs };
-}
-
-const { prompt: initialPrompt, baseArgs } = parseArgs(incomingArgs);
-
-function buildClaudeArgs(prompt: string): string[] {
-  const args: string[] = [];
-  args.push("-p", prompt);
-  args.push(...baseArgs);
-  args.push("--output-format", "stream-json", "--verbose");
-  return args;
-}
-
-// --- Job system ---
+// --- Job system helpers ---
 
 function readJobsFile(): JobsFile {
   if (!existsSync(JOBS_FILE)) return { groups: [] };
@@ -201,11 +170,15 @@ function writeJobsFile(data: JobsFile): void {
 }
 
 function groupsMatch(a: Group, b: Group): boolean {
-  return a.strategy === b.strategy && a.timestamp === b.timestamp &&
-    a.jobs.length === b.jobs.length && a.jobs.every((j, i) => j === b.jobs[i]);
+  return (
+    a.strategy === b.strategy &&
+    a.timestamp === b.timestamp &&
+    a.jobs.length === b.jobs.length &&
+    a.jobs.every((j, i) => j === b.jobs[i])
+  );
 }
 
-function completeGroup(assignedGroup: Group, log: (msg: string) => void): void {
+function completeGroup(assignedGroup: Group, log: Logger): void {
   const data = readJobsFile();
   const idx = data.groups.findIndex((g) => groupsMatch(g, assignedGroup));
   if (idx === -1) {
@@ -235,77 +208,68 @@ function buildGroupPrompt(group: Group): string {
   );
 }
 
-// --- Main loop ---
+export function getPendingGroupCount(): number {
+  return readJobsFile().groups.length;
+}
 
-async function runLoop(): Promise<void> {
-  const containerName = process.env.CONTAINER_NAME ?? "(unknown)";
-  let iteration = 0;
+// --- Exported API ---
+
+/**
+ * Run a single prompt through Claude and return the result.
+ */
+export async function processMessage(
+  prompt: string,
+  extraArgs: string[],
+  log: Logger,
+  onEvent?: EventCallback,
+): Promise<ClaudeResult> {
+  const claudeArgs = buildClaudeArgs(prompt, extraArgs);
+  log(`Running Claude...`);
+  return runClaude(claudeArgs, log, onEvent);
+}
+
+/**
+ * Process all pending job groups until the queue is empty.
+ * Calls commitFn after each group completes.
+ * Returns the number of groups processed.
+ */
+export async function processJobGroups(
+  extraArgs: string[],
+  log: Logger,
+  onEvent?: EventCallback,
+  shouldStop?: () => boolean,
+  commitFn?: (label: string) => void,
+): Promise<{ groupsProcessed: number; totalCost: number }> {
+  let groupsProcessed = 0;
   let totalCost = 0;
   let consecutiveRetries = 0;
 
   while (true) {
-    iteration++;
+    if (shouldStop?.()) break;
 
-    if (MAX_ITERATIONS !== null && iteration > MAX_ITERATIONS) {
+    const data = readJobsFile();
+    debug(`processJobGroups: jobs.json has ${data.groups.length} group(s)`);
+    if (data.groups.length === 0) {
+      log("No groups remaining.");
       break;
     }
 
-    const log = createLogFile(LOGS_DIR);
-
-    log(`Container: ${containerName}`);
-    log(`Max iterations: ${MAX_ITERATIONS ?? "unlimited"}`);
-    log(`=== Iteration ${iteration} ===`);
-    log(`Initial revision: ${getGitRevision()}`);
-
-    // First iteration uses the provided prompt; subsequent iterations consume job groups
-    let prompt: string;
-    let assignedGroup: Group | null = null;
-
-    if (iteration === 1 && initialPrompt) {
-      prompt = initialPrompt;
-      log(`Running initial prompt`);
-      debug(`iteration ${iteration}: using initial prompt`);
-    } else {
-      // Read next group from jobs.json
-      const data = readJobsFile();
-      debug(`iteration ${iteration}: jobs.json has ${data.groups.length} group(s)`);
-      if (data.groups.length > 0) {
-        debug(`iteration ${iteration}: first group strategy=${data.groups[0].strategy} jobs=${JSON.stringify(data.groups[0].jobs)}`);
-      }
-      if (data.groups.length === 0) {
-        log("No groups remaining. Exiting.");
-        debug(`iteration ${iteration}: no groups, exiting`);
-        archiveCurrentLog(LOGS_DIR);
-        break;
-      }
-
-      // Snapshot the group we're assigning so we can remove it by identity later
-      // (Claude may prepend new groups to the queue during its run via add-group)
-      assignedGroup = { ...data.groups[0], jobs: [...data.groups[0].jobs] };
-      prompt = buildGroupPrompt(assignedGroup);
-      log(`Running group: ${assignedGroup.jobs.length} job(s) (strategy: ${assignedGroup.strategy})`);
-      for (const job of assignedGroup.jobs) {
-        log(`  - ${job}`);
-      }
+    const assignedGroup = { ...data.groups[0], jobs: [...data.groups[0].jobs] };
+    const prompt = buildGroupPrompt(assignedGroup);
+    log(`Running group: ${assignedGroup.jobs.length} job(s) (strategy: ${assignedGroup.strategy})`);
+    for (const job of assignedGroup.jobs) {
+      log(`  - ${job}`);
     }
-
-    // Run Claude
-    const claudeArgs = buildClaudeArgs(prompt);
-    log(`Running Claude...`);
-    const startTime = Date.now();
 
     let response: ClaudeResult;
     try {
-      response = await runClaude(claudeArgs, log);
+      response = await processMessage(prompt, extraArgs, log, onEvent);
     } catch (e: any) {
       log(`Error running claude: ${e.message}`);
-      gitCommit("Agent error recovery", log);
-      archiveCurrentLog(LOGS_DIR);
+      commitFn?.("Agent error recovery");
       continue;
     }
 
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    log(`Completed in ${elapsed}s`);
     if (response.cost_usd != null) {
       totalCost += response.cost_usd;
       log(`Cost: $${response.cost_usd.toFixed(4)} (total: $${totalCost.toFixed(4)})`);
@@ -314,42 +278,27 @@ async function runLoop(): Promise<void> {
       log(`Turns: ${response.num_turns}`);
     }
 
-    // Check for <DONE> signal (scanned across all streamed output, not just the result summary)
     const done = response.doneSignaled;
-    debug(`iteration ${iteration}: done=${done} assignedGroup=${!!assignedGroup} result.length=${response.result.length}`);
-    debug(`iteration ${iteration}: response.result first 500 chars: ${JSON.stringify(response.result.slice(0, 500))}`);
+    debug(`processJobGroups: done=${done} assignedGroup strategy=${assignedGroup.strategy}`);
 
-    if (assignedGroup) {
-      if (done) {
-        log(`Group signaled <DONE>. Completing group.`);
-        debug(`iteration ${iteration}: completing group`);
+    if (done) {
+      log(`Group signaled <DONE>. Completing group.`);
+      completeGroup(assignedGroup, log);
+      consecutiveRetries = 0;
+    } else {
+      consecutiveRetries++;
+      if (consecutiveRetries >= MAX_GROUP_RETRIES) {
+        log(`Group failed ${MAX_GROUP_RETRIES} times. Skipping.`);
         completeGroup(assignedGroup, log);
         consecutiveRetries = 0;
       } else {
-        consecutiveRetries++;
-        if (consecutiveRetries >= MAX_GROUP_RETRIES) {
-          log(`Group failed ${MAX_GROUP_RETRIES} times. Skipping.`);
-          debug(`iteration ${iteration}: max retries reached, skipping group`);
-          completeGroup(assignedGroup, log);
-          consecutiveRetries = 0;
-        } else {
-          log(`Group did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}.`);
-          debug(`iteration ${iteration}: no DONE, retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}`);
-        }
+        log(`Group did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}.`);
       }
     }
 
-    // Commit and archive
-    gitCommit(`Agent iteration ${iteration}`, log);
-    log(`Final revision: ${getGitRevision()}`);
-    archiveCurrentLog(LOGS_DIR);
+    groupsProcessed++;
+    commitFn?.(`Agent iteration (group ${groupsProcessed})`);
   }
-}
 
-runLoop().then(
-  () => process.exit(0),
-  (e) => {
-    console.error(e);
-    process.exit(1);
-  },
-);
+  return { groupsProcessed, totalCost };
+}

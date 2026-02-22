@@ -1,21 +1,10 @@
 import { Command } from "commander";
-import {
-  spawnContainer,
-  startInteractiveContainer,
-  execInContainer,
-  stopContainer,
-} from "./container";
+import { startContainer, stopContainer, readAgentState } from "./container";
+import { httpGet, httpPost } from "./http-client";
 import { formatEvent } from "./format";
-import { createLogFile } from "./log";
-import { resolve } from "path";
-import { readFileSync } from "fs";
-
-const LOGS_DIR = resolve(__dirname, "..", "logs");
 
 // --- Input helpers ---
 
-// Reads input using raw mode. Enter submits, pasted text (which arrives
-// as a single chunk with embedded newlines) is preserved as multi-line.
 function readInput(): Promise<string | null> {
   return new Promise((resolve) => {
     let buffer = "";
@@ -42,14 +31,14 @@ function readInput(): Promise<string | null> {
     const onData = (data: Buffer) => {
       const str = data.toString("utf-8");
 
-      // Ctrl+C or Ctrl+D → EOF
+      // Ctrl+C or Ctrl+D -> EOF
       if (data.length === 1 && (data[0] === 0x03 || data[0] === 0x04)) {
         process.stdout.write("\n");
         finish(null);
         return;
       }
 
-      // A lone Enter keypress → submit
+      // Enter -> submit
       if (str === "\r" || str === "\n" || str === "\r\n") {
         process.stdout.write("\n");
         finish(buffer);
@@ -70,7 +59,7 @@ function readInput(): Promise<string | null> {
         return;
       }
 
-      // Regular input or paste — normalize newlines, append and echo
+      // Regular input or paste
       const normalized = str.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
       buffer += normalized;
       process.stdout.write(normalized);
@@ -80,14 +69,72 @@ function readInput(): Promise<string | null> {
   });
 }
 
-async function runInteractive(sessionId?: string): Promise<void> {
-  const { containerName, mcpConfig } = await startInteractiveContainer();
-  console.log(`Container started: ${containerName}`);
-  const log = createLogFile(LOGS_DIR);
-  log(`Container: ${containerName}`);
-  log(`Mode: interactive`);
+// --- Event polling ---
 
-  let messagesSent = 0;
+async function pollEvents(
+  baseUrl: string,
+  signal: AbortSignal,
+): Promise<void> {
+  let offset = 0;
+
+  while (!signal.aborted) {
+    try {
+      const data = await httpGet(`${baseUrl}/events?offset=${offset}`);
+      for (const line of data.items) {
+        try {
+          const event = JSON.parse(line);
+          const formatted = formatEvent(event);
+          if (formatted) console.log(formatted);
+        } catch {
+          // not JSON, skip
+        }
+      }
+      offset = data.nextOffset;
+    } catch {
+      // Server may be busy, retry
+    }
+    await new Promise((r) => setTimeout(r, 300));
+  }
+}
+
+// --- Wait for message to complete ---
+
+async function waitForMessage(
+  baseUrl: string,
+  messageId: string,
+  signal: AbortSignal,
+): Promise<void> {
+  while (!signal.aborted) {
+    try {
+      const data = await httpGet(`${baseUrl}/message/${messageId}`);
+      if (data.status === "done" || data.status === "error") {
+        if (data.error) {
+          console.error(`Error: ${data.error}`);
+        }
+        return;
+      }
+    } catch {
+      // Retry
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+}
+
+// --- Interactive mode ---
+
+async function runInteractive(opts: {
+  repo: string;
+  branch: string;
+  pushBranch: string;
+}): Promise<void> {
+  const { containerName, baseUrl } = await startContainer({
+    repoUrl: opts.repo,
+    cloneBranch: opts.branch,
+    pushBranch: opts.pushBranch,
+  });
+
+  console.log(`Container: ${containerName}`);
+  console.log(`Server: ${baseUrl}`);
 
   process.on("SIGINT", () => {
     stopContainer(containerName);
@@ -102,115 +149,119 @@ async function runInteractive(sessionId?: string): Promise<void> {
 
       console.log("...");
 
-      const claudeArgs: string[] = [];
-      if (messagesSent > 0) {
-        claudeArgs.push("-c");
-      } else if (sessionId) {
-        claudeArgs.push("--resume", sessionId);
+      // Send message
+      const { id } = await httpPost(`${baseUrl}/message`, { prompt: input });
+
+      // Poll events in background while waiting
+      const abortController = new AbortController();
+
+      // Listen for ESC to interrupt
+      let interrupted = false;
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(true);
       }
-      claudeArgs.push("-p", input);
-      claudeArgs.push("--model", "claude-opus-4-6");
-      claudeArgs.push("--output-format", "stream-json");
-      claudeArgs.push("--verbose");
-      claudeArgs.push("--dangerously-skip-permissions");
-      claudeArgs.push("--mcp-config", mcpConfig);
-
-      try {
-        const child = execInContainer(containerName, claudeArgs);
-
-        // Listen for ESC in raw mode to interrupt claude
-        let interrupted = false;
-        if (process.stdin.isTTY) {
-          process.stdin.setRawMode(true);
+      process.stdin.resume();
+      const onKey = (data: Buffer) => {
+        if (data[0] === 0x1b) {
+          interrupted = true;
+          httpPost(`${baseUrl}/interrupt`).catch(() => {});
+          console.log("\nInterrupted.");
         }
-        process.stdin.resume();
-        const onKey = (data: Buffer) => {
-          if (data[0] === 0x1b) {
-            interrupted = true;
-            child.kill("SIGINT");
-            console.log("\nInterrupted.");
-          }
-        };
-        process.stdin.on("data", onKey);
+      };
+      process.stdin.on("data", onKey);
 
-        let buffer = "";
-        child.stdout!.on("data", (data: Buffer) => {
-          buffer += data.toString();
-          const lines = buffer.split("\n");
-          buffer = lines.pop() ?? "";
-          for (const line of lines) {
-            if (!line.trim()) continue;
-            log(line);
-            try {
-              const event = JSON.parse(line);
-              const formatted = formatEvent(event);
-              if (formatted) console.log(formatted);
-            } catch {
-              console.log(line);
-            }
-          }
-        });
+      // Poll events and wait for completion concurrently
+      const eventPoll = pollEvents(baseUrl, abortController.signal);
+      await waitForMessage(baseUrl, id, abortController.signal);
 
-        await new Promise<void>((resolve, reject) => {
-          child.on("close", (code) => {
-            // Tear down raw mode ESC listener
-            process.stdin.removeListener("data", onKey);
-            if (process.stdin.isTTY) {
-              process.stdin.setRawMode(false);
-            }
-            process.stdin.pause();
+      // Stop event polling
+      abortController.abort();
+      await eventPoll.catch(() => {});
 
-            if (buffer.trim()) {
-              log(buffer);
-              try {
-                const event = JSON.parse(buffer);
-                const formatted = formatEvent(event);
-                if (formatted) console.log(formatted);
-              } catch {
-                console.log(buffer);
-              }
-            }
-            if (interrupted || code === 0) resolve();
-            else reject(new Error(`claude exited with code ${code}`));
-          });
-          child.on("error", reject);
-        });
-      } catch (e) {
-        console.error(e instanceof Error ? e.message : e);
+      // Tear down ESC listener
+      process.stdin.removeListener("data", onKey);
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(false);
       }
-      messagesSent++;
+      process.stdin.pause();
     }
   } finally {
-    stopContainer(containerName);
+    // Send detach so container finishes any remaining work and exits
+    try {
+      await httpPost(`${baseUrl}/detach`);
+      console.log("Detached from container. It will exit when work completes.");
+    } catch {
+      stopContainer(containerName);
+    }
   }
 }
+
+// --- Detached mode ---
+
+async function runDetached(opts: {
+  repo: string;
+  branch: string;
+  pushBranch: string;
+  prompt?: string;
+}): Promise<void> {
+  const { containerName, baseUrl } = await startContainer({
+    repoUrl: opts.repo,
+    cloneBranch: opts.branch,
+    pushBranch: opts.pushBranch,
+  });
+
+  console.log(`Container: ${containerName}`);
+  console.log(`Server: ${baseUrl}`);
+
+  // Optionally send an initial message
+  if (opts.prompt) {
+    const { id } = await httpPost(`${baseUrl}/message`, { prompt: opts.prompt });
+    console.log(`Message queued: ${id}`);
+  }
+
+  // Detach — container will process message + job groups, then exit
+  await httpPost(`${baseUrl}/detach`);
+  console.log("Detached. Container will exit when all work is complete.");
+  console.log(`Monitor: npm run status`);
+  console.log(`Stop: npm run stop`);
+}
+
+// --- Main ---
 
 async function main(): Promise<void> {
   const program = new Command();
   program
     .option("-i, --interactive", "interactive mode")
-    .option("-r, --resume <id>", "resume a claude session (interactive mode)")
     .option("-p, --prompt <text>", "handle a prompt before consuming jobs")
-    .option("-n, --iterations <count>", "limit number of iterations", parseInt)
+    .option("--repo <url>", "git repo URL to clone", process.env.REPO_URL)
+    .option("--branch <name>", "branch to clone", process.env.CLONE_BRANCH ?? "main")
+    .option("--push-branch <name>", "branch to push to")
     .allowUnknownOption(false)
     .allowExcessArguments(false)
     .parse();
 
   const opts = program.opts();
 
+  if (!opts.repo) {
+    console.error("--repo is required (or set REPO_URL env var)");
+    process.exit(1);
+  }
+
+  const pushBranch = opts.pushBranch ?? opts.branch;
+
   if (opts.interactive) {
-    await runInteractive(opts.resume);
+    await runInteractive({
+      repo: opts.repo,
+      branch: opts.branch,
+      pushBranch,
+    });
   } else {
-    const hasPrompt = !!opts.prompt;
-    if (!hasPrompt) {
-      const jobsPath = resolve(__dirname, "..", "jobs", "jobs.json");
-      const jobsData = JSON.parse(readFileSync(jobsPath, "utf-8"));
-      if (!jobsData.groups || jobsData.groups.length === 0) {
-        console.log("No jobs available. Add jobs to jobs/jobs.json before running the agent.");
-        return;
-      }
-    }
-    await spawnContainer({ prompt: opts.prompt, maxIterations: opts.iterations });
+    await runDetached({
+      repo: opts.repo,
+      branch: opts.branch,
+      pushBranch,
+      prompt: opts.prompt,
+    });
   }
 }
 

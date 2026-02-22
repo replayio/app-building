@@ -1,9 +1,16 @@
-import { ChildProcess, execFileSync, spawn } from "child_process";
-import { readFileSync, existsSync } from "fs";
+import { execFileSync, spawn } from "child_process";
+import { readFileSync, writeFileSync, existsSync } from "fs";
 import { resolve } from "path";
 
 const IMAGE_NAME = "app-building";
-const ReplayMCPServer = "https://dispatch.[REDACTED].io/nut/mcp";
+const CONTAINER_PORT = 3000;
+const STATE_FILE = resolve(__dirname, "..", ".agent-state.json");
+
+export interface AgentState {
+  containerName: string;
+  port: number;
+  baseUrl: string;
+}
 
 export function buildImage(): void {
   const contextDir = resolve(__dirname, "..");
@@ -39,7 +46,6 @@ function loadDotEnv(projectRoot: string): Record<string, string> {
     if (eqIndex === -1) continue;
     const key = trimmed.slice(0, eqIndex).trim();
     let value = trimmed.slice(eqIndex + 1).trim();
-    // Strip surrounding quotes
     if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
       value = value.slice(1, -1);
     }
@@ -60,22 +66,57 @@ function loadRequiredEnvVars(projectRoot: string): string[] {
     .filter((key) => key.length > 0);
 }
 
-function buildMCPConfig(envVars: Record<string, string>): string {
-  const mcpConfig: Record<string, any> = { mcpServers: {} };
-  if (envVars.RECORD_REPLAY_API_KEY) {
-    mcpConfig.mcpServers.[REDACTED] = { type: "http", url: ReplayMCPServer };
+function findFreePort(): number {
+  // Use a simple incrementing scheme based on existing containers
+  // Start from 3100 to avoid conflicts
+  let port = 3100;
+  try {
+    const out = execFileSync("docker", ["ps", "--format", "{{.Ports}}"], {
+      encoding: "utf-8",
+      timeout: 5000,
+    });
+    const usedPorts = new Set<number>();
+    for (const match of out.matchAll(/0\.0\.0\.0:(\d+)->/g)) {
+      usedPorts.add(parseInt(match[1], 10));
+    }
+    while (usedPorts.has(port)) port++;
+  } catch {
+    // If docker ps fails, just use default
   }
-  return JSON.stringify(mcpConfig);
+  return port;
 }
 
-interface ContainerSetup {
-  args: string[];
-  containerName: string;
-  envVars: Record<string, string>;
-  mcpConfig: string;
+export function writeAgentState(state: AgentState): void {
+  writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + "\n");
 }
 
-function setupContainer(mode: "interactive" | "detached" | "attached"): ContainerSetup {
+export function readAgentState(): AgentState | null {
+  if (!existsSync(STATE_FILE)) return null;
+  try {
+    return JSON.parse(readFileSync(STATE_FILE, "utf-8"));
+  } catch {
+    return null;
+  }
+}
+
+export function clearAgentState(): void {
+  try {
+    const { unlinkSync } = require("fs");
+    unlinkSync(STATE_FILE);
+  } catch {
+    // Already gone
+  }
+}
+
+export interface StartContainerOptions {
+  repoUrl: string;
+  cloneBranch: string;
+  pushBranch: string;
+}
+
+export async function startContainer(
+  opts: StartContainerOptions,
+): Promise<AgentState> {
   const projectRoot = resolve(__dirname, "..");
 
   ensureImageExists();
@@ -86,145 +127,111 @@ function setupContainer(mode: "interactive" | "detached" | "attached"): Containe
   const requiredVars = loadRequiredEnvVars(projectRoot);
   const missing = requiredVars.filter((v) => !envVars[v]);
   if (missing.length > 0) {
-    console.error(`Missing required env vars in .env: ${missing.join(", ")}`);
-    process.exit(1);
+    throw new Error(`Missing required env vars in .env: ${missing.join(", ")}`);
   }
 
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const containerName = `app-building-${uniqueId}`;
-
-  const mcpConfig = buildMCPConfig(envVars);
+  const hostPort = findFreePort();
 
   // Build docker run args
-  const args: string[] = ["run"];
+  const args: string[] = ["run", "-d", "--rm", "--name", containerName];
 
-  if (mode === "detached") {
-    args.push("-d");
-  } else if (mode === "interactive") {
-    args.push("-it");
-  }
-  // "attached" mode: no -d, no -it — runs in foreground
+  // Port mapping: host -> container
+  args.push("-p", `${hostPort}:${CONTAINER_PORT}`);
 
-  args.push("--rm", "--name", containerName);
-  args.push("-v", `${projectRoot}:/repo`);
-  args.push("-w", "/repo");
+  // Network for outbound access
   args.push("--network", "host");
-  args.push("--user", `${process.getuid!()}:${process.getgid!()}`);
 
-  // Writable HOME that persists across container runs (for claude -c)
-  args.push("--env", "HOME=/repo/.agent-home");
+  // Git env vars for repo clone
+  args.push("--env", `REPO_URL=${opts.repoUrl}`);
+  args.push("--env", `CLONE_BRANCH=${opts.cloneBranch}`);
+  args.push("--env", `PUSH_BRANCH=${opts.pushBranch}`);
 
-  // Git identity (system gitconfig not visible to non-root user)
+  // When using --network host, the container uses the host's network stack,
+  // so we need to tell the server to use a specific port
+  args.push("--env", `PORT=${hostPort}`);
+
+  // Container name for logging
+  args.push("--env", `CONTAINER_NAME=${containerName}`);
+
+  // Writable HOME for claude -c
+  args.push("--env", "HOME=/root");
+
+  // Git identity
   args.push("--env", "GIT_AUTHOR_NAME=App Builder");
   args.push("--env", "GIT_AUTHOR_EMAIL=app-builder@localhost");
   args.push("--env", "GIT_COMMITTER_NAME=App Builder");
   args.push("--env", "GIT_COMMITTER_EMAIL=app-builder@localhost");
 
-  // Playwright browsers installed at shared path
+  // Playwright
   args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
 
-  // Pass env vars from .env
+  // Pass all .env vars (includes API keys, tokens, etc.)
   for (const [k, v] of Object.entries(envVars)) {
     args.push("--env", `${k}=${v}`);
   }
 
-  // Image name
-  args.push(IMAGE_NAME);
-
-  return { args, containerName, envVars, mcpConfig };
-}
-
-export function spawnContainer(options?: { prompt?: string; maxIterations?: number }): Promise<void> {
-  const { args, containerName, mcpConfig } = setupContainer("detached");
-
-  if (options?.maxIterations) {
-    args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `MAX_ITERATIONS=${options.maxIterations}`);
-  }
-
-  // Forward DEBUG flag for worker-debug.log
+  // Forward DEBUG flag
   if (process.env.DEBUG) {
-    args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `DEBUG=${process.env.DEBUG}`);
+    args.push("--env", `DEBUG=${process.env.DEBUG}`);
   }
 
-  // Pass container name so the worker can log it
-  args.splice(args.indexOf(IMAGE_NAME), 0, "--env", `CONTAINER_NAME=${containerName}`);
-
-  // Worker (consumes job groups, optionally preceded by a prompt)
-  args.push("npx", "tsx", "/repo/src/worker.ts");
-  if (options?.prompt) {
-    args.push("-p", options.prompt);
-  }
-  args.push("--model", "claude-opus-4-6");
-  args.push("--dangerously-skip-permissions");
-  args.push("--mcp-config", mcpConfig);
+  // Image name — CMD is baked in (server.ts)
+  args.push(IMAGE_NAME);
 
   const containerId = execFileSync("docker", args, {
     encoding: "utf-8",
     timeout: 30000,
   }).trim();
 
-  console.log(`Container started: ${containerId.slice(0, 12)}`);
-  console.log(`Logs: docker logs -f ${containerName}`);
-  return Promise.resolve();
-}
+  console.log(`Container started: ${containerId.slice(0, 12)} (${containerName})`);
 
-export async function startInteractiveContainer(): Promise<{ containerName: string; mcpConfig: string }> {
-  const { args, containerName, mcpConfig } = setupContainer("attached");
-  // -i keeps stdin open; cat exits on EOF when the parent process dies,
-  // which triggers --rm to clean up the container.
-  args.splice(1, 0, "-i");
-  args.push("cat");
-
-  const child = spawn("docker", args, {
-    stdio: ["pipe", "ignore", "pipe"],
-  });
-
-  let startError = "";
-  child.stderr!.on("data", (data: Buffer) => {
-    startError += data.toString();
-  });
-  child.on("error", () => {});
-
-  // Wait for the container to be running
-  const maxWait = 30000;
-  const interval = 200;
+  // Wait for the HTTP server to become ready
+  const baseUrl = `http://127.0.0.1:${hostPort}`;
+  const maxWait = 120000; // clone can take a while
+  const interval = 1000;
   const start = Date.now();
+  let ready = false;
+
   while (Date.now() - start < maxWait) {
     try {
-      const status = execFileSync("docker", ["inspect", "--format", "{{.State.Running}}", containerName], {
-        encoding: "utf-8",
-        stdio: ["pipe", "pipe", "pipe"],
-        timeout: 5000,
-      }).trim();
-      if (status === "true") break;
+      const res = await fetch(`${baseUrl}/status`);
+      if (res.ok) {
+        ready = true;
+        break;
+      }
     } catch {
-      // Container not found yet, keep waiting
+      // Not ready yet
     }
     await new Promise((r) => setTimeout(r, interval));
   }
 
-  // Verify container is actually running
-  try {
-    const status = execFileSync("docker", ["inspect", "--format", "{{.State.Running}}", containerName], {
-      encoding: "utf-8",
-      stdio: ["pipe", "pipe", "pipe"],
-      timeout: 5000,
-    }).trim();
-    if (status !== "true") {
-      throw new Error(`Container failed to start: ${startError.trim() || "unknown error"}`);
+  if (!ready) {
+    // Check if container is still running
+    try {
+      const status = execFileSync(
+        "docker",
+        ["inspect", "--format", "{{.State.Running}}", containerName],
+        { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"], timeout: 5000 },
+      ).trim();
+      if (status !== "true") {
+        const logs = execFileSync("docker", ["logs", "--tail", "20", containerName], {
+          encoding: "utf-8",
+          timeout: 5000,
+        });
+        throw new Error(`Container exited before becoming ready:\n${logs}`);
+      }
+    } catch (e: any) {
+      if (e.message.includes("Container exited")) throw e;
     }
-  } catch (e: any) {
-    if (e.message.includes("Container failed to start")) throw e;
-    throw new Error(`Container failed to start: ${startError.trim() || e.message}`);
+    throw new Error("Container did not become ready within timeout");
   }
 
-  return { containerName, mcpConfig };
-}
+  const agentState: AgentState = { containerName, port: hostPort, baseUrl };
+  writeAgentState(agentState);
 
-export function execInContainer(containerName: string, claudeArgs: string[]): ChildProcess {
-  return spawn("docker", ["exec", containerName, "claude", ...claudeArgs], {
-    stdio: ["ignore", "pipe", "inherit"],
-  });
+  return agentState;
 }
 
 export function stopContainer(containerName: string): void {
@@ -233,13 +240,28 @@ export function stopContainer(containerName: string): void {
   } catch {
     // Container may already be stopped
   }
+  clearAgentState();
 }
 
 export function spawnTestContainer(): Promise<void> {
-  const { args } = setupContainer("interactive");
+  const projectRoot = resolve(__dirname, "..");
+  ensureImageExists();
 
-  // Just start bash — no worker script
-  args.push("bash");
+  const envVars = loadDotEnv(projectRoot);
+  const uniqueId = Math.random().toString(36).slice(2, 8);
+  const containerName = `app-building-test-${uniqueId}`;
+
+  const args: string[] = ["run", "-it", "--rm", "--name", containerName];
+  args.push("-v", `${projectRoot}:/repo`);
+  args.push("-w", "/repo");
+  args.push("--network", "host");
+  args.push("--user", `${process.getuid!()}:${process.getgid!()}`);
+  args.push("--env", "HOME=/repo/.agent-home");
+  args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
+  for (const [k, v] of Object.entries(envVars)) {
+    args.push("--env", `${k}=${v}`);
+  }
+  args.push(IMAGE_NAME, "bash");
 
   return new Promise((resolve, reject) => {
     const child = spawn("docker", args, { stdio: "inherit" });
