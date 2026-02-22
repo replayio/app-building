@@ -158,6 +158,12 @@ export async function startContainer(
   // Writable HOME for claude -c
   args.push("--env", "HOME=/root");
 
+  // Mount host SSH keys so git clone works with SSH remotes
+  const sshDir = resolve(process.env.HOME ?? "", ".ssh");
+  if (existsSync(sshDir)) {
+    args.push("-v", `${sshDir}:/root/.ssh:ro`);
+  }
+
   // Git identity
   args.push("--env", "GIT_AUTHOR_NAME=App Builder");
   args.push("--env", "GIT_AUTHOR_EMAIL=app-builder@localhost");
@@ -195,6 +201,29 @@ export async function startContainer(
   let ready = false;
 
   while (Date.now() - start < maxWait) {
+    // Check if the container is still alive (--rm removes it on exit)
+    try {
+      execFileSync(
+        "docker",
+        ["inspect", "--format", "{{.State.Running}}", containerName],
+        { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"], timeout: 5000 },
+      );
+    } catch {
+      // Container is gone — grab logs from docker if possible, otherwise just report
+      let logs = "";
+      try {
+        logs = execFileSync("docker", ["logs", "--tail", "30", containerName], {
+          encoding: "utf-8",
+          timeout: 5000,
+        });
+      } catch {
+        // Container already removed (--rm)
+      }
+      throw new Error(
+        `Container exited during startup.${logs ? `\n\n--- container logs ---\n${logs}` : " (no logs available, container was removed)"}`,
+      );
+    }
+
     try {
       const res = await fetch(`${baseUrl}/status`);
       if (res.ok) {
@@ -208,23 +237,6 @@ export async function startContainer(
   }
 
   if (!ready) {
-    // Check if container is still running
-    try {
-      const status = execFileSync(
-        "docker",
-        ["inspect", "--format", "{{.State.Running}}", containerName],
-        { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"], timeout: 5000 },
-      ).trim();
-      if (status !== "true") {
-        const logs = execFileSync("docker", ["logs", "--tail", "20", containerName], {
-          encoding: "utf-8",
-          timeout: 5000,
-        });
-        throw new Error(`Container exited before becoming ready:\n${logs}`);
-      }
-    } catch (e: any) {
-      if (e.message.includes("Container exited")) throw e;
-    }
     throw new Error("Container did not become ready within timeout");
   }
 
