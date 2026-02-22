@@ -109,11 +109,9 @@ function buildExtraArgs(): string[] {
   return args;
 }
 
-// --- Logger ---
+// --- Logger (initialized after clone) ---
 
-const log = createBufferedLogger(LOGS_DIR, (line) => {
-  logBuffer.append(line);
-});
+let log: ReturnType<typeof createBufferedLogger>;
 
 const onEvent: EventCallback = (rawLine) => {
   eventBuffer.append(rawLine);
@@ -344,7 +342,7 @@ const server = createServer(async (req, res) => {
 // --- Startup ---
 
 async function main(): Promise<void> {
-  log("=== Container starting ===");
+  console.log("=== Container starting ===");
 
   // Clone repo
   if (!REPO_URL) {
@@ -352,25 +350,29 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  log(`Cloning ${REPO_URL} (branch: ${CLONE_BRANCH})...`);
+  console.log(`Cloning ${REPO_URL} (branch: ${CLONE_BRANCH})...`);
   try {
     cloneRepo(REPO_URL, CLONE_BRANCH, REPO_DIR);
-    log("Clone complete.");
+    console.log("Clone complete.");
   } catch (e: any) {
-    log(`Fatal: clone failed: ${e.message}`);
-    console.error(`Clone failed: ${e.message}`);
+    console.error(`Fatal: clone failed: ${e.message}`);
     process.exit(1);
   }
 
   // Checkout push branch if different from clone branch
   if (PUSH_BRANCH !== CLONE_BRANCH) {
-    log(`Checking out push branch: ${PUSH_BRANCH}`);
+    console.log(`Checking out push branch: ${PUSH_BRANCH}`);
     try {
       checkoutPushBranch(PUSH_BRANCH, REPO_DIR);
     } catch (e: any) {
-      log(`Warning: checkout push branch failed: ${e.message}`);
+      console.error(`Warning: checkout push branch failed: ${e.message}`);
     }
   }
+
+  // Now that /repo exists, initialize the logger
+  log = createBufferedLogger(LOGS_DIR, (line) => {
+    logBuffer.append(line);
+  });
 
   log(`Revision: ${getRevision(REPO_DIR)}`);
   log(`Push branch: ${PUSH_BRANCH}`);
