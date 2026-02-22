@@ -1,7 +1,7 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
-import { pushImage, createMachine, waitForMachine, destroyMachine } from "./fly";
+import { pushImage, createApp, createMachine, waitForMachine, destroyMachine } from "./fly";
 
 const IMAGE_NAME = "app-building";
 const CONTAINER_PORT = 3000;
@@ -65,7 +65,7 @@ function loadRequiredEnvVars(projectRoot: string): string[] {
   return content
     .split("\n")
     .map((line) => line.trim())
-    .filter((line) => line && !line.startsWith("#"))
+    .filter((line) => line && !line.startsWith("#") && !line.includes("# optional"))
     .map((line) => line.split("=")[0].trim())
     .filter((key) => key.length > 0);
 }
@@ -249,10 +249,19 @@ export async function startRemoteContainer(
   const envVars = loadDotEnv(projectRoot);
 
   const flyToken = envVars.FLY_API_TOKEN ?? process.env.FLY_API_TOKEN;
-  const flyApp = envVars.FLY_APP_NAME ?? process.env.FLY_APP_NAME;
+  let flyApp = envVars.FLY_APP_NAME ?? process.env.FLY_APP_NAME;
 
   if (!flyToken) throw new Error("FLY_API_TOKEN is required for --remote");
-  if (!flyApp) throw new Error("FLY_APP_NAME is required for --remote");
+
+  if (!flyApp) {
+    const randomId = Math.random().toString(36).slice(2, 8);
+    flyApp = `app-building-${randomId}`;
+    console.log(`No FLY_APP_NAME set. Creating Fly app "${flyApp}"...`);
+    await createApp(flyToken, flyApp);
+    const envPath = resolve(projectRoot, ".env");
+    appendFileSync(envPath, `\nFLY_APP_NAME=${flyApp}\n`);
+    console.log(`Fly app created and saved to .env as FLY_APP_NAME=${flyApp}`);
+  }
 
   // Ensure local Docker image exists, then push to Fly registry
   ensureImageExists();

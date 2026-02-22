@@ -99,3 +99,13 @@ npm run stop
 ```
 
 Sends an HTTP stop signal to the container. Errors if the container is unreachable.
+
+### Remote mode (Fly.io)
+
+Set `FLY_API_TOKEN` in your `.env`, then add `--remote`:
+
+```bash
+npm run agent -- --remote -p "build a todo app"
+```
+
+On first use, a Fly app is automatically created and saved to `.env` as `FLY_APP_NAME`. Subsequent runs reuse the same app. No `fly` CLI needed.

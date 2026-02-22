@@ -23,6 +23,16 @@ async function flyFetch(
 }
 
 /**
+ * Create a Fly app via the Machines API.
+ */
+export async function createApp(token: string, name: string, org?: string): Promise<void> {
+  await flyFetch("/apps", token, {
+    method: "POST",
+    body: JSON.stringify({ app_name: name, org_slug: org ?? "personal" }),
+  });
+}
+
+/**
  * Push a local Docker image to the Fly.io registry.
  * Returns the full registry image ref.
  */
