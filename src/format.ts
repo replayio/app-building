@@ -1,11 +1,11 @@
-export const RESET = "\x1b[0m";
-export const DIM = "\x1b[2m";
-export const BOLD = "\x1b[1m";
-export const CYAN = "\x1b[36m";
-export const GREEN = "\x1b[32m";
-export const YELLOW = "\x1b[33m";
-export const RED = "\x1b[31m";
-const MAGENTA = "\x1b[35m";
+export const RESET = "";
+export const DIM = "";
+export const BOLD = "";
+export const CYAN = "";
+export const GREEN = "";
+export const YELLOW = "";
+export const RED = "";
+const MAGENTA = "";
 
 /**
  * Format a single raw log line (timestamp already stripped) for display.
@@ -59,13 +59,27 @@ export function formatLogLine(line: string): string | null {
     return null;
   }
 
+  // Strip ANSI escape codes before trying JSON parse
+  const stripped = line.replace(/\x1b\[[0-9;]*m/g, "");
+
   // Try parsing as JSON stream event
   try {
-    const event = JSON.parse(line);
+    const event = JSON.parse(stripped);
     return formatEvent(event);
   } catch {
-    return line;
+    return truncLine(stripped);
   }
+}
+
+const MAX_LINE_LEN = 300;
+
+function truncLine(s: string): string {
+  if (s.length <= MAX_LINE_LEN) return s;
+  return s.slice(0, MAX_LINE_LEN) + `${DIM}... (truncated)${RESET}`;
+}
+
+function truncLines(s: string): string {
+  return s.split("\n").map(truncLine).join("\n");
 }
 
 export function formatEvent(event: any): string | null {
@@ -80,11 +94,11 @@ export function formatEvent(event: any): string | null {
     const parts: string[] = [];
     for (const block of content) {
       if (block.type === "text" && block.text) {
-        parts.push(block.text);
+        parts.push(truncLines(block.text));
       } else if (block.type === "tool_use") {
         const input = block.input;
         if (block.name === "Bash" && input?.command) {
-          parts.push(`${MAGENTA}$ ${input.command}${RESET}`);
+          parts.push(`${MAGENTA}$ ${truncLine(input.command)}${RESET}`);
         } else if (block.name === "Edit" && input?.file_path) {
           parts.push(`${MAGENTA}[edit] ${input.file_path}${RESET}`);
         } else if (block.name === "Write" && input?.file_path) {
@@ -113,12 +127,17 @@ export function formatEvent(event: any): string | null {
       const display = lines.length > 20
         ? [...lines.slice(0, 20), `${DIM}... (${lines.length - 20} more lines)${RESET}`]
         : lines;
-      parts.push(`${DIM}${display.join("\n")}${RESET}`);
+      parts.push(`${DIM}${display.map(truncLine).join("\n")}${RESET}`);
     }
     if (stderr) {
-      parts.push(`${RED}${stderr}${RESET}`);
+      parts.push(`${RED}${truncLines(stderr)}${RESET}`);
     }
     return parts.length > 0 ? parts.join("\n") : null;
+  }
+
+  if (event.type === "user") {
+    // User messages with raw content (e.g. tool_result arrays) — skip the raw JSON
+    return null;
   }
 
   if (event.type === "result") {

@@ -149,21 +149,29 @@ When tests fail, you MUST follow this process for each distinct failure. Every s
 mandatory — do NOT skip or reorder steps.
 
 1. Announce `ANALYZING TEST FAILURE: <test name>`.
-2. Find the uploaded recording IDs in the `npm run test` output. The test script automatically
+2. **Read the debugging guides** in `strategies/debugging/` to find the category matching your
+   failure. The guides describe which Replay MCP tools to use first and what to look for:
+   - `strategies/debugging/timeouts.md` — Test timeouts and stuck steps
+   - `strategies/debugging/race-conditions.md` — Flaky tests, parallel interference
+   - `strategies/debugging/component-rendering.md` — Empty DOM, components not mounting
+   - `strategies/debugging/network-and-api.md` — API errors, missing/wrong data
+   - `strategies/debugging/form-and-input.md` — Form validation, input interactions
+   - `strategies/debugging/seed-data.md` — Missing test data, count mismatches
+   - `strategies/debugging/README.md` — Quick reference table: symptom → starting tool
+3. Find the uploaded recording IDs in the `npm run test` output. The test script automatically
    uploads failed recordings and logs full metadata for each one. Look for the
    `=== REPLAY RECORDINGS METADATA ===` block and the `REPLAY UPLOADED: <recordingId>` lines
    in the output. Choose the recording whose URI and duration best match the failing test. If
    the upload did not happen (e.g., the script was misconfigured), use
    `npx [REDACTED]io list --json` to find recordings and upload them manually:
    `npx [REDACTED]io upload <id>`.
-3. Announce `TEST FAILURE UPLOADED: <recordingId>` before doing anything else.
-4. Use Replay MCP tools to analyze the failure. Pick the tool that fits the failure:
-   `PlaywrightSteps`, `ConsoleMessages`, `NetworkRequest`, `SearchSources`, `Logpoint`,
-   `Evaluate`, `GetStack`, `ReactComponents`, `Screenshot`, etc. Use as many as needed to
-   understand what actually happened before making any changes.
-5. Write a bug writeup to `docs/bugs/<TestName>.md` following the investigative template below.
+4. Announce `TEST FAILURE UPLOADED: <recordingId>` before doing anything else.
+5. Use Replay MCP tools to analyze the failure, following the tool sequence from the relevant
+   debugging guide. Use as many tools as needed to understand what actually happened before
+   making any changes.
+6. Write a bug writeup to `docs/bugs/<TestName>.md` following the investigative template below.
    You MUST fill in every section before making any code changes.
-6. Only after completing the Replay analysis AND the bug writeup, fix the test and/or app based
+7. Only after completing the Replay analysis AND the bug writeup, fix the test and/or app based
    on what you found.
 
 ### Bug Writeup Template

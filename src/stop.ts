@@ -1,4 +1,4 @@
-import { readAgentState, clearAgentState } from "./container";
+import { readAgentState, clearAgentState, stopRemoteContainer } from "./container";
 import { httpPost } from "./http-client";
 
 async function main(): Promise<void> {
@@ -11,10 +11,21 @@ async function main(): Promise<void> {
 
   console.log(`Stopping container ${agentState.containerName}...`);
 
-  await httpPost(`${agentState.baseUrl}/stop`);
-  console.log("Stop signal sent.");
+  // Send HTTP stop signal to the container's server
+  try {
+    await httpPost(`${agentState.baseUrl}/stop`);
+    console.log("Stop signal sent.");
+  } catch {
+    console.log("Could not reach container (may already be stopped).");
+  }
 
-  // Wait for container to exit
+  if (agentState.type === "remote") {
+    // Destroy the Fly machine so it doesn't sit idle and cost money
+    await stopRemoteContainer(agentState);
+    return;
+  }
+
+  // Wait for local container to exit
   for (let i = 0; i < 10; i++) {
     await new Promise((r) => setTimeout(r, 500));
     try {

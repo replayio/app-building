@@ -3,6 +3,8 @@ import { resolve } from "path";
 import { Command } from "commander";
 import { formatLogLine } from "./format";
 
+const MAX_OUTPUT_LINE = 300;
+
 const program = new Command();
 program
   .argument("<logfile>", "path to an iteration log file")
@@ -19,5 +21,14 @@ for (const rawLine of content.split("\n")) {
   const line = tsMatch ? tsMatch[2] : rawLine;
 
   const formatted = formatLogLine(line);
-  if (formatted) console.log(formatted);
+  if (formatted) {
+    // Truncate each output line as a safety net
+    for (const outLine of formatted.split("\n")) {
+      if (outLine.length > MAX_OUTPUT_LINE) {
+        console.log(outLine.slice(0, MAX_OUTPUT_LINE) + "... (truncated)");
+      } else {
+        console.log(outLine);
+      }
+    }
+  }
 }

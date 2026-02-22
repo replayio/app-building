@@ -1,15 +1,19 @@
 import { execFileSync, spawn } from "child_process";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { resolve } from "path";
+import { pushImage, createMachine, waitForMachine, destroyMachine } from "./fly";
 
 const IMAGE_NAME = "app-building";
 const CONTAINER_PORT = 3000;
 const STATE_FILE = resolve(__dirname, "..", ".agent-state.json");
 
 export interface AgentState {
+  type: "local" | "remote";
   containerName: string;
   port: number;
   baseUrl: string;
+  flyApp?: string;
+  flyMachineId?: string;
 }
 
 export function buildImage(): void {
@@ -93,7 +97,9 @@ export function writeAgentState(state: AgentState): void {
 export function readAgentState(): AgentState | null {
   if (!existsSync(STATE_FILE)) return null;
   try {
-    return JSON.parse(readFileSync(STATE_FILE, "utf-8"));
+    const state = JSON.parse(readFileSync(STATE_FILE, "utf-8"));
+    if (!state.type) state.type = "local";
+    return state;
   } catch {
     return null;
   }
@@ -112,6 +118,29 @@ export interface StartContainerOptions {
   repoUrl: string;
   cloneBranch: string;
   pushBranch: string;
+}
+
+function buildContainerEnv(
+  opts: StartContainerOptions,
+  envVars: Record<string, string>,
+  extra: Record<string, string> = {},
+): Record<string, string> {
+  const env: Record<string, string> = {
+    REPO_URL: opts.repoUrl,
+    CLONE_BRANCH: opts.cloneBranch,
+    PUSH_BRANCH: opts.pushBranch,
+    GIT_AUTHOR_NAME: "App Builder",
+    GIT_AUTHOR_EMAIL: "app-builder@localhost",
+    GIT_COMMITTER_NAME: "App Builder",
+    GIT_COMMITTER_EMAIL: "app-builder@localhost",
+    PLAYWRIGHT_BROWSERS_PATH: "/opt/playwright",
+    ...envVars,
+    ...extra,
+  };
+  if (process.env.DEBUG) {
+    env.DEBUG = process.env.DEBUG;
+  }
+  return env;
 }
 
 export async function startContainer(
@@ -134,37 +163,19 @@ export async function startContainer(
   const containerName = `app-building-${uniqueId}`;
   const hostPort = findFreePort();
 
+  const containerEnv = buildContainerEnv(opts, envVars, {
+    PORT: String(hostPort),
+    CONTAINER_NAME: containerName,
+  });
+
   // Build docker run args
   const args: string[] = ["run", "-d", "--rm", "--name", containerName];
 
   // --network host: container shares host network stack (no -p needed)
   args.push("--network", "host");
 
-  // Git env vars for repo clone
-  args.push("--env", `REPO_URL=${opts.repoUrl}`);
-  args.push("--env", `CLONE_BRANCH=${opts.cloneBranch}`);
-  args.push("--env", `PUSH_BRANCH=${opts.pushBranch}`);
-  args.push("--env", `PORT=${hostPort}`);
-  args.push("--env", `CONTAINER_NAME=${containerName}`);
-
-
-  // Git identity
-  args.push("--env", "GIT_AUTHOR_NAME=App Builder");
-  args.push("--env", "GIT_AUTHOR_EMAIL=app-builder@localhost");
-  args.push("--env", "GIT_COMMITTER_NAME=App Builder");
-  args.push("--env", "GIT_COMMITTER_EMAIL=app-builder@localhost");
-
-  // Playwright
-  args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
-
-  // Pass all .env vars (includes API keys, tokens, etc.)
-  for (const [k, v] of Object.entries(envVars)) {
+  for (const [k, v] of Object.entries(containerEnv)) {
     args.push("--env", `${k}=${v}`);
-  }
-
-  // Forward DEBUG flag
-  if (process.env.DEBUG) {
-    args.push("--env", `DEBUG=${process.env.DEBUG}`);
   }
 
   // Image name — CMD is baked in (server.ts)
@@ -224,10 +235,104 @@ export async function startContainer(
     throw new Error("Container did not become ready within timeout");
   }
 
-  const agentState: AgentState = { containerName, port: hostPort, baseUrl };
+  const agentState: AgentState = { type: "local", containerName, port: hostPort, baseUrl };
   writeAgentState(agentState);
 
   return agentState;
+}
+
+export async function startRemoteContainer(
+  opts: StartContainerOptions,
+): Promise<AgentState> {
+  const projectRoot = resolve(__dirname, "..");
+
+  const envVars = loadDotEnv(projectRoot);
+
+  const flyToken = envVars.FLY_API_TOKEN ?? process.env.FLY_API_TOKEN;
+  const flyApp = envVars.FLY_APP_NAME ?? process.env.FLY_APP_NAME;
+
+  if (!flyToken) throw new Error("FLY_API_TOKEN is required for --remote");
+  if (!flyApp) throw new Error("FLY_APP_NAME is required for --remote");
+
+  // Ensure local Docker image exists, then push to Fly registry
+  ensureImageExists();
+  console.log("Pushing image to Fly registry...");
+  const imageRef = pushImage(flyApp, flyToken, IMAGE_NAME);
+
+  // Build env vars for the machine
+  const containerEnv = buildContainerEnv(opts, envVars, {
+    PORT: "3000",
+  });
+  // Remove Fly-specific vars from container env (not needed inside)
+  delete containerEnv.FLY_API_TOKEN;
+  delete containerEnv.FLY_APP_NAME;
+
+  const uniqueId = Math.random().toString(36).slice(2, 8);
+  const machineName = `app-building-${uniqueId}`;
+
+  console.log("Creating Fly machine...");
+  const machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, machineName);
+  console.log(`Machine created: ${machineId}`);
+
+  console.log("Waiting for machine to start...");
+  await waitForMachine(flyApp, flyToken, machineId);
+  console.log("Machine started.");
+
+  // Poll the public URL until the HTTP server is ready
+  const baseUrl = `https://${flyApp}.fly.dev`;
+  const maxWait = 180000;
+  const interval = 2000;
+  const start = Date.now();
+  let ready = false;
+
+  while (Date.now() - start < maxWait) {
+    try {
+      const res = await fetch(`${baseUrl}/status`);
+      if (res.ok) {
+        ready = true;
+        break;
+      }
+    } catch {
+      // Not ready yet
+    }
+    await new Promise((r) => setTimeout(r, interval));
+  }
+
+  if (!ready) {
+    // Clean up machine if we can't reach it
+    console.log("Timed out waiting for machine, destroying...");
+    await destroyMachine(flyApp, flyToken, machineId).catch(() => {});
+    throw new Error("Remote container did not become ready within timeout");
+  }
+
+  const agentState: AgentState = {
+    type: "remote",
+    containerName: machineName,
+    port: 443,
+    baseUrl,
+    flyApp,
+    flyMachineId: machineId,
+  };
+  writeAgentState(agentState);
+
+  return agentState;
+}
+
+export async function stopRemoteContainer(state: AgentState): Promise<void> {
+  if (!state.flyApp || !state.flyMachineId) {
+    throw new Error("Missing flyApp or flyMachineId in agent state");
+  }
+
+  const projectRoot = resolve(__dirname, "..");
+  const envVars = loadDotEnv(projectRoot);
+  const flyToken = envVars.FLY_API_TOKEN ?? process.env.FLY_API_TOKEN;
+
+  if (!flyToken) throw new Error("FLY_API_TOKEN is required to stop remote container");
+
+  console.log(`Destroying Fly machine ${state.flyMachineId}...`);
+  await destroyMachine(state.flyApp, flyToken, state.flyMachineId);
+  console.log("Machine destroyed.");
+  clearAgentState();
 }
 
 export function stopContainer(containerName: string): void {

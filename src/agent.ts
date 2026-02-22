@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { startContainer, stopContainer, readAgentState } from "./container";
+import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, readAgentState } from "./container";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 import { httpGet, httpPost } from "./http-client";
 import { formatEvent } from "./format";
@@ -130,19 +130,29 @@ async function runInteractive(opts: {
   repo: string;
   branch: string;
   pushBranch: string;
+  remote?: boolean;
 }): Promise<void> {
-  const { containerName, baseUrl } = await startContainer({
+  const startOpts = {
     repoUrl: opts.repo,
     cloneBranch: opts.branch,
     pushBranch: opts.pushBranch,
-  });
+  };
+  const state = opts.remote
+    ? await startRemoteContainer(startOpts)
+    : await startContainer(startOpts);
+
+  const { containerName, baseUrl } = state;
 
   console.log(`Container: ${containerName}`);
   console.log(`Server: ${baseUrl}`);
 
   process.on("SIGINT", () => {
-    stopContainer(containerName);
-    process.exit(0);
+    if (state.type === "remote") {
+      stopRemoteContainer(state).finally(() => process.exit(0));
+    } else {
+      stopContainer(containerName);
+      process.exit(0);
+    }
   });
 
   let eventOffset = 0;
@@ -209,12 +219,16 @@ async function runDetached(opts: {
   branch: string;
   pushBranch: string;
   prompt?: string;
+  remote?: boolean;
 }): Promise<void> {
-  const { containerName, baseUrl } = await startContainer({
+  const startOpts = {
     repoUrl: opts.repo,
     cloneBranch: opts.branch,
     pushBranch: opts.pushBranch,
-  });
+  };
+  const { containerName, baseUrl } = opts.remote
+    ? await startRemoteContainer(startOpts)
+    : await startContainer(startOpts);
 
   console.log(`Container: ${containerName}`);
   console.log(`Server: ${baseUrl}`);
@@ -242,6 +256,7 @@ async function main(): Promise<void> {
     .option("--repo <url>", "git repo URL to clone")
     .option("--branch <name>", "branch to clone")
     .option("--push-branch <name>", "branch to push to")
+    .option("--remote", "run container on Fly.io instead of local Docker")
     .allowUnknownOption(false)
     .allowExcessArguments(false)
     .parse();
@@ -253,9 +268,9 @@ async function main(): Promise<void> {
   const pushBranch = opts.pushBranch ?? branch;
 
   if (opts.interactive) {
-    await runInteractive({ repo, branch, pushBranch });
+    await runInteractive({ repo, branch, pushBranch, remote: opts.remote });
   } else {
-    await runDetached({ repo, branch, pushBranch, prompt: opts.prompt });
+    await runDetached({ repo, branch, pushBranch, prompt: opts.prompt, remote: opts.remote });
   }
 }
 
