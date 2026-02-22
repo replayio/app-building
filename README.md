@@ -3,17 +3,18 @@
 Simple and extensible platform for dark factory agentic app building: creating apps
 according to a spec without human involvement along the way. Example use cases:
 
-* `npm run agent -- "Build me an app XYZ based on this spec: ..."`
-* `npm run agent -- "Continue maintaining app XYZ and fix these bugs: ..."`
-* `npm run agent` for interactive access to the agent.
+* `npm run agent -- -p "Build me an app XYZ based on this spec: ..."`
+* `npm run agent -- -p "Continue maintaining app XYZ and fix these bugs: ..."`
+* `npm run agent -- -i` for interactive access to the agent.
 
 Core ideas:
 
-* The agent runs within a docker container and has access to the repo and the internet.
+* The agent runs within a docker container that clones the target repo and exposes an HTTP server for control.
+* The host communicates with the container via HTTP — sending prompts, polling events/logs, and managing lifecycle.
 * The agent builds by following a set of strategy documents with guides and directives
   for breaking its work down into tasks and performing those tasks.
 * The agent reviews its own changes and improves the strategies based on this.
-* All code changes and agent trajectories are tracked in git for later automated review.
+* All code changes are committed and pushed back to the remote from inside the container.
 
 ## Strategies
 
@@ -50,34 +51,38 @@ npm run docker:build
 
 Copy `.env.example` to `.env` and fill in all API keys.
 
+## Architecture
+
+The Docker container runs an HTTP server (`src/server.ts`) that manages the full agent lifecycle:
+
+1. On startup, the container clones the target repo and starts listening on a port.
+2. The host sends prompts via `POST /message` and polls for events/logs.
+3. After each message, the server processes any pending job groups from `jobs/jobs.json`.
+4. Commits and pushes happen inside the container after each iteration.
+
+Container state is tracked locally in `.agent-state.json` so that `npm run status` and `npm run stop` can find the running container.
+
 ## Running the Agent
 
-### Consume pending jobs (default)
+`--repo` defaults to the current git remote (`origin`). `--branch` defaults to the current branch. Use `--push-branch` to push to a different branch than the one cloned.
+
+### Detached mode (default)
 
 ```bash
 npm run agent
-npm run agent -- -n 10   # limit iterations
-```
-
-Consumes pending job groups from `jobs/jobs.json`. Errors if no groups are queued. Each iteration handles one group — all jobs in the group are passed to Claude, which signals `<DONE>` on completion. Groups that don't get `<DONE>` are retried (up to 3 times). All output is logged to `logs/worker-current.log`.
-
-### Prompt mode
-
-```bash
 npm run agent -- -p "<prompt>"
-npm run agent -- -p "<prompt>" -n 10
+npm run agent -- --branch dev --push-branch feature/xyz -p "<prompt>"
 ```
 
-Handles the prompt first, then consumes any pending job groups.
+Starts a container, optionally queues a prompt, then detaches. The container processes the prompt followed by any pending job groups, commits and pushes results, then exits. Monitor with `npm run status`, stop with `npm run stop`.
 
 ### Interactive mode
 
 ```bash
 npm run agent -- -i
-npm run agent -- -i --resume <session-id>
 ```
 
-Chat with Claude inside a container. Output is streamed in real-time. Press ESC to interrupt. Subsequent messages continue the conversation.
+Chat with Claude inside a container. Output is streamed via event polling. Press ESC to interrupt the current message. On exit, the container is detached and finishes any remaining work.
 
 ### Checking status
 
@@ -85,4 +90,12 @@ Chat with Claude inside a container. Output is streamed in real-time. Press ESC 
 npm run status
 ```
 
-Shows the container name, iteration progress, cost, and the last 20 lines of formatted log output. If the agent is still running, it tails the log in real-time (Ctrl+C to stop).
+Connects to the running container's HTTP API and shows state, revision, queue depth, cost, and recent log output. Tails logs in real-time (Ctrl+C to stop). Errors if no agent is running.
+
+### Stopping the agent
+
+```bash
+npm run stop
+```
+
+Sends an HTTP stop signal to the container. Errors if the container is unreachable.

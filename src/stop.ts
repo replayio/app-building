@@ -1,4 +1,4 @@
-import { readAgentState, stopContainer, clearAgentState } from "./container";
+import { readAgentState, clearAgentState } from "./container";
 import { httpPost } from "./http-client";
 
 async function main(): Promise<void> {
@@ -11,16 +11,10 @@ async function main(): Promise<void> {
 
   console.log(`Stopping container ${agentState.containerName}...`);
 
-  // Try HTTP stop first
-  try {
-    await httpPost(`${agentState.baseUrl}/stop`);
-    console.log("Stop signal sent.");
-  } catch {
-    console.log("HTTP stop failed, falling back to docker stop...");
-    stopContainer(agentState.containerName);
-  }
+  await httpPost(`${agentState.baseUrl}/stop`);
+  console.log("Stop signal sent.");
 
-  // Wait for container to disappear
+  // Wait for container to exit
   for (let i = 0; i < 10; i++) {
     await new Promise((r) => setTimeout(r, 500));
     try {
@@ -34,11 +28,8 @@ async function main(): Promise<void> {
     }
   }
 
-  // Force stop
-  console.log("Container still running, forcing docker stop...");
-  stopContainer(agentState.containerName);
-  clearAgentState();
-  console.log("Container stopped.");
+  console.error("Container did not stop within 5 seconds.");
+  process.exit(1);
 }
 
 main().catch((e) => {

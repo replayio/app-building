@@ -1,5 +1,6 @@
 import { Command } from "commander";
 import { startContainer, stopContainer, readAgentState } from "./container";
+import { getLocalRemoteUrl, getLocalBranch } from "./git";
 import { httpGet, httpPost } from "./http-client";
 import { formatEvent } from "./format";
 
@@ -233,8 +234,8 @@ async function main(): Promise<void> {
   program
     .option("-i, --interactive", "interactive mode")
     .option("-p, --prompt <text>", "handle a prompt before consuming jobs")
-    .option("--repo <url>", "git repo URL to clone", process.env.REPO_URL)
-    .option("--branch <name>", "branch to clone", process.env.CLONE_BRANCH ?? "main")
+    .option("--repo <url>", "git repo URL to clone")
+    .option("--branch <name>", "branch to clone")
     .option("--push-branch <name>", "branch to push to")
     .allowUnknownOption(false)
     .allowExcessArguments(false)
@@ -242,26 +243,14 @@ async function main(): Promise<void> {
 
   const opts = program.opts();
 
-  if (!opts.repo) {
-    console.error("--repo is required (or set REPO_URL env var)");
-    process.exit(1);
-  }
-
-  const pushBranch = opts.pushBranch ?? opts.branch;
+  const repo = opts.repo ?? process.env.REPO_URL ?? getLocalRemoteUrl();
+  const branch = opts.branch ?? process.env.CLONE_BRANCH ?? getLocalBranch();
+  const pushBranch = opts.pushBranch ?? branch;
 
   if (opts.interactive) {
-    await runInteractive({
-      repo: opts.repo,
-      branch: opts.branch,
-      pushBranch,
-    });
+    await runInteractive({ repo, branch, pushBranch });
   } else {
-    await runDetached({
-      repo: opts.repo,
-      branch: opts.branch,
-      pushBranch,
-      prompt: opts.prompt,
-    });
+    await runDetached({ repo, branch, pushBranch, prompt: opts.prompt });
   }
 }
 
