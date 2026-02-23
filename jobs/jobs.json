@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecPersonDetail: Check testSpec.md directive violations in PersonDetailPage test entries",
-        "CheckComponentsPersonDetail: Check writeApp.md directive violations in PersonDetailPage components",
-        "CheckTestsPersonDetail: Check writeTests.md directive violations in PersonDetailPage tests"
-      ],
-      "timestamp": "2026-02-23T23:39:23.373Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecDealsList: Check testSpec.md directive violations in DealsListPage test entries",
         "CheckComponentsDealsList: Check writeApp.md directive violations in DealsListPage components",
         "CheckTestsDealsList: Check writeTests.md directive violations in DealsListPage tests"
@@ -625,6 +616,38 @@
         "WriteTestsClientDetail: Write all Playwright tests for ClientDetailPage test entries"
       ],
       "timestamp": "2026-02-23T23:54:55.983Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPagePersonDetail: Decide on components, add sections to docs/tests.md for PersonDetailPage",
+        "PlanComponentPersonDetailHeader: Add test entries for PersonDetailHeader",
+        "PlanComponentPersonRelationships: Add test entries for PersonRelationships",
+        "PlanComponentPersonContactHistory: Add test entries for PersonContactHistory",
+        "PlanComponentPersonAssociatedClients: Add test entries for PersonAssociatedClients"
+      ],
+      "timestamp": "2026-02-23T23:59:09.395Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentPersonDetailHeader: Write the PersonDetailHeader component",
+        "WriteComponentPersonRelationships: Write the PersonRelationships component",
+        "WriteComponentPersonContactHistory: Write the PersonContactHistory component",
+        "WriteComponentPersonAssociatedClients: Write the PersonAssociatedClients component",
+        "WritePagePersonDetail: Write the PersonDetailPage and individuals Netlify function"
+      ],
+      "timestamp": "2026-02-23T23:59:14.128Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "WriteTestPersonDetailHeader: Write tests for PersonDetailHeader",
+        "WriteTestPersonRelationships: Write tests for PersonRelationships",
+        "WriteTestPersonContactHistory: Write tests for PersonContactHistory",
+        "WriteTestPersonAssociatedClients: Write tests for PersonAssociatedClients"
+      ],
+      "timestamp": "2026-02-23T23:59:19.240Z"
     }
   ]
 }
