@@ -1,4 +1,27 @@
 import { test, expect } from './base';
+import { neon } from '@neondatabase/serverless';
+import { scryptSync, randomBytes } from 'crypto';
+import { readFileSync, existsSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __test_filename = fileURLToPath(import.meta.url);
+const __test_dirname = dirname(__test_filename);
+
+function getTestDbUrl(): string {
+  const branchDataPath = resolve(__test_dirname, 'test-branch-data.json');
+  if (existsSync(branchDataPath)) {
+    const data = JSON.parse(readFileSync(branchDataPath, 'utf-8'));
+    return data.connectionUri;
+  }
+  return process.env.DATABASE_URL || '';
+}
+
+function hashPassword(password: string): string {
+  const salt = randomBytes(16).toString('hex');
+  const hash = scryptSync(password, salt, 64).toString('hex');
+  return `${salt}:${hash}`;
+}
 
 // ============================================================
 // Authentication Tests (AUTH-USR)
@@ -256,5 +279,118 @@ test.describe('ConfirmEmailPage', () => {
     await expect(page.getByTestId('confirm-email-error')).toContainText('Confirmation Failed');
 
     await context.close();
+  });
+});
+
+// ============================================================
+// Production Auth Flows — no IS_TEST bypass (AUTH-CE-03, AUTH-RP-04)
+// These tests exercise real token generation, storage, and redemption
+// by interacting with the database directly and calling API endpoints.
+// ============================================================
+
+test.describe('Production Auth Flows', () => {
+  test.setTimeout(120000);
+
+  test('AUTH-CE-03: Email confirmation token redemption and login flow', async ({ request }) => {
+    const dbUrl = getTestDbUrl();
+    expect(dbUrl).toBeTruthy();
+    const sql = neon(dbUrl);
+
+    const testEmail = `ce03-${Date.now()}@test.com`;
+    const testPassword = 'testpass123';
+    const passwordHash = hashPassword(testPassword);
+    const authUserId = crypto.randomUUID();
+    const confirmToken = randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+    // 1. Insert an unconfirmed user directly into the database
+    const userRows = await sql`
+      INSERT INTO users (auth_user_id, email, name, password_hash, provider, email_confirmed)
+      VALUES (${authUserId}::uuid, ${testEmail}, ${testEmail.split('@')[0]}, ${passwordHash}, 'email', false)
+      RETURNING id
+    `;
+    const userId = userRows[0].id;
+
+    // 2. Insert a confirmation token
+    await sql`
+      INSERT INTO email_tokens (user_id, token, type, expires_at)
+      VALUES (${userId}::uuid, ${confirmToken}, 'confirm', ${expiresAt})
+    `;
+
+    // 3. Call the confirm-email API endpoint with the token
+    const confirmRes = await request.post('/.netlify/functions/auth?action=confirm-email', {
+      data: { token: confirmToken },
+    });
+    expect(confirmRes.status()).toBe(200);
+    const confirmBody = await confirmRes.json();
+    expect(confirmBody.access_token).toBeTruthy();
+    expect(confirmBody.user).toBeTruthy();
+    expect(confirmBody.user.email).toBe(testEmail);
+
+    // 4. Verify the user is confirmed in the database
+    const confirmedRows = await sql`
+      SELECT email_confirmed FROM users WHERE id = ${userId}::uuid
+    `;
+    expect(confirmedRows[0].email_confirmed).toBe(true);
+
+    // 5. Verify the token is marked as used
+    const tokenRows = await sql`
+      SELECT used_at FROM email_tokens WHERE token = ${confirmToken}
+    `;
+    expect(tokenRows[0].used_at).toBeTruthy();
+  });
+
+  test('AUTH-RP-04: Full password reset token generation, redemption, and login flow', async ({ request }) => {
+    const dbUrl = getTestDbUrl();
+    expect(dbUrl).toBeTruthy();
+    const sql = neon(dbUrl);
+
+    const testEmail = `rp04-${Date.now()}@test.com`;
+    const originalPassword = 'original123';
+    const newPassword = 'newpass456';
+    const passwordHash = hashPassword(originalPassword);
+    const authUserId = crypto.randomUUID();
+
+    // 1. Create a confirmed user in the database
+    await sql`
+      INSERT INTO users (auth_user_id, email, name, password_hash, provider, email_confirmed)
+      VALUES (${authUserId}::uuid, ${testEmail}, ${testEmail.split('@')[0]}, ${passwordHash}, 'email', true)
+    `;
+
+    // 2. Call forgot-password API to generate a reset token
+    const forgotRes = await request.post('/.netlify/functions/auth?action=forgot-password', {
+      data: { email: testEmail },
+    });
+    expect(forgotRes.status()).toBe(200);
+    const forgotBody = await forgotRes.json();
+    expect(forgotBody.message).toContain('password reset link has been sent');
+
+    // 3. Query the database for the generated reset token
+    const tokenRows = await sql`
+      SELECT et.token FROM email_tokens et
+      JOIN users u ON u.id = et.user_id
+      WHERE u.email = ${testEmail} AND et.type = 'reset' AND et.used_at IS NULL
+      ORDER BY et.created_at DESC LIMIT 1
+    `;
+    expect(tokenRows.length).toBe(1);
+    const resetToken = tokenRows[0].token;
+
+    // 4. Call reset-password API with the token and new password
+    const resetRes = await request.post('/.netlify/functions/auth?action=reset-password', {
+      data: { token: resetToken, password: newPassword },
+    });
+    expect(resetRes.status()).toBe(200);
+    const resetBody = await resetRes.json();
+    expect(resetBody.access_token).toBeTruthy();
+    expect(resetBody.user).toBeTruthy();
+    expect(resetBody.user.email).toBe(testEmail);
+
+    // 5. Login with the new password should succeed
+    const loginRes = await request.post('/.netlify/functions/auth?action=login', {
+      data: { email: testEmail, password: newPassword },
+    });
+    expect(loginRes.status()).toBe(200);
+    const loginBody = await loginRes.json();
+    expect(loginBody.access_token).toBeTruthy();
   });
 });

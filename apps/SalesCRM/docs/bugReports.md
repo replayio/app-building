@@ -4,9 +4,13 @@
 
 2/23/2026: The forgot password screen and other pages have content flush against the top/sides of the screen with no breathing room — pages need consistent padding/margin so content is not pressed against screen edges. This should be added as a directive in writeApp.md.
 
-2/23/2026: Email confirmation for password login does not work in production — confirmation emails contain localhost URLs (from getAppUrl() in netlify/utils/email.ts defaulting to http://localhost:8888 when process.env.URL is not set), so users can never confirm their email and are blocked from logging in. Tests did not catch this because IS_TEST mode bypasses email confirmation entirely (auto-confirms on signup, skips the check on login), so the actual production email confirmation flow is never exercised. Directive added to writeTests.md: auth flows with email verification must have dedicated tests that run without IS_TEST bypass.
-
 ## Unreviewed
+
+2/23/2026: Email confirmation for password login does not work in production — confirmation emails contain localhost URLs (from getAppUrl() in netlify/utils/email.ts defaulting to http://localhost:8888 when process.env.URL is not set), so users can never confirm their email and are blocked from logging in. Tests did not catch this because IS_TEST mode bypasses email confirmation entirely (auto-confirms on signup, skips the check on login), so the actual production email confirmation flow is never exercised. Directive added to writeTests.md: auth flows with email verification must have dedicated tests that run without IS_TEST bypass.
+- Before: 084ad68
+- After: (this commit)
+- Fix: Changed `getAppUrl()` in `netlify/utils/email.ts` and `netlify/utils/notifications.ts` to accept the full `Request` object instead of just the URL string. The function now reads `x-forwarded-host` and `x-forwarded-proto` headers (set by Netlify's CDN proxy) to determine the correct production origin, falling back to the `host` header, then `req.url` origin, then `process.env.URL`, then localhost. Updated all callers in auth.ts, deals.ts, clients.ts, client-tasks.ts, client-people.ts, client-deals.ts to pass `req` instead of `req.url`. Added two new tests (AUTH-CE-03, AUTH-RP-04) that exercise the email confirmation and password reset flows without IS_TEST bypass by inserting test data directly into the database and calling the API endpoints.
+- Problem stage: writeApp.md — `getAppUrl()` only tried parsing `req.url` as a full URL (which in Netlify Functions may be a local address) and fell back to `process.env.URL` then hardcoded localhost, instead of reading proxy headers that carry the real production host
 
 2/21/2026: Adding a relationship to a contact does not update the other contact to show the reciprocal relationship.
 - Before: 9441d18

@@ -8,24 +8,36 @@ function getResend(): Resend | null {
   return new Resend(apiKey)
 }
 
-function getAppUrl(requestUrl?: string): string {
-  if (requestUrl) {
+function getAppUrl(request?: Request): string {
+  if (request) {
+    const forwardedHost = request.headers.get('x-forwarded-host')
+    const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
+    if (forwardedHost) {
+      return `${forwardedProto}://${forwardedHost}`
+    }
+    const host = request.headers.get('host')
+    if (host && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)(:|$)/.test(host)) {
+      return `https://${host}`
+    }
     try {
-      return new URL(requestUrl).origin
+      const url = new URL(request.url)
+      if (!/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(url.hostname)) {
+        return url.origin
+      }
     } catch { /* fall through */ }
   }
   if (process.env.URL) return process.env.URL
   return 'http://localhost:8888'
 }
 
-export async function sendConfirmationEmail(email: string, token: string, requestUrl?: string): Promise<boolean> {
+export async function sendConfirmationEmail(email: string, token: string, request?: Request): Promise<boolean> {
   const resend = getResend()
   if (!resend) {
-    console.log(`[email] No RESEND_API_KEY — confirmation link: ${getAppUrl(requestUrl)}/auth/confirm-email?token=${token}`)
+    console.log(`[email] No RESEND_API_KEY — confirmation link: ${getAppUrl(request)}/auth/confirm-email?token=${token}`)
     return true
   }
 
-  const confirmUrl = `${getAppUrl(requestUrl)}/auth/confirm-email?token=${token}`
+  const confirmUrl = `${getAppUrl(request)}/auth/confirm-email?token=${token}`
   const { error } = await resend.emails.send({
     from: FROM_EMAIL,
     to: email,
@@ -53,14 +65,14 @@ export async function sendConfirmationEmail(email: string, token: string, reques
   return true
 }
 
-export async function sendPasswordResetEmail(email: string, token: string, requestUrl?: string): Promise<boolean> {
+export async function sendPasswordResetEmail(email: string, token: string, request?: Request): Promise<boolean> {
   const resend = getResend()
   if (!resend) {
-    console.log(`[email] No RESEND_API_KEY — reset link: ${getAppUrl(requestUrl)}/auth/reset-password?token=${token}`)
+    console.log(`[email] No RESEND_API_KEY — reset link: ${getAppUrl(request)}/auth/reset-password?token=${token}`)
     return true
   }
 
-  const resetUrl = `${getAppUrl(requestUrl)}/auth/reset-password?token=${token}`
+  const resetUrl = `${getAppUrl(request)}/auth/reset-password?token=${token}`
   const { error } = await resend.emails.send({
     from: FROM_EMAIL,
     to: email,

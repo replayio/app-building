@@ -77,6 +77,18 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Wait for the confirmation process to complete
 - Expected: The page (data-testid="confirm-email-page") initially shows a loading state (data-testid="confirm-email-loading") with "Confirming your email..." text. After processing, either a success state (data-testid="confirm-email-success") with "Email Confirmed" heading appears, or an error state (data-testid="confirm-email-error") with "Confirmation Failed" heading appears if the token is invalid.
 
+#### Production Auth Flows (no IS_TEST bypass)
+
+**AUTH-CE-03: Email confirmation token redemption and login flow**
+- Initial: An unconfirmed user and valid confirmation token exist in the database (inserted directly, not via IS_TEST-bypassed signup)
+- Action: Call the confirm-email API endpoint with the token via direct HTTP request
+- Expected: API returns 200 with access_token and user object. The user's email_confirmed field in the database is set to true after confirmation.
+
+**AUTH-RP-04: Full password reset token generation, redemption, and login flow**
+- Initial: A confirmed user with a known password exists in the database
+- Action: Call the forgot-password API endpoint with the user's email (generates a reset token in the database). Query the database for the generated token. Call the reset-password API endpoint with the token and a new password. Then call the login API endpoint with the new password.
+- Expected: forgot-password returns 200 with success message. A reset token exists in the email_tokens table. reset-password returns 200 with access_token and user object. Login with the new password returns 200 with access_token.
+
 ---
 
 ## 1. ClientsListPage (/clients)

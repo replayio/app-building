@@ -23,10 +23,22 @@ const EVENT_LABELS: Record<string, string> = {
   note_added: 'Note Added',
 }
 
-function getAppUrl(requestUrl?: string): string {
-  if (requestUrl) {
+function getAppUrl(request?: Request): string {
+  if (request) {
+    const forwardedHost = request.headers.get('x-forwarded-host')
+    const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
+    if (forwardedHost) {
+      return `${forwardedProto}://${forwardedHost}`
+    }
+    const host = request.headers.get('host')
+    if (host && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)(:|$)/.test(host)) {
+      return `https://${host}`
+    }
     try {
-      return new URL(requestUrl).origin
+      const url = new URL(request.url)
+      if (!/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(url.hostname)) {
+        return url.origin
+      }
     } catch { /* fall through */ }
   }
   if (process.env.URL) return process.env.URL
@@ -56,7 +68,7 @@ export async function notifyClientFollowers(
   eventType: string,
   description: string,
   actorUserId?: string,
-  requestUrl?: string
+  request?: Request
 ): Promise<void> {
   const prefKey = EVENT_TO_PREF_KEY[eventType]
   if (!prefKey) return
@@ -102,7 +114,7 @@ export async function notifyClientFollowers(
   }
 
   const resend = new Resend(apiKey)
-  const appUrl = getAppUrl(requestUrl)
+  const appUrl = getAppUrl(request)
   const clientUrl = `${appUrl}/clients/${clientId}`
   const settingsUrl = `${appUrl}/settings`
   const eventLabel = EVENT_LABELS[eventType] || eventType

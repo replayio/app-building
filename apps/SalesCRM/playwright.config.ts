@@ -26,6 +26,6 @@ export default defineConfig({
     command: 'env -u DATABASE_URL IS_TEST=true npx netlify dev --port 8888 --functions ./netlify/functions',
     url: 'http://localhost:8888',
     reuseExistingServer: true,
-    timeout: 60000,
+    timeout: 120000,
   },
 });

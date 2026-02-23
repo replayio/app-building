@@ -240,7 +240,7 @@ async function handler(req: OptionalAuthRequest) {
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
       VALUES (${body.client_id}::uuid, 'deal_created', ${dealCreateDesc}, ${req.user?.name ?? 'System'}, ${deal.id}::uuid, 'deal')
     `
-    notifyClientFollowers(getDbUrl(), body.client_id, 'deal_created', dealCreateDesc, req.user?.id, req.url).catch(() => {})
+    notifyClientFollowers(getDbUrl(), body.client_id, 'deal_created', dealCreateDesc, req.user?.id, req).catch(() => {})
 
     // Add client_name
     const clientRows = await sql`SELECT name FROM clients WHERE id = ${body.client_id}::uuid`
@@ -283,7 +283,7 @@ async function handler(req: OptionalAuthRequest) {
             'deal'
           )
         `
-        notifyClientFollowers(getDbUrl(), existing[0].client_id, 'deal_stage_changed', stageChangeDesc, req.user?.id, req.url).catch(() => {})
+        notifyClientFollowers(getDbUrl(), existing[0].client_id, 'deal_stage_changed', stageChangeDesc, req.user?.id, req).catch(() => {})
       }
     }
 

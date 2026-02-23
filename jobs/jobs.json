@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/fixBugReport.md",
       "jobs": [
-        "FixBug: Fix email confirmation localhost URLs in production — confirmation emails contain localhost URLs from getAppUrl() defaulting to http://localhost:8888 when process.env.URL is not set",
-        "UpdateTests: Add tests for the email confirmation production URL fix — auth flows with email verification must have dedicated tests that run without IS_TEST bypass",
-        "UpdateRevisions: Record spec changes for email confirmation production URL fix",
-        "ResolveBug: Mark email confirmation localhost URLs bug as resolved"
-      ],
-      "timestamp": "2026-02-23T16:24:18.709Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/fixBugReport.md",
-      "jobs": [
         "FixBug: Fix unpolished pages — forgot password and other pages have content flush against screen edges with no breathing room, need consistent padding/margin",
         "UpdateTests: Update tests for page spacing/padding fix",
         "UpdateRevisions: Record spec changes for page spacing fix",
