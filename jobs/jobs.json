@@ -3,10 +3,11 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
+        "WriteSidebarNavLinks: Write the SidebarNavLinks component",
+        "WriteSidebarUserArea: Write the SidebarUserArea component",
+        "WriteSidebar: Write the Sidebar component and app layout"
       ],
-      "timestamp": "2026-02-23T21:32:45.716Z"
+      "timestamp": "2026-02-23T21:43:03.538Z"
     },
     {
       "strategy": "strategies/jobs/writeScript.md",
@@ -386,6 +387,131 @@
         "WritePageConfirmEmailPage: Write the ConfirmEmailPage"
       ],
       "timestamp": "2026-02-23T21:33:10.906Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteClientsFilterBar: Write the ClientsFilterBar component",
+        "WriteClientsTable: Write the ClientsTable component",
+        "WriteCreateClientModal: Write the CreateClientModal component",
+        "WriteClientsListPage: Write the ClientsListPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:08.840Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteClientDetailHeader: Write the ClientDetailHeader component",
+        "WriteClientSourceInfo: Write the ClientSourceInfo component",
+        "WriteClientTasks: Write the ClientTasks section component",
+        "WriteClientDeals: Write the ClientDeals section component",
+        "WriteClientAttachments: Write the ClientAttachments section component",
+        "WriteClientPeople: Write the ClientPeople section component",
+        "WriteClientTimeline: Write the ClientTimeline section component",
+        "WriteClientDetailPage: Write the ClientDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:14.956Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WritePersonHeader: Write the PersonHeader component",
+        "WritePersonRelationships: Write the PersonRelationships section component",
+        "WritePersonContactHistory: Write the PersonContactHistory section component",
+        "WritePersonClients: Write the PersonClients section component",
+        "WritePersonDetailPage: Write the PersonDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:19.997Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteDealsFilterBar: Write the DealsFilterBar component",
+        "WriteDealsTable: Write the DealsTable component",
+        "WriteDealsPipeline: Write the DealsPipeline component with drag-and-drop",
+        "WriteCreateDealModal: Write the CreateDealModal component",
+        "WriteDealsListPage: Write the DealsListPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:25.115Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteDealDetailHeader: Write the DealDetailHeader component",
+        "WriteDealStageHistory: Write the DealStageHistory section component",
+        "WriteDealWriteups: Write the DealWriteups section component",
+        "WriteDealTasks: Write the DealTasks section component",
+        "WriteDealAttachments: Write the DealAttachments section component",
+        "WriteDealContacts: Write the DealContacts section component",
+        "WriteDealDetailPage: Write the DealDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:31.786Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteTasksFilterBar: Write the TasksFilterBar component",
+        "WriteTasksTable: Write the TasksTable component",
+        "WriteCreateTaskModal: Write the CreateTaskModal component",
+        "WriteTasksListPage: Write the TasksListPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:36.742Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteTaskDetailHeader: Write the TaskDetailHeader component",
+        "WriteTaskNotes: Write the TaskNotes section component",
+        "WriteTaskDetailPage: Write the TaskDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:42.209Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteContactsTable: Write the ContactsTable component",
+        "WriteCreateContactModal: Write the CreateContactModal component",
+        "WriteContactsListPage: Write the ContactsListPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:47.100Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteSettingsNotifications: Write the SettingsNotifications section component",
+        "WriteSettingsImportExport: Write the SettingsImportExport section component",
+        "WriteSettingsWebhooks: Write the SettingsWebhooks section component",
+        "WriteSettingsPage: Write the SettingsPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:52.028Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteUserCard: Write the UserCard component",
+        "WriteUsersListPage: Write the UsersListPage page"
+      ],
+      "timestamp": "2026-02-23T21:43:56.537Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteUserDetailHeader: Write the UserDetailHeader component",
+        "WriteUserDeals: Write the UserDeals section component",
+        "WriteUserTasks: Write the UserTasks section component",
+        "WriteUserActivity: Write the UserActivity section component",
+        "WriteUserDetailPage: Write the UserDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:44:02.105Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteForgotPasswordPage: Write the ForgotPasswordPage page",
+        "WriteResetPasswordPage: Write the ResetPasswordPage page",
+        "WriteConfirmEmailPage: Write the ConfirmEmailPage page"
+      ],
+      "timestamp": "2026-02-23T21:44:07.319Z"
     }
   ]
 }
