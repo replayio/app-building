@@ -37,7 +37,7 @@ resources.
 
 5. Build the app (`vite build`).
 6. Deploy to Netlify (`netlify deploy --prod`).
-7. Write the deployed URL to `deployment.txt`.
+7. Write the deployed URL, `site_id`, `neon_project_id`, and `database_url` to `deployment.txt`.
 
 ## Populating `.env` for Redeployments
 
@@ -45,24 +45,13 @@ resources.
 deployed before, you MUST populate `.env` before running the script so it reuses the
 existing Netlify site and Neon database instead of creating new ones.
 
-Read `deployment.txt` (committed to git) to get `site_id`. Then write `.env`:
+Read `deployment.txt` (committed to git) to get all previously stored deployment
+values (`site_id`, `neon_project_id`, `database_url`). Write them to `.env`:
 
 ```
 NETLIFY_SITE_ID=<site_id from deployment.txt>
-```
-
-For the Neon database, look up the existing project via the Neon API:
-
-```bash
-curl -s -H "Authorization: Bearer $NEON_API_KEY" \
-  https://console.neon.tech/api/v2/projects | jq '.projects[] | select(.name | startswith("sales-crm"))'
-```
-
-Then write the project ID and connection URI to `.env`:
-
-```
-NEON_PROJECT_ID=<id from API response>
-DATABASE_URL=<connection_uri from API response>
+NEON_PROJECT_ID=<neon_project_id from deployment.txt>
+DATABASE_URL=<database_url from deployment.txt>
 ```
 
 If `.env` is missing these values the script will create **new** resources, which means
@@ -77,13 +66,15 @@ a new URL and an empty database. Always check `deployment.txt` first.
 - **Files**:
   - `.env`: Read for existing project info (`NEON_PROJECT_ID`, `DATABASE_URL`,
     `NETLIFY_SITE_ID`). Written to on first run.
-  - `deployment.txt`: Contains `site_id` from the last deployment (committed to git).
-    Use this to populate `.env` when deploying in a fresh environment.
+  - `deployment.txt`: Contains `site_id`, `neon_project_id`, and `database_url` from the
+    last deployment (committed to git). Use this to populate `.env` when deploying in a
+    fresh environment.
 
 ## Outputs
 
 - **`.env`**: Updated with `NEON_PROJECT_ID`, `DATABASE_URL`, `NETLIFY_SITE_ID` if created.
-- **`deployment.txt`**: Updated with the current deployed URL.
+- **`deployment.txt`**: Updated with the current deployed URL, `site_id`, `neon_project_id`,
+  and `database_url`.
 - **Side effects**:
   - Creates Neon project (first run only).
   - Syncs production database schema (every run).

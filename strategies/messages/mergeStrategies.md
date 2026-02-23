@@ -6,7 +6,7 @@ root config files flow back to `main` so that new app branches benefit from them
 
 ## Prerequisites
 
-- You must be on a `*-merge` branch (e.g. `sales-crm-merge`).
+- You must be on a `*-merge` branch (e.g. `<app>-merge`).
   If not, create one from the current app branch: `git checkout -b <app>-merge`.
 - The app branch must have diverged from `origin/main`. All infrastructure changes
   since that divergence will be extracted.
