@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/writeScript.md",
       "jobs": [
-        "WriteScript: Implement the test script (strategies/scripts/test.md)"
-      ],
-      "timestamp": "2026-02-23T22:20:16.596Z"
-    },
-    {
-      "strategy": "strategies/jobs/writeScript.md",
-      "jobs": [
         "WriteScript: Implement the deploy script (strategies/scripts/deploy.md)"
       ],
       "timestamp": "2026-02-23T22:20:12.723Z"
