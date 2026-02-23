@@ -30,7 +30,7 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/maintain/fixBugRe
 
 If there is a recording ID referenced by the bug report, you MUST open it using Replay MCP
 and explore it to understand what happened. Read this skill file to learn how to use these tools.
-https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-mcp/SKILL.md
+https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-mcp/SKILL.md
 
 Study the bug and identify the root cause of the problem by looking at the bug report, app source,
 and any Replay MCP recording.

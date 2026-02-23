@@ -1,5 +1,5 @@
 import { defineConfig } from '@playwright/test';
-import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
+import { devices as replayDevices, replayReporter } from '@replayio/playwright';
 
 export default defineConfig({
   globalSetup: './tests/global-setup.ts',
@@ -11,7 +11,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? undefined : 8,
   reporter: [
-    [REDACTED]Reporter({ apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY, upload: false }),
+    replayReporter({ apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY, upload: false }),
     ['html', { open: 'never' }],
     ['./tests/json-log-reporter.ts'],
   ],
@@ -20,7 +20,7 @@ export default defineConfig({
     baseURL: 'http://localhost:8888',
     trace: 'on-first-retry',
     storageState: './tests/test-storage-state.json',
-    ...[REDACTED]Devices['Replay Chromium'],
+    ...replayDevices['Replay Chromium'],
   },
   webServer: {
     command: 'env -u DATABASE_URL IS_TEST=true npx netlify dev --port 8888 --functions ./netlify/functions',

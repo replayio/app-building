@@ -20,7 +20,7 @@ const __dirname = dirname(__filename)
 
 const BRANCH_PREFIX = 'test-worker-'
 const APP_DIR = resolve(__dirname, '..')
-const REPLAY_CLI = process.env.REPLAY_CLI || '[REDACTED]io'
+const REPLAY_CLI = process.env.REPLAY_CLI || 'replayio'
 
 function readEnvFile(): Record<string, string> {
   const envPath = resolve(APP_DIR, '.env')
@@ -75,7 +75,7 @@ interface RecordingEntry {
 }
 
 function parseRecordingsLog(): RecordingEntry[] {
-  const logPath = resolve(homedir(), '.[REDACTED]', 'recordings.log')
+  const logPath = resolve(homedir(), '.replay', 'recordings.log')
   if (!existsSync(logPath)) return []
 
   const content = readFileSync(logPath, 'utf-8')

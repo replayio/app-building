@@ -33,8 +33,8 @@ entry in tests.md
 
 You MUST read these skill files before testing.
 
-https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-cli/SKILL.md
-https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-mcp/SKILL.md
+https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-cli/SKILL.md
+https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-mcp/SKILL.md
 
 RECORD_REPLAY_API_KEY is already set in the environment for using the Replay CLI.
 
@@ -48,10 +48,10 @@ the exact installation steps and configuration required.
 The app's `package.json` must include these dev dependencies:
 
 ```bash
-npm install --save-dev @[REDACTED]io/playwright @playwright/test
+npm install --save-dev @replayio/playwright @playwright/test
 ```
 
-`@[REDACTED]io/playwright` (currently v5.0.1) provides the `[REDACTED]Reporter` and `devices` exports
+`@replayio/playwright` (currently v5.0.1) provides the `replayReporter` and `devices` exports
 for integrating Replay recordings into Playwright.
 
 ### 2. Install the Replay browser
@@ -59,14 +59,14 @@ for integrating Replay recordings into Playwright.
 Run once in the container (or as part of CI setup):
 
 ```bash
-npx [REDACTED]io install
+npx replayio install
 ```
 
-This downloads the Replay Chromium browser to `~/.[REDACTED]/runtimes/chrome-linux/chrome`.
+This downloads the Replay Chromium browser to `~/.replay/runtimes/chrome-linux/chrome`.
 Verify it exists:
 
 ```bash
-ls ~/.[REDACTED]/runtimes/chrome-linux/chrome
+ls ~/.replay/runtimes/chrome-linux/chrome
 ```
 
 ### 3. API key
@@ -82,28 +82,28 @@ apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY
 
 The Playwright config MUST:
 
-1. Import BOTH `[REDACTED]Reporter` and `devices as [REDACTED]Devices` from `@[REDACTED]io/playwright`.
-2. Include `[REDACTED]Reporter(...)` in the `reporter` array with `upload: false`. Uploads are
+1. Import BOTH `replayReporter` and `devices as replayDevices` from `@replayio/playwright`.
+2. Include `replayReporter(...)` in the `reporter` array with `upload: false`. Uploads are
    handled by the test script, NOT by the reporter.
-3. Spread `[REDACTED]Devices['Replay Chromium']` into the global `use` config. This sets
+3. Spread `replayDevices['Replay Chromium']` into the global `use` config. This sets
    `executablePath`, `RECORD_ALL_CONTENT`, and critically `RECORD_REPLAY_METADATA_FILE` which
    is required for the reporter to attach test metadata (pass/fail result) to recordings.
    Without `RECORD_REPLAY_METADATA_FILE`, the recording driver cannot read the per-test
    metadata written by the fixture, and all recordings will have empty `testResult`.
 
 **IMPORTANT**: Do NOT manually set `launchOptions.executablePath` and `env` instead of using
-`[REDACTED]Devices['Replay Chromium']`. Manual config misses `RECORD_REPLAY_METADATA_FILE`,
+`replayDevices['Replay Chromium']`. Manual config misses `RECORD_REPLAY_METADATA_FILE`,
 which breaks the recording-to-test metadata association.
 
 Example:
 
 ```ts
 import { defineConfig, devices } from '@playwright/test';
-import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
+import { devices as replayDevices, replayReporter } from '@replayio/playwright';
 
 export default defineConfig({
   reporter: [
-    [REDACTED]Reporter({
+    replayReporter({
       apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY,
       upload: false,
     }),
@@ -111,20 +111,20 @@ export default defineConfig({
     ['list'],
   ],
   use: {
-    ...[REDACTED]Devices['Replay Chromium'],
+    ...replayDevices['Replay Chromium'],
   },
 });
 ```
 
 ### 5. Replay CLI commands reference
 
-- `npx [REDACTED]io list` — List all local recordings (ID, host, date, duration, status).
-- `npx [REDACTED]io list --json` — Full JSON metadata for all recordings. Each entry includes:
+- `npx replayio list` — List all local recordings (ID, host, date, duration, status).
+- `npx replayio list --json` — Full JSON metadata for all recordings. Each entry includes:
   `id`, `buildId`, `date`, `duration`, `metadata` (host, URI, sourceMaps, processType),
   `path`, `recordingStatus` (one of `"recording"`, `"finished"`, `"crashed"`).
-- `npx [REDACTED]io upload <id>` — Upload a single recording by ID. Returns the viewable URL.
-- `npx [REDACTED]io upload --all` — Upload all local recordings.
-- `npx [REDACTED]io remove --all` — Delete all local recordings (use between runs to avoid stale
+- `npx replayio upload <id>` — Upload a single recording by ID. Returns the viewable URL.
+- `npx replayio upload --all` — Upload all local recordings.
+- `npx replayio remove --all` — Delete all local recordings (use between runs to avoid stale
   data accumulating).
 
 ### 6. OpenSSL 1.1 requirement
@@ -163,8 +163,8 @@ mandatory — do NOT skip or reorder steps.
    `=== REPLAY RECORDINGS METADATA ===` block and the `REPLAY UPLOADED: <recordingId>` lines
    in the output. Choose the recording whose URI and duration best match the failing test. If
    the upload did not happen (e.g., the script was misconfigured), use
-   `npx [REDACTED]io list --json` to find recordings and upload them manually:
-   `npx [REDACTED]io upload <id>`.
+   `npx replayio list --json` to find recordings and upload them manually:
+   `npx replayio upload <id>`.
 4. Announce `TEST FAILURE UPLOADED: <recordingId>` before doing anything else.
 5. Use Replay MCP tools to analyze the failure, following the tool sequence from the relevant
    debugging guide. Use as many tools as needed to understand what actually happened before
@@ -223,8 +223,8 @@ When testing the app after deployment, use the Replay browser to record the app 
   restart the dev server before re-running tests. The dev server may cache old function bundles.
   Kill background processes with `pkill -f "netlify"` and `pkill -f "vite"` before restarting.
 
-- All browsers must run headless. Never use Xvfb, never set `DISPLAY`, never use the `[REDACTED]io record`
-  CLI (it launches a headed browser). Use `@[REDACTED]io/playwright` for recordings.
+- All browsers must run headless. Never use Xvfb, never set `DISPLAY`, never use the `replayio record`
+  CLI (it launches a headed browser). Use `@replayio/playwright` for recordings.
 
 - The Playwright config MUST use `fullyParallel: true` and `workers` > 1 (or the default). Do NOT
   set `workers: 1` — tests must be designed to run concurrently. If tests interfere with each other,
@@ -245,7 +245,7 @@ When testing the app after deployment, use the Replay browser to record the app 
 
 ## Tips
 
-- When a test times out inside a `.toPass()` block, use `mcp__[REDACTED]__PlaywrightSteps` first. It
+- When a test times out inside a `.toPass()` block, use `mcp__replay__PlaywrightSteps` first. It
   shows the exact sequence of Playwright actions with timestamps and return values. Look for a
   step that is stuck auto-waiting for an element — this reveals nested-wait deadlocks where the
   DOM changed mid-iteration and an inner `textContent()` or `count()` call is waiting on an

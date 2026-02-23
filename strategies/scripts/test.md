@@ -26,7 +26,7 @@ tests during development and debugging.
 4. **Initialize and seed**: Run `initSchema` on the new branch, then run migrations, then seed
    test data.
 
-5. **Remove stale recordings**: Run `npx [REDACTED]io remove --all` to clear local recordings from
+5. **Remove stale recordings**: Run `npx replayio remove --all` to clear local recordings from
    prior runs.
 
 6. **Run Playwright**: Run `npx playwright test <testFile>` with `--retries 0` against the
@@ -34,7 +34,7 @@ tests during development and debugging.
    `DATABASE_URL`. Capture the exit code.
 
 7. **On failure** (non-zero exit code):
-   a. Parse `~/.[REDACTED]/recordings.log` with a built-in parser (NOT `npx [REDACTED]io list --json`,
+   a. Parse `~/.replay/recordings.log` with a built-in parser (NOT `npx replayio list --json`,
       which crashes on large suites). The log is newline-delimited JSON with `kind` field:
       `createRecording`, `addMetadata`, `writeStarted`, `writeFinished`, etc.
    b. Log full metadata for every recording that has test metadata in a delimited block:
@@ -47,11 +47,11 @@ tests during development and debugging.
    c. Upload exactly ONE recording: among all finished recordings where
       `metadata.test.result` is `"failed"` or `"timedOut"`, pick the one with the longest
       duration (the real recording, not zero-duration stubs). Upload with
-      `npx [REDACTED]io upload <id>`. On success, log `REPLAY UPLOADED: <recordingId>`.
+      `npx replayio upload <id>`. On success, log `REPLAY UPLOADED: <recordingId>`.
       On failure, log the exit code.
 
 8. **Clean up**: Delete the ephemeral Neon branch. Remove local recordings with
-   `npx [REDACTED]io remove --all`.
+   `npx replayio remove --all`.
 
 9. **Exit** with the original Playwright exit code.
 
@@ -64,11 +64,11 @@ tests during development and debugging.
   - `NEON_PROJECT_ID` (required): Read from `.env`. The Neon project to branch from.
   - `DATABASE_URL` (required): Read from `.env`. The main branch connection string used as
     template for ephemeral branches.
-  - `REPLAY_CLI` (optional): Override the Replay CLI command (default: `[REDACTED]io`, assumed
+  - `REPLAY_CLI` (optional): Override the Replay CLI command (default: `replayio`, assumed
     globally installed). Useful for pointing at a local build or alternate installation.
 - **Files**:
   - `.env`: Project configuration (Neon project ID, database URL, etc.).
-  - `~/.[REDACTED]/recordings.log`: Replay recording metadata (read after test run).
+  - `~/.replay/recordings.log`: Replay recording metadata (read after test run).
 
 ## Outputs
 
@@ -86,10 +86,10 @@ tests during development and debugging.
 - Reuse `initSchema` from `scripts/schema.ts` and the seed logic from `scripts/seed-db.ts`.
 - Use the Neon API directly (`fetch` to `https://console.neon.tech/api/v2/...`) for branch
   creation and deletion. The API key is `NEON_API_KEY`.
-- Parse `~/.[REDACTED]/recordings.log` in TypeScript — it's newline-delimited JSON. The
+- Parse `~/.replay/recordings.log` in TypeScript — it's newline-delimited JSON. The
   `addMetadata` entries contain `metadata.test.result` which indicates pass/fail.
-- The Playwright config must use the Replay browser via `[REDACTED]Devices['Replay Chromium']`
-  from `@[REDACTED]io/playwright` and include `[REDACTED]Reporter` with `upload: false`.
+- The Playwright config must use the Replay browser via `replayDevices['Replay Chromium']`
+  from `@replayio/playwright` and include `replayReporter` with `upload: false`.
 - The HTML reporter must use `open: 'never'` to suppress the interactive "Serving HTML report"
   prompt that blocks the script from exiting.
 - Run Playwright with `--retries 0` — no retries. Failures must be analyzed via Replay.

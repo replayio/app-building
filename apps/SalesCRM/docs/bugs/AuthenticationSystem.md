@@ -2,7 +2,7 @@
 
 ## Report
 
-The app has no authentication — all pages and API endpoints are accessible without logging in. Add a Supabase-based auth system that authenticates against the same auth service used by `~/record[REDACTED]/builder-assets/appTemplate/` (i.e. `https://auth.nut.new`). All app data stays in Neon via `DATABASE_URL`; the only new table is a `users` table in Neon for mapping auth identities to local user records.
+The app has no authentication — all pages and API endpoints are accessible without logging in. Add a Supabase-based auth system that authenticates against the same auth service used by `~/recordreplay/builder-assets/appTemplate/` (i.e. `https://auth.nut.new`). All app data stays in Neon via `DATABASE_URL`; the only new table is a `users` table in Neon for mapping auth identities to local user records.
 
 ## Analysis
 
@@ -19,7 +19,7 @@ The app has no authentication — all pages and API endpoints are accessible wit
 
 ### How the Template Auth Works
 
-The template at `~/record[REDACTED]/builder-assets/appTemplate/` authenticates against `https://auth.nut.new` (a Supabase instance). Key pieces:
+The template at `~/recordreplay/builder-assets/appTemplate/` authenticates against `https://auth.nut.new` (a Supabase instance). Key pieces:
 
 1. **Frontend** (`src/lib/auth.ts`): Creates a Supabase client using `VITE_AUTH_SUPABASE_URL` + `VITE_AUTH_SUPABASE_ANON_KEY`. Patches `window.fetch` so every request to `/.netlify/functions/` automatically gets an `Authorization: Bearer <token>` header from the current Supabase session. This means existing frontend fetch calls need zero changes to start sending tokens.
 
@@ -83,7 +83,7 @@ Create `src/lib/auth.ts` based on the template's version. This file:
 - Overrides `window.fetch` to attach `Authorization: Bearer <token>` on all `/.netlify/functions/` calls
 - Exports `auth` (the `supabase.auth` object)
 
-Reference: `~/record[REDACTED]/builder-assets/appTemplate/src/lib/auth.ts`
+Reference: `~/recordreplay/builder-assets/appTemplate/src/lib/auth.ts`
 
 ### 5. Backend Auth Middleware
 
@@ -124,7 +124,7 @@ export function requiresAuth(handler: (req: AuthenticatedRequest) => Promise<Res
 }
 ```
 
-Reference: `~/record[REDACTED]/builder-assets/appTemplate/netlify/utils/jwt.ts` (for JWKS fetching, JWT verification, and JWT claim extraction logic)
+Reference: `~/recordreplay/builder-assets/appTemplate/netlify/utils/jwt.ts` (for JWKS fetching, JWT verification, and JWT claim extraction logic)
 
 ### 6. Create `getUserInfo` Endpoint
 
@@ -172,13 +172,13 @@ Register `appApi.reducer` and `appApi.middleware` in `src/store/index.ts`.
 
 Create `src/store/authSlice.ts` based on the template's version. This provides `useGetSessionQuery()` and `useSignOutMutation()` hooks, and a `getUserInfo` endpoint that calls the new Netlify function.
 
-Reference: `~/record[REDACTED]/builder-assets/appTemplate/src/store/slices/authSlice.ts`
+Reference: `~/recordreplay/builder-assets/appTemplate/src/store/slices/authSlice.ts`
 
 ### 9. AuthProvider Context
 
 Create `src/contexts/AuthProvider.tsx` based on the template's version. Provides `useAuth()` hook with `{ isLoggedIn, user, loading, signOut, getUserId }`.
 
-Reference: `~/record[REDACTED]/builder-assets/appTemplate/src/contexts/AuthProvider.tsx`
+Reference: `~/recordreplay/builder-assets/appTemplate/src/contexts/AuthProvider.tsx`
 
 ### 10. Auth Pages
 
@@ -192,7 +192,7 @@ Create these pages based on the template, styled to match the CRM's Linear-inspi
 
 Also create `src/hooks/useOAuthPopup.ts` based on the template — handles OAuth by redirecting to `https://auth.nut.new/functions/v1/oauth/start` with the app's callback URL.
 
-Reference: `~/record[REDACTED]/builder-assets/appTemplate/src/hooks/useOAuthPopup.ts`
+Reference: `~/recordreplay/builder-assets/appTemplate/src/hooks/useOAuthPopup.ts`
 
 ### 11. Update Routing and Entry Point
 

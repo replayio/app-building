@@ -31,7 +31,7 @@ testIgnore: ['**/deployment.spec.ts'],
 ```
 
 The deployment test has its own config at `playwright.deployment.config.ts` which uses
-`@[REDACTED]io/playwright` to launch the Replay browser and auto-upload recordings.
+`@replayio/playwright` to launch the Replay browser and auto-upload recordings.
 All browsers must run headless — never use Xvfb or set `DISPLAY`.
 
 ```
@@ -55,7 +55,7 @@ can be debugged from the recording.
 The deployment test is a SINGLE Playwright test at `tests/deployment.spec.ts` that
 runs against the deployed production URL (read from `deployment.txt`). It uses a
 separate config (`playwright.deployment.config.ts`) that launches the Replay browser
-via `@[REDACTED]io/playwright` and auto-uploads recordings. It does not start a dev server
+via `@replayio/playwright` and auto-uploads recordings. It does not start a dev server
 or reuse the integration test config.
 
 #### Analyzing the Recording
@@ -69,15 +69,15 @@ supports updates. Record the Replay recording ID in the deployment notes.
 
 Read these skills to learn how to use these:
 
-https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-playwright/SKILL.md
-https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-mcp/SKILL.md
+https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-playwright/SKILL.md
+https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-mcp/SKILL.md
 
 ## Tips
 
-- Do NOT use the `[REDACTED]io record <url>` CLI to create recordings. It launches a headed browser
+- Do NOT use the `replayio record <url>` CLI to create recordings. It launches a headed browser
   which will crash in this headless container (`Missing X server or $DISPLAY`). Always use the
   Playwright deployment test config (`playwright.deployment.config.ts`) which runs headless with
-  `@[REDACTED]io/playwright` and handles browser setup correctly.
+  `@replayio/playwright` and handles browser setup correctly.
 - Do NOT install or start Xvfb. All browsers must run headless. If a browser complains about
   a missing display, the fix is to ensure it runs headless, not to add a virtual display.
 - NEVER stop, cancel, or skip a Replay recording upload that is in progress. The upload is a

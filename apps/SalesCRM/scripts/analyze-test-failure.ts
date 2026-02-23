@@ -21,9 +21,9 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const APP_DIR = resolve(__dirname, '..')
 
-const REPLAY_MCP_URL = 'https://dispatch.[REDACTED].io/nut/mcp'
+const REPLAY_MCP_URL = 'https://dispatch.replay.io/nut/mcp'
 const SKILL_URL =
-  'https://raw.githubusercontent.com/[REDACTED]io/skills/refs/heads/main/skills/[REDACTED]-mcp/SKILL.md'
+  'https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-mcp/SKILL.md'
 
 function fetchSkillMd(): string {
   const result = execSync(`curl -sfL ${SKILL_URL}`, {
@@ -61,13 +61,13 @@ function main() {
   }
 
   // Write MCP config to a temp file
-  const mcpConfigPath = resolve(tmpdir(), `[REDACTED]-mcp-config-${Date.now()}.json`)
+  const mcpConfigPath = resolve(tmpdir(), `replay-mcp-config-${Date.now()}.json`)
   writeFileSync(
     mcpConfigPath,
     JSON.stringify(
       {
         mcpServers: {
-          [REDACTED]: {
+          replay: {
             type: 'http',
             url: REPLAY_MCP_URL,
             headers: {
@@ -124,7 +124,7 @@ function main() {
         '--append-system-prompt',
         systemPrompt,
         '--allowedTools',
-        'mcp__[REDACTED]__*',
+        'mcp__replay__*',
         '--dangerously-skip-permissions',
         '--model',
         'sonnet',

@@ -3,14 +3,11 @@ import { join, resolve } from "path";
 
 export type Logger = (message: string) => void;
 
-// --- Known secret key names (from .env.example convention) ---
-const SECRET_KEY_PATTERNS = [
-  /KEY/i,
-  /SECRET/i,
-  /TOKEN/i,
-  /PASSWORD/i,
-  /CREDENTIAL/i,
-];
+// --- Env vars whose values are safe to show in logs (not secrets) ---
+const SAFE_ENV_VARS = new Set([
+  "NETLIFY_ACCOUNT_SLUG",
+  "FLY_APP_NAME",
+]);
 
 /** Load secret values from .env file */
 function loadSecretsFromFile(): string[] {
@@ -22,23 +19,36 @@ function loadSecretsFromFile(): string[] {
     if (!trimmed || trimmed.startsWith("#")) continue;
     const eqIndex = trimmed.indexOf("=");
     if (eqIndex === -1) continue;
+    const key = trimmed.slice(0, eqIndex).trim();
     let value = trimmed.slice(eqIndex + 1).trim();
     if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
       value = value.slice(1, -1);
     }
-    if (value) secrets.push(value);
+    if (value && !SAFE_ENV_VARS.has(key)) {
+      secrets.push(value);
+    }
   }
   return secrets;
 }
 
-/** Load secret values from environment variables (container mode) */
+/** Load secret values from environment variables (container mode).
+ *  Reads .env.example to know which keys came from .env, then checks
+ *  process.env for their values. */
 function loadSecretsFromEnv(): string[] {
+  const examplePath = resolve(__dirname, "..", ".env.example");
+  let envKeys: string[] = [];
+  if (existsSync(examplePath)) {
+    envKeys = readFileSync(examplePath, "utf-8")
+      .split("\n")
+      .map((l) => l.split("#")[0].trim())
+      .filter((l) => l && l.includes("="))
+      .map((l) => l.split("=")[0].trim());
+  }
   const secrets: string[] = [];
-  for (const [key, value] of Object.entries(process.env)) {
-    if (!value || value.length < 8) continue;
-    if (SECRET_KEY_PATTERNS.some((p) => p.test(key))) {
-      secrets.push(value);
-    }
+  for (const key of envKeys) {
+    if (SAFE_ENV_VARS.has(key)) continue;
+    const value = process.env[key];
+    if (value) secrets.push(value);
   }
   return secrets;
 }

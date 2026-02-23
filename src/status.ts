@@ -1,5 +1,5 @@
-import { httpGet } from "./http-client";
-import { getRecentContainers, RegistryEntry } from "./container-registry";
+import { httpGet, type HttpOptions } from "./http-client";
+import { getRecentContainers, markStopped, RegistryEntry } from "./container-registry";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 
 function stripTimestamp(rawLine: string): string {
@@ -27,10 +27,22 @@ function formatAge(isoDate: string): string {
   return `${days}d ago`;
 }
 
+function httpOptsFor(entry: RegistryEntry): HttpOptions {
+  if (entry.type === "remote" && entry.flyMachineId) {
+    return { headers: { "fly-force-instance-id": entry.flyMachineId } };
+  }
+  return {};
+}
+
 async function probeAlive(entry: RegistryEntry): Promise<boolean> {
   try {
+    const headers: Record<string, string> = {};
+    if (entry.type === "remote" && entry.flyMachineId) {
+      headers["fly-force-instance-id"] = entry.flyMachineId;
+    }
     const res = await fetch(`${entry.baseUrl}/status`, {
-      signal: AbortSignal.timeout(3000),
+      headers,
+      signal: AbortSignal.timeout(5000),
     });
     return res.ok;
   } catch {
@@ -38,8 +50,8 @@ async function probeAlive(entry: RegistryEntry): Promise<boolean> {
   }
 }
 
-async function showHttpStatus(baseUrl: string, containerName: string): Promise<void> {
-  const status = await httpGet(`${baseUrl}/status`);
+async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: HttpOptions = {}): Promise<void> {
+  const status = await httpGet(`${baseUrl}/status`, httpOpts);
 
   let stateLabel: string;
   if (status.state === "processing") {
@@ -71,8 +83,8 @@ async function showHttpStatus(baseUrl: string, containerName: string): Promise<v
   }
 }
 
-async function tailHttpLogs(baseUrl: string): Promise<void> {
-  const data = await httpGet(`${baseUrl}/logs?offset=0`);
+async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}): Promise<void> {
+  const data = await httpGet(`${baseUrl}/logs?offset=0`, httpOpts);
   const lines: string[] = data.items;
   const recent = lines.slice(-20);
   console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
@@ -83,7 +95,7 @@ async function tailHttpLogs(baseUrl: string): Promise<void> {
 
   const poll = setInterval(async () => {
     try {
-      const data = await httpGet(`${baseUrl}/logs?offset=${offset}`);
+      const data = await httpGet(`${baseUrl}/logs?offset=${offset}`, httpOpts);
       for (const line of data.items) {
         const stripped = stripTimestamp(line);
         const formatted = formatLogLine(stripped);
@@ -100,7 +112,7 @@ async function tailHttpLogs(baseUrl: string): Promise<void> {
 
   const healthCheck = setInterval(async () => {
     try {
-      await httpGet(`${baseUrl}/status`);
+      await httpGet(`${baseUrl}/status`, httpOpts);
     } catch {
       clearInterval(poll);
       clearInterval(healthCheck);
@@ -155,13 +167,14 @@ async function main(): Promise<void> {
       console.error(`${RED}Container "${tailTarget}" not found in registry.${RESET}`);
       process.exit(1);
     }
+    const opts = httpOptsFor(entry);
     try {
-      await showHttpStatus(entry.baseUrl, entry.containerName);
+      await showHttpStatus(entry.baseUrl, entry.containerName, opts);
     } catch {
       console.error(`${RED}Cannot reach container "${tailTarget}" at ${entry.baseUrl} — may be stopped.${RESET}`);
       process.exit(1);
     }
-    await tailHttpLogs(entry.baseUrl);
+    await tailHttpLogs(entry.baseUrl, opts);
     return;
   }
 
@@ -173,19 +186,26 @@ async function main(): Promise<void> {
       alive: await probeAlive(entry),
     })),
   );
+
+  // Mark dead entries as stopped so they don't get probed again
+  for (const r of aliveResults) {
+    if (!r.alive) markStopped(r.entry.containerName);
+  }
+
   const alive = aliveResults.filter((r) => r.alive).map((r) => r.entry);
 
   if (alive.length === 0) {
     showStoppedEntries(entries);
   } else if (alive.length === 1) {
     // Single alive container — show status and tail logs (original behavior)
+    const opts = httpOptsFor(alive[0]);
     try {
-      await showHttpStatus(alive[0].baseUrl, alive[0].containerName);
+      await showHttpStatus(alive[0].baseUrl, alive[0].containerName, opts);
     } catch {
       console.error(`${RED}Cannot reach agent at ${alive[0].baseUrl} — container may be stopped.${RESET}`);
       process.exit(1);
     }
-    await tailHttpLogs(alive[0].baseUrl);
+    await tailHttpLogs(alive[0].baseUrl, opts);
   } else {
     // Multiple alive — list them, no tailing
     showAliveList(alive);

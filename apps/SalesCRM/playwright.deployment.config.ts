@@ -1,5 +1,5 @@
 import { defineConfig } from '@playwright/test';
-import { devices as [REDACTED]Devices, [REDACTED]Reporter } from '@[REDACTED]io/playwright';
+import { devices as replayDevices, replayReporter } from '@replayio/playwright';
 
 export default defineConfig({
   testDir: './tests',
@@ -7,14 +7,14 @@ export default defineConfig({
   timeout: 60000,
   projects: [
     {
-      name: '[REDACTED]-chromium',
+      name: 'replay-chromium',
       use: {
-        ...[REDACTED]Devices['Replay Chromium'],
+        ...replayDevices['Replay Chromium'],
       },
     },
   ],
   reporter: [
-    [REDACTED]Reporter({
+    replayReporter({
       apiKey: process.env.REPLAY_API_KEY,
       upload: true,
     }),
