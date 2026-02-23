@@ -13,7 +13,7 @@ Core ideas:
 * The host communicates with the container via HTTP — sending prompts, polling events/logs, and managing lifecycle.
 * The agent builds by following a set of strategy documents with guides and directives
   for breaking its work down into tasks and performing those tasks.
-* The agent leaves logs for it to review later and improve the strategies.
+* The agent commits logs for it to review later and improve its strategies.
 * All code changes are committed and pushed back to the remote from inside the container.
 
 Containers can run locally or remotely.

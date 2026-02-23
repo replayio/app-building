@@ -159,7 +159,7 @@ export async function startContainer(
 ): Promise<AgentState> {
   const projectRoot = resolve(__dirname, "..");
 
-  ensureImageExists();
+  buildImage();
 
   const envVars = loadDotEnv(projectRoot);
 
