@@ -68,10 +68,11 @@ let groupsProcessed = 0;
 
 // --- Container state ---
 
-type ContainerState = "starting" | "idle" | "processing" | "stopping";
+type ContainerState = "starting" | "idle" | "processing" | "stopping" | "stopped";
 let state: ContainerState = "starting";
 let detachRequested = false;
 let stopRequested = false;
+let unmergedBranch: string | null = null;
 
 // Wake signal for processing loop
 let wakeResolve: (() => void) | null = null;
@@ -237,7 +238,22 @@ async function processLoop(): Promise<void> {
 
   state = "stopping";
   log("Server shutting down.");
-  process.exit(0);
+
+  // Commit and push all remaining work to an unmerged branch
+  try {
+    const branch = `${PUSH_BRANCH}-unmerged-${CONTAINER_NAME}`;
+    checkoutPushBranch(branch, REPO_DIR);
+    commitAndPush(`Unmerged work from ${CONTAINER_NAME}`, branch, log, REPO_DIR);
+    unmergedBranch = branch;
+    log(`Unmerged branch: ${branch}`);
+  } catch (e: any) {
+    log(`Warning: failed to push unmerged branch: ${e.message}`);
+  }
+
+  state = "stopped";
+
+  // Wait briefly for final status polls before exiting
+  setTimeout(() => process.exit(0), 5000);
 }
 
 // --- HTTP server ---
@@ -325,8 +341,6 @@ const server = createServer(async (req, res) => {
       }
       wake();
       json(res, 200, { stopping: true });
-      // Give time for the response to flush, then exit
-      setTimeout(() => process.exit(0), 500);
       return;
     }
 
@@ -340,6 +354,7 @@ const server = createServer(async (req, res) => {
         totalCost,
         iteration,
         detachRequested,
+        unmergedBranch,
         revision: getRevision(REPO_DIR),
       });
       return;

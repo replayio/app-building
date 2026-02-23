@@ -1,8 +1,25 @@
 import { readAgentState, clearAgentState, stopRemoteContainer } from "./container";
 import { findContainer } from "./container-registry";
-import { httpPost } from "./http-client";
+import { httpGet, httpPost } from "./http-client";
 import type { AgentState } from "./container";
 import { RED, RESET } from "./format";
+
+async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<string | null> {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      const status = await httpGet(`${baseUrl}/status`, { timeout: 5000 });
+      if (status.state === "stopped") {
+        return status.unmergedBranch ?? null;
+      }
+    } catch {
+      // Server may have already exited
+      return null;
+    }
+  }
+  return null;
+}
 
 async function stopByState(agentState: AgentState): Promise<void> {
   console.log(`Stopping container ${agentState.containerName}...`);
@@ -10,9 +27,15 @@ async function stopByState(agentState: AgentState): Promise<void> {
   // Send HTTP stop signal to the container's server
   try {
     await httpPost(`${agentState.baseUrl}/stop`);
-    console.log("Stop signal sent.");
+    console.log("Stop signal sent. Waiting for graceful shutdown...");
   } catch {
     console.log("Could not reach container (may already be stopped).");
+  }
+
+  // Wait for the server to reach "stopped" state (it commits+pushes unmerged work)
+  const branch = await waitForStopped(agentState.baseUrl);
+  if (branch) {
+    console.log(`Unmerged branch: ${branch}`);
   }
 
   if (agentState.type === "remote") {
