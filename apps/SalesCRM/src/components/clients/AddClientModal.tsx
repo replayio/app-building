@@ -62,7 +62,7 @@ export function AddClientModal({ open, onClose, onSave }: AddClientModalProps) {
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       {/* Modal */}
-      <div data-testid="add-client-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto">
+      <div data-testid="add-client-modal" className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-sm:max-w-[calc(100%-24px)] max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add New Client</h2>
           <button

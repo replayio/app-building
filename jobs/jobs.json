@@ -1,3 +1,25 @@
 {
-  "groups": []
+  "groups": [
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveClientDetailPage: Make ClientDetailPage responsive"
+      ],
+      "timestamp": "2026-02-23T00:40:01.476Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveUsersListPage: Make UsersListPage responsive"
+      ],
+      "timestamp": "2026-02-23T00:40:02.254Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "MakeResponsiveUserDetailPage: Make UserDetailPage responsive"
+      ],
+      "timestamp": "2026-02-23T00:40:02.999Z"
+    }
+  ]
 }

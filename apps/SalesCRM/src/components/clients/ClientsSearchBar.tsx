@@ -7,7 +7,7 @@ interface ClientsSearchBarProps {
 
 export function ClientsSearchBar({ value, onChange }: ClientsSearchBarProps) {
   return (
-    <div data-testid="clients-search-bar" className="relative flex-1 max-w-[400px]">
+    <div data-testid="clients-search-bar" className="relative flex-1 max-w-[400px] max-sm:max-w-none">
       <Search
         size={14}
         strokeWidth={1.75}

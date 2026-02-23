@@ -395,7 +395,7 @@ Open bug reports to address:
 ## Polish
 
 ### Responsive UI
-- [ ] ClientsListPage
+- [x] ClientsListPage
 - [ ] ClientDetailPage
 - [x] PersonDetailPage
 - [x] DealsListPage
