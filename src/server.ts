@@ -17,6 +17,7 @@ const PORT = parseInt(process.env.PORT ?? "3000", 10);
 const REPO_URL = process.env.REPO_URL ?? "";
 const CLONE_BRANCH = process.env.CLONE_BRANCH ?? "main";
 const PUSH_BRANCH = process.env.PUSH_BRANCH ?? CLONE_BRANCH;
+const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
 const REPO_DIR = "/repo";
 const LOGS_DIR = resolve(REPO_DIR, "logs");
 
@@ -216,7 +217,7 @@ async function processLoop(): Promise<void> {
 
       // Final commit and push after message + jobs
       const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
-      commitAndPush(summary, PUSH_BRANCH, log, REPO_DIR);
+      commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
       log(`Final revision: ${getRevision(REPO_DIR)}`);
 
       state = "idle";
