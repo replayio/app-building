@@ -33,11 +33,11 @@ function formatRelativeDate(dateStr: string) {
 export function UserActivitySection({ activity }: UserActivitySectionProps) {
   return (
     <div data-testid="user-activity-section" className="border border-border rounded-[6px] bg-surface">
-      <div className="px-5 py-4 border-b border-border flex items-center gap-2">
+      <div className="px-5 max-sm:px-3 py-4 max-sm:py-3 border-b border-border flex items-center gap-2">
         <Clock size={14} strokeWidth={1.75} className="text-text-muted" />
         <h2 className="text-[14px] font-semibold text-text-primary">Recent Activity</h2>
       </div>
-      <div className="px-5 py-4">
+      <div className="px-5 max-sm:px-3 py-4 max-sm:py-3">
         {activity.length === 0 ? (
           <p className="text-[13px] text-text-muted text-center py-4">No recent activity.</p>
         ) : (

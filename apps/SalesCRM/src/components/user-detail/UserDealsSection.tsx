@@ -27,11 +27,11 @@ interface UserDealsSectionProps {
 export function UserDealsSection({ deals }: UserDealsSectionProps) {
   return (
     <div data-testid="user-deals-section" className="border border-border rounded-[6px] bg-surface">
-      <div className="px-5 py-4 border-b border-border flex items-center gap-2">
+      <div className="px-5 max-sm:px-3 py-4 max-sm:py-3 border-b border-border flex items-center gap-2">
         <Briefcase size={14} strokeWidth={1.75} className="text-text-muted" />
         <h2 className="text-[14px] font-semibold text-text-primary">Deals ({deals.length})</h2>
       </div>
-      <div className="px-5 py-4">
+      <div className="px-5 max-sm:px-3 py-4 max-sm:py-3">
         {deals.length === 0 ? (
           <p className="text-[13px] text-text-muted text-center py-4">No deals owned by this user.</p>
         ) : (

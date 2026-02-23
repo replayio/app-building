@@ -404,7 +404,7 @@ Open bug reports to address:
 - [x] TaskDetailPage
 - [x] SettingsPage
 - [ ] UsersListPage
-- [ ] UserDetailPage
+- [x] UserDetailPage
 
 ## Blockers
 

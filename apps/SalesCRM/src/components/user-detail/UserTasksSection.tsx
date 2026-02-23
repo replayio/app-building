@@ -22,11 +22,11 @@ function formatDate(dateStr: string) {
 export function UserTasksSection({ tasks }: UserTasksSectionProps) {
   return (
     <div data-testid="user-tasks-section" className="border border-border rounded-[6px] bg-surface">
-      <div className="px-5 py-4 border-b border-border flex items-center gap-2">
+      <div className="px-5 max-sm:px-3 py-4 max-sm:py-3 border-b border-border flex items-center gap-2">
         <CheckSquare size={14} strokeWidth={1.75} className="text-text-muted" />
         <h2 className="text-[14px] font-semibold text-text-primary">Tasks ({tasks.length})</h2>
       </div>
-      <div className="px-5 py-4">
+      <div className="px-5 max-sm:px-3 py-4 max-sm:py-3">
         {tasks.length === 0 ? (
           <p className="text-[13px] text-text-muted text-center py-4">No tasks assigned to this user.</p>
         ) : (

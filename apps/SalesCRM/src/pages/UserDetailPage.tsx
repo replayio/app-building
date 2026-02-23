@@ -75,14 +75,14 @@ export function UserDetailPage() {
   const openTasks = tasks.filter(t => !t.completed)
 
   return (
-    <div className="p-6 max-sm:p-4 max-w-[900px]" data-testid="user-detail-page">
+    <div className="p-6 max-sm:p-3 max-w-[900px]" data-testid="user-detail-page">
       <UserDetailHeader
         user={user}
         activeDealsCount={activeDeals.length}
         openTasksCount={openTasks.length}
         totalDealsCount={deals.length}
       />
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 max-sm:gap-4">
         <UserDealsSection deals={deals} />
         <UserTasksSection tasks={tasks} />
         <UserActivitySection activity={activity} />

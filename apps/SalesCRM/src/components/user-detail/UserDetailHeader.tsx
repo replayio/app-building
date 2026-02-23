@@ -40,7 +40,7 @@ export function UserDetailHeader({ user, activeDealsCount, openTasksCount, total
           </div>
         )}
         <div className="min-w-0">
-          <h1 data-testid="user-detail-name" className="text-[22px] max-sm:text-[18px] font-semibold text-text-primary">
+          <h1 data-testid="user-detail-name" className="text-[24px] max-sm:text-[20px] font-semibold text-text-primary">
             {user.name}
           </h1>
           <div className="flex items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-1 text-[13px] text-text-muted mt-1">
@@ -56,7 +56,7 @@ export function UserDetailHeader({ user, activeDealsCount, openTasksCount, total
         </div>
       </div>
 
-      <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-4 mt-5">
+      <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-4 max-sm:gap-3 mt-5">
         <div className="border border-border rounded-[6px] bg-surface p-3">
           <div className="text-[12px] text-text-muted mb-1">Active Deals</div>
           <div className="text-[18px] font-semibold text-text-primary">{activeDealsCount}</div>
