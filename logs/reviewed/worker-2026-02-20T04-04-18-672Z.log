@@ -1,7 +1,0 @@
-[2026-02-20T03:53:00.676Z] Container: app-building-ozqgj2
-[2026-02-20T03:53:00.676Z] Max iterations: unlimited
-[2026-02-20T03:53:00.676Z] === Iteration 1 ===
-[2026-02-20T03:53:00.680Z] Initial revision: 6cf51c9c31a75ff21612fbc5ab2e7d1b88869fab
-[2026-02-20T03:53:00.680Z] Running Claude...
-[2026-02-20T03:53:02.054Z] [claude:err] Error: Input must be provided either through stdin or as a prompt argument when using --print
-[2026-02-20T03:53:02.606Z] Error running claude: claude exited with code 1
