@@ -18,6 +18,7 @@ function App() {
           <Route path="/tasks" element={<PlaceholderPage name="Tasks" />} />
           <Route path="/reports" element={<PlaceholderPage name="Reports" />} />
           <Route path="/settings" element={<PlaceholderPage name="Settings" />} />
+          <Route path="/login" element={<PlaceholderPage name="Login" />} />
         </Routes>
       </BrowserRouter>
     </Provider>
