@@ -290,11 +290,13 @@ export async function startRemoteContainer(
   delete containerEnv.FLY_API_TOKEN;
   delete containerEnv.FLY_APP_NAME;
 
-  // Destroy any stale machines from previous runs
+  // Log existing machines (but don't destroy — multiple containers may run concurrently)
   const existing = await listMachines(flyApp, flyToken);
-  for (const m of existing) {
-    console.log(`Destroying stale machine ${m.id} (${m.name})...`);
-    await destroyMachine(flyApp, flyToken, m.id).catch(() => {});
+  if (existing.length > 0) {
+    console.log(`${existing.length} existing machine(s) in ${flyApp}:`);
+    for (const m of existing) {
+      console.log(`  ${m.id} (${m.name}) — ${m.state}`);
+    }
   }
 
   // Retry machine creation — the registry tag may take a moment to propagate
@@ -320,7 +322,7 @@ export async function startRemoteContainer(
   await waitForMachine(flyApp, flyToken, machineId);
   console.log("Machine started.");
 
-  // Poll the public URL until the HTTP server is ready
+  // Poll the public URL until the HTTP server is ready, targeting this specific machine
   const baseUrl = `https://${flyApp}.fly.dev`;
   const maxWait = 180000;
   const interval = 2000;
@@ -329,7 +331,9 @@ export async function startRemoteContainer(
 
   while (Date.now() - start < maxWait) {
     try {
-      const res = await fetch(`${baseUrl}/status`);
+      const res = await fetch(`${baseUrl}/status`, {
+        headers: { "fly-force-instance-id": machineId },
+      });
       if (res.ok) {
         ready = true;
         break;

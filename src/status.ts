@@ -67,6 +67,9 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   }
 
   console.log(`\n  ${stateLabel}  ${DIM}(${containerName})${RESET}`);
+  if (status.pushBranch) {
+    console.log(`  ${DIM}Branch:${RESET}    ${status.pushBranch}`);
+  }
   console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
   console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
 
@@ -81,6 +84,14 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   if (status.detachRequested) {
     console.log(`  ${YELLOW}Detach requested — will exit when work complete${RESET}`);
   }
+}
+
+async function showRecentLogs(baseUrl: string, httpOpts: HttpOptions = {}, count = 20): Promise<void> {
+  const data = await httpGet(`${baseUrl}/logs?offset=0`, httpOpts);
+  const lines: string[] = data.items;
+  const recent = lines.slice(-count);
+  console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
+  displayFormattedLines(recent);
 }
 
 async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}): Promise<void> {
@@ -152,11 +163,17 @@ function showStoppedEntries(entries: RegistryEntry[]): void {
   }
 }
 
-function showAliveList(alive: RegistryEntry[]): void {
-  console.log(`\n${BOLD}${alive.length} running containers:${RESET}\n`);
+async function showAllContainers(alive: RegistryEntry[]): Promise<void> {
+  console.log(`\n${BOLD}${alive.length} running containers:${RESET}`);
   for (const entry of alive) {
-    const started = formatAge(entry.startedAt);
-    console.log(`  ${GREEN}●${RESET} ${entry.containerName}  ${DIM}${entry.type}${RESET}  ${entry.baseUrl}  started ${started}`);
+    const opts = httpOptsFor(entry);
+    try {
+      await showHttpStatus(entry.baseUrl, entry.containerName, opts);
+      await showRecentLogs(entry.baseUrl, opts);
+    } catch {
+      console.log(`\n  ${RED}UNREACHABLE${RESET}  ${DIM}(${entry.containerName})${RESET}`);
+      console.log(`  ${DIM}Server:${RESET}    ${entry.baseUrl}`);
+    }
   }
   console.log(`\n${DIM}Use: npm run status -- --tail <containerName> to tail a specific container${RESET}`);
 }
@@ -217,8 +234,8 @@ async function main(): Promise<void> {
     }
     await tailHttpLogs(alive[0].baseUrl, opts);
   } else {
-    // Multiple alive — list them, no tailing
-    showAliveList(alive);
+    // Multiple alive — show status and recent logs for each, then exit
+    await showAllContainers(alive);
   }
 }
 
