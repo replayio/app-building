@@ -54,7 +54,7 @@ USER agent
 
 # Copy app scripts and source
 WORKDIR /app-building
-COPY --chown=agent:agent package.json ./
+COPY --chown=agent:agent package.json .env.example ./
 RUN npm install --production
 COPY --chown=agent:agent src/ ./src/
 COPY --chown=agent:agent scripts/ ./scripts/
