@@ -1,15 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageSidebar: Decide on components for Sidebar Navigation, add sections to docs/tests.md",
-        "PlanComponentSidebarNavLinks: Add test entries for sidebar navigation links (Clients, Contacts, Deals, Tasks, Team, Settings)",
-        "PlanComponentSidebarUserArea: Add test entries for user area (avatar/name/sign-out when logged in, Sign In button when not, inline auth form with email/password, Sign In/Sign Up toggle)"
-      ],
-      "timestamp": "2026-02-23T21:26:11.219Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "Unpack: Write the app"
