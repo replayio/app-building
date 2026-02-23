@@ -3,9 +3,14 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage groups for each page"
+        "PlanPageClientsListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentSidebar: Add test entries for Sidebar Navigation",
+        "PlanComponentClientsSearchAndFilters: Add test entries for ClientsSearchAndFilters",
+        "PlanComponentClientsActions: Add test entries for ClientsActions (Import, Export, Add New Client)",
+        "PlanComponentClientsTable: Add test entries for ClientsTable",
+        "PlanComponentPagination: Add test entries for Pagination"
       ],
-      "timestamp": "2026-02-23T21:48:04.386Z"
+      "timestamp": "2026-02-23T21:49:42.510Z"
     },
     {
       "strategy": "strategies/jobs/build/writeApp.md",
@@ -146,6 +151,66 @@
         "Unpack: Deploy to production"
       ],
       "timestamp": "2026-02-23T21:47:32.028Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageClientDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentClientHeader: Add test entries for ClientHeader",
+        "PlanComponentQuickActions: Add test entries for QuickActions (Add Task, Add Deal, Add Attachment, Add Person)",
+        "PlanComponentSourceInfoSection: Add test entries for SourceInfoSection",
+        "PlanComponentTasksSection: Add test entries for TasksSection",
+        "PlanComponentDealsSection: Add test entries for DealsSection",
+        "PlanComponentAttachmentsSection: Add test entries for AttachmentsSection",
+        "PlanComponentPeopleSection: Add test entries for PeopleSection",
+        "PlanComponentTimelineSection: Add test entries for TimelineSection"
+      ],
+      "timestamp": "2026-02-23T21:49:48.453Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPagePersonDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentPersonHeader: Add test entries for PersonHeader",
+        "PlanComponentRelationshipsSection: Add test entries for RelationshipsSection (Graph/List View, Filter, Add Entry)",
+        "PlanComponentContactHistorySection: Add test entries for ContactHistorySection",
+        "PlanComponentAssociatedClientsSection: Add test entries for AssociatedClientsSection"
+      ],
+      "timestamp": "2026-02-23T21:49:53.526Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageDealsListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentDealsSummaryCards: Add test entries for DealsSummaryCards",
+        "PlanComponentDealsViewTabs: Add test entries for DealsViewTabs (Table View, Pipeline View)",
+        "PlanComponentDealsFilters: Add test entries for DealsFilters",
+        "PlanComponentDealsTable: Add test entries for DealsTable and CreateDealButton"
+      ],
+      "timestamp": "2026-02-23T21:50:05.742Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageDealDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentDealHeader: Add test entries for DealHeader and StageProgressBar",
+        "PlanComponentDealHistorySection: Add test entries for DealHistorySection and DealMetricsSection",
+        "PlanComponentWriteupsSection: Add test entries for WriteupsSection",
+        "PlanComponentLinkedTasksSection: Add test entries for LinkedTasksSection",
+        "PlanComponentDealAttachmentsSection: Add test entries for DealAttachmentsSection",
+        "PlanComponentDealContactsSection: Add test entries for DealContactsSection"
+      ],
+      "timestamp": "2026-02-23T21:50:11.295Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageTasksListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentTasksHeader: Add test entries for TasksHeader and New Task button",
+        "PlanComponentTasksFilter: Add test entries for TasksFilter",
+        "PlanComponentTasksList: Add test entries for TasksList (task cards, priority badges, action menu)"
+      ],
+      "timestamp": "2026-02-23T21:50:17.457Z"
     }
   ]
 }
