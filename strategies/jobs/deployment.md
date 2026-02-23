@@ -14,9 +14,14 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/deployment.md" \
 
 ## Deployment
 
-Run `npm run deploy` from the app directory. See `strategies/scripts/deploy.md` for the full
-script specification. The script handles database creation/sync, Netlify site creation/update,
-and writes the deployed URL to `deployment.txt`.
+Before running the deploy script, check whether the app has been deployed before by reading
+`deployment.txt`. If it exists, you MUST populate `.env` with the existing resource IDs so
+the script reuses them. See `strategies/scripts/deploy.md` § "Populating `.env` for
+Redeployments" for the exact steps.
+
+Then run `npm run deploy` from the app directory. See `strategies/scripts/deploy.md` for the
+full script specification. The script handles database creation/sync, Netlify site
+creation/update, and writes the deployed URL to `deployment.txt`.
 
 ## Testing
 

@@ -39,6 +39,35 @@ resources.
 6. Deploy to Netlify (`netlify deploy --prod`).
 7. Write the deployed URL to `deployment.txt`.
 
+## Populating `.env` for Redeployments
+
+`.env` is gitignored and will not exist in a fresh environment. If the app has been
+deployed before, you MUST populate `.env` before running the script so it reuses the
+existing Netlify site and Neon database instead of creating new ones.
+
+Read `deployment.txt` (committed to git) to get `site_id`. Then write `.env`:
+
+```
+NETLIFY_SITE_ID=<site_id from deployment.txt>
+```
+
+For the Neon database, look up the existing project via the Neon API:
+
+```bash
+curl -s -H "Authorization: Bearer $NEON_API_KEY" \
+  https://console.neon.tech/api/v2/projects | jq '.projects[] | select(.name | startswith("sales-crm"))'
+```
+
+Then write the project ID and connection URI to `.env`:
+
+```
+NEON_PROJECT_ID=<id from API response>
+DATABASE_URL=<connection_uri from API response>
+```
+
+If `.env` is missing these values the script will create **new** resources, which means
+a new URL and an empty database. Always check `deployment.txt` first.
+
 ## Inputs
 
 - **Environment variables**:
@@ -48,6 +77,8 @@ resources.
 - **Files**:
   - `.env`: Read for existing project info (`NEON_PROJECT_ID`, `DATABASE_URL`,
     `NETLIFY_SITE_ID`). Written to on first run.
+  - `deployment.txt`: Contains `site_id` from the last deployment (committed to git).
+    Use this to populate `.env` when deploying in a fresh environment.
 
 ## Outputs
 
