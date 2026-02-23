@@ -1,3 +1,151 @@
 {
-  "groups": []
+  "groups": [
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "Unpack: Write test specification"
+      ],
+      "timestamp": "2026-02-23T21:22:58.070Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "Unpack: Write the app"
+      ],
+      "timestamp": "2026-02-23T21:23:01.726Z"
+    },
+    {
+      "strategy": "strategies/jobs/writeScript.md",
+      "jobs": [
+        "Unpack: Implement package scripts"
+      ],
+      "timestamp": "2026-02-23T21:23:05.557Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "Unpack: Write Playwright tests"
+      ],
+      "timestamp": "2026-02-23T21:23:09.721Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testing.md",
+      "jobs": [
+        "Unpack: Get all tests passing"
+      ],
+      "timestamp": "2026-02-23T21:23:13.989Z"
+    },
+    {
+      "strategy": "strategies/jobs/deployment.md",
+      "jobs": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-23T21:23:18.001Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-23T21:23:31.061Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-23T21:23:31.998Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-23T21:23:32.948Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-23T21:23:33.898Z"
+    },
+    {
+      "strategy": "strategies/jobs/deployment.md",
+      "jobs": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-23T21:23:34.809Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-23T21:23:35.713Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-23T21:23:36.654Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-23T21:23:37.632Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-23T21:23:38.556Z"
+    },
+    {
+      "strategy": "strategies/jobs/deployment.md",
+      "jobs": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-23T21:23:39.511Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/fixBugReport.md",
+      "jobs": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-23T21:23:40.476Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-23T21:23:41.406Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-23T21:23:42.396Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/polishApp.md",
+      "jobs": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-23T21:23:43.405Z"
+    },
+    {
+      "strategy": "strategies/jobs/deployment.md",
+      "jobs": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-23T21:23:44.408Z"
+    }
+  ]
 }
