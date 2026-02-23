@@ -208,6 +208,8 @@ export async function createMachine(
             ports: [{ port: 443, handlers: ["tls", "http"] }],
             protocol: "tcp",
             internal_port: 3000,
+            autostart: false,
+            autostop: "off",
           },
         ],
       },

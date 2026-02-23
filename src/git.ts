@@ -67,7 +67,7 @@ export function commitAndPush(label: string, pushBranch: string, log: Logger, di
       timeout: 30000,
     });
   } catch (e: any) {
-    log(`Warning: git commit failed: ${e.message}`);
+    log(`Warning: git commit failed: ${e.message}${e.stderr ? `\nstderr: ${e.stderr}` : ""}`);
     return;
   }
 
@@ -102,7 +102,7 @@ export function commitAndPush(label: string, pushBranch: string, log: Logger, di
     });
     log(`Pushed to ${pushBranch}`);
   } catch (e: any) {
-    log(`Warning: git push failed: ${e.message}`);
+    log(`Warning: git push failed: ${e.message}${e.stderr ? `\nstderr: ${e.stderr}` : ""}`);
   }
 }
 
