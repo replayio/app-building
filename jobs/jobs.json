@@ -3,9 +3,9 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "Unpack: Write test specification"
+        "PlanPages: Read the spec, decide on pages, and add PlanPage groups for each page"
       ],
-      "timestamp": "2026-02-23T21:22:58.070Z"
+      "timestamp": "2026-02-23T21:24:22.485Z"
     },
     {
       "strategy": "strategies/jobs/build/writeApp.md",
