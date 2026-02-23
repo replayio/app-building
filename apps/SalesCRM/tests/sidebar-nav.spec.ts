@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test'
 
 test.describe('SidebarNavLinks', () => {
   test('Sidebar displays all navigation links with icons', async ({ page }) => {
+    // Checks all 6 nav links with multiple assertions each - needs extra time in Replay browser
+    test.slow()
+
     await page.goto('/clients')
 
     const sidebar = page.getByTestId('sidebar')
@@ -160,6 +163,9 @@ test.describe('SidebarNavLinks', () => {
   })
 
   test('Sidebar is persistent across all pages', async ({ page }) => {
+    // Navigates to 6 different pages - needs extra time in Replay browser
+    test.slow()
+
     const pages = [
       { path: '/clients', testId: 'clients-list-page' },
       { path: '/deals', testId: 'deals-list-page' },

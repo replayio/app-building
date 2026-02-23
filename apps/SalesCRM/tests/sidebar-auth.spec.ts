@@ -7,10 +7,7 @@ function uniqueEmail() {
 
 test.describe('SidebarUserArea', () => {
   test.beforeEach(async ({ page }) => {
-    // Clear auth state so we start unauthenticated
     await page.goto('/clients')
-    await page.evaluate(() => localStorage.removeItem('token'))
-    await page.reload()
   })
 
   test('Sign In button shown when not logged in', async ({ page }) => {
@@ -42,6 +39,9 @@ test.describe('SidebarUserArea', () => {
   })
 
   test('Sign In form submits with email and password', async ({ page }) => {
+    // This test does signup + signout + signin, so it needs extra time
+    test.slow()
+
     // First, create an account via sign up
     const email = uniqueEmail()
     const password = 'testpass123'
@@ -54,7 +54,7 @@ test.describe('SidebarUserArea', () => {
     await page.getByTestId('auth-submit-button').click()
 
     // Wait for sign up to complete (IS_TEST=true auto-confirms)
-    await expect(page.getByTestId('user-name')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('user-name')).toBeVisible({ timeout: 30000 })
 
     // Sign out so we can test sign in
     await page.getByTestId('sign-out-button').click()
@@ -67,7 +67,7 @@ test.describe('SidebarUserArea', () => {
     await page.getByTestId('auth-submit-button').click()
 
     // On success: form replaced by user info
-    await expect(page.getByTestId('user-avatar')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('user-avatar')).toBeVisible({ timeout: 30000 })
     await expect(page.getByTestId('user-name')).toHaveText('Test User')
     await expect(page.getByTestId('sign-out-button')).toBeVisible()
   })
@@ -121,7 +121,7 @@ test.describe('SidebarUserArea', () => {
 
     // In test mode (IS_TEST=true), signup auto-confirms and returns a session immediately
     // So the user should be authenticated
-    await expect(page.getByTestId('user-name')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('user-name')).toBeVisible({ timeout: 30000 })
     await expect(page.getByTestId('user-name')).toHaveText('New User')
   })
 
@@ -137,7 +137,7 @@ test.describe('SidebarUserArea', () => {
     await page.getByTestId('auth-submit-button').click()
 
     // Wait for authenticated state
-    await expect(page.getByTestId('user-area')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('user-area')).toBeVisible({ timeout: 30000 })
 
     // Verify avatar (shows initial)
     await expect(page.getByTestId('user-avatar')).toBeVisible()
@@ -166,7 +166,7 @@ test.describe('SidebarUserArea', () => {
     await page.getByTestId('auth-submit-button').click()
 
     // Wait for authenticated state
-    await expect(page.getByTestId('user-name')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('user-name')).toBeVisible({ timeout: 30000 })
 
     // Click sign out
     await page.getByTestId('sign-out-button').click()

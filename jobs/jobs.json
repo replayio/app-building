@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testing.md",
-      "jobs": [
-        "FixTests: Get all tests passing"
-      ],
-      "timestamp": "2026-02-23T22:08:26.085Z"
-    },
-    {
       "strategy": "strategies/jobs/deployment.md",
       "jobs": [
         "Unpack: Deploy to production"

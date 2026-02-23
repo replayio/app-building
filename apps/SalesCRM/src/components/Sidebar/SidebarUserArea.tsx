@@ -70,6 +70,11 @@ export default function SidebarUserArea() {
           data-testid="sign-in-button"
           onClick={() => {
             setShowForm(true)
+            setIsSignUp(false)
+            setEmail('')
+            setPassword('')
+            setName('')
+            setMessage('')
             dispatch(clearError())
           }}
           className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"

@@ -221,7 +221,11 @@ async function main() {
     try {
       execSync(`npx playwright test ${testFile} --retries 0`, {
         stdio: 'inherit',
-        env: { ...process.env, DATABASE_URL: databaseUrl },
+        env: {
+          ...process.env,
+          DATABASE_URL: databaseUrl,
+          LD_LIBRARY_PATH: '/tmp/libssl1.1/usr/lib/x86_64-linux-gnu' + (process.env.LD_LIBRARY_PATH ? ':' + process.env.LD_LIBRARY_PATH : ''),
+        },
       })
     } catch (err) {
       playwrightExitCode = (err as { status?: number }).status || 1
