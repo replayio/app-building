@@ -182,21 +182,7 @@ async function runInteractive(opts: {
       console.log("...");
 
       try {
-        // Send message with retry for transient network errors
-        let id: string;
-        for (let attempt = 0; ; attempt++) {
-          try {
-            const resp = await httpPost(`${baseUrl}/message`, { prompt: input }, httpOpts);
-            id = resp.id;
-            break;
-          } catch (err) {
-            if (attempt < 3) {
-              await new Promise((r) => setTimeout(r, 2000));
-              continue;
-            }
-            throw err;
-          }
-        }
+        const { id } = await httpPost(`${baseUrl}/message`, { prompt: input }, httpOpts);
 
         // Poll events in background while waiting
         const abortController = new AbortController();

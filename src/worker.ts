@@ -35,6 +35,7 @@ export interface ClaudeResult {
   cost_usd?: number;
   duration_ms?: number;
   num_turns?: number;
+  session_id?: string;
   doneSignaled: boolean;
 }
 
@@ -49,9 +50,13 @@ function hasDoneSignal(source: string, text: string): boolean {
   return match;
 }
 
-function buildClaudeArgs(prompt: string, extraArgs: string[]): string[] {
+function buildClaudeArgs(prompt: string, extraArgs: string[], resumeSessionId?: string): string[] {
   const args: string[] = [];
-  args.push("-p", prompt);
+  if (resumeSessionId) {
+    args.push("--resume", resumeSessionId, "-p", prompt);
+  } else {
+    args.push("-p", prompt);
+  }
   args.push(...extraArgs);
   args.push("--output-format", "stream-json", "--verbose");
   return args;
@@ -72,6 +77,7 @@ function runClaude(
 
     let resultEvent: ClaudeResult | null = null;
     let doneSignaled = false;
+    let sessionId: string | undefined;
     let buffer = "";
 
     child.stdout!.on("data", (data: Buffer) => {
@@ -85,6 +91,9 @@ function runClaude(
         try {
           const event = JSON.parse(line);
           debug(`event type=${event.type} subtype=${event.subtype ?? ""}`);
+          if (event.type === "system" && event.subtype === "init" && event.session_id) {
+            sessionId = event.session_id;
+          }
           if (event.type === "result") {
             debug(`result event: result=${JSON.stringify((event.result ?? "").slice(0, 500))}`);
             resultEvent = {
@@ -150,6 +159,7 @@ function runClaude(
       }
       const result = resultEvent ?? { result: "", doneSignaled: false };
       result.doneSignaled = doneSignaled;
+      if (sessionId) result.session_id = sessionId;
       resolve(result);
     });
   });
@@ -216,15 +226,18 @@ export function getPendingGroupCount(): number {
 
 /**
  * Run a single prompt through Claude and return the result.
+ * If resumeSessionId is provided, the prompt is sent as a follow-up
+ * in the existing Claude Code session.
  */
 export async function processMessage(
   prompt: string,
   extraArgs: string[],
   log: Logger,
   onEvent?: EventCallback,
+  resumeSessionId?: string,
 ): Promise<ClaudeResult> {
-  const claudeArgs = buildClaudeArgs(prompt, extraArgs);
-  log(`Running Claude...`);
+  const claudeArgs = buildClaudeArgs(prompt, extraArgs, resumeSessionId);
+  log(`Running Claude${resumeSessionId ? ` (resume ${resumeSessionId.slice(0, 8)}...)` : ""}...`);
   return runClaude(claudeArgs, log, onEvent);
 }
 

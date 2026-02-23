@@ -164,6 +164,8 @@ function getQuery(url: string, key: string): string | null {
 
 async function processLoop(): Promise<void> {
   const extraArgs = buildExtraArgs();
+  // Track the Claude session ID across interactive messages so context is preserved
+  let interactiveSessionId: string | undefined;
 
   while (true) {
     if (stopRequested) break;
@@ -180,9 +182,14 @@ async function processLoop(): Promise<void> {
       log(`Initial revision: ${getRevision(REPO_DIR)}`);
 
       try {
-        const result = await processMessage(entry.prompt, extraArgs, log, onEvent);
+        const result = await processMessage(entry.prompt, extraArgs, log, onEvent, interactiveSessionId);
         entry.result = result;
         entry.status = "done";
+
+        // Capture session ID for resuming subsequent messages
+        if (result.session_id) {
+          interactiveSessionId = result.session_id;
+        }
 
         if (result.cost_usd != null) {
           totalCost += result.cost_usd;
