@@ -11,6 +11,7 @@
     "check": "tsx scripts/check.ts",
     "test": "tsx scripts/test.ts",
     "deploy": "tsx scripts/deploy.ts",
+    "seed-production": "tsx scripts/seed-production.ts",
     "analyze-test-failure": "tsx scripts/analyze-test-failure.ts"
   },
   "dependencies": {
