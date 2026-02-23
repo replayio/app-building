@@ -102,7 +102,7 @@ export function commitAndPush(label: string, pushBranch: string, log: Logger, di
     });
     log(`Pushed to ${pushBranch}`);
   } catch (e: any) {
-    log(`Warning: git push failed: ${e.message}${e.stderr ? `\nstderr: ${e.stderr}` : ""}`);
+    log(`Warning: git push failed: status=${e.status} signal=${e.signal} killed=${e.killed} stderr=${JSON.stringify(String(e.stderr ?? ""))} message=${e.message}`);
   }
 }
 
