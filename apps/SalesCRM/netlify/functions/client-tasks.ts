@@ -64,7 +64,7 @@ async function handler(req: OptionalAuthRequest) {
     `
 
     // Notify followers (fire-and-forget)
-    notifyClientFollowers(getDbUrl(), body.client_id, 'task_created', desc, req.user?.id).catch(() => {})
+    notifyClientFollowers(getDbUrl(), body.client_id, 'task_created', desc, req.user?.id, req.url).catch(() => {})
 
     // Fetch deal_name if deal_id provided
     const task = rows[0]
@@ -114,7 +114,7 @@ async function handler(req: OptionalAuthRequest) {
         INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
         VALUES (${task.client_id}, 'task_completed', ${completedDesc}, ${req.user?.name ?? 'System'}, ${taskId}, 'task')
       `
-      notifyClientFollowers(getDbUrl(), task.client_id, 'task_completed', completedDesc, req.user?.id).catch(() => {})
+      notifyClientFollowers(getDbUrl(), task.client_id, 'task_completed', completedDesc, req.user?.id, req.url).catch(() => {})
     }
 
     return Response.json(rows[0])

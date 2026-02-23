@@ -23,7 +23,12 @@ const EVENT_LABELS: Record<string, string> = {
   note_added: 'Note Added',
 }
 
-function getAppUrl(): string {
+function getAppUrl(requestUrl?: string): string {
+  if (requestUrl) {
+    try {
+      return new URL(requestUrl).origin
+    } catch { /* fall through */ }
+  }
   if (process.env.URL) return process.env.URL
   return 'http://localhost:8888'
 }
@@ -50,7 +55,8 @@ export async function notifyClientFollowers(
   clientId: string,
   eventType: string,
   description: string,
-  actorUserId?: string
+  actorUserId?: string,
+  requestUrl?: string
 ): Promise<void> {
   const prefKey = EVENT_TO_PREF_KEY[eventType]
   if (!prefKey) return
@@ -96,7 +102,7 @@ export async function notifyClientFollowers(
   }
 
   const resend = new Resend(apiKey)
-  const appUrl = getAppUrl()
+  const appUrl = getAppUrl(requestUrl)
   const clientUrl = `${appUrl}/clients/${clientId}`
   const settingsUrl = `${appUrl}/settings`
   const eventLabel = EVENT_LABELS[eventType] || eventType

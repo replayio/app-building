@@ -139,7 +139,7 @@ export default async function handler(req: Request): Promise<Response> {
       VALUES (${user.id}, ${token}, 'reset', ${expiresAt.toISOString()})
     `
 
-    await sendPasswordResetEmail(user.email as string, token)
+    await sendPasswordResetEmail(user.email as string, token, req.url)
 
     return new Response(JSON.stringify({ message: 'If an account with that email exists, a password reset link has been sent.' }), { status: 200, headers })
   }
@@ -238,7 +238,7 @@ export default async function handler(req: Request): Promise<Response> {
       VALUES (${user.id}, ${confirmToken}, 'confirm', ${expiresAt.toISOString()})
     `
 
-    await sendConfirmationEmail(email, confirmToken)
+    await sendConfirmationEmail(email, confirmToken, req.url)
 
     return new Response(JSON.stringify({
       needsConfirmation: true,

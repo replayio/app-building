@@ -73,7 +73,7 @@ async function handler(req: OptionalAuthRequest) {
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
       VALUES (${body.client_id}, 'contact_added', ${contactDesc}, ${req.user?.name ?? 'System'}, ${individual.id}, 'individual')
     `
-    notifyClientFollowers(getDbUrl(), body.client_id, 'contact_added', contactDesc, req.user?.id).catch(() => {})
+    notifyClientFollowers(getDbUrl(), body.client_id, 'contact_added', contactDesc, req.user?.id, req.url).catch(() => {})
 
     return Response.json({
       id: individual.id,
