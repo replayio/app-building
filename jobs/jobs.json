@@ -3,9 +3,20 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
-        "Unpack: Review fixed bug reports"
+        "ClassifyBug: Classify SignInFormSubmits",
+        "UpdateDirectives: Update directives for SignInFormSubmits",
+        "FinishBug: Mark SignInFormSubmits as reviewed"
       ],
-      "timestamp": "2026-02-23T21:23:31.998Z"
+      "timestamp": "2026-02-23T23:33:20.248Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
+      "jobs": [
+        "ClassifyBug: Classify SidebarNavLinks",
+        "UpdateDirectives: Update directives for SidebarNavLinks",
+        "FinishBug: Mark SidebarNavLinks as reviewed"
+      ],
+      "timestamp": "2026-02-23T23:33:16.488Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
