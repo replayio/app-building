@@ -9,7 +9,7 @@ import {
   type ClaudeResult,
   type EventCallback,
 } from "./worker";
-import { createBufferedLogger } from "./log";
+import { createBufferedLogger, archiveCurrentLog } from "./log";
 
 // --- Configuration from env ---
 
@@ -209,6 +209,7 @@ async function processLoop(): Promise<void> {
       // Final commit and push after message (skip if stopping — unmerged branch gets these)
       if (!stopRequested) {
         const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
+        archiveCurrentLog(LOGS_DIR);
         commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
         log(`Final revision: ${getRevision(REPO_DIR)}`);
       }
@@ -228,7 +229,10 @@ async function processLoop(): Promise<void> {
         onEvent,
         () => stopRequested,
         (label) => {
-          if (!stopRequested) commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
+          if (!stopRequested) {
+            archiveCurrentLog(LOGS_DIR);
+            commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
+          }
         },
       );
       groupsProcessed += jobResult.groupsProcessed;
@@ -253,15 +257,18 @@ async function processLoop(): Promise<void> {
   state = "stopping";
   log("Server shutting down.");
 
-  // Commit and push all remaining work to an unmerged branch
-  try {
-    const branch = `${PUSH_BRANCH}-unmerged-${CONTAINER_NAME}`;
-    checkoutPushBranch(branch, REPO_DIR);
-    commitAndPush(`Unmerged work from ${CONTAINER_NAME}`, branch, log, REPO_DIR);
-    unmergedBranch = branch;
-    log(`Unmerged branch: ${branch}`);
-  } catch (e: any) {
-    log(`Warning: failed to push unmerged branch: ${e.message}`);
+  // Only create an unmerged branch on stop (interrupted work), not on detach (clean completion)
+  if (stopRequested) {
+    try {
+      const branch = `${PUSH_BRANCH}-unmerged-${CONTAINER_NAME}`;
+      checkoutPushBranch(branch, REPO_DIR);
+      archiveCurrentLog(LOGS_DIR);
+      commitAndPush(`Unmerged work from ${CONTAINER_NAME}`, branch, log, REPO_DIR);
+      unmergedBranch = branch;
+      log(`Unmerged branch: ${branch}`);
+    } catch (e: any) {
+      log(`Warning: failed to push unmerged branch: ${e.message}`);
+    }
   }
 
   state = "stopped";

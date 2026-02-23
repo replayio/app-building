@@ -2,6 +2,9 @@ node_modules/
 dist/
 .env
 prompt-*.txt
+# worker-current.log is the live log file written to during a worker run.
+# It is archived to worker-<timestamp>.log before each commit (see log.ts).
+# Only the archived timestamped files should be committed.
 */worker-current.log
 *~
 

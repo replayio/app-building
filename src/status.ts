@@ -110,16 +110,21 @@ async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}): Promis
     }
   }, 500);
 
+  const exitTail = () => {
+    clearInterval(poll);
+    clearInterval(healthCheck);
+    console.log(`\n${DIM}Container stopped.${RESET}\n`);
+    process.exit(0);
+  };
+
   const healthCheck = setInterval(async () => {
     try {
-      await httpGet(`${baseUrl}/status`, httpOpts);
+      const status = await httpGet(`${baseUrl}/status`, { ...httpOpts, timeout: 5000 });
+      if (status.state === "stopped") exitTail();
     } catch {
-      clearInterval(poll);
-      clearInterval(healthCheck);
-      console.log(`\n${DIM}Container stopped.${RESET}\n`);
-      process.exit(0);
+      exitTail();
     }
-  }, 3000);
+  }, 2000);
 
   process.on("SIGINT", () => {
     clearInterval(poll);

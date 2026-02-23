@@ -70,8 +70,18 @@ export function redactSecrets(text: string): string {
 }
 
 /**
- * Rotate any existing worker-current.log to a timestamped name,
- * create a fresh one, and return a logger that appends to it.
+ * Log file lifecycle:
+ *
+ * 1. The current worker always writes to `worker-current.log`. This file is
+ *    gitignored so it doesn't create noise in every commit.
+ * 2. When a worker finishes (a Claude invocation completes), the caller must
+ *    call `archiveCurrentLog()` to rename it to `worker-<timestamp>.log`.
+ *    The timestamped file is NOT gitignored and will be included in the next
+ *    `git add -A` / commit.
+ * 3. On the next `createLogFile` call a fresh `worker-current.log` is created.
+ *
+ * This means `archiveCurrentLog` must be called before `commitAndPush` for
+ * the logs to appear in the commit.
  */
 export function createLogFile(logsDir: string): Logger {
   mkdirSync(logsDir, { recursive: true });

@@ -197,6 +197,7 @@ export async function createMachine(
       config: {
         image,
         env,
+        restart: { policy: "no" },
         guest: {
           cpu_kind: "shared",
           cpus: 4,
