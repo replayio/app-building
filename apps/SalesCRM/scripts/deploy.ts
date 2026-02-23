@@ -19,6 +19,18 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const APP_DIR = resolve(__dirname, '..')
 const ENV_PATH = resolve(APP_DIR, '.env')
+const DEPLOYMENT_PATH = resolve(APP_DIR, 'deployment.txt')
+
+function readKeyValueFile(filePath: string): Record<string, string> {
+  const result: Record<string, string> = {}
+  if (!existsSync(filePath)) return result
+  const content = readFileSync(filePath, 'utf-8')
+  for (const line of content.split('\n')) {
+    const match = line.match(/^([^#=]+)=(.*)$/)
+    if (match) result[match[1].trim()] = match[2].trim()
+  }
+  return result
+}
 
 function readEnvFile(): Record<string, string> {
   const result: Record<string, string> = {}
@@ -56,6 +68,15 @@ async function ensureNeonProject(neonApiKey: string): Promise<{ projectId: strin
   if (envVars.NEON_PROJECT_ID && envVars.DATABASE_URL) {
     console.log(`Using existing Neon project: ${envVars.NEON_PROJECT_ID}`)
     return { projectId: envVars.NEON_PROJECT_ID, databaseUrl: envVars.DATABASE_URL }
+  }
+
+  // Fall back to deployment.txt (committed to git, survives across environments)
+  const deploymentVars = readKeyValueFile(DEPLOYMENT_PATH)
+  if (deploymentVars.neon_project_id && deploymentVars.database_url) {
+    console.log(`Using Neon project from deployment.txt: ${deploymentVars.neon_project_id}`)
+    writeEnvValue('NEON_PROJECT_ID', deploymentVars.neon_project_id)
+    writeEnvValue('DATABASE_URL', deploymentVars.database_url)
+    return { projectId: deploymentVars.neon_project_id, databaseUrl: deploymentVars.database_url }
   }
 
   console.log('Creating new Neon project...')
@@ -100,6 +121,14 @@ async function ensureNetlifySite(netlifyAccountSlug: string): Promise<string> {
   if (envVars.NETLIFY_SITE_ID) {
     console.log(`Using existing Netlify site: ${envVars.NETLIFY_SITE_ID}`)
     return envVars.NETLIFY_SITE_ID
+  }
+
+  // Fall back to deployment.txt (committed to git, survives across environments)
+  const deploymentVars = readKeyValueFile(DEPLOYMENT_PATH)
+  if (deploymentVars.site_id) {
+    console.log(`Using Netlify site from deployment.txt: ${deploymentVars.site_id}`)
+    writeEnvValue('NETLIFY_SITE_ID', deploymentVars.site_id)
+    return deploymentVars.site_id
   }
 
   console.log('Creating new Netlify site...')
