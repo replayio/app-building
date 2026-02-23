@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecClientDetail: Check testSpec.md directive violations in ClientDetailPage test entries",
-        "CheckComponentsClientDetail: Check writeApp.md directive violations in ClientDetailPage components",
-        "CheckTestsClientDetail: Check writeTests.md directive violations in ClientDetailPage tests"
-      ],
-      "timestamp": "2026-02-23T23:39:24.463Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecPersonDetail: Check testSpec.md directive violations in PersonDetailPage test entries",
         "CheckComponentsPersonDetail: Check writeApp.md directive violations in PersonDetailPage components",
         "CheckTestsPersonDetail: Check writeTests.md directive violations in PersonDetailPage tests"
@@ -599,6 +590,41 @@
         "WriteTestsClientsListPage: Write all Playwright tests for ClientsListPage"
       ],
       "timestamp": "2026-02-23T23:52:16.547Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageClientDetail: Decide on components, add sections to docs/tests.md for ClientDetailPage",
+        "PlanComponentClientDetailHeader: Add test entries for ClientDetailHeader",
+        "PlanComponentClientDetailSourceInfo: Add test entries for ClientDetailSourceInfo",
+        "PlanComponentClientDetailTasks: Add test entries for ClientDetailTasks",
+        "PlanComponentClientDetailDeals: Add test entries for ClientDetailDeals",
+        "PlanComponentClientDetailAttachments: Add test entries for ClientDetailAttachments",
+        "PlanComponentClientDetailPeople: Add test entries for ClientDetailPeople",
+        "PlanComponentClientDetailTimeline: Add test entries for ClientDetailTimeline"
+      ],
+      "timestamp": "2026-02-23T23:54:10.452Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentClientDetailHeader: Write the ClientDetailHeader component",
+        "WriteComponentClientDetailSourceInfo: Write the ClientDetailSourceInfo component",
+        "WriteComponentClientDetailTasks: Write the ClientDetailTasks component",
+        "WriteComponentClientDetailDeals: Write the ClientDetailDeals component",
+        "WriteComponentClientDetailAttachments: Write the ClientDetailAttachments component",
+        "WriteComponentClientDetailPeople: Write the ClientDetailPeople component",
+        "WriteComponentClientDetailTimeline: Write the ClientDetailTimeline component",
+        "WritePageClientDetail: Write the ClientDetailPage itself"
+      ],
+      "timestamp": "2026-02-23T23:54:41.571Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "WriteTestsClientDetail: Write all Playwright tests for ClientDetailPage test entries"
+      ],
+      "timestamp": "2026-02-23T23:54:55.983Z"
     }
   ]
 }
