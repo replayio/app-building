@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/writeScript.md",
-      "jobs": [
-        "Unpack: Implement the deploy script (strategies/scripts/deploy.md)"
-      ],
-      "timestamp": "2026-02-23T21:48:03.112Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeTests.md",
       "jobs": [
         "Unpack: Write Playwright tests"
