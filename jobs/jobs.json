@@ -3,11 +3,11 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecSidebar: Check testSpec.md directive violations in Sidebar Navigation test entries",
-        "CheckComponentsSidebar: Check writeApp.md directive violations in Sidebar Navigation components",
-        "CheckTestsSidebar: Check writeTests.md directive violations in Sidebar Navigation tests"
+        "FixViolationSidebarSignUpNameField: Update test spec entries 'Toggle switches between Sign In and Sign Up modes' and 'Sign Up form submits and requires email confirmation' to mention the Name input field that appears in Sign Up mode, and update the toggle test to verify Name field visibility",
+        "FixViolationSidebarTestSlow: Add test.slow() to the 'Clicking sign-out logs the user out' test in sidebar-auth.spec.ts since it chains multiple user flows (signup, signout, navigation)",
+        "RunTestsSidebar: Verify sidebar tests pass after fixes"
       ],
-      "timestamp": "2026-02-23T23:39:26.910Z"
+      "timestamp": "2026-02-23T23:44:59.944Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
