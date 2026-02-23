@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecClientsList: Check testSpec.md directive violations in ClientsListPage test entries",
-        "CheckComponentsClientsList: Check writeApp.md directive violations in ClientsListPage components",
-        "CheckTestsClientsList: Check writeTests.md directive violations in ClientsListPage tests"
-      ],
-      "timestamp": "2026-02-23T23:39:25.583Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecClientDetail: Check testSpec.md directive violations in ClientDetailPage test entries",
         "CheckComponentsClientDetail: Check writeApp.md directive violations in ClientDetailPage components",
         "CheckTestsClientDetail: Check writeTests.md directive violations in ClientDetailPage tests"
@@ -587,6 +578,27 @@
         "WriteConfirmEmailPage: Write the ConfirmEmailPage page"
       ],
       "timestamp": "2026-02-23T21:44:07.319Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageClientsListPage: Decide on components and add test entries to docs/tests.md for ClientsListPage"
+      ],
+      "timestamp": "2026-02-23T23:52:08.117Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WritePageClientsListPage: Write all ClientsListPage components, backend function, and page"
+      ],
+      "timestamp": "2026-02-23T23:52:12.532Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "WriteTestsClientsListPage: Write all Playwright tests for ClientsListPage"
+      ],
+      "timestamp": "2026-02-23T23:52:16.547Z"
     }
   ]
 }
