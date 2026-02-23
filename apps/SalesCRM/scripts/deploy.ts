@@ -167,6 +167,13 @@ async function main() {
 
   const siteId = env.NETLIFY_SITE_ID!
 
+  // --- Set Netlify environment variables ---
+  console.log('Setting Netlify environment variables...')
+  execSync(
+    `netlify env:set DATABASE_URL "${databaseUrl}"`,
+    { stdio: 'inherit', env: { ...process.env, NETLIFY_AUTH_TOKEN: netlifyAuthToken, NETLIFY_SITE_ID: siteId } }
+  )
+
   // --- Build ---
   console.log('Building app...')
   execSync('npx vite build', { stdio: 'inherit' })

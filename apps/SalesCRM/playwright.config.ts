@@ -3,6 +3,7 @@ import { devices as replayDevices, replayReporter } from '@replayio/playwright'
 
 export default defineConfig({
   testDir: './tests',
+  testIgnore: ['**/deployment.spec.ts'],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,

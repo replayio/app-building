@@ -1,14 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/deployment.md",
-      "jobs": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-23T23:21:50.346Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/fixBugReport.md",
       "jobs": [
         "Unpack: Fix open bug reports"
