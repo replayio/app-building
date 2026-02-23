@@ -130,6 +130,13 @@ Write tests with this in mind:
 - Never hardcode database IDs in tests. Query the UI or API to discover IDs for the records
   you need to interact with.
 - The Playwright config must use `fullyParallel: true`. Do not set `workers: 1`.
+- The Playwright config must use `replayDevices['Replay Chromium']` from `@replayio/playwright`
+  as the browser project, not standard `devices['Desktop Chrome']`. Tests must run under the
+  Replay browser so that recordings are captured for debugging.
+- Set the Playwright config's global `timeout` and `webServer.timeout` to at least 60000ms.
+  The Replay browser has significant recording overhead, and with parallel workers all hitting
+  the dev server simultaneously, pages can take 25+ seconds to load. A 30s timeout that works
+  locally with standard Chrome will cause widespread flakes under recording.
 
 ## Tips
 

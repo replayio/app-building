@@ -6,6 +6,10 @@
 
 ## Unreviewed
 
+(none)
+
+## Finished
+
 ### SidebarNavLinks — Multiple test timeouts
 
 - **Bug file**: [docs/bugs/SidebarNavLinks.md](bugs/SidebarNavLinks.md)
@@ -13,8 +17,8 @@
 - **Git revision after fix**: 8847111
 - **Summary**: Playwright config used `devices['Desktop Chrome']` instead of `replayDevices['Replay Chromium']`, and timeouts were too tight for Replay browser under parallel test load.
 - **Determination**: TEST (configuration)
-
-## Finished
+- **Problem stage**: `writeTests.md` — The test entries correctly specify sidebar navigation behavior, but the Playwright config used the wrong browser device and insufficient global timeouts, preventing reliable test execution under recording overhead.
+- **Directives updated**: Added two new directives to `writeTests.md` Parallel Test Design section: (1) Playwright config must use `replayDevices['Replay Chromium']` instead of standard Chrome devices, (2) global `timeout` and `webServer.timeout` must be at least 60000ms to account for Replay browser recording overhead under parallel load.
 
 ### SignInFormSubmits — Sign In form submits with email and password
 

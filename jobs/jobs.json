@@ -1,15 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
-        "ClassifyBug: Classify SidebarNavLinks",
-        "UpdateDirectives: Update directives for SidebarNavLinks",
-        "FinishBug: Mark SidebarNavLinks as reviewed"
-      ],
-      "timestamp": "2026-02-23T23:33:16.488Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "Unpack: Check directive compliance"
