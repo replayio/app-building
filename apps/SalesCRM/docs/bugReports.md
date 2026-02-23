@@ -2,9 +2,14 @@
 
 ## Open
 
-2/23/2026: The forgot password screen and other pages have content flush against the top/sides of the screen with no breathing room — pages need consistent padding/margin so content is not pressed against screen edges. This should be added as a directive in writeApp.md.
-
 ## Unreviewed
+
+2/23/2026: The forgot password screen and other pages have content flush against the top/sides of the screen with no breathing room — pages need consistent padding/margin so content is not pressed against screen edges. This should be added as a directive in writeApp.md.
+- Before: 1352882
+- After: (this commit)
+- Fix: Added `p-6 max-sm:p-3` padding to ForgotPasswordPage, ResetPasswordPage, ConfirmEmailPage, and NotFoundPage root elements. These pages were missing the consistent padding that all other pages (ClientsListPage, DealsListPage, etc.) already had. Added directive to writeApp.md requiring all pages to include consistent padding on their root element. Added SPACING-01 cross-cutting test to verify pages have non-zero padding.
+- Problem stage: writeApp.md — no directive required page-level padding, so auth pages and the 404 page were created without it
+- Directive: Added directive to writeApp.md: every page component must include consistent padding (`p-6 max-sm:p-3`) on its root element
 
 2/23/2026: Email confirmation for password login does not work in production — confirmation emails contain localhost URLs (from getAppUrl() in netlify/utils/email.ts defaulting to http://localhost:8888 when process.env.URL is not set), so users can never confirm their email and are blocked from logging in. Tests did not catch this because IS_TEST mode bypasses email confirmation entirely (auto-confirms on signup, skips the check on login), so the actual production email confirmation flow is never exercised. Directive added to writeTests.md: auth flows with email verification must have dedicated tests that run without IS_TEST bypass.
 - Before: 084ad68

@@ -44,7 +44,7 @@ export function ResetPasswordPage() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center" data-testid="reset-password-page">
+    <div className="flex-1 flex items-center justify-center p-6 max-sm:p-3" data-testid="reset-password-page">
       <div className="max-w-[400px] w-full px-6">
         {!token ? (
           <div data-testid="reset-password-error" className="text-center">

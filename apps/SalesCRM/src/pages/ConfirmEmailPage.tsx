@@ -29,7 +29,7 @@ export function ConfirmEmailPage() {
   }, [searchParams, confirmEmail, navigate])
 
   return (
-    <div className="flex-1 flex items-center justify-center" data-testid="confirm-email-page">
+    <div className="flex-1 flex items-center justify-center p-6 max-sm:p-3" data-testid="confirm-email-page">
       <div className="max-w-[400px] w-full px-6">
         {status === 'loading' && (
           <div data-testid="confirm-email-loading" className="text-center">

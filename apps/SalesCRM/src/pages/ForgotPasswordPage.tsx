@@ -28,7 +28,7 @@ export function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center" data-testid="forgot-password-page">
+    <div className="flex-1 flex items-center justify-center p-6 max-sm:p-3" data-testid="forgot-password-page">
       <div className="max-w-[400px] w-full px-6">
         {submitted ? (
           <div data-testid="forgot-password-success" className="text-center">

@@ -93,6 +93,10 @@ contexts (testing, deployment).
 - Attachment functionality must support actual file uploads. Any UI that allows adding attachments
   must include a working file upload mechanism (e.g., file picker, drag-and-drop), not just link entry.
 
+- Every page component must include consistent padding on its root element (`p-6 max-sm:p-3`)
+  so content is never flush against the screen edges. This applies to all pages including
+  centered layouts (auth forms, error pages) — add padding alongside centering utilities.
+
 ## Tips
 
 - Production builds must use `sourcemap: true`, `minify: false`, and the React development build in

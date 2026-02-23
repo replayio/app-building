@@ -368,6 +368,50 @@ test.describe('Cross-Cutting Data Consistency', () => {
 });
 
 // ============================================================
+// Cross-Cutting Page Spacing Tests (SPACING-01)
+// ============================================================
+
+test.describe('Cross-Cutting Page Spacing', () => {
+  test('SPACING-01: All pages have consistent padding and content is not flush against screen edges', async ({ browser }) => {
+    const context = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+    const page = await context.newPage();
+
+    const pagesToCheck = [
+      { url: '/auth/forgot-password', testId: 'forgot-password-page' },
+      { url: '/auth/reset-password', testId: 'reset-password-page' },
+      { url: '/auth/confirm-email', testId: 'confirm-email-page' },
+      { url: '/nonexistent', testId: 'not-found-page' },
+    ];
+
+    for (const { url, testId } of pagesToCheck) {
+      await page.goto(url);
+      await page.waitForLoadState('networkidle');
+
+      const pageEl = page.getByTestId(testId);
+      await expect(pageEl).toBeVisible();
+
+      // Verify the page root element has padding (content not flush against edges)
+      const padding = await pageEl.evaluate((el) => {
+        const style = window.getComputedStyle(el);
+        return {
+          top: parseFloat(style.paddingTop),
+          right: parseFloat(style.paddingRight),
+          bottom: parseFloat(style.paddingBottom),
+          left: parseFloat(style.paddingLeft),
+        };
+      });
+
+      expect(padding.top, `${testId} should have top padding`).toBeGreaterThan(0);
+      expect(padding.right, `${testId} should have right padding`).toBeGreaterThan(0);
+      expect(padding.bottom, `${testId} should have bottom padding`).toBeGreaterThan(0);
+      expect(padding.left, `${testId} should have left padding`).toBeGreaterThan(0);
+    }
+
+    await context.close();
+  });
+});
+
+// ============================================================
 // Cross-Cutting Timeline Atomicity Tests (ATOM-01 through ATOM-03)
 // ============================================================
 

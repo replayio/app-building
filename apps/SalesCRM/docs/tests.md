@@ -1659,6 +1659,13 @@ This document defines behavior-driven test entries for the Sales CRM application
 - Action: Navigate to the associated client's detail page
 - Expected: Attachment appears in the client's Attachments section with the deal linked.
 
+### Page Spacing
+
+**SPACING-01: All pages have consistent padding and content is not flush against screen edges**
+- Initial: User navigates to various pages including auth pages (/auth/forgot-password, /auth/reset-password, /auth/confirm-email) and the 404 page (/nonexistent)
+- Action: Check that the page root container has padding so content is not pressed against the viewport edges
+- Expected: Every page's root element (data-testid ending in "-page") has non-zero padding on all sides. Content is never flush against the screen edges.
+
 ### Timeline Atomicity
 
 **ATOM-01: Single task creation produces exactly one timeline entry**
