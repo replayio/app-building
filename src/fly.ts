@@ -23,13 +23,44 @@ async function flyFetch(
 }
 
 /**
- * Create a Fly app via the Machines API.
+ * Create a Fly app via the Machines API and allocate IPs so .fly.dev DNS works.
  */
 export async function createApp(token: string, name: string, org?: string): Promise<void> {
   await flyFetch("/apps", token, {
     method: "POST",
     body: JSON.stringify({ app_name: name, org_slug: org ?? "personal" }),
   });
+
+  // Allocate shared IPv4 and IPv6 via GraphQL so the app gets a .fly.dev domain
+  const gqlFetch = async (query: string, variables: Record<string, unknown>) => {
+    const res = await fetch("https://api.fly.io/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(`Fly GraphQL error ${res.status}: ${body}`);
+    }
+    const data = await res.json() as { errors?: { message: string }[] };
+    if (data.errors?.length) {
+      throw new Error(`Fly GraphQL: ${data.errors[0].message}`);
+    }
+  };
+
+  const allocateMutation = `
+    mutation($input: AllocateIPAddressInput!) {
+      allocateIpAddress(input: $input) {
+        ipAddress { id address type }
+      }
+    }
+  `;
+
+  await gqlFetch(allocateMutation, { input: { appId: name, type: "shared_v4" } });
+  await gqlFetch(allocateMutation, { input: { appId: name, type: "v6" } });
 }
 
 /**
@@ -80,6 +111,7 @@ export async function createMachine(
         image,
         env,
         guest: {
+          cpu_kind: "shared",
           cpus: 4,
           memory_mb: 4096,
         },
@@ -107,7 +139,7 @@ export async function waitForMachine(
   machineId: string,
 ): Promise<void> {
   await flyFetch(
-    `/apps/${app}/machines/${machineId}/wait?state=started&timeout=120`,
+    `/apps/${app}/machines/${machineId}/wait?state=started&timeout=60`,
     token,
   );
 }
