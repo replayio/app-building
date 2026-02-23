@@ -3,9 +3,16 @@
     {
       "strategy": "strategies/jobs/writeScript.md",
       "jobs": [
-        "Unpack: Implement package scripts"
+        "Unpack: Implement the test script (strategies/scripts/test.md)"
       ],
-      "timestamp": "2026-02-23T21:23:05.557Z"
+      "timestamp": "2026-02-23T21:48:07.074Z"
+    },
+    {
+      "strategy": "strategies/jobs/writeScript.md",
+      "jobs": [
+        "Unpack: Implement the deploy script (strategies/scripts/deploy.md)"
+      ],
+      "timestamp": "2026-02-23T21:48:03.112Z"
     },
     {
       "strategy": "strategies/jobs/build/writeTests.md",
