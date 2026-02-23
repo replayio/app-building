@@ -1,4 +1,5 @@
-import { execFileSync } from "child_process";
+import { execFileSync, execSync } from "child_process";
+import { existsSync, mkdirSync, chmodSync } from "fs";
 import { resolve } from "path";
 
 const API_BASE = "https://api.machines.dev/v1";
@@ -64,16 +65,44 @@ export async function createApp(token: string, name: string, org?: string): Prom
   await gqlFetch(allocateMutation, { input: { appId: name, type: "v6" } });
 }
 
+const FLYCTL_DIR = resolve(__dirname, "..", "node_modules", ".cache", "flyctl");
+const FLYCTL_PATH = resolve(FLYCTL_DIR, process.platform === "win32" ? "flyctl.exe" : "flyctl");
+
+/**
+ * Download flyctl binary if not already cached.
+ * Returns the absolute path to the flyctl binary.
+ */
+function ensureFlyctl(): string {
+  if (existsSync(FLYCTL_PATH)) return FLYCTL_PATH;
+
+  mkdirSync(FLYCTL_DIR, { recursive: true });
+
+  const os = process.platform === "darwin" ? "macOS" : "Linux";
+  const arch = process.arch === "arm64" ? "arm64" : "x86_64";
+  const url = `https://github.com/superfly/flyctl/releases/latest/download/flyctl_${os}_${arch}.tar.gz`;
+
+  console.log(`Downloading flyctl from ${url}...`);
+  execSync(`curl -fsSL "${url}" | tar xz -C "${FLYCTL_DIR}" flyctl`, {
+    stdio: ["pipe", "inherit", "inherit"],
+    timeout: 120000,
+  });
+  chmodSync(FLYCTL_PATH, 0o755);
+  console.log("flyctl downloaded.");
+
+  return FLYCTL_PATH;
+}
+
 /**
  * Build the Docker image remotely on Fly's builders and push to the registry.
  * Returns the full registry image ref.
  */
 export function remoteBuildAndPush(app: string, token: string): string {
   const projectRoot = resolve(__dirname, "..");
+  const flyctl = ensureFlyctl();
 
   console.log("Building image remotely on Fly...");
   const output = execFileSync(
-    "flyctl",
+    flyctl,
     ["deploy", "--remote-only", "--build-only", "--push", "--app", app],
     {
       cwd: projectRoot,
