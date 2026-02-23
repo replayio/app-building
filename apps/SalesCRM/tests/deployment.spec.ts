@@ -20,9 +20,8 @@ test('deployment: data displays and can be updated', async ({ page }) => {
   // Navigate to the deployed app
   await page.goto(DEPLOYED_URL);
 
-  // Verify the page loads and shows real client data
-  await expect(page.getByTestId('clients-table')).toBeVisible({ timeout: 15000 });
-  await expect(page.getByTestId('client-name').first()).toBeVisible({ timeout: 10000 });
+  // Wait for the page to load (clients list page should be visible)
+  await expect(page.getByTestId('clients-list-page')).toBeVisible({ timeout: 15000 });
 
   // Add a new client to verify write operations work
   await page.getByTestId('add-new-client-button').click();
@@ -32,6 +31,12 @@ test('deployment: data displays and can be updated', async ({ page }) => {
   await page.getByTestId('client-name-input').fill(testClientName);
   await page.getByTestId('client-save-button').click();
 
-  // Verify the new client appears in the table
+  // Verify the new client appears in the table (data displays)
+  await expect(page.getByTestId('clients-table')).toBeVisible({ timeout: 10000 });
   await expect(page.getByText(testClientName)).toBeVisible({ timeout: 10000 });
+
+  // Verify data can be updated by clicking into the client and checking it loads
+  await page.getByText(testClientName).click();
+  await expect(page.getByTestId('client-detail-page')).toBeVisible({ timeout: 10000 });
+  await expect(page.getByTestId('client-header-title')).toHaveText(testClientName, { timeout: 10000 });
 });

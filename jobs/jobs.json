@@ -1,12 +1,3 @@
 {
-  "groups": [
-    {
-      "strategy": "strategies/jobs/deployment.md",
-      "jobs": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-23T16:24:28.259Z"
-    }
-  ]
+  "groups": []
 }
