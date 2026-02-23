@@ -65,7 +65,7 @@ async function handler(req: OptionalAuthRequest) {
       INSERT INTO timeline_events (client_id, event_type, description, user_name, related_entity_id, related_entity_type)
       VALUES (${body.client_id}, 'deal_created', ${dealDesc}, ${req.user?.name ?? 'System'}, ${deal.id}, 'deal')
     `
-    notifyClientFollowers(getDbUrl(), body.client_id, 'deal_created', dealDesc, req.user?.id).catch(() => {})
+    notifyClientFollowers(getDbUrl(), body.client_id, 'deal_created', dealDesc, req.user?.id, req.url).catch(() => {})
 
     // Add client_name
     const clientRows = await sql`SELECT name FROM clients WHERE id = ${body.client_id}`

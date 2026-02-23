@@ -261,7 +261,7 @@ async function handler(req: OptionalAuthRequest) {
     }
     if (body.type && body.type !== old.type) changes.push(`Type changed to '${body.type}'`)
     if (changes.length > 0) {
-      notifyClientFollowers(getDbUrl(), resourceId, 'client_updated', changes.join('. '), req.user?.id).catch(() => {})
+      notifyClientFollowers(getDbUrl(), resourceId, 'client_updated', changes.join('. '), req.user?.id, req.url).catch(() => {})
     }
 
     return Response.json(rows[0])
