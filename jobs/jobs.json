@@ -3,10 +3,14 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
+        "WriteComponentSidebar: Write the Sidebar component",
+        "WriteComponentClientsSearchAndFilters: Write the ClientsSearchAndFilters component",
+        "WriteComponentClientsActions: Write the ClientsActions component",
+        "WriteComponentClientsTable: Write the ClientsTable component",
+        "WriteComponentPagination: Write the Pagination component",
+        "WritePageClientsListPage: Write the ClientsListPage page"
       ],
-      "timestamp": "2026-02-23T21:53:50.066Z"
+      "timestamp": "2026-02-23T22:00:46.346Z"
     },
     {
       "strategy": "strategies/jobs/writeScript.md",
@@ -275,6 +279,69 @@
         "WritePageClientsListPage: Write the page itself"
       ],
       "timestamp": "2026-02-23T21:54:04.391Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentClientHeader: Write the ClientHeader component",
+        "WriteComponentQuickActions: Write the QuickActions component",
+        "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
+        "WriteComponentTasksSection: Write the TasksSection component",
+        "WriteComponentDealsSection: Write the DealsSection component",
+        "WriteComponentAttachmentsSection: Write the AttachmentsSection component",
+        "WriteComponentPeopleSection: Write the PeopleSection component",
+        "WriteComponentTimelineSection: Write the TimelineSection component",
+        "WritePageClientDetailPage: Write the ClientDetailPage page"
+      ],
+      "timestamp": "2026-02-23T22:00:52.409Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentPersonHeader: Write the PersonHeader component",
+        "WriteComponentRelationshipsSection: Write the RelationshipsSection component",
+        "WriteComponentContactHistorySection: Write the ContactHistorySection component",
+        "WriteComponentAssociatedClientsSection: Write the AssociatedClientsSection component",
+        "WritePagePersonDetailPage: Write the PersonDetailPage page"
+      ],
+      "timestamp": "2026-02-23T22:00:57.928Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
+        "WriteComponentDealsViewTabs: Write the DealsViewTabs component",
+        "WriteComponentDealsFilters: Write the DealsFilters component",
+        "WriteComponentDealsTable: Write the DealsTable component",
+        "WriteComponentCreateDealButton: Write the CreateDealButton component",
+        "WritePageDealsListPage: Write the DealsListPage page"
+      ],
+      "timestamp": "2026-02-23T22:01:03.376Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealHeader: Write the DealHeader component",
+        "WriteComponentStageProgressBar: Write the StageProgressBar component",
+        "WriteComponentDealHistorySection: Write the DealHistorySection component",
+        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
+        "WriteComponentWriteupsSection: Write the WriteupsSection component",
+        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
+        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
+        "WriteComponentDealContactsSection: Write the DealContactsSection component",
+        "WritePageDealDetailPage: Write the DealDetailPage page"
+      ],
+      "timestamp": "2026-02-23T22:01:09.079Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentTasksHeader: Write the TasksHeader component",
+        "WriteComponentTasksFilter: Write the TasksFilter component",
+        "WriteComponentTasksList: Write the TasksList component",
+        "WritePageTasksListPage: Write the TasksListPage page"
+      ],
+      "timestamp": "2026-02-23T22:01:14.184Z"
     }
   ]
 }

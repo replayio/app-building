@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  /* Font */
+  --font-sans: "Inter", "SF Pro Display", -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif;
+
+  /* Colors - Backgrounds */
+  --color-bg-sidebar: #f5f5f5;
+  --color-bg-base: #fcfcfc;
+  --color-bg-hover: rgba(0, 0, 0, 0.063);
+  --color-bg-active: #efefef;
+  --color-bg-selected: #ededed;
+
+  /* Colors - Borders */
+  --color-border-default: #dcdcdc;
+  --color-border-light: #e0e0e0;
+
+  /* Colors - Text */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #2d2e2f;
+  --color-text-muted: #59595a;
+  --color-text-disabled: #b0b5c0;
+
+  /* Colors - Accent */
+  --color-accent: #7180ff;
+  --color-accent-blue: #5d85ff;
+  --color-accent-purple: #9577ff;
+  --color-accent-muted: #6d78d5;
+
+  /* Colors - Status badges */
+  --color-status-active: #22c55e;
+  --color-status-active-bg: #f0fdf4;
+  --color-status-inactive: #6b7280;
+  --color-status-inactive-bg: #f3f4f6;
+  --color-status-prospect: #f59e0b;
+  --color-status-prospect-bg: #fffbeb;
+  --color-status-churned: #ef4444;
+  --color-status-churned-bg: #fef2f2;
+
+  /* Colors - Priority badges */
+  --color-priority-high: #ef4444;
+  --color-priority-high-bg: #fef2f2;
+  --color-priority-medium: #f59e0b;
+  --color-priority-medium-bg: #fffbeb;
+  --color-priority-low: #22c55e;
+  --color-priority-low-bg: #f0fdf4;
+  --color-priority-normal: #6b7280;
+  --color-priority-normal-bg: #f3f4f6;
+
+  /* Colors - Deal status */
+  --color-deal-on-track: #22c55e;
+  --color-deal-on-track-bg: #f0fdf4;
+  --color-deal-needs-attention: #f59e0b;
+  --color-deal-needs-attention-bg: #fffbeb;
+  --color-deal-at-risk: #ef4444;
+  --color-deal-at-risk-bg: #fef2f2;
+  --color-deal-won: #7180ff;
+  --color-deal-won-bg: #eef0ff;
+
+  /* Spacing */
+  --sidebar-width: 244px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Shadows */
+  --shadow-sm: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-text-primary);
+  background: var(--color-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-disabled);
+}
