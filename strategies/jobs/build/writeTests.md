@@ -90,6 +90,15 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeTests.
   confirmation requirements, incorrect error handling, and session establishment failures that
   unit-level or mocked tests miss.
 
+- Auth flows that involve email-based verification (email confirmation, password reset) must
+  have dedicated tests that exercise the real production code path — not the IS_TEST bypass.
+  These tests must run the backend without IS_TEST=true (or with IS_TEST=false) so that actual
+  tokens are generated and stored. The test should call the signup/forgot-password endpoint,
+  query the database directly for the generated token, then hit the confirmation/reset endpoint
+  with that token and verify success. This ensures the full flow works end-to-end: token
+  generation, storage, URL construction, and redemption. Other (non-auth-flow) tests may
+  continue to use IS_TEST=true to bypass auth for convenience.
+
 ## Parallel Test Design
 
 Tests run in parallel across multiple Playwright workers, each with its own isolated database branch.
