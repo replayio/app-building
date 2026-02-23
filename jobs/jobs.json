@@ -3,9 +3,10 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "Unpack: Write the app"
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
       ],
-      "timestamp": "2026-02-23T21:46:48.178Z"
+      "timestamp": "2026-02-23T21:53:50.066Z"
     },
     {
       "strategy": "strategies/jobs/writeScript.md",
@@ -199,6 +200,81 @@
         "PlanComponentTasksList: Add test entries for TasksList (task cards, priority badges, action menu)"
       ],
       "timestamp": "2026-02-23T21:50:17.457Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentTasksHeader: Write the TasksHeader component",
+        "WriteComponentTasksFilter: Write the TasksFilter component",
+        "WriteComponentTasksList: Write the TasksList component",
+        "WritePageTasksListPage: Write the page itself"
+      ],
+      "timestamp": "2026-02-23T21:53:55.726Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealHeader: Write the DealHeader component",
+        "WriteComponentStageProgressBar: Write the StageProgressBar component",
+        "WriteComponentDealHistorySection: Write the DealHistorySection component",
+        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
+        "WriteComponentWriteupsSection: Write the WriteupsSection component",
+        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
+        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
+        "WriteComponentDealContactsSection: Write the DealContactsSection component",
+        "WritePageDealDetailPage: Write the page itself"
+      ],
+      "timestamp": "2026-02-23T21:53:57.859Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
+        "WriteComponentDealsViewTabs: Write the DealsViewTabs component",
+        "WriteComponentDealsFilters: Write the DealsFilters component",
+        "WriteComponentDealsTable: Write the DealsTable component",
+        "WriteComponentCreateDealButton: Write the CreateDealButton component",
+        "WritePageDealsListPage: Write the page itself"
+      ],
+      "timestamp": "2026-02-23T21:53:59.461Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentPersonHeader: Write the PersonHeader component",
+        "WriteComponentRelationshipsSection: Write the RelationshipsSection component",
+        "WriteComponentContactHistorySection: Write the ContactHistorySection component",
+        "WriteComponentAssociatedClientsSection: Write the AssociatedClientsSection component",
+        "WritePagePersonDetailPage: Write the page itself"
+      ],
+      "timestamp": "2026-02-23T21:54:00.798Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentClientHeader: Write the ClientHeader component",
+        "WriteComponentQuickActions: Write the QuickActions component",
+        "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
+        "WriteComponentTasksSection: Write the TasksSection component",
+        "WriteComponentDealsSection: Write the DealsSection component",
+        "WriteComponentAttachmentsSection: Write the AttachmentsSection component",
+        "WriteComponentPeopleSection: Write the PeopleSection component",
+        "WriteComponentTimelineSection: Write the TimelineSection component",
+        "WritePageClientDetailPage: Write the page itself"
+      ],
+      "timestamp": "2026-02-23T21:54:02.700Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentSidebar: Write the Sidebar navigation component",
+        "WriteComponentClientsSearchAndFilters: Write the ClientsSearchAndFilters component",
+        "WriteComponentClientsActions: Write the ClientsActions component",
+        "WriteComponentClientsTable: Write the ClientsTable component",
+        "WriteComponentPagination: Write the Pagination component",
+        "WritePageClientsListPage: Write the page itself"
+      ],
+      "timestamp": "2026-02-23T21:54:04.391Z"
     }
   ]
 }
