@@ -82,16 +82,20 @@ async function pollEvents(
   while (!signal.aborted) {
     try {
       const data = await httpGet(`${baseUrl}/events?offset=${offset}`);
-      for (const line of data.items) {
-        try {
-          const event = JSON.parse(line);
-          const formatted = formatEvent(event);
-          if (formatted) console.log(formatted);
-        } catch {
-          // not JSON, skip
+      const nextOffset = typeof data.nextOffset === "number" ? data.nextOffset : offset;
+      // Only process if the server reports a higher offset (new events)
+      if (nextOffset > offset && Array.isArray(data.items)) {
+        for (const line of data.items) {
+          try {
+            const event = JSON.parse(line);
+            const formatted = formatEvent(event);
+            if (formatted) console.log(formatted);
+          } catch {
+            // not JSON, skip
+          }
         }
+        offset = nextOffset;
       }
-      offset = data.nextOffset;
     } catch {
       // Server may be busy, retry
     }

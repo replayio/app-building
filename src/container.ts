@@ -289,8 +289,23 @@ export async function startRemoteContainer(
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const machineName = `app-building-${uniqueId}`;
 
+  // Retry machine creation — the registry tag may take a moment to propagate
   console.log("Creating Fly machine...");
-  const machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, machineName);
+  let machineId = "";
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, machineName);
+      break;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes("MANIFEST_UNKNOWN") && attempt < 4) {
+        console.log("Image not yet available in registry, retrying in 5s...");
+        await new Promise((r) => setTimeout(r, 5000));
+        continue;
+      }
+      throw err;
+    }
+  }
   console.log(`Machine created: ${machineId}`);
 
   console.log("Waiting for machine to start...");

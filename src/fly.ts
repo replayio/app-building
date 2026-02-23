@@ -79,10 +79,24 @@ function ensureFlyctl(): string {
 
   const os = process.platform === "darwin" ? "macOS" : "Linux";
   const arch = process.arch === "arm64" ? "arm64" : "x86_64";
-  const url = `https://github.com/superfly/flyctl/releases/latest/download/flyctl_${os}_${arch}.tar.gz`;
+  const suffix = `_${os}_${arch}.tar.gz`;
 
-  console.log(`Downloading flyctl from ${url}...`);
-  execSync(`curl -fsSL "${url}" | tar xz -C "${FLYCTL_DIR}" flyctl`, {
+  // Asset filenames include a version (e.g. flyctl_0.4.14_macOS_arm64.tar.gz),
+  // so we query the GitHub API to get the actual download URL.
+  const release = JSON.parse(
+    execSync(
+      'curl -fsSL "https://api.github.com/repos/superfly/flyctl/releases/latest"',
+      { encoding: "utf-8", timeout: 30000 },
+    ),
+  ) as { assets: { name: string; browser_download_url: string }[] };
+
+  const asset = release.assets.find((a) => a.name.endsWith(suffix));
+  if (!asset) {
+    throw new Error(`No flyctl release asset matching *${suffix}`);
+  }
+
+  console.log(`Downloading ${asset.name}...`);
+  execSync(`curl -fsSL "${asset.browser_download_url}" | tar xz -C "${FLYCTL_DIR}" flyctl`, {
     stdio: ["pipe", "inherit", "inherit"],
     timeout: 120000,
   });
@@ -101,30 +115,39 @@ export function remoteBuildAndPush(app: string, token: string): string {
   const flyctl = ensureFlyctl();
 
   console.log("Building image remotely on Fly...");
-  const output = execFileSync(
-    flyctl,
-    ["deploy", "--remote-only", "--build-only", "--push", "--app", app],
+  const output = execSync(
+    `"${flyctl}" deploy --remote-only --build-only --push --app "${app}" 2>&1`,
     {
       cwd: projectRoot,
       encoding: "utf-8",
-      env: { ...process.env, FLY_API_TOKEN: token },
+      env: { ...process.env, FLY_API_TOKEN: token, NO_COLOR: "1" },
       timeout: 600000,
     },
   );
 
-  // Parse the image ref from flyctl output
-  const match = output.match(/registry\.fly\.io\/[^\s]+/);
-  if (!match) {
-    // Fallback: construct the ref using the app name
-    const tag = `deployment-${Date.now()}`;
-    const fallbackRef = `registry.fly.io/${app}:${tag}`;
-    console.log(`Could not parse image ref from output, using ${fallbackRef}`);
-    return fallbackRef;
+  // Strip ANSI escape codes
+  const clean = output.replace(/\x1b\[[0-9;]*m/g, "");
+
+  // --build-only doesn't register the tag in the registry, but the builder
+  // does push the manifest by digest. Parse the digest and use that.
+  const digestMatch = clean.match(
+    /pushing manifest for (registry\.fly\.io\/\S+)@(sha256:[0-9a-f]+)/,
+  );
+  if (digestMatch) {
+    const imageRef = `${digestMatch[1].split("@")[0]}@${digestMatch[2]}`;
+    console.log(`Remote build complete: ${imageRef}`);
+    return imageRef;
   }
 
-  const imageRef = match[0];
-  console.log(`Remote build complete: ${imageRef}`);
-  return imageRef;
+  // Fallback: try the "image:" line (works if flyctl registers the tag)
+  const imageMatch = clean.match(/image:\s*(registry\.fly\.io\/\S+)/);
+  if (imageMatch) {
+    const imageRef = imageMatch[1];
+    console.log(`Remote build complete: ${imageRef}`);
+    return imageRef;
+  }
+
+  throw new Error("Could not parse image ref from flyctl output");
 }
 
 /**

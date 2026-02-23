@@ -130,7 +130,10 @@ function readBody(req: IncomingMessage): Promise<string> {
 
 function json(res: ServerResponse, status: number, body: unknown): void {
   const data = JSON.stringify(body);
-  res.writeHead(status, { "Content-Type": "application/json" });
+  res.writeHead(status, {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+  });
   res.end(data);
 }
 
