@@ -3,9 +3,11 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage groups for each page"
+        "PlanPageSidebar: Decide on components for Sidebar Navigation, add sections to docs/tests.md",
+        "PlanComponentSidebarNavLinks: Add test entries for sidebar navigation links (Clients, Contacts, Deals, Tasks, Team, Settings)",
+        "PlanComponentSidebarUserArea: Add test entries for user area (avatar/name/sign-out when logged in, Sign In button when not, inline auth form with email/password, Sign In/Sign Up toggle)"
       ],
-      "timestamp": "2026-02-23T21:24:22.485Z"
+      "timestamp": "2026-02-23T21:26:11.219Z"
     },
     {
       "strategy": "strategies/jobs/build/writeApp.md",
@@ -146,6 +148,133 @@
         "Unpack: Deploy to production"
       ],
       "timestamp": "2026-02-23T21:23:44.408Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageClientsListPage: Decide on components for ClientsListPage, add sections to docs/tests.md",
+        "PlanComponentClientsTable: Add test entries for clients table (columns: Client Name, Type, Status, Tags, Primary Contact, Open Deals, Next Task; row click navigates to detail; action menu)",
+        "PlanComponentClientsSearchAndFilters: Add test entries for search bar (by name/tag/contact), Status filter dropdown, Tags filter dropdown, Source filter dropdown, Sort dropdown (Recently Updated)",
+        "PlanComponentClientsPagination: Add test entries for pagination (Previous/Next, page numbers, showing X of Y)",
+        "PlanComponentAddClientModal: Add test entries for Add New Client button and modal (name, type org/individual, status, tags, source fields, validation)",
+        "PlanComponentClientsImportExport: Add test entries for Import button (CSV upload with format spec, template download, validation errors) and Export button (CSV download)"
+      ],
+      "timestamp": "2026-02-23T21:26:20.454Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageClientDetailPage: Decide on components for ClientDetailPage, add sections to docs/tests.md",
+        "PlanComponentClientHeader: Add test entries for client header (name, type badge, status badge, tags, edit button click, follow/unfollow toggle)",
+        "PlanComponentClientQuickActions: Add test entries for quick action buttons (Add Task, Add Deal, Add Attachment, Add Person) and their modals",
+        "PlanComponentClientSourceInfo: Add test entries for Source Info section (Acquisition Source, Campaign, Channel, Date Acquired, Edit button)",
+        "PlanComponentClientTasks: Add test entries for Tasks section (unresolved tasks list, task with deal association, due date, checkbox, click navigates to /tasks/:taskId)",
+        "PlanComponentClientDeals: Add test entries for Deals section (deal name, stage, value, click navigates to /deals/:dealId)",
+        "PlanComponentClientAttachments: Add test entries for Attachments section (file-type icons, image thumbnails, filename, type, date, linked deal, download/view/delete, upload modal with file/link toggle)",
+        "PlanComponentClientPeople: Add test entries for People section (person name, role/title, click navigates to /individuals/:id)",
+        "PlanComponentClientTimeline: Add test entries for Timeline section (chronological feed of tasks, notes, status changes, deal stage changes, contacts added; click navigates to detail; user attribution)"
+      ],
+      "timestamp": "2026-02-23T21:26:31.149Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPagePersonDetailPage: Decide on components for PersonDetailPage, add sections to docs/tests.md",
+        "PlanComponentPersonHeader: Add test entries for person header (name, title, email, phone, location, associated clients links)",
+        "PlanComponentPersonRelationships: Add test entries for Relationships section (Graph View/List View tabs, relationship entries with name/type/org/link, Filter button, Add Entry button and modal)",
+        "PlanComponentPersonContactHistory: Add test entries for History of Contact section (date/time, type: Video Call/Email/Meeting/Note, summary, team member, Filter button, Add Entry button and modal, edit icon)",
+        "PlanComponentPersonAssociatedClients: Add test entries for Associated Clients section (client cards with name, status, industry, View Client Detail Page link navigates to /clients/:clientId)"
+      ],
+      "timestamp": "2026-02-23T21:26:40.339Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageDealsListPage: Decide on components for DealsListPage, add sections to docs/tests.md",
+        "PlanComponentDealsSummaryCards: Add test entries for summary cards (Total Active Deals, Pipeline Value, Won Q3 count+value, Lost Q3 count+value)",
+        "PlanComponentDealsTableView: Add test entries for Table View (columns: Deal Name, Client, Stage, Owner, Value, Close Date with sort arrow indicator, Status badges; row click; action menu; pagination)",
+        "PlanComponentDealsPipelineView: Add test entries for Pipeline View (stage columns, deal cards, drag-and-drop between columns updates stage via API)",
+        "PlanComponentDealsFiltersAndSearch: Add test entries for filter bar (Stage dropdown, Client dropdown searchable, Status dropdown, Date Range picker, Sort by dropdown, Search input) and custom FilterSelect dropdowns",
+        "PlanComponentCreateDealModal: Add test entries for Create New Deal button and modal (name, client searchable dropdown, value, stage, owner user dropdown, probability, expected close date, status, validation)"
+      ],
+      "timestamp": "2026-02-23T21:26:50.446Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageDealDetailPage: Decide on components for DealDetailPage, add sections to docs/tests.md",
+        "PlanComponentDealHeader: Add test entries for deal header (deal name, client field, value field, owner user dropdown, stage dropdown, Change Stage button)",
+        "PlanComponentDealStageAndMetrics: Add test entries for stage progress bar (Lead/Qualification/Discovery/Proposal/Negotiation/Closed Won), Deal History section (stage change log with old/new/date/user), Deal Metrics (probability, expected close date)",
+        "PlanComponentDealWriteups: Add test entries for Writeups section (entries with title/date/author/content, New Entry button, Edit button, Version History button)",
+        "PlanComponentDealLinkedTasks: Add test entries for Linked Tasks section (task list with checkboxes, due dates, completed status, Add Task button, click navigates to /tasks/:taskId)",
+        "PlanComponentDealAttachments: Add test entries for Attachments section (file list with size, Download/Delete links, upload button with file/link toggle, file-type icons, image thumbnails)",
+        "PlanComponentDealContacts: Add test entries for Contacts/Individuals section (person name, role, organization, View Profile link navigates to /individuals/:id)"
+      ],
+      "timestamp": "2026-02-23T21:27:02.064Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageTasksListPage: Decide on components for TasksListPage, add sections to docs/tests.md",
+        "PlanComponentTasksList: Add test entries for task cards (priority badge High/Medium/Low/Normal, title, due date, assignee avatar+name+role, action menu; click navigates to /tasks/:taskId)",
+        "PlanComponentTasksFilterAndCreate: Add test entries for filter control (filter dropdown + text input), New Task button and CreateTaskModal (title, description, due date, priority, client searchable dropdown, assignee user dropdown, validation)"
+      ],
+      "timestamp": "2026-02-23T21:27:08.605Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageTaskDetailPage: Decide on components for TaskDetailPage, add sections to docs/tests.md",
+        "PlanComponentTaskDetails: Add test entries for task detail display (title, priority, status, due date, assignee user dropdown, associated client/deal links, mark complete button, cancel button)",
+        "PlanComponentTaskNotes: Add test entries for notes section (list of notes, add note form, delete note button, note content/timestamp)"
+      ],
+      "timestamp": "2026-02-23T21:27:14.253Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageContactsListPage: Decide on components for ContactsListPage, add sections to docs/tests.md",
+        "PlanComponentContactsTable: Add test entries for contacts table (columns: Name, Title, Email, Phone, Location, Associated Clients; row click navigates to /individuals/:id; pagination 50 per page)",
+        "PlanComponentContactsSearchAndActions: Add test entries for search bar (debounced, filters name/email/title/phone/location), Add Contact modal (name, title, email, phone, location, client association), Import CSV (format spec, template download), Export CSV"
+      ],
+      "timestamp": "2026-02-23T21:27:20.984Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageSettingsPage: Decide on components for SettingsPage, add sections to docs/tests.md",
+        "PlanComponentSettingsEmailNotifications: Add test entries for Email Notifications section (7 toggleable preferences, only visible when authenticated, default all enabled)",
+        "PlanComponentSettingsImportExport: Add test entries for Import & Export section (import buttons for clients/deals/tasks/contacts CSV, export buttons for clients/deals/tasks CSV)",
+        "PlanComponentSettingsWebhooks: Add test entries for Webhooks section (webhook list with enable/disable toggle, add/edit modal with name/URL/events/platform guide for Zapier/n8n/Discord, payload format display, delete with confirmation)"
+      ],
+      "timestamp": "2026-02-23T21:27:29.215Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageUsersListPage: Decide on components for UsersListPage (Team), add sections to docs/tests.md",
+        "PlanComponentUserCards: Add test entries for user cards grid (avatar, name, email, active deals count, open tasks count, click navigates to /users/:userId)"
+      ],
+      "timestamp": "2026-02-23T21:27:35.320Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageUserDetailPage: Decide on components for UserDetailPage, add sections to docs/tests.md",
+        "PlanComponentUserInfo: Add test entries for user info header (name, email, join date) and summary stats (active deals, open tasks, total deals)",
+        "PlanComponentUserSections: Add test entries for owned deals list, assigned tasks list, and recent activity feed sections"
+      ],
+      "timestamp": "2026-02-23T21:27:41.643Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageAuthPages: Decide on components for ForgotPasswordPage, ResetPasswordPage, ConfirmEmailPage, add sections to docs/tests.md",
+        "PlanComponentForgotPassword: Add test entries for ForgotPasswordPage (email input, submit sends reset email via Resend API, success message, validation)",
+        "PlanComponentResetPassword: Add test entries for ResetPasswordPage (new password + confirm fields, token validation, submit updates password and logs in, expired/invalid token handling)",
+        "PlanComponentConfirmEmail: Add test entries for ConfirmEmailPage (token from URL, auto-confirms account and logs in, expired/invalid/already-used token handling)"
+      ],
+      "timestamp": "2026-02-23T21:27:49.049Z"
     }
   ]
 }
