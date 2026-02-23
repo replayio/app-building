@@ -1,3 +1,0 @@
-url=https://sales-crm-1771869000486.netlify.app
-site_id=3f44f0c3-61b5-4ecf-9f7b-877c304f57a7
-deployed_at=2026-02-23T18:58:37.216Z
