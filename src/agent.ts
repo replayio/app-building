@@ -1,7 +1,7 @@
 import { Command } from "commander";
-import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, readAgentState } from "./container";
+import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, readAgentState, type AgentState } from "./container";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
-import { httpGet, httpPost } from "./http-client";
+import { httpGet, httpPost, type HttpOptions } from "./http-client";
 import { formatEvent } from "./format";
 
 // --- Input helpers ---
@@ -70,18 +70,28 @@ function readInput(): Promise<string | null> {
   });
 }
 
+// --- Build HTTP options that pin requests to a specific Fly machine ---
+
+function buildHttpOpts(state: AgentState): HttpOptions {
+  if (state.type === "remote" && state.flyMachineId) {
+    return { headers: { "fly-force-instance-id": state.flyMachineId } };
+  }
+  return {};
+}
+
 // --- Event polling ---
 
 async function pollEvents(
   baseUrl: string,
   startOffset: number,
   signal: AbortSignal,
+  httpOpts: HttpOptions,
 ): Promise<number> {
   let offset = startOffset;
 
   while (!signal.aborted) {
     try {
-      const data = await httpGet(`${baseUrl}/events?offset=${offset}`);
+      const data = await httpGet(`${baseUrl}/events?offset=${offset}`, httpOpts);
       const nextOffset = typeof data.nextOffset === "number" ? data.nextOffset : offset;
       // Only process if the server reports a higher offset (new events)
       if (nextOffset > offset && Array.isArray(data.items)) {
@@ -111,10 +121,11 @@ async function waitForMessage(
   baseUrl: string,
   messageId: string,
   signal: AbortSignal,
+  httpOpts: HttpOptions,
 ): Promise<void> {
   while (!signal.aborted) {
     try {
-      const data = await httpGet(`${baseUrl}/message/${messageId}`);
+      const data = await httpGet(`${baseUrl}/message/${messageId}`, httpOpts);
       if (data.status === "done" || data.status === "error") {
         if (data.error) {
           console.error(`Error: ${data.error}`);
@@ -146,6 +157,7 @@ async function runInteractive(opts: {
     : await startContainer(startOpts);
 
   const { containerName, baseUrl } = state;
+  const httpOpts = buildHttpOpts(state);
 
   console.log(`Container: ${containerName}`);
   console.log(`Server: ${baseUrl}`);
@@ -169,46 +181,68 @@ async function runInteractive(opts: {
 
       console.log("...");
 
-      // Send message
-      const { id } = await httpPost(`${baseUrl}/message`, { prompt: input });
-
-      // Poll events in background while waiting
-      const abortController = new AbortController();
-
-      // Listen for ESC to interrupt
-      let interrupted = false;
-      if (process.stdin.isTTY) {
-        process.stdin.setRawMode(true);
-      }
-      process.stdin.resume();
-      const onKey = (data: Buffer) => {
-        if (data[0] === 0x1b) {
-          interrupted = true;
-          httpPost(`${baseUrl}/interrupt`).catch(() => {});
-          console.log("\nInterrupted.");
+      try {
+        // Send message with retry for transient network errors
+        let id: string;
+        for (let attempt = 0; ; attempt++) {
+          try {
+            const resp = await httpPost(`${baseUrl}/message`, { prompt: input }, httpOpts);
+            id = resp.id;
+            break;
+          } catch (err) {
+            if (attempt < 3) {
+              await new Promise((r) => setTimeout(r, 2000));
+              continue;
+            }
+            throw err;
+          }
         }
-      };
-      process.stdin.on("data", onKey);
 
-      // Poll events and wait for completion concurrently
-      const eventPoll = pollEvents(baseUrl, eventOffset, abortController.signal);
-      await waitForMessage(baseUrl, id, abortController.signal);
+        // Poll events in background while waiting
+        const abortController = new AbortController();
 
-      // Stop event polling and capture final offset
-      abortController.abort();
-      eventOffset = await eventPoll.catch(() => eventOffset);
+        // Listen for ESC to interrupt
+        let interrupted = false;
+        if (process.stdin.isTTY) {
+          process.stdin.setRawMode(true);
+        }
+        process.stdin.resume();
+        const onKey = (data: Buffer) => {
+          if (data[0] === 0x1b) {
+            interrupted = true;
+            httpPost(`${baseUrl}/interrupt`, undefined, httpOpts).catch(() => {});
+            console.log("\nInterrupted.");
+          }
+        };
+        process.stdin.on("data", onKey);
 
-      // Tear down ESC listener
-      process.stdin.removeListener("data", onKey);
-      if (process.stdin.isTTY) {
-        process.stdin.setRawMode(false);
+        // Poll events and wait for completion concurrently
+        const eventPoll = pollEvents(baseUrl, eventOffset, abortController.signal, httpOpts);
+        await waitForMessage(baseUrl, id, abortController.signal, httpOpts);
+
+        // Stop event polling and capture final offset
+        abortController.abort();
+        eventOffset = await eventPoll.catch(() => eventOffset);
+
+        // Tear down ESC listener
+        process.stdin.removeListener("data", onKey);
+        if (process.stdin.isTTY) {
+          process.stdin.setRawMode(false);
+        }
+        process.stdin.pause();
+      } catch (err) {
+        console.error(`\nError: ${err instanceof Error ? err.message : err}`);
+        // Reset stdin state and continue the interactive loop
+        if (process.stdin.isTTY) {
+          process.stdin.setRawMode(false);
+        }
+        process.stdin.pause();
       }
-      process.stdin.pause();
     }
   } finally {
     // Send detach so container finishes any remaining work and exits
     try {
-      await httpPost(`${baseUrl}/detach`);
+      await httpPost(`${baseUrl}/detach`, undefined, httpOpts);
       console.log("Detached from container. It will exit when work completes.");
     } catch {
       stopContainer(containerName);
@@ -230,21 +264,24 @@ async function runDetached(opts: {
     cloneBranch: opts.branch,
     pushBranch: opts.pushBranch,
   };
-  const { containerName, baseUrl } = opts.remote
+  const state = opts.remote
     ? await startRemoteContainer(startOpts)
     : await startContainer(startOpts);
+
+  const { containerName, baseUrl } = state;
+  const httpOpts = buildHttpOpts(state);
 
   console.log(`Container: ${containerName}`);
   console.log(`Server: ${baseUrl}`);
 
   // Optionally send an initial message
   if (opts.prompt) {
-    const { id } = await httpPost(`${baseUrl}/message`, { prompt: opts.prompt });
+    const { id } = await httpPost(`${baseUrl}/message`, { prompt: opts.prompt }, httpOpts);
     console.log(`Message queued: ${id}`);
   }
 
   // Detach — container will process message + job groups, then exit
-  await httpPost(`${baseUrl}/detach`);
+  await httpPost(`${baseUrl}/detach`, undefined, httpOpts);
   console.log("Detached. Container will exit when all work is complete.");
   console.log(`Monitor: npm run status`);
   console.log(`Stop: npm run stop`);

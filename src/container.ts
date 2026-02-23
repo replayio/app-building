@@ -1,7 +1,7 @@
 import { execFileSync, spawn } from "child_process";
 import { readFileSync, writeFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
-import { remoteBuildAndPush, createApp, createMachine, waitForMachine, destroyMachine } from "./fly";
+import { remoteBuildAndPush, createApp, createMachine, waitForMachine, destroyMachine, listMachines } from "./fly";
 import { logContainer, markStopped } from "./container-registry";
 
 const IMAGE_NAME = "app-building";
@@ -285,6 +285,13 @@ export async function startRemoteContainer(
   // Remove Fly-specific vars from container env (not needed inside)
   delete containerEnv.FLY_API_TOKEN;
   delete containerEnv.FLY_APP_NAME;
+
+  // Destroy any stale machines from previous runs
+  const existing = await listMachines(flyApp, flyToken);
+  for (const m of existing) {
+    console.log(`Destroying stale machine ${m.id} (${m.name})...`);
+    await destroyMachine(flyApp, flyToken, m.id).catch(() => {});
+  }
 
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const machineName = `app-building-${uniqueId}`;
