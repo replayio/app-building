@@ -76,11 +76,11 @@ Components: SidebarNavLinks, SidebarUserArea
 #### Toggle switches between Sign In and Sign Up modes
 - **Initial state:** The inline auth form is open in Sign In mode.
 - **Action:** User clicks the Sign In/Sign Up toggle.
-- **Expected:** The form switches to Sign Up mode. The submit button text changes to "Sign Up". The toggle text updates to indicate the user can switch back to Sign In mode. The email and password fields remain visible.
+- **Expected:** The form switches to Sign Up mode. The submit button text changes to "Sign Up". The toggle text updates to indicate the user can switch back to Sign In mode. A Name input field appears (not present in Sign In mode). The email and password fields remain visible.
 
 #### Sign Up form submits and requires email confirmation
 - **Initial state:** The inline auth form is open in Sign Up mode.
-- **Action:** User enters a new email and password and clicks the "Sign Up" submit button.
+- **Action:** User enters a name, a new email, and password and clicks the "Sign Up" submit button.
 - **Expected:** The form submits the registration. A message is displayed informing the user that a confirmation email has been sent and they must confirm their email before logging in. The user is not yet authenticated. (In test mode with IS_TEST=true, signup auto-confirms and returns a session immediately.)
 
 #### Logged in state shows avatar, name, and sign-out

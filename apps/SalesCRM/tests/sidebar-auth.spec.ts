@@ -95,6 +95,8 @@ test.describe('SidebarUserArea', () => {
 
     // Submit button should say "Sign Up"
     await expect(page.getByTestId('auth-submit-button')).toHaveText('Sign Up')
+    // Name field should appear in Sign Up mode
+    await expect(page.getByTestId('auth-name-input')).toBeVisible()
     // Email and password fields remain visible
     await expect(page.getByTestId('auth-email-input')).toBeVisible()
     await expect(page.getByTestId('auth-password-input')).toBeVisible()
@@ -105,6 +107,8 @@ test.describe('SidebarUserArea', () => {
     await page.getByTestId('auth-toggle').click()
     await expect(page.getByTestId('auth-submit-button')).toHaveText('Sign In')
     await expect(page.getByTestId('auth-toggle')).toHaveText('Sign Up')
+    // Name field should be hidden again in Sign In mode
+    await expect(page.getByTestId('auth-name-input')).not.toBeVisible()
   })
 
   test('Sign Up form submits and requires email confirmation', async ({ page }) => {
@@ -155,6 +159,9 @@ test.describe('SidebarUserArea', () => {
   })
 
   test('Clicking sign-out logs the user out', async ({ page }) => {
+    // This test chains signup, signout, and navigation verification, so it needs extra time
+    test.slow()
+
     // Create account and sign in
     const email = uniqueEmail()
 
