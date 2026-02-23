@@ -3,9 +3,10 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "Unpack: Write the app"
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
       ],
-      "timestamp": "2026-02-23T21:23:01.726Z"
+      "timestamp": "2026-02-23T21:32:45.716Z"
     },
     {
       "strategy": "strategies/jobs/writeScript.md",
@@ -266,6 +267,125 @@
         "PlanComponentConfirmEmail: Add test entries for ConfirmEmailPage (token from URL, auto-confirms account and logs in, expired/invalid/already-used token handling)"
       ],
       "timestamp": "2026-02-23T21:27:49.049Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentSidebarNavLinks: Write the SidebarNavLinks component",
+        "WriteComponentSidebarUserArea: Write the SidebarUserArea component",
+        "WriteComponentAppLayout: Write the AppLayout component with routing"
+      ],
+      "timestamp": "2026-02-23T21:32:55.182Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentClientsFilterBar: Write the ClientsFilterBar component",
+        "WriteComponentClientsTable: Write the ClientsTable component",
+        "WriteComponentCreateClientModal: Write the CreateClientModal component",
+        "WritePageClientsListPage: Write the ClientsListPage page"
+      ],
+      "timestamp": "2026-02-23T21:32:56.242Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentClientDetailHeader: Write the ClientDetailHeader component with quick actions",
+        "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
+        "WriteComponentClientSections: Write the Tasks, Deals, Attachments, People, and Timeline sections for client detail",
+        "WritePageClientDetailPage: Write the ClientDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:32:58.756Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentPersonDetailHeader: Write the PersonDetailHeader component",
+        "WriteComponentPersonSections: Write the Relationships, ContactHistory, and AssociatedClients sections",
+        "WritePagePersonDetailPage: Write the PersonDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:00.900Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
+        "WriteComponentDealsTable: Write the DealsTable and DealsFilterBar components",
+        "WriteComponentDealsPipelineView: Write the DealsPipelineView component with drag-and-drop",
+        "WriteComponentCreateDealModal: Write the CreateDealModal component",
+        "WritePageDealsListPage: Write the DealsListPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:01.925Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealDetailHeader: Write the DealDetailHeader component with stage indicator and controls",
+        "WriteComponentDealSections: Write the DealHistory, Metrics, Writeups, LinkedTasks, Attachments, and Contacts sections",
+        "WritePageDealDetailPage: Write the DealDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:02.914Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentTaskCard: Write the TaskCard component",
+        "WriteComponentCreateTaskModal: Write the CreateTaskModal component",
+        "WritePageTasksListPage: Write the TasksListPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:04.109Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentTaskDetailContent: Write the TaskDetailContent component",
+        "WriteComponentTaskNotesSection: Write the TaskNotesSection component",
+        "WritePageTaskDetailPage: Write the TaskDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:05.130Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentContactsTable: Write the ContactsTable component",
+        "WriteComponentAddContactModal: Write the AddContactModal component",
+        "WritePageContactsListPage: Write the ContactsListPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:06.136Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentNotificationPreferences: Write the NotificationPreferences component",
+        "WriteComponentWebhooksSection: Write the WebhooksSection and WebhookModal components",
+        "WritePageSettingsPage: Write the SettingsPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:07.874Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentUserCard: Write the UserCard component",
+        "WritePageUsersListPage: Write the UsersListPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:08.876Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentUserDetailContent: Write the UserDetailContent component",
+        "WritePageUserDetailPage: Write the UserDetailPage page"
+      ],
+      "timestamp": "2026-02-23T21:33:09.859Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WritePageForgotPasswordPage: Write the ForgotPasswordPage",
+        "WritePageResetPasswordPage: Write the ResetPasswordPage",
+        "WritePageConfirmEmailPage: Write the ConfirmEmailPage"
+      ],
+      "timestamp": "2026-02-23T21:33:10.906Z"
     }
   ]
 }
