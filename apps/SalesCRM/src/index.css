@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@theme {
+  /* Sidebar */
+  --color-sidebar: #f5f5f5;
+  --color-sidebar-hover: #f7f7f7;
+  --color-sidebar-active: #eeeeee;
+
+  /* Backgrounds */
+  --color-base: #fcfcfc;
+  --color-surface: #ffffff;
+
+  /* Borders */
+  --color-border: #dcdcdc;
+  --color-border-light: #e0e0e0;
+
+  /* Text */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #2d2e2f;
+  --color-text-muted: #59595a;
+  --color-text-disabled: #b0b5c0;
+
+  /* Accent / Brand */
+  --color-accent: #7180ff;
+  --color-accent-blue: #5d85ff;
+  --color-accent-purple: #9577ff;
+  --color-accent-muted: #6d78d5;
+
+  /* Status colors */
+  --color-status-active: #22c55e;
+  --color-status-inactive: #6b7280;
+  --color-status-prospect: #3b82f6;
+  --color-status-churned: #ef4444;
+
+  /* Priority colors */
+  --color-priority-high-bg: #fee2e2;
+  --color-priority-high-text: #b91c1c;
+  --color-priority-medium-bg: #fef3c7;
+  --color-priority-medium-text: #b45309;
+  --color-priority-low-bg: #dcfce7;
+  --color-priority-low-text: #15803d;
+  --color-priority-normal-bg: #dbeafe;
+  --color-priority-normal-text: #1d4ed8;
+
+  /* Hover states */
+  --color-hover: rgba(0, 0, 0, 0.063);
+  --color-pressed: #efefef;
+  --color-selected: #ededed;
+
+  /* Shadows */
+  --shadow-elevation-1: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-elevation-2: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+
+  /* Sizing */
+  --spacing-sidebar-width: 244px;
+
+  /* Border radius */
+  --radius-control: 4px;
+  --radius-card: 6px;
+  --radius-modal: 8px;
+
+  /* Font sizes */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "SF Pro Display", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  background-color: var(--color-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  width: 100%;
+}
+
+/* Responsive: Clients table */
+@media (max-width: 1024px) {
+  .clients-col-tags,
+  .clients-col-contact,
+  .clients-col-task {
+    display: none !important;
+  }
+  .clients-table-grid {
+    grid-template-columns: 1.5fr 0.8fr 0.7fr 0.9fr 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .clients-col-type,
+  .clients-col-deals {
+    display: none !important;
+  }
+  .clients-table-grid {
+    grid-template-columns: 1fr auto 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .clients-table-header {
+    display: none !important;
+  }
+  .clients-table-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .clients-col-name {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+  .clients-col-status {
+    flex: 0 0 auto;
+  }
+  .clients-col-actions {
+    flex: 0 0 auto;
+  }
+}
+
+/* Responsive: Deals table */
+@media (max-width: 480px) {
+  .deals-table-head {
+    display: none !important;
+  }
+  .deals-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  .deals-table tbody td {
+    padding: 0 !important;
+  }
+  .deals-col-name {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .deals-col-stage {
+    flex: 0 0 auto;
+  }
+  .deals-col-value {
+    flex: 0 0 auto;
+  }
+  .deals-col-actions {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
+/* Responsive: Deals filter controls */
+@media (max-width: 480px) {
+  .deals-date-range {
+    width: 100%;
+  }
+  .deals-date-range input[type="date"] {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* Task detail metadata */
+.task-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .task-detail-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

@@ -1,0 +1,1098 @@
+[WebServer] [33m⠋[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [1G[WebServer] [1G[1G[1G[33m⠙[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠹[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠸[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠼[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [1G[WebServer] [1G[1G[1G[33m⠴[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠦[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠧[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠇[39m Waiting for framework port 5173. This can be configured using the 'targetPort' property in the netlify.toml
+[WebServer] [33m⠋[39m Setting up the Edge Functions environment. This may take a couple of minutes.
+[WebServer] (node:837) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+[WebServer] (Use `node --trace-deprecation ...` to show where the warning was created)
+Seeding database before tests...
+
+> sales-crm@0.0.0 seed-db
+> tsx scripts/seed-db.ts
+
+Seeding database with test data...
+  Created 5 clients
+  Created 5 individuals
+  Created 5 client-individual associations
+  Created 3 individual relationships
+  Created 5 contact history entries
+  Created 7 deals
+  Created 8 deal history entries
+  Created 5 deal contacts
+  Created 2 writeups with version history
+  Created 8 tasks
+  Created 5 attachments
+  Created 7 timeline events
+
+Database seeded successfully!
+  Clients: 5 (IDs: 9f250582-9ccf-43d1-9022-69a2e6663d2a, 70a20649-73c2-49d8-bce3-63e825ad4895, 7ca6aab9-dfd1-4e74-bef8-2084c4dcb946, 59b554e3-7dfd-49d9-9436-fe7fb7e5b6d2, 2b34cc39-e7e2-4baa-8a00-ece4f27973cd)
+  Individuals: 5
+  Deals: 7
+  Tasks: 8
+
+Running 176 tests using 1 worker
+
+  ✘    1 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:26:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-01: Client header displays client name, type badge, and status (2ms)
+  ✘    2 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:49:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-02: Edit button opens edit mode with form fields (2ms)
+  ✘    3 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:66:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-03: Cancel edit mode restores original values (2ms)
+  ✘    4 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:87:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-04: Status dropdown shows all status options (3ms)
+  ✘    5 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:102:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-05: Tags are displayed in the header (2ms)
+  ✘    6 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:112:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-01: Quick action buttons are all visible (2ms)
+  ✘    7 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:124:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-02: Add Task button opens Add Task modal (2ms)
+  ✘    8 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:131:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-03: Add Deal button opens Add Deal modal (2ms)
+  ✘    9 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:138:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-04: Add Attachment button opens Add Attachment modal (2ms)
+  ✘   10 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:145:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-05: Add Person button opens Add Person modal (2ms)
+  ✘   11 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:154:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-01: Source info section displays with source data (3ms)
+  ✘   12 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:169:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-02: Edit button opens source info edit mode (2ms)
+  ✘   13 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:186:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-03: Cancel edit restores original source values (2ms)
+  ✘   14 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:209:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-01: Tasks section is visible (3ms)
+  ✘   15 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:224:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-02: Task items display title (2ms)
+  ✘   16 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:238:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-03: Task items have a checkbox for toggling completion (2ms)
+  ✘   17 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:252:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-01: Deals section is visible (2ms)
+  ✘   18 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:267:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-02: Deal items display name, stage, and value (2ms)
+  ✘   19 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:285:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-03: Clicking a deal navigates to deal detail page (2ms)
+  ✘   20 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:304:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-01: Attachments section is visible (2ms)
+  ✘   21 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:319:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-02: Attachment items display filename and type (2ms)
+  ✘   22 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:336:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-03: Attachment items have a delete button (2ms)
+  ✘   23 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:348:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-04: Delete attachment shows confirmation dialog (2ms)
+  ✘   24 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:371:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-01: People section is visible (2ms)
+  ✘   25 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:386:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-02: Person items display name (2ms)
+  ✘   26 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:400:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-03: Clicking a person navigates to individual detail page (2ms)
+  ✘   27 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:419:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-01: Timeline section is visible (2ms)
+  ✘   28 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:434:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-02: Timeline events are grouped by date (2ms)
+  ✘   29 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:449:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-03: Timeline events display descriptions (2ms)
+  ✘   30 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:465:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-01: Add Task modal has all required form fields (2ms)
+  ✘   31 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:484:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-02: Save button is disabled when title is empty (2ms)
+  ✘   32 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:494:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-03: Cancel button closes the modal (2ms)
+  ✘   33 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:507:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-01: Add Deal modal has all required form fields (2ms)
+  ✘   34 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:525:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-02: Save button is disabled when name is empty (2ms)
+  ✘   35 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:537:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-01: Add Person modal has all required form fields (2ms)
+  ✘   36 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:553:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-02: Save button is disabled when name is empty (3ms)
+  ✘   37 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:565:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-01: Add Attachment modal has type toggle buttons (2ms)
+  ✘   38 [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:583:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-02: Link URL mode shows link name and URL inputs (2ms)
+  ✘   39 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:4:3 › ClientsListPage - SidebarNavigation › CLP-NAV-01: Sidebar displays all navigation items (2ms)
+  ✘   40 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:24:3 › ClientsListPage - SidebarNavigation › CLP-NAV-02: Sidebar navigation links route correctly (2ms)
+  ✘   41 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:46:3 › ClientsListPage - PageHeader › CLP-HDR-01: Page header displays title and action buttons (2ms)
+  ✘   42 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:66:3 › ClientsListPage - PageHeader › CLP-HDR-02: Add New Client button opens create client modal (3ms)
+  ✘   43 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:88:3 › ClientsListPage - PageHeader › CLP-HDR-03: Creating a new client persists and appears in list (3ms)
+  ✘   44 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:114:3 › ClientsListPage - PageHeader › CLP-HDR-04: Import button opens import dialog (2ms)
+  ✘   45 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:127:3 › ClientsListPage - PageHeader › CLP-HDR-05: Export button triggers data export (2ms)
+  ✘   46 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:142:3 › ClientsListPage - SearchBar › CLP-SRCH-01: Search bar is displayed with placeholder text (2ms)
+  ✘   47 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:151:3 › ClientsListPage - SearchBar › CLP-SRCH-02: Search filters clients by name (2ms)
+  ✘   48 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:173:3 › ClientsListPage - SearchBar › CLP-SRCH-03: Search filters clients by tag (2ms)
+  ✘   49 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:195:3 › ClientsListPage - SearchBar › CLP-SRCH-04: Search filters clients by contact name (2ms)
+  ✘   50 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:211:3 › ClientsListPage - SearchBar › CLP-SRCH-05: Clearing search restores full client list (2ms)
+  ✘   51 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:244:3 › ClientsListPage - FilterControls › CLP-FLT-01: Status filter dropdown shows all status options (2ms)
+  ✘   52 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:261:3 › ClientsListPage - FilterControls › CLP-FLT-02: Filtering by status shows only matching clients (2ms)
+  ✘   53 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:279:3 › ClientsListPage - FilterControls › CLP-FLT-03: Tags filter dropdown shows available tags (2ms)
+  ✘   54 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:293:3 › ClientsListPage - FilterControls › CLP-FLT-04: Filtering by tag shows only matching clients (2ms)
+  ✘   55 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:318:3 › ClientsListPage - FilterControls › CLP-FLT-05: Source filter dropdown shows available sources (2ms)
+  ✘   56 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:330:3 › ClientsListPage - FilterControls › CLP-FLT-06: Filtering by source shows only matching clients (2ms)
+  ✘   57 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:356:3 › ClientsListPage - FilterControls › CLP-FLT-07: Sort dropdown shows sort options (2ms)
+  ✘   58 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:371:3 › ClientsListPage - FilterControls › CLP-FLT-08: Sorting by name A-Z orders clients alphabetically (2ms)
+  ✘   59 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:392:3 › ClientsListPage - FilterControls › CLP-FLT-09: Multiple filters can be combined (2ms)
+  ✘   60 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:428:3 › ClientsListPage - ClientsTable › CLP-TBL-01: Table displays correct column headers (2ms)
+  ✘   61 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:444:3 › ClientsListPage - ClientsTable › CLP-TBL-02: Client rows display all required fields (2ms)
+  ✘   62 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:463:3 › ClientsListPage - ClientsTable › CLP-TBL-03: Status badges have correct colors (2ms)
+  ✘   63 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:482:3 › ClientsListPage - ClientsTable › CLP-TBL-04: Clicking a client name navigates to client detail page (2ms)
+  ✘   64 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:501:3 › ClientsListPage - ClientsTable › CLP-TBL-05: Individual type clients show self as primary contact (2ms)
+  ✘   65 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:518:3 › ClientsListPage - ClientsTable › CLP-TBL-06: Clients with no open deals show 0 (3ms)
+  ✘   66 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:534:3 › ClientsListPage - ClientsTable › CLP-TBL-07: Clients with no next task show appropriate text (3ms)
+  ✘   67 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:549:3 › ClientsListPage - ClientsTable › CLP-TBL-08: Clients with churned status show N/A for deals (2ms)
+  ✘   68 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:578:3 › ClientsListPage - RowActionMenu › CLP-ACT-01: Row action menu button is visible on each row (2ms)
+  ✘   69 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:589:3 › ClientsListPage - RowActionMenu › CLP-ACT-02: Clicking row action menu shows options (2ms)
+  ✘   70 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:606:3 › ClientsListPage - RowActionMenu › CLP-ACT-03: Row action View navigates to client detail (2ms)
+  ✘   71 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:625:3 › ClientsListPage - RowActionMenu › CLP-ACT-04: Row action Delete removes client after confirmation (2ms)
+  ✘   72 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:668:3 › ClientsListPage - Pagination › CLP-PGN-01: Pagination shows correct count (2ms)
+  ✘   73 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:686:3 › ClientsListPage - Pagination › CLP-PGN-02: Clicking next page loads next set of clients (2ms)
+  ✘   74 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:713:3 › ClientsListPage - Pagination › CLP-PGN-03: Previous button is disabled on first page (2ms)
+  ✘   75 [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:723:3 › ClientsListPage - Pagination › CLP-PGN-04: Next button is disabled on last page (2ms)
+  ✘   76 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:8:3 › Cross-Cutting Navigation › NAV-01: Default route redirects to /clients (2ms)
+  ✘   77 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:19:3 › Cross-Cutting Navigation › NAV-02: Unknown routes show 404 or redirect (2ms)
+  ✘   78 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:37:3 › Cross-Cutting Navigation › NAV-03: Browser back/forward navigation works correctly (2ms)
+  ✘   79 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:93:3 › Cross-Cutting Data Consistency › DATA-01: Creating a deal on ClientDetailPage shows on DealsListPage (2ms)
+  ✘   80 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:122:3 › Cross-Cutting Data Consistency › DATA-02: Completing a task on DealDetailPage reflects on ClientDetailPage and TasksListPage (2ms)
+  ✘   81 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:201:3 › Cross-Cutting Data Consistency › DATA-03: Adding a person on ClientDetailPage creates accessible PersonDetailPage (2ms)
+  ✘   82 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:236:3 › Cross-Cutting Data Consistency › DATA-04: Deleting a client removes associated data from other pages (2ms)
+  ✘   83 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:286:3 › Cross-Cutting Data Consistency › DATA-05: Uploading an attachment on DealDetailPage shows on ClientDetailPage (2ms)
+  ✘   84 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:361:3 › Cross-Cutting Timeline Atomicity › ATOM-01: Single task creation produces exactly one timeline entry (2ms)
+  ✘   85 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:400:3 › Cross-Cutting Timeline Atomicity › ATOM-02: Single deal stage change produces exactly one timeline entry (2ms)
+  ✘   86 [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:465:3 › Cross-Cutting Timeline Atomicity › ATOM-03: Single status change produces exactly one timeline entry (2ms)
+  ✘   87 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:26:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-01: Header displays deal info with editable fields (2ms)
+  ✘   88 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:62:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-02: Editing deal fields via edit button (2ms)
+  ✘   89 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:91:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-03: Editing value field updates the deal (2ms)
+  ✘   90 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:123:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-04: Changing stage via dropdown and Change Stage button (2ms)
+  ✘   91 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:169:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-01: Stage pipeline displays all stages with visual progress (3ms)
+  ✘   92 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:193:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-02: Pipeline updates when stage changes (2ms)
+  ✘   93 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:222:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-01: Deal history shows stage change log (2ms)
+  ✘   94 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:248:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-02: New stage change adds history entry (2ms)
+  ✘   95 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:277:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-01: Deal metrics displays probability and expected close (2ms)
+  ✘   96 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:295:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-02: Metrics are editable (2ms)
+  ✘   97 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:334:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-01: Writeups section shows existing writeups (2ms)
+  ✘   98 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:346:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-02: New Entry button opens writeup creation form (2ms)
+  ✘   99 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:369:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-03: Creating a writeup persists and shows in list (2ms)
+  ✘  100 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:391:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-04: Edit button allows editing a writeup (2ms)
+  ✘  101 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:420:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-05: Editing a writeup creates a version history entry (2ms)
+  ✘  102 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:429:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-06: Version History button shows previous versions (2ms)
+  ✘  103 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:450:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-01: Linked tasks section shows deal-specific tasks (2ms)
+  ✘  104 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:462:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-02: Add Task button opens task creation form (2ms)
+  ✘  105 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:485:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-03: Creating a task adds it to linked tasks (2ms)
+  ✘  106 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:505:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-04: Checking a task marks it complete (2ms)
+  ✘  107 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:539:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-01: Attachments section lists deal-specific files (2ms)
+  ✘  108 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:550:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-02: Upload icon opens file upload dialog (2ms)
+  ✘  109 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:569:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-03: Uploading a file adds it to attachments list (3ms)
+  ✘  110 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:590:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-04: Download link is present on attachments (2ms)
+  ✘  111 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:606:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-05: Delete link removes attachment after confirmation (3ms)
+  ✘  112 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:645:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-01: Contacts section lists deal-related individuals (2ms)
+  ✘  113 [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:669:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-02: View Profile link navigates to PersonDetailPage (3ms)
+  ✘  114 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:4:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-01: Page header shows title, breadcrumb, and create button (2ms)
+  ✘  115 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:27:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-02: Create New Deal button opens deal creation modal (2ms)
+  ✘  116 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:49:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-03: Creating a deal persists and appears in table (2ms)
+  ✘  117 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:91:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-01: Summary cards display correct metrics (2ms)
+  ✘  118 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:118:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-02: Summary cards update when deals are added (2ms)
+  ✘  119 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:157:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-01: Table View is the default view (3ms)
+  ✘  120 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:174:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-02: Pipeline View shows deals organized by stage (2ms)
+  ✘  121 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:197:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-03: Switching between views preserves data (2ms)
+  ✘  122 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:221:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-01: Stage filter shows all stage options (2ms)
+  ✘  123 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:243:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-02: Filtering by stage shows only matching deals (2ms)
+  ✘  124 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:265:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-03: Client filter shows all client options (2ms)
+  ✘  125 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:287:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-04: Filtering by client shows only that client's deals (2ms)
+  ✘  126 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:324:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-05: Status filter shows status options (2ms)
+  ✘  127 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:342:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-06: Date range filter limits deals by close date (2ms)
+  ✘  128 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:362:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-07: Sort by Close Date orders deals correctly (3ms)
+  ✘  129 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:381:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-08: Search filters deals by name (3ms)
+  ✘  130 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:411:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-01: Table displays correct column headers (2ms)
+  ✘  131 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:431:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-02: Deal rows display all required fields (2ms)
+  ✘  132 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:468:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-03: Status badges have correct colors (2ms)
+  ✘  133 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:487:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-04: Clicking a deal row navigates to DealDetailPage (2ms)
+  ✘  134 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:505:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-05: Close Date column is sortable (2ms)
+  ✘  135 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:527:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-01: Row action menu shows deal actions (2ms)
+  ✘  136 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:554:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-02: Delete deal removes it after confirmation (2ms)
+  ✘  137 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:588:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-01: Pagination shows page count (2ms)
+  ✘  138 [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:609:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-02: Navigating pages loads correct deals (2ms)
+  ✘  139 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:68:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-01: Header displays person name, title, and contact info (2ms)
+  ✘  140 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:85:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-02: Clicking associated client link navigates to ClientDetailPage (2ms)
+  ✘  141 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:107:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-03: Person header info is editable (2ms)
+  ✘  142 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:126:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-04: Cancel edit restores original values (2ms)
+  ✘  143 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:149:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-01: Relationships section displays with view toggle (2ms)
+  ✘  144 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:168:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-02: List View shows relationship entries (2ms)
+  ✘  145 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:200:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-03: Clicking Link on a relationship navigates to that person (2ms)
+  ✘  146 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:218:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-04: Add Entry button opens relationship creation form (3ms)
+  ✘  147 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:235:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-05: Save is disabled when person ID is empty in Add Relationship modal (3ms)
+  ✘  148 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:245:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-06: Filter button opens filter dropdown (3ms)
+  ✘  149 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:257:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-07: Graph View displays visual relationship graph (2ms)
+  ✘  150 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:274:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-01: Contact history displays section with controls (2ms)
+  ✘  151 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:285:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-02: Contact history entries show correct details (2ms)
+  ✘  152 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:316:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-03: Add Entry button opens contact history creation form (2ms)
+  ✘  153 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:335:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-04: Save is disabled when required fields are empty in Add Contact History modal (2ms)
+  ✘  154 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:345:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-05: Edit icon opens edit form for existing entry (2ms)
+  ✘  155 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:371:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-06: Cancel button closes the edit modal (2ms)
+  ✘  156 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:390:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-07: Filter button filters contact history by type (2ms)
+  ✘  157 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:404:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-01: Associated clients section shows client cards (3ms)
+  ✘  158 [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:440:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-02: View Client Detail Page button navigates to client (2ms)
+  ✘  159 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:4:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-01: Page header shows title and New Task button (2ms)
+  ✘  160 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:18:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-02: New Task button opens task creation modal (2ms)
+  ✘  161 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:40:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-03: Creating a task persists and appears in list (2ms)
+  ✘  162 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:79:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-01: Filter controls are displayed (2ms)
+  ✘  163 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:90:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-02: Filter by priority shows matching tasks (2ms)
+  ✘  164 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:112:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-03: Text filter searches task titles (2ms)
+  ✘  165 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:140:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-04: Filter by assignee shows matching tasks (2ms)
+  ✘  166 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:172:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-05: Filter by client shows matching tasks (2ms)
+  ✘  167 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:197:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-06: Clearing filters restores full task list (2ms)
+  ✘  168 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:228:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-01: Task cards display all required information (2ms)
+  ✘  169 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:259:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-02: Priority badges have correct colors (2ms)
+  ✘  170 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:292:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-03: Task cards are ordered by due date (soonest first) (2ms)
+  ✘  171 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:319:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-04: Clicking a task card navigates to task context (2ms)
+  ✘  172 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:340:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-05: Action menu on task card shows options (2ms)
+  ✘  173 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:368:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-06: Mark Complete removes task from upcoming list (2ms)
+  ✘  174 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:391:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-07: Edit opens task edit form (2ms)
+  ✘  175 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:422:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-08: Editing a task persists changes (3ms)
+  ✘  176 [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:455:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-09: Delete task removes it after confirmation (2ms)
+
+
+  1) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:26:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-01: Client header displays client name, type badge, and status 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  2) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:49:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-02: Edit button opens edit mode with form fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  3) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:66:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-03: Cancel edit mode restores original values 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  4) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:87:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-04: Status dropdown shows all status options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  5) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:102:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-05: Tags are displayed in the header 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  6) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:112:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-01: Quick action buttons are all visible 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  7) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:124:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-02: Add Task button opens Add Task modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  8) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:131:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-03: Add Deal button opens Add Deal modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  9) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:138:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-04: Add Attachment button opens Add Attachment modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  10) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:145:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-05: Add Person button opens Add Person modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  11) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:154:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-01: Source info section displays with source data 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  12) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:169:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-02: Edit button opens source info edit mode 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  13) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:186:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-03: Cancel edit restores original source values 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  14) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:209:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-01: Tasks section is visible 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  15) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:224:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-02: Task items display title 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  16) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:238:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-03: Task items have a checkbox for toggling completion 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  17) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:252:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-01: Deals section is visible 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  18) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:267:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-02: Deal items display name, stage, and value 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  19) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:285:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-03: Clicking a deal navigates to deal detail page 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  20) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:304:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-01: Attachments section is visible 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  21) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:319:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-02: Attachment items display filename and type 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  22) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:336:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-03: Attachment items have a delete button 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  23) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:348:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-04: Delete attachment shows confirmation dialog 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  24) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:371:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-01: People section is visible 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  25) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:386:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-02: Person items display name 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  26) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:400:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-03: Clicking a person navigates to individual detail page 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  27) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:419:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-01: Timeline section is visible 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  28) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:434:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-02: Timeline events are grouped by date 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  29) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:449:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-03: Timeline events display descriptions 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  30) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:465:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-01: Add Task modal has all required form fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  31) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:484:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-02: Save button is disabled when title is empty 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  32) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:494:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-03: Cancel button closes the modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  33) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:507:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-01: Add Deal modal has all required form fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  34) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:525:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-02: Save button is disabled when name is empty 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  35) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:537:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-01: Add Person modal has all required form fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  36) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:553:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-02: Save button is disabled when name is empty 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  37) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:565:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-01: Add Attachment modal has type toggle buttons 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  38) [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:583:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-02: Link URL mode shows link name and URL inputs 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  39) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:4:3 › ClientsListPage - SidebarNavigation › CLP-NAV-01: Sidebar displays all navigation items 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  40) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:24:3 › ClientsListPage - SidebarNavigation › CLP-NAV-02: Sidebar navigation links route correctly 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  41) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:46:3 › ClientsListPage - PageHeader › CLP-HDR-01: Page header displays title and action buttons 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  42) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:66:3 › ClientsListPage - PageHeader › CLP-HDR-02: Add New Client button opens create client modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  43) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:88:3 › ClientsListPage - PageHeader › CLP-HDR-03: Creating a new client persists and appears in list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  44) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:114:3 › ClientsListPage - PageHeader › CLP-HDR-04: Import button opens import dialog 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  45) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:127:3 › ClientsListPage - PageHeader › CLP-HDR-05: Export button triggers data export 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  46) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:142:3 › ClientsListPage - SearchBar › CLP-SRCH-01: Search bar is displayed with placeholder text 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  47) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:151:3 › ClientsListPage - SearchBar › CLP-SRCH-02: Search filters clients by name 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  48) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:173:3 › ClientsListPage - SearchBar › CLP-SRCH-03: Search filters clients by tag 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  49) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:195:3 › ClientsListPage - SearchBar › CLP-SRCH-04: Search filters clients by contact name 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  50) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:211:3 › ClientsListPage - SearchBar › CLP-SRCH-05: Clearing search restores full client list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  51) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:244:3 › ClientsListPage - FilterControls › CLP-FLT-01: Status filter dropdown shows all status options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  52) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:261:3 › ClientsListPage - FilterControls › CLP-FLT-02: Filtering by status shows only matching clients 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  53) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:279:3 › ClientsListPage - FilterControls › CLP-FLT-03: Tags filter dropdown shows available tags 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  54) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:293:3 › ClientsListPage - FilterControls › CLP-FLT-04: Filtering by tag shows only matching clients 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  55) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:318:3 › ClientsListPage - FilterControls › CLP-FLT-05: Source filter dropdown shows available sources 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  56) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:330:3 › ClientsListPage - FilterControls › CLP-FLT-06: Filtering by source shows only matching clients 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  57) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:356:3 › ClientsListPage - FilterControls › CLP-FLT-07: Sort dropdown shows sort options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  58) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:371:3 › ClientsListPage - FilterControls › CLP-FLT-08: Sorting by name A-Z orders clients alphabetically 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  59) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:392:3 › ClientsListPage - FilterControls › CLP-FLT-09: Multiple filters can be combined 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  60) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:428:3 › ClientsListPage - ClientsTable › CLP-TBL-01: Table displays correct column headers 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  61) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:444:3 › ClientsListPage - ClientsTable › CLP-TBL-02: Client rows display all required fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  62) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:463:3 › ClientsListPage - ClientsTable › CLP-TBL-03: Status badges have correct colors 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  63) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:482:3 › ClientsListPage - ClientsTable › CLP-TBL-04: Clicking a client name navigates to client detail page 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  64) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:501:3 › ClientsListPage - ClientsTable › CLP-TBL-05: Individual type clients show self as primary contact 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  65) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:518:3 › ClientsListPage - ClientsTable › CLP-TBL-06: Clients with no open deals show 0 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  66) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:534:3 › ClientsListPage - ClientsTable › CLP-TBL-07: Clients with no next task show appropriate text 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  67) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:549:3 › ClientsListPage - ClientsTable › CLP-TBL-08: Clients with churned status show N/A for deals 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  68) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:578:3 › ClientsListPage - RowActionMenu › CLP-ACT-01: Row action menu button is visible on each row 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  69) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:589:3 › ClientsListPage - RowActionMenu › CLP-ACT-02: Clicking row action menu shows options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  70) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:606:3 › ClientsListPage - RowActionMenu › CLP-ACT-03: Row action View navigates to client detail 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  71) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:625:3 › ClientsListPage - RowActionMenu › CLP-ACT-04: Row action Delete removes client after confirmation 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  72) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:668:3 › ClientsListPage - Pagination › CLP-PGN-01: Pagination shows correct count 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  73) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:686:3 › ClientsListPage - Pagination › CLP-PGN-02: Clicking next page loads next set of clients 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  74) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:713:3 › ClientsListPage - Pagination › CLP-PGN-03: Previous button is disabled on first page 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  75) [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:723:3 › ClientsListPage - Pagination › CLP-PGN-04: Next button is disabled on last page 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  76) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:8:3 › Cross-Cutting Navigation › NAV-01: Default route redirects to /clients 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  77) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:19:3 › Cross-Cutting Navigation › NAV-02: Unknown routes show 404 or redirect 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  78) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:37:3 › Cross-Cutting Navigation › NAV-03: Browser back/forward navigation works correctly 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  79) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:93:3 › Cross-Cutting Data Consistency › DATA-01: Creating a deal on ClientDetailPage shows on DealsListPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  80) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:122:3 › Cross-Cutting Data Consistency › DATA-02: Completing a task on DealDetailPage reflects on ClientDetailPage and TasksListPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  81) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:201:3 › Cross-Cutting Data Consistency › DATA-03: Adding a person on ClientDetailPage creates accessible PersonDetailPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  82) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:236:3 › Cross-Cutting Data Consistency › DATA-04: Deleting a client removes associated data from other pages 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  83) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:286:3 › Cross-Cutting Data Consistency › DATA-05: Uploading an attachment on DealDetailPage shows on ClientDetailPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  84) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:361:3 › Cross-Cutting Timeline Atomicity › ATOM-01: Single task creation produces exactly one timeline entry 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  85) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:400:3 › Cross-Cutting Timeline Atomicity › ATOM-02: Single deal stage change produces exactly one timeline entry 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  86) [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:465:3 › Cross-Cutting Timeline Atomicity › ATOM-03: Single status change produces exactly one timeline entry 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  87) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:26:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-01: Header displays deal info with editable fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  88) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:62:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-02: Editing deal fields via edit button 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  89) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:91:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-03: Editing value field updates the deal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  90) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:123:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-04: Changing stage via dropdown and Change Stage button 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  91) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:169:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-01: Stage pipeline displays all stages with visual progress 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  92) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:193:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-02: Pipeline updates when stage changes 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  93) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:222:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-01: Deal history shows stage change log 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  94) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:248:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-02: New stage change adds history entry 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  95) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:277:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-01: Deal metrics displays probability and expected close 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  96) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:295:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-02: Metrics are editable 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  97) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:334:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-01: Writeups section shows existing writeups 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  98) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:346:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-02: New Entry button opens writeup creation form 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  99) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:369:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-03: Creating a writeup persists and shows in list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  100) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:391:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-04: Edit button allows editing a writeup 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  101) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:420:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-05: Editing a writeup creates a version history entry 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  102) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:429:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-06: Version History button shows previous versions 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  103) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:450:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-01: Linked tasks section shows deal-specific tasks 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  104) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:462:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-02: Add Task button opens task creation form 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  105) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:485:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-03: Creating a task adds it to linked tasks 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  106) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:505:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-04: Checking a task marks it complete 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  107) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:539:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-01: Attachments section lists deal-specific files 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  108) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:550:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-02: Upload icon opens file upload dialog 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  109) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:569:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-03: Uploading a file adds it to attachments list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  110) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:590:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-04: Download link is present on attachments 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  111) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:606:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-05: Delete link removes attachment after confirmation 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  112) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:645:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-01: Contacts section lists deal-related individuals 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  113) [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:669:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-02: View Profile link navigates to PersonDetailPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  114) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:4:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-01: Page header shows title, breadcrumb, and create button 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  115) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:27:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-02: Create New Deal button opens deal creation modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  116) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:49:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-03: Creating a deal persists and appears in table 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  117) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:91:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-01: Summary cards display correct metrics 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  118) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:118:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-02: Summary cards update when deals are added 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  119) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:157:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-01: Table View is the default view 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  120) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:174:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-02: Pipeline View shows deals organized by stage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  121) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:197:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-03: Switching between views preserves data 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  122) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:221:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-01: Stage filter shows all stage options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  123) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:243:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-02: Filtering by stage shows only matching deals 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  124) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:265:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-03: Client filter shows all client options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  125) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:287:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-04: Filtering by client shows only that client's deals 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  126) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:324:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-05: Status filter shows status options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  127) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:342:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-06: Date range filter limits deals by close date 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  128) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:362:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-07: Sort by Close Date orders deals correctly 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  129) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:381:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-08: Search filters deals by name 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  130) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:411:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-01: Table displays correct column headers 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  131) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:431:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-02: Deal rows display all required fields 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  132) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:468:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-03: Status badges have correct colors 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  133) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:487:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-04: Clicking a deal row navigates to DealDetailPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  134) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:505:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-05: Close Date column is sortable 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  135) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:527:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-01: Row action menu shows deal actions 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  136) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:554:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-02: Delete deal removes it after confirmation 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  137) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:588:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-01: Pagination shows page count 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  138) [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:609:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-02: Navigating pages loads correct deals 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  139) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:68:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-01: Header displays person name, title, and contact info 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  140) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:85:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-02: Clicking associated client link navigates to ClientDetailPage 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  141) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:107:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-03: Person header info is editable 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  142) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:126:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-04: Cancel edit restores original values 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  143) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:149:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-01: Relationships section displays with view toggle 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  144) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:168:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-02: List View shows relationship entries 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  145) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:200:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-03: Clicking Link on a relationship navigates to that person 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  146) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:218:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-04: Add Entry button opens relationship creation form 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  147) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:235:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-05: Save is disabled when person ID is empty in Add Relationship modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  148) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:245:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-06: Filter button opens filter dropdown 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  149) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:257:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-07: Graph View displays visual relationship graph 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  150) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:274:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-01: Contact history displays section with controls 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  151) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:285:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-02: Contact history entries show correct details 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  152) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:316:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-03: Add Entry button opens contact history creation form 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  153) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:335:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-04: Save is disabled when required fields are empty in Add Contact History modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  154) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:345:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-05: Edit icon opens edit form for existing entry 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  155) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:371:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-06: Cancel button closes the edit modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  156) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:390:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-07: Filter button filters contact history by type 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  157) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:404:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-01: Associated clients section shows client cards 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  158) [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:440:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-02: View Client Detail Page button navigates to client 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  159) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:4:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-01: Page header shows title and New Task button 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  160) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:18:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-02: New Task button opens task creation modal 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  161) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:40:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-03: Creating a task persists and appears in list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  162) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:79:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-01: Filter controls are displayed 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  163) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:90:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-02: Filter by priority shows matching tasks 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  164) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:112:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-03: Text filter searches task titles 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  165) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:140:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-04: Filter by assignee shows matching tasks 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  166) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:172:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-05: Filter by client shows matching tasks 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  167) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:197:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-06: Clearing filters restores full task list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  168) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:228:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-01: Task cards display all required information 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  169) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:259:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-02: Priority badges have correct colors 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  170) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:292:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-03: Task cards are ordered by due date (soonest first) 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  171) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:319:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-04: Clicking a task card navigates to task context 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  172) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:340:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-05: Action menu on task card shows options 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  173) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:368:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-06: Mark Complete removes task from upcoming list 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  174) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:391:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-07: Edit opens task edit form 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  175) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:422:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-08: Editing a task persists changes 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  176) [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:455:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-09: Delete task removes it after confirmation 
+
+    Error: browserType.launch: Failed to launch chromium because executable doesn't exist at /home/node/.[REDACTED]/runtimes/chrome-linux/chrome
+
+  176 failed
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:26:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-01: Client header displays client name, type badge, and status 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:49:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-02: Edit button opens edit mode with form fields 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:66:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-03: Cancel edit mode restores original values 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:87:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-04: Status dropdown shows all status options 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:102:3 › ClientDetailPage - ClientHeader (CDP-HDR) › CDP-HDR-05: Tags are displayed in the header 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:112:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-01: Quick action buttons are all visible 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:124:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-02: Add Task button opens Add Task modal 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:131:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-03: Add Deal button opens Add Deal modal 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:138:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-04: Add Attachment button opens Add Attachment modal 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:145:3 › ClientDetailPage - QuickActions (CDP-QA) › CDP-QA-05: Add Person button opens Add Person modal 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:154:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-01: Source info section displays with source data 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:169:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-02: Edit button opens source info edit mode 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:186:3 › ClientDetailPage - SourceInfo (CDP-SRC) › CDP-SRC-03: Cancel edit restores original source values 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:209:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-01: Tasks section is visible 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:224:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-02: Task items display title 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:238:3 › ClientDetailPage - Tasks (CDP-TSK) › CDP-TSK-03: Task items have a checkbox for toggling completion 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:252:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-01: Deals section is visible 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:267:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-02: Deal items display name, stage, and value 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:285:3 › ClientDetailPage - Deals (CDP-DL) › CDP-DL-03: Clicking a deal navigates to deal detail page 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:304:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-01: Attachments section is visible 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:319:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-02: Attachment items display filename and type 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:336:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-03: Attachment items have a delete button 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:348:3 › ClientDetailPage - Attachments (CDP-ATT) › CDP-ATT-04: Delete attachment shows confirmation dialog 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:371:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-01: People section is visible 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:386:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-02: Person items display name 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:400:3 › ClientDetailPage - People (CDP-PPL) › CDP-PPL-03: Clicking a person navigates to individual detail page 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:419:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-01: Timeline section is visible 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:434:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-02: Timeline events are grouped by date 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:449:3 › ClientDetailPage - Timeline (CDP-TL) › CDP-TL-03: Timeline events display descriptions 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:465:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-01: Add Task modal has all required form fields 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:484:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-02: Save button is disabled when title is empty 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:494:3 › ClientDetailPage - AddTaskModal (CDP-ATSK) › CDP-ATSK-03: Cancel button closes the modal 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:507:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-01: Add Deal modal has all required form fields 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:525:3 › ClientDetailPage - AddDealModal (CDP-ADL) › CDP-ADL-02: Save button is disabled when name is empty 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:537:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-01: Add Person modal has all required form fields 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:553:3 › ClientDetailPage - AddPersonModal (CDP-APER) › CDP-APER-02: Save button is disabled when name is empty 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:565:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-01: Add Attachment modal has type toggle buttons 
+    [[REDACTED]-chromium] › tests/client-detail-page.spec.ts:583:3 › ClientDetailPage - AddAttachmentModal (CDP-AATT) › CDP-AATT-02: Link URL mode shows link name and URL inputs 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:4:3 › ClientsListPage - SidebarNavigation › CLP-NAV-01: Sidebar displays all navigation items 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:24:3 › ClientsListPage - SidebarNavigation › CLP-NAV-02: Sidebar navigation links route correctly 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:46:3 › ClientsListPage - PageHeader › CLP-HDR-01: Page header displays title and action buttons 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:66:3 › ClientsListPage - PageHeader › CLP-HDR-02: Add New Client button opens create client modal 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:88:3 › ClientsListPage - PageHeader › CLP-HDR-03: Creating a new client persists and appears in list 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:114:3 › ClientsListPage - PageHeader › CLP-HDR-04: Import button opens import dialog 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:127:3 › ClientsListPage - PageHeader › CLP-HDR-05: Export button triggers data export 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:142:3 › ClientsListPage - SearchBar › CLP-SRCH-01: Search bar is displayed with placeholder text 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:151:3 › ClientsListPage - SearchBar › CLP-SRCH-02: Search filters clients by name 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:173:3 › ClientsListPage - SearchBar › CLP-SRCH-03: Search filters clients by tag 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:195:3 › ClientsListPage - SearchBar › CLP-SRCH-04: Search filters clients by contact name 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:211:3 › ClientsListPage - SearchBar › CLP-SRCH-05: Clearing search restores full client list 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:244:3 › ClientsListPage - FilterControls › CLP-FLT-01: Status filter dropdown shows all status options 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:261:3 › ClientsListPage - FilterControls › CLP-FLT-02: Filtering by status shows only matching clients 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:279:3 › ClientsListPage - FilterControls › CLP-FLT-03: Tags filter dropdown shows available tags 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:293:3 › ClientsListPage - FilterControls › CLP-FLT-04: Filtering by tag shows only matching clients 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:318:3 › ClientsListPage - FilterControls › CLP-FLT-05: Source filter dropdown shows available sources 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:330:3 › ClientsListPage - FilterControls › CLP-FLT-06: Filtering by source shows only matching clients 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:356:3 › ClientsListPage - FilterControls › CLP-FLT-07: Sort dropdown shows sort options 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:371:3 › ClientsListPage - FilterControls › CLP-FLT-08: Sorting by name A-Z orders clients alphabetically 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:392:3 › ClientsListPage - FilterControls › CLP-FLT-09: Multiple filters can be combined 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:428:3 › ClientsListPage - ClientsTable › CLP-TBL-01: Table displays correct column headers 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:444:3 › ClientsListPage - ClientsTable › CLP-TBL-02: Client rows display all required fields 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:463:3 › ClientsListPage - ClientsTable › CLP-TBL-03: Status badges have correct colors 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:482:3 › ClientsListPage - ClientsTable › CLP-TBL-04: Clicking a client name navigates to client detail page 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:501:3 › ClientsListPage - ClientsTable › CLP-TBL-05: Individual type clients show self as primary contact 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:518:3 › ClientsListPage - ClientsTable › CLP-TBL-06: Clients with no open deals show 0 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:534:3 › ClientsListPage - ClientsTable › CLP-TBL-07: Clients with no next task show appropriate text 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:549:3 › ClientsListPage - ClientsTable › CLP-TBL-08: Clients with churned status show N/A for deals 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:578:3 › ClientsListPage - RowActionMenu › CLP-ACT-01: Row action menu button is visible on each row 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:589:3 › ClientsListPage - RowActionMenu › CLP-ACT-02: Clicking row action menu shows options 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:606:3 › ClientsListPage - RowActionMenu › CLP-ACT-03: Row action View navigates to client detail 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:625:3 › ClientsListPage - RowActionMenu › CLP-ACT-04: Row action Delete removes client after confirmation 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:668:3 › ClientsListPage - Pagination › CLP-PGN-01: Pagination shows correct count 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:686:3 › ClientsListPage - Pagination › CLP-PGN-02: Clicking next page loads next set of clients 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:713:3 › ClientsListPage - Pagination › CLP-PGN-03: Previous button is disabled on first page 
+    [[REDACTED]-chromium] › tests/clients-list-page.spec.ts:723:3 › ClientsListPage - Pagination › CLP-PGN-04: Next button is disabled on last page 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:8:3 › Cross-Cutting Navigation › NAV-01: Default route redirects to /clients 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:19:3 › Cross-Cutting Navigation › NAV-02: Unknown routes show 404 or redirect 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:37:3 › Cross-Cutting Navigation › NAV-03: Browser back/forward navigation works correctly 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:93:3 › Cross-Cutting Data Consistency › DATA-01: Creating a deal on ClientDetailPage shows on DealsListPage 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:122:3 › Cross-Cutting Data Consistency › DATA-02: Completing a task on DealDetailPage reflects on ClientDetailPage and TasksListPage 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:201:3 › Cross-Cutting Data Consistency › DATA-03: Adding a person on ClientDetailPage creates accessible PersonDetailPage 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:236:3 › Cross-Cutting Data Consistency › DATA-04: Deleting a client removes associated data from other pages 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:286:3 › Cross-Cutting Data Consistency › DATA-05: Uploading an attachment on DealDetailPage shows on ClientDetailPage 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:361:3 › Cross-Cutting Timeline Atomicity › ATOM-01: Single task creation produces exactly one timeline entry 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:400:3 › Cross-Cutting Timeline Atomicity › ATOM-02: Single deal stage change produces exactly one timeline entry 
+    [[REDACTED]-chromium] › tests/cross-cutting.spec.ts:465:3 › Cross-Cutting Timeline Atomicity › ATOM-03: Single status change produces exactly one timeline entry 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:26:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-01: Header displays deal info with editable fields 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:62:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-02: Editing deal fields via edit button 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:91:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-03: Editing value field updates the deal 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:123:3 › DealDetailPage - DealHeader (DDP-HDR) › DDP-HDR-04: Changing stage via dropdown and Change Stage button 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:169:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-01: Stage pipeline displays all stages with visual progress 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:193:3 › DealDetailPage - StagePipeline (DDP-PIP) › DDP-PIP-02: Pipeline updates when stage changes 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:222:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-01: Deal history shows stage change log 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:248:3 › DealDetailPage - DealHistorySection (DDP-HIS) › DDP-HIS-02: New stage change adds history entry 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:277:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-01: Deal metrics displays probability and expected close 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:295:3 › DealDetailPage - DealMetricsSection (DDP-MET) › DDP-MET-02: Metrics are editable 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:334:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-01: Writeups section shows existing writeups 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:346:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-02: New Entry button opens writeup creation form 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:369:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-03: Creating a writeup persists and shows in list 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:391:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-04: Edit button allows editing a writeup 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:420:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-05: Editing a writeup creates a version history entry 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:429:3 › DealDetailPage - WriteupsSection (DDP-WRT) › DDP-WRT-06: Version History button shows previous versions 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:450:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-01: Linked tasks section shows deal-specific tasks 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:462:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-02: Add Task button opens task creation form 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:485:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-03: Creating a task adds it to linked tasks 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:505:3 › DealDetailPage - LinkedTasksSection (DDP-LTK) › DDP-LTK-04: Checking a task marks it complete 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:539:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-01: Attachments section lists deal-specific files 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:550:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-02: Upload icon opens file upload dialog 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:569:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-03: Uploading a file adds it to attachments list 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:590:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-04: Download link is present on attachments 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:606:3 › DealDetailPage - AttachmentsSection (DDP-ATT) › DDP-ATT-05: Delete link removes attachment after confirmation 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:645:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-01: Contacts section lists deal-related individuals 
+    [[REDACTED]-chromium] › tests/deal-detail-page.spec.ts:669:3 › DealDetailPage - ContactsSection (DDP-CON) › DDP-CON-02: View Profile link navigates to PersonDetailPage 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:4:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-01: Page header shows title, breadcrumb, and create button 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:27:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-02: Create New Deal button opens deal creation modal 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:49:3 › DealsListPage - PageHeader (DLP-HDR) › DLP-HDR-03: Creating a deal persists and appears in table 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:91:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-01: Summary cards display correct metrics 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:118:3 › DealsListPage - SummaryCards (DLP-SUM) › DLP-SUM-02: Summary cards update when deals are added 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:157:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-01: Table View is the default view 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:174:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-02: Pipeline View shows deals organized by stage 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:197:3 › DealsListPage - ViewToggle (DLP-VW) › DLP-VW-03: Switching between views preserves data 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:221:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-01: Stage filter shows all stage options 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:243:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-02: Filtering by stage shows only matching deals 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:265:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-03: Client filter shows all client options 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:287:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-04: Filtering by client shows only that client's deals 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:324:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-05: Status filter shows status options 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:342:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-06: Date range filter limits deals by close date 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:362:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-07: Sort by Close Date orders deals correctly 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:381:3 › DealsListPage - FilterControls (DLP-FLT) › DLP-FLT-08: Search filters deals by name 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:411:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-01: Table displays correct column headers 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:431:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-02: Deal rows display all required fields 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:468:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-03: Status badges have correct colors 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:487:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-04: Clicking a deal row navigates to DealDetailPage 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:505:3 › DealsListPage - DealsTable (DLP-TBL) › DLP-TBL-05: Close Date column is sortable 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:527:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-01: Row action menu shows deal actions 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:554:3 › DealsListPage - RowActionMenu (DLP-ACT) › DLP-ACT-02: Delete deal removes it after confirmation 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:588:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-01: Pagination shows page count 
+    [[REDACTED]-chromium] › tests/deals-list-page.spec.ts:609:3 › DealsListPage - Pagination (DLP-PGN) › DLP-PGN-02: Navigating pages loads correct deals 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:68:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-01: Header displays person name, title, and contact info 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:85:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-02: Clicking associated client link navigates to ClientDetailPage 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:107:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-03: Person header info is editable 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:126:3 › PersonDetailPage - PersonHeader (PDP-HDR) › PDP-HDR-04: Cancel edit restores original values 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:149:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-01: Relationships section displays with view toggle 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:168:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-02: List View shows relationship entries 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:200:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-03: Clicking Link on a relationship navigates to that person 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:218:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-04: Add Entry button opens relationship creation form 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:235:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-05: Save is disabled when person ID is empty in Add Relationship modal 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:245:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-06: Filter button opens filter dropdown 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:257:3 › PersonDetailPage - RelationshipsSection (PDP-REL) › PDP-REL-07: Graph View displays visual relationship graph 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:274:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-01: Contact history displays section with controls 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:285:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-02: Contact history entries show correct details 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:316:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-03: Add Entry button opens contact history creation form 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:335:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-04: Save is disabled when required fields are empty in Add Contact History modal 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:345:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-05: Edit icon opens edit form for existing entry 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:371:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-06: Cancel button closes the edit modal 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:390:3 › PersonDetailPage - ContactHistorySection (PDP-CH) › PDP-CH-07: Filter button filters contact history by type 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:404:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-01: Associated clients section shows client cards 
+    [[REDACTED]-chromium] › tests/person-detail-page.spec.ts:440:3 › PersonDetailPage - AssociatedClientsSection (PDP-AC) › PDP-AC-02: View Client Detail Page button navigates to client 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:4:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-01: Page header shows title and New Task button 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:18:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-02: New Task button opens task creation modal 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:40:3 › TasksListPage - PageHeader (TLP-HDR) › TLP-HDR-03: Creating a task persists and appears in list 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:79:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-01: Filter controls are displayed 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:90:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-02: Filter by priority shows matching tasks 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:112:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-03: Text filter searches task titles 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:140:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-04: Filter by assignee shows matching tasks 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:172:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-05: Filter by client shows matching tasks 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:197:3 › TasksListPage - FilterBar (TLP-FLT) › TLP-FLT-06: Clearing filters restores full task list 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:228:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-01: Task cards display all required information 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:259:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-02: Priority badges have correct colors 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:292:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-03: Task cards are ordered by due date (soonest first) 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:319:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-04: Clicking a task card navigates to task context 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:340:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-05: Action menu on task card shows options 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:368:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-06: Mark Complete removes task from upcoming list 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:391:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-07: Edit opens task edit form 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:422:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-08: Editing a task persists changes 
+    [[REDACTED]-chromium] › tests/tasks-list-page.spec.ts:455:3 › TasksListPage - TaskCards (TLP-CRD) › TLP-CRD-09: Delete task removes it after confirmation 
