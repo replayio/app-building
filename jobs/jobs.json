@@ -1,18 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
-        "WriteComponentSidebar: Write the Sidebar component",
-        "WriteComponentClientsSearchAndFilters: Write the ClientsSearchAndFilters component",
-        "WriteComponentClientsActions: Write the ClientsActions component",
-        "WriteComponentClientsTable: Write the ClientsTable component",
-        "WriteComponentPagination: Write the Pagination component",
-        "WritePageClientsListPage: Write the ClientsListPage page"
-      ],
-      "timestamp": "2026-02-23T22:00:46.346Z"
-    },
-    {
       "strategy": "strategies/jobs/writeScript.md",
       "jobs": [
         "Unpack: Implement package scripts"

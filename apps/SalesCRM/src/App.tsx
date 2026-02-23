@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import ClientsListPage from './pages/ClientsListPage'
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/clients" replace />} />
           <Route path="/dashboard" element={<PlaceholderPage name="Dashboard" />} />
-          <Route path="/clients" element={<PlaceholderPage name="Clients" />} />
+          <Route path="/clients" element={<ClientsListPage />} />
           <Route path="/clients/:clientId" element={<PlaceholderPage name="Client Detail" />} />
           <Route path="/individuals/:individualId" element={<PlaceholderPage name="Person Detail" />} />
           <Route path="/deals" element={<PlaceholderPage name="Deals" />} />
