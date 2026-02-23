@@ -65,7 +65,7 @@ export function TimelineSection({ events }: TimelineSectionProps) {
   }, {})
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="timeline-section">
+    <div className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4" data-testid="timeline-section">
       <h2 className="text-[14px] font-semibold text-text-primary mb-3">Timeline</h2>
 
       {events.length === 0 ? (

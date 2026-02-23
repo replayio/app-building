@@ -74,8 +74,8 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto" data-testid="add-attachment-modal">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-sm:max-w-[calc(100%-24px)] max-h-[90vh] overflow-auto" data-testid="add-attachment-modal">
+        <div className="flex items-center justify-between px-5 max-sm:px-3 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add Attachment</h2>
           <button
             onClick={onClose}
@@ -85,7 +85,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
             <X size={16} strokeWidth={1.75} />
           </button>
         </div>
-        <div className="px-5 py-4 flex flex-col gap-3.5">
+        <div className="px-5 max-sm:px-3 py-4 flex flex-col gap-3.5">
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Attachment Type</label>
             <div className="flex gap-2">
@@ -171,7 +171,7 @@ export function AddAttachmentModal({ open, onClose, onSave, deals }: AddAttachme
             />
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
+        <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-4 border-t border-border">
           <button
             data-testid="attachment-cancel-button"
             onClick={onClose}

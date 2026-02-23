@@ -28,7 +28,7 @@ export function TasksSection({ tasks, onToggleTask }: TasksSectionProps) {
   }
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="tasks-section">
+    <div className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4" data-testid="tasks-section">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-[14px] font-semibold text-text-primary">Tasks</h2>
         <span className="text-[12px] text-text-muted" data-testid="tasks-unresolved-label">Unresolved tasks</span>

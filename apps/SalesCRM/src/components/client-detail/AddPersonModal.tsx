@@ -115,8 +115,8 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto" data-testid="add-person-modal">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-sm:max-w-[calc(100%-24px)] max-h-[90vh] overflow-auto" data-testid="add-person-modal">
+        <div className="flex items-center justify-between px-5 max-sm:px-3 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add Person</h2>
           <button
             onClick={onClose}
@@ -126,7 +126,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
             <X size={16} strokeWidth={1.75} />
           </button>
         </div>
-        <div className="px-5 py-4 flex flex-col gap-3.5">
+        <div className="px-5 max-sm:px-3 py-4 flex flex-col gap-3.5">
           {/* Mode toggle */}
           <div className="flex gap-2" data-testid="person-mode-toggle">
             <button
@@ -188,7 +188,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
                   className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
                 <div>
                   <label className="block text-[12px] font-medium text-text-muted mb-1">Email</label>
                   <input
@@ -270,7 +270,7 @@ export function AddPersonModal({ open, onClose, onSave }: AddPersonModalProps) {
             </>
           )}
         </div>
-        <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
+        <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-4 border-t border-border">
           <button
             data-testid="person-cancel-button"
             onClick={onClose}

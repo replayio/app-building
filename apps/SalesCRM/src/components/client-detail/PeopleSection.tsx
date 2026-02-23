@@ -17,7 +17,7 @@ export function PeopleSection({ people }: PeopleSectionProps) {
   const navigate = useNavigate()
 
   return (
-    <div className="border border-border rounded-[6px] p-4 mb-4" data-testid="people-section">
+    <div className="border border-border rounded-[6px] p-4 max-sm:p-3 mb-4" data-testid="people-section">
       <h2 className="text-[14px] font-semibold text-text-primary mb-3">People</h2>
 
       {people.length === 0 ? (

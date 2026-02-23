@@ -23,10 +23,11 @@ function QuickActionButton({ icon, label, onClick, testId }: { icon: React.React
     <button
       onClick={onClick}
       data-testid={testId}
-      className="flex flex-col items-center justify-center gap-1.5 w-[100px] h-[72px] border border-border rounded-[6px] text-text-secondary hover:bg-hover transition-colors duration-100"
+      className="flex flex-col items-center justify-center gap-1.5 w-[100px] h-[72px] max-sm:w-[44px] max-sm:h-[44px] border border-border rounded-[6px] text-text-secondary hover:bg-hover transition-colors duration-100"
+      title={label}
     >
       <span className="text-text-muted">{icon}</span>
-      <span className="text-[12px] font-medium">{label}</span>
+      <span className="text-[12px] font-medium max-sm:hidden">{label}</span>
     </button>
   )
 }

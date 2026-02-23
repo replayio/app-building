@@ -47,8 +47,8 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-h-[90vh] overflow-auto" data-testid="add-deal-modal">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+      <div className="relative bg-surface rounded-[8px] shadow-[var(--shadow-elevation-2)] w-full max-w-[480px] max-sm:max-w-[calc(100%-24px)] max-h-[90vh] overflow-auto" data-testid="add-deal-modal">
+        <div className="flex items-center justify-between px-5 max-sm:px-3 py-4 border-b border-border">
           <h2 className="text-[14px] font-semibold text-text-primary">Add Deal</h2>
           <button
             onClick={onClose}
@@ -58,7 +58,7 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
             <X size={16} strokeWidth={1.75} />
           </button>
         </div>
-        <div className="px-5 py-4 flex flex-col gap-3.5">
+        <div className="px-5 max-sm:px-3 py-4 flex flex-col gap-3.5">
           <div>
             <label className="block text-[12px] font-medium text-text-muted mb-1">Deal Name *</label>
             <input
@@ -70,7 +70,7 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
               className="w-full h-[34px] px-3 text-[13px] text-text-primary bg-base border border-border rounded-[5px] placeholder:text-text-disabled focus:outline-none focus:border-accent"
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Value ($)</label>
               <input
@@ -125,7 +125,7 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
               />
             )}
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
             <div>
               <label className="block text-[12px] font-medium text-text-muted mb-1">Probability (%)</label>
               <input
@@ -151,7 +151,7 @@ export function AddDealModal({ open, availableUsers = [], onClose, onSave }: Add
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-border">
+        <div className="flex items-center justify-end gap-2 px-5 max-sm:px-3 py-4 border-t border-border">
           <button
             data-testid="deal-cancel-button"
             onClick={onClose}

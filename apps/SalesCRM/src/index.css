@@ -188,16 +188,3 @@ body {
     gap: 4px;
   }
 }
-
-/* Responsive: Source info section */
-@media (max-width: 768px) {
-  .source-info-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .source-info-grid {
-    grid-template-columns: 1fr;
-  }
-}

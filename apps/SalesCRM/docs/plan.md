@@ -396,7 +396,7 @@ Open bug reports to address:
 
 ### Responsive UI
 - [x] ClientsListPage
-- [ ] ClientDetailPage
+- [x] ClientDetailPage
 - [x] PersonDetailPage
 - [x] DealsListPage
 - [x] DealDetailPage
