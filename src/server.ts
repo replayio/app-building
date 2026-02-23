@@ -210,16 +210,20 @@ async function processLoop(): Promise<void> {
           log,
           onEvent,
           () => stopRequested,
-          (label) => commitAndPush(label, PUSH_BRANCH, log, REPO_DIR),
+          (label) => {
+            if (!stopRequested) commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
+          },
         );
         groupsProcessed += jobResult.groupsProcessed;
         totalCost += jobResult.totalCost;
       }
 
-      // Final commit and push after message + jobs
-      const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
-      commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
-      log(`Final revision: ${getRevision(REPO_DIR)}`);
+      // Final commit and push after message + jobs (skip if stopping — unmerged branch gets these)
+      if (!stopRequested) {
+        const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
+        commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
+        log(`Final revision: ${getRevision(REPO_DIR)}`);
+      }
 
       state = "idle";
       continue;
