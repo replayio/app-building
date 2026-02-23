@@ -1,18 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageClientsListPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentSidebar: Add test entries for Sidebar Navigation",
-        "PlanComponentClientsSearchAndFilters: Add test entries for ClientsSearchAndFilters",
-        "PlanComponentClientsActions: Add test entries for ClientsActions (Import, Export, Add New Client)",
-        "PlanComponentClientsTable: Add test entries for ClientsTable",
-        "PlanComponentPagination: Add test entries for Pagination"
-      ],
-      "timestamp": "2026-02-23T21:49:42.510Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "Unpack: Write the app"
