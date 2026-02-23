@@ -1,7 +1,7 @@
 import { execFileSync, spawn } from "child_process";
 import { readFileSync, writeFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
-import { pushImage, createApp, createMachine, waitForMachine, destroyMachine } from "./fly";
+import { remoteBuildAndPush, createApp, createMachine, waitForMachine, destroyMachine } from "./fly";
 import { logContainer, markStopped } from "./container-registry";
 
 const IMAGE_NAME = "app-building";
@@ -274,10 +274,9 @@ export async function startRemoteContainer(
     console.log(`Fly app created and saved to .env as FLY_APP_NAME=${flyApp}`);
   }
 
-  // Ensure local Docker image exists, then push to Fly registry
-  ensureImageExists();
-  console.log("Pushing image to Fly registry...");
-  const imageRef = pushImage(flyApp, flyToken, IMAGE_NAME);
+  // Build remotely on Fly and push to registry (no local Docker needed)
+  console.log("Building and pushing image via Fly remote builder...");
+  const imageRef = remoteBuildAndPush(flyApp, flyToken);
 
   // Build env vars for the machine
   const containerEnv = buildContainerEnv(opts, envVars, {

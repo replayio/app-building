@@ -1,4 +1,5 @@
 import { execFileSync } from "child_process";
+import { resolve } from "path";
 
 const API_BASE = "https://api.machines.dev/v1";
 
@@ -61,6 +62,40 @@ export async function createApp(token: string, name: string, org?: string): Prom
 
   await gqlFetch(allocateMutation, { input: { appId: name, type: "shared_v4" } });
   await gqlFetch(allocateMutation, { input: { appId: name, type: "v6" } });
+}
+
+/**
+ * Build the Docker image remotely on Fly's builders and push to the registry.
+ * Returns the full registry image ref.
+ */
+export function remoteBuildAndPush(app: string, token: string): string {
+  const projectRoot = resolve(__dirname, "..");
+
+  console.log("Building image remotely on Fly...");
+  const output = execFileSync(
+    "flyctl",
+    ["deploy", "--remote-only", "--build-only", "--push", "--app", app],
+    {
+      cwd: projectRoot,
+      encoding: "utf-8",
+      env: { ...process.env, FLY_API_TOKEN: token },
+      timeout: 600000,
+    },
+  );
+
+  // Parse the image ref from flyctl output
+  const match = output.match(/registry\.fly\.io\/[^\s]+/);
+  if (!match) {
+    // Fallback: construct the ref using the app name
+    const tag = `deployment-${Date.now()}`;
+    const fallbackRef = `registry.fly.io/${app}:${tag}`;
+    console.log(`Could not parse image ref from output, using ${fallbackRef}`);
+    return fallbackRef;
+  }
+
+  const imageRef = match[0];
+  console.log(`Remote build complete: ${imageRef}`);
+  return imageRef;
 }
 
 /**
