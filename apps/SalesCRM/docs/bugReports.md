@@ -2,7 +2,9 @@
 
 ## Open
 
-(none)
+2/23/2026: The forgot password screen and other pages have content flush against the top/sides of the screen with no breathing room — pages need consistent padding/margin so content is not pressed against screen edges. This should be added as a directive in writeApp.md.
+
+2/23/2026: Email confirmation for password login does not work in production — confirmation emails contain localhost URLs (from getAppUrl() in netlify/utils/email.ts defaulting to http://localhost:8888 when process.env.URL is not set), so users can never confirm their email and are blocked from logging in. Tests did not catch this because IS_TEST mode bypasses email confirmation entirely (auto-confirms on signup, skips the check on login), so the actual production email confirmation flow is never exercised.
 
 ## Unreviewed
 
