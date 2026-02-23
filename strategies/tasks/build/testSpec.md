@@ -1,0 +1,66 @@
+# Strategy
+
+You are writing a complete, detailed test specification for an app based on an initial app specification
+in `AppSpec.md`. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug
+reports and must also be followed.
+
+## Unpack Subtasks
+
+Unpack the initial test specification task into the following:
+
+- PlanPages: Read the spec, decide on the pages the app needs, and add a PlanPage<Name> subtask for each page.
+
+- PlanPage<Name>: Decide on the components the page needs, add sections for the page and its components to docs/tests.md, and add a PlanComponent<Name> subtask for each of those components. IMPORTANT: The last task done to specify the test entries for each page must require committing and exiting afterwards.
+
+- PlanComponent<Name>: Add test entries to comprehensively test the component's behavior.
+
+## Requirements
+
+The test spec must be written in docs/tests.md. This file is organized by page, with one or more test entries for the page.
+
+- The test entries must match the app spec as closely as possible.
+- If there are image URLs in the app spec, you MUST download them, read them from disk, and follow them carefully.
+- Use behavior driven development to formulate test entries: describe the initial conditions of the app's state, the action the user takes, and the changes to the app that should occur afterwards.
+- Test entries must all have titles.
+- Test entries must be grouped by page in the app.
+- Test entries must indicate the components on that page they are exercising.
+- Every interactive element (buttons etc) in the component must be tested. There must be a comment in the JSX next to every interactive element with the titles of the tests that exercise it.
+- The test must verify that the interactive element actually works and does what the user expects. For example, clicking a button must do something, and text added to forms must be reflected in the app state afterwards.
+- Adding extra necessary features beyond the app spec may be needed for a complete, functional app (e.g. create/delete buttons, navigation, form validation).
+
+## Directives
+
+- Images of different pages in the app spec might not have consistent styling or navigation elements with each other. Prioritize a consistent navigation / styling over exact adherence to the images.
+
+- Systematically inventory every visible element in each mockup — every column header, filter control, button, icon, badge, and section. Write a test entry for each one. It is easy to gloss over elements that seem minor or to only test the most prominent features.
+
+- Do not substitute easier-to-implement elements for what the mockup shows. If a table has columns that require joins or computed values, test for all those columns — do not replace them with simpler alternatives. If a mockup shows four filter controls, test for all four — not just the two easiest ones.
+
+- For every clickable element, the test entry must specify the exact navigation target or action result. Do not leave navigation destinations ambiguous. For buttons that trigger external flows (OAuth, SSO, payment, etc.), specify how the flow opens (popup window, redirect, etc.) and what happens when it completes.
+
+- For any user action that mutates data, write test entries verifying that the change is persisted correctly and that exactly the right side effects occur (e.g. history/timeline entries are created, and only one per action — not duplicates).
+
+- Button and control appearance matters: if a mockup shows specific text, icons, or styling for a button, the test entry should verify that appearance — not just that some button exists.
+
+- Completely test that modal dialogs work properly.
+
+- Attachment functionality should support file uploads unless the mockup specifically indicates something else.
+
+- Import/upload dialogs must specify the expected data format (e.g., required columns, accepted values, file type). Test entries should verify that format documentation is visible to the user before they attempt the import.
+
+- State-changing actions must have tests that when performed other parts of the app update appropriately. For example:
+* If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry. Ensure this happens atomically to avoid duplicates from re-renders. Think through every field that can change and whether it needs history tracking.
+
+## Tips
+
+- Mockup images hosted on utfs.io cannot be fetched via WebFetch. Download them with
+  `curl -L -o <local-path> <url>` and then use the Read tool to view the downloaded image files.
+- When starting from scratch with no existing plan.md, create and commit plan.md before moving on
+  to PlanPage tasks. This avoids losing the plan if the iteration runs out of turns.
+- The PlanPages task must produce output quickly. Do NOT spend excessive turns reading files
+  through Task/Explore agents or re-reading files you have already seen. Read AppSpec.md and the
+  mockup images directly, decide on pages/components, write docs/tests.md scaffolding, update
+  plan.md, commit, and exit. A zero-commit iteration is always a failure — prioritize writing
+  output over exhaustive exploration.
+- Download all mockup images in a single curl command, then read them all in parallel. Do not
+  interleave downloads and reads.
