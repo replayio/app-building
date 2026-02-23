@@ -15,11 +15,16 @@ Key directories:
 You are running within a container and can run test suites for applications and connect to various
 external services using instructions in the relevant strategy files.
 
-Whenever possible you must act according to the strategy documents. Usually you will know what strategy
-you must be following. If you are responding to a user message and don't know what strategy to use,
-look for a suitable one in `strategies/messages/`. If there isn't one do your best to satisfy the
-user's request, and then write a new strategy document there to help yourself in the future when
-similar requests are made.
+**CRITICAL — FIRST THING YOU DO when responding to a user message:**
+
+1. **BEFORE doing ANY work**, list the files in `strategies/messages/` and read any strategy
+   whose name matches the user's request.
+2. If a matching strategy exists, follow it exactly.
+3. Only if no matching strategy exists should you proceed on your own — and then write a new
+   strategy document in `strategies/messages/` afterward so you handle it correctly next time.
+
+Do NOT run git commands, search code, or take any other action until you have checked for a
+matching strategy. This is the highest-priority rule when handling user messages.
 
 ## Worker Execution
 
