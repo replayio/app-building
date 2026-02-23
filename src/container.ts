@@ -2,6 +2,7 @@ import { execFileSync, spawn } from "child_process";
 import { readFileSync, writeFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import { pushImage, createApp, createMachine, waitForMachine, destroyMachine } from "./fly";
+import { logContainer, markStopped } from "./container-registry";
 
 const IMAGE_NAME = "app-building";
 const CONTAINER_PORT = 3000;
@@ -36,7 +37,7 @@ function ensureImageExists(): void {
   }
 }
 
-function loadDotEnv(projectRoot: string): Record<string, string> {
+export function loadDotEnv(projectRoot: string): Record<string, string> {
   const envPath = resolve(projectRoot, ".env");
   if (!existsSync(envPath)) {
     return {};
@@ -92,6 +93,7 @@ function findFreePort(): number {
 
 export function writeAgentState(state: AgentState): void {
   writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + "\n");
+  logContainer(state);
 }
 
 export function readAgentState(): AgentState | null {
@@ -105,7 +107,16 @@ export function readAgentState(): AgentState | null {
   }
 }
 
-export function clearAgentState(): void {
+export function clearAgentState(containerName?: string): void {
+  if (containerName) {
+    markStopped(containerName);
+  } else {
+    // Try to read the current state to get the container name before clearing
+    const state = readAgentState();
+    if (state) {
+      markStopped(state.containerName);
+    }
+  }
   try {
     const { unlinkSync } = require("fs");
     unlinkSync(STATE_FILE);
@@ -350,7 +361,7 @@ export function stopContainer(containerName: string): void {
   } catch {
     // Container may already be stopped
   }
-  clearAgentState();
+  clearAgentState(containerName);
 }
 
 export function spawnTestContainer(): Promise<void> {

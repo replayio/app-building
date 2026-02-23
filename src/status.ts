@@ -1,5 +1,5 @@
-import { readAgentState } from "./container";
 import { httpGet } from "./http-client";
+import { getRecentContainers, RegistryEntry } from "./container-registry";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 
 function stripTimestamp(rawLine: string): string {
@@ -15,9 +15,30 @@ function displayFormattedLines(rawLines: string[]): void {
   }
 }
 
-// --- HTTP-based status ---
+function formatAge(isoDate: string): string {
+  const ms = Date.now() - new Date(isoDate).getTime();
+  const secs = Math.floor(ms / 1000);
+  if (secs < 60) return `${secs}s ago`;
+  const mins = Math.floor(secs / 60);
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
 
-async function showHttpStatus(baseUrl: string): Promise<void> {
+async function probeAlive(entry: RegistryEntry): Promise<boolean> {
+  try {
+    const res = await fetch(`${entry.baseUrl}/status`, {
+      signal: AbortSignal.timeout(3000),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+async function showHttpStatus(baseUrl: string, containerName: string): Promise<void> {
   const status = await httpGet(`${baseUrl}/status`);
 
   let stateLabel: string;
@@ -33,7 +54,7 @@ async function showHttpStatus(baseUrl: string): Promise<void> {
     stateLabel = `${DIM}${status.state}${RESET}`;
   }
 
-  console.log(`\n  ${stateLabel}`);
+  console.log(`\n  ${stateLabel}  ${DIM}(${containerName})${RESET}`);
   console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
   console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
 
@@ -95,18 +116,80 @@ async function tailHttpLogs(baseUrl: string): Promise<void> {
   });
 }
 
+function showStoppedEntries(entries: RegistryEntry[]): void {
+  console.log(`\n${DIM}No running containers.${RESET}`);
+  if (entries.length === 0) {
+    console.log(`${DIM}No container history found.${RESET}`);
+    return;
+  }
+  console.log(`\n${BOLD}Recent containers:${RESET}\n`);
+  for (const entry of entries.slice(-10).reverse()) {
+    const started = formatAge(entry.startedAt);
+    const stopped = entry.stoppedAt ? formatAge(entry.stoppedAt) : "unknown";
+    console.log(`  ${DIM}${entry.containerName}${RESET}  ${entry.type}  started ${started}  stopped ${stopped}`);
+  }
+}
+
+function showAliveList(alive: RegistryEntry[]): void {
+  console.log(`\n${BOLD}${alive.length} running containers:${RESET}\n`);
+  for (const entry of alive) {
+    const started = formatAge(entry.startedAt);
+    console.log(`  ${GREEN}●${RESET} ${entry.containerName}  ${DIM}${entry.type}${RESET}  ${entry.baseUrl}  started ${started}`);
+  }
+  console.log(`\n${DIM}Use: npm run status -- --tail <containerName> to tail a specific container${RESET}`);
+}
+
 // --- Main ---
 
 async function main(): Promise<void> {
-  const agentState = readAgentState();
+  const args = process.argv.slice(2);
+  const tailIdx = args.indexOf("--tail");
+  const tailTarget = tailIdx !== -1 ? args[tailIdx + 1] : null;
 
-  if (!agentState) {
-    console.error(`${RED}No active agent found (no .agent-state.json).${RESET}`);
-    process.exit(1);
+  const entries = getRecentContainers();
+
+  // If --tail <name>, find that container and tail it
+  if (tailTarget) {
+    const entry = entries.find((e) => e.containerName === tailTarget);
+    if (!entry) {
+      console.error(`${RED}Container "${tailTarget}" not found in registry.${RESET}`);
+      process.exit(1);
+    }
+    try {
+      await showHttpStatus(entry.baseUrl, entry.containerName);
+    } catch {
+      console.error(`${RED}Cannot reach container "${tailTarget}" at ${entry.baseUrl} — may be stopped.${RESET}`);
+      process.exit(1);
+    }
+    await tailHttpLogs(entry.baseUrl);
+    return;
   }
 
-  await showHttpStatus(agentState.baseUrl);
-  await tailHttpLogs(agentState.baseUrl);
+  // Probe all entries without stoppedAt to find alive containers
+  const candidates = entries.filter((e) => !e.stoppedAt);
+  const aliveResults = await Promise.all(
+    candidates.map(async (entry) => ({
+      entry,
+      alive: await probeAlive(entry),
+    })),
+  );
+  const alive = aliveResults.filter((r) => r.alive).map((r) => r.entry);
+
+  if (alive.length === 0) {
+    showStoppedEntries(entries);
+  } else if (alive.length === 1) {
+    // Single alive container — show status and tail logs (original behavior)
+    try {
+      await showHttpStatus(alive[0].baseUrl, alive[0].containerName);
+    } catch {
+      console.error(`${RED}Cannot reach agent at ${alive[0].baseUrl} — container may be stopped.${RESET}`);
+      process.exit(1);
+    }
+    await tailHttpLogs(alive[0].baseUrl);
+  } else {
+    // Multiple alive — list them, no tailing
+    showAliveList(alive);
+  }
 }
 
 main().catch((e) => {

@@ -1,14 +1,10 @@
 import { readAgentState, clearAgentState, stopRemoteContainer } from "./container";
+import { findContainer } from "./container-registry";
 import { httpPost } from "./http-client";
+import type { AgentState } from "./container";
+import { RED, RESET } from "./format";
 
-async function main(): Promise<void> {
-  const agentState = readAgentState();
-
-  if (!agentState) {
-    console.error("No active agent found (no .agent-state.json).");
-    process.exit(1);
-  }
-
+async function stopByState(agentState: AgentState): Promise<void> {
   console.log(`Stopping container ${agentState.containerName}...`);
 
   // Send HTTP stop signal to the container's server
@@ -34,13 +30,38 @@ async function main(): Promise<void> {
     } catch {
       // Connection refused = container is gone
       console.log("Container stopped.");
-      clearAgentState();
+      clearAgentState(agentState.containerName);
       return;
     }
   }
 
   console.error("Container did not stop within 5 seconds.");
   process.exit(1);
+}
+
+async function main(): Promise<void> {
+  const targetName = process.argv[2];
+
+  if (targetName) {
+    // Stop a specific container by name from the registry
+    const entry = findContainer(targetName);
+    if (!entry) {
+      console.error(`${RED}Container "${targetName}" not found in registry.${RESET}`);
+      process.exit(1);
+    }
+    await stopByState(entry);
+    return;
+  }
+
+  // Default: stop the current container from .agent-state.json
+  const agentState = readAgentState();
+
+  if (!agentState) {
+    console.error("No active agent found (no .agent-state.json).");
+    process.exit(1);
+  }
+
+  await stopByState(agentState);
 }
 
 main().catch((e) => {

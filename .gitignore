@@ -7,6 +7,7 @@ prompt-*.txt
 
 # Container agent state and home directory
 .agent-state.json
+.container-registry.jsonl
 .agent-home
 .claude
 

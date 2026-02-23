@@ -156,3 +156,22 @@ export async function destroyMachine(
     method: "DELETE",
   });
 }
+
+export interface FlyMachineInfo {
+  id: string;
+  name: string;
+  state: string;
+  created_at: string;
+  region: string;
+}
+
+/**
+ * List all machines for a Fly app.
+ */
+export async function listMachines(
+  app: string,
+  token: string,
+): Promise<FlyMachineInfo[]> {
+  const res = await flyFetch(`/apps/${app}/machines`, token);
+  return (await res.json()) as FlyMachineInfo[];
+}
