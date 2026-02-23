@@ -1,15 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
-        "WriteSidebarNavLinks: Write the SidebarNavLinks component",
-        "WriteSidebarUserArea: Write the SidebarUserArea component",
-        "WriteSidebar: Write the Sidebar component and app layout"
-      ],
-      "timestamp": "2026-02-23T21:43:03.538Z"
-    },
-    {
       "strategy": "strategies/jobs/writeScript.md",
       "jobs": [
         "Unpack: Implement package scripts"
