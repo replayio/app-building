@@ -3,9 +3,26 @@
     {
       "strategy": "strategies/jobs/build/writeTests.md",
       "jobs": [
-        "Unpack: Write Playwright tests"
+        "WriteTestSidebarDisplaysNavLinks: Write test for Sidebar displays all navigation links with icons",
+        "WriteTestClickClientsLink: Write test for Clicking Clients link navigates to /clients",
+        "WriteTestClickContactsLink: Write test for Clicking Contacts link navigates to /contacts",
+        "WriteTestClickDealsLink: Write test for Clicking Deals link navigates to /deals",
+        "WriteTestClickTasksLink: Write test for Clicking Tasks link navigates to /tasks",
+        "WriteTestClickTeamLink: Write test for Clicking Team link navigates to /users",
+        "WriteTestClickSettingsLink: Write test for Clicking Settings link navigates to /settings",
+        "WriteTestActiveLinkHighlight: Write test for Active link highlights based on current route",
+        "WriteTestActiveLinkSubRoutes: Write test for Active link updates on sub-routes",
+        "WriteTestSidebarPersistent: Write test for Sidebar is persistent across all pages",
+        "WriteTestSignInButton: Write test for Sign In button shown when not logged in",
+        "WriteTestSignInRevealsForm: Write test for Clicking Sign In reveals inline auth form",
+        "WriteTestSignInFormSubmits: Write test for Sign In form submits with email and password",
+        "WriteTestForgotPasswordLink: Write test for Forgot password link navigates to /auth/forgot-password",
+        "WriteTestToggleSignInSignUp: Write test for Toggle switches between Sign In and Sign Up modes",
+        "WriteTestSignUpFormSubmits: Write test for Sign Up form submits and requires email confirmation",
+        "WriteTestLoggedInState: Write test for Logged in state shows avatar, name, and sign-out",
+        "WriteTestSignOut: Write test for Clicking sign-out logs the user out"
       ],
-      "timestamp": "2026-02-23T21:23:09.721Z"
+      "timestamp": "2026-02-23T21:57:01.890Z"
     },
     {
       "strategy": "strategies/jobs/build/testing.md",
