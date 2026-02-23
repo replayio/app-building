@@ -278,9 +278,13 @@ export async function startRemoteContainer(
   console.log("Building and pushing image via Fly remote builder...");
   const imageRef = remoteBuildAndPush(flyApp, flyToken);
 
+  const uniqueId = Math.random().toString(36).slice(2, 8);
+  const machineName = `app-building-${uniqueId}`;
+
   // Build env vars for the machine
   const containerEnv = buildContainerEnv(opts, envVars, {
     PORT: "3000",
+    CONTAINER_NAME: machineName,
   });
   // Remove Fly-specific vars from container env (not needed inside)
   delete containerEnv.FLY_API_TOKEN;
@@ -292,9 +296,6 @@ export async function startRemoteContainer(
     console.log(`Destroying stale machine ${m.id} (${m.name})...`);
     await destroyMachine(flyApp, flyToken, m.id).catch(() => {});
   }
-
-  const uniqueId = Math.random().toString(36).slice(2, 8);
-  const machineName = `app-building-${uniqueId}`;
 
   // Retry machine creation — the registry tag may take a moment to propagate
   console.log("Creating Fly machine...");

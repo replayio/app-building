@@ -170,7 +170,10 @@ async function processLoop(): Promise<void> {
   let interactiveSessionId: string | undefined;
 
   while (true) {
-    if (stopRequested) break;
+    if (stopRequested) {
+      log("Stop requested. Exiting loop.");
+      break;
+    }
 
     // Check for queued messages
     if (messageQueue.length > 0) {
@@ -203,28 +206,34 @@ async function processLoop(): Promise<void> {
         log(`Error: ${e.message}`);
       }
 
-      // After each message, process all pending job groups
-      if (!stopRequested) {
-        const jobResult = await processJobGroups(
-          extraArgs,
-          log,
-          onEvent,
-          () => stopRequested,
-          (label) => {
-            if (!stopRequested) commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
-          },
-        );
-        groupsProcessed += jobResult.groupsProcessed;
-        totalCost += jobResult.totalCost;
-      }
-
-      // Final commit and push after message + jobs (skip if stopping — unmerged branch gets these)
+      // Final commit and push after message (skip if stopping — unmerged branch gets these)
       if (!stopRequested) {
         const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
         commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
         log(`Final revision: ${getRevision(REPO_DIR)}`);
       }
 
+      state = "idle";
+      continue;
+    }
+
+    // Process pending job groups (after message handling above, or standalone)
+    const pendingGroups = getPendingGroupCount();
+    if (!stopRequested && pendingGroups > 0) {
+      log(`Processing ${pendingGroups} pending job group(s)...`);
+      state = "processing";
+      const jobResult = await processJobGroups(
+        extraArgs,
+        log,
+        onEvent,
+        () => stopRequested,
+        (label) => {
+          if (!stopRequested) commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
+        },
+      );
+      groupsProcessed += jobResult.groupsProcessed;
+      totalCost += jobResult.totalCost;
+      log(`Job processing complete. ${jobResult.groupsProcessed} group(s) processed, cost: $${jobResult.totalCost.toFixed(4)}`);
       state = "idle";
       continue;
     }
@@ -236,6 +245,7 @@ async function processLoop(): Promise<void> {
     }
 
     // Wait for something to happen
+    log(`Idle. Queue: ${messageQueue.length} messages, ${getPendingGroupCount()} groups pending. Waiting...`);
     state = "idle";
     await waitForWake();
   }

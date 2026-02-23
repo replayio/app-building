@@ -135,7 +135,12 @@ function showStoppedEntries(entries: RegistryEntry[]): void {
     return;
   }
   console.log(`\n${BOLD}Recent containers:${RESET}\n`);
-  for (const entry of entries.slice(-10).reverse()) {
+  const sorted = [...entries].sort((a, b) => {
+    const aTime = a.stoppedAt ?? a.startedAt;
+    const bTime = b.stoppedAt ?? b.startedAt;
+    return new Date(bTime).getTime() - new Date(aTime).getTime();
+  });
+  for (const entry of sorted.slice(0, 10)) {
     const started = formatAge(entry.startedAt);
     const stopped = entry.stoppedAt ? formatAge(entry.stoppedAt) : "unknown";
     console.log(`  ${DIM}${entry.containerName}${RESET}  ${entry.type}  started ${started}  stopped ${stopped}`);
