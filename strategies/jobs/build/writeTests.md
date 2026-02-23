@@ -74,6 +74,20 @@ npx tsx /repo/scripts/add-group.ts --strategy "strategies/jobs/build/writeTests.
   calls that can block indefinitely. Use locator chaining (`.filter()`, `.locator()`) and
   single-assertion expect matchers (`.toHaveCount()`, `.toContainText()`, `.toBeVisible()`) instead.
 
+- Do not add unnecessary state cleanup (e.g., `localStorage.removeItem`, `page.reload()`) in
+  `beforeEach` hooks when Playwright already provides a fresh browser context per test. Redundant
+  cleanup wastes time and can cause tests to exceed their timeout under recording or CI overhead.
+
+- For assertions that depend on backend round-trips (auth flows, database writes, API calls),
+  use generous timeouts (e.g., `{ timeout: 30000 }`) rather than tight ones. Environments with
+  recording overhead (Replay browser) and cold database connections (Neon DB) add significant
+  latency beyond typical local development. A tight timeout that barely passes locally will flake
+  under load or recording.
+
+- For tests that chain multiple user flows in a single test (e.g., signup → signout → signin →
+  verify), add `test.slow()` at the top of the test to triple the default timeout. Multi-step
+  end-to-end flows easily exceed the default 60s timeout under recording and CI environments.
+
 - Strategy files are at `/repo/strategies/jobs/` and its subdirectories (the repo root), NOT inside
   the app directory. Always use `/repo/strategies/jobs/build/writeTests.md`, etc.
 

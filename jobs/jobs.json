@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
-        "ClassifyBug: Classify SignInFormSubmits",
-        "UpdateDirectives: Update directives for SignInFormSubmits",
-        "FinishBug: Mark SignInFormSubmits as reviewed"
-      ],
-      "timestamp": "2026-02-23T23:33:20.248Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
         "ClassifyBug: Classify SidebarNavLinks",
         "UpdateDirectives: Update directives for SidebarNavLinks",
         "FinishBug: Mark SidebarNavLinks as reviewed"
