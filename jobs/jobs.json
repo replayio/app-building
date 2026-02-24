@@ -3,9 +3,9 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+        "FixViolationPlaywrightFunctionsFlag: Fix Playwright config missing --functions ./netlify/functions flag in webServer command"
       ],
-      "timestamp": "2026-02-23T23:39:04.312Z"
+      "timestamp": "2026-02-24T01:55:08.225Z"
     },
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
