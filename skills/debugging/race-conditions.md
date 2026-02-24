@@ -58,6 +58,24 @@ set by earlier interactions.
 
 **Fix**: Ensure effects are idempotent, or use abort controllers to cancel stale requests.
 
+### Cross-test data contamination
+When tests fail intermittently with unexpected data states (wrong counts, unexpected records,
+stale values), check for parallel test interference. This happens when multiple tests or
+workers modify the same database records concurrently.
+
+**Diagnosis**: Tests pass in isolation but fail when run in the full suite. Error messages
+show unexpected counts or data values that don't match what the test created.
+
+**Fix**: Apply one or more of these strategies:
+- Use unique test data per parallel worker (unique names, IDs, or prefixes)
+- Run stateful tests serially (`test.describe.serial`) when they must share state
+- Add per-test database cleanup in `beforeEach`/`afterEach`
+- Use per-worker database branches (already the default in this repo)
+
+*Example*: 5 failures (15% of all failures) in `sales-crm-2-review-5` were caused by
+cross-test contamination in `fullyParallel` mode where tests shared the same client IDs
+and task names.
+
 ### Date.now() or shared identifiers across workers
 When parallel Playwright workers share a module-level `Date.now()` value for generating
 unique IDs (like test emails), all workers get the same value, causing collisions.
