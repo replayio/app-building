@@ -1,16 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageAuthPages: Decide on components for ForgotPasswordPage, ResetPasswordPage, ConfirmEmailPage, add sections to docs/tests.md",
-        "PlanComponentForgotPassword: Add test entries for ForgotPasswordPage (email input, submit sends reset email via Resend API, success message, validation)",
-        "PlanComponentResetPassword: Add test entries for ResetPasswordPage (new password + confirm fields, token validation, submit updates password and logs in, expired/invalid token handling)",
-        "PlanComponentConfirmEmail: Add test entries for ConfirmEmailPage (token from URL, auto-confirms account and logs in, expired/invalid/already-used token handling)"
-      ],
-      "timestamp": "2026-02-23T21:27:49.049Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "WriteComponentSidebarNavLinks: Write the SidebarNavLinks component",

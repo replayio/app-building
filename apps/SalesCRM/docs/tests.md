@@ -2906,10 +2906,30 @@ Components: ForgotPasswordPage
 - **Action:** User enters an email and clicks "Send Reset Link", but the server returns an error response.
 - **Expected:** An error message is displayed below the email input (e.g., "Failed to send reset email"). The form remains visible so the user can retry. The error message disappears when the user submits again.
 
+#### Email validation prevents submission with empty email
+- **Initial state:** The forgot password form is displayed with the email input empty.
+- **Action:** User clicks the "Send Reset Link" button without entering an email.
+- **Expected:** The form does not submit. A validation error message is displayed below the email input (e.g., "Email is required"). The submit button remains enabled.
+
+#### Email validation prevents submission with invalid email format
+- **Initial state:** The forgot password form is displayed.
+- **Action:** User enters "notanemail" (invalid format) into the email input and clicks "Send Reset Link".
+- **Expected:** The form does not submit. A validation error message is displayed below the email input (e.g., "Please enter a valid email address"). The submit button remains enabled.
+
+#### Back to Sign In link navigates to /clients with sidebar auth form
+- **Initial state:** The forgot password form is displayed.
+- **Action:** User clicks the "Back to Sign In" link below the form.
+- **Expected:** The browser navigates to /clients. The user can use the sidebar "Sign In" button to access the sign-in form.
+
 #### Error message displayed on network failure
 - **Initial state:** The forgot password form is displayed.
 - **Action:** User enters an email and clicks "Send Reset Link", but a network error occurs.
 - **Expected:** An error message "Network error" is displayed below the email input. The form remains visible so the user can retry.
+
+#### Success message shown regardless of whether email exists (no enumeration)
+- **Initial state:** The forgot password form is displayed.
+- **Action:** User enters an email address that is not associated with any account and clicks "Send Reset Link".
+- **Expected:** The same success message "If an account exists with that email, a password reset link has been sent." is displayed, preventing email enumeration attacks. No error is shown even though the email does not exist.
 
 ## ResetPasswordPage (/auth/reset-password)
 
@@ -2926,10 +2946,10 @@ Components: ResetPasswordPage
 - **Action:** User enters "password123" in the password input and "password456" in the confirm password input, then clicks "Reset Password".
 - **Expected:** An error message "Passwords do not match" is displayed below the inputs. The form remains visible and the password is not reset.
 
-#### Successful password reset navigates to /clients
-- **Initial state:** The reset password form is displayed.
+#### Successful password reset updates password, logs in, and navigates to /clients
+- **Initial state:** The reset password form is displayed with a valid token in the URL.
 - **Action:** User enters "newpassword123" in both the password input and confirm password input, then clicks "Reset Password".
-- **Expected:** The form submits the new password to the backend. On success, the browser navigates to /clients, displaying the ClientsListPage.
+- **Expected:** The form submits the new password and token to the backend. On success, the auth token from the response is stored in localStorage, the user is logged in (sidebar shows avatar, name, and sign-out), and the browser navigates to /clients, displaying the ClientsListPage.
 
 #### Submit button shows loading state during submission
 - **Initial state:** The reset password form is displayed.
@@ -2945,6 +2965,25 @@ Components: ResetPasswordPage
 - **Initial state:** The reset password form is displayed.
 - **Action:** User enters matching passwords and clicks "Reset Password", but a network error occurs.
 - **Expected:** An error message "Network error" is displayed below the inputs. The form remains visible so the user can retry.
+
+#### No token in URL shows error instead of form
+- **Initial state:** User navigates to /auth/reset-password without a token query parameter (no ?token=...).
+- **Expected:** The page displays an error message "No reset token provided" instead of the reset password form. The password inputs and submit button are not visible. A "Back to Sign In" link is displayed that navigates to /clients.
+
+#### Expired or invalid token shows error on form submission
+- **Initial state:** User navigates to /auth/reset-password?token=expiredtoken where the token has expired or is invalid.
+- **Action:** User enters matching passwords and clicks "Reset Password".
+- **Expected:** The backend rejects the request because the token is expired or invalid. An error message "This reset link has expired or is invalid. Please request a new one." is displayed. A link to /auth/forgot-password is shown so the user can request a new reset link.
+
+#### Password minimum length validation
+- **Initial state:** The reset password form is displayed.
+- **Action:** User enters "abc" (too short) in both the password and confirm password inputs and clicks "Reset Password".
+- **Expected:** A validation error message is displayed (e.g., "Password must be at least 8 characters"). The form does not submit.
+
+#### Back to Sign In link navigates to /clients
+- **Initial state:** The reset password form is displayed.
+- **Action:** User clicks the "Back to Sign In" link below the form.
+- **Expected:** The browser navigates to /clients. The user can use the sidebar "Sign In" button to access the sign-in form.
 
 ## ConfirmEmailPage (/auth/confirm-email)
 
@@ -2965,8 +3004,12 @@ Components: ConfirmEmailPage
 - **Expected:** The page immediately displays an error message "No confirmation token provided" in red text. No API request is made. The page does not redirect.
 
 #### Invalid or expired token shows error message
-- **Initial state:** User navigates to /auth/confirm-email?token=invalidtoken where the token does not exist, has already been used, or has expired.
-- **Expected:** After the API returns an error response, the page displays an error message "Invalid or expired token" in red text. The page does not redirect.
+- **Initial state:** User navigates to /auth/confirm-email?token=invalidtoken where the token does not exist or has expired.
+- **Expected:** After the API returns an error response, the page displays an error message "Invalid or expired token" in red text. The page does not redirect. A link to request a new confirmation email or navigate back to sign in is displayed.
+
+#### Already-used token shows error message
+- **Initial state:** User navigates to /auth/confirm-email?token=usedtoken where the token has already been used to confirm an account (used_at is set in the email_tokens table).
+- **Expected:** After the API returns an error response, the page displays an error message "This confirmation link has already been used" in red text. The page does not redirect. A link to navigate to /clients or sign in is displayed.
 
 #### Network error shows error message
 - **Initial state:** User navigates to /auth/confirm-email?token=sometoken but a network error occurs during the API request.
