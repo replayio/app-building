@@ -1509,7 +1509,97 @@ Components: DealsSummaryCards, DealsTableView, DealsPipelineView, DealsFiltersAn
 
 ### DealsImportExport
 
+#### Import button displayed in page header
+- **Initial state:** DealsListPage is loaded.
+- **Expected:** An "Import" button with an import icon is visible in the top-right area of the page header, near the "Export" button and "Create New Deal" button.
+
+#### Export button displayed in page header
+- **Initial state:** DealsListPage is loaded.
+- **Expected:** An "Export" button with an export icon is visible in the top-right area of the page header, between the "Import" button and the "Create New Deal" button.
+
+#### Clicking Import button opens ImportDialog for deals
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the "Import" button.
+- **Expected:** An ImportDialog modal opens with the title indicating deals import. The dialog displays a CSV column format specification table listing all supported columns (Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status) with required/optional indicators and value descriptions. The Name column is marked as required. Stage accepted values are "Discovery", "Qualification", "Proposal Sent", "Negotiation", "Closed Won", "Closed Lost". Status accepted values are "On Track", "Needs Attention", "At Risk", "Won", "Lost". Client Name performs a lookup by name against existing clients. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### ImportDialog CSV format specification is visible before upload
+- **Initial state:** The ImportDialog for deals is open.
+- **Expected:** The CSV column format specification table is immediately visible to the user before they attempt any upload. The table lists each column name, whether it is required or optional, and a description of accepted values. This ensures the user knows the expected format before preparing their CSV.
+
+#### ImportDialog Download CSV template button generates template
+- **Initial state:** The ImportDialog for deals is open.
+- **Action:** User clicks the "Download CSV template" button.
+- **Expected:** A CSV template file is downloaded containing the correct column headers for deals (Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status) with no data rows. The template can be used as a starting point for populating import data.
+
+#### ImportDialog processes valid CSV file and creates deals
+- **Initial state:** The ImportDialog is open. User has a valid CSV file with deal data matching the expected format (e.g., rows with Name, Client Name, Value, Stage).
+- **Action:** User uploads the CSV file and confirms the import.
+- **Expected:** The deals from the CSV are created via the bulk import API. Client names in the CSV are matched to existing clients in the system by name lookup. The dialog shows a success message with the count of deals imported (e.g., "Successfully imported 10 deals"). After closing the dialog, the deals table/pipeline view refreshes and the newly imported deals appear in the list. The summary cards update to reflect the new totals. Timeline entries are created on associated clients for newly created deals.
+
+#### ImportDialog shows validation errors for invalid CSV data
+- **Initial state:** The ImportDialog is open. User has a CSV file with invalid data (e.g., missing required Name column, invalid stage value "Pending", unrecognized client name).
+- **Action:** User uploads the invalid CSV file and confirms the import.
+- **Expected:** The dialog displays per-row validation errors indicating which rows failed and why (e.g., "Row 2: Name is required", "Row 4: Invalid stage 'Pending'", "Row 6: Client 'Unknown Corp' not found"). The error messages are specific enough for the user to correct the CSV. Valid rows may still be imported, or the user may be asked to fix errors and retry.
+
+#### ImportDialog cancel button closes without importing
+- **Initial state:** The ImportDialog is open with a file selected.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The dialog closes. No data is imported. The deals list remains unchanged.
+
+#### ImportDialog closes on overlay click without importing
+- **Initial state:** The ImportDialog is open.
+- **Action:** User clicks the modal overlay (area outside the dialog).
+- **Expected:** The dialog closes. No data is imported.
+
+#### Clicking Export button downloads deals CSV
+- **Initial state:** DealsListPage is loaded with deals in the system.
+- **Action:** User clicks the "Export" button.
+- **Expected:** A CSV file is downloaded containing all deal data. The CSV includes columns: Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status. Each row corresponds to a deal in the system. The file name includes "deals" (e.g., "deals.csv" or "deals-export.csv").
+
+#### Exported CSV contains correct data for all deals
+- **Initial state:** The system has deals with various stages, statuses, values, and associated clients.
+- **Action:** User clicks the "Export" button and opens the downloaded CSV.
+- **Expected:** The CSV correctly contains all deals' data. Client names are populated from the associated client records. Value is formatted as a number. Stage and status values match the deal's current values. Probability is a numeric percentage value. Expected close dates are in a standard date format.
+
 ### DealsListContent
+
+#### Page displays heading "Deals List" and breadcrumb
+- **Initial state:** User navigates to /deals.
+- **Expected:** The page displays a breadcrumb showing "/deals" above the main heading. The main heading reads "Deals List" in large, prominent text. The sidebar "Deals" link is highlighted as active.
+
+#### Page displays action buttons in header
+- **Initial state:** User navigates to /deals.
+- **Expected:** Three buttons are displayed in the top-right area of the page header: an "Import" button with an import icon, an "Export" button with an export icon, and a blue "Create New Deal" button. The buttons are grouped together and aligned to the right of the heading.
+
+#### View toggle displays Table View and Pipeline View tabs
+- **Initial state:** DealsListPage is loaded.
+- **Expected:** Below the summary cards, a view toggle is displayed with two tabs: "Table View" and "Pipeline View". The tabs are styled as underlined text links. One tab is active/selected at a time.
+
+#### Table View tab is active by default
+- **Initial state:** User navigates to /deals.
+- **Expected:** The "Table View" tab is active/selected by default with a visual indicator (e.g., underline or bold text). The table view of deals is displayed below the filter bar. The "Pipeline View" tab is not active.
+
+#### Clicking Pipeline View tab switches to pipeline view
+- **Initial state:** DealsListPage is loaded with Table View active.
+- **Action:** User clicks the "Pipeline View" tab.
+- **Expected:** The view switches to the pipeline/board layout with stage columns. The "Pipeline View" tab becomes active/selected. The "Table View" tab becomes inactive. The filter bar remains visible. The deals are displayed as cards within their respective stage columns.
+
+#### Clicking Table View tab switches back to table view
+- **Initial state:** DealsListPage is loaded with Pipeline View active.
+- **Action:** User clicks the "Table View" tab.
+- **Expected:** The view switches back to the table layout with rows and columns. The "Table View" tab becomes active/selected. The "Pipeline View" tab becomes inactive. The deals are displayed as table rows.
+
+#### Loading state shows while deals are being fetched
+- **Initial state:** User navigates to /deals and the API request for deals is in progress.
+- **Expected:** A loading indicator (spinner or skeleton) is displayed in the deals content area while data is being fetched. The page heading, summary cards area, view toggle tabs, and action buttons are still visible.
+
+#### Empty state shown when no deals match filters
+- **Initial state:** DealsListPage is loaded. User applies filters or search that match no deals (e.g., search for "xyznonexistent").
+- **Expected:** The deals table/pipeline area displays an empty state message (e.g., "No deals found" or "No matching deals") instead of table rows or pipeline cards. The filter bar and view toggle remain visible so the user can adjust filters.
+
+#### Empty state shown when no deals exist
+- **Initial state:** User navigates to /deals and there are no deals in the system.
+- **Expected:** The deals content area displays an empty state message (e.g., "No deals yet") with a prompt or button to create the first deal. The "Create New Deal" button remains visible in the header.
 
 ## DealDetailPage (/deals/:dealId)
 

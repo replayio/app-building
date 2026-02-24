@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanComponentDealsImportExport: Add test entries for CSV import/export (import with column format table and template download, export to CSV)",
-        "PlanComponentDealsListContent: Add test entries for DealsListContent (view toggle Table/Pipeline, loading states, empty states, page heading, breadcrumb)"
-      ],
-      "timestamp": "2026-02-24T02:33:48.022Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageDealDetailPage: Decide on components for DealDetailPage, add sections to docs/tests.md",
         "PlanComponentDealHeader: Add test entries for deal header (deal name, client field, value field, owner user dropdown, stage dropdown, Change Stage button)",
         "PlanComponentDealStageAndMetrics: Add test entries for stage progress bar (Lead/Qualification/Discovery/Proposal/Negotiation/Closed Won), Deal History section (stage change log with old/new/date/user), Deal Metrics (probability, expected close date)",
