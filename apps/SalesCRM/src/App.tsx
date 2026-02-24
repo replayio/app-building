@@ -4,6 +4,7 @@ import { store } from './store'
 import Sidebar from './components/Sidebar'
 import ClientsListPage from './pages/ClientsListPage'
 import TasksListPage from './pages/TasksListPage'
+import ClientDetailPage from './pages/ClientDetailPage'
 
 function AppLayout() {
   return (
@@ -26,7 +27,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<PlaceholderPage name="Dashboard" />} />
             <Route path="/clients" element={<ClientsListPage />} />
-            <Route path="/clients/:clientId" element={<PlaceholderPage name="Client Detail" />} />
+            <Route path="/clients/:clientId" element={<ClientDetailPage />} />
             <Route path="/individuals/:individualId" element={<PlaceholderPage name="Person Detail" />} />
             <Route path="/deals" element={<PlaceholderPage name="Deals" />} />
             <Route path="/deals/:dealId" element={<PlaceholderPage name="Deal Detail" />} />

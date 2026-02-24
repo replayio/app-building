@@ -47,7 +47,7 @@ export const handler = async (event: HandlerEvent) => {
         if (!rows.length) return json(404, { error: 'Not found' })
         return json(200, rows[0])
       }
-      return await handleList(sql)
+      return await handleList(sql, event.queryStringParameters)
     }
 
     if (event.httpMethod === 'POST') {
@@ -73,17 +73,29 @@ export const handler = async (event: HandlerEvent) => {
   }
 }
 
-async function handleList(sql: SqlFn) {
-  const rows = await sql`
-    SELECT t.*,
-      c.name as client_name,
-      d.name as deal_name
-    FROM tasks t
-    LEFT JOIN clients c ON t.client_id = c.id
-    LEFT JOIN deals d ON t.deal_id = d.id
-    WHERE t.completed = false
-    ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
-  `
+async function handleList(sql: SqlFn, params?: Record<string, string> | null) {
+  const clientIdFilter = params?.client_id || null
+  const rows = clientIdFilter
+    ? await sql`
+      SELECT t.*,
+        c.name as client_name,
+        d.name as deal_name
+      FROM tasks t
+      LEFT JOIN clients c ON t.client_id = c.id
+      LEFT JOIN deals d ON t.deal_id = d.id
+      WHERE t.completed = false AND t.client_id = ${clientIdFilter}
+      ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
+    `
+    : await sql`
+      SELECT t.*,
+        c.name as client_name,
+        d.name as deal_name
+      FROM tasks t
+      LEFT JOIN clients c ON t.client_id = c.id
+      LEFT JOIN deals d ON t.deal_id = d.id
+      WHERE t.completed = false
+      ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC
+    `
 
   const clients = await sql`SELECT id, name FROM clients ORDER BY name`
   const deals = await sql`SELECT id, name, client_id FROM deals WHERE stage NOT IN ('Closed Won', 'Closed Lost') ORDER BY name`
@@ -141,16 +153,23 @@ async function handleUpdate(sql: SqlFn, id: string, body: string | null) {
   const data = JSON.parse(body || '{}')
   const { title, description, client_id, deal_id, assignee, assignee_role, priority, due_date, completed } = data
 
+  const skipDesc = description === undefined
+  const skipClient = client_id === undefined
+  const skipDeal = deal_id === undefined
+  const skipAssignee = assignee === undefined
+  const skipRole = assignee_role === undefined
+  const skipDueDate = due_date === undefined
+
   await sql`
     UPDATE tasks SET
       title = COALESCE(${title || null}, title),
-      description = ${description === undefined ? null : (description || null)},
-      client_id = ${client_id === undefined ? null : (client_id || null)},
-      deal_id = ${deal_id === undefined ? null : (deal_id || null)},
-      assignee = ${assignee === undefined ? null : (assignee || null)},
-      assignee_role = ${assignee_role === undefined ? null : (assignee_role || null)},
+      description = CASE WHEN ${skipDesc}::boolean THEN description ELSE ${description || null} END,
+      client_id = CASE WHEN ${skipClient}::boolean THEN client_id ELSE ${client_id || null} END,
+      deal_id = CASE WHEN ${skipDeal}::boolean THEN deal_id ELSE ${deal_id || null} END,
+      assignee = CASE WHEN ${skipAssignee}::boolean THEN assignee ELSE ${assignee || null} END,
+      assignee_role = CASE WHEN ${skipRole}::boolean THEN assignee_role ELSE ${assignee_role || null} END,
       priority = COALESCE(${priority || null}, priority),
-      due_date = ${due_date === undefined ? null : (due_date || null)},
+      due_date = CASE WHEN ${skipDueDate}::boolean THEN due_date ELSE ${due_date || null} END,
       completed = COALESCE(${completed === undefined ? null : completed}, completed),
       updated_at = now()
     WHERE id = ${id}

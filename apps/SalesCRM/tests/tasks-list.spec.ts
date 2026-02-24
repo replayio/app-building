@@ -2,9 +2,13 @@ import { test, expect } from '@playwright/test'
 
 // Track IDs of tasks created in beforeAll for cleanup
 const createdTaskIds: string[] = []
+// Unique suffix per worker to avoid duplicates from fullyParallel
+let workerSuffix = ''
 
 test.describe('TasksList', () => {
   test.beforeAll(async ({ request }) => {
+    workerSuffix = `-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+
     // Get available clients
     const res = await request.get('/.netlify/functions/tasks')
     const data = await res.json()
@@ -21,7 +25,7 @@ test.describe('TasksList', () => {
     // Create tasks with diverse attributes for display and action tests
     const testTasks = [
       {
-        title: 'ListTest-High-Task',
+        title: `ListTest-High-Task${workerSuffix}`,
         priority: 'High',
         assignee: 'Sarah Jenkins',
         assignee_role: 'PM',
@@ -29,7 +33,7 @@ test.describe('TasksList', () => {
         due_date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0).toISOString(),
       },
       {
-        title: 'ListTest-Medium-Task',
+        title: `ListTest-Medium-Task${workerSuffix}`,
         priority: 'Medium',
         assignee: 'David Lee',
         assignee_role: 'Sales',
@@ -37,7 +41,7 @@ test.describe('TasksList', () => {
         due_date: tomorrow.toISOString(),
       },
       {
-        title: 'ListTest-Low-Task',
+        title: `ListTest-Low-Task${workerSuffix}`,
         priority: 'Low',
         assignee: 'Sarah Jenkins',
         assignee_role: 'PM',
@@ -45,7 +49,7 @@ test.describe('TasksList', () => {
         due_date: nextMonth.toISOString(),
       },
       {
-        title: 'ListTest-Normal-Task',
+        title: `ListTest-Normal-Task${workerSuffix}`,
         priority: 'Normal',
         client_id: globexClient?.id,
       },
@@ -68,7 +72,7 @@ test.describe('TasksList', () => {
 
   test('Task cards display all required elements', async ({ page }) => {
     // Find a test task card with known attributes
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     // Priority badge
@@ -92,28 +96,28 @@ test.describe('TasksList', () => {
 
   test('Priority badges are color-coded correctly', async ({ page }) => {
     // High priority - red/orange badge
-    const highCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const highCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(highCard).toBeVisible({ timeout: 10000 })
     const highBadge = highCard.locator('[data-testid^="task-priority-"]')
     await expect(highBadge).toContainText('High')
     await expect(highBadge).toHaveClass(/priority-high/)
 
     // Medium priority - yellow badge
-    const medCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
+    const medCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
     await expect(medCard).toBeVisible()
     const medBadge = medCard.locator('[data-testid^="task-priority-"]')
     await expect(medBadge).toContainText('Medium')
     await expect(medBadge).toHaveClass(/priority-medium/)
 
     // Low priority - green badge
-    const lowCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Low-Task' })
+    const lowCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Low-Task${workerSuffix}` })
     await expect(lowCard).toBeVisible()
     const lowBadge = lowCard.locator('[data-testid^="task-priority-"]')
     await expect(lowBadge).toContainText('Low')
     await expect(lowBadge).toHaveClass(/priority-low/)
 
     // Normal priority - blue/teal badge
-    const normalCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Normal-Task' })
+    const normalCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Normal-Task${workerSuffix}` })
     await expect(normalCard).toBeVisible()
     const normalBadge = normalCard.locator('[data-testid^="task-priority-"]')
     await expect(normalBadge).toContainText('Normal')
@@ -121,24 +125,24 @@ test.describe('TasksList', () => {
   })
 
   test('Task name is displayed in bold', async ({ page }) => {
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     const taskName = taskCard.locator('[data-testid^="task-name-"]')
-    await expect(taskName).toContainText('ListTest-High-Task')
+    await expect(taskName).toContainText(`ListTest-High-Task${workerSuffix}`)
     // task-name class has font-weight: 600 (bold)
     await expect(taskName).toHaveClass(/task-name/)
   })
 
   test('Due date displays relative dates for upcoming tasks', async ({ page }) => {
     // Task due today should show "Due: Today, ..."
-    const todayCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const todayCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(todayCard).toBeVisible({ timeout: 10000 })
     const todayDue = todayCard.locator('[data-testid^="task-due-date-"]')
     await expect(todayDue).toContainText('Due: Today,')
 
     // Task due tomorrow should show "Due: Tomorrow, ..."
-    const tomorrowCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
+    const tomorrowCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
     await expect(tomorrowCard).toBeVisible()
     const tomorrowDue = tomorrowCard.locator('[data-testid^="task-due-date-"]')
     await expect(tomorrowDue).toContainText('Due: Tomorrow,')
@@ -146,7 +150,7 @@ test.describe('TasksList', () => {
 
   test('Due date displays absolute dates for future tasks', async ({ page }) => {
     // Task due next month should show "Due: Mon DD, YYYY" format
-    const futureCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Low-Task' })
+    const futureCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Low-Task${workerSuffix}` })
     await expect(futureCard).toBeVisible({ timeout: 10000 })
     const futureDue = futureCard.locator('[data-testid^="task-due-date-"]')
     // Should show "Due:" prefix with a date (not Today or Tomorrow)
@@ -160,7 +164,7 @@ test.describe('TasksList', () => {
 
   test('Assignee displays avatar, abbreviated name, and role', async ({ page }) => {
     // Sarah Jenkins (PM) should show as "Sarah J." with "(PM)"
-    const sarahCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const sarahCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(sarahCard).toBeVisible({ timeout: 10000 })
     const sarahAssignee = sarahCard.locator('[data-testid^="task-assignee-"]')
     await expect(sarahAssignee.locator('.task-assignee-avatar')).toBeVisible()
@@ -168,7 +172,7 @@ test.describe('TasksList', () => {
     await expect(sarahAssignee.locator('.task-assignee-name')).toContainText('(PM)')
 
     // David Lee (Sales) should show as "David L." with "(Sales)"
-    const davidCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
+    const davidCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
     await expect(davidCard).toBeVisible()
     const davidAssignee = davidCard.locator('[data-testid^="task-assignee-"]')
     await expect(davidAssignee.locator('.task-assignee-avatar')).toBeVisible()
@@ -180,9 +184,9 @@ test.describe('TasksList', () => {
     await expect(page.getByTestId('tasks-list')).toBeVisible({ timeout: 10000 })
 
     // Get all task card positions
-    const todayCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
-    const tomorrowCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
-    const futureCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Low-Task' })
+    const todayCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
+    const tomorrowCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
+    const futureCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Low-Task${workerSuffix}` })
 
     await expect(todayCard).toBeVisible()
     await expect(tomorrowCard).toBeVisible()
@@ -198,7 +202,7 @@ test.describe('TasksList', () => {
   })
 
   test('Action menu opens with options', async ({ page }) => {
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     // Get task ID from the action button's testid
@@ -220,7 +224,7 @@ test.describe('TasksList', () => {
 
   test('Action menu "View Details" navigates to associated client detail page', async ({ page }) => {
     // Use a task associated with Acme Corp
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-High-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     const actionBtn = taskCard.locator('[data-testid^="task-actions-"]')
@@ -236,7 +240,7 @@ test.describe('TasksList', () => {
 
   test('Action menu "Edit" opens task edit dialog', async ({ page }) => {
     // Find a task and open its action menu
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     const actionBtn = taskCard.locator('[data-testid^="task-actions-"]')
@@ -248,7 +252,7 @@ test.describe('TasksList', () => {
 
     // Edit dialog should open pre-populated
     await expect(page.getByTestId('task-form-modal')).toBeVisible()
-    await expect(page.getByTestId('task-form-name')).toHaveValue('ListTest-Medium-Task')
+    await expect(page.getByTestId('task-form-name')).toHaveValue(`ListTest-Medium-Task${workerSuffix}`)
 
     // Change priority from Medium to Low
     await page.getByTestId('task-form-priority-trigger').click()
@@ -259,7 +263,7 @@ test.describe('TasksList', () => {
     await expect(page.getByTestId('task-form-modal')).not.toBeVisible({ timeout: 10000 })
 
     // Task card should update to show Low priority badge
-    const updatedCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
+    const updatedCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
     await expect(updatedCard).toBeVisible({ timeout: 10000 })
     await expect(updatedCard.locator('[data-testid^="task-priority-"]')).toHaveClass(/priority-low/, { timeout: 10000 })
 
@@ -277,7 +281,7 @@ test.describe('TasksList', () => {
   })
 
   test('Action menu "Edit" dialog can be cancelled', async ({ page }) => {
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Low-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Low-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     const actionBtn = taskCard.locator('[data-testid^="task-actions-"]')
@@ -289,7 +293,7 @@ test.describe('TasksList', () => {
 
     // Edit dialog should open pre-populated
     await expect(page.getByTestId('task-form-modal')).toBeVisible()
-    await expect(page.getByTestId('task-form-name')).toHaveValue('ListTest-Low-Task')
+    await expect(page.getByTestId('task-form-name')).toHaveValue(`ListTest-Low-Task${workerSuffix}`)
 
     // Make modifications but cancel
     await page.getByTestId('task-form-name').clear()
@@ -301,7 +305,7 @@ test.describe('TasksList', () => {
 
     // Original task still shown unchanged
     await expect(
-      page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Low-Task' })
+      page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Low-Task${workerSuffix}` })
     ).toBeVisible()
 
     // Cancelled name should not appear
@@ -341,14 +345,27 @@ test.describe('TasksList', () => {
     const verifyRes = await request.get(`/.netlify/functions/tasks/${createdTask.id}`)
     const verifyData = await verifyRes.json()
     expect(verifyData.completed).toBe(true)
+
+    // Cross-page verification: completed task no longer appears in client's Tasks section
+    if (acmeClient) {
+      await page.goto(`/clients/${acmeClient.id}`)
+      await expect(page.getByTestId('client-tasks-section')).toBeVisible({ timeout: 10000 })
+      await expect(
+        page.locator('[data-testid^="client-task-"]').filter({ hasText: uniqueName })
+      ).toHaveCount(0)
+    }
   })
 
   test('Action menu "Delete" removes task with confirmation', async ({ page, request }) => {
     test.setTimeout(120000)
     // Create a task specifically for deletion test
     const uniqueName = `DeleteMe-${Date.now()}`
+    const acmeRes = await request.get('/.netlify/functions/tasks')
+    const acmeData = await acmeRes.json()
+    const acmeClient = acmeData.clients.find((c: { name: string }) => c.name === 'Acme Corp')
+
     const createRes = await request.post('/.netlify/functions/tasks', {
-      data: { title: uniqueName, priority: 'Normal' },
+      data: { title: uniqueName, priority: 'Normal', client_id: acmeClient?.id },
     })
     const createdTask = await createRes.json()
 
@@ -387,20 +404,48 @@ test.describe('TasksList', () => {
     // Verify via API that the task is deleted
     const verifyRes = await request.get(`/.netlify/functions/tasks/${createdTask.id}`)
     expect(verifyRes.status()).toBe(404)
+
+    // Cross-page verification: deleted task no longer appears in client's Tasks section
+    if (acmeClient) {
+      await page.goto(`/clients/${acmeClient.id}`)
+      await expect(page.getByTestId('client-tasks-section')).toBeVisible({ timeout: 10000 })
+      await expect(
+        page.locator('[data-testid^="client-task-"]').filter({ hasText: uniqueName })
+      ).toHaveCount(0)
+    }
   })
 
-  test('Task list shows empty state when no tasks exist', async ({ page }) => {
-    // Filter to produce zero results
-    await page.getByTestId('tasks-filter-input').fill('zzzzabsolutelynonexistent')
+  test('Task list shows empty state when no tasks exist', async ({ page, request }) => {
+    test.setTimeout(120000)
+    // Get all current incomplete tasks and mark them as completed
+    const res = await request.get('/.netlify/functions/tasks')
+    const data = await res.json()
+    const tasksToRestore: string[] = data.tasks.map((t: { id: string }) => t.id)
 
-    // Empty state should appear
-    await expect(page.getByTestId('tasks-list-no-results')).toBeVisible({ timeout: 10000 })
-    await expect(page.getByTestId('tasks-list-no-results')).toContainText('No tasks found')
+    for (const id of tasksToRestore) {
+      await request.put(`/.netlify/functions/tasks/${id}`, {
+        data: { completed: true },
+      })
+    }
+
+    // Reload the page to see the true empty state
+    await page.goto('/tasks')
+
+    // True empty state should appear with data-testid tasks-list-empty
+    await expect(page.getByTestId('tasks-list-empty')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('tasks-list-empty')).toContainText('No upcoming tasks. Create a new task to get started.')
+
+    // Restore tasks for remaining tests
+    for (const id of tasksToRestore) {
+      await request.put(`/.netlify/functions/tasks/${id}`, {
+        data: { completed: false },
+      })
+    }
   })
 
   test('Clicking a task card navigates to associated client detail page', async ({ page }) => {
     // Find a task associated with a client (Globex Solutions)
-    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: 'ListTest-Medium-Task' })
+    const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
 
     // Click on the task name

@@ -111,6 +111,15 @@ test.describe('TasksHeader', () => {
     const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: uniqueName })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
     await expect(taskCard.locator('[data-testid^="task-priority-"]')).toContainText('High')
+
+    // Cross-page verification: task appears in client's Tasks section
+    if (acmeClient) {
+      await page.goto(`/clients/${acmeClient.id}`)
+      await expect(page.getByTestId('client-tasks-section')).toBeVisible({ timeout: 10000 })
+      await expect(
+        page.locator('[data-testid^="client-task-"]').filter({ hasText: uniqueName })
+      ).toBeVisible({ timeout: 10000 })
+    }
   })
 
   test('New Task dialog can be cancelled', async ({ page }) => {
@@ -176,5 +185,12 @@ test.describe('TasksHeader', () => {
     expect(createdTask).toBeTruthy()
     expect(createdTask.client_id).toBe(acmeClient.id)
     expect(createdTask.deal_id).toBe(acmeDeals[0].id)
+
+    // Cross-page verification: task appears in client's Tasks section
+    await page.goto(`/clients/${acmeClient.id}`)
+    await expect(page.getByTestId('client-tasks-section')).toBeVisible({ timeout: 10000 })
+    await expect(
+      page.locator('[data-testid^="client-task-"]').filter({ hasText: uniqueName })
+    ).toBeVisible({ timeout: 10000 })
   })
 })
