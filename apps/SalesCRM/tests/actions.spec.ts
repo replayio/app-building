@@ -68,6 +68,25 @@ ImportTest Beta,Individual,Prospect,Startup,Direct`
     fs.unlinkSync(csvPath)
   })
 
+  test('Import dialog can be cancelled', async ({ page }) => {
+    // Record current row count
+    const initialRows = await page.locator('[data-testid^="client-row-"]').count()
+
+    // Open import dialog
+    await page.getByTestId('import-button').click()
+    await expect(page.getByTestId('import-modal')).toBeVisible()
+
+    // Click Cancel
+    await page.getByTestId('import-cancel').click()
+
+    // Dialog should close
+    await expect(page.getByTestId('import-modal')).not.toBeVisible()
+
+    // No new clients should appear
+    const finalRows = await page.locator('[data-testid^="client-row-"]').count()
+    expect(finalRows).toBe(initialRows)
+  })
+
   test('Import dialog rejects invalid file', async ({ page }) => {
     // Open import dialog
     await page.getByTestId('import-button').click()

@@ -129,6 +129,12 @@
 - **And** a success message is shown (e.g., "X clients imported successfully")
 - **And** the import dialog closes
 
+#### Test: Import dialog can be cancelled
+- **Given** the import dialog is open
+- **When** the user clicks the Cancel button or closes the dialog
+- **Then** the dialog closes without importing any data
+- **And** no new clients appear in the table
+
 #### Test: Import dialog rejects invalid file
 - **Given** the import dialog is open
 - **When** the user uploads a file that is not a CSV or has missing required columns
@@ -236,6 +242,14 @@
 - **Then** an edit dialog opens pre-populated with the client's current data
 - **When** the user changes the client name and saves
 - **Then** the updated name is reflected in the clients table
+
+#### Test: Row action menu "Edit" dialog can be cancelled
+- **Given** the row action menu is open for a client
+- **When** the user clicks "Edit"
+- **Then** an edit dialog opens pre-populated with the client's current data
+- **When** the user changes the client name and clicks Cancel
+- **Then** the dialog closes without saving changes
+- **And** the original client name remains unchanged in the table
 
 #### Test: Row action menu "Delete" with confirmation
 - **Given** the row action menu is open for client "Globex Solutions"

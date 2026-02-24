@@ -245,6 +245,41 @@ test.describe('ClientsTable', () => {
     await expect(page.locator('[data-testid^="client-row-"]').filter({ hasText: updatedName })).toBeVisible({ timeout: 10000 })
   })
 
+  test('Row action menu "Edit" dialog can be cancelled', async ({ page }) => {
+    await expect(page.getByTestId('clients-table')).toBeVisible()
+
+    // Find a client and open its action menu
+    const firstRow = page.locator('[data-testid^="client-row-"]').first()
+    const originalName = await firstRow.locator('[data-testid^="client-name-"]').textContent()
+    const actionBtn = firstRow.locator('[data-testid^="client-actions-"]')
+    const testId = await actionBtn.getAttribute('data-testid')
+    const clientId = testId!.replace('client-actions-', '')
+
+    await actionBtn.click()
+    await page.getByTestId(`action-edit-${clientId}`).click()
+
+    // Edit dialog should open pre-populated with client data
+    await expect(page.getByTestId('client-form-modal')).toBeVisible()
+    const nameInput = page.getByTestId('client-form-name')
+    await expect(nameInput).toHaveValue(originalName!.trim())
+
+    // Change the name but cancel
+    await nameInput.clear()
+    await nameInput.fill('CancelledEdit')
+    await page.getByTestId('client-form-cancel').click()
+
+    // Dialog should close
+    await expect(page.getByTestId('client-form-modal')).not.toBeVisible()
+
+    // Original name should remain unchanged in the table
+    await expect(firstRow.locator('[data-testid^="client-name-"]')).toHaveText(originalName!.trim())
+
+    // The cancelled name should NOT appear
+    await expect(
+      page.locator('[data-testid^="client-row-"]').filter({ hasText: 'CancelledEdit' })
+    ).toHaveCount(0)
+  })
+
   test('Row action menu "Delete" with confirmation', async ({ page }) => {
     test.setTimeout(120000)
     // First create a client to delete

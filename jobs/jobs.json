@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add missing cancel/close test entries for Import dialog and Edit dialog in docs/tests.md (testSpec Directive 7 - complete modal testing)",
-        "FixViolation: Write Playwright tests for Import dialog cancel and Edit dialog cancel",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-24T01:36:50.247Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
         "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
         "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"
