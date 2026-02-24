@@ -56,9 +56,277 @@ Components: BatchHeader, BatchOverview, LineageDiagram, UsageHistoryTable
 
 ## TransactionsPage (`/transactions`)
 
-Components: TransactionsFilterBar, TransactionsTable, Pagination
+Components: TransactionsFilterBar, TransactionsTable, NewTransactionButton
 
-<!-- Tests will be added by PlanPageTransactions -->
+### Page Header
+
+#### Test: Breadcrumb navigation displays Home / Transactions
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`.
+- **Action:** Page loads.
+- **Expected:** A breadcrumb trail is displayed showing "Home / Transactions". "Home" is a clickable link. "Transactions" is the current page label and is not clickable. The "/" separator is visible between each breadcrumb segment.
+
+#### Test: Breadcrumb Home link navigates to Dashboard
+- **Components:** TransactionsFilterBar
+- **Initial state:** User is on `/transactions`. Breadcrumb shows "Home / Transactions".
+- **Action:** User clicks "Home" in the breadcrumb.
+- **Expected:** User is navigated to the DashboardPage (`/`).
+
+#### Test: New Transaction button is displayed in the page header
+- **Components:** NewTransactionButton
+- **Initial state:** User navigates to `/transactions`.
+- **Action:** Page loads.
+- **Expected:** A blue/primary "+ New Transaction" button is displayed in the top-right area of the page header, to the right of the breadcrumb/title area.
+
+#### Test: New Transaction button navigates to NewTransactionPage
+- **Components:** NewTransactionButton
+- **Initial state:** User is on `/transactions`.
+- **Action:** User clicks the "+ New Transaction" button.
+- **Expected:** User is navigated to the NewTransactionPage (`/transactions/new`).
+
+### TransactionsFilterBar
+
+#### Test: Filters section is displayed with label and Clear Filters button
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`.
+- **Action:** Page loads.
+- **Expected:** A "Filters" label is displayed above the filter controls. A "Clear Filters" text button is displayed to the right of the "Filters" label. Four filter controls are arranged in a horizontal row below the label: Date Range, Involved Account(s), Material, and Transaction Type.
+
+#### Test: Date Range picker displays selected range with calendar icon
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`. A date range filter is applied showing Oct 1, 2023 to Oct 31, 2023.
+- **Action:** Page loads.
+- **Expected:** The Date Range filter shows a calendar icon on the left and displays the selected range as "Oct 1, 2023 - Oct 31, 2023" within the input field. The field has a "Date Range" label above it.
+
+#### Test: Date Range picker opens calendar for date selection
+- **Components:** TransactionsFilterBar
+- **Initial state:** User is on `/transactions`.
+- **Action:** User clicks the Date Range picker input.
+- **Expected:** A calendar popup or date range picker opens allowing the user to select a start and end date. The user can navigate between months and select individual dates for both the start and end of the range.
+
+#### Test: Selecting a date range filters the transactions table
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. The table shows transactions across multiple dates.
+- **Action:** User opens the Date Range picker and selects Oct 25, 2023 to Oct 27, 2023.
+- **Expected:** The Date Range field updates to show "Oct 25, 2023 - Oct 27, 2023". The TransactionsTable updates to show only transactions with dates falling within the selected range. The "Showing X of Y results" count updates accordingly.
+
+#### Test: Involved Account(s) multi-select displays selected accounts with count
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`. Two accounts are selected in the Involved Account(s) filter.
+- **Action:** Page loads.
+- **Expected:** The Involved Account(s) field displays the selected account names (e.g., "Raw Materials Inventory (1200), Accounts Payable (2100)") followed by a count indicator "(2 selected)". The field has an "Involved Account(s)" label above it.
+
+#### Test: Involved Account(s) multi-select opens dropdown with available accounts
+- **Components:** TransactionsFilterBar
+- **Initial state:** User is on `/transactions`. Multiple accounts exist in the system.
+- **Action:** User clicks the Involved Account(s) multi-select field.
+- **Expected:** A dropdown opens listing all available accounts in the system with checkboxes. Each account shows its name and ID (e.g., "Raw Materials Inventory (1200)"). Previously selected accounts have their checkboxes checked.
+
+#### Test: Selecting and deselecting accounts in Involved Account(s) updates filter
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. No accounts are selected in the Involved Account(s) filter. The table shows all transactions.
+- **Action:** User opens the Involved Account(s) dropdown, checks "Raw Materials Inventory (1200)" and "Accounts Payable (2100)", then closes the dropdown.
+- **Expected:** The Involved Account(s) field shows the two selected account names with "(2 selected)". The TransactionsTable updates to show only transactions that involve at least one of the selected accounts. The "Showing X of Y results" count updates.
+
+#### Test: Material multi-select displays selected materials with count
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`. Two materials are selected in the Material filter.
+- **Action:** Page loads.
+- **Expected:** The Material field displays the selected material names (e.g., "Steel Plates (M001), Plastic Pellets (M002)") followed by a count indicator "(2 selected)". The field has a "Material" label above it.
+
+#### Test: Material multi-select opens dropdown with available materials
+- **Components:** TransactionsFilterBar
+- **Initial state:** User is on `/transactions`. Multiple materials exist in the system.
+- **Action:** User clicks the Material multi-select field.
+- **Expected:** A dropdown opens listing all available materials in the system with checkboxes. Each material shows its name and code (e.g., "Steel Plates (M001)"). Previously selected materials have their checkboxes checked.
+
+#### Test: Selecting materials filters the transactions table
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. No materials are selected. The table shows all transactions.
+- **Action:** User opens the Material dropdown and checks "Steel Plates (M001)".
+- **Expected:** The Material field shows "Steel Plates (M001) (1 selected)". The TransactionsTable updates to show only transactions that involve Steel Plates. The "Showing X of Y results" count updates.
+
+#### Test: Transaction Type dropdown displays current selection
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`. No specific transaction type is filtered.
+- **Action:** Page loads.
+- **Expected:** The Transaction Type dropdown displays "All Types (Purchase, Consumption, Transfer...)" as the default value. The field has a "Transaction Type" label above it.
+
+#### Test: Transaction Type dropdown opens with available types
+- **Components:** TransactionsFilterBar
+- **Initial state:** User is on `/transactions`.
+- **Action:** User clicks the Transaction Type dropdown.
+- **Expected:** A dropdown menu opens listing the available transaction types (e.g., Purchase, Consumption, Transfer, Inventory Adjustment, and an "All Types" option). The user can select one type.
+
+#### Test: Selecting a transaction type filters the table
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. Transaction Type is set to "All Types". The table shows transactions of various types.
+- **Action:** User opens the Transaction Type dropdown and selects "Purchase".
+- **Expected:** The Transaction Type dropdown displays "Purchase". The TransactionsTable updates to show only purchase transactions. The "Showing X of Y results" count updates.
+
+#### Test: Clear Filters button resets all filters to defaults
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. Filters are applied: Date Range is "Oct 1, 2023 - Oct 31, 2023", Involved Account(s) has 2 accounts selected, Material has 2 materials selected, Transaction Type is "Purchase".
+- **Action:** User clicks the "Clear Filters" button.
+- **Expected:** All filter controls are reset to their default state: Date Range is cleared/empty, Involved Account(s) shows no selections, Material shows no selections, Transaction Type resets to "All Types". The TransactionsTable updates to show all unfiltered transactions. The "Showing X of Y results" count reflects the full unfiltered dataset.
+
+#### Test: Search bar displays placeholder text and magnifying glass icon
+- **Components:** TransactionsFilterBar
+- **Initial state:** User navigates to `/transactions`. No search query is entered.
+- **Action:** Page loads.
+- **Expected:** A search input is displayed below the filter controls with a magnifying glass icon on the left and placeholder text "Search by ID or description...".
+
+#### Test: Typing in search bar filters transactions by ID
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. The table shows multiple transactions.
+- **Action:** User types "TXN-100245" into the search bar.
+- **Expected:** The TransactionsTable updates to show only the transaction with ID "TXN-100245". The "Showing X of Y results" count updates to reflect the filtered results.
+
+#### Test: Typing in search bar filters transactions by description
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. The table shows multiple transactions.
+- **Action:** User types "Steel Plates" into the search bar.
+- **Expected:** The TransactionsTable updates to show only transactions whose description contains "Steel Plates" (e.g., "Purchase of Steel Plates from Supplier A"). The "Showing X of Y results" count updates accordingly.
+
+#### Test: Clearing the search bar restores unfiltered results
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. The search bar contains "Steel Plates" and the table is filtered.
+- **Action:** User clears the search bar text (backspace or clear button).
+- **Expected:** The TransactionsTable returns to showing the unfiltered results (subject to any active filter controls). The "Showing X of Y results" count updates.
+
+#### Test: Filters and search bar work together
+- **Components:** TransactionsFilterBar, TransactionsTable
+- **Initial state:** User is on `/transactions`. Transaction Type is set to "Purchase". The table shows purchase transactions.
+- **Action:** User types "Steel" into the search bar.
+- **Expected:** The TransactionsTable shows only transactions that are of type "Purchase" AND whose ID or description matches "Steel". Both the Transaction Type filter and search are applied simultaneously.
+
+### TransactionsTable
+
+#### Test: Table displays all column headers
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Date", "Transaction ID", "Description", "Accounts affected", and "Materials and amounts". The Date column header has a sort indicator arrow (↓ for descending by default).
+
+#### Test: Date column displays formatted dates and is sortable
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. Transactions exist with various dates.
+- **Action:** Page loads.
+- **Expected:** The Date column displays dates in a formatted style (e.g., "Oct 27, 2023"). The Date column header shows a sort arrow (↓) indicating the current sort direction. Dates are displayed in descending order by default (newest first).
+
+#### Test: Clicking Date column header toggles sort direction
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. Transactions are sorted by Date descending (newest first). The Date column header shows a down arrow (↓).
+- **Action:** User clicks the "Date" column header.
+- **Expected:** The sort direction toggles to ascending (oldest first). The Date column header arrow changes to up (↑). The table rows reorder so the earliest date appears first. The Sort by dropdown updates to reflect "Date (Oldest First)".
+
+#### Test: Transaction ID column displays transaction IDs
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. Transactions exist in the system.
+- **Action:** Page loads.
+- **Expected:** The Transaction ID column displays unique transaction identifiers (e.g., "TXN-100245", "TXN-100244", "TXN-100243") for each row.
+
+#### Test: Description column displays transaction descriptions
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`.
+- **Action:** Page loads.
+- **Expected:** The Description column displays the full description text for each transaction (e.g., "Purchase of Steel Plates from Supplier A", "Consumption for Production Run #45", "Finished Goods Transfer to Warehouse").
+
+#### Test: Accounts affected column shows Dr/Cr notation with account names and IDs
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. A transaction debits "Raw Materials Inventory (1200)" and credits "Accounts Payable (2100)".
+- **Action:** Page loads.
+- **Expected:** The Accounts affected column displays the debit and credit accounts using Dr/Cr notation, e.g., "Dr: Raw Materials Inventory [1200] | Cr: Accounts Payable (2100)". Both the account name and account ID number are shown. Debit accounts are prefixed with "Dr:" and credit accounts with "Cr:". Multiple accounts are separated by a pipe character "|".
+
+#### Test: Materials and amounts column shows material details with quantities and pricing
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. A purchase transaction for Steel Plates exists with 500 kg at $2.50/kg.
+- **Action:** Page loads.
+- **Expected:** The Materials and amounts column displays the material name, code, quantity, unit, unit price, and total cost, e.g., "Steel Plates (M001): 500 kg @ $2.50/kg ($1,250.00)".
+
+#### Test: Materials and amounts column shows multiple materials separated by semicolons
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. A consumption transaction involves both Steel Plates and Plastic Pellets.
+- **Action:** Page loads.
+- **Expected:** The Materials and amounts column displays multiple materials separated by semicolons, e.g., "Steel Plates (M001): 120 kg; Plastic Pellets (M002): 30 kg".
+
+#### Test: Materials and amounts column shows N/A for non-material transactions
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. A utility bill payment transaction exists that does not involve materials.
+- **Action:** Page loads.
+- **Expected:** The Materials and amounts column displays "N/A ($350.00)" indicating no material is involved but showing the monetary amount.
+
+#### Test: Clicking a table row navigates to TransactionDetailPage
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. The table shows transaction TXN-100245.
+- **Action:** User clicks the row for TXN-100245.
+- **Expected:** User is navigated to the TransactionDetailPage (`/transactions/TXN-100245`) for that transaction.
+
+#### Test: Sort by dropdown displays current sort option
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`.
+- **Action:** Page loads.
+- **Expected:** A "Sort by:" dropdown is displayed above the table on the right side, showing the current sort option "Date (Newest First)" as the default value.
+
+#### Test: Sort by dropdown allows changing sort criteria
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. The Sort by dropdown shows "Date (Newest First)".
+- **Action:** User clicks the Sort by dropdown and selects a different option (e.g., "Date (Oldest First)").
+- **Expected:** The dropdown updates to show the selected sort option. The table rows reorder according to the new sort criteria. The Date column sort arrow updates to reflect the new direction.
+
+#### Test: Showing X of Y results displays correct count
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. There are 145 total transactions. Rows per page is set to 10.
+- **Action:** Page loads.
+- **Expected:** A text label "Showing 1-10 of 145 results" is displayed above the table, to the right of the Sort by dropdown, indicating the current range and total count of results.
+
+#### Test: Showing X of Y results updates when filters are applied
+- **Components:** TransactionsTable, TransactionsFilterBar
+- **Initial state:** User is on `/transactions`. "Showing 1-10 of 145 results" is displayed. No filters are applied.
+- **Action:** User selects Transaction Type "Purchase" from the filter.
+- **Expected:** The results count updates to reflect the filtered count, e.g., "Showing 1-10 of 42 results" (the exact count depends on how many purchase transactions exist).
+
+#### Test: Pagination displays page numbers and navigation controls
+- **Components:** TransactionsTable
+- **Initial state:** User navigates to `/transactions`. There are 145 results with 10 per page (15 pages total).
+- **Action:** Page loads.
+- **Expected:** Pagination controls are displayed below the table showing: "First" button, "Previous" button, page number buttons (1, 2, 3, ..., 15), "Next" button, and "Last" button. Page 1 is highlighted as the current page. "First" and "Previous" buttons are disabled on the first page.
+
+#### Test: Clicking Next button goes to the next page
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. Currently on page 1 of 15. The table shows transactions 1-10.
+- **Action:** User clicks the "Next" button.
+- **Expected:** The table updates to show the next set of transactions (11-20). The results count updates to "Showing 11-20 of 145 results". Page 2 is highlighted in the pagination. "Previous" and "First" buttons become enabled.
+
+#### Test: Clicking Previous button goes to the previous page
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. Currently on page 2 of 15. The table shows transactions 11-20.
+- **Action:** User clicks the "Previous" button.
+- **Expected:** The table updates to show the first set of transactions (1-10). The results count updates to "Showing 1-10 of 145 results". Page 1 is highlighted in the pagination.
+
+#### Test: Clicking a page number goes directly to that page
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. Currently on page 1 of 15.
+- **Action:** User clicks page number "3" in the pagination controls.
+- **Expected:** The table updates to show transactions 21-30. The results count updates to "Showing 21-30 of 145 results". Page 3 is highlighted in the pagination.
+
+#### Test: First and Last buttons navigate to first and last pages
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. Currently on page 3 of 15.
+- **Action:** User clicks the "Last" button.
+- **Expected:** The table updates to show the last page of results (transactions 141-145). The results count updates to "Showing 141-145 of 145 results". Page 15 is highlighted. "Next" and "Last" buttons become disabled. Then user clicks "First" button and the table returns to page 1 showing transactions 1-10.
+
+#### Test: Rows per page dropdown changes the number of displayed rows
+- **Components:** TransactionsTable
+- **Initial state:** User is on `/transactions`. "Rows per page: 10" is displayed to the right of the pagination. The table shows 10 rows.
+- **Action:** User clicks the "Rows per page" dropdown and selects a different value (e.g., 25).
+- **Expected:** The dropdown updates to show "Rows per page: 25". The table now displays up to 25 rows per page. The pagination updates (fewer total pages). The "Showing X of Y results" count updates (e.g., "Showing 1-25 of 145 results").
+
+#### Test: Empty state when no transactions match filters
+- **Components:** TransactionsTable, TransactionsFilterBar
+- **Initial state:** User is on `/transactions`.
+- **Action:** User applies filters that match no transactions (e.g., selects a date range with no recorded transactions).
+- **Expected:** The table displays column headers but no data rows. An empty state message such as "No transactions found" is displayed. The results count shows "Showing 0 of 0 results". Pagination controls are hidden or disabled.
 
 ---
 

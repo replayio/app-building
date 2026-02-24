@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageTransactions: Decide on components, add sections to docs/tests.md for TransactionsPage (/transactions)",
-        "PlanComponentTransactionsFilterBar: Add test entries for filters (Date Range picker, Involved Accounts multi-select, Material multi-select, Transaction Type dropdown, Clear Filters button) and search bar (search by ID or description)",
-        "PlanComponentTransactionsTable: Add test entries for TransactionsTable (columns: Date sortable, Transaction ID, Description, Accounts affected showing Dr/Cr notation, Materials and amounts; row click navigates to detail; Sort by dropdown; Pagination with Previous/Next/page numbers/rows per page; Showing X of Y results) and New Transaction button"
-      ],
-      "timestamp": "2026-02-24T03:48:09.953Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageBatchDetail: Decide on components, add sections to docs/tests.md for BatchDetailPage (/batches/:batchId)",
         "PlanComponentBatchHeader: Add test entries for BatchHeader (Batch ID, Material name, Account name, Status with green dot, Created date/time, Originating Transaction link, Create New Transaction button)",
         "PlanComponentBatchOverview: Add test entries for BatchOverview (Quantity with large display, Unit, Location, Lot Number, Expiration Date, Quality Grade, Storage Condition)",
