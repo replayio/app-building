@@ -2778,6 +2778,10 @@ Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, Use
 - **Initial state:** User navigates to /users/:userId and the API request for user data is in progress.
 - **Expected:** A loading indicator (spinner or skeleton) is displayed while data is being fetched.
 
+#### Error state for non-existent user
+- **Initial state:** User navigates to /users/99999 where no user exists with that ID.
+- **Expected:** The page displays an error state message (e.g., "User not found") instead of user details. The back navigation element is still visible so the user can return to the team list.
+
 ### UserDetailStats
 
 #### Stats section displays active deals count
@@ -2791,6 +2795,14 @@ Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, Use
 #### Stats section displays total deals count
 - **Initial state:** UserDetailPage is loaded for a team member who owns 8 total deals (including closed).
 - **Expected:** The stats section displays a "Total Deals" stat showing the number 8 with a label "Total Deals" and a bar-chart icon.
+
+#### Stats section displays zero counts when user has no deals or tasks
+- **Initial state:** UserDetailPage is loaded for a team member who owns 0 deals and has 0 assigned tasks.
+- **Expected:** The stats section displays "0" for "Active Deals", "0" for "Open Tasks", and "0" for "Total Deals". All three stat cards are still visible with their icons and labels even when counts are zero.
+
+#### Stats section displays three cards in a horizontal row
+- **Initial state:** UserDetailPage is loaded for any team member.
+- **Expected:** The three stat cards (Active Deals, Open Tasks, Total Deals) are displayed in a horizontal row/grid layout. Each card shows an icon at the top or left, a large numeric value, and a label below it. The cards have a consistent size and visual styling (e.g., bordered card with padding).
 
 ### UserDealsList
 
@@ -2807,6 +2819,14 @@ Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, Use
 - **Action:** User clicks on a deal entry (e.g., "Enterprise License Renewal").
 - **Expected:** The browser navigates to /deals/:dealId and the DealDetailPage is displayed showing the full details for that deal.
 
+#### Owned deals list displays stage as colored badge
+- **Initial state:** UserDetailPage is loaded for a team member who owns deals in different stages (e.g., "Lead", "Proposal", "Negotiation", "Closed Won").
+- **Expected:** Each deal entry displays its stage as a colored badge. Different stages have visually distinct badge colors (e.g., "Lead" in blue, "Proposal" in purple, "Negotiation" in amber, "Closed Won" in green, "Closed Lost" in red). The badge color matches the stage colors used on the DealsListPage.
+
+#### Owned deals list displays value formatted as currency
+- **Initial state:** UserDetailPage is loaded for a team member who owns a deal with value 50000.
+- **Expected:** The deal value is displayed formatted as currency with a dollar sign and comma separators (e.g., "$50,000"). Deals without a value show a dash or "—" placeholder.
+
 #### Empty state when user owns no deals
 - **Initial state:** UserDetailPage is loaded for a team member who owns no deals.
 - **Expected:** The deals section displays an empty state message (e.g., "No deals owned" or "No owned deals yet") instead of deal entries.
@@ -2820,6 +2840,10 @@ Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, Use
 #### Assigned tasks list displays task title, priority, status, and due date
 - **Initial state:** UserDetailPage is loaded for a team member who has a task "Finalize Q3 Marketing Plan" with High priority, Open status, and due date of Oct 25.
 - **Expected:** The tasks list shows a row/card with the task title "Finalize Q3 Marketing Plan", a priority badge showing "High" with a red/coral color, status "Open", and the formatted due date. Each task entry is visible with all data fields.
+
+#### Task priority badge displays correct color per priority level
+- **Initial state:** UserDetailPage is loaded for a team member with tasks of different priorities (High, Medium, Low, Normal).
+- **Expected:** Each task entry displays a priority badge that is color-coded: "High" has a red/coral background, "Medium" has a yellow/amber background, "Low" has a green background, and "Normal" has a teal/blue-green background. The badge colors match the priority colors used on the TasksListPage.
 
 #### Clicking a task navigates to task detail page
 - **Initial state:** UserDetailPage is loaded with assigned tasks visible.
@@ -2843,6 +2867,15 @@ Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, Use
 #### Activity feed displays event type icon
 - **Initial state:** UserDetailPage is loaded for a team member with activity events of different types (deal created, task completed, contact added, etc.).
 - **Expected:** Each activity entry displays an icon corresponding to the event type (e.g., briefcase icon for deal events, check icon for task events, user icon for contact events). The icons help visually distinguish event types.
+
+#### Activity feed entries display different event type descriptions
+- **Initial state:** UserDetailPage is loaded for a team member with varied activity events including deal creation, deal stage change, task completion, contact addition, and note addition.
+- **Expected:** Each event type displays a descriptive text: deal events show "Deal created: <deal name>" or "Deal stage changed: <deal name> moved to <stage>", task events show "Task completed: <task title>", contact events show "Contact added: <contact name>", and note events show "Note added on <client name>". The event descriptions identify the related entity by name.
+
+#### Activity feed items link to related entity detail pages
+- **Initial state:** UserDetailPage is loaded for a team member with activity events referencing deals, tasks, and contacts.
+- **Action:** User clicks on an activity entry that references a deal (e.g., "Deal created: Enterprise License").
+- **Expected:** The browser navigates to /deals/:dealId for the referenced deal. Similarly, clicking a task-related activity navigates to /tasks/:taskId, and clicking a contact-related activity navigates to /individuals/:individualId. The entity name in the activity entry is styled as a clickable link.
 
 #### Empty state when user has no activity
 - **Initial state:** UserDetailPage is loaded for a team member who has no recent activity events.

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageUserDetailPage: Decide on components for UserDetailPage, add sections to docs/tests.md",
-        "PlanComponentUserInfo: Add test entries for user info header (name, email, join date) and summary stats (active deals, open tasks, total deals)",
-        "PlanComponentUserSections: Add test entries for owned deals list, assigned tasks list, and recent activity feed sections"
-      ],
-      "timestamp": "2026-02-23T21:27:41.643Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageAuthPages: Decide on components for ForgotPasswordPage, ResetPasswordPage, ConfirmEmailPage, add sections to docs/tests.md",
         "PlanComponentForgotPassword: Add test entries for ForgotPasswordPage (email input, submit sends reset email via Resend API, success message, validation)",
         "PlanComponentResetPassword: Add test entries for ResetPasswordPage (new password + confirm fields, token validation, submit updates password and logs in, expired/invalid token handling)",
