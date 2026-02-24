@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
-      ],
-      "timestamp": "2026-02-24T01:28:54.469Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "WriteComponentDealHeader: Write the DealHeader component",
