@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecDealDetail: Check testSpec.md directive violations in DealDetailPage test entries",
-        "CheckComponentsDealDetail: Check writeApp.md directive violations in DealDetailPage components",
-        "CheckTestsDealDetail: Check writeTests.md directive violations in DealDetailPage tests"
-      ],
-      "timestamp": "2026-02-23T23:39:21.019Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecTasksList: Check testSpec.md directive violations in TasksListPage test entries",
         "CheckComponentsTasksList: Check writeApp.md directive violations in TasksListPage components",
         "CheckTestsTasksList: Check writeTests.md directive violations in TasksListPage tests"
