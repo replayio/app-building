@@ -111,7 +111,7 @@ export default function LinkedTasksSection({ dealId, clientId }: LinkedTasksSect
               </label>
               <button
                 className={`linked-task-name ${task.completed ? 'completed' : ''}`}
-                onClick={() => navigate(`/tasks`)}
+                onClick={() => navigate(`/tasks/${task.id}`)}
                 data-testid="linked-task-name"
               >
                 {task.title}

@@ -84,17 +84,6 @@ export default function DealDetailPage() {
         body: JSON.stringify({ stage: newStage }),
       })
       if (res.ok) {
-        // Record the stage change in history
-        await fetch(`/.netlify/functions/deals/${dealId}/history`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            old_stage: deal.stage,
-            new_stage: newStage,
-            changed_by: deal.owner || 'System',
-          }),
-        })
-
         const updated = await res.json()
         setDeal(updated)
         setHistoryRefreshKey(k => k + 1)
