@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
-      ],
-      "timestamp": "2026-02-24T02:35:07.548Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
         "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
         "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
@@ -329,6 +322,22 @@
         "WritePageDealDetailPage: Write the DealDetailPage page itself"
       ],
       "timestamp": "2026-02-24T01:56:23.099Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix schema.ts initSchema to remove DROP TABLE statements and be truly idempotent/safe to re-run per writeApp.md directive",
+        "RunTests: Verify tests pass after schema fix"
+      ],
+      "timestamp": "2026-02-24T02:37:52.274Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Fix clients.ts backend to handle source_detail, campaign, channel, date_acquired, and industry fields in create and update operations so Source Info section is fully functional end-to-end",
+        "RunTests: Verify tests pass after clients backend fix"
+      ],
+      "timestamp": "2026-02-24T02:37:56.494Z"
     }
   ]
 }
