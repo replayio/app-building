@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
-      ],
-      "timestamp": "2026-02-24T21:00:36.132Z"
-    },
-    {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts for InventoryTracker"
