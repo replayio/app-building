@@ -833,6 +833,53 @@ Components: EmailNotificationsSection, ImportExportSection, WebhooksSection, Add
 
 ## UsersListPage - Team (/users)
 
+Components: UsersGrid, UserCard
+
+### UsersGrid
+
+#### Page displays heading "Team"
+- **Initial state:** User navigates to /users.
+- **Expected:** The page displays a heading "Team" at the top. The sidebar "Team" link is highlighted as active.
+
+#### User cards displayed in responsive grid layout
+- **Initial state:** UsersListPage is loaded with multiple team members (e.g., 9 seeded users).
+- **Expected:** User cards are displayed in a responsive grid layout (single column on small screens, two columns on medium screens, three columns on larger screens). Each card represents one team member. All team members in the system are shown.
+
+#### Loading state shows while users are being fetched
+- **Initial state:** User navigates to /users and the API request for users is in progress.
+- **Expected:** A loading indicator (spinner or skeleton) is displayed in the grid area while data is being fetched. The page heading "Team" is still visible.
+
+#### Empty state shown when no team members exist
+- **Initial state:** User navigates to /users and there are no team members in the system.
+- **Expected:** The grid area displays an empty state message (e.g., "No team members found" or "Users appear here after signing up") instead of user cards. The page heading "Team" is still visible.
+
+### UserCard
+
+#### User card displays avatar image
+- **Initial state:** UsersListPage is loaded with team members that have avatar images.
+- **Expected:** Each user card displays the user's circular avatar image. Users without an avatar image display a fallback with their first initial on an accent-colored circular background.
+
+#### User card displays user name
+- **Initial state:** UsersListPage is loaded with team members.
+- **Expected:** Each user card displays the user's full name as the primary identifier text (e.g., "Sarah Johnson", "David Lee"). The name is prominent and clearly readable.
+
+#### User card displays user email
+- **Initial state:** UsersListPage is loaded with team members that have email addresses.
+- **Expected:** Each user card displays the user's email address with a mail icon to its left (e.g., "sarah@example.com"). Long email addresses are truncated with ellipsis.
+
+#### User card displays active deals count
+- **Initial state:** UsersListPage is loaded with team members who have active deals.
+- **Expected:** Each user card displays the number of active deals with a briefcase icon (e.g., "2 active deals", "1 active deal"). The count reflects the current number of deals in active stages owned by that user.
+
+#### User card displays open tasks count
+- **Initial state:** UsersListPage is loaded with team members who have open tasks.
+- **Expected:** Each user card displays the number of open tasks with a check-square icon (e.g., "3 open tasks", "1 open task"). The count reflects the current number of tasks in open status assigned to that user.
+
+#### Clicking a user card navigates to /users/:userId
+- **Initial state:** UsersListPage is loaded with team members.
+- **Action:** User clicks on a user card (e.g., the card for "Sarah Johnson" with user id 1).
+- **Expected:** The browser navigates to /users/1 and the UserDetailPage is displayed showing the full details for that user.
+
 ## UserDetailPage (/users/:userId)
 
 ## ForgotPasswordPage (/auth/forgot-password)
