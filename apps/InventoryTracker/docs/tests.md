@@ -42,7 +42,331 @@ Components: MaterialsToolbar, MaterialsFilterBar, MaterialsTable, Pagination
 
 Components: MaterialHeader, AccountsDistribution, AllBatchesList, TransactionsHistory
 
-<!-- Tests will be added by PlanPageMaterialDetail -->
+### MaterialHeader
+
+#### Test: Breadcrumb navigation displays Home > Materials > Material Name
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material name is "Carbon Fiber Sheets".
+- **Action:** Page loads.
+- **Expected:** A breadcrumb trail is displayed showing "Home > Materials > Carbon Fiber Sheets". "Home" is a clickable link. "Materials" is a clickable link. "Carbon Fiber Sheets" is the current page label and is not clickable. The ">" separator characters are visible between each breadcrumb segment.
+
+#### Test: Breadcrumb Home link navigates to Dashboard
+- **Components:** MaterialHeader
+- **Initial state:** User is on `/materials/M-CFS-001`. Breadcrumb shows "Home > Materials > Carbon Fiber Sheets".
+- **Action:** User clicks "Home" in the breadcrumb.
+- **Expected:** User is navigated to the DashboardPage (`/`).
+
+#### Test: Breadcrumb Materials link navigates to Materials list
+- **Components:** MaterialHeader
+- **Initial state:** User is on `/materials/M-CFS-001`. Breadcrumb shows "Home > Materials > Carbon Fiber Sheets".
+- **Action:** User clicks "Materials" in the breadcrumb.
+- **Expected:** User is navigated to the MaterialsPage (`/materials`).
+
+#### Test: Material name is displayed as the primary page heading
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material name is "Carbon Fiber Sheets".
+- **Action:** Page loads.
+- **Expected:** The header displays "Carbon Fiber Sheets" in large, bold text as the primary heading of the page.
+
+#### Test: Category is displayed below the material name
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material category is "Composite".
+- **Action:** Page loads.
+- **Expected:** A "Category:" label is displayed below the material name heading with the value "Composite" inline. The category is separated from the Unit of Measure by a pipe character "|".
+
+#### Test: Unit of Measure is displayed next to the category
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material unit of measure is "sq meters".
+- **Action:** Page loads.
+- **Expected:** A "Unit of Measure:" label is displayed inline after the category, separated by a pipe character "|", with the value "sq meters".
+
+#### Test: Description text is displayed below category and unit of measure
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material has a description "High-strength, lightweight composite sheets used for structural applications and panels. Standard grade."
+- **Action:** Page loads.
+- **Expected:** The description text is displayed below the category/unit of measure line as a paragraph of body text. The full description is visible without truncation.
+
+#### Test: Edit Material button is displayed in the header
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** An "Edit Material" button is displayed in the top-right area of the header, styled as an outline/secondary button.
+
+#### Test: Edit Material button opens an edit form for the material
+- **Components:** MaterialHeader
+- **Initial state:** User is on `/materials/M-CFS-001`.
+- **Action:** User clicks the "Edit Material" button.
+- **Expected:** An edit form or modal opens allowing the user to modify the material's name, category, unit of measure, and description. The form is pre-filled with the current values. The user can save changes or cancel.
+
+#### Test: Saving Edit Material form persists changes
+- **Components:** MaterialHeader
+- **Initial state:** User has clicked "Edit Material" on `/materials/M-CFS-001`. The edit form is open with the current material name "Carbon Fiber Sheets".
+- **Action:** User changes the description to "Updated description for carbon fiber sheets." and saves the form.
+- **Expected:** The edit form closes. The MaterialHeader updates to show the new description "Updated description for carbon fiber sheets." The change is persisted to the database.
+
+#### Test: New Batch button is displayed in the header
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "New Batch" button is displayed in the top-right area of the header next to the Edit Material button, styled as a primary/filled button.
+
+#### Test: New Batch button opens a form to create a new batch for this material
+- **Components:** MaterialHeader
+- **Initial state:** User is on `/materials/M-CFS-001`.
+- **Action:** User clicks the "New Batch" button.
+- **Expected:** A form or modal opens for creating a new batch. The material field is pre-filled with "Carbon Fiber Sheets" and is read-only or pre-selected. The user can enter batch details (quantity, account/location, and any custom properties such as lot number or expiration date). The user can save or cancel.
+
+#### Test: Saving New Batch form creates a batch and updates the page
+- **Components:** MaterialHeader, AccountsDistribution, AllBatchesList
+- **Initial state:** User clicked "New Batch" on `/materials/M-CFS-001`. The form is open. User fills in: Account "Warehouse A - Main Storage", Quantity "300".
+- **Action:** User saves the new batch form.
+- **Expected:** The form closes. A new batch is created in the database for "Carbon Fiber Sheets" in "Warehouse A - Main Storage" with quantity 300. The AccountsDistribution table updates to reflect the new quantity and batch count for "Warehouse A - Main Storage". The AllBatchesList table includes the newly created batch row.
+
+#### Test: New Transaction button is displayed in the header
+- **Components:** MaterialHeader
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "New Transaction" button is displayed in the top-right area of the header next to the New Batch button, styled as a primary/filled button.
+
+#### Test: New Transaction button navigates to NewTransactionPage
+- **Components:** MaterialHeader
+- **Initial state:** User is on `/materials/M-CFS-001`.
+- **Action:** User clicks the "New Transaction" button.
+- **Expected:** User is navigated to the NewTransactionPage (`/transactions/new`). The new transaction form is pre-filled or pre-configured to reference the current material "Carbon Fiber Sheets".
+
+### AccountsDistribution
+
+#### Test: Accounts Distribution section heading is displayed
+- **Components:** AccountsDistribution
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** An "Accounts Distribution" heading is displayed below the MaterialHeader, above the accounts distribution table.
+
+#### Test: Accounts Distribution table displays all column headers
+- **Components:** AccountsDistribution
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Account Name", "Account Type", "Quantity (sq m)", "Number of Batches", and "Link". The Quantity column header includes the material's unit of measure in parentheses.
+
+#### Test: Account rows display correct data
+- **Components:** AccountsDistribution
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material "Carbon Fiber Sheets" exists in two accounts: "Warehouse A - Main Storage" (Storage, 1200 sq m, 3 batches) and "Production Line B" (Manufacturing, 450 sq m, 1 batch).
+- **Action:** Page loads.
+- **Expected:** Two rows are displayed. Row 1: Account Name "Warehouse A - Main Storage", Account Type "Storage", Quantity "1,200", Number of Batches "3", Link "View Account". Row 2: Account Name "Production Line B", Account Type "Manufacturing", Quantity "450", Number of Batches "1", Link "View Account".
+
+#### Test: View Account link navigates to AccountDetailPage
+- **Components:** AccountsDistribution
+- **Initial state:** User is on `/materials/M-CFS-001`. The Accounts Distribution table shows "Warehouse A - Main Storage" with a "View Account" link.
+- **Action:** User clicks the "View Account" link on the "Warehouse A - Main Storage" row.
+- **Expected:** User is navigated to the AccountDetailPage (`/accounts/:accountId`) for "Warehouse A - Main Storage".
+
+#### Test: Account row has a collapse/expand chevron to show batches
+- **Components:** AccountsDistribution
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The Accounts Distribution table shows account rows.
+- **Action:** Page loads.
+- **Expected:** Each account row in the Account Name column has a chevron icon (▶ or ▼) that can be clicked to expand or collapse the batch details for that account. By default, rows may be collapsed.
+
+#### Test: Expanding an account row reveals batches sub-table
+- **Components:** AccountsDistribution
+- **Initial state:** User is on `/materials/M-CFS-001`. The "Warehouse A - Main Storage" row is collapsed (chevron pointing right ▶).
+- **Action:** User clicks the chevron on the "Warehouse A - Main Storage" row.
+- **Expected:** The row expands and a sub-section appears below it titled "Batches in Warehouse A - Main Storage". A sub-table is displayed with columns: "Batch ID", "Quantity (sq m)", "Unit", and "Created Date". The chevron rotates to point downward (▼) indicating the expanded state.
+
+#### Test: Expanded batches sub-table displays correct batch data
+- **Components:** AccountsDistribution
+- **Initial state:** User is on `/materials/M-CFS-001`. The "Warehouse A - Main Storage" row is expanded. This account has 3 batches for the material (two shown in mockup: B-2023-001 and B-2023-005).
+- **Action:** User views the expanded sub-table.
+- **Expected:** The sub-table rows display batch details. Row 1: Batch ID "B-2023-001", Quantity "500", Unit "sq m", Created Date "Oct 15, 2023". Row 2: Batch ID "B-2023-005", Quantity "700", Unit "sq m", Created Date "Oct 22, 2023". All batches belonging to this account for this material are listed.
+
+#### Test: Batch ID in expanded sub-table is a clickable link
+- **Components:** AccountsDistribution
+- **Initial state:** User is on `/materials/M-CFS-001`. The "Warehouse A - Main Storage" row is expanded showing batches.
+- **Action:** User clicks "B-2023-001" in the Batch ID column of the sub-table.
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/B-2023-001`).
+
+#### Test: Collapsing an expanded account row hides the batches sub-table
+- **Components:** AccountsDistribution
+- **Initial state:** User is on `/materials/M-CFS-001`. The "Warehouse A - Main Storage" row is expanded (chevron pointing down ▼), showing the batches sub-table.
+- **Action:** User clicks the chevron on the "Warehouse A - Main Storage" row again.
+- **Expected:** The batches sub-table collapses and is hidden. The chevron rotates back to pointing right (▶). The main account row remains visible.
+
+#### Test: Multiple account rows can be expanded independently
+- **Components:** AccountsDistribution
+- **Initial state:** User is on `/materials/M-CFS-001`. Both "Warehouse A - Main Storage" and "Production Line B" rows are collapsed.
+- **Action:** User expands "Warehouse A - Main Storage" and then expands "Production Line B".
+- **Expected:** Both account rows are expanded simultaneously, each showing their own batches sub-table. Expanding one row does not collapse the other.
+
+#### Test: Empty Accounts Distribution when material is not in any account
+- **Components:** AccountsDistribution
+- **Initial state:** User navigates to a material that has not been added to any account yet.
+- **Action:** Page loads.
+- **Expected:** The "Accounts Distribution" heading is displayed. The table shows column headers but no data rows. An empty state message such as "This material is not currently tracked in any account" is displayed.
+
+### AllBatchesList
+
+#### Test: All Batches section heading is displayed
+- **Components:** AllBatchesList
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** An "All Batches" heading is displayed below the Accounts Distribution section.
+
+#### Test: Filter by Account dropdown is displayed with default value
+- **Components:** AllBatchesList
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "Filter by Account:" dropdown is displayed above the All Batches table with the default value "[All Accounts]".
+
+#### Test: Filter by Account dropdown lists all accounts containing this material
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. The material exists in "Warehouse A - Main Storage" and "Production Line B".
+- **Action:** User clicks the "Filter by Account" dropdown.
+- **Expected:** A dropdown opens listing "[All Accounts]", "Warehouse A - Main Storage", and "Production Line B" as options.
+
+#### Test: Selecting an account from Filter by Account filters the batches table
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. The All Batches table shows 3 batches across two accounts.
+- **Action:** User selects "Warehouse A - Main Storage" from the Filter by Account dropdown.
+- **Expected:** The dropdown displays "Warehouse A - Main Storage". The All Batches table updates to show only batches located in "Warehouse A - Main Storage" (e.g., B-2023-001 and B-2023-005). Batches in other accounts are hidden.
+
+#### Test: Filter by Date dropdown is displayed with default value
+- **Components:** AllBatchesList
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "Filter by Date:" dropdown is displayed next to the Filter by Account dropdown, with the default value "[All Dates]".
+
+#### Test: Selecting a date range from Filter by Date filters the batches table
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. The All Batches table shows batches created on Oct 15, Oct 22, and Nov 01 2023.
+- **Action:** User selects a date range option from the Filter by Date dropdown that covers only October 2023.
+- **Expected:** The All Batches table updates to show only batches created within October 2023 (B-2023-001 and B-2023-005). The batch created in November (B-2023-010) is hidden.
+
+#### Test: All Batches table displays all column headers
+- **Components:** AllBatchesList
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Batch ID", "Location", "Quantity (sq m)", "Created Date", and "Actions". The Quantity column header includes the material's unit of measure in parentheses.
+
+#### Test: All Batches table rows display correct data
+- **Components:** AllBatchesList
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material has three batches: B-2023-001 (Warehouse A, 500, Oct 15 2023), B-2023-005 (Warehouse A, 700, Oct 22 2023), B-2023-010 (Production Line B, 450, Nov 01 2023).
+- **Action:** Page loads.
+- **Expected:** Three rows are displayed. Row 1: Batch ID "B-2023-001", Location "Warehouse A", Quantity "500", Created Date "Oct 15, 2023", Actions "View Lineage". Row 2: Batch ID "B-2023-005", Location "Warehouse A", Quantity "700", Created Date "Oct 22, 2023", Actions "View Lineage". Row 3: Batch ID "B-2023-010", Location "Production Line B", Quantity "450", Created Date "Nov 01, 2023", Actions "View Lineage".
+
+#### Test: Batch ID in All Batches table is clickable and navigates to BatchDetailPage
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. The All Batches table shows batch "B-2023-001".
+- **Action:** User clicks "B-2023-001" in the Batch ID column.
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/B-2023-001`).
+
+#### Test: View Lineage link navigates to BatchDetailPage lineage section
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. The All Batches table shows a "View Lineage" link in the Actions column for batch "B-2023-001".
+- **Action:** User clicks the "View Lineage" link for batch "B-2023-001".
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/B-2023-001`) where the lineage information for that batch is displayed.
+
+#### Test: Filters work together to narrow batch results
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. All Batches table shows 3 batches. Filter by Account is "[All Accounts]" and Filter by Date is "[All Dates]".
+- **Action:** User selects "Warehouse A - Main Storage" from Filter by Account and selects an October 2023 date range from Filter by Date.
+- **Expected:** The All Batches table shows only batches that are both in "Warehouse A - Main Storage" AND created within October 2023 (B-2023-001 and B-2023-005). B-2023-010 is excluded because it is in a different account.
+
+#### Test: Empty All Batches when no batches exist for this material
+- **Components:** AllBatchesList
+- **Initial state:** User navigates to a material that has no batches created yet.
+- **Action:** Page loads.
+- **Expected:** The "All Batches" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No batches found" is displayed. Filter dropdowns are still visible.
+
+#### Test: Empty All Batches when filters match no results
+- **Components:** AllBatchesList
+- **Initial state:** User is on `/materials/M-CFS-001`. The material has batches, but the user applies filters that exclude all of them.
+- **Action:** User selects "Production Line B" from Filter by Account and a date range that contains no batches from Production Line B.
+- **Expected:** The table shows column headers but no data rows. An empty state message such as "No batches found" is displayed.
+
+### TransactionsHistory
+
+#### Test: Transactions History section heading is displayed
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "Transactions History" heading is displayed below the All Batches section.
+
+#### Test: Filter by Type dropdown is displayed with default value
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "Filter by Type:" dropdown is displayed above the Transactions History table with the default value "[All Types]".
+
+#### Test: Filter by Type dropdown lists available transaction types
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`.
+- **Action:** User clicks the "Filter by Type" dropdown.
+- **Expected:** A dropdown opens listing "[All Types]" and the available transaction types (e.g., Purchase, Consumption, Transfer, Inventory Adjustment, Production).
+
+#### Test: Selecting a type from Filter by Type filters the transactions table
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`. The Transactions History table shows transactions of various types.
+- **Action:** User selects "Purchase" from the Filter by Type dropdown.
+- **Expected:** The dropdown displays "Purchase". The Transactions History table updates to show only purchase transactions involving this material.
+
+#### Test: Filter by Date dropdown is displayed with default value
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** A "Filter by Date:" dropdown is displayed next to the Filter by Type dropdown, with the default value "[Last 30 Days]".
+
+#### Test: Selecting a date range from Filter by Date filters the transactions table
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`. The Transactions History table shows transactions from multiple dates.
+- **Action:** User selects a different date range option from the Filter by Date dropdown (e.g., "Last 7 Days").
+- **Expected:** The Transactions History table updates to show only transactions within the selected date range. Transactions outside the range are hidden.
+
+#### Test: Transactions History table displays all column headers
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to `/materials/M-CFS-001`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Date", "Transaction ID", "Accounts Involved", "Batch References", and "Quantity Moved (sq m)". The Quantity Moved column header includes the material's unit of measure in parentheses.
+
+#### Test: Transactions History table rows display correct data
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to `/materials/M-CFS-001`. The material has three transactions: (1) Nov 05, 2023 | T-2311-567 | Warehouse A → Production Line B | B-2023-010 | 450, (2) Oct 25, 2023 | T-2310-210 | Supplier X → Warehouse A | B-2023-005 | 700, (3) Oct 15, 2023 | T-2310-015 | Supplier X → Warehouse A | B-2023-001 | 500.
+- **Action:** Page loads.
+- **Expected:** Three rows are displayed in chronological order (newest first). Row 1: Date "Nov 05, 2023", Transaction ID "T-2311-567", Accounts Involved "Warehouse A → Production Line B", Batch References "B-2023-010", Quantity Moved "450". Row 2: Date "Oct 25, 2023", Transaction ID "T-2310-210", Accounts Involved "Supplier X → Warehouse A", Batch References "B-2023-005", Quantity Moved "700". Row 3: Date "Oct 15, 2023", Transaction ID "T-2310-015", Accounts Involved "Supplier X → Warehouse A", Batch References "B-2023-001", Quantity Moved "500".
+
+#### Test: Accounts Involved column shows directional arrow between source and destination
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to `/materials/M-CFS-001`. A transaction moved material from "Warehouse A" to "Production Line B".
+- **Action:** Page loads.
+- **Expected:** The Accounts Involved column displays the source account followed by an arrow "→" and the destination account, e.g., "Warehouse A → Production Line B". The arrow indicates the direction of material flow.
+
+#### Test: Transaction ID in Transactions History is clickable
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`. The Transactions History table shows transaction "T-2311-567".
+- **Action:** User clicks "T-2311-567" in the Transaction ID column.
+- **Expected:** User is navigated to the TransactionDetailPage (`/transactions/T-2311-567`).
+
+#### Test: Batch References in Transactions History are clickable
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`. The Transactions History table shows batch reference "B-2023-010" for transaction T-2311-567.
+- **Action:** User clicks "B-2023-010" in the Batch References column.
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/B-2023-010`).
+
+#### Test: Filters work together to narrow transaction results
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`. Transactions History shows transactions of various types and dates.
+- **Action:** User selects a specific type from Filter by Type and a specific date range from Filter by Date.
+- **Expected:** The Transactions History table shows only transactions that match both the selected type AND fall within the selected date range.
+
+#### Test: Empty Transactions History when no transactions exist for this material
+- **Components:** TransactionsHistory
+- **Initial state:** User navigates to a material that has no transactions recorded.
+- **Action:** Page loads.
+- **Expected:** The "Transactions History" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No transactions found" is displayed. Filter dropdowns are still visible.
+
+#### Test: Empty Transactions History when filters match no results
+- **Components:** TransactionsHistory
+- **Initial state:** User is on `/materials/M-CFS-001`. The material has transactions, but the user applies filters that exclude all of them.
+- **Action:** User selects a transaction type from Filter by Type that has no matching transactions for this material.
+- **Expected:** The table shows column headers but no data rows. An empty state message such as "No transactions found" is displayed.
 
 ---
 

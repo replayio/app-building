@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageMaterialDetail: Decide on components, add sections to docs/tests.md for MaterialDetailPage (/materials/:materialId)",
-        "PlanComponentMaterialHeader: Add test entries for MaterialHeader (material name, category, description, unit of measure, Edit Material button, New Batch button, New Transaction button)",
-        "PlanComponentAccountsDistribution: Add test entries for AccountsDistribution table (Account Name, Account Type, Quantity, Number of Batches, View Account link; collapsible rows showing batches within each account with Batch ID, Quantity, Unit, Created Date)",
-        "PlanComponentAllBatchesAndTransactions: Add test entries for AllBatchesList (filters by Account/Date; columns: Batch ID, Location, Quantity, Created Date, View Lineage link) and TransactionsHistory (filters by Type/Date; columns: Date, Transaction ID, Accounts Involved, Batch References, Quantity Moved)"
-      ],
-      "timestamp": "2026-02-24T03:47:55.706Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageMaterials: Decide on components, add sections to docs/tests.md for MaterialsPage (/materials)",
         "PlanComponentMaterialsToolbar: Add test entries for New Material button (opens create material form/modal) and New Category button (opens create category form/modal)",
         "PlanComponentMaterialsFilterBar: Add test entries for search by name input, Filter by Category dropdown, Filter by Account dropdown, Sort by dropdown (Name A-Z etc)",
