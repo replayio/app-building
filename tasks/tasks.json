@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageBatchDetail: Decide on components, add sections to docs/tests.md for BatchDetailPage (/batches/:batchId)",
-        "PlanComponentBatchHeader: Add test entries for BatchHeader (Batch ID, Material name, Account name, Status with green dot, Created date/time, Originating Transaction link, Create New Transaction button)",
-        "PlanComponentBatchOverview: Add test entries for BatchOverview (Quantity with large display, Unit, Location, Lot Number, Expiration Date, Quality Grade, Storage Condition)",
-        "PlanComponentLineageAndUsageHistory: Add test entries for LineageDiagram (source transaction box, input batches with clickable IDs, output batch, visual flow arrows) and UsageHistoryTable (columns: Date & Time, Transaction ID link, Type, Movement In/Out, Amount, Created Batches with clickable links)"
-      ],
-      "timestamp": "2026-02-24T03:48:03.274Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageMaterialDetail: Decide on components, add sections to docs/tests.md for MaterialDetailPage (/materials/:materialId)",
         "PlanComponentMaterialHeader: Add test entries for MaterialHeader (material name, category, description, unit of measure, Edit Material button, New Batch button, New Transaction button)",
         "PlanComponentAccountsDistribution: Add test entries for AccountsDistribution table (Account Name, Account Type, Quantity, Number of Batches, View Account link; collapsible rows showing batches within each account with Batch ID, Quantity, Unit, Created Date)",

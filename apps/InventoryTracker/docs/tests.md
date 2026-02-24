@@ -50,7 +50,241 @@ Components: MaterialHeader, AccountsDistribution, AllBatchesList, TransactionsHi
 
 Components: BatchHeader, BatchOverview, LineageDiagram, UsageHistoryTable
 
-<!-- Tests will be added by PlanPageBatchDetail -->
+### BatchHeader
+
+#### Test: Batch ID is displayed as the primary page heading
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** The header displays "Batch: BATCH-12345" in large, bold text as the primary heading of the page.
+
+#### Test: Material name is displayed in the header
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch is for material "Organic Arabica Coffee Beans".
+- **Action:** Page loads.
+- **Expected:** A "Material" label is displayed in the header area with the value "Organic Arabica Coffee Beans" below it, to the right of the Batch ID heading.
+
+#### Test: Account name is displayed in the header
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch belongs to account "Global Imports Inc.".
+- **Action:** Page loads.
+- **Expected:** An "Account" label is displayed in the header area with the value "Global Imports Inc." below it, to the right of the Material field.
+
+#### Test: Status badge with green dot is displayed for active batch
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has an "Active" status.
+- **Action:** Page loads.
+- **Expected:** A "Status" label is displayed in the header area with a green dot indicator and the text "Active" below it, to the right of the Account field. The green dot visually indicates the active state.
+
+#### Test: Created date and time are displayed below the heading
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch was created on 2023-10-27 at 10:30 AM.
+- **Action:** Page loads.
+- **Expected:** A pill/badge below the Batch ID heading displays "Created: 2023-10-27 at 10:30 AM". The date and time are formatted clearly.
+
+#### Test: Originating Transaction link is displayed and clickable
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch was created by transaction TX-PROD-987.
+- **Action:** Page loads.
+- **Expected:** A pill/badge below the Batch ID heading displays "Originating Transaction: TX-PROD-987". The transaction ID "TX-PROD-987" portion is a clickable link.
+
+#### Test: Clicking Originating Transaction link navigates to TransactionDetailPage
+- **Components:** BatchHeader
+- **Initial state:** User is on `/batches/BATCH-12345`. The header shows "Originating Transaction: TX-PROD-987" as a clickable link.
+- **Action:** User clicks the "TX-PROD-987" link.
+- **Expected:** User is navigated to the TransactionDetailPage (`/transactions/TX-PROD-987`).
+
+#### Test: Create New Transaction button is displayed in the header
+- **Components:** BatchHeader
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** A blue/primary "+ Create New Transaction" button with a plus icon is displayed in the top-right area of the header.
+
+#### Test: Create New Transaction button navigates to NewTransactionPage
+- **Components:** BatchHeader
+- **Initial state:** User is on `/batches/BATCH-12345`.
+- **Action:** User clicks the "+ Create New Transaction" button.
+- **Expected:** User is navigated to the NewTransactionPage (`/transactions/new`).
+
+### BatchOverview
+
+#### Test: Batch Overview section heading is displayed
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** A "Batch Overview" heading is displayed on the left side of the main content area, above a card containing quantity and properties.
+
+#### Test: Current Quantity & Properties subheading is displayed
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** Within the Batch Overview card, a "Current Quantity & Properties" subheading is displayed at the top of the card.
+
+#### Test: Quantity is displayed in large prominent format
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has a quantity of 1500.00 kg.
+- **Action:** Page loads.
+- **Expected:** A "Quantity" label is displayed followed by "1500.00 kg" in large, bold text. The quantity value is visually prominent with a larger font size than surrounding text.
+
+#### Test: Unit of measure is displayed below quantity
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch unit is Kilograms (kg).
+- **Action:** Page loads.
+- **Expected:** A "Unit" label is displayed below the quantity with the value "Kilograms (kg)" showing both the full unit name and abbreviation.
+
+#### Test: Location property is displayed with icon
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch location is "Warehouse A, Zone 4".
+- **Action:** Page loads.
+- **Expected:** A location pin icon is displayed followed by a "Location" label and the value "Warehouse A, Zone 4" below the unit section, separated by a divider line.
+
+#### Test: Lot Number property is displayed with icon
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch lot number is "LOT-2023-OCB".
+- **Action:** Page loads.
+- **Expected:** A document icon is displayed followed by a "Lot Number" label and the value "LOT-2023-OCB".
+
+#### Test: Expiration Date property is displayed with icon
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch expiration date is 2024-10-27.
+- **Action:** Page loads.
+- **Expected:** A calendar icon is displayed followed by an "Expiration Date" label and the value "2024-10-27".
+
+#### Test: Quality Grade property is displayed with icon
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch quality grade is "Premium".
+- **Action:** Page loads.
+- **Expected:** A badge/star icon is displayed followed by a "Quality Grade" label and the value "Premium".
+
+#### Test: Storage Condition property is displayed with icon
+- **Components:** BatchOverview
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch storage condition is "Climate Controlled".
+- **Action:** Page loads.
+- **Expected:** A temperature/storage icon is displayed followed by a "Storage Condition" label and the value "Climate Controlled".
+
+### LineageDiagram
+
+#### Test: Lineage section heading is displayed
+- **Components:** LineageDiagram
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** A "Lineage" heading is displayed on the right side of the main content area, above the lineage diagram card.
+
+#### Test: Source Transaction heading displays transaction ID
+- **Components:** LineageDiagram
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch was created by transaction TX-PROD-987.
+- **Action:** Page loads.
+- **Expected:** Within the Lineage card, a heading "Source Transaction: TX-PROD-987" is displayed at the top.
+
+#### Test: Inputs Used section lists input batches with details
+- **Components:** LineageDiagram
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The originating transaction TX-PROD-987 used two input batches: BATCH-11001 (Raw Coffee Cherries, 1800.00 kg, Farm Co-op) and BATCH-11002 (Water for Washing, 5000.00 L, Facility Supplies).
+- **Action:** Page loads.
+- **Expected:** An "Inputs Used:" label is displayed. Below it, two input batch entries are listed. Each entry shows: Batch ID as a clickable blue link, "Material:" with material name, "Quantity:" with amount and unit, and "Account:" with account name. Specifically: (1) "BATCH-11001" link, Material: Raw Coffee Cherries, Quantity: 1800.00 kg, Account: Farm Co-op. (2) "BATCH-11002" link, Material: Water for Washing, Quantity: 5000.00 L, Account: Facility Supplies.
+
+#### Test: Clicking an input batch ID link navigates to that batch's detail page
+- **Components:** LineageDiagram
+- **Initial state:** User is on `/batches/BATCH-12345`. The Lineage section shows input batch "BATCH-11001" as a clickable blue link.
+- **Action:** User clicks "BATCH-11001".
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/BATCH-11001`).
+
+#### Test: Process box displays transaction name and date
+- **Components:** LineageDiagram
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The originating transaction is TX-PROD-987 of type "Washing & Processing" on 2023-10-27.
+- **Action:** Page loads.
+- **Expected:** A central process box in the lineage diagram displays the transaction description "Washing & Processing" with the transaction ID "(TX-PROD-987)" and "Date: 2023-10-27". The box is styled distinctly (e.g., with a border and background color) to represent the transformation process.
+
+#### Test: Visual flow arrows connect inputs to process box and process box to output
+- **Components:** LineageDiagram
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The lineage has input batches, a process box, and an output batch.
+- **Action:** Page loads.
+- **Expected:** Visual arrow lines flow from the input batches on the left to the central process box, and from the process box to the output batch on the right. The arrows indicate the direction of material flow (left to right).
+
+#### Test: Output batch displays batch ID, material, quantity, and account
+- **Components:** LineageDiagram
+- **Initial state:** User navigates to `/batches/BATCH-12345`. This is the output batch of transaction TX-PROD-987.
+- **Action:** Page loads.
+- **Expected:** On the right side of the lineage diagram, an "Output:" label is displayed followed by "BATCH-12345" as a clickable blue link, "Material: Organic Arabica Coffee Beans", "Quantity: 1500.00 kg", and "Account: Global Imports Inc.".
+
+#### Test: Clicking output batch ID link navigates to that batch's detail page
+- **Components:** LineageDiagram
+- **Initial state:** User is on `/batches/BATCH-12345`. The output section shows "BATCH-12345" as a clickable link.
+- **Action:** User clicks "BATCH-12345" in the output section.
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/BATCH-12345`) (reloads/stays on the same page since this is the current batch).
+
+### UsageHistoryTable
+
+#### Test: Usage History section heading is displayed
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** A "Usage History" heading is displayed below the Lineage section on the right side of the page.
+
+#### Test: Usage History table displays all column headers
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Date & Time", "Transaction ID", "Type", "Movement (In/Out)", "Amount (kg)", and "Created Batches".
+
+#### Test: Date & Time column displays formatted timestamps
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has usage history entries.
+- **Action:** Page loads.
+- **Expected:** The Date & Time column displays formatted date and time values (e.g., "2023-11-05, 14:20", "2023-11-10, 09:15") for each usage history row.
+
+#### Test: Transaction ID column displays clickable links
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has usage history entries with transactions TX-PACK-221, TX-ROAST-305, TX-ADJ-054, and TX-PROD-987.
+- **Action:** Page loads.
+- **Expected:** The Transaction ID column displays each transaction ID (e.g., "TX-PACK-221", "TX-ROAST-305") as clickable blue links.
+
+#### Test: Clicking a Transaction ID link navigates to TransactionDetailPage
+- **Components:** UsageHistoryTable
+- **Initial state:** User is on `/batches/BATCH-12345`. The Usage History table shows "TX-PACK-221" as a clickable link.
+- **Action:** User clicks "TX-PACK-221".
+- **Expected:** User is navigated to the TransactionDetailPage (`/transactions/TX-PACK-221`).
+
+#### Test: Type column displays transaction type labels
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has usage history entries of various types.
+- **Action:** Page loads.
+- **Expected:** The Type column displays the type of each transaction (e.g., "Packaging", "Roasting", "Inventory Adjustment", "Production").
+
+#### Test: Movement column indicates In or Out direction
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has usage history with both inbound (Production creating the batch) and outbound (Packaging, Roasting, Adjustment consuming from the batch) movements.
+- **Action:** Page loads.
+- **Expected:** The Movement (In/Out) column displays "In" for transactions that added quantity to this batch (e.g., the originating Production transaction) and "Out" for transactions that consumed quantity from this batch (e.g., Packaging, Roasting, Inventory Adjustment).
+
+#### Test: Amount column displays quantities
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has usage history entries with various amounts.
+- **Action:** Page loads.
+- **Expected:** The Amount column displays the numeric quantity for each transaction (e.g., "500.00", "800.00", "5.00", "1500.00"). The column header includes the unit in parentheses matching the batch's unit of measure (e.g., "Amount (kg)").
+
+#### Test: Created Batches column displays clickable batch links
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. Some usage history transactions created new batches: TX-PACK-221 created BATCH-12401 and BATCH-12402, TX-ROAST-305 created BATCH-12500.
+- **Action:** Page loads.
+- **Expected:** The Created Batches column displays batch IDs as clickable blue links, comma-separated when multiple batches were created (e.g., "BATCH-12401, BATCH-12402" for the Packaging row, "BATCH-12500" for the Roasting row). Rows where no batches were created show a dash "-".
+
+#### Test: Clicking a Created Batch link navigates to that batch's detail page
+- **Components:** UsageHistoryTable
+- **Initial state:** User is on `/batches/BATCH-12345`. The Usage History table shows "BATCH-12401" as a clickable link in the Created Batches column.
+- **Action:** User clicks "BATCH-12401".
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/BATCH-12401`).
+
+#### Test: Usage History displays multiple rows in chronological order
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to `/batches/BATCH-12345`. The batch has four usage history entries.
+- **Action:** Page loads.
+- **Expected:** Four rows are displayed in the Usage History table: (1) 2023-11-05, 14:20 | TX-PACK-221 | Packaging | Out | 500.00 | BATCH-12401, BATCH-12402. (2) 2023-11-10, 09:15 | TX-ROAST-305 | Roasting | Out | 800.00 | BATCH-12500. (3) 2023-11-12, 11:00 | TX-ADJ-054 | Inventory Adjustment | Out | 5.00 | -. (4) 2023-10-27, 10:30 | TX-PROD-987 | Production | In | 1500.00 | -.
+
+#### Test: Empty Usage History when batch has no transactions
+- **Components:** UsageHistoryTable
+- **Initial state:** User navigates to a newly created batch that has only the originating transaction and no subsequent usage.
+- **Action:** Page loads.
+- **Expected:** The Usage History table displays column headers and at minimum the originating transaction row showing the "In" movement. If no other transactions exist, only the single originating row is shown.
 
 ---
 
