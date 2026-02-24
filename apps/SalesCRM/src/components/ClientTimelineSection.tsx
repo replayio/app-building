@@ -178,7 +178,7 @@ export default function ClientTimelineSection({ clientId, refreshKey }: ClientTi
                   </span>
                 </div>
                 <div className="timeline-entry-body">
-                  {event.reference_id && event.reference_type ? (
+                  {event.reference_id && event.reference_type && ['deal', 'individual', 'task'].includes(event.reference_type) ? (
                     <button
                       className="timeline-subject-link"
                       onClick={() => handleSubjectClick(event)}

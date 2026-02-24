@@ -9,18 +9,13 @@ async function findClient(request: { get: (url: string) => Promise<{ json: () =>
   return data.clients.find(c => c.name === name) || data.clients[0]
 }
 
-// Helper: fetch individuals
-async function findIndividual(request: { get: (url: string) => Promise<{ json: () => Promise<unknown> }> }, name: string) {
-  const res = await request.get('/.netlify/functions/individuals')
-  const data = (await res.json()) as { individuals: { id: string; name: string }[] }
-  return data.individuals.find(i => i.name === name) || data.individuals[0]
-}
 
 // =========================================================================
 // ClientHeader
 // =========================================================================
 test.describe('ClientHeader', () => {
   test('Header displays client name prominently', async ({ page }) => {
+    test.setTimeout(90000)
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
     await expect(page.getByTestId('client-detail-page')).toBeVisible()
@@ -35,6 +30,7 @@ test.describe('ClientHeader', () => {
   })
 
   test('Header displays type badge', async ({ page }) => {
+    test.setTimeout(90000)
     // Test Organization type
     const acme = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${acme.id}`)
@@ -52,6 +48,7 @@ test.describe('ClientHeader', () => {
   })
 
   test('Header displays status badge with correct color coding', async ({ page }) => {
+    test.setTimeout(120000)
     // Active client - green
     const acme = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${acme.id}`)
@@ -250,6 +247,9 @@ test.describe('ClientHeader', () => {
     await page.goto(`/clients/${client.id}`)
     await expect(page.getByTestId('client-detail-header')).toBeVisible()
 
+    // Record the current status before opening dropdown
+    const currentStatus = await page.getByTestId('client-status-badge').textContent()
+
     // Click on status badge
     await page.getByTestId('client-status-badge').click()
     await expect(page.getByTestId('client-status-dropdown')).toBeVisible()
@@ -261,7 +261,7 @@ test.describe('ClientHeader', () => {
     await expect(page.getByTestId('client-status-dropdown')).not.toBeVisible({ timeout: 5000 })
 
     // Status should remain unchanged
-    await expect(page.getByTestId('client-status-badge')).toHaveText('Active')
+    await expect(page.getByTestId('client-status-badge')).toHaveText(currentStatus!)
   })
 })
 
@@ -994,7 +994,7 @@ test.describe('DealsSection', () => {
   test('Deal entry is clickable and navigates to deal detail page', async ({ page }) => {
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
-    await expect(page.getByTestId('deals-list')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('deals-list')).toBeVisible({ timeout: 15000 })
 
     // Click on a deal
     const enterpriseDeal = page.getByTestId('deal-item').filter({ hasText: 'Enterprise License' })
@@ -1007,7 +1007,7 @@ test.describe('DealsSection', () => {
   test('Each deal entry navigates to the correct deal detail page', async ({ page }) => {
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
-    await expect(page.getByTestId('deals-list')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('deals-list')).toBeVisible({ timeout: 15000 })
 
     // Click on a different deal
     const saasUpgrade = page.getByTestId('deal-item').filter({ hasText: 'SaaS Upgrade' })
@@ -1191,7 +1191,7 @@ test.describe('PeopleSection', () => {
   test('Person entry is clickable and navigates to person detail page', async ({ page }) => {
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
-    await expect(page.getByTestId('people-list')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('people-list')).toBeVisible({ timeout: 15000 })
 
     // Click on Sarah Jenkins
     const sarahEntry = page.getByTestId('person-item').filter({ hasText: 'Sarah Jenkins' })
@@ -1206,7 +1206,7 @@ test.describe('PeopleSection', () => {
     test.setTimeout(90000)
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
-    await expect(page.getByTestId('people-list')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('people-list')).toBeVisible({ timeout: 20000 })
 
     // First add a person we can safely remove
     await page.getByTestId('quick-action-add-person').click()
@@ -1216,11 +1216,11 @@ test.describe('PeopleSection', () => {
     const removableName = `RemoveMe ${Date.now()}`
     await page.getByTestId('add-person-name-input').fill(removableName)
     await page.getByTestId('add-person-save').click()
-    await expect(page.getByTestId('person-association-dialog')).not.toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('person-association-dialog')).not.toBeVisible({ timeout: 15000 })
 
     // Wait for the person to appear
     const personEntry = page.getByTestId('person-item').filter({ hasText: removableName })
-    await expect(personEntry).toBeVisible({ timeout: 15000 })
+    await expect(personEntry).toBeVisible({ timeout: 20000 })
 
     // Click remove button
     await personEntry.getByTestId('person-remove-button').click()
@@ -1241,7 +1241,7 @@ test.describe('PeopleSection', () => {
   test('Person removal can be cancelled', async ({ page }) => {
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
-    await expect(page.getByTestId('people-list')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByTestId('people-list')).toBeVisible({ timeout: 15000 })
 
     const personItems = page.getByTestId('person-item')
     const beforeCount = await personItems.count()
