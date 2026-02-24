@@ -380,6 +380,14 @@ test.describe('RelationshipsSection', () => {
     await expect(
       page.getByTestId('relationship-entry').filter({ hasText: 'Emily Davis' })
     ).toBeVisible({ timeout: 10000 })
+
+    // Verify reciprocal entry on Emily Davis's page
+    const emilyDavis = await findIndividual(page.request, 'Emily Davis')
+    await page.goto(`/individuals/${emilyDavis.id}`)
+    await expect(page.getByTestId('relationships-list')).toBeVisible({ timeout: 10000 })
+    await expect(
+      page.getByTestId('relationship-entry').filter({ hasText: 'Sarah Jenkins' })
+    ).toBeVisible({ timeout: 10000 })
   })
 
   test('Add Entry form validates required fields', async ({ page }) => {
@@ -421,6 +429,68 @@ test.describe('RelationshipsSection', () => {
     await expect(page.getByTestId('add-relationship-modal')).not.toBeVisible()
 
     // No new entry should appear
+    await expect(page.getByTestId('relationship-entry')).toHaveCount(beforeCount)
+  })
+
+  test('Relationship entry can be deleted', async ({ page }) => {
+    test.setTimeout(90000)
+    const individual = await findIndividual(page.request, 'Sarah Jenkins')
+    await page.goto(`/individuals/${individual.id}`)
+    await expect(page.getByTestId('relationships-list')).toBeVisible({ timeout: 10000 })
+
+    // Find an existing relationship entry (Michael Chen - seeded as Colleague)
+    const michaelEntry = page.getByTestId('relationship-entry').filter({ hasText: 'Michael Chen' })
+    await expect(michaelEntry).toBeVisible()
+
+    // Click delete button on the entry
+    await michaelEntry.getByTestId('relationship-delete-button').click()
+
+    // Confirmation dialog should appear
+    await expect(page.getByTestId('delete-relationship-confirm')).toBeVisible()
+
+    // Confirm deletion
+    await page.getByTestId('delete-relationship-confirm-button').click()
+
+    // Confirmation dialog should close
+    await expect(page.getByTestId('delete-relationship-confirm')).not.toBeVisible({ timeout: 10000 })
+
+    // Michael Chen entry should be removed from the list
+    await expect(
+      page.getByTestId('relationship-entry').filter({ hasText: 'Michael Chen' })
+    ).toHaveCount(0, { timeout: 10000 })
+
+    // Verify reciprocal deletion: navigate to Michael Chen's page
+    const michaelChen = await findIndividual(page.request, 'Michael Chen')
+    await page.goto(`/individuals/${michaelChen.id}`)
+    await page.waitForLoadState('networkidle')
+
+    // Sarah Jenkins should NOT appear in Michael Chen's relationships
+    const sarahEntry = page.getByTestId('relationship-entry').filter({ hasText: 'Sarah Jenkins' })
+    await expect(sarahEntry).toHaveCount(0, { timeout: 10000 })
+  })
+
+  test('Delete relationship can be cancelled', async ({ page }) => {
+    const individual = await findIndividual(page.request, 'Sarah Jenkins')
+    await page.goto(`/individuals/${individual.id}`)
+    await expect(page.getByTestId('relationships-list')).toBeVisible({ timeout: 10000 })
+
+    // Count existing relationships
+    const beforeCount = await page.getByTestId('relationship-entry').count()
+
+    // Find an existing relationship entry
+    const firstEntry = page.getByTestId('relationship-entry').first()
+    await firstEntry.getByTestId('relationship-delete-button').click()
+
+    // Confirmation dialog should appear
+    await expect(page.getByTestId('delete-relationship-confirm')).toBeVisible()
+
+    // Cancel deletion
+    await page.getByTestId('delete-relationship-cancel').click()
+
+    // Confirmation dialog should close
+    await expect(page.getByTestId('delete-relationship-confirm')).not.toBeVisible()
+
+    // No entries should be removed
     await expect(page.getByTestId('relationship-entry')).toHaveCount(beforeCount)
   })
 

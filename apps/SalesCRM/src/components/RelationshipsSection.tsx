@@ -32,6 +32,7 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
   const [filterType, setFilterType] = useState('')
   const [filterClient, setFilterClient] = useState('')
   const [loading, setLoading] = useState(true)
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
 
   const fetchRelationships = useCallback(async () => {
     try {
@@ -52,6 +53,19 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
   const uniqueClients = Array.from(
     new Set(relationships.map(r => r.related_client_name).filter((c): c is string => !!c))
   ).sort()
+
+  const handleDeleteRelationship = async (relationshipId: string) => {
+    try {
+      await fetch(`/.netlify/functions/individuals/${individualId}/relationships/${relationshipId}`, {
+        method: 'DELETE',
+      })
+      fetchRelationships()
+    } catch {
+      // silently fail
+    } finally {
+      setDeleteConfirmId(null)
+    }
+  }
 
   const filteredRelationships = relationships.filter(r => {
     if (filterType && r.relationship_type !== filterType) return false
@@ -177,6 +191,17 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
                 >
                   [Link]
                 </button>
+                {/* Test: Relationship entry can be deleted */}
+                <button
+                  className="relationship-delete"
+                  data-testid="relationship-delete-button"
+                  onClick={() => setDeleteConfirmId(rel.id)}
+                  title="Delete relationship"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
               </div>
             ))}
           </div>
@@ -195,6 +220,25 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
               No relationships yet
             </div>
           )}
+        </div>
+      )}
+
+      {/* Test: Relationship entry can be deleted */}
+      {/* Test: Delete relationship can be cancelled */}
+      {deleteConfirmId && (
+        <div className="modal-overlay" data-testid="delete-relationship-confirm">
+          <div className="modal-content" style={{ maxWidth: '400px' }}>
+            <div className="modal-header">
+              <h3 className="modal-title">Delete Relationship</h3>
+            </div>
+            <p style={{ padding: '0 var(--spacing-lg)', color: 'var(--color-text-secondary)' }}>
+              Are you sure you want to delete this relationship? This will also remove the reciprocal relationship entry.
+            </p>
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setDeleteConfirmId(null)} data-testid="delete-relationship-cancel">Cancel</button>
+              <button className="btn-primary" style={{ backgroundColor: 'var(--color-danger, #dc2626)' }} onClick={() => handleDeleteRelationship(deleteConfirmId)} data-testid="delete-relationship-confirm-button">Delete</button>
+            </div>
+          </div>
         </div>
       )}
 

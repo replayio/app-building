@@ -832,6 +832,21 @@
 - **Then** the form closes without creating a relationship
 - **And** no new entry appears in the Relationships list
 
+#### Test: Relationship entry can be deleted
+- **Given** the user is on the Person Detail Page with at least one relationship entry visible in the Relationships list
+- **When** the user clicks the delete (trash) icon on a relationship entry
+- **Then** a confirmation dialog appears asking the user to confirm deletion
+- **When** the user confirms the deletion
+- **Then** the relationship entry is removed from the Relationships list
+- **And** the reciprocal relationship entry on the related person's Person Detail Page is also deleted
+
+#### Test: Delete relationship can be cancelled
+- **Given** the user is on the Person Detail Page with at least one relationship entry visible
+- **When** the user clicks the delete (trash) icon on a relationship entry
+- **Then** a confirmation dialog appears
+- **When** the user clicks Cancel on the confirmation dialog
+- **Then** the relationship entry remains in the Relationships list
+
 #### Test: Relationships section shows empty state when no relationships exist
 - **Given** the person has no relationships with other individuals
 - **Then** the Relationships section shows an empty state message (e.g., "No relationships yet")
