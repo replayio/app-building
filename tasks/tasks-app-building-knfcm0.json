@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageEquipmentDetails: Decide on components, add sections to docs/tests.md",
-        "PlanComponentEquipmentDetailHeader: Add test entries for EquipmentDetailHeader (breadcrumb Equipment > Details, title with equipment ID, Operational/Maintenance status badge)",
-        "PlanComponentEquipmentInfo: Add test entries for EquipmentInfo (photo/image upload, details panel: Model/Serial No/Location/Manufacturer/Installation Date, description text)",
-        "PlanComponentMaintenanceNotes: Add test entries for MaintenanceNotes (Add a note text input, Post Note button, comments list with author name/role/date/text, chronological ordering)"
-      ],
-      "timestamp": "2026-02-24T23:28:09.706Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageEquipment: Decide on components, add sections to docs/tests.md",
         "PlanComponentEquipmentHeader: Add test entries for EquipmentHeader (page title, subtitle, Add Equipment button)",
         "PlanComponentEquipmentTable: Add test entries for EquipmentTable (Title/Description/Available Units/Actions columns, edit pencil icon, delete trash icon, row click navigates to details, pagination with page count and prev/next)"
