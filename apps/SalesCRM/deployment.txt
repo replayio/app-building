@@ -1,4 +1,0 @@
-url=https://salescrm-1771895502877.netlify.app
-site_id=af45edd8-c810-475a-9265-3dda337011a9
-neon_project_id=mute-butterfly-91813942
-database_url=postgresql://neondb_owner:npg_1k6SvPqnUzBN@ep-tiny-snow-aem6wr0c.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require
