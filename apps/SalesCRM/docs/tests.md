@@ -1047,3 +1047,31 @@ Components: ResetPasswordPage
 - **Expected:** An error message "Network error" is displayed below the inputs. The form remains visible so the user can retry.
 
 ## ConfirmEmailPage (/auth/confirm-email)
+
+Components: ConfirmEmailPage
+
+### ConfirmEmailPage
+
+#### Loading state displayed while confirming email with token
+- **Initial state:** User navigates to /auth/confirm-email?token=somevalidtoken. The API request to confirm the email is in progress.
+- **Expected:** The page displays a loading message "Confirming your email..." in muted text while the confirmation request is being processed.
+
+#### Successful confirmation shows success message and redirects to /clients
+- **Initial state:** User navigates to /auth/confirm-email?token=somevalidtoken.
+- **Expected:** After the API returns a successful response, the loading message is replaced by a success message "Email confirmed! Redirecting..." in primary text. After a brief delay (approximately 2 seconds), the browser automatically navigates to /clients, displaying the ClientsListPage.
+
+#### Missing token shows error message
+- **Initial state:** User navigates to /auth/confirm-email without a token query parameter (no ?token=...).
+- **Expected:** The page immediately displays an error message "No confirmation token provided" in red text. No API request is made. The page does not redirect.
+
+#### Invalid or expired token shows error message
+- **Initial state:** User navigates to /auth/confirm-email?token=invalidtoken where the token does not exist, has already been used, or has expired.
+- **Expected:** After the API returns an error response, the page displays an error message "Invalid or expired token" in red text. The page does not redirect.
+
+#### Network error shows error message
+- **Initial state:** User navigates to /auth/confirm-email?token=sometoken but a network error occurs during the API request.
+- **Expected:** The page displays an error message "Network error" in red text. The page does not redirect.
+
+#### Auto-login after successful confirmation stores auth token
+- **Initial state:** User navigates to /auth/confirm-email?token=somevalidtoken and the API returns a successful response that includes an auth token.
+- **Expected:** The auth token from the response is stored in localStorage. The user is automatically logged in — after redirecting to /clients, the sidebar user area shows the user's avatar, display name, and sign-out button instead of the "Sign In" button.

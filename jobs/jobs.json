@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationConfirmEmailTestSpec: Write complete test entries for ConfirmEmailPage in docs/tests.md covering: loading state with token, successful confirmation with redirect to /clients, missing token error, invalid/expired token error, network error, and auto-login after confirmation"
-      ],
-      "timestamp": "2026-02-24T01:37:31.380Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolationConfirmEmailComponent: Add missing data-testid on loading state element in ConfirmEmailPage.tsx, and fix backend confirm-email action in auth.ts to generate and return JWT token for auto-login after email confirmation (as specified in AppRevisions.md)"
       ],
       "timestamp": "2026-02-24T01:37:27.025Z"
