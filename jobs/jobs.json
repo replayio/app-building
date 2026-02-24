@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/fixBugReport.md",
-      "jobs": [
-        "Unpack: Fix open bug reports"
-      ],
-      "timestamp": "2026-02-23T21:47:20.943Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
         "Unpack: Review fixed bug reports"
