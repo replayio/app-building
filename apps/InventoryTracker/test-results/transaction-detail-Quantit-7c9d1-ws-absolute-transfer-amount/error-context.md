@@ -1,0 +1,187 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - heading "Inventory Tracker" [level=1] [ref=e6]
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - generic [ref=e14]: Dashboard
+      - link "Accounts" [ref=e15] [cursor=pointer]:
+        - /url: /accounts
+        - img [ref=e16]
+        - generic [ref=e20]: Accounts
+      - link "Materials" [ref=e21] [cursor=pointer]:
+        - /url: /materials
+        - img [ref=e22]
+        - generic [ref=e26]: Materials
+      - link "Transactions" [ref=e27] [cursor=pointer]:
+        - /url: /transactions
+        - img [ref=e28]
+        - generic [ref=e31]: Transactions
+  - main [ref=e32]:
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Transactions" [level=1] [ref=e35]
+        - navigation [ref=e36]:
+          - link "Home" [ref=e37] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e38]: ">"
+          - generic [ref=e39]: Transactions
+      - button "New Transaction" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+        - generic [ref=e43]: New Transaction
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e46]: "Date From:"
+          - textbox [ref=e47]
+        - generic [ref=e48]:
+          - generic [ref=e49]: "Date To:"
+          - textbox [ref=e50]
+        - generic [ref=e51]:
+          - generic [ref=e52]: "Involved Account(s):"
+          - listbox [ref=e53] [cursor=pointer]
+        - generic [ref=e54]:
+          - generic [ref=e55]: "Transaction Type:"
+          - combobox [ref=e56] [cursor=pointer]:
+            - option "All Types" [selected]
+            - option "Purchase"
+            - option "Consumption"
+            - option "Transfer"
+            - option "Production"
+            - option "Adjustment"
+        - button "Clear Filters" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+          - text: Clear Filters
+        - generic [ref=e62]:
+          - img [ref=e63]
+          - textbox "Search transactions..." [ref=e66]
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]: "Sort by:"
+          - combobox [ref=e70] [cursor=pointer]:
+            - option "Date (Newest First)" [selected]
+            - option "Date (Oldest First)"
+            - option "ID (A-Z)"
+            - option "ID (Z-A)"
+        - generic [ref=e71]: Showing 1 of 145 results
+      - table [ref=e72]:
+        - rowgroup [ref=e73]:
+          - row "Date ↓ Transaction ID Description Accounts Affected Materials and Amounts" [ref=e74]:
+            - columnheader "Date ↓" [ref=e75] [cursor=pointer]
+            - columnheader "Transaction ID" [ref=e76]
+            - columnheader "Description" [ref=e77]
+            - columnheader "Accounts Affected" [ref=e78]
+            - columnheader "Materials and Amounts" [ref=e79]
+        - rowgroup [ref=e80]:
+          - 'row "Nov 12, 2023 TX-ADJ-054 Inventory adjustment for coffee Global Imports Inc. -> Inventory Shrinkage Expense Organic Arabica Coffee Beans: +5 kg" [ref=e81] [cursor=pointer]':
+            - cell "Nov 12, 2023" [ref=e82]
+            - cell "TX-ADJ-054" [ref=e83]:
+              - link "TX-ADJ-054" [ref=e84]:
+                - /url: /transactions/TX-ADJ-054
+            - cell "Inventory adjustment for coffee" [ref=e85]
+            - cell "Global Imports Inc. -> Inventory Shrinkage Expense" [ref=e86]
+            - 'cell "Organic Arabica Coffee Beans: +5 kg" [ref=e87]'
+          - 'row "Nov 10, 2023 TX-ROAST-305 Roasting coffee beans Global Imports Inc. -> Main Inventory Organic Arabica Coffee Beans: +800 kg" [ref=e88] [cursor=pointer]':
+            - cell "Nov 10, 2023" [ref=e89]
+            - cell "TX-ROAST-305" [ref=e90]:
+              - link "TX-ROAST-305" [ref=e91]:
+                - /url: /transactions/TX-ROAST-305
+            - cell "Roasting coffee beans" [ref=e92]
+            - cell "Global Imports Inc. -> Main Inventory" [ref=e93]
+            - 'cell "Organic Arabica Coffee Beans: +800 kg" [ref=e94]'
+          - 'row "Nov 5, 2023 TX-PACK-221 Packaging coffee beans Global Imports Inc. -> Main Inventory Organic Arabica Coffee Beans: +500 kg" [ref=e95] [cursor=pointer]':
+            - cell "Nov 5, 2023" [ref=e96]
+            - cell "TX-PACK-221" [ref=e97]:
+              - link "TX-PACK-221" [ref=e98]:
+                - /url: /transactions/TX-PACK-221
+            - cell "Packaging coffee beans" [ref=e99]
+            - cell "Global Imports Inc. -> Main Inventory" [ref=e100]
+            - 'cell "Organic Arabica Coffee Beans: +500 kg" [ref=e101]'
+          - 'row "Nov 5, 2023 T-2311-567 Transfer of Carbon Fiber Sheets to Production Warehouse A - Main Storage -> Production Line B Carbon Fiber Sheets: +450 sq m" [ref=e102] [cursor=pointer]':
+            - cell "Nov 5, 2023" [ref=e103]
+            - cell "T-2311-567" [ref=e104]:
+              - link "T-2311-567" [ref=e105]:
+                - /url: /transactions/T-2311-567
+            - cell "Transfer of Carbon Fiber Sheets to Production" [ref=e106]
+            - cell "Warehouse A - Main Storage -> Production Line B" [ref=e107]
+            - 'cell "Carbon Fiber Sheets: +450 sq m" [ref=e108]'
+          - row "Oct 27, 2023 TXN-FILL-001 Auto-generated transaction 1 N/A N/A" [ref=e109] [cursor=pointer]:
+            - cell "Oct 27, 2023" [ref=e110]
+            - cell "TXN-FILL-001" [ref=e111]:
+              - link "TXN-FILL-001" [ref=e112]:
+                - /url: /transactions/TXN-FILL-001
+            - cell "Auto-generated transaction 1" [ref=e113]
+            - cell "N/A" [ref=e114]
+            - cell "N/A" [ref=e115]
+          - row "Oct 27, 2023 TXN-FILL-002 Auto-generated transaction 2 N/A N/A" [ref=e116] [cursor=pointer]:
+            - cell "Oct 27, 2023" [ref=e117]
+            - cell "TXN-FILL-002" [ref=e118]:
+              - link "TXN-FILL-002" [ref=e119]:
+                - /url: /transactions/TXN-FILL-002
+            - cell "Auto-generated transaction 2" [ref=e120]
+            - cell "N/A" [ref=e121]
+            - cell "N/A" [ref=e122]
+          - 'row "Oct 27, 2023 TX-PROD-987 Washing & Processing N/A -> Global Imports Inc.; Facility Supplies -> Global Imports Inc.; Farm Co-op -> Global Imports Inc. Organic Arabica Coffee Beans: +1500 kg; Water for Washing: +5000 L; Raw Coffee Cherries: +1800 kg" [ref=e123] [cursor=pointer]':
+            - cell "Oct 27, 2023" [ref=e124]
+            - cell "TX-PROD-987" [ref=e125]:
+              - link "TX-PROD-987" [ref=e126]:
+                - /url: /transactions/TX-PROD-987
+            - cell "Washing & Processing" [ref=e127]
+            - cell "N/A -> Global Imports Inc.; Facility Supplies -> Global Imports Inc.; Farm Co-op -> Global Imports Inc." [ref=e128]
+            - 'cell "Organic Arabica Coffee Beans: +1500 kg; Water for Washing: +5000 L; Raw Coffee Cherries: +1800 kg" [ref=e129]'
+          - 'row "Oct 27, 2023 TXN-100245 Purchase of Steel Plates from Supplier A Supplier X -> Raw Materials Inventory Steel Plates: +500 kg" [ref=e130] [cursor=pointer]':
+            - cell "Oct 27, 2023" [ref=e131]
+            - cell "TXN-100245" [ref=e132]:
+              - link "TXN-100245" [ref=e133]:
+                - /url: /transactions/TXN-100245
+            - cell "Purchase of Steel Plates from Supplier A" [ref=e134]
+            - cell "Supplier X -> Raw Materials Inventory" [ref=e135]
+            - 'cell "Steel Plates: +500 kg" [ref=e136]'
+          - row "Oct 26, 2023 TXN-FILL-003 Auto-generated transaction 3 N/A N/A" [ref=e137] [cursor=pointer]:
+            - cell "Oct 26, 2023" [ref=e138]
+            - cell "TXN-FILL-003" [ref=e139]:
+              - link "TXN-FILL-003" [ref=e140]:
+                - /url: /transactions/TXN-FILL-003
+            - cell "Auto-generated transaction 3" [ref=e141]
+            - cell "N/A" [ref=e142]
+            - cell "N/A" [ref=e143]
+          - row "Oct 26, 2023 TXN-FILL-004 Auto-generated transaction 4 N/A N/A" [ref=e144] [cursor=pointer]:
+            - cell "Oct 26, 2023" [ref=e145]
+            - cell "TXN-FILL-004" [ref=e146]:
+              - link "TXN-FILL-004" [ref=e147]:
+                - /url: /transactions/TXN-FILL-004
+            - cell "Auto-generated transaction 4" [ref=e148]
+            - cell "N/A" [ref=e149]
+            - cell "N/A" [ref=e150]
+      - generic [ref=e151]:
+        - generic [ref=e152]: Showing 1 of 145 results
+        - generic [ref=e153]:
+          - button "First" [disabled] [ref=e154]
+          - button "Previous" [disabled] [ref=e155]
+          - button "1" [ref=e156] [cursor=pointer]
+          - button "2" [ref=e157] [cursor=pointer]
+          - button "3" [ref=e158] [cursor=pointer]
+          - button "4" [ref=e159] [cursor=pointer]
+          - button "5" [ref=e160] [cursor=pointer]
+          - button "6" [ref=e161] [cursor=pointer]
+          - button "7" [ref=e162] [cursor=pointer]
+          - button "8" [ref=e163] [cursor=pointer]
+          - button "9" [ref=e164] [cursor=pointer]
+          - button "10" [ref=e165] [cursor=pointer]
+          - button "11" [ref=e166] [cursor=pointer]
+          - button "12" [ref=e167] [cursor=pointer]
+          - button "13" [ref=e168] [cursor=pointer]
+          - button "14" [ref=e169] [cursor=pointer]
+          - button "15" [ref=e170] [cursor=pointer]
+          - button "Next" [ref=e171] [cursor=pointer]
+          - button "Last" [ref=e172] [cursor=pointer]
+        - generic [ref=e173]:
+          - generic [ref=e174]: "Rows per page:"
+          - combobox [ref=e175] [cursor=pointer]:
+            - option "10" [selected]
+            - option "25"
+            - option "50"
+```

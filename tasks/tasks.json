@@ -3,9 +3,15 @@
     {
       "strategy": "strategies/tasks/build/testing.md",
       "subtasks": [
-        "Unpack: Get all tests passing for InventoryTracker"
+        "FixTests: Fix materials.spec.ts networkidle timeouts (18 failures)",
+        "FixTests: Fix material-detail.spec.ts page loading timeout (27 failures)",
+        "FixTests: Fix transactions.spec.ts networkidle timeouts (30 failures)",
+        "FixTests: Fix transaction-detail.spec.ts page loading timeout (32 failures)",
+        "FixTests: Fix account-detail.spec.ts empty state test (1 failure)",
+        "FixTests: Run and fix batch-detail.spec.ts",
+        "FixTests: Run and fix new-transaction.spec.ts"
       ],
-      "timestamp": "2026-02-24T03:43:03.639Z"
+      "timestamp": "2026-02-24T06:13:40.422Z"
     },
     {
       "strategy": "strategies/tasks/deployment.md",

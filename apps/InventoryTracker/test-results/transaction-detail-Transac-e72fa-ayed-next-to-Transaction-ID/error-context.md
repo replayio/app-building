@@ -1,0 +1,71 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - heading "Inventory Tracker" [level=1] [ref=e6]
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - generic [ref=e14]: Dashboard
+      - link "Accounts" [ref=e15] [cursor=pointer]:
+        - /url: /accounts
+        - img [ref=e16]
+        - generic [ref=e20]: Accounts
+      - link "Materials" [ref=e21] [cursor=pointer]:
+        - /url: /materials
+        - img [ref=e22]
+        - generic [ref=e26]: Materials
+      - link "Transactions" [ref=e27] [cursor=pointer]:
+        - /url: /transactions
+        - img [ref=e28]
+        - generic [ref=e31]: Transactions
+  - main [ref=e32]:
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Transactions" [level=1] [ref=e35]
+        - navigation [ref=e36]:
+          - link "Home" [ref=e37] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e38]: ">"
+          - generic [ref=e39]: Transactions
+      - button "New Transaction" [ref=e41] [cursor=pointer]:
+        - img [ref=e42]
+        - generic [ref=e43]: New Transaction
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e46]: "Date From:"
+          - textbox [ref=e47]
+        - generic [ref=e48]:
+          - generic [ref=e49]: "Date To:"
+          - textbox [ref=e50]
+        - generic [ref=e51]:
+          - generic [ref=e52]: "Involved Account(s):"
+          - listbox [ref=e53] [cursor=pointer]
+        - generic [ref=e54]:
+          - generic [ref=e55]: "Transaction Type:"
+          - combobox [ref=e56] [cursor=pointer]:
+            - option "All Types" [selected]
+            - option "Purchase"
+            - option "Consumption"
+            - option "Transfer"
+            - option "Production"
+            - option "Adjustment"
+        - button "Clear Filters" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+          - text: Clear Filters
+        - generic [ref=e62]:
+          - img [ref=e63]
+          - textbox "Search transactions..." [ref=e66]
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]: "Sort by:"
+          - combobox [ref=e70] [cursor=pointer]:
+            - option "Date (Newest First)" [selected]
+            - option "Date (Oldest First)"
+            - option "ID (A-Z)"
+            - option "ID (Z-A)"
+        - generic [ref=e71]: Showing 0 of 0 results
+      - generic [ref=e72]: Loading...
+```
