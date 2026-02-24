@@ -3,18 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageClientsListPage: Decide on components for ClientsListPage, add sections to docs/tests.md",
-        "PlanComponentClientsTable: Add test entries for clients table (columns: Client Name, Type, Status, Tags, Primary Contact, Open Deals, Next Task; row click navigates to detail; action menu)",
-        "PlanComponentClientsSearchAndFilters: Add test entries for search bar (by name/tag/contact), Status filter dropdown, Tags filter dropdown, Source filter dropdown, Sort dropdown (Recently Updated)",
-        "PlanComponentClientsPagination: Add test entries for pagination (Previous/Next, page numbers, showing X of Y)",
-        "PlanComponentAddClientModal: Add test entries for Add New Client button and modal (name, type org/individual, status, tags, source fields, validation)",
-        "PlanComponentClientsImportExport: Add test entries for Import button (CSV upload with format spec, template download, validation errors) and Export button (CSV download)"
-      ],
-      "timestamp": "2026-02-23T21:26:20.454Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageClientDetailPage: Decide on components for ClientDetailPage, add sections to docs/tests.md",
         "PlanComponentClientHeader: Add test entries for client header (name, type badge, status badge, tags, edit button click, follow/unfollow toggle)",
         "PlanComponentClientQuickActions: Add test entries for quick action buttons (Add Task, Add Deal, Add Attachment, Add Person) and their modals",

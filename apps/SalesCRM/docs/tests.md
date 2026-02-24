@@ -94,6 +94,353 @@ Components: SidebarNavLinks, SidebarUserArea
 
 ## ClientsListPage (/clients)
 
+Components: ClientsTable, ClientsSearchAndFilters, ClientsPagination, AddClientModal, ClientsImportExport, ClientsListContent
+
+### ClientsTable
+
+#### Table displays correct column headers
+- **Initial state:** ClientsListPage is loaded with clients.
+- **Expected:** The table displays seven column headers in order: Client Name, Type, Status, Tags, Primary Contact, Open Deals, Next Task. The headers are visible and clearly labeled.
+
+#### Table rows display client name
+- **Initial state:** ClientsListPage is loaded with clients (e.g., "Acme Corp", "Globex Solutions", "Jane Doe").
+- **Expected:** Each table row displays the client's name in the Client Name column as the primary identifier (e.g., "Acme Corp"). The name is prominent and clearly readable.
+
+#### Table rows display client type
+- **Initial state:** ClientsListPage is loaded with clients of different types.
+- **Expected:** Each table row displays the client type in the Type column as either "Organization" or "Individual" (e.g., "Acme Corp" shows "Organization", "Jane Doe" shows "Individual").
+
+#### Table rows display status badge with correct color
+- **Initial state:** ClientsListPage is loaded with clients having different statuses.
+- **Expected:** Each table row displays the client's status as a colored badge in the Status column. "Active" has a green background, "Inactive" has a gray background, "Prospect" has a yellow/amber background, and "Churned" has a red/orange background. The badge text matches the client's current status.
+
+#### Table rows display tags as badges
+- **Initial state:** ClientsListPage is loaded with clients that have tags assigned.
+- **Expected:** Each table row displays the client's tags as comma-separated badges in the Tags column (e.g., "SaaS, Enterprise, Q3-Target" for Acme Corp; "Legacy, Partner" for Globex Solutions). Clients with no tags show an empty cell or placeholder.
+
+#### Table rows display primary contact with name and title
+- **Initial state:** ClientsListPage is loaded with organization clients that have associated contacts.
+- **Expected:** Each table row displays the primary contact's name followed by their title in parentheses in the Primary Contact column (e.g., "Sarah Jenkins (CEO)" for Acme Corp, "Michael Chen (CTO)" for Globex Solutions). For individual-type clients, the primary contact shows the client's own name with "(Self)" (e.g., "Jane Doe (Self)"). Clients with no primary contact show an empty cell or placeholder.
+
+#### Table rows display open deals count with total value
+- **Initial state:** ClientsListPage is loaded with clients that have deals.
+- **Expected:** Each table row displays the number of open deals and their total value in the Open Deals column (e.g., "3 (Value: $150k)" for Acme Corp, "1 (Value: $15k)" for Jane Doe). Clients with no open deals show "0". The value is formatted with appropriate abbreviations (k for thousands, M for millions). Clients with deals but zero value show just the count (e.g., "N/A" for churned clients with no deals).
+
+#### Table rows display next task with description and date
+- **Initial state:** ClientsListPage is loaded with clients that have upcoming tasks.
+- **Expected:** Each table row displays the next upcoming task description and its due date in the Next Task column (e.g., "Follow-up call - Today, 2pm" for Acme Corp, "Send proposal - Tomorrow" for Jane Doe, "Review contract - Next Week" for Stark Industries). Clients with no upcoming tasks show "No task scheduled". Dates for today and tomorrow show relative labels with time.
+
+#### Clicking a client row navigates to ClientDetailPage
+- **Initial state:** ClientsListPage is loaded with clients.
+- **Action:** User clicks on a client row (e.g., the row for "Acme Corp" with client id 1).
+- **Expected:** The browser navigates to /clients/1 and the ClientDetailPage is displayed showing the full details for that client.
+
+#### Clicking an individual client row navigates to ClientDetailPage
+- **Initial state:** ClientsListPage is loaded with individual-type clients.
+- **Action:** User clicks on an individual client row (e.g., the row for "Jane Doe" with client id 3).
+- **Expected:** The browser navigates to /clients/3 and the ClientDetailPage is displayed showing the full details for that individual client.
+
+#### Action menu icon displayed on each row
+- **Initial state:** ClientsListPage is loaded with clients.
+- **Expected:** Each table row has a three-dot menu icon ("...") on the far right side. The icon is visible and clickable.
+
+#### Action menu shows options on click
+- **Initial state:** ClientsListPage is loaded with clients.
+- **Action:** User clicks the three-dot menu icon ("...") on a client row.
+- **Expected:** A dropdown menu appears with options including: "View Details", "Edit", and "Delete". The menu is positioned near the three-dot icon.
+
+#### Action menu View Details navigates to ClientDetailPage
+- **Initial state:** The three-dot action menu is open on a client row (e.g., client id 2).
+- **Action:** User clicks "View Details" from the action menu.
+- **Expected:** The browser navigates to /clients/2 and the ClientDetailPage is displayed.
+
+#### Action menu Edit opens edit functionality
+- **Initial state:** The three-dot action menu is open on a client row.
+- **Action:** User clicks "Edit" from the action menu.
+- **Expected:** An edit modal or inline edit mode opens, allowing the user to modify the client's details (name, type, status, tags, source info). The current client data is pre-populated in the form fields.
+
+#### Action menu Delete removes the client with confirmation
+- **Initial state:** The three-dot action menu is open on a client row.
+- **Action:** User clicks "Delete" from the action menu.
+- **Expected:** A confirmation dialog appears asking the user to confirm deletion (e.g., "Are you sure you want to delete this client?"). Upon confirmation, the client is deleted via the API and the row is removed from the table. The total client count decreases by one.
+
+#### Action menu Delete cancellation keeps the client
+- **Initial state:** The delete confirmation dialog is open for a client.
+- **Action:** User clicks "Cancel" on the confirmation dialog.
+- **Expected:** The dialog closes. The client remains in the table unchanged.
+
+### ClientsSearchAndFilters
+
+#### Search input filters clients by name
+- **Initial state:** ClientsListPage is loaded with multiple clients visible (e.g., "Acme Corp", "Globex Solutions", "Stark Industries").
+- **Action:** User types "Acme" into the search input (placeholder text "Search clients by name, tag, or contact...").
+- **Expected:** The clients table updates to show only clients whose name contains "Acme" (e.g., "Acme Corp"). Non-matching clients are hidden. The search is case-insensitive and debounced.
+
+#### Search input filters clients by tag
+- **Initial state:** ClientsListPage is loaded with clients that have various tags (e.g., "SaaS", "Enterprise", "Legacy", "Partner").
+- **Action:** User types "Enterprise" into the search input.
+- **Expected:** The clients table updates to show only clients that have a tag containing "Enterprise" (e.g., "Acme Corp" with tags "SaaS, Enterprise, Q3-Target"). Clients without a matching tag are hidden.
+
+#### Search input filters clients by contact name
+- **Initial state:** ClientsListPage is loaded with clients that have primary contacts (e.g., "Sarah Jenkins", "Michael Chen").
+- **Action:** User types "Sarah" into the search input.
+- **Expected:** The clients table updates to show only clients whose primary contact name contains "Sarah" (e.g., "Acme Corp" with primary contact "Sarah Jenkins (CEO)"). Clients without a matching contact are hidden.
+
+#### Search input clears and shows all clients
+- **Initial state:** The search input contains "Acme" and only matching clients are shown.
+- **Action:** User clears the search input.
+- **Expected:** All clients are displayed again without any name/tag/contact filter applied.
+
+#### Status filter dropdown shows all status options
+- **Initial state:** ClientsListPage is loaded.
+- **Action:** User clicks the Status filter dropdown (showing "Status: All").
+- **Expected:** A dropdown appears with options: "All", "Active", "Inactive", "Prospect", and "Churned". The dropdown uses the custom styled FilterSelect component matching the app's design system.
+
+#### Status filter dropdown filters by Active status
+- **Initial state:** ClientsListPage is loaded with clients of various statuses.
+- **Action:** User selects "Active" from the Status filter dropdown.
+- **Expected:** The clients table updates to show only clients with "Active" status (e.g., "Acme Corp", "Stark Industries"). Clients with Inactive, Prospect, and Churned statuses are hidden. The dropdown label updates to indicate the active filter (e.g., "Status: Active").
+
+#### Status filter dropdown filters by Inactive status
+- **Initial state:** ClientsListPage is loaded with clients of various statuses.
+- **Action:** User selects "Inactive" from the Status filter dropdown.
+- **Expected:** The clients table updates to show only clients with "Inactive" status (e.g., "Globex Solutions"). Clients with other statuses are hidden.
+
+#### Status filter dropdown filters by Prospect status
+- **Initial state:** ClientsListPage is loaded with clients of various statuses.
+- **Action:** User selects "Prospect" from the Status filter dropdown.
+- **Expected:** The clients table updates to show only clients with "Prospect" status (e.g., "Jane Doe", "Liam Smith"). Clients with other statuses are hidden.
+
+#### Status filter dropdown filters by Churned status
+- **Initial state:** ClientsListPage is loaded with clients of various statuses.
+- **Action:** User selects "Churned" from the Status filter dropdown.
+- **Expected:** The clients table updates to show only clients with "Churned" status (e.g., "Wayne Enterprises"). Clients with other statuses are hidden.
+
+#### Status filter can be reset to All
+- **Initial state:** The Status filter is set to "Active", showing only active clients.
+- **Action:** User opens the Status filter dropdown and selects "All".
+- **Expected:** All clients are displayed regardless of status. The dropdown label returns to "Status: All".
+
+#### Tags filter dropdown shows available tags
+- **Initial state:** ClientsListPage is loaded.
+- **Action:** User clicks the Tags filter dropdown (showing "Tags: All").
+- **Expected:** A dropdown appears listing all available tags from the system (e.g., "SaaS", "Enterprise", "Q3-Target", "Legacy", "Partner", "Consultant", "Hot Lead", "Manufacturing", "Key Account", "VIP", "Lost", "Competitor", "Freelancer", "Referral") plus an "All" option. The dropdown uses the custom styled FilterSelect component.
+
+#### Tags filter dropdown filters by a specific tag
+- **Initial state:** ClientsListPage is loaded with clients that have various tags.
+- **Action:** User selects "Enterprise" from the Tags filter dropdown.
+- **Expected:** The clients table updates to show only clients that have the "Enterprise" tag (e.g., "Acme Corp"). Clients without the "Enterprise" tag are hidden. The dropdown label updates to indicate the active filter (e.g., "Tags: Enterprise").
+
+#### Tags filter can be reset to All
+- **Initial state:** The Tags filter is set to "Enterprise", showing only enterprise-tagged clients.
+- **Action:** User opens the Tags filter dropdown and selects "All".
+- **Expected:** All clients are displayed regardless of tags. The dropdown label returns to "Tags: All".
+
+#### Source filter dropdown shows available source options
+- **Initial state:** ClientsListPage is loaded.
+- **Action:** User clicks the Source filter dropdown (showing "Source: All").
+- **Expected:** A dropdown appears listing all available source types from the system (e.g., "Referral", "Campaign", "Website", "Cold Call", "Event") plus an "All" option. The dropdown uses the custom styled FilterSelect component.
+
+#### Source filter dropdown filters by a specific source
+- **Initial state:** ClientsListPage is loaded with clients that have various source types.
+- **Action:** User selects "Referral" from the Source filter dropdown.
+- **Expected:** The clients table updates to show only clients whose source type is "Referral". Clients with other source types are hidden. The dropdown label updates to indicate the active filter (e.g., "Source: Referral").
+
+#### Source filter can be reset to All
+- **Initial state:** The Source filter is set to "Referral", showing only referral-sourced clients.
+- **Action:** User opens the Source filter dropdown and selects "All".
+- **Expected:** All clients are displayed regardless of source. The dropdown label returns to "Source: All".
+
+#### Sort dropdown defaults to Recently Updated
+- **Initial state:** User navigates to /clients.
+- **Expected:** The Sort dropdown shows "Sort: Recently Updated" as the default sort order. Clients are listed with the most recently updated clients first.
+
+#### Sort dropdown shows sort options
+- **Initial state:** ClientsListPage is loaded.
+- **Action:** User clicks the Sort dropdown (showing "Sort: Recently Updated").
+- **Expected:** A dropdown appears with sort options including at least: "Recently Updated", "Name A-Z", "Name Z-A", "Newest First", "Oldest First". The dropdown uses the custom styled FilterSelect component.
+
+#### Changing sort order re-sorts the table
+- **Initial state:** ClientsListPage is loaded with clients sorted by "Recently Updated".
+- **Action:** User selects "Name A-Z" from the Sort dropdown.
+- **Expected:** The clients table re-sorts to display clients in alphabetical order by name (e.g., "Acme Corp" before "Globex Solutions" before "Jane Doe"). The dropdown label updates to "Sort: Name A-Z".
+
+#### Multiple filters can be combined with search
+- **Initial state:** ClientsListPage is loaded with clients of varying statuses, tags, and sources.
+- **Action:** User sets the Status filter to "Active", the Tags filter to "Enterprise", and types "Acme" in the search input.
+- **Expected:** Only clients matching all three criteria are shown (Active status AND has "Enterprise" tag AND name/tag/contact contains "Acme"). Changing any filter updates the results immediately.
+
+#### Filters persist when changing sort order
+- **Initial state:** Status filter is set to "Active" and search contains "Corp".
+- **Action:** User changes the Sort dropdown to "Name A-Z".
+- **Expected:** The filtered results (Active clients matching "Corp") are re-sorted alphabetically. The Status filter and search term remain applied.
+
+### ClientsPagination
+
+#### Pagination controls appear when clients exceed page size
+- **Initial state:** The system has more than 50 clients (e.g., 324 clients).
+- **Expected:** Pagination controls are displayed below the clients table. The controls include a "Previous" button, numbered page buttons (e.g., 1, 2, 3, ...), and a "Next" button. A text indicator shows "Showing 1-50 of 324 clients". Each page shows up to 50 clients. The current page number (1) is visually highlighted/selected.
+
+#### Clicking Next loads the next page of clients
+- **Initial state:** ClientsListPage is loaded with pagination controls visible. User is on page 1.
+- **Action:** User clicks the "Next" button.
+- **Expected:** The clients table updates to show the next page of clients (clients 51–100). The text indicator updates to "Showing 51-100 of 324 clients". The page number 2 becomes highlighted. The "Previous" button becomes enabled.
+
+#### Clicking Previous loads the previous page of clients
+- **Initial state:** User is on page 2 of the clients list.
+- **Action:** User clicks the "Previous" button.
+- **Expected:** The clients table updates to show the first page of clients (clients 1–50). The text indicator updates to "Showing 1-50 of 324 clients". The page number 1 becomes highlighted. The "Previous" button becomes disabled (since it's the first page).
+
+#### Clicking a page number navigates directly to that page
+- **Initial state:** ClientsListPage is loaded with pagination visible. User is on page 1.
+- **Action:** User clicks page number "3".
+- **Expected:** The clients table updates to show page 3 of clients (clients 101–150). The text indicator updates to "Showing 101-150 of 324 clients". Page number 3 becomes highlighted. Both "Previous" and "Next" buttons are enabled.
+
+#### Previous button is disabled on first page
+- **Initial state:** User is on page 1 of the clients list.
+- **Expected:** The "Previous" button is disabled (visually grayed out and not clickable). The "Next" button is enabled. Page number 1 is highlighted.
+
+#### Next button is disabled on last page
+- **Initial state:** User navigates to the last page of clients (e.g., page 7 of 324 clients with 50 per page).
+- **Expected:** The "Next" button is disabled (visually grayed out and not clickable). The "Previous" button is enabled. The last page number is highlighted. The text indicator shows the remaining clients (e.g., "Showing 301-324 of 324 clients").
+
+#### Pagination updates when filters reduce result count
+- **Initial state:** ClientsListPage shows 324 clients with 7 pages of pagination.
+- **Action:** User sets the Status filter to "Active", which returns only 40 clients.
+- **Expected:** The pagination controls update to reflect the filtered count. The text indicator shows "Showing 1-40 of 40 clients". Since all results fit on one page, the "Previous" and "Next" buttons are both disabled and page numbers show only page 1.
+
+#### Pagination hidden when all results fit on one page
+- **Initial state:** ClientsListPage is loaded with filters applied that return fewer than 50 clients.
+- **Expected:** The pagination controls are either hidden or show a single page with no Previous/Next navigation needed. The text indicator still shows the count (e.g., "Showing 1-25 of 25 clients").
+
+### AddClientModal
+
+#### Clicking Add New Client button opens AddClientModal
+- **Initial state:** ClientsListPage is loaded. A blue "+ Add New Client" button is visible in the top-right area of the page header.
+- **Action:** User clicks the "+ Add New Client" button.
+- **Expected:** A modal dialog opens with the title "Add New Client" (or "Create Client"). The modal contains a form with fields for: Name (text input, required), Type (dropdown with options: Organization, Individual), Status (dropdown with options: Active, Inactive, Prospect, Churned), Tags (text input or multi-select for adding tags), Source Type (dropdown, e.g., Referral, Campaign, Website, Cold Call, Event), Source Detail (text input), Campaign (text input), Channel (text input). The modal has "Cancel" and "Create" (or "Save") buttons at the bottom.
+
+#### AddClientModal form validates required name field
+- **Initial state:** AddClientModal is open with all fields empty or at defaults.
+- **Action:** User clicks the "Create" submit button without filling in the Name field.
+- **Expected:** The form displays a validation error for the Name field indicating it is required. The client is not created. The modal remains open.
+
+#### AddClientModal successfully creates an organization client
+- **Initial state:** AddClientModal is open.
+- **Action:** User fills in: Name = "NewCo Industries", Type = "Organization", Status = "Prospect", Tags = "SaaS, Enterprise", Source Type = "Referral", Source Detail = "John from TechStart". User clicks the "Create" button.
+- **Expected:** The client is created via the API. The modal closes. The new client "NewCo Industries" appears in the clients table with type "Organization", status badge "Prospect" (yellow), tags "SaaS, Enterprise", and source info saved. A timeline entry is created for the new client. The total client count increases by one.
+
+#### AddClientModal successfully creates an individual client
+- **Initial state:** AddClientModal is open.
+- **Action:** User fills in: Name = "Alex Turner", Type = "Individual", Status = "Active". User clicks the "Create" button.
+- **Expected:** The client is created via the API. The modal closes. The new client "Alex Turner" appears in the clients table with type "Individual", status badge "Active" (green), and primary contact showing "Alex Turner (Self)".
+
+#### AddClientModal type dropdown shows Organization and Individual options
+- **Initial state:** AddClientModal is open.
+- **Action:** User clicks the Type dropdown.
+- **Expected:** A dropdown appears with two options: "Organization" and "Individual". Selecting a type populates the Type field.
+
+#### AddClientModal status dropdown shows all status options
+- **Initial state:** AddClientModal is open.
+- **Action:** User clicks the Status dropdown.
+- **Expected:** A dropdown appears with four options: "Active", "Inactive", "Prospect", and "Churned". Selecting a status populates the Status field.
+
+#### AddClientModal tags field accepts multiple tags
+- **Initial state:** AddClientModal is open.
+- **Action:** User adds tags "SaaS", "Enterprise", and "Q3-Target" to the Tags field.
+- **Expected:** All three tags are displayed in the Tags field as separate badges or chips. Tags can be individually removed. The tags will be saved with the client when the form is submitted.
+
+#### AddClientModal source type dropdown shows source options
+- **Initial state:** AddClientModal is open.
+- **Action:** User clicks the Source Type dropdown.
+- **Expected:** A dropdown appears with source type options (e.g., "Referral", "Campaign", "Website", "Cold Call", "Event"). Selecting a source type populates the Source Type field.
+
+#### AddClientModal cancel button closes modal without creating
+- **Initial state:** AddClientModal is open with some fields filled in.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The modal closes. No client is created. The clients table remains unchanged.
+
+#### AddClientModal closes on overlay click
+- **Initial state:** AddClientModal is open.
+- **Action:** User clicks the modal overlay (area outside the modal dialog).
+- **Expected:** The modal closes. No client is created.
+
+#### Created client appears in table after modal closes
+- **Initial state:** AddClientModal was just used to create a new client "NewCo Industries".
+- **Expected:** After the modal closes, the clients table refreshes and the new client "NewCo Industries" appears in the list according to the current sort order. If sorted by "Recently Updated", the new client appears near the top.
+
+### ClientsImportExport
+
+#### Import button displayed in page header
+- **Initial state:** ClientsListPage is loaded.
+- **Expected:** An "Import" button with a download/import icon is visible in the top-right area of the page header, to the left of the "Export" button and "+ Add New Client" button.
+
+#### Export button displayed in page header
+- **Initial state:** ClientsListPage is loaded.
+- **Expected:** An "Export" button with an upload/export icon is visible in the top-right area of the page header, between the "Import" button and the "+ Add New Client" button.
+
+#### Clicking Import button opens ImportDialog for clients
+- **Initial state:** ClientsListPage is loaded.
+- **Action:** User clicks the "Import" button.
+- **Expected:** An ImportDialog modal opens with the title indicating clients import. The dialog displays a CSV column format specification table listing all supported columns (Name, Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired) with required/optional indicators and value descriptions. The Name column is marked as required. Type accepted values are "Organization" or "Individual". Status accepted values are "Active", "Inactive", "Prospect", or "Churned". A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### ImportDialog CSV format specification is visible before upload
+- **Initial state:** The ImportDialog for clients is open.
+- **Expected:** The CSV column format specification table is immediately visible to the user before they attempt any upload. The table lists each column name, whether it is required or optional, and a description of accepted values. This ensures the user knows the expected format before preparing their CSV.
+
+#### ImportDialog Download CSV template button generates template
+- **Initial state:** The ImportDialog for clients is open.
+- **Action:** User clicks the "Download CSV template" button.
+- **Expected:** A CSV template file is downloaded containing the correct column headers for clients (Name, Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired) with no data rows. The template can be used as a starting point for populating import data.
+
+#### ImportDialog processes valid CSV file and creates clients
+- **Initial state:** The ImportDialog is open. User has a valid CSV file with client data matching the expected format (e.g., rows with Name, Type, Status, Tags).
+- **Action:** User uploads the CSV file and confirms the import.
+- **Expected:** The clients from the CSV are created via the bulk import API. The dialog shows a success message with the count of clients imported (e.g., "Successfully imported 15 clients"). After closing the dialog, the clients table refreshes and the newly imported clients appear in the list. The total client count increases accordingly.
+
+#### ImportDialog shows validation errors for invalid CSV data
+- **Initial state:** The ImportDialog is open. User has a CSV file with invalid data (e.g., missing required Name column, invalid status value "Unknown", invalid type "Group").
+- **Action:** User uploads the invalid CSV file and confirms the import.
+- **Expected:** The dialog displays per-row validation errors indicating which rows failed and why (e.g., "Row 3: Name is required", "Row 5: Invalid status 'Unknown'", "Row 7: Invalid type 'Group'"). The error messages are specific enough for the user to correct the CSV. Valid rows may still be imported, or the user may be asked to fix errors and retry.
+
+#### ImportDialog cancel button closes without importing
+- **Initial state:** The ImportDialog is open with a file selected.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The dialog closes. No data is imported. The clients table remains unchanged.
+
+#### ImportDialog closes on overlay click without importing
+- **Initial state:** The ImportDialog is open.
+- **Action:** User clicks the modal overlay (area outside the dialog).
+- **Expected:** The dialog closes. No data is imported.
+
+#### Clicking Export button downloads clients CSV
+- **Initial state:** ClientsListPage is loaded with clients in the system.
+- **Action:** User clicks the "Export" button.
+- **Expected:** A CSV file is downloaded containing all client data. The CSV includes columns: Name, Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired. Each row corresponds to a client in the system. The file name includes "clients" (e.g., "clients.csv" or "clients-export.csv").
+
+#### Exported CSV contains correct data for all clients
+- **Initial state:** The system has clients with various types, statuses, tags, and source info.
+- **Action:** User clicks the "Export" button and opens the downloaded CSV.
+- **Expected:** The CSV correctly contains all clients' data. Tags are formatted as comma-separated values within a single column. Status values match the client's current status. Source fields are populated when available and empty when not set.
+
+### ClientsListContent
+
+#### Page displays heading and action buttons
+- **Initial state:** User navigates to /clients.
+- **Expected:** The page displays a heading "Clients" at the top. Three buttons are displayed in the top-right area: "Import" button with an import icon, "Export" button with an export icon, and a blue "+ Add New Client" button. The sidebar "Clients" link is highlighted as active.
+
+#### Loading state shows while clients are being fetched
+- **Initial state:** User navigates to /clients and the API request for clients is in progress.
+- **Expected:** A loading indicator (spinner or skeleton) is displayed in the clients table area while data is being fetched. The page heading, search bar, filter dropdowns, and action buttons are still visible.
+
+#### Empty state shown when no clients match filters
+- **Initial state:** ClientsListPage is loaded. User applies filters or search that match no clients (e.g., search for "xyznonexistent").
+- **Expected:** The clients table area displays an empty state message (e.g., "No clients found" or "No matching clients") instead of table rows. The search bar and filter dropdowns remain visible so the user can adjust filters.
+
+#### Empty state shown when no clients exist
+- **Initial state:** User navigates to /clients and there are no clients in the system.
+- **Expected:** The clients table area displays an empty state message (e.g., "No clients yet") with a prompt or button to add the first client. The "+ Add New Client" button remains visible in the header.
+
 ## ClientDetailPage (/clients/:clientId)
 
 ## PersonDetailPage (/individuals/:individualId)
