@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageRecipeDetails: Decide on components, add sections to docs/tests.md",
-        "PlanComponentRecipeDetailHeader: Add test entries for RecipeDetailHeader (breadcrumb Recipes > recipe name, title with recipe ID, Edit Recipe button)",
-        "PlanComponentDescriptionCard: Add test entries for DescriptionCard (recipe description text display)",
-        "PlanComponentProductsOutputTable: Add test entries for ProductsOutputTable (Product Name/Amount columns) and RawMaterialsCard (Material Name/Amount per batch table)",
-        "PlanComponentEquipmentRequiredList: Add test entries for EquipmentRequiredList (linked equipment items with IDs, links navigate to EquipmentDetailsPage)"
-      ],
-      "timestamp": "2026-02-24T23:27:42.831Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageRunDetails: Decide on components, add sections to docs/tests.md",
         "PlanComponentRunHeader: Add test entries for RunHeader (breadcrumb navigation, Run ID title, high-level info fields: Run ID/Date-Time/Product/Associated Recipe/Planned Quantity/Status badge)",
         "PlanComponentRunActions: Add test entries for RunActions (Adjust Quantities button opens edit, Confirm Run button changes status, Cancel Run button changes status)",

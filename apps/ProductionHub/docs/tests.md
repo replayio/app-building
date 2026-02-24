@@ -14,7 +14,138 @@
 
 ## RecipeDetailsPage (/recipe/:recipeId)
 
-<!-- Tests for RecipeDetailsPage will be added by PlanPage tasks -->
+Components: RecipeDetailHeader, DescriptionCard, ProductsOutputTable, RawMaterialsCard, EquipmentRequiredList
+
+### RecipeDetailHeader
+
+#### RD-HDR-1: Breadcrumb displays Recipes > recipe name with ID
+- **Components:** RecipeDetailHeader
+- **Given** the user navigates to /recipe/HPP-B1 for a recipe named "High-Performance Polymer Blend" with ID "HPP-B1"
+- **Then** a breadcrumb is displayed showing "Recipes" as a clickable link followed by a ">" separator and "High-Performance Polymer Blend (HPP-B1)"
+
+#### RD-HDR-2: Breadcrumb Recipes link navigates to RecipesPage
+- **Components:** RecipeDetailHeader
+- **Given** the user is on /recipe/HPP-B1
+- **When** the user clicks the "Recipes" link in the breadcrumb
+- **Then** the app navigates to /recipes (the recipes list page)
+
+#### RD-HDR-3: Page title displays recipe name with ID
+- **Components:** RecipeDetailHeader
+- **Given** the user navigates to /recipe/HPP-B1 for a recipe named "High-Performance Polymer Blend" with ID "HPP-B1"
+- **Then** the page title "High-Performance Polymer Blend (HPP-B1)" is displayed as a large heading
+
+#### RD-HDR-4: Edit Recipe button is displayed
+- **Components:** RecipeDetailHeader
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a blue "Edit Recipe" button is displayed to the right of the page title
+
+#### RD-HDR-5: Edit Recipe button opens an edit form for the recipe
+- **Components:** RecipeDetailHeader
+- **Given** the user is on /recipe/HPP-B1 for recipe "High-Performance Polymer Blend"
+- **When** the user clicks the "Edit Recipe" button
+- **Then** a modal or form is displayed pre-filled with the recipe's current name, description, products output, raw materials, and equipment
+- **When** the user changes the recipe name from "High-Performance Polymer Blend" to "High-Performance Polymer Blend v2" and saves
+- **Then** the page title updates to "High-Performance Polymer Blend v2 (HPP-B1)"
+- **And** the breadcrumb updates to show the new recipe name
+- **And** the change persists after navigating away and returning to /recipe/HPP-B1
+
+### DescriptionCard
+
+#### RD-DESC-1: Description card heading is displayed
+- **Components:** DescriptionCard
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a card is displayed with the heading "Description"
+
+#### RD-DESC-2: Recipe description text is displayed
+- **Components:** DescriptionCard
+- **Given** the user navigates to /recipe/HPP-B1 for a recipe with description "A proprietary blend for creating durable, heat-resistant components. Requires precise temperature control during mixing and extrusion phases to ensure uniform properties."
+- **Then** the description text is displayed inside the Description card below the heading
+
+#### RD-DESC-3: Empty description shows placeholder
+- **Components:** DescriptionCard
+- **Given** the user navigates to the recipe details page for a recipe with no description
+- **Then** the Description card displays a placeholder message indicating no description is available
+
+### ProductsOutputTable
+
+#### RD-PROD-1: Products (Output) card heading is displayed
+- **Components:** ProductsOutputTable
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a card is displayed with the heading "Products (Output)"
+
+#### RD-PROD-2: Table displays Product Name and Amount column headers
+- **Components:** ProductsOutputTable
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a table inside the Products (Output) card displays column headers "Product Name" and "Amount"
+
+#### RD-PROD-3: Table rows display product output data
+- **Components:** ProductsOutputTable
+- **Given** the user navigates to /recipe/HPP-B1 for a recipe that produces "Finished HPP-B1 Granules" at "528 kg" and "Waste / Scrap (Recyclable)" at "12 kg"
+- **Then** the table displays a row with Product Name "Finished HPP-B1 Granules" and Amount "528 kg"
+- **And** the table displays a row with Product Name "Waste / Scrap (Recyclable)" and Amount "12 kg"
+
+#### RD-PROD-4: Empty products table shows placeholder
+- **Components:** ProductsOutputTable
+- **Given** the user navigates to the recipe details page for a recipe with no products defined
+- **Then** the Products (Output) card displays a placeholder message or empty table state
+
+### RawMaterialsCard
+
+#### RD-MAT-1: Raw Materials (per batch) card heading is displayed
+- **Components:** RawMaterialsCard
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a card is displayed with the heading "Raw Materials (per batch)"
+
+#### RD-MAT-2: Table displays Material Name and Amount column headers
+- **Components:** RawMaterialsCard
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a table inside the Raw Materials card displays column headers "Material Name" and "Amount"
+
+#### RD-MAT-3: Table rows display raw material data
+- **Components:** RawMaterialsCard
+- **Given** the user navigates to /recipe/HPP-B1 for a recipe requiring "Polymer Resin A" at "500 kg", "Stabilizer Additive X" at "25 kg", "Pigment Concentrate (Blue)" at "5 kg", and "Process Aid Z" at "10 kg"
+- **Then** the table displays a row with Material Name "Polymer Resin A" and Amount "500 kg"
+- **And** the table displays a row with Material Name "Stabilizer Additive X" and Amount "25 kg"
+- **And** the table displays a row with Material Name "Pigment Concentrate (Blue)" and Amount "5 kg"
+- **And** the table displays a row with Material Name "Process Aid Z" and Amount "10 kg"
+
+#### RD-MAT-4: Empty materials table shows placeholder
+- **Components:** RawMaterialsCard
+- **Given** the user navigates to the recipe details page for a recipe with no raw materials defined
+- **Then** the Raw Materials card displays a placeholder message or empty table state
+
+### EquipmentRequiredList
+
+#### RD-EQUIP-1: Equipment Required card heading is displayed
+- **Components:** EquipmentRequiredList
+- **Given** the user navigates to /recipe/HPP-B1
+- **Then** a card is displayed with the heading "Equipment Required"
+
+#### RD-EQUIP-2: Equipment items are displayed with link icons, names, and IDs
+- **Components:** EquipmentRequiredList
+- **Given** the user navigates to /recipe/HPP-B1 for a recipe requiring "Twin-Screw Extruder (E-101)", "Industrial Chiller (C-205)", "High-Shear Mixer (M-310)", and "Vacuum Dryer (D-402)"
+- **Then** the Equipment Required card displays a list of four items
+- **And** each item shows a link icon, the equipment name as a clickable link, and the equipment ID in parentheses
+- **And** the items displayed are "Twin-Screw Extruder (E-101)", "Industrial Chiller (C-205)", "High-Shear Mixer (M-310)", and "Vacuum Dryer (D-402)"
+
+#### RD-EQUIP-3: Clicking an equipment link navigates to the EquipmentDetailsPage
+- **Components:** EquipmentRequiredList
+- **Given** the user is on /recipe/HPP-B1 and the Equipment Required list shows "Twin-Screw Extruder (E-101)"
+- **When** the user clicks the "Twin-Screw Extruder" link
+- **Then** the app navigates to /equipment/E-101 (the equipment details page for that equipment)
+
+#### RD-EQUIP-4: Each equipment link navigates to its respective details page
+- **Components:** EquipmentRequiredList
+- **Given** the user is on /recipe/HPP-B1 and the Equipment Required list shows multiple items
+- **When** the user clicks the "Industrial Chiller" link
+- **Then** the app navigates to /equipment/C-205
+- **When** the user navigates back and clicks the "Vacuum Dryer" link
+- **Then** the app navigates to /equipment/D-402
+
+#### RD-EQUIP-5: Empty equipment list shows placeholder
+- **Components:** EquipmentRequiredList
+- **Given** the user navigates to the recipe details page for a recipe with no equipment required
+- **Then** the Equipment Required card displays a placeholder message indicating no equipment is required
 
 ## EquipmentPage (/equipment)
 
