@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { createTransaction } from "../slices/transactionsSlice";
 import { fetchAccounts } from "../slices/accountsSlice";
 import { formatCurrency } from "@shared/utils/currency";
+import { SearchableSelect } from "@shared/components/SearchableSelect";
 import type { Account } from "../types";
 
 interface NewTransactionModalProps {
@@ -226,49 +227,20 @@ function LineItemRow({
   onChange: (index: number, field: keyof LineItem, value: string) => void;
   onRemove: (index: number) => void;
 }) {
-  const [searchText, setSearchText] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const selectedAccount = accounts.find((a) => a.id === item.account_id);
-  const filtered = accounts.filter((a) =>
-    a.name.toLowerCase().includes(searchText.toLowerCase())
+  const accountOptions = useMemo(
+    () => accounts.map((a) => ({ id: a.id, label: a.name })),
+    [accounts]
   );
 
   return (
     <div className="line-item-row" data-testid={`line-item-row-${index}`}>
-      <div className="searchable-select">
-        <input
-          className="searchable-select-input"
-          data-testid={`line-item-account-${index}`}
-          placeholder="Search account..."
-          value={showDropdown ? searchText : (selectedAccount?.name ?? "")}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-            setShowDropdown(true);
-          }}
-          onFocus={() => {
-            setSearchText("");
-            setShowDropdown(true);
-          }}
-          onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-        />
-        {showDropdown && filtered.length > 0 && (
-          <div className="searchable-select-dropdown">
-            {filtered.map((a) => (
-              <button
-                key={a.id}
-                className="searchable-select-option"
-                onMouseDown={() => {
-                  onChange(index, "account_id", a.id);
-                  setShowDropdown(false);
-                }}
-              >
-                {a.name}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+      <SearchableSelect
+        options={accountOptions}
+        value={item.account_id}
+        onChange={(id) => onChange(index, "account_id", id)}
+        placeholder="Search account..."
+        testId={`line-item-account-${index}`}
+      />
 
       <div className="searchable-select">
         <button

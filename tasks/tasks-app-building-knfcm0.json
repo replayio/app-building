@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeShared.md",
-      "subtasks": [
-        "WriteShared: Shared app-wide code for InventoryTracker (backend, store, auth, navigation)",
-        "WriteShared: Shared code for InventoryTracker AccountsPage and AccountDetailPage",
-        "WriteShared: Shared code for InventoryTracker TransactionsPage, TransactionDetailPage, and NewTransactionPage"
-      ],
-      "timestamp": "2026-02-24T20:50:35.999Z"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "Unpack: Write the app for InventoryTracker"
