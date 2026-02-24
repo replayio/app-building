@@ -6,10 +6,22 @@ You are writing the database and code for the app to match the specs in AppSpec.
 
 Unpack the initial write app task into subtasks using `add-task`:
 
-First, add a setup task:
+First, add a setup task. If `apps/shared/` does not yet exist (i.e., this is the first app being
+built), include a `SetupShared` subtask to create the shared directory with base components and
+utilities that all apps will use. If `apps/shared/` already exists, skip `SetupShared` and go
+straight to `SetupApp`.
+
 ```
 npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md" \
-  --subtask "SetupApp: Setup the app" \
+  --subtask "SetupShared: Create apps/shared/ with base layout, components, styles, and backend utilities" \
+  --subtask "SetupApp: Setup the app (configure aliases, import shared styles)" \
+  --subtask "DesignDatabase: Design the database"
+```
+
+Or if `apps/shared/` already exists:
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md" \
+  --subtask "SetupApp: Setup the app (configure aliases, import shared styles)" \
   --subtask "DesignDatabase: Design the database"
 ```
 
@@ -26,6 +38,89 @@ npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
 - All JSX rendered on a page must be abstracted into other React components with their own files.
 - Check for style guides at both `apps/AppStyle.md` (shared across all apps) and `apps/<AppName>/AppStyle.md` (app-specific). Read both if they exist and use them to style the pages and components appropriately. The app-specific style guide takes precedence when they conflict. Prefer using CSS files with style variables instead of hardcoded styles.
+
+## Shared Code (`apps/shared/`)
+
+The `apps/shared/` directory contains components, utilities, and styles that are common across
+multiple apps. **Before writing a new component or utility, check `apps/shared/` first** — if a
+shared version exists, import and use it instead of creating a duplicate. When building something
+that is clearly reusable across apps (not domain-specific), add it to `apps/shared/` so other
+apps can use it.
+
+Apps import from shared using relative paths (e.g., `import { DataTable } from '../../shared/components/DataTable'`).
+Configure a TypeScript path alias in each app's `tsconfig.json` for cleaner imports:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@shared/*": ["../shared/*"]
+    }
+  }
+}
+```
+
+And a corresponding Vite alias in `vite.config.ts`:
+
+```ts
+resolve: {
+  alias: {
+    '@shared': path.resolve(__dirname, '../shared'),
+  },
+},
+```
+
+### What belongs in `apps/shared/`
+
+**`apps/shared/components/`** — Reusable React UI components that appear in multiple apps:
+- `AppLayout` — Sidebar + main content layout shell following `AppStyle.md`
+- `Sidebar` — Navigation sidebar with active-page highlighting
+- `DataTable` — Filterable, sortable, paginated data table using CSS Grid (per AppStyle.md)
+- `DetailPageHeader` — Entity detail page header with title, metadata, and action buttons
+- `FilterBar` — Search input + dropdown filter controls
+- `FilterSelect` — Custom styled dropdown (never native `<select>`)
+- `Modal` — Base modal dialog with form support
+- `ConfirmDialog` — Confirmation modal for destructive actions
+- `StatusBadge` — Color-coded status indicator using CSS variables
+- `EmptyState` — Placeholder for empty lists/tables
+- `LoadingSpinner` — Loading indicator
+- `Pagination` — Page controls for large data sets
+- `AttachmentList` — File list with type-specific icons/thumbnails
+- `FileUpload` — File picker with drag-and-drop support
+- `CommentSection` — Threaded comments/notes with add/delete
+- `Timeline` — Chronological activity feed
+
+**`apps/shared/lib/`** — Shared utilities:
+- `db.ts` — Neon serverless client setup (tagged template literal helper)
+- `api.ts` — Frontend fetch wrappers with error handling
+- `dates.ts` — Date formatting and parsing utilities
+- `csv.ts` — CSV import/export helpers
+- `colors.ts` — Status color mappings from AppStyle.md
+
+**`apps/shared/styles/`** — Shared CSS:
+- `variables.css` — CSS custom properties from `AppStyle.md` (palette, typography, spacing)
+- `base.css` — Reset and base typography styles
+
+**`apps/shared/netlify/`** — Shared backend utilities for Netlify Functions:
+- `db.ts` — Backend Neon connection helper (accepts URL parameter, uses tagged template syntax)
+- `response.ts` — Standard JSON response helpers (success, error, 404)
+- `middleware.ts` — Optional auth middleware, CORS headers
+- `parse-path.ts` — URL path parsing with correct index handling for function name vs resource ID
+
+### When NOT to use shared
+
+- Domain-specific components that only make sense for one app (e.g., a transaction double-entry
+  form, a recipe builder, a deal pipeline board).
+- Components with highly app-specific props or behavior that would require excessive configuration
+  to generalize.
+- When in doubt, start app-specific and extract to shared only when a second app needs the same thing.
+
+### Building shared code
+
+The first app that needs a shared component creates it in `apps/shared/`. Subsequent apps import
+it directly. If a later app needs the component to behave slightly differently, extend it via
+props — do not fork it into an app-specific copy. Keep shared components flexible through
+composition (children, render props) rather than accumulating app-specific flags.
 
 ## Database Schema
 
