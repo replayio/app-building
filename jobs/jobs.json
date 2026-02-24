@@ -1,13 +1,18 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
-        "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
-        "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests"
+        "PlanComponentDealHeader: Add test entries for DealHeader component",
+        "PlanComponentStageProgressBar: Add test entries for StageProgressBar component",
+        "PlanComponentDealHistorySection: Add test entries for DealHistorySection component",
+        "PlanComponentDealMetricsSection: Add test entries for DealMetricsSection component",
+        "PlanComponentWriteupsSection: Add test entries for WriteupsSection component",
+        "PlanComponentLinkedTasksSection: Add test entries for LinkedTasksSection component",
+        "PlanComponentDealAttachmentsSection: Add test entries for DealAttachmentsSection component",
+        "PlanComponentDealContactsSection: Add test entries for DealContactsSection component"
       ],
-      "timestamp": "2026-02-24T01:29:02.541Z"
+      "timestamp": "2026-02-24T01:56:17.084Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
@@ -306,6 +311,21 @@
         "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
       "timestamp": "2026-02-24T01:28:54.469Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentDealHeader: Write the DealHeader component",
+        "WriteComponentStageProgressBar: Write the StageProgressBar component",
+        "WriteComponentDealHistorySection: Write the DealHistorySection component",
+        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
+        "WriteComponentWriteupsSection: Write the WriteupsSection component",
+        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
+        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
+        "WriteComponentDealContactsSection: Write the DealContactsSection component",
+        "WritePageDealDetailPage: Write the DealDetailPage page itself"
+      ],
+      "timestamp": "2026-02-24T01:56:23.099Z"
     }
   ]
 }
