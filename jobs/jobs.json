@@ -1,16 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageTasksListPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentTasksHeader: Add test entries for TasksHeader and New Task button",
-        "PlanComponentTasksFilter: Add test entries for TasksFilter",
-        "PlanComponentTasksList: Add test entries for TasksList (task cards, priority badges, action menu)"
-      ],
-      "timestamp": "2026-02-23T21:50:17.457Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "WriteComponentTasksHeader: Write the TasksHeader component",

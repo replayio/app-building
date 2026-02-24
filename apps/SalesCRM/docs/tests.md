@@ -1997,6 +1997,7 @@
 - **And** the new task "Prepare quarterly report" appears in the tasks list with a red "High" priority badge, the correct due date ("Due: Tomorrow, ..."), and the selected assignee visible
 - **And** a success message is shown (e.g., "Task created successfully")
 - **And** the task also appears in the associated client's Tasks section on the Client Detail Page
+- **And** a timeline entry is created on the associated client's timeline recording the task creation (e.g., "Task Created: 'Prepare quarterly report'" with the current date)
 
 #### Test: New Task dialog can be cancelled
 - **Given** the New Task dialog is open and the user has entered partial data
@@ -2012,6 +2013,7 @@
 - **Then** the task is created and linked to both the client and the deal
 - **And** the task appears in the deal's Linked Tasks section on the Deal Detail Page
 - **And** the task appears in the client's Tasks section with the deal association visible
+- **And** a timeline entry is created on the associated client's timeline recording the task creation
 
 ### TasksFilter
 
@@ -2134,6 +2136,7 @@
 - **When** the user changes the priority from "High" to "Medium" and saves
 - **Then** the task card updates to show a yellow "Medium" priority badge instead of the red "High" badge
 - **And** the change is persisted to the database
+- **And** the updated priority is also reflected in the associated client's Tasks section on the Client Detail Page
 
 #### Test: Action menu "Edit" dialog can be cancelled
 - **Given** the edit dialog is open for a task with modifications made
@@ -2148,6 +2151,7 @@
 - **And** the task is removed from the "Upcoming Tasks" list (or displayed with a completed visual style such as strikethrough)
 - **And** the task's completed status is reflected on the associated client's Tasks section on the Client Detail Page
 - **And** if the task is linked to a deal, the task's completed status is also reflected in the deal's Linked Tasks section
+- **And** a timeline entry is created on the associated client's timeline recording the task completion (e.g., "Task Completed: 'Finalize Q3 Marketing Plan'")
 
 #### Test: Action menu "Delete" removes task with confirmation
 - **Given** the action menu is open for task "Prepare Weekly Status Report"
@@ -2157,6 +2161,7 @@
 - **Then** the task is removed from the tasks list
 - **And** the task is also removed from the associated client's Tasks section
 - **And** if linked to a deal, the task is removed from the deal's Linked Tasks section
+- **And** a timeline entry is created on the associated client's timeline recording the task deletion
 - **When** the user cancels deletion
 - **Then** the task remains in the list
 
