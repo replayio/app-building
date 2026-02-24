@@ -6,12 +6,15 @@
 
 ## Unreviewed
 
+(none)
+
+## Finished
+
 2/24/2026: All sidebar tests fail because the catch-all SPA redirect in netlify.toml intercepts Vite dev server module requests, preventing React from mounting (SidebarNotRendering)
 - Analysis: docs/bugs/SidebarNotRendering.md
 - Before fix: 8bbb1fd
 - After fix: 1ea3778
-
-## Finished
+- Problem stage: none (infrastructure configuration error in netlify.toml — the catch-all SPA redirect intercepted Vite dev server module requests; this is not a UI/styling issue, test spec deficiency, or test coverage gap — existing sidebar tests correctly caught the failure)
 
 2/24/2026: Row action menu clicks are intercepted by table cells due to overflow hidden on the table and missing z-index on the action wrapper (RowActionMenu)
 - Analysis: docs/bugs/RowActionMenu.md

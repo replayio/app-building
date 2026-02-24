@@ -1,15 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
-        "ClassifyBug: Classify SidebarNotRendering",
-        "UpdateDirectives: Update directives for SidebarNotRendering",
-        "FinishBug: Mark SidebarNotRendering as reviewed"
-      ],
-      "timestamp": "2026-02-24T01:20:08.987Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "Unpack: Check directive compliance"
