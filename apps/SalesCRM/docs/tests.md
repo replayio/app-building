@@ -720,4 +720,204 @@
 - TasksFilter (filter type dropdown, text filter input)
 - TasksList (task cards with priority badge color-coded High/Medium/Low/Normal, task name, due date, assignee avatar + name/role, action menu ...)
 
-<!-- Test entries will be added by PlanComponent jobs -->
+### TasksHeader
+
+#### Test: Page title displays "Upcoming Tasks"
+- **Given** the user navigates to the Tasks List Page (/tasks)
+- **Then** the page displays "Upcoming Tasks" as the heading
+- **And** the heading is prominently styled (large, bold text)
+
+#### Test: New Task button is displayed as a blue primary button
+- **Given** the user is on the Tasks List Page
+- **Then** a "New Task" button is displayed in the top-right area of the header
+- **And** the button is styled as a blue primary button
+
+#### Test: New Task button opens task creation dialog
+- **Given** the user is on the Tasks List Page
+- **When** the user clicks the "New Task" button
+- **Then** a modal dialog opens with a form for creating a new task
+- **And** the form includes fields: Task Name (required text input), Due Date (date/time picker), Priority (dropdown with options: High, Medium, Low, Normal), Assignee (dropdown or search showing user name and role), Client (dropdown to associate the task with a client), Deal (optional dropdown to associate the task with a deal, populated based on selected client)
+
+#### Test: New Task form validates required fields
+- **Given** the New Task dialog is open
+- **When** the user leaves the Task Name field empty and clicks save/submit
+- **Then** a validation error is shown on the Task Name field (e.g., "Task name is required")
+- **And** the form is not submitted
+
+#### Test: New Task can be created successfully
+- **Given** the New Task dialog is open
+- **When** the user enters "Prepare quarterly report" as the Task Name
+- **And** selects a due date of tomorrow at 3:00 PM
+- **And** selects "High" as the Priority
+- **And** selects "Sarah J. (PM)" as the Assignee
+- **And** selects "Acme Corp" as the Client
+- **And** clicks save/submit
+- **Then** the dialog closes
+- **And** the new task "Prepare quarterly report" appears in the tasks list with a red "High" priority badge, the correct due date, and "Sarah J. (PM)" as assignee
+- **And** a success message is shown (e.g., "Task created successfully")
+- **And** the task also appears in the associated client's Tasks section on the Client Detail Page
+
+#### Test: New Task dialog can be cancelled
+- **Given** the New Task dialog is open and the user has entered partial data
+- **When** the user clicks the Cancel button or closes the dialog
+- **Then** the dialog closes without creating a task
+- **And** no new task appears in the tasks list
+
+#### Test: New Task with optional deal association
+- **Given** the New Task dialog is open
+- **When** the user selects "Acme Corp" as the Client
+- **And** selects "Acme Corp - $250k Expansion Deal" from the Deal dropdown
+- **And** fills in the remaining required fields and submits
+- **Then** the task is created and linked to both the client and the deal
+- **And** the task appears in the deal's Linked Tasks section on the Deal Detail Page
+- **And** the task appears in the client's Tasks section with the deal association visible
+
+### TasksFilter
+
+#### Test: Filter type dropdown is displayed with filter icon
+- **Given** the user is on the Tasks List Page
+- **Then** a filter type dropdown is displayed with a filter icon (lines icon) and a chevron indicating it is expandable
+- **And** the dropdown defaults to a general filter mode (e.g., "All Fields")
+
+#### Test: Filter type dropdown shows filter category options
+- **Given** the user is on the Tasks List Page
+- **When** the user clicks the filter type dropdown
+- **Then** the dropdown shows filter category options such as: All Fields, Priority, Assignee, Client, Due Date
+
+#### Test: Text filter input is displayed with placeholder
+- **Given** the user is on the Tasks List Page
+- **Then** a text filter input is displayed next to the filter type dropdown
+- **And** the input shows the placeholder text "Filter..."
+
+#### Test: Text filter filters tasks by task name
+- **Given** the Tasks List Page is loaded with multiple tasks (e.g., "Finalize Q3 Marketing Plan", "Review Client Proposal Draft", "Update Team Documentation", "Prepare Weekly Status Report")
+- **When** the user types "Marketing" into the text filter input
+- **Then** only tasks whose name contains "Marketing" are shown (e.g., "Finalize Q3 Marketing Plan")
+- **And** non-matching tasks are hidden
+
+#### Test: Filter by Priority category
+- **Given** the user is on the Tasks List Page with tasks of various priorities
+- **When** the user selects "Priority" from the filter type dropdown
+- **And** types "High" into the text filter input
+- **Then** only tasks with "High" priority are shown
+- **And** tasks with Medium, Low, and Normal priorities are hidden
+
+#### Test: Filter by Assignee category
+- **Given** the user is on the Tasks List Page with tasks assigned to different people
+- **When** the user selects "Assignee" from the filter type dropdown
+- **And** types "Sarah" into the text filter input
+- **Then** only tasks assigned to users matching "Sarah" are shown (e.g., tasks assigned to "Sarah J. (PM)")
+- **And** tasks assigned to other users are hidden
+
+#### Test: Filter by Client category
+- **Given** the user is on the Tasks List Page with tasks associated with different clients
+- **When** the user selects "Client" from the filter type dropdown
+- **And** types "Acme" into the text filter input
+- **Then** only tasks associated with clients matching "Acme" are shown
+- **And** tasks associated with other clients are hidden
+
+#### Test: Text filter shows empty state when no results match
+- **Given** the Tasks List Page is loaded with tasks
+- **When** the user types "zzzznonexistent" into the text filter input
+- **Then** an empty state message is shown (e.g., "No tasks found")
+
+#### Test: Clearing the text filter resets results
+- **Given** the user has typed "Marketing" into the text filter and the list is filtered
+- **When** the user clears the text filter input (backspace or clear action)
+- **Then** all tasks are shown again
+
+#### Test: Changing filter type resets the text filter
+- **Given** the user has selected "Priority" from the filter type dropdown and typed "High" into the text filter
+- **When** the user changes the filter type dropdown to "Assignee"
+- **Then** the text filter input is cleared
+- **And** all tasks are shown until the user enters a new filter value
+
+### TasksList
+
+#### Test: Task cards display all required elements
+- **Given** the Tasks List Page is loaded with tasks
+- **Then** each task card displays: a color-coded priority badge, the task name in bold text, a due date, an assignee avatar with abbreviated name and role, and a "..." action menu button
+
+#### Test: Priority badges are color-coded correctly
+- **Given** the Tasks List Page shows tasks with different priorities
+- **Then** "High" priority tasks show a red/orange badge labeled "High"
+- **And** "Medium" priority tasks show a yellow badge labeled "Medium"
+- **And** "Low" priority tasks show a green badge labeled "Low"
+- **And** "Normal" priority tasks show a blue/teal badge labeled "Normal"
+
+#### Test: Task name is displayed in bold
+- **Given** the Tasks List Page shows a task named "Finalize Q3 Marketing Plan"
+- **Then** the task name "Finalize Q3 Marketing Plan" is displayed in bold text within the task card
+
+#### Test: Due date displays relative dates for upcoming tasks
+- **Given** a task is due today at 5:00 PM
+- **Then** the due date displays "Due: Today, 5:00 PM"
+- **Given** a task is due tomorrow at 10:00 AM
+- **Then** the due date displays "Due: Tomorrow, 10:00 AM"
+
+#### Test: Due date displays absolute dates for future tasks
+- **Given** a task is due on Oct 25, 2024
+- **Then** the due date displays "Due: Oct 25, 2024"
+
+#### Test: Assignee displays avatar, abbreviated name, and role
+- **Given** a task is assigned to Sarah Jenkins who is a PM
+- **Then** the task card shows an avatar image, "Sarah J." as the abbreviated name, and "(PM)" as the role in parentheses
+- **Given** a task is assigned to David Lee who is in Sales
+- **Then** the task card shows an avatar image, "David L." as the abbreviated name, and "(Sales)" as the role
+
+#### Test: Tasks are ordered by due date with soonest first
+- **Given** the Tasks List Page is loaded with multiple tasks with different due dates
+- **Then** tasks are displayed in chronological order with the soonest due date at the top (e.g., "Due: Today" before "Due: Tomorrow" before "Due: Oct 25, 2024")
+
+#### Test: Action menu opens with options
+- **Given** the Tasks List Page shows task cards
+- **When** the user clicks the "..." action menu on a task card (e.g., "Finalize Q3 Marketing Plan")
+- **Then** a dropdown menu appears with options such as "View Details", "Edit", "Mark as Complete", "Delete"
+
+#### Test: Action menu "View Details" navigates to associated client detail page
+- **Given** the action menu is open for task "Finalize Q3 Marketing Plan" which is associated with client "Acme Corp"
+- **When** the user clicks "View Details"
+- **Then** the app navigates to the Client Detail Page (/clients/:clientId) for "Acme Corp"
+
+#### Test: Action menu "Edit" opens task edit dialog
+- **Given** the action menu is open for a task
+- **When** the user clicks "Edit"
+- **Then** an edit dialog opens pre-populated with the task's current data (name, due date, priority, assignee, client, deal)
+- **When** the user changes the priority from "High" to "Medium" and saves
+- **Then** the task card updates to show a yellow "Medium" priority badge instead of the red "High" badge
+- **And** the change is persisted to the database
+
+#### Test: Action menu "Edit" dialog can be cancelled
+- **Given** the edit dialog is open for a task with modifications made
+- **When** the user clicks Cancel or closes the dialog
+- **Then** the dialog closes without saving changes
+- **And** the task card retains its original values
+
+#### Test: Action menu "Mark as Complete" completes the task
+- **Given** the action menu is open for task "Finalize Q3 Marketing Plan"
+- **When** the user clicks "Mark as Complete"
+- **Then** the task is marked as completed
+- **And** the task is removed from the "Upcoming Tasks" list (or displayed with a completed visual style such as strikethrough)
+- **And** the task's completed status is reflected on the associated client's Tasks section on the Client Detail Page
+- **And** if the task is linked to a deal, the task's completed status is also reflected in the deal's Linked Tasks section
+
+#### Test: Action menu "Delete" removes task with confirmation
+- **Given** the action menu is open for task "Prepare Weekly Status Report"
+- **When** the user clicks "Delete"
+- **Then** a confirmation dialog appears (e.g., "Are you sure you want to delete this task?")
+- **When** the user confirms deletion
+- **Then** the task is removed from the tasks list
+- **And** the task is also removed from the associated client's Tasks section
+- **And** if linked to a deal, the task is removed from the deal's Linked Tasks section
+- **When** the user cancels deletion
+- **Then** the task remains in the list
+
+#### Test: Task list shows empty state when no tasks exist
+- **Given** there are no upcoming tasks in the system
+- **Then** the tasks list shows an empty state message (e.g., "No upcoming tasks. Create a new task to get started.")
+- **And** there may be a call-to-action button to create a task
+
+#### Test: Clicking a task card navigates to associated client detail page
+- **Given** the Tasks List Page shows a task card for "Review Client Proposal Draft" associated with client "Globex Solutions"
+- **When** the user clicks on the task card (on the task name area)
+- **Then** the app navigates to the Client Detail Page (/clients/:clientId) for "Globex Solutions"
