@@ -1,0 +1,171 @@
+
+> salescrm@0.0.0 test
+> tsx scripts/test.ts tests/person-detail.spec.ts
+
+Killing stale processes...
+Cleaning up stale Neon branches...
+Creating ephemeral branch: test-worker-1771904525700-ls37ln
+Initializing schema...
+Seeding test data...
+Seeded 10 clients, 6 contacts, 5 deals, 3 tasks, 2 relationships, 2 contact history entries
+Removing stale recordings...
+⠙ Initializing…
+All recordings deleted
+
+Running tests: tests/person-detail.spec.ts
+
+[2m[WebServer] [22m[33m⠋[39m Waiting for framework dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠙[39m Waiting for framework dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠹[39m Waiting for framework dev server to be ready on port 5173
+[2m[WebServer] [22m[32m√[39m framework dev server ready on port 5173
+
+Running 45 tests using 2 workers
+
+[2m[WebServer] [22m(node:2711) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+[2m[WebServer] [22m(Use `node --trace-deprecation ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/person-detail.spec.ts:29:3 › PersonHeader › Header displays person's full name prominently (3.6s)
+  ✓   1 [chromium] › tests/person-detail.spec.ts:43:3 › PersonHeader › Header displays title and client associations (3.6s)
+  ✓   3 [chromium] › tests/person-detail.spec.ts:66:3 › PersonHeader › Header displays email with mail icon (2.0s)
+  ✓   4 [chromium] › tests/person-detail.spec.ts:81:3 › PersonHeader › Header displays phone number with phone icon (2.0s)
+  ✓   5 [chromium] › tests/person-detail.spec.ts:96:3 › PersonHeader › Header displays location with location pin icon (1.7s)
+  ✓   6 [chromium] › tests/person-detail.spec.ts:111:3 › PersonHeader › Header displays associated clients as clickable links (2.1s)
+  ✓   7 [chromium] › tests/person-detail.spec.ts:132:3 › PersonHeader › Associated client link navigates to client detail page (2.1s)
+  ✓   8 [chromium] › tests/person-detail.spec.ts:147:3 › PersonHeader › Each associated client link navigates correctly (2.3s)
+  ✓   9 [chromium] › tests/person-detail.spec.ts:167:3 › RelationshipsSection › Relationships section displays heading with icon (1.8s)
+  ✓  10 [chromium] › tests/person-detail.spec.ts:181:3 › RelationshipsSection › Relationships section shows Graph View and List View tabs (1.7s)
+  ✓  11 [chromium] › tests/person-detail.spec.ts:193:3 › RelationshipsSection › List View displays relationship entries with all details (1.9s)
+  ✓  12 [chromium] › tests/person-detail.spec.ts:216:3 › RelationshipsSection › Relationship entry Link navigates to the related person's detail page (2.7s)
+  ✓  13 [chromium] › tests/person-detail.spec.ts:233:3 › RelationshipsSection › Each relationship Link navigates to the correct person (2.7s)
+  ✓  14 [chromium] › tests/person-detail.spec.ts:247:3 › RelationshipsSection › Switching to Graph View tab (1.9s)
+  ✓  15 [chromium] › tests/person-detail.spec.ts:264:3 › RelationshipsSection › Switching back to List View from Graph View (2.3s)
+  ✓  16 [chromium] › tests/person-detail.spec.ts:282:3 › RelationshipsSection › Filter button is displayed in Relationships section (1.6s)
+  ✓  18 [chromium] › tests/person-detail.spec.ts:313:3 › RelationshipsSection › Add Entry button is displayed in Relationships section (1.8s)
+  ✓  17 [chromium] › tests/person-detail.spec.ts:294:3 › RelationshipsSection › Filter button opens filter options for relationships (2.2s)
+  ✓  19 [chromium] › tests/person-detail.spec.ts:323:3 › RelationshipsSection › Add Entry button opens relationship creation form (2.6s)
+  ✓  20 [chromium] › tests/person-detail.spec.ts:341:3 › RelationshipsSection › New relationship entry can be created successfully (3.9s)
+  ✓  21 [chromium] › tests/person-detail.spec.ts:377:3 › RelationshipsSection › Add Entry form validates required fields (2.3s)
+  ✓  22 [chromium] › tests/person-detail.spec.ts:396:3 › RelationshipsSection › Add Entry form can be cancelled (2.1s)
+  ✓  23 [chromium] › tests/person-detail.spec.ts:419:3 › RelationshipsSection › Relationships section shows empty state when no relationships exist (1.8s)
+  ✓  24 [chromium] › tests/person-detail.spec.ts:435:3 › ContactHistorySection › Contact History section displays heading with icon (1.8s)
+  ✓  25 [chromium] › tests/person-detail.spec.ts:449:3 › ContactHistorySection › Contact History shows chronological log entries (2.3s)
+  ✓  26 [chromium] › tests/person-detail.spec.ts:469:3 › ContactHistorySection › Contact History displays various interaction types (2.1s)
+  ✓  27 [chromium] › tests/person-detail.spec.ts:482:3 › ContactHistorySection › Contact History entries show team member with role (1.9s)
+  ✓  28 [chromium] › tests/person-detail.spec.ts:494:3 › ContactHistorySection › Contact History entry edit icon opens edit form (2.1s)
+  ✓  29 [chromium] › tests/person-detail.spec.ts:512:3 › ContactHistorySection › Contact History entry edit saves changes (3.1s)
+  ✓  30 [chromium] › tests/person-detail.spec.ts:539:3 › ContactHistorySection › Contact History entry edit can be cancelled (3.1s)
+  ✓  31 [chromium] › tests/person-detail.spec.ts:567:3 › ContactHistorySection › Filter button is displayed in Contact History section (1.7s)
+  ✓  33 [chromium] › tests/person-detail.spec.ts:597:3 › ContactHistorySection › Add Entry button is displayed in Contact History section (1.7s)
+  ✓  32 [chromium] › tests/person-detail.spec.ts:577:3 › ContactHistorySection › Filter button opens filter options for contact history (2.3s)
+  ✓  34 [chromium] › tests/person-detail.spec.ts:607:3 › ContactHistorySection › Add Entry button opens contact history creation form (2.2s)
+  ✓  35 [chromium] › tests/person-detail.spec.ts:625:3 › ContactHistorySection › New contact history entry can be created successfully (3.3s)
+  ✘  36 [chromium] › tests/person-detail.spec.ts:664:3 › ContactHistorySection › Add Entry form validates required fields (2.2s)
+  ✓  37 [chromium] › tests/person-detail.spec.ts:683:3 › ContactHistorySection › Add Entry form can be cancelled (2.3s)
+  ✓  38 [chromium] › tests/person-detail.spec.ts:723:3 › AssociatedClientsSection › Associated Clients section displays heading with icon (1.8s)
+  ✓  39 [chromium] › tests/person-detail.spec.ts:707:3 › ContactHistorySection › Contact History section shows empty state when no history exists (1.8s)
+  ✓  40 [chromium] › tests/person-detail.spec.ts:737:3 › AssociatedClientsSection › Associated Clients shows client cards with all details (2.2s)
+  ✓  41 [chromium] › tests/person-detail.spec.ts:758:3 › AssociatedClientsSection › Client card displays correct status for each client (2.4s)
+  ✓  42 [chromium] › tests/person-detail.spec.ts:775:3 › AssociatedClientsSection › Client card displays correct industry for each client (2.0s)
+  ✓  43 [chromium] › tests/person-detail.spec.ts:793:3 › AssociatedClientsSection › View Client Detail Page button navigates to client detail page (2.2s)
+  ✓  44 [chromium] › tests/person-detail.spec.ts:806:3 › AssociatedClientsSection › Each View Client Detail Page button navigates correctly (2.5s)
+  ✓  45 [chromium] › tests/person-detail.spec.ts:824:3 › AssociatedClientsSection › Associated Clients section shows empty state when no clients exist (2.1s)
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+
+  1) [chromium] › tests/person-detail.spec.ts:664:3 › ContactHistorySection › Add Entry form validates required fields 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('.form-error')
+    Expected: visible
+    Error: strict mode violation: locator('.form-error') resolved to 3 elements:
+        1) <span class="form-error">Date/time is required</span> aka getByText('Date/time is required')
+        2) <span class="form-error">Interaction type is required</span> aka getByText('Interaction type is required')
+        3) <span class="form-error">Summary is required</span> aka getByText('Summary is required')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 15000ms[22m
+    [2m  - waiting for locator('.form-error')[22m
+
+
+      675 |
+      676 |     // Validation error should appear for summary (required field)
+    > 677 |     await expect(page.locator('.form-error')).toBeVisible()
+          |                                               ^
+      678 |
+      679 |     // Modal should still be open
+      680 |     await expect(page.getByTestId('contact-history-form-modal')).toBeVisible()
+        at /repo/apps/SalesCRM/tests/person-detail.spec.ts:677:47
+
+    Error Context: test-results/person-detail-ContactHisto-39fae-m-validates-required-fields-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/person-detail.spec.ts:664:3 › ContactHistorySection › Add Entry form validates required fields 
+  44 passed (1.1m)
+
+Tests failed. Processing recordings...
+
+=== REPLAY RECORDINGS METADATA ===
+{"id":"797a6a37-48cd-4551-92c7-88762e44464a","testResult":"passed","duration":0}
+{"id":"fb2fc798-ed73-4331-a9a3-89d8b816edbe","testResult":"passed","duration":0}
+{"id":"770443e4-96aa-46da-a61a-05258e8617a3","testResult":"passed","duration":0}
+{"id":"20d215e9-da38-44e1-9213-5403c4478824","testResult":"passed","duration":0}
+{"id":"98a58e3f-25ad-4573-840b-8446f4178658","testResult":"passed","duration":0}
+{"id":"935ec6a9-a263-438d-a3c4-4f4cb61dc509","testResult":"passed","duration":0}
+{"id":"4d6c9be3-8193-4865-9751-97bcd113026b","testResult":"passed","duration":0}
+{"id":"4bd4ef10-29f4-472f-9699-2d33a7191621","testResult":"passed","duration":0}
+{"id":"b70163c7-7da9-46e0-87e9-053b0502db11","testResult":"passed","duration":0}
+{"id":"ff7ed917-4392-4be8-acd2-0133c9caa403","testResult":"passed","duration":0}
+{"id":"fc8f954e-7055-4e18-8899-31207e3667df","testResult":"passed","duration":0}
+{"id":"d34e3068-c9c4-4c59-b6ef-8d1aece77313","testResult":"passed","duration":0}
+{"id":"510fd2d9-3ad0-403e-9385-31125781e7f7","testResult":"passed","duration":0}
+{"id":"51fb5ff9-dd20-4903-9410-3af21eec6c73","testResult":"passed","duration":0}
+{"id":"97a2ab92-38de-4f18-b9b4-6661479ced24","testResult":"passed","duration":0}
+{"id":"c4298c83-a3a4-404d-b2de-33d5af81fb7f","testResult":"passed","duration":0}
+{"id":"742f1a1a-54ff-48d6-a260-d2c423d0c8ba","testResult":"passed","duration":0}
+{"id":"d73d058b-ae45-4c2e-b852-3438f1b581e2","testResult":"passed","duration":0}
+{"id":"43bbec98-bb1a-44bf-8708-a999a7b94653","testResult":"passed","duration":0}
+{"id":"ae252ec7-6077-4930-bc01-6479dada40e9","testResult":"passed","duration":0}
+{"id":"6e07bc3c-e995-4dde-94f4-d87833bc24f1","testResult":"passed","duration":0}
+{"id":"6bac4c5e-7eb5-4450-acf9-5d5d62ae0585","testResult":"passed","duration":0}
+{"id":"23ecbc49-6c0e-4444-b45d-9b6622ecd643","testResult":"passed","duration":0}
+{"id":"4c5da938-87c4-4865-8c88-f4a6fdf502b6","testResult":"passed","duration":0}
+{"id":"e1fc15cd-3654-4eae-95b3-011f6ccb8afd","testResult":"passed","duration":0}
+{"id":"b3741ee4-fa54-40c5-8f53-38ab7541f2ca","testResult":"passed","duration":0}
+{"id":"40413786-2230-4174-a04b-f0c0891f6a4a","testResult":"passed","duration":0}
+{"id":"0a2feed9-6a76-40f0-a295-647c2f54c903","testResult":"passed","duration":0}
+{"id":"3fc80d5c-8731-4869-9056-71c7adb0df87","testResult":"passed","duration":0}
+{"id":"24d52559-0fcb-4c83-8b91-47a6dcdcc58c","testResult":"passed","duration":0}
+{"id":"5711a1a0-afb6-45a1-bd34-20ace52003ea","testResult":"passed","duration":0}
+{"id":"f2656bd7-b08b-4500-9a35-3709f92b261e","testResult":"passed","duration":0}
+{"id":"a666393f-0648-4cd2-8487-8c50bf2679f2","testResult":"passed","duration":0}
+{"id":"105fe2a9-6b31-4593-b930-6caa0eeaef85","testResult":"passed","duration":0}
+{"id":"23134521-f12c-41f0-844b-7cc55ec469b8","testResult":"passed","duration":0}
+{"id":"4fc7ece3-a620-4331-b353-41212f997a97","testResult":"failed","duration":0}
+{"id":"1b8909dd-4cd8-4e76-af90-246b9ce81a19","testResult":"passed","duration":0}
+{"id":"8e73fce2-481f-41d0-bc65-9a8af566b165","testResult":"passed","duration":0}
+{"id":"5ab2c16d-5d23-4b91-a39f-b8c12b6f207a","testResult":"passed","duration":0}
+{"id":"f6acc037-454a-44f2-8171-1156ee7b68b4","testResult":"passed","duration":0}
+{"id":"10095b6b-8714-4761-975c-0b9910f3e903","testResult":"passed","duration":0}
+{"id":"1407c42e-52da-4a57-bb89-af628d304187","testResult":"passed","duration":0}
+{"id":"2dbe1308-bec9-433a-80ec-c78f88e8289f","testResult":"passed","duration":0}
+{"id":"2a22d370-34ad-4039-97f0-2dd8d38e2a13","testResult":"passed","duration":0}
+{"id":"deb93632-4948-4621-98c7-032b5186d6ee","testResult":"passed","duration":0}
+=== END REPLAY RECORDINGS METADATA ===
+
+Uploading recording 4fc7ece3-a620-4331-b353-41212f997a97 (undefined, duration: 0ms)...
+⠙ Initializing…
+Uploading recordings...
+   4fc7ece3…  Add Entry form validates required fields  21s ago  1.8s   
+
+Uploaded recordings
+ ✔  4fc7ece3…  Add Entry form validates required fields  24s ago  1.8s  (uploaded) 
+
+View recording at:
+https://app.replay.io/recording/4fc7ece3-a620-4331-b353-41212f997a97
+REPLAY UPLOADED: 4fc7ece3-a620-4331-b353-41212f997a97
+
+Cleaning up...
+Deleting branch: test-worker-1771904525700-ls37ln
+⠙ Initializing…
+All recordings deleted
