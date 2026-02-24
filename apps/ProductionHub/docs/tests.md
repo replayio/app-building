@@ -6,7 +6,302 @@
 
 ## CalendarPage (/calendar)
 
-<!-- Tests for CalendarPage will be added by PlanPage tasks -->
+Components: CalendarHeader, CalendarGrid, RunDetailsPopup
+
+### CalendarHeader
+
+#### CAL-HDR-1: Page title displays "Production Calendar"
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** the page title "Production Calendar" is displayed as a large heading
+
+#### CAL-HDR-2: Prev button is displayed
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** a "Prev" button is displayed in the calendar controls area
+
+#### CAL-HDR-3: Today button is displayed
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** a "Today" button is displayed between the "Prev" and "Next" buttons
+
+#### CAL-HDR-4: Next button is displayed
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** a "Next" button is displayed to the right of the "Today" button
+
+#### CAL-HDR-5: Month and year display shows the current calendar period
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar and the current date is in July 2024
+- **Then** the text "July 2024" is displayed to the right of the navigation buttons
+
+#### CAL-HDR-6: Prev button navigates to the previous month
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar viewing "July 2024" in Monthly view
+- **When** the user clicks the "Prev" button
+- **Then** the calendar updates to display "June 2024" and shows the day grid for June 2024
+
+#### CAL-HDR-7: Next button navigates to the next month
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar viewing "July 2024" in Monthly view
+- **When** the user clicks the "Next" button
+- **Then** the calendar updates to display "August 2024" and shows the day grid for August 2024
+
+#### CAL-HDR-8: Today button navigates to the current month
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar viewing a month other than the current month (e.g., "March 2024" when the current date is in July 2024)
+- **When** the user clicks the "Today" button
+- **Then** the calendar updates to display the current month (e.g., "July 2024")
+
+#### CAL-HDR-9: Daily/Weekly/Monthly view toggle is displayed
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** three toggle buttons labeled "Daily", "Weekly", and "Monthly" are displayed in the top-right area of the calendar controls
+
+#### CAL-HDR-10: Monthly view is selected by default
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** the "Monthly" toggle button is visually active/selected and the calendar displays a monthly grid
+
+#### CAL-HDR-11: Clicking Daily toggle switches to daily view
+- **Components:** CalendarHeader, CalendarGrid
+- **Given** the user is on /calendar in Monthly view
+- **When** the user clicks the "Daily" toggle button
+- **Then** the "Daily" button becomes visually active/selected
+- **And** the calendar grid updates to show a single-day view with time slots
+- **And** the month/year display updates to show the current date (e.g., "July 15, 2024")
+- **And** the Prev/Next buttons now navigate by day
+
+#### CAL-HDR-12: Clicking Weekly toggle switches to weekly view
+- **Components:** CalendarHeader, CalendarGrid
+- **Given** the user is on /calendar in Monthly view
+- **When** the user clicks the "Weekly" toggle button
+- **Then** the "Weekly" button becomes visually active/selected
+- **And** the calendar grid updates to show a single-week view with day columns
+- **And** the month/year display updates to show the week range (e.g., "Jul 14 - Jul 20, 2024")
+- **And** the Prev/Next buttons now navigate by week
+
+#### CAL-HDR-13: Clicking Monthly toggle returns to monthly view
+- **Components:** CalendarHeader, CalendarGrid
+- **Given** the user is on /calendar in Daily or Weekly view
+- **When** the user clicks the "Monthly" toggle button
+- **Then** the "Monthly" button becomes visually active/selected
+- **And** the calendar grid updates to show the full monthly grid
+- **And** the Prev/Next buttons navigate by month
+
+#### CAL-HDR-14: New Production Run button is displayed
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** a blue "+ New Production Run" button is displayed in the top-right area of the calendar controls, to the right of the view toggle buttons
+
+#### CAL-HDR-15: New Production Run button opens a creation form
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar
+- **When** the user clicks the "+ New Production Run" button
+- **Then** a modal or form is displayed with fields for selecting a recipe, setting start date/time, end date/time, planned quantity, and optional notes
+- **When** the user selects recipe "Recipe v2.1 (Widget-A)", sets start date "July 5, 2024 08:00 AM", end date "July 5, 2024 05:00 PM", quantity "500 Units", and submits
+- **Then** the modal closes and a new production run event card appears on July 5 in the calendar grid
+- **And** the new run persists after navigating away and returning to /calendar
+
+#### CAL-HDR-16: Filter by Status dropdown is displayed
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** a "Filter by Status" dropdown is displayed below the navigation buttons on the left side
+
+#### CAL-HDR-17: Filter by Status dropdown shows status options
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar
+- **When** the user clicks the "Filter by Status" dropdown
+- **Then** a dropdown menu appears with status options including "All", "On Track", "Material Shortage", "Scheduled", "In Progress", and "Pending Approval"
+
+#### CAL-HDR-18: Selecting a status filter hides non-matching runs
+- **Components:** CalendarHeader, CalendarGrid
+- **Given** the user is on /calendar viewing multiple production run events with different statuses
+- **When** the user selects "Material Shortage" from the "Filter by Status" dropdown
+- **Then** only production run event cards with status "Material Shortage" are displayed in the calendar grid
+- **And** event cards with other statuses are hidden
+
+#### CAL-HDR-19: Selecting "All" in the filter shows all runs
+- **Components:** CalendarHeader, CalendarGrid
+- **Given** the user is on /calendar with the filter set to "Material Shortage"
+- **When** the user selects "All" from the "Filter by Status" dropdown
+- **Then** all production run event cards are displayed in the calendar grid regardless of status
+
+#### CAL-HDR-20: Legend displays color coding for statuses
+- **Components:** CalendarHeader
+- **Given** the user navigates to /calendar
+- **Then** a legend is displayed showing "Legend:" followed by "On Track" in green text, "Material Shortage" in red text, and "Scheduled" in yellow text
+
+### CalendarGrid
+
+#### CAL-GRID-1: Monthly grid displays day-of-week column headers
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar in Monthly view
+- **Then** the calendar grid displays seven column headers: "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+
+#### CAL-GRID-2: Monthly grid displays day cells with date numbers
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar in Monthly view viewing July 2024
+- **Then** the calendar grid displays a grid of day cells with date numbers 1 through 31 for July
+- **And** cells for trailing days of the previous month (e.g., June 28-30) and leading days of the next month (e.g., Aug 1-3) are shown in a dimmed style
+
+#### CAL-GRID-3: Production run event cards are displayed on the correct dates
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run for "Widget-A (Recipe v2.1) | 500 Units" is scheduled on July 1, 2024
+- **Then** an event card labeled "Widget-A (Recipe v2.1) | 500 Units | Status: Scheduled" appears in the July 1 cell
+
+#### CAL-GRID-4: Event cards display product name, recipe, quantity, and status
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and production runs exist
+- **Then** each event card displays the format "[Product Name] (Recipe [version]) | [Quantity] Units | Status: [Status]"
+
+#### CAL-GRID-5: On Track events are displayed with green background
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run has status "On Track"
+- **Then** the event card for that run is displayed with a green background color
+- **And** a green checkmark icon is displayed on the event card
+
+#### CAL-GRID-6: Material Shortage events are displayed with red/pink background
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run has status "Material Shortage"
+- **Then** the event card for that run is displayed with a red/pink background color
+- **And** a red warning triangle icon is displayed on the event card
+
+#### CAL-GRID-7: Scheduled events are displayed with yellow background
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run has status "Scheduled"
+- **Then** the event card for that run is displayed with a yellow background color
+
+#### CAL-GRID-8: In Progress events are displayed with a distinct color
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run has status "In Progress"
+- **Then** the event card for that run is displayed with a teal/cyan background color distinguishing it from other statuses
+
+#### CAL-GRID-9: Pending Approval events are displayed with a distinct color
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run has status "Pending Approval"
+- **Then** the event card for that run is displayed with an amber/orange background color distinguishing it from other statuses
+
+#### CAL-GRID-10: Multi-day events span across multiple day cells
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and a production run for "Super-Widget (Recipe v3.5)" is scheduled from Monday July 8 to Friday July 12
+- **Then** the event card spans horizontally across the Mon, Tue, Wed, Thu, and Fri cells of that week row
+
+#### CAL-GRID-11: Clicking an event card opens the RunDetailsPopup
+- **Components:** CalendarGrid, RunDetailsPopup
+- **Given** the user is on /calendar and an event card for "Mega-Unit (Recipe v1.2) | 300 Units | Status: Scheduled" is displayed on July 19
+- **When** the user clicks on that event card
+- **Then** the RunDetailsPopup opens showing details for that production run including the run title, start/end times, quantity, status, materials, and notes
+
+#### CAL-GRID-12: Multiple events on the same day are stacked within the cell
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and two or more production runs are scheduled on the same day
+- **Then** the event cards are stacked vertically within that day cell so all events are visible
+
+#### CAL-GRID-13: Empty day cells show no event cards
+- **Components:** CalendarGrid
+- **Given** the user navigates to /calendar and July 3 has no scheduled production runs
+- **Then** the July 3 cell is empty with no event cards displayed
+
+#### CAL-GRID-14: Drag-and-drop an event card to reschedule a run
+- **Components:** CalendarGrid
+- **Given** the user is on /calendar in Monthly view and a production run event card is displayed on July 16
+- **When** the user drags the event card from July 16 and drops it onto July 15
+- **Then** a tooltip or confirmation appears indicating the proposed reschedule (e.g., "Reschedule to July 15-16?")
+- **When** the user confirms the reschedule
+- **Then** the event card moves to the new date(s) in the calendar grid
+- **And** the run's start and end dates are updated and the change persists after refreshing
+
+#### CAL-GRID-15: Drag-and-drop reschedule can be cancelled
+- **Components:** CalendarGrid
+- **Given** the user is on /calendar and starts dragging an event card to a new date
+- **When** the reschedule confirmation tooltip appears and the user cancels or drops the card back to the original position
+- **Then** the event card remains on its original date and no changes are made to the run
+
+#### CAL-GRID-16: Weekly view displays single week with day columns
+- **Components:** CalendarGrid
+- **Given** the user is on /calendar in Weekly view
+- **Then** the grid shows seven day columns (Sun through Sat) for the selected week with time slots, and production run events are shown within their scheduled time ranges
+
+#### CAL-GRID-17: Daily view displays a single day with time slots
+- **Components:** CalendarGrid
+- **Given** the user is on /calendar in Daily view
+- **Then** the grid shows a single day layout with time slots along the vertical axis, and production run events are displayed as blocks spanning their scheduled time ranges
+
+### RunDetailsPopup
+
+#### CAL-POP-1: RunDetailsPopup displays the run title with recipe name
+- **Components:** RunDetailsPopup
+- **Given** the user is on /calendar and clicks on a production run event card for "Mega-Unit (Recipe v1.2)"
+- **Then** the RunDetailsPopup opens and displays the heading "Run Details: Mega-Unit (Recipe v1.2)"
+
+#### CAL-POP-2: Start date/time is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run starting Jul 22, 2024 at 08:00 AM
+- **Then** the popup displays "Start:" with value "Jul 22, 2024 08:00 AM"
+
+#### CAL-POP-3: End date/time is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run ending Jul 22, 2024 at 05:00 PM
+- **Then** the popup displays "End:" with value "Jul 22, 2024 05:00 PM"
+
+#### CAL-POP-4: Quantity is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run with quantity 300 Units
+- **Then** the popup displays "Quantity:" with value "300 Units"
+
+#### CAL-POP-5: Status is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run with status "Scheduled"
+- **Then** the popup displays "Status:" with value "Scheduled"
+
+#### CAL-POP-6: Materials list with stock levels is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run that requires materials
+- **Then** the popup displays "Materials:" followed by a list of materials with their stock levels, each showing an availability indicator (e.g., "OK for all")
+
+#### CAL-POP-7: Notes field is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run with notes "Priority order."
+- **Then** the popup displays "Notes:" with value "Priority order."
+
+#### CAL-POP-8: Edit Run button is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open
+- **Then** a blue "Edit Run" button is displayed at the bottom of the popup
+
+#### CAL-POP-9: Edit Run button navigates to the run details page
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a production run with ID "RUN-12345"
+- **When** the user clicks the "Edit Run" button
+- **Then** the app navigates to /runs/RUN-12345 (the RunDetailsPage for that specific run)
+
+#### CAL-POP-10: Close button is displayed
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open
+- **Then** a "Close" button is displayed at the bottom of the popup, to the right of the "Edit Run" button
+
+#### CAL-POP-11: Close button closes the popup
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open
+- **When** the user clicks the "Close" button
+- **Then** the RunDetailsPopup closes and the calendar grid is fully visible again
+
+#### CAL-POP-12: Popup displays empty notes when run has no notes
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run that has no notes
+- **Then** the "Notes:" field is empty or displays a placeholder indicating no notes
+
+#### CAL-POP-13: Popup materials show shortage indicators when materials are insufficient
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open for a run with material shortages
+- **Then** the "Materials:" list displays the affected materials with a shortage indicator instead of "OK"
+
+#### CAL-POP-14: Clicking outside the popup closes it
+- **Components:** RunDetailsPopup
+- **Given** the RunDetailsPopup is open
+- **When** the user clicks outside the popup area on the calendar grid
+- **Then** the RunDetailsPopup closes
 
 ## RunDetailsPage (/runs/:runId)
 

@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageCalendar: Decide on components, add sections to docs/tests.md",
-        "PlanComponentCalendarHeader: Add test entries for CalendarHeader (Prev/Today/Next buttons, month/year display, Daily/Weekly/Monthly view toggle, New Production Run button, Filter by Status dropdown)",
-        "PlanComponentCalendarGrid: Add test entries for CalendarGrid (monthly grid with day cells, production run event cards color-coded by status, legend for On Track/Material Shortage/Scheduled)",
-        "PlanComponentRunDetailsPopup: Add test entries for RunDetailsPopup (popup with Start/End/Quantity/Status/Materials/Notes, Edit Run button navigates to run details, Close button, drag-and-drop reschedule tooltip)"
-      ],
-      "timestamp": "2026-02-24T23:27:14.266Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageRecipes: Decide on components, add sections to docs/tests.md",
         "PlanComponentRecipesHeader: Add test entries for RecipesHeader (search bar, Filter Status dropdown, Add Recipe button)",
         "PlanComponentRecipesTable: Add test entries for RecipesTable (Recipe Name/Product/Version/Status/Actions columns, Active/Draft/Archived status badges, edit icon, delete icon, row click to show details, pagination)",
