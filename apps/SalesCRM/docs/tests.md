@@ -2631,7 +2631,7 @@ Components: EmailNotificationsSection, ImportExportSection, WebhooksSection, Add
 
 #### Modal displays name, URL, platform, and event fields
 - **Initial state:** The AddEditWebhookModal is open (via clicking "Add Webhook").
-- **Expected:** The modal contains: a Name text input field, a platform selection control with options for Zapier, n8n, and Custom, a URL text input field, and a set of event checkboxes for subscribing to events (e.g., "New Client Created", "Deal Stage Changed", "Task Completed", etc.). The modal has "Cancel" and "Save" (or "Create") buttons at the bottom.
+- **Expected:** The modal contains: a Name text input field, a platform selection control with options for Zapier, n8n, Discord, and Custom, a URL text input field, and a set of event checkboxes for subscribing to events (e.g., "New Client Created", "Deal Stage Changed", "Task Completed", etc.). The modal has "Cancel" and "Save" (or "Create") buttons at the bottom.
 
 #### Platform selection shows Zapier setup guide
 - **Initial state:** The AddEditWebhookModal is open.
@@ -2642,6 +2642,11 @@ Components: EmailNotificationsSection, ImportExportSection, WebhooksSection, Add
 - **Initial state:** The AddEditWebhookModal is open.
 - **Action:** User selects "n8n" as the platform.
 - **Expected:** A platform-specific setup guide is displayed with step-by-step instructions for obtaining the n8n webhook URL. The guide explains where to find the webhook URL in n8n (e.g., "Add a Webhook node to your workflow, copy the webhook URL from the node settings"). A URL format hint is shown (e.g., "https://your-n8n-instance.com/webhook/..."). A platform-specific tip is displayed explaining that n8n has separate test and production URLs and to use the production URL. The URL input placeholder updates to reflect the n8n URL format.
+
+#### Platform selection shows Discord setup guide
+- **Initial state:** The AddEditWebhookModal is open.
+- **Action:** User selects "Discord" as the platform.
+- **Expected:** A platform-specific setup guide is displayed with step-by-step instructions for obtaining the Discord webhook URL. The guide explains where to find the webhook URL in Discord (e.g., "Go to Server Settings > Integrations > Webhooks, click 'New Webhook', select the target channel, and copy the webhook URL"). A URL format hint is shown (e.g., "https://discord.com/api/webhooks/..."). A platform-specific tip is displayed explaining that Discord webhooks accept a JSON payload and may require an embeds array structure for rich message formatting. The URL input placeholder updates to reflect the Discord URL format.
 
 #### Platform selection shows Custom endpoint setup guide
 - **Initial state:** The AddEditWebhookModal is open.
@@ -2690,8 +2695,8 @@ Components: EmailNotificationsSection, ImportExportSection, WebhooksSection, Add
 
 #### URL placeholder updates based on selected platform
 - **Initial state:** The AddEditWebhookModal is open with no platform selected.
-- **Action:** User selects "Zapier", then "n8n", then "Custom" as the platform.
-- **Expected:** When "Zapier" is selected, the URL input placeholder shows a Zapier-style URL hint (e.g., "https://hooks.zapier.com/hooks/catch/..."). When "n8n" is selected, the placeholder changes to an n8n-style URL hint (e.g., "https://your-n8n-instance.com/webhook/..."). When "Custom" is selected, the placeholder changes to a generic URL hint (e.g., "https://your-server.com/webhook").
+- **Action:** User selects "Zapier", then "n8n", then "Discord", then "Custom" as the platform.
+- **Expected:** When "Zapier" is selected, the URL input placeholder shows a Zapier-style URL hint (e.g., "https://hooks.zapier.com/hooks/catch/..."). When "n8n" is selected, the placeholder changes to an n8n-style URL hint (e.g., "https://your-n8n-instance.com/webhook/..."). When "Discord" is selected, the placeholder changes to a Discord-style URL hint (e.g., "https://discord.com/api/webhooks/..."). When "Custom" is selected, the placeholder changes to a generic URL hint (e.g., "https://your-server.com/webhook").
 
 ## UsersListPage - Team (/users)
 

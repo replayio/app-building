@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageSettingsPage: Decide on components for SettingsPage, add sections to docs/tests.md",
-        "PlanComponentSettingsEmailNotifications: Add test entries for Email Notifications section (7 toggleable preferences, only visible when authenticated, default all enabled)",
-        "PlanComponentSettingsImportExport: Add test entries for Import & Export section (import buttons for clients/deals/tasks/contacts CSV, export buttons for clients/deals/tasks CSV)",
-        "PlanComponentSettingsWebhooks: Add test entries for Webhooks section (webhook list with enable/disable toggle, add/edit modal with name/URL/events/platform guide for Zapier/n8n/Discord, payload format display, delete with confirmation)"
-      ],
-      "timestamp": "2026-02-23T21:27:29.215Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageUsersListPage: Decide on components for UsersListPage (Team), add sections to docs/tests.md",
         "PlanComponentUserCards: Add test entries for user cards grid (avatar, name, email, active deals count, open tasks count, click navigates to /users/:userId)"
       ],
