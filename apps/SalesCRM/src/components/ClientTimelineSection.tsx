@@ -165,7 +165,7 @@ export default function ClientTimelineSection({ clientId, refreshKey }: ClientTi
         <div className="timeline-list" data-testid="timeline-list">
           {events.map(event => (
             <div key={event.id} className="timeline-entry" data-testid="timeline-entry">
-              <div className="timeline-entry-icon">
+              <div className="timeline-entry-icon" data-testid="timeline-icon">
                 {getEventIcon(event.event_type)}
               </div>
               <div className="timeline-entry-content">
@@ -187,10 +187,10 @@ export default function ClientTimelineSection({ clientId, refreshKey }: ClientTi
                       {event.title}
                     </button>
                   ) : (
-                    <span>{event.title}</span>
+                    <span data-testid="timeline-title">{event.title}</span>
                   )}
                   {event.description && (
-                    <span className="timeline-entry-description">{event.description}</span>
+                    <span className="timeline-entry-description" data-testid="timeline-description">{event.description}</span>
                   )}
                 </div>
                 {event.actor && (

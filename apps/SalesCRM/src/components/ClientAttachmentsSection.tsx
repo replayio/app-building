@@ -144,8 +144,8 @@ export default function ClientAttachmentsSection({ clientId, refreshKey }: Clien
                 {getFileIcon(att.file_type, att.filename)}
               </span>
               <span className="client-attachment-name" data-testid="attachment-filename">{att.filename}</span>
-              <span className="client-attachment-type">{getFileTypeLabel(att.file_type, att.filename)}</span>
-              <span className="client-attachment-date">Created: {formatDate(att.created_at)}</span>
+              <span className="client-attachment-type" data-testid="attachment-type-label">{getFileTypeLabel(att.file_type, att.filename)}</span>
+              <span className="client-attachment-date" data-testid="attachment-created-date">Created: {formatDate(att.created_at)}</span>
               <span className="client-attachment-deal" data-testid="attachment-deal-link">
                 Linked Deal: {att.deal_name || 'None'}
               </span>

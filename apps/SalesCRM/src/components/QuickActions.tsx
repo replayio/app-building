@@ -416,6 +416,7 @@ function AddAttachmentModal({ clientId, onClose, onSaved }: { clientId: string; 
             <div
               className="import-dropzone"
               onClick={() => fileInputRef.current?.click()}
+              data-testid="add-attachment-dropzone"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="import-dropzone-icon">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -560,9 +561,9 @@ function AddPersonModal({ clientId, onClose, onSaved }: { clientId: string; onCl
             <div className="form-field">
               <label className="form-label">Person *</label>
               {selectedPerson ? (
-                <div className="selected-person-chip">
+                <div className="selected-person-chip" data-testid="add-person-selected">
                   {selectedPerson.name}
-                  <button className="tag-input-remove" onClick={() => setSelectedPerson(null)}>
+                  <button className="tag-input-remove" onClick={() => setSelectedPerson(null)} data-testid="add-person-clear-selection">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                   </button>
                 </div>
@@ -723,10 +724,11 @@ function DealDropdown({ deals, value, onChange, testIdPrefix }: { deals: { id: s
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       {open && (
-        <div className="form-dropdown-menu">
+        <div className="form-dropdown-menu" data-testid={`${testIdPrefix}-deal-dropdown-menu`}>
           <button
             className={`form-dropdown-option ${!value ? 'selected' : ''}`}
             onClick={() => { onChange(''); setOpen(false) }}
+            data-testid={`${testIdPrefix}-deal-option-none`}
           >
             None
           </button>
@@ -735,6 +737,7 @@ function DealDropdown({ deals, value, onChange, testIdPrefix }: { deals: { id: s
               key={d.id}
               className={`form-dropdown-option ${value === d.id ? 'selected' : ''}`}
               onClick={() => { onChange(d.id); setOpen(false) }}
+              data-testid={`${testIdPrefix}-deal-option`}
             >
               {d.name}
             </button>
@@ -768,7 +771,7 @@ function StageDropdown({ value, onChange }: { value: string; onChange: (v: strin
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       {open && (
-        <div className="form-dropdown-menu">
+        <div className="form-dropdown-menu" data-testid="add-deal-stage-dropdown-menu">
           {STAGES.map(s => (
             <button
               key={s}

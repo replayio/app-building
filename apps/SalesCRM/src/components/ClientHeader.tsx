@@ -173,9 +173,9 @@ export default function ClientHeader({
               <div className="tag-input-wrapper">
                 <div className="tag-input-tags">
                   {localTags.map(tag => (
-                    <span key={tag} className="tag-input-chip">
+                    <span key={tag} className="tag-input-chip" data-testid="client-tag-editor-chip">
                       {tag}
-                      <button className="tag-input-remove" onClick={() => removeTag(tag)}>
+                      <button className="tag-input-remove" onClick={() => removeTag(tag)} data-testid="client-tag-remove">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                       </button>
                     </span>

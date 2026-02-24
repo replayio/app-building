@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Build ClientDetailPage and all components (ClientHeader, QuickActions, SourceInfoSection, TasksSection with checkboxes/due dates/deals, DealsSection, AttachmentsSection with file upload, PeopleSection, TimelineSection) with backend functions and modals",
-        "FixViolation: Add all missing data-testid attributes to ClientDetailPage components"
-      ],
-      "timestamp": "2026-02-24T03:49:18.685Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Write Playwright tests for ClientDetailPage (all sections and components)",
         "RunTests: Verify all ClientDetailPage tests pass"
       ],
