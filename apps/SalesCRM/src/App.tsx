@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar'
 import ClientsListPage from './pages/ClientsListPage'
 import TasksListPage from './pages/TasksListPage'
 import ClientDetailPage from './pages/ClientDetailPage'
+import PersonDetailPage from './pages/PersonDetailPage'
 
 function AppLayout() {
   return (
@@ -28,7 +29,7 @@ function App() {
             <Route path="/dashboard" element={<PlaceholderPage name="Dashboard" />} />
             <Route path="/clients" element={<ClientsListPage />} />
             <Route path="/clients/:clientId" element={<ClientDetailPage />} />
-            <Route path="/individuals/:individualId" element={<PlaceholderPage name="Person Detail" />} />
+            <Route path="/individuals/:individualId" element={<PersonDetailPage />} />
             <Route path="/deals" element={<PlaceholderPage name="Deals" />} />
             <Route path="/deals/:dealId" element={<PlaceholderPage name="Deal Detail" />} />
             <Route path="/tasks" element={<TasksListPage />} />
