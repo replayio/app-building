@@ -1957,6 +1957,11 @@ Components: TasksFilterBar, TaskCard, CreateTaskModal, TasksListContent
 - **Action:** User clicks "View Details" from the action menu.
 - **Expected:** The browser navigates to /tasks/5 and the TaskDetailPage is displayed.
 
+#### Action menu Edit opens EditTaskModal with task data pre-populated
+- **Initial state:** The three-dot action menu is open on a task card (e.g., "Finalize Q3 Marketing Plan" with priority "High", due date today at 5:00 PM, client "Acme Corp", assignee "Sarah J.").
+- **Action:** User clicks "Edit" from the action menu.
+- **Expected:** The EditTaskModal opens with all fields pre-populated: Title contains "Finalize Q3 Marketing Plan", Priority shows "High", Due Date shows the task's due date, Client shows "Acme Corp", Assignee shows "Sarah J.". The user can modify fields and save changes. On save, the task list updates to reflect the changes.
+
 #### Action menu Mark Complete updates task status
 - **Initial state:** The three-dot action menu is open on an open task card.
 - **Action:** User clicks "Mark Complete" from the action menu.

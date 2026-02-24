@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageTasksListPage: Decide on components for TasksListPage, add sections to docs/tests.md",
-        "PlanComponentTasksList: Add test entries for task cards (priority badge High/Medium/Low/Normal, title, due date, assignee avatar+name+role, action menu; click navigates to /tasks/:taskId)",
-        "PlanComponentTasksFilterAndCreate: Add test entries for filter control (filter dropdown + text input), New Task button and CreateTaskModal (title, description, due date, priority, client searchable dropdown, assignee user dropdown, validation)"
-      ],
-      "timestamp": "2026-02-23T21:27:08.605Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageTaskDetailPage: Decide on components for TaskDetailPage, add sections to docs/tests.md",
         "PlanComponentTaskDetails: Add test entries for task detail display (title, priority, status, due date, assignee user dropdown, associated client/deal links, mark complete button, cancel button)",
         "PlanComponentTaskNotes: Add test entries for notes section (list of notes, add note form, delete note button, note content/timestamp)"
