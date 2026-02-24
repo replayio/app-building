@@ -107,10 +107,12 @@ test.describe('TasksHeader', () => {
     // Success message shown
     await expect(page.getByTestId('task-success-message')).toContainText('Task created successfully')
 
-    // New task appears in list with High priority badge
+    // New task appears in list with High priority badge, due date, and assignee
     const taskCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: uniqueName })
     await expect(taskCard).toBeVisible({ timeout: 10000 })
     await expect(taskCard.locator('[data-testid^="task-priority-"]')).toContainText('High')
+    await expect(taskCard.locator('[data-testid^="task-due-date-"]')).toContainText('Due: Tomorrow,')
+    await expect(taskCard.locator('[data-testid^="task-assignee-"]')).toBeVisible()
 
     // Cross-page verification: task appears in client's Tasks section
     if (acmeClient) {

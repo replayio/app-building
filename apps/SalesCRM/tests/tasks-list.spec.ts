@@ -4,6 +4,9 @@ import { test, expect } from '@playwright/test'
 const createdTaskIds: string[] = []
 // Unique suffix per worker to avoid duplicates from fullyParallel
 let workerSuffix = ''
+// Client IDs stored at describe scope for URL assertions
+let acmeClientId = ''
+let globexClientId = ''
 
 test.describe('TasksList', () => {
   test.beforeAll(async ({ request }) => {
@@ -14,6 +17,8 @@ test.describe('TasksList', () => {
     const data = await res.json()
     const acmeClient = data.clients.find((c: { name: string }) => c.name === 'Acme Corp')
     const globexClient = data.clients.find((c: { name: string }) => c.name === 'Globex Solutions')
+    acmeClientId = acmeClient?.id || ''
+    globexClientId = globexClient?.id || ''
 
     const now = new Date()
     const tomorrow = new Date(now)
@@ -28,15 +33,15 @@ test.describe('TasksList', () => {
         title: `ListTest-High-Task${workerSuffix}`,
         priority: 'High',
         assignee: 'Sarah Jenkins',
-        assignee_role: 'PM',
+        assignee_role: 'CEO',
         client_id: acmeClient?.id,
         due_date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0).toISOString(),
       },
       {
         title: `ListTest-Medium-Task${workerSuffix}`,
         priority: 'Medium',
-        assignee: 'David Lee',
-        assignee_role: 'Sales',
+        assignee: 'Michael Chen',
+        assignee_role: 'CTO',
         client_id: globexClient?.id,
         due_date: tomorrow.toISOString(),
       },
@@ -44,7 +49,7 @@ test.describe('TasksList', () => {
         title: `ListTest-Low-Task${workerSuffix}`,
         priority: 'Low',
         assignee: 'Sarah Jenkins',
-        assignee_role: 'PM',
+        assignee_role: 'CEO',
         client_id: acmeClient?.id,
         due_date: nextMonth.toISOString(),
       },
@@ -163,21 +168,21 @@ test.describe('TasksList', () => {
   })
 
   test('Assignee displays avatar, abbreviated name, and role', async ({ page }) => {
-    // Sarah Jenkins (PM) should show as "Sarah J." with "(PM)"
+    // Sarah Jenkins (CEO) should show as "Sarah J." with "(CEO)"
     const sarahCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-High-Task${workerSuffix}` })
     await expect(sarahCard).toBeVisible({ timeout: 10000 })
     const sarahAssignee = sarahCard.locator('[data-testid^="task-assignee-"]')
     await expect(sarahAssignee.locator('.task-assignee-avatar')).toBeVisible()
     await expect(sarahAssignee.locator('.task-assignee-name')).toContainText('Sarah J.')
-    await expect(sarahAssignee.locator('.task-assignee-name')).toContainText('(PM)')
+    await expect(sarahAssignee.locator('.task-assignee-name')).toContainText('(CEO)')
 
-    // David Lee (Sales) should show as "David L." with "(Sales)"
-    const davidCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
-    await expect(davidCard).toBeVisible()
-    const davidAssignee = davidCard.locator('[data-testid^="task-assignee-"]')
-    await expect(davidAssignee.locator('.task-assignee-avatar')).toBeVisible()
-    await expect(davidAssignee.locator('.task-assignee-name')).toContainText('David L.')
-    await expect(davidAssignee.locator('.task-assignee-name')).toContainText('(Sales)')
+    // Michael Chen (CTO) should show as "Michael C." with "(CTO)"
+    const michaelCard = page.locator('[data-testid^="task-card-"]').filter({ hasText: `ListTest-Medium-Task${workerSuffix}` })
+    await expect(michaelCard).toBeVisible()
+    const michaelAssignee = michaelCard.locator('[data-testid^="task-assignee-"]')
+    await expect(michaelAssignee.locator('.task-assignee-avatar')).toBeVisible()
+    await expect(michaelAssignee.locator('.task-assignee-name')).toContainText('Michael C.')
+    await expect(michaelAssignee.locator('.task-assignee-name')).toContainText('(CTO)')
   })
 
   test('Tasks are ordered by due date with soonest first', async ({ page }) => {
@@ -235,7 +240,8 @@ test.describe('TasksList', () => {
     await page.getByTestId(`task-action-view-${taskId}`).click()
 
     // Should navigate to client detail page for Acme Corp
-    await expect(page).toHaveURL(/\/clients\//)
+    await expect(page).toHaveURL(new RegExp(`/clients/${acmeClientId}`))
+    await expect(page.locator('h1')).toContainText('Acme Corp')
   })
 
   test('Action menu "Edit" opens task edit dialog', async ({ page }) => {
@@ -250,9 +256,13 @@ test.describe('TasksList', () => {
     await actionBtn.click()
     await page.getByTestId(`task-action-edit-${taskId}`).click()
 
-    // Edit dialog should open pre-populated
+    // Edit dialog should open pre-populated with all task data
     await expect(page.getByTestId('task-form-modal')).toBeVisible()
     await expect(page.getByTestId('task-form-name')).toHaveValue(`ListTest-Medium-Task${workerSuffix}`)
+    await expect(page.getByTestId('task-form-due-date')).not.toHaveValue('')
+    await expect(page.getByTestId('task-form-priority-trigger')).toContainText('Medium')
+    await expect(page.getByTestId('task-form-assignee-trigger')).toContainText('Michael C.')
+    await expect(page.getByTestId('task-form-client-trigger')).toContainText('Globex')
 
     // Change priority from Medium to Low
     await page.getByTestId('task-form-priority-trigger').click()
@@ -452,7 +462,8 @@ test.describe('TasksList', () => {
     const taskName = taskCard.locator('[data-testid^="task-name-"]')
     await taskName.click()
 
-    // Should navigate to client detail page
-    await expect(page).toHaveURL(/\/clients\//)
+    // Should navigate to client detail page for Globex Solutions
+    await expect(page).toHaveURL(new RegExp(`/clients/${globexClientId}`))
+    await expect(page.locator('h1')).toContainText('Globex')
   })
 })

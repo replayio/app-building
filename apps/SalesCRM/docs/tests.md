@@ -1645,11 +1645,11 @@
 - **When** the user enters "Prepare quarterly report" as the Task Name
 - **And** selects a due date of tomorrow at 3:00 PM
 - **And** selects "High" as the Priority
-- **And** selects "Sarah J. (PM)" as the Assignee
+- **And** selects an assignee from the Assignee dropdown
 - **And** selects "Acme Corp" as the Client
 - **And** clicks save/submit
 - **Then** the dialog closes
-- **And** the new task "Prepare quarterly report" appears in the tasks list with a red "High" priority badge, the correct due date, and "Sarah J. (PM)" as assignee
+- **And** the new task "Prepare quarterly report" appears in the tasks list with a red "High" priority badge, the correct due date ("Due: Tomorrow, ..."), and the selected assignee visible
 - **And** a success message is shown (e.g., "Task created successfully")
 - **And** the task also appears in the associated client's Tasks section on the Client Detail Page
 
