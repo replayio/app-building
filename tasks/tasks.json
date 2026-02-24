@@ -1,21 +1,6 @@
 {
   "tasks": [
     {
-      "strategy": "strategies/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestDashboardPage: Write tests for DashboardPage (DashboardPageHeader, LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsTable, DateRangeFilter, CategoryFilter, NewTransactionButton)",
-        "WriteTestAccountsPage: Write tests for AccountsPage (AccountsPageHeader, StockAccountsList, InputAccountsList, OutputAccountsList, CreateAccountButton, AccountRowActions)",
-        "WriteTestAccountDetailPage: Write tests for AccountDetailPage (AccountHeader, TrackedMaterialsTable)",
-        "WriteTestMaterialsPage: Write tests for MaterialsPage (MaterialsToolbar, MaterialsFilterBar, MaterialsTable, Pagination)",
-        "WriteTestMaterialDetailPage: Write tests for MaterialDetailPage (MaterialHeader, AccountsDistribution, AllBatchesList, TransactionsHistory)",
-        "WriteTestBatchDetailPage: Write tests for BatchDetailPage (BatchHeader, BatchOverview, LineageDiagram, UsageHistoryTable)",
-        "WriteTestTransactionsPage: Write tests for TransactionsPage (TransactionsFilterBar, TransactionsTable, NewTransactionButton)",
-        "WriteTestTransactionDetailPage: Write tests for TransactionDetailPage (TransactionHeader, BasicInfoSection, QuantityTransfersTable, BatchesCreatedTable)",
-        "WriteTestNewTransactionPage: Write tests for NewTransactionPage (BasicInfoForm, QuantityTransfersList, BatchAllocationList)"
-      ],
-      "timestamp": "2026-02-24T04:24:10.414Z"
-    },
-    {
       "strategy": "strategies/tasks/build/testing.md",
       "subtasks": [
         "Unpack: Get all tests passing for InventoryTracker"
