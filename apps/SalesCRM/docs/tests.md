@@ -597,6 +597,240 @@ Components: ContactsSearchBar, ContactsTable, CreateContactModal, ContactsListCo
 
 ## SettingsPage (/settings)
 
+Components: EmailNotificationsSection, ImportExportSection, WebhooksSection, AddEditWebhookModal
+
+### EmailNotificationsSection
+
+#### Email Notifications section visible only when authenticated
+- **Initial state:** User is not authenticated (no active session).
+- **Action:** User navigates to /settings.
+- **Expected:** The Settings page loads. The Email Notifications section is not visible. The Import & Export and Webhooks sections are still displayed.
+
+#### Email Notifications section visible when authenticated
+- **Initial state:** User is authenticated with an active session.
+- **Action:** User navigates to /settings.
+- **Expected:** The Email Notifications section is visible with a heading (e.g., "Email Notifications"). It displays seven notification preference toggles, all enabled by default.
+
+#### Seven notification preference toggles displayed
+- **Initial state:** Authenticated user navigates to /settings. No prior preference changes have been made.
+- **Expected:** The Email Notifications section displays exactly seven toggle switches with labels: "Client Updated", "Deal Created", "Deal Stage Changed", "Task Created", "Task Completed", "Contact Added", and "Note Added". All seven toggles are in the enabled (on) state by default.
+
+#### Toggling Client Updated preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Client Updated" toggle is enabled.
+- **Action:** User clicks the "Client Updated" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the PUT /.netlify/functions/notification-preferences API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling Deal Created preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Deal Created" toggle is enabled.
+- **Action:** User clicks the "Deal Created" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling Deal Stage Changed preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Deal Stage Changed" toggle is enabled.
+- **Action:** User clicks the "Deal Stage Changed" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling Task Created preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Task Created" toggle is enabled.
+- **Action:** User clicks the "Task Created" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling Task Completed preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Task Completed" toggle is enabled.
+- **Action:** User clicks the "Task Completed" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling Contact Added preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Contact Added" toggle is enabled.
+- **Action:** User clicks the "Contact Added" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling Note Added preference off persists the change
+- **Initial state:** Authenticated user is on /settings. The "Note Added" toggle is enabled.
+- **Action:** User clicks the "Note Added" toggle to disable it.
+- **Expected:** The toggle switches to the disabled (off) state. The preference is saved via the API. Refreshing the page shows the toggle still in the disabled state.
+
+#### Toggling a preference back on persists the change
+- **Initial state:** Authenticated user is on /settings. The "Client Updated" toggle has been previously disabled.
+- **Action:** User clicks the "Client Updated" toggle to enable it.
+- **Expected:** The toggle switches to the enabled (on) state. The preference is saved via the API. Refreshing the page shows the toggle still in the enabled state.
+
+#### Multiple preferences can be toggled independently
+- **Initial state:** Authenticated user is on /settings. All toggles are enabled.
+- **Action:** User disables "Deal Created" and "Task Completed" toggles while leaving the other five enabled.
+- **Expected:** Only the "Deal Created" and "Task Completed" toggles are in the disabled state. The other five toggles remain enabled. All changes are persisted via the API. Refreshing the page shows the correct state for each toggle.
+
+### ImportExportSection
+
+#### Import & Export section displays heading and all buttons
+- **Initial state:** User navigates to /settings.
+- **Expected:** The Import & Export section is visible with a heading (e.g., "Import & Export"). The section displays import buttons for four entity types: "Import Clients", "Import Deals", "Import Tasks", and "Import Contacts". The section also displays export buttons for three entity types: "Export Clients", "Export Deals", and "Export Tasks".
+
+#### Import Clients button opens ImportDialog for clients
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Import Clients" button.
+- **Expected:** An ImportDialog modal opens with the title indicating clients import. The dialog displays a CSV column format specification table listing all supported columns (Name, Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired) with required/optional indicators and value descriptions. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### Import Deals button opens ImportDialog for deals
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Import Deals" button.
+- **Expected:** An ImportDialog modal opens with the title indicating deals import. The dialog displays a CSV column format specification table listing all supported columns (Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status) with required/optional indicators and value descriptions. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### Import Tasks button opens ImportDialog for tasks
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Import Tasks" button.
+- **Expected:** An ImportDialog modal opens with the title indicating tasks import. The dialog displays a CSV column format specification table listing all supported columns (Title, Description, Due Date, Priority, Client Name, Assignee) with required/optional indicators and value descriptions. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### Import Contacts button opens ImportDialog for contacts
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Import Contacts" button.
+- **Expected:** An ImportDialog modal opens with the title indicating contacts import. The dialog displays a CSV column format specification table listing all supported columns (Name, Title, Email, Phone, Location, Client Name) with required/optional indicators and value descriptions. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### Export Clients button downloads clients CSV
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Export Clients" button.
+- **Expected:** A CSV file is downloaded containing the client data. The CSV includes columns: Name, Type, Status, Tags, Source Type, Source Detail, Campaign, Channel, Date Acquired. Each row corresponds to a client in the system.
+
+#### Export Deals button downloads deals CSV
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Export Deals" button.
+- **Expected:** A CSV file is downloaded containing the deal data. The CSV includes columns: Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status. Each row corresponds to a deal in the system.
+
+#### Export Tasks button downloads tasks CSV
+- **Initial state:** User is on /settings. The Import & Export section is visible.
+- **Action:** User clicks the "Export Tasks" button.
+- **Expected:** A CSV file is downloaded containing the task data. The CSV includes columns: Title, Description, Due Date, Priority, Client Name, Assignee. Each row corresponds to a task in the system.
+
+#### Import dialog CSV import processes valid file and creates entities
+- **Initial state:** The ImportDialog for clients is open. User has a valid CSV file with client data matching the expected format.
+- **Action:** User uploads the CSV file and confirms the import.
+- **Expected:** The clients from the CSV are created via the bulk import API. The dialog shows a success message with the count of clients imported. After closing the dialog, navigating to /clients shows the newly imported clients.
+
+#### Import dialog CSV import shows validation errors for invalid data
+- **Initial state:** The ImportDialog for clients is open. User has a CSV file with invalid data (e.g., missing required Name column, invalid status value).
+- **Action:** User uploads the invalid CSV file and confirms the import.
+- **Expected:** The dialog displays per-row validation errors indicating which rows failed and why (e.g., "Row 3: Name is required", "Row 5: Invalid status 'Unknown'"). The error messages are specific enough for the user to correct the CSV.
+
+#### Import dialog Download CSV template button generates template
+- **Initial state:** The ImportDialog for any entity type is open.
+- **Action:** User clicks the "Download CSV template" button.
+- **Expected:** A CSV template file is downloaded containing the correct column headers for the entity type, with no data rows. The template can be used as a starting point for populating import data.
+
+#### Import dialog cancel button closes without importing
+- **Initial state:** The ImportDialog is open with a file selected.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The dialog closes. No data is imported. The system state remains unchanged.
+
+### WebhooksSection
+
+#### Webhooks section displays heading and Add Webhook button
+- **Initial state:** User navigates to /settings.
+- **Expected:** The Webhooks section is visible with a heading (e.g., "Webhooks"). An "Add Webhook" button is displayed. If no webhooks exist, an empty state message is shown (e.g., "No webhooks configured").
+
+#### Add Webhook button opens AddEditWebhookModal
+- **Initial state:** User is on /settings. The Webhooks section is visible.
+- **Action:** User clicks the "Add Webhook" button.
+- **Expected:** The AddEditWebhookModal opens with empty form fields and the title "Add Webhook" (or "Create Webhook"). The modal contains fields for Name, URL, platform selection, and event checkboxes.
+
+#### Webhook list displays configured webhooks
+- **Initial state:** User is on /settings. One or more webhooks have been configured (e.g., "Zapier Integration" pointing to https://hooks.zapier.com/...).
+- **Expected:** The Webhooks section displays a list of configured webhooks. Each webhook entry shows the webhook name (e.g., "Zapier Integration"), the URL (or a truncated version), an enable/disable toggle, an edit button, and a delete button.
+
+#### Clicking edit on a webhook opens AddEditWebhookModal in edit mode
+- **Initial state:** User is on /settings. A webhook named "Zapier Integration" exists in the list.
+- **Action:** User clicks the edit button on the "Zapier Integration" webhook entry.
+- **Expected:** The AddEditWebhookModal opens with all fields pre-populated with the existing webhook data: Name = "Zapier Integration", URL = the configured URL, platform selection matching the URL pattern, and the previously selected event checkboxes checked.
+
+#### Enable/disable toggle changes webhook active state
+- **Initial state:** User is on /settings. A webhook named "Zapier Integration" exists with the toggle in the enabled (active) state.
+- **Action:** User clicks the enable/disable toggle on the "Zapier Integration" webhook entry.
+- **Expected:** The toggle switches to the disabled state. The webhook is updated via the API to be inactive. Disabled webhooks will not fire when events occur. The toggle visually reflects the disabled state. Clicking the toggle again re-enables the webhook.
+
+#### Delete webhook button shows confirmation dialog
+- **Initial state:** User is on /settings. A webhook named "Zapier Integration" exists in the list.
+- **Action:** User clicks the delete button on the "Zapier Integration" webhook entry.
+- **Expected:** A confirmation dialog appears asking the user to confirm deletion (e.g., "Are you sure you want to delete this webhook?"). The dialog has "Cancel" and "Delete" (or "Confirm") buttons.
+
+#### Confirming webhook deletion removes the webhook
+- **Initial state:** The delete confirmation dialog is open for the "Zapier Integration" webhook.
+- **Action:** User clicks the "Delete" (or "Confirm") button.
+- **Expected:** The webhook is deleted via the API. The webhook entry is removed from the list. If no webhooks remain, the empty state message is shown.
+
+#### Canceling webhook deletion keeps the webhook
+- **Initial state:** The delete confirmation dialog is open for the "Zapier Integration" webhook.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The dialog closes. The webhook remains in the list unchanged.
+
+#### Webhook list shows event types for each webhook
+- **Initial state:** User is on /settings. A webhook exists configured to fire on "New Client Created" and "Deal Stage Changed" events.
+- **Expected:** The webhook entry displays the subscribed event types (e.g., as badges or a comma-separated list showing "New Client Created", "Deal Stage Changed") so the user can see at a glance what events trigger each webhook.
+
+### AddEditWebhookModal
+
+#### Modal displays name, URL, platform, and event fields
+- **Initial state:** The AddEditWebhookModal is open (via clicking "Add Webhook").
+- **Expected:** The modal contains: a Name text input field, a platform selection control with options for Zapier, n8n, and Custom, a URL text input field, and a set of event checkboxes for subscribing to events (e.g., "New Client Created", "Deal Stage Changed", "Task Completed", etc.). The modal has "Cancel" and "Save" (or "Create") buttons at the bottom.
+
+#### Platform selection shows Zapier setup guide
+- **Initial state:** The AddEditWebhookModal is open.
+- **Action:** User selects "Zapier" as the platform.
+- **Expected:** A platform-specific setup guide is displayed with step-by-step instructions for obtaining the Zapier webhook URL. The guide explains where to find the webhook URL in Zapier (e.g., "Create a new Zap, add 'Webhooks by Zapier' as the trigger, select 'Catch Hook', and copy the webhook URL"). A URL format hint is shown (e.g., "https://hooks.zapier.com/hooks/catch/..."). A platform-specific tip is displayed explaining that Zapier needs the first event sent to detect the payload schema. The URL input placeholder updates to reflect the Zapier URL format.
+
+#### Platform selection shows n8n setup guide
+- **Initial state:** The AddEditWebhookModal is open.
+- **Action:** User selects "n8n" as the platform.
+- **Expected:** A platform-specific setup guide is displayed with step-by-step instructions for obtaining the n8n webhook URL. The guide explains where to find the webhook URL in n8n (e.g., "Add a Webhook node to your workflow, copy the webhook URL from the node settings"). A URL format hint is shown (e.g., "https://your-n8n-instance.com/webhook/..."). A platform-specific tip is displayed explaining that n8n has separate test and production URLs and to use the production URL. The URL input placeholder updates to reflect the n8n URL format.
+
+#### Platform selection shows Custom endpoint setup guide
+- **Initial state:** The AddEditWebhookModal is open.
+- **Action:** User selects "Custom" as the platform.
+- **Expected:** A setup guide is displayed with instructions for configuring a custom webhook endpoint. The guide explains that the endpoint must accept POST requests with a JSON payload. A URL format hint is shown (e.g., "https://your-server.com/webhook"). The URL input placeholder updates to a generic webhook URL format.
+
+#### Payload format preview is toggleable
+- **Initial state:** The AddEditWebhookModal is open with a platform selected.
+- **Action:** User clicks a toggle or expandable section to show the payload format preview.
+- **Expected:** A section expands or appears showing the JSON structure that webhook events will send. The preview displays example JSON with fields like event type, timestamp, and entity data. The user can toggle this section closed again to hide the preview.
+
+#### Event checkboxes allow selecting multiple events
+- **Initial state:** The AddEditWebhookModal is open. No events are selected.
+- **Action:** User checks the "New Client Created" and "Deal Stage Changed" event checkboxes.
+- **Expected:** Both checkboxes are visually checked. The user can check or uncheck any combination of event types independently. At least one event must be selected to save the webhook.
+
+#### Modal validates required fields
+- **Initial state:** The AddEditWebhookModal is open with all fields empty.
+- **Action:** User clicks the "Save" button without filling in any fields.
+- **Expected:** Validation errors are displayed for required fields: Name is required, URL is required, and at least one event must be selected. The webhook is not created. The modal remains open.
+
+#### Modal validates URL format
+- **Initial state:** The AddEditWebhookModal is open. User has entered a name and selected events.
+- **Action:** User enters "not-a-valid-url" in the URL field and clicks "Save".
+- **Expected:** A validation error is displayed indicating the URL is not valid (e.g., "Please enter a valid URL"). The webhook is not created. The modal remains open.
+
+#### Successfully creating a webhook adds it to the list
+- **Initial state:** The AddEditWebhookModal is open.
+- **Action:** User fills in Name = "My Zapier Hook", selects platform = "Zapier", enters URL = "https://hooks.zapier.com/hooks/catch/123/abc", checks "New Client Created" and "Task Completed" events, and clicks "Save".
+- **Expected:** The webhook is created via the CRUD API. The modal closes. The new webhook "My Zapier Hook" appears in the webhooks list with the URL displayed, an enabled toggle, and the selected event types shown.
+
+#### Successfully editing a webhook updates the list
+- **Initial state:** The AddEditWebhookModal is open in edit mode for a webhook named "My Zapier Hook" subscribed to "New Client Created" and "Task Completed".
+- **Action:** User changes the name to "Updated Zapier Hook" and additionally checks the "Deal Stage Changed" event. User clicks "Save".
+- **Expected:** The webhook is updated via the API. The modal closes. The webhook list shows the updated name "Updated Zapier Hook" and now displays three subscribed events: "New Client Created", "Task Completed", and "Deal Stage Changed".
+
+#### Cancel button closes modal without saving
+- **Initial state:** The AddEditWebhookModal is open with some fields filled in.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The modal closes. No webhook is created or updated. The webhooks list remains unchanged.
+
+#### Modal closes on overlay click without saving
+- **Initial state:** The AddEditWebhookModal is open.
+- **Action:** User clicks the modal overlay (area outside the modal dialog).
+- **Expected:** The modal closes. No webhook is created or updated.
+
+#### URL placeholder updates based on selected platform
+- **Initial state:** The AddEditWebhookModal is open with no platform selected.
+- **Action:** User selects "Zapier", then "n8n", then "Custom" as the platform.
+- **Expected:** When "Zapier" is selected, the URL input placeholder shows a Zapier-style URL hint (e.g., "https://hooks.zapier.com/hooks/catch/..."). When "n8n" is selected, the placeholder changes to an n8n-style URL hint (e.g., "https://your-n8n-instance.com/webhook/..."). When "Custom" is selected, the placeholder changes to a generic URL hint (e.g., "https://your-server.com/webhook").
+
 ## UsersListPage - Team (/users)
 
 ## UserDetailPage (/users/:userId)
