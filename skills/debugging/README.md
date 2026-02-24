@@ -56,3 +56,6 @@ what the ambiguous locator was.
 | DB constraint violation (500) | `NetworkRequest` then `Logpoint` on handler |
 | Click times out on toggle/checkbox | `PlaywrightSteps` then check if testid is on sr-only element |
 | All API calls failing after setup | `NetworkRequest` then `LocalStorage` (stale server?) |
+| Multiple timeouts on fresh build | `PlaywrightSteps` then `DescribeComponent` (Replay browser overhead?) |
+| Auth test returns 409/400 | `PlaywrightSteps` then `NetworkRequest` (check request payload) |
+| Action succeeds but UI doesn't update | `NetworkRequest`/`LocalStorage` then `ReactRenders` (state hydration gap?) |

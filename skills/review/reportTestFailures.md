@@ -15,6 +15,7 @@ NOTES: <brief summary of what this log was about>
 
 ## Test Failures
 TEST_FAILURES: <count of distinct test failures in this log, 0 if none>
+TEST_RERUNS: <number of test re-runs needed in this log to achieve all-pass, 0 if all passed on first run>
 
 For each test failure:
 
@@ -25,6 +26,7 @@ REPLAY_USED: yes/no (yes = agent actively called mcp__replay__* tools to analyze
 REPLAY_NOT_USED_REASON: <if REPLAY_USED is no, explain why — e.g. "diagnosed from error output", "no recording available", "upload failed">
 RECORDING_AVAILABLE: yes/no (no = recording upload failed, infrastructure failure, or no recording was created)
 DEBUGGING_SUCCESSFUL: yes/no/partial
+ROOT_CAUSE_CLUSTER: <optional — when multiple failures share a single root cause, use a shared cluster ID (e.g. "replay-browser-timeout", "missing-env-var"). Omit if this failure has a unique root cause.>
 
 #### Replay Usage (if REPLAY_USED is yes)
 OUTCOME: <what the Replay analysis revealed>
@@ -32,7 +34,7 @@ DEBUGGING_STRATEGY: <how the agent approached debugging — e.g. "PlaywrightStep
 TOOLS_USED: <comma-separated list of mcp__replay__* tools called>
 
 #### Resolution
-CHANGESET_REVISION: <git SHA from "CHANGESET REVISION:" line in log, or "none">
+CHANGESET_REVISION: <git SHA from "CHANGESET REVISION:" line in log, or "none". Note: this captures the commit that fixed the issue. If the fix was applied during the same test-fixing session and no separate "CHANGESET REVISION:" line was emitted, use "none".>
 FAILING_TEST: <test name from "FAILING TEST:" line in log, or "none">
 ```
 

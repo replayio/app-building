@@ -47,6 +47,46 @@ the mismatch from API response through to component rendering.
 
 ## Common Root Causes (from observed failures)
 
+### Auth request payload mismatch
+An auth-related test fails because the frontend sends the wrong action type or missing fields
+in the request payload (e.g., `action: "signup"` instead of `"signin"`). The backend returns
+an error like 409 Conflict or 400 Bad Request, but the test output may only show a timeout
+or generic failure.
+
+**Diagnosis with Replay**: `PlaywrightSteps` identifies the slow or failing step.
+`NetworkRequest` reveals the exact request payload and response body — e.g., a 409 Conflict
+with "Email already in use" because the request sent `action: "signup"` instead of `"signin"`.
+This pinpoints the bug to UI state management (e.g., `isSignUp` not resetting on mode switch).
+
+**Fix**: Trace the action type from UI state through to the request payload and fix the state
+management bug. Common causes: toggle state not resetting, form reusing stale state from a
+previous interaction.
+
+*Example*: `worker-2026-02-23T23-21-34.log` — Sign In form test failed. NetworkRequest
+revealed a 409 "Email already in use" because the frontend sent `action: "signup"` instead
+of `"signin"`.
+
+### State hydration gap (action succeeds but UI doesn't update)
+An action completes successfully (data visible in localStorage or network response) but the
+UI doesn't reflect the change. The component still shows stale state because the state
+management layer wasn't hydrated.
+
+**Diagnosis with Replay**: `PlaywrightSteps` shows the action completed. `NetworkRequest`
+or `LocalStorage` confirms the data was stored correctly. `ReactRenders` / `DescribeReactRender`
+shows the component didn't re-render, or rendered with stale props.
+
+**Debugging checklist**:
+1. Redux store dispatch — was the action dispatched after the successful operation?
+2. localStorage → Redux hydration — does the app load persisted state on mount/navigation?
+3. Component re-render triggers — is the component subscribed to the relevant store slice?
+
+**Fix**: Ensure the state management layer (Redux, Context, etc.) is hydrated from persistent
+storage on app startup and that successful operations dispatch the appropriate state updates.
+
+*Example*: `worker-2026-02-24T01-51-45.log` — Auto-login test. Token was stored in
+localStorage but sidebar didn't update. Fix: added `loadSession` on app startup and
+`setSession` Redux action dispatched from ConfirmEmailPage.
+
 ### Missing database columns (schema migration)
 `CREATE TABLE IF NOT EXISTS` doesn't modify existing tables. When new columns are added to
 the schema definition, existing ephemeral branches don't get them.

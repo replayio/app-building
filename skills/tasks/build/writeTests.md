@@ -76,6 +76,20 @@ npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" \
   calls that can block indefinitely. Use locator chaining (`.filter()`, `.locator()`) and
   single-assertion expect matchers (`.toHaveCount()`, `.toContainText()`, `.toBeVisible()`) instead.
 
+- Do not add unnecessary state cleanup (e.g., `localStorage.removeItem`, `page.reload()`) in
+  `beforeEach` hooks when Playwright already provides a fresh browser context per test. Redundant
+  cleanup wastes time and can cause tests to exceed their timeout under recording or CI overhead.
+
+- For assertions that depend on backend round-trips (auth flows, database writes, API calls),
+  use generous timeouts (e.g., `{ timeout: 30000 }`) rather than tight ones. Environments with
+  recording overhead (Replay browser) and cold database connections (Neon DB) add significant
+  latency beyond typical local development. A tight timeout that barely passes locally will flake
+  under load or recording.
+
+- For tests that chain multiple user flows in a single test (e.g., signup → signout → signin →
+  verify), add `test.slow()` at the top of the test to triple the default timeout. Multi-step
+  end-to-end flows easily exceed the default 60s timeout under recording and CI environments.
+
 - Skill files are at `/repo/skills/tasks/` and its subdirectories (the repo root), NOT inside
   the app directory. Always use `/repo/skills/tasks/build/writeTests.md`, etc.
 
@@ -118,6 +132,13 @@ Write tests with this in mind:
 - Never hardcode database IDs in tests. Query the UI or API to discover IDs for the records
   you need to interact with.
 - The Playwright config must use `fullyParallel: true`. Do not set `workers: 1`.
+- The Playwright config must use `replayDevices['Replay Chromium']` from `@replayio/playwright`
+  as the browser project, not standard `devices['Desktop Chrome']`. Tests must run under the
+  Replay browser so that recordings are captured for debugging.
+- Set the Playwright config's global `timeout` and `webServer.timeout` to at least 60000ms.
+  The Replay browser has significant recording overhead, and with parallel workers all hitting
+  the dev server simultaneously, pages can take 25+ seconds to load. A 30s timeout that works
+  locally with standard Chrome will cause widespread flakes under recording.
 
 ## Tips
 
