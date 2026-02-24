@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageAccountsPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentNavBar: Add test entries for NavBar (navigation links, New Transaction button, user menu, Log Out)",
-        "PlanComponentAccountsOverviewHeader: Add test entries for AccountsOverviewHeader (page title, Generate Reports button)",
-        "PlanComponentCategorySection: Add test entries for CategorySection (expand/collapse categories, category totals, 5 categories displayed)",
-        "PlanComponentAccountCard: Add test entries for AccountCard (account name, balance, debits/credits YTD, budget vs actual bar, View Budget Details link, three-dot menu, click to navigate to detail)"
-      ],
-      "timestamp": "2026-02-24T19:29:18.573Z"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code for Accounting"
