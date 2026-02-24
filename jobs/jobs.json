@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageUsersListPage: Decide on components for UsersListPage (Team), add sections to docs/tests.md",
-        "PlanComponentUserCards: Add test entries for user cards grid (avatar, name, email, active deals count, open tasks count, click navigates to /users/:userId)"
-      ],
-      "timestamp": "2026-02-23T21:27:35.320Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageUserDetailPage: Decide on components for UserDetailPage, add sections to docs/tests.md",
         "PlanComponentUserInfo: Add test entries for user info header (name, email, join date) and summary stats (active deals, open tasks, total deals)",
         "PlanComponentUserSections: Add test entries for owned deals list, assigned tasks list, and recent activity feed sections"
