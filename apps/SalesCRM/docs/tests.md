@@ -1247,6 +1247,22 @@
 - **Then** the deal card moves to the "Proposal" column
 - **And** the deal's stage is updated to "Proposal" in the database
 - **And** the column headers update their deal counts and total values to reflect the change
+- **And** a stage history entry is created on the Deal Detail Page recording the change from "Discovery" to "Proposal"
+- **And** a timeline entry is created on the associated client's Client Detail Page recording the deal stage change
+
+#### Test: Pipeline View shows empty stage columns
+- **Given** the user is on the Deals List Page with "Pipeline View" active
+- **And** there are no deals in the "Lead" stage
+- **Then** the "Lead" stage column is still visible with a count badge showing "0" and "$0" total value
+- **And** the column can still accept deal cards via drag-and-drop
+
+#### Test: Pipeline View filters apply to displayed cards
+- **Given** the user is on the Deals List Page with "Pipeline View" active
+- **When** the user selects "Acme Corp." from the Client dropdown filter
+- **Then** only deal cards for "Acme Corp." are shown across all pipeline columns
+- **And** the column headers update their deal counts and total values to reflect only the filtered deals
+- **When** the user resets the Client filter to "All Clients"
+- **Then** all deal cards are shown again in their respective stage columns
 
 #### Test: Switching back to Table View from Pipeline View
 - **Given** the user is on the Deals List Page with "Pipeline View" active
@@ -1255,6 +1271,15 @@
 - **And** the deals are displayed in the table format again
 
 ### DealsFilters
+
+#### Test: Filter controls display with correct default values on page load
+- **Given** the user navigates to the Deals List Page
+- **Then** the Stage dropdown displays "All Stages" as its default value
+- **And** the Client dropdown displays "All Clients" as its default value
+- **And** the Status dropdown displays "Active" as its default value
+- **And** the Date Range picker shows "Date - Range" as its placeholder
+- **And** the Sort by dropdown displays "Close Date (Newest)" as its default value
+- **And** the search input shows "Search deals..." as its placeholder text with a search icon
 
 #### Test: Stage dropdown filters by deal stage
 - **Given** the Deals List Page is loaded with deals in various stages (e.g., Discovery, Qualification, Proposal Sent, Negotiation, Closed Won)
@@ -1381,6 +1406,15 @@
 - **Then** an edit dialog opens pre-populated with the deal's current data (Deal Name, Client, Stage, Owner, Value, Close Date, Status)
 - **When** the user changes the deal value and saves
 - **Then** the updated value is reflected in the deals table
+- **And** the summary cards update if the value change affects Pipeline Value
+
+#### Test: Row action menu "Edit" stage change creates history entry
+- **Given** the row action menu is open for a deal currently in "Discovery" stage
+- **When** the user clicks "Edit"
+- **And** changes the Stage from "Discovery" to "Proposal" and saves
+- **Then** the updated stage is reflected in the deals table
+- **And** a stage history entry is created on the Deal Detail Page recording the change from "Discovery" to "Proposal"
+- **And** a timeline entry is created on the associated client's Client Detail Page recording the deal stage change
 
 #### Test: Row action menu "Edit" dialog can be cancelled
 - **Given** the row action menu is open for a deal
@@ -1399,6 +1433,7 @@
 - **And** the summary cards update to reflect the removal (e.g., Total Active Deals decrements)
 - **And** the pagination count updates accordingly
 - **And** the deal is removed from the associated client's Deals section on the Client Detail Page
+- **And** a timeline entry is created on the associated client's timeline recording the deal deletion
 - **When** the user cancels deletion
 - **Then** the deal remains in the table
 
