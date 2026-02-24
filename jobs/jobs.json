@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeTests.md",
-      "jobs": [
-        "WriteTestsTasksListPage: Write all Playwright tests for TasksListPage based on test entries in docs/tests.md"
-      ],
-      "timestamp": "2026-02-24T02:02:44.350Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
         "Unpack: Polish app quality"

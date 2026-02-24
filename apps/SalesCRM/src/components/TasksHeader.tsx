@@ -7,6 +7,7 @@ import TaskFormModal from './TaskFormModal'
 export default function TasksHeader() {
   const dispatch = useAppDispatch()
   const [addOpen, setAddOpen] = useState(false)
+  const [successMsg, setSuccessMsg] = useState('')
 
   const handleCreate = async (data: {
     title: string
@@ -27,6 +28,8 @@ export default function TasksHeader() {
       deal_id: data.deal_id || undefined,
     })).unwrap()
     await dispatch(fetchTasks())
+    setSuccessMsg('Task created successfully')
+    setTimeout(() => setSuccessMsg(''), 3000)
   }
 
   return (
@@ -40,6 +43,9 @@ export default function TasksHeader() {
         <Plus size={14} />
         <span>New Task</span>
       </button>
+      {successMsg && (
+        <div className="success-toast" data-testid="task-success-message">{successMsg}</div>
+      )}
       <TaskFormModal
         open={addOpen}
         onClose={() => setAddOpen(false)}
