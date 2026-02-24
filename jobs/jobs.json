@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix schema.ts initSchema to remove DROP TABLE statements and be truly idempotent/safe to re-run per writeApp.md directive",
-        "RunTests: Verify tests pass after schema fix"
-      ],
-      "timestamp": "2026-02-24T02:37:52.274Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Fix clients.ts backend to handle source_detail, campaign, channel, date_acquired, and industry fields in create and update operations so Source Info section is fully functional end-to-end",
         "RunTests: Verify tests pass after clients backend fix"
       ],
