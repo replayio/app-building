@@ -336,7 +336,242 @@
 - ContactHistorySection (chronological log with date/time, interaction type, summary, team member, edit icon; Filter button, Add Entry button)
 - AssociatedClientsSection (client cards with icon, name, status, industry, View Client Detail Page button)
 
-<!-- Test entries will be added by PlanComponent jobs -->
+### PersonHeader
+
+#### Test: Header displays person's full name prominently
+- **Given** the user navigates to a Person Detail Page (/individuals/:individualId) for "Dr. Anya Sharma"
+- **Then** the header displays "Dr. Anya Sharma" as a large, bold heading at the top of the page
+
+#### Test: Header displays title and client associations
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma"
+- **Then** the header shows the person's title "Chief Technology Officer (CTO)" below the name
+- **And** the title is followed by a pipe separator and client associations "Innovate Solutions Inc. & FutureTech Corp."
+
+#### Test: Header displays email with mail icon
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma"
+- **Then** the header shows a mail icon followed by the email address "anya.sharma@example.com"
+
+#### Test: Header displays phone number with phone icon
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma"
+- **Then** the header shows a phone icon followed by the phone number "+1 (555) 123-4567"
+
+#### Test: Header displays location with location pin icon
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma"
+- **Then** the header shows a location pin icon followed by the location "San Francisco, CA"
+
+#### Test: Header displays associated clients as clickable links
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma" who is associated with "Innovate Solutions Inc." and "FutureTech Corp."
+- **Then** the header shows "Associated Clients:" followed by "Innovate Solutions Inc." and "FutureTech Corp." as clickable, underlined links separated by commas
+
+#### Test: Associated client link navigates to client detail page
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma"
+- **When** the user clicks the "Innovate Solutions Inc." link in the Associated Clients row
+- **Then** the app navigates to the Client Detail Page (/clients/:clientId) for "Innovate Solutions Inc."
+
+#### Test: Each associated client link navigates correctly
+- **Given** the user is on the Person Detail Page for "Dr. Anya Sharma"
+- **When** the user clicks the "FutureTech Corp." link in the Associated Clients row
+- **Then** the app navigates to the Client Detail Page (/clients/:clientId) for "FutureTech Corp."
+
+### RelationshipsSection
+
+#### Test: Relationships section displays heading with icon
+- **Given** the user is on the Person Detail Page
+- **Then** the section heading "Relationships with Other Individuals" is visible with a relationship/link icon to the left
+
+#### Test: Relationships section shows Graph View and List View tabs
+- **Given** the user is on the Person Detail Page
+- **Then** the Relationships section displays two tabs: "Graph View" and "List View"
+- **And** one tab is visually highlighted as active (e.g., underline or bold text)
+
+#### Test: List View displays relationship entries with all details
+- **Given** the user is on the Person Detail Page with List View active in the Relationships section
+- **Then** each relationship entry shows: the related person's name in bold, relationship type in parentheses (e.g., "Colleague", "Decision Maker", "Influencer"), a dash separator, their title, their client/company name, and a "[Link]" clickable link
+- **For example**: "David Chen (Colleague) - V.P. Engineering, Innovate Solutions Inc. [Link]"
+
+#### Test: Relationship entry Link navigates to the related person's detail page
+- **Given** the Relationships section shows "David Chen (Colleague) - V.P. Engineering, Innovate Solutions Inc. [Link]"
+- **When** the user clicks the "[Link]" next to "David Chen"
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for "David Chen"
+
+#### Test: Each relationship Link navigates to the correct person
+- **Given** the Relationships section shows "Maria Rodriguez (Decision Maker) - CEO, FutureTech Corp. [Link]"
+- **When** the user clicks the "[Link]" next to "Maria Rodriguez"
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for "Maria Rodriguez"
+
+#### Test: Switching to Graph View tab
+- **Given** the user is on the Person Detail Page with List View active
+- **When** the user clicks the "Graph View" tab
+- **Then** the "Graph View" tab becomes visually highlighted as active
+- **And** the "List View" tab returns to its default non-active state
+- **And** a visual relationship graph is displayed showing the person and their connections
+
+#### Test: Switching back to List View from Graph View
+- **Given** the user is on the Person Detail Page with Graph View active
+- **When** the user clicks the "List View" tab
+- **Then** the "List View" tab becomes visually highlighted as active
+- **And** the relationship entries are displayed in list format again
+
+#### Test: Filter button is displayed in Relationships section
+- **Given** the user is on the Person Detail Page
+- **Then** a "Filter" button with a filter icon is displayed in the Relationships section header area
+
+#### Test: Filter button opens filter options for relationships
+- **Given** the user is on the Person Detail Page
+- **When** the user clicks the "Filter" button in the Relationships section
+- **Then** filter options appear allowing the user to filter relationships by type (e.g., Colleague, Decision Maker, Influencer) or by client
+
+#### Test: Add Entry button is displayed in Relationships section
+- **Given** the user is on the Person Detail Page
+- **Then** a "+ Add Entry" button is displayed in the Relationships section header area
+
+#### Test: Add Entry button opens relationship creation form
+- **Given** the user is on the Person Detail Page
+- **When** the user clicks the "+ Add Entry" button in the Relationships section
+- **Then** a modal or form opens with fields for: Related Person (required, search/select from existing individuals), Relationship Type (required, dropdown with options such as Colleague, Decision Maker, Influencer), and optionally Client association
+
+#### Test: New relationship entry can be created successfully
+- **Given** the relationship creation form is open
+- **When** the user selects "Sarah Lee" as the Related Person
+- **And** selects "Colleague" as the Relationship Type
+- **And** clicks save/submit
+- **Then** the form closes
+- **And** a new entry "Sarah Lee (Colleague) - Product Lead, Innovate Solutions Inc. [Link]" appears in the Relationships list
+- **And** a reciprocal relationship entry is also created on Sarah Lee's Person Detail Page linking back to the current individual
+
+#### Test: Add Entry form validates required fields
+- **Given** the relationship creation form is open
+- **When** the user leaves the Related Person field empty and clicks save
+- **Then** a validation error is shown (e.g., "Related person is required")
+- **And** the form is not submitted
+
+#### Test: Add Entry form can be cancelled
+- **Given** the relationship creation form is open with partial data entered
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without creating a relationship
+- **And** no new entry appears in the Relationships list
+
+#### Test: Relationships section shows empty state when no relationships exist
+- **Given** the person has no relationships with other individuals
+- **Then** the Relationships section shows an empty state message (e.g., "No relationships yet")
+
+### ContactHistorySection
+
+#### Test: Contact History section displays heading with icon
+- **Given** the user is on the Person Detail Page
+- **Then** the section heading "History of Contact" is visible with a clock/history icon to the left
+
+#### Test: Contact History shows chronological log entries
+- **Given** the user is on the Person Detail Page with contact history entries
+- **Then** the Contact History section shows entries in reverse chronological order (most recent first)
+- **And** each entry displays: date/time, interaction type, a "Summary:" label followed by the summary text, a "Team Member:" label followed by the team member name and role in parentheses, and an edit (pencil) icon
+- **For example**: "Oct 26, 2023, 2:30 PM | Video Call | Summary: Discussed Q4 roadmap integration. Action items assigned. | Team Member: Michael B. (Sales Lead)"
+
+#### Test: Contact History displays various interaction types
+- **Given** the person has contact history entries of different types
+- **Then** entries display interaction types including "Video Call", "Email", "Meeting (In-person)", and "Note"
+
+#### Test: Contact History entries show team member with role
+- **Given** the person has contact history entries
+- **Then** single team member entries show format "Team Member: Michael B. (Sales Lead)"
+- **And** entries with multiple team members show format "Team Member: Michael B., Emily R."
+
+#### Test: Contact History entry edit icon opens edit form
+- **Given** the Contact History section shows entries with edit (pencil) icons
+- **When** the user clicks the edit icon on a contact history entry
+- **Then** an edit form or modal opens pre-populated with the entry's date/time, interaction type, summary, and team member
+
+#### Test: Contact History entry edit saves changes
+- **Given** the edit form is open for a contact history entry
+- **When** the user changes the summary text and clicks save
+- **Then** the form closes
+- **And** the updated summary is displayed in the contact history entry
+
+#### Test: Contact History entry edit can be cancelled
+- **Given** the edit form is open for a contact history entry with changes made
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without saving changes
+- **And** the original entry content remains unchanged
+
+#### Test: Filter button is displayed in Contact History section
+- **Given** the user is on the Person Detail Page
+- **Then** a "Filter" button with a filter icon is displayed in the Contact History section header area
+
+#### Test: Filter button opens filter options for contact history
+- **Given** the user is on the Person Detail Page
+- **When** the user clicks the "Filter" button in the Contact History section
+- **Then** filter options appear allowing the user to filter entries by interaction type (e.g., Video Call, Email, Meeting, Note) or by date range
+
+#### Test: Add Entry button is displayed in Contact History section
+- **Given** the user is on the Person Detail Page
+- **Then** a "+ Add Entry" button is displayed in the Contact History section header area
+
+#### Test: Add Entry button opens contact history creation form
+- **Given** the user is on the Person Detail Page
+- **When** the user clicks the "+ Add Entry" button in the Contact History section
+- **Then** a modal or form opens with fields for: Date/Time (required, date/time picker), Interaction Type (required, dropdown with options: Video Call, Email, Meeting (In-person), Note), Summary (required, text area), Team Member (required, search/select)
+
+#### Test: New contact history entry can be created successfully
+- **Given** the contact history creation form is open
+- **When** the user selects today's date and time
+- **And** selects "Email" as the Interaction Type
+- **And** enters "Sent proposal follow-up" as the Summary
+- **And** selects "Emily R. (Account Manager)" as the Team Member
+- **And** clicks save/submit
+- **Then** the form closes
+- **And** the new entry appears at the top of the Contact History list with the correct date/time, type, summary, and team member
+- **And** a success message is shown
+
+#### Test: Add Entry form validates required fields
+- **Given** the contact history creation form is open
+- **When** the user leaves the Summary field empty and clicks save
+- **Then** a validation error is shown (e.g., "Summary is required")
+- **And** the form is not submitted
+
+#### Test: Add Entry form can be cancelled
+- **Given** the contact history creation form is open with partial data entered
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without creating an entry
+- **And** no new entry appears in the Contact History section
+
+#### Test: Contact History section shows empty state when no history exists
+- **Given** the person has no contact history entries
+- **Then** the Contact History section shows an empty state message (e.g., "No contact history yet")
+
+### AssociatedClientsSection
+
+#### Test: Associated Clients section displays heading with icon
+- **Given** the user is on the Person Detail Page
+- **Then** the section heading "Associated Clients" is visible with an icon to the left
+
+#### Test: Associated Clients shows client cards with all details
+- **Given** the person is associated with clients "Innovate Solutions Inc." and "FutureTech Corp."
+- **Then** the Associated Clients section displays a card for each client
+- **And** each card shows: a client icon, the client name in bold (e.g., "Innovate Solutions Inc."), "Status:" followed by the client status (e.g., "Active Client", "Prospect"), "Industry:" followed by the industry (e.g., "Software", "Hardware"), and a "View Client Detail Page" button with an external link icon
+
+#### Test: Client card displays correct status for each client
+- **Given** the person is associated with "Innovate Solutions Inc." (Active Client) and "FutureTech Corp." (Prospect)
+- **Then** the "Innovate Solutions Inc." card shows "Status: Active Client"
+- **And** the "FutureTech Corp." card shows "Status: Prospect"
+
+#### Test: Client card displays correct industry for each client
+- **Given** the person is associated with "Innovate Solutions Inc." (Software) and "FutureTech Corp." (Hardware)
+- **Then** the "Innovate Solutions Inc." card shows "Industry: Software"
+- **And** the "FutureTech Corp." card shows "Industry: Hardware"
+
+#### Test: View Client Detail Page button navigates to client detail page
+- **Given** the Associated Clients section shows a card for "Innovate Solutions Inc."
+- **When** the user clicks the "View Client Detail Page" button on the "Innovate Solutions Inc." card
+- **Then** the app navigates to the Client Detail Page (/clients/:clientId) for "Innovate Solutions Inc."
+
+#### Test: Each View Client Detail Page button navigates correctly
+- **Given** the Associated Clients section shows a card for "FutureTech Corp."
+- **When** the user clicks the "View Client Detail Page" button on the "FutureTech Corp." card
+- **Then** the app navigates to the Client Detail Page (/clients/:clientId) for "FutureTech Corp."
+
+#### Test: Associated Clients section shows empty state when no clients exist
+- **Given** the person is not associated with any clients
+- **Then** the Associated Clients section shows an empty state message (e.g., "No associated clients")
 
 ---
 

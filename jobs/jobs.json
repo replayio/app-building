@@ -3,13 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add all missing test entries to tests.md for PersonDetailPage components (PersonHeader, RelationshipsSection, ContactHistorySection, AssociatedClientsSection) following testSpec.md directives"
-      ],
-      "timestamp": "2026-02-24T03:23:25.977Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Build PersonDetailPage and all components (PersonHeader, RelationshipsSection, ContactHistorySection, AssociatedClientsSection) with proper data-testid attributes, padding, and backend functions",
         "RunTests: Verify app builds and existing tests still pass after PersonDetailPage implementation"
       ],
