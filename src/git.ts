@@ -133,6 +133,7 @@ export function pushTarget(
     hadConflicts = false;
 
     // Step 1: Fetch
+    let remoteExists = false;
     try {
       execFileSync("git", ["fetch", "origin", targetBranch], {
         cwd: dir,
@@ -140,35 +141,38 @@ export function pushTarget(
         timeout: 60000,
         stdio: "pipe",
       });
+      remoteExists = true;
     } catch {
-      // Branch may not exist remotely yet — push will create it
+      // Branch doesn't exist remotely yet — push will create it
     }
 
-    // Step 2: Merge
-    try {
-      execFileSync("git", ["merge", `origin/${targetBranch}`, "--no-edit"], {
-        cwd: dir,
-        encoding: "utf-8",
-        timeout: 30000,
-        stdio: "pipe",
-      });
-    } catch {
-      // Merge conflict — leave conflict markers in the tree
-      hadConflicts = true;
+    // Step 2: Merge (only if remote branch exists)
+    if (remoteExists) {
       try {
-        execFileSync("git", ["add", "-A"], {
+        execFileSync("git", ["merge", `origin/${targetBranch}`, "--no-edit"], {
           cwd: dir,
           encoding: "utf-8",
           timeout: 30000,
+          stdio: "pipe",
         });
-        execFileSync("git", ["commit", "-m", "Merge with conflicts (markers left in tree)"], {
-          cwd: dir,
-          encoding: "utf-8",
-          timeout: 30000,
-        });
-        log("Merged with conflict markers left in tree");
-      } catch (e: any) {
-        log(`Warning: merge commit failed: ${e.message}`);
+      } catch {
+        // Merge conflict — leave conflict markers in the tree
+        hadConflicts = true;
+        try {
+          execFileSync("git", ["add", "-A"], {
+            cwd: dir,
+            encoding: "utf-8",
+            timeout: 30000,
+          });
+          execFileSync("git", ["commit", "-m", "Merge with conflicts (markers left in tree)"], {
+            cwd: dir,
+            encoding: "utf-8",
+            timeout: 30000,
+          });
+          log("Merged with conflict markers left in tree");
+        } catch (e: any) {
+          log(`Warning: merge commit failed: ${e.message}`);
+        }
       }
     }
 

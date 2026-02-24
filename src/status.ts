@@ -162,24 +162,60 @@ async function showAllContainers(alive: RegistryEntry[], contextCount?: number):
 
 // --- Main ---
 
-function parseContextArg(args: string[]): number | undefined {
-  const idx = args.indexOf("--context");
-  if (idx === -1) return undefined;
-  const val = args[idx + 1];
-  if (val === "all") return Infinity;
-  const n = parseInt(val, 10);
-  if (isNaN(n) || n < 1) {
-    console.error(`${RED}--context requires a positive number or "all"${RESET}`);
-    process.exit(1);
+const KNOWN_FLAGS: Record<string, number> = {
+  "--tail": 1,     // consumes 1 arg
+  "--context": 1,
+  "--all": 0,      // no arg
+};
+
+function parseArgs(args: string[]): { tailTarget: string | null; contextCount: number | undefined } {
+  let tailTarget: string | null = null;
+  let contextCount: number | undefined;
+  let hasAll = false;
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (!arg.startsWith("--")) {
+      console.error(`${RED}Unexpected argument: ${arg}${RESET}`);
+      process.exit(1);
+    }
+    const consumed = KNOWN_FLAGS[arg];
+    if (consumed === undefined) {
+      console.error(`${RED}Unknown flag: ${arg}${RESET}`);
+      process.exit(1);
+    }
+    if (arg === "--tail") {
+      tailTarget = args[++i];
+      if (!tailTarget) {
+        console.error(`${RED}--tail requires a container name${RESET}`);
+        process.exit(1);
+      }
+    } else if (arg === "--context") {
+      const val = args[++i];
+      if (val === "all") {
+        contextCount = Infinity;
+      } else {
+        const n = parseInt(val, 10);
+        if (isNaN(n) || n < 1) {
+          console.error(`${RED}--context requires a positive number or "all"${RESET}`);
+          process.exit(1);
+        }
+        contextCount = n;
+      }
+    } else if (arg === "--all") {
+      hasAll = true;
+    }
   }
-  return n;
+
+  if (hasAll && contextCount === undefined) {
+    contextCount = Infinity;
+  }
+
+  return { tailTarget, contextCount };
 }
 
 async function main(): Promise<void> {
-  const args = process.argv.slice(2);
-  const tailIdx = args.indexOf("--tail");
-  const tailTarget = tailIdx !== -1 ? args[tailIdx + 1] : null;
-  const contextCount = parseContextArg(args);
+  const { tailTarget, contextCount } = parseArgs(process.argv.slice(2));
 
   const entries = getRecentContainers();
 
