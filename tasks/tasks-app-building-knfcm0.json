@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageDashboard: Decide on components, add sections to docs/tests.md",
-        "PlanComponentNavigationHeader: Add test entries for NavigationHeader",
-        "PlanComponentLowInventoryAlerts: Add test entries for LowInventoryAlerts",
-        "PlanComponentMaterialsCategoriesOverview: Add test entries for MaterialsCategoriesOverview",
-        "PlanComponentRecentTransactionsTable: Add test entries for RecentTransactionsTable",
-        "PlanComponentDashboardFiltersAndActions: Add test entries for DateRangeFilter, CategoryFilter, NewTransactionButton"
-      ],
-      "timestamp": "2026-02-24T20:41:45.637Z"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code for InventoryTracker"
