@@ -10,6 +10,12 @@ test.describe('TasksFilter', () => {
     const globexClient = data.clients.find((c: { name: string }) => c.name === 'Globex Solutions')
 
     // Create tasks with different priorities and assignees for filter testing
+    // Create a "today" due date and a far-future due date for Due Date filter testing
+    const todayDate = new Date()
+    todayDate.setHours(17, 0, 0, 0)
+    const futureDateObj = new Date()
+    futureDateObj.setFullYear(futureDateObj.getFullYear() + 1)
+
     const filterTasks = [
       {
         title: 'FilterTest-HighPriority-Marketing',
@@ -31,6 +37,22 @@ test.describe('TasksFilter', () => {
         assignee: 'Sarah Jenkins',
         assignee_role: 'CEO',
         client_id: acmeClient?.id,
+      },
+      {
+        title: 'FilterTest-DueToday-Task',
+        priority: 'Normal',
+        assignee: 'Sarah Jenkins',
+        assignee_role: 'CEO',
+        client_id: acmeClient?.id,
+        due_date: todayDate.toISOString(),
+      },
+      {
+        title: 'FilterTest-DueFuture-Task',
+        priority: 'Normal',
+        assignee: 'Michael Chen',
+        assignee_role: 'CTO',
+        client_id: globexClient?.id,
+        due_date: futureDateObj.toISOString(),
       },
     ]
 
@@ -150,6 +172,25 @@ test.describe('TasksFilter', () => {
     // Tasks associated with Globex Solutions should be hidden
     await expect(
       page.locator('[data-testid^="task-card-"]').filter({ hasText: 'FilterTest-MediumPriority-Sales' })
+    ).toHaveCount(0, { timeout: 10000 })
+  })
+
+  test('Filter by Due Date category', async ({ page }) => {
+    // Select Due Date from filter type dropdown
+    await page.getByTestId('tasks-filter-type-dropdown-trigger').click()
+    await page.getByTestId('tasks-filter-type-option-due_date').click()
+
+    // Type "Today" into the filter
+    await page.getByTestId('tasks-filter-input').fill('Today')
+
+    // Only tasks due today should be shown
+    await expect(
+      page.locator('[data-testid^="task-card-"]').filter({ hasText: 'FilterTest-DueToday-Task' })
+    ).toBeVisible({ timeout: 10000 })
+
+    // Tasks with future due dates should be hidden
+    await expect(
+      page.locator('[data-testid^="task-card-"]').filter({ hasText: 'FilterTest-DueFuture-Task' })
     ).toHaveCount(0, { timeout: 10000 })
   })
 

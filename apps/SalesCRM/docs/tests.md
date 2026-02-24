@@ -816,6 +816,13 @@
 - **Then** only tasks associated with clients matching "Acme" are shown
 - **And** tasks associated with other clients are hidden
 
+#### Test: Filter by Due Date category
+- **Given** the user is on the Tasks List Page with tasks that have different due dates (e.g., one due today and one due in the future)
+- **When** the user selects "Due Date" from the filter type dropdown
+- **And** types "Today" into the text filter input
+- **Then** only tasks whose formatted due date contains "Today" are shown (e.g., a task due today)
+- **And** tasks with other due dates are hidden
+
 #### Test: Text filter shows empty state when no results match
 - **Given** the Tasks List Page is loaded with tasks
 - **When** the user types "zzzznonexistent" into the text filter input
