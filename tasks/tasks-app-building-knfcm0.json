@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
-        "Unpack: Deploy to production for Accounting"
+        "DoDeploy: Deploy the app to production for Accounting",
+        "TestDeploy: Test the deployed app for Accounting"
       ],
-      "timestamp": "2026-02-24T19:26:26.242Z"
+      "timestamp": "2026-02-24T20:30:40.589Z"
     },
     {
       "skill": "skills/tasks/build/testSpec.md",
