@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/polishApp.md",
-      "jobs": [
-        "Unpack: Polish app quality"
-      ],
-      "timestamp": "2026-02-23T21:23:33.898Z"
-    },
-    {
       "strategy": "strategies/jobs/deployment.md",
       "jobs": [
         "Unpack: Deploy to production"
