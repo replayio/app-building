@@ -1,30 +1,30 @@
 # Overview
 
 This repository is a platform for agentic app building. You will build and/or maintain one or more
-web apps according to a set of strategies and guidelines which will evolve as you get better at building apps.
+web apps according to a set of skills and guidelines which will evolve as you get better at building apps.
 
 Key directories:
 
 * `apps`: Has one subdirectory for each app that has been built or has been specified and still needs to be built.
-* `strategies/messages`: Strategies for responding to messages from the user (e.g. bug reports, log analysis).
-* `strategies/tasks`: Strategies for performing tasks. See `strategies/AGENTS.md` for details.
+* `skills/messages`: Skills for responding to messages from the user (e.g. bug reports, log analysis).
+* `skills/tasks`: Skills for performing tasks. See `skills/AGENTS.md` for details.
 * `tasks`: The task queue (`tasks-<containerName>.json`) managed by scripts in `scripts/`.
 * `logs`: Log files from work that has been performed. `worker-current.log` is the log for
   the work currently being done.
 
 You are running within a container and can run test suites for applications and connect to various
-external services using instructions in the relevant strategy files.
+external services using instructions in the relevant skill files.
 
 **CRITICAL — FIRST THING YOU DO when responding to a user message:**
 
-1. **BEFORE doing ANY work**, list the files in `strategies/messages/` and read any strategy
+1. **BEFORE doing ANY work**, list the files in `skills/messages/` and read any skill
    whose name matches the user's request.
-2. If a matching strategy exists, follow it exactly.
-3. Only if no matching strategy exists should you proceed on your own — and then write a new
-   strategy document in `strategies/messages/` afterward so you handle it correctly next time.
+2. If a matching skill exists, follow it exactly.
+3. Only if no matching skill exists should you proceed on your own — and then write a new
+   skill document in `skills/messages/` afterward so you handle it correctly next time.
 
 Do NOT run git commands, search code, or take any other action until you have checked for a
-matching strategy. This is the highest-priority rule when handling user messages.
+matching skill. This is the highest-priority rule when handling user messages.
 
 ## Worker Execution
 
@@ -42,14 +42,14 @@ When you have completed ALL subtasks in your task, output `<DONE>` to signal com
 ## Task System
 
 Work is managed through a JSON task queue at `tasks/tasks-<containerName>.json`. The file contains an object
-with a `tasks` array. Each task has a `strategy`, an array of `subtasks` (description strings),
+with a `tasks` array. Each task has a `skill`, an array of `subtasks` (description strings),
 and a `timestamp`:
 
 ```json
 {
   "tasks": [
     {
-      "strategy": "strategies/tasks/maintain/checkDirectives.md",
+      "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication",
         "CheckComponentsAuth: Check writeApp.md directive violations in Authentication",
@@ -63,13 +63,13 @@ and a `timestamp`:
 
 The agent NEVER reads or writes task files directly. Instead, use:
 
-* **`npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2"`**:
+* **`npx tsx /repo/scripts/add-task.ts --skill "<path>" --subtask "desc1" --subtask "desc2"`**:
   Adds a task to the FRONT of the queue (next to be processed). Each `--subtask` flag
   adds one subtask to the task. Subtasks execute in the order listed.
   Add `--trailing` to append to the END of the queue instead.
 
-All subtasks in a task share the same strategy. Group related subtasks together — for example,
-all checks for a single page go in one task. When a strategy needs to "unpack" into
+All subtasks in a task share the same skill. Group related subtasks together — for example,
+all checks for a single page go in one task. When a skill needs to "unpack" into
 sub-tasks, use `add-task` to insert them at the front of the queue.
 
 **CRITICAL: Task scope rules**
@@ -102,10 +102,10 @@ frontend components.
 
 ## Quality Gates
 
-Before each commit, run `npm run check` (see `strategies/scripts/check.md`). Do not commit
+Before each commit, run `npm run check` (see `skills/scripts/check.md`). Do not commit
 code that fails typecheck or lint.
 
 ## Commits
 
 The worker commits automatically after each iteration. Do not commit manually unless
-explicitly asked to by a strategy or prompt.
+explicitly asked to by a skill or prompt.

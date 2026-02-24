@@ -1,7 +1,7 @@
-# Strategy
+# Skill
 
 You are preparing the current branch for merging to `main` via PR.
-The goal is to land only strategies, scripts, and task-system changes — **not** app code
+The goal is to land only skills, scripts, and task-system changes — **not** app code
 or logs.
 
 The server will push this branch automatically after you finish. Do NOT push to `main`
@@ -32,7 +32,7 @@ or checkout `main`. Just prepare the current branch.
 
 ## What gets merged
 
-- `strategies/` — message strategies, task strategies, script design docs
+- `skills/` — message skills, task skills, script design docs
 - `scripts/` (repo-root) — task queue tooling, worker scripts
 - `tasks/` — task queue state
 - Any other top-level files outside `apps/` and `logs/`
@@ -47,7 +47,7 @@ or checkout `main`. Just prepare the current branch.
 - Always merge FROM `main` first (step 1) to avoid conflicts on `main`.
 - The deletion in step 2 is permanent on this branch. The app branch still has
   those files — they are not lost.
-- If the user only wants to merge a subset of strategies, they should say so
-  explicitly. By default this strategy merges everything outside `apps/` and `logs/`.
+- If the user only wants to merge a subset of skills, they should say so
+  explicitly. By default this skill merges everything outside `apps/` and `logs/`.
 - Never force-push to `main`.
 - Do NOT checkout `main` or push to `main`. The server handles pushing this branch.

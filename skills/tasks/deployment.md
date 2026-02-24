@@ -1,4 +1,4 @@
-# Strategy
+# Skill
 
 During this stage you will deploy the app to production and test it to make sure it works.
 
@@ -7,7 +7,7 @@ During this stage you will deploy the app to production and test it to make sure
 Unpack the initial deployment task into a single task:
 
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/deployment.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/deployment.md" \
   --subtask "DoDeploy: Deploy the app to production" \
   --subtask "TestDeploy: Test the deployed app"
 ```
@@ -16,10 +16,10 @@ npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/deployment.md" \
 
 Before running the deploy script, check whether the app has been deployed before by reading
 `deployment.txt`. If it exists, you MUST populate `.env` with the existing resource IDs so
-the script reuses them. See `strategies/scripts/deploy.md` § "Populating `.env` for
+the script reuses them. See `skills/scripts/deploy.md` § "Populating `.env` for
 Redeployments" for the exact steps.
 
-Then run `npm run deploy` from the app directory. See `strategies/scripts/deploy.md` for the
+Then run `npm run deploy` from the app directory. See `skills/scripts/deploy.md` for the
 full script specification. The script handles database creation/sync, Netlify site
 creation/update, and writes the deployed URL to `deployment.txt`.
 

@@ -1,4 +1,4 @@
-# Strategy
+# Skill
 
 You will run all the tests in the app and get them to pass..
 
@@ -7,7 +7,7 @@ You will run all the tests in the app and get them to pass..
 Unpack the initial testing task into a single task:
 
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/testing.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" \
   --subtask "FixTests: Get all tests passing"
 ```
 
@@ -15,7 +15,7 @@ After running tests and there are failures, pick specific failing tests and add 
 them without regressing any tests that passed in previous runs:
 
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/testing.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" \
   --subtask "Fix: <failing test name 1>" \
   --subtask "Fix: <failing test name 2>"
 ```
@@ -137,7 +137,7 @@ the deployment Playwright config for a working example.
 
 ## Running Tests
 
-Run tests via `npm run test <testFile>` from the app directory (see `strategies/scripts/test.md`
+Run tests via `npm run test <testFile>` from the app directory (see `skills/scripts/test.md`
 for the full script specification). Do NOT manually run playwright or start dev servers.
 
 - Write the results to a logs/test-run-N.log file.
@@ -149,15 +149,15 @@ When tests fail, you MUST follow this process for each distinct failure. Every s
 mandatory — do NOT skip or reorder steps.
 
 1. Announce `ANALYZING TEST FAILURE: <test name>`.
-2. **Read the debugging guides** in `strategies/debugging/` to find the category matching your
+2. **Read the debugging guides** in `skills/debugging/` to find the category matching your
    failure. The guides describe which Replay MCP tools to use first and what to look for:
-   - `strategies/debugging/timeouts.md` — Test timeouts and stuck steps
-   - `strategies/debugging/race-conditions.md` — Flaky tests, parallel interference
-   - `strategies/debugging/component-rendering.md` — Empty DOM, components not mounting
-   - `strategies/debugging/network-and-api.md` — API errors, missing/wrong data
-   - `strategies/debugging/form-and-input.md` — Form validation, input interactions
-   - `strategies/debugging/seed-data.md` — Missing test data, count mismatches
-   - `strategies/debugging/README.md` — Quick reference table: symptom → starting tool
+   - `skills/debugging/timeouts.md` — Test timeouts and stuck steps
+   - `skills/debugging/race-conditions.md` — Flaky tests, parallel interference
+   - `skills/debugging/component-rendering.md` — Empty DOM, components not mounting
+   - `skills/debugging/network-and-api.md` — API errors, missing/wrong data
+   - `skills/debugging/form-and-input.md` — Form validation, input interactions
+   - `skills/debugging/seed-data.md` — Missing test data, count mismatches
+   - `skills/debugging/README.md` — Quick reference table: symptom → starting tool
 3. Find the uploaded recording IDs in the `npm run test` output. The test script automatically
    uploads failed recordings and logs full metadata for each one. Look for the
    `=== REPLAY RECORDINGS METADATA ===` block and the `REPLAY UPLOADED: <recordingId>` lines
@@ -277,7 +277,7 @@ When testing the app after deployment, use the Replay browser to record the app 
   Playwright `webServer` config starts fresh processes on different ports and is not affected.
 - Commit incrementally during debugging sessions. If you improve test results (e.g., 81→207 passing)
   or fix a meaningful issue, commit those changes immediately even if other failures remain. An
-  iteration that produces zero commits despite significant work (strategy updates, code fixes,
+  iteration that produces zero commits despite significant work (skill updates, code fixes,
   debugging progress) is wasted effort because the next iteration starts from scratch.
 - Before running tests, verify `NEON_PROJECT_ID` is set in the environment. The test script
   requires it for creating ephemeral Neon branches. The project ID for SalesCRM is

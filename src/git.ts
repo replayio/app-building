@@ -197,8 +197,8 @@ export function pushTarget(
             [
               "tsx",
               "/repo/scripts/add-task.ts",
-              "--strategy",
-              "strategies/tasks/resolveConflicts.md",
+              "--skill",
+              "skills/tasks/resolveConflicts.md",
               "--subtask",
               "Resolve merge conflicts from auto-resolution with --theirs and verify the codebase is correct",
             ],

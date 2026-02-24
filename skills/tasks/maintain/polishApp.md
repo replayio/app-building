@@ -1,4 +1,4 @@
-# Strategy
+# Skill
 
 During this stage you will polish the app to improve its quality, identifying and fixing
 issues around the app's appearance, performance, code structure, and so on.
@@ -40,7 +40,7 @@ If the `Responsive UI` section in `docs/plan.md` is missing or not marked `✓`,
 responsive work. Read `docs/tests.md` to identify all pages, then add one task per page:
 
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/maintain/polishApp.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/polishApp.md" \
   --subtask "MakeResponsive<PageName>: Make <PageName> responsive"
 ```
 

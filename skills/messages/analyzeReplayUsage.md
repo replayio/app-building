@@ -1,6 +1,6 @@
-# Strategy
+# Skill
 
-Use this strategy when the user asks you to study how Replay MCP tools were used across
+Use this skill when the user asks you to study how Replay MCP tools were used across
 worker logs — e.g., to find patterns, measure effectiveness, identify gaps, or update
 the debugging guides.
 
@@ -8,7 +8,7 @@ the debugging guides.
 
 **You MUST use `npm run read-log /path/to/log` from the repo root to read every log file.**
 Do NOT use grep, cat, head, tail, or the Read tool on raw log files. See
-`strategies/messages/analyzeLogs.md` for why.
+`skills/messages/analyzeLogs.md` for why.
 
 **Do NOT pipe read-log output through grep or other filters.** The read-log script already
 formats the output into a readable summary. Read the full output to understand the log.
@@ -82,7 +82,7 @@ Include:
 
 ## Step 4: Update debugging guides
 
-Compare the findings against the existing guides in `strategies/debugging/`:
+Compare the findings against the existing guides in `skills/debugging/`:
 - `timeouts.md`
 - `race-conditions.md`
 - `component-rendering.md`

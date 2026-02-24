@@ -1,10 +1,10 @@
-# Strategy
+# Skill
 
-You are implementing a package script based on its design doc in `strategies/scripts/`.
+You are implementing a package script based on its design doc in `skills/scripts/`.
 
 ## Process
 
-1. **Read the design doc**: Read `strategies/scripts/<script-name>.md` to understand the
+1. **Read the design doc**: Read `skills/scripts/<script-name>.md` to understand the
    script's purpose, usage, behavior, inputs, outputs, and implementation tips.
 
 2. **Read related code**: Before writing, read existing scripts and modules referenced in

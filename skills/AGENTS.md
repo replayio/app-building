@@ -1,10 +1,10 @@
-# Strategy Organization
+# Skill Organization
 
-Strategies are divided into two categories:
+Skills are divided into two categories:
 
 ## `messages/` — Responding to user messages
 
-These strategies are triggered when a user sends a message (e.g. a bug report, a request to
+These skills are triggered when a user sends a message (e.g. a bug report, a request to
 build or maintain an app, or a question about logs). They add tasks to the queue using
 `add-task --trailing`.
 
@@ -18,21 +18,21 @@ build or maintain an app, or a question about logs). They add tasks to the queue
 
 Design docs that define the contract for package scripts (`npm run <name>`). Each file covers
 the script's purpose, usage, behavior, inputs, outputs, and implementation tips. These are
-written by the `messages/updateScripts.md` strategy before the script is implemented.
+written by the `messages/updateScripts.md` skill before the script is implemented.
 
 Design docs are prescriptive — they define how a script should work and are created before
 implementation. The implementing agent reads the design doc and follows it.
 
-## `tasks/` — Task strategies
+## `tasks/` — Task skills
 
-These strategies are referenced by tasks in the queue. Each worker invocation reads the
-next task from the container's task file and runs all subtasks in the task. Strategies that need to "unpack"
+These skills are referenced by tasks in the queue. Each worker invocation reads the
+next task from the container's task file and runs all subtasks in the task. Skills that need to "unpack"
 into sub-tasks use `add-task` to insert them at the front of the queue.
 
 ### Root — Shared infrastructure
 
 - **deployment.md**: Deploy the app to production. Used by both build and maintain workflows.
-- **writeScript.md**: Implement a package script from its design doc in `strategies/scripts/`.
+- **writeScript.md**: Implement a package script from its design doc in `skills/scripts/`.
 
 ### `build/` — Build stage tasks
 
@@ -49,5 +49,5 @@ Used when maintaining an existing app (see `messages/maintainApp.md` for stage o
 
 - **fixBugReport.md**: Analyze, fix, and test open bug reports.
 - **reviewBugReport.md**: Review fixed bugs for process improvements and directive updates.
-- **checkDirectives.md**: Systematically check the app against all strategy directives.
+- **checkDirectives.md**: Systematically check the app against all skill directives.
 - **polishApp.md**: Improve the app's overall quality.

@@ -1,4 +1,4 @@
-# Strategy
+# Skill
 
 You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide. If `AppRevisions.md` exists, it describes new functionality and spec changes organized by topic section, and must also be followed.
 
@@ -8,14 +8,14 @@ Unpack the initial write app task into subtasks using `add-task`:
 
 First, add a setup task:
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" \
   --subtask "SetupApp: Setup the app" \
   --subtask "DesignDatabase: Design the database"
 ```
 
 Then add one task per page, containing all components and the page itself:
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" \
   --subtask "WriteComponent<Component1>: Write the <Component1> component" \
   --subtask "WriteComponent<Component2>: Write the <Component2> component" \
   --subtask "WritePage<Name>: Write the page itself"
@@ -31,7 +31,7 @@ npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md
 
 The app MUST have a reusable `initSchema` function exported from a shared module (e.g.,
 `scripts/schema.ts`). This is the single source of truth for the database schema, used by
-the test and deploy scripts (see `strategies/scripts/test.md` and `strategies/scripts/deploy.md`).
+the test and deploy scripts (see `skills/scripts/test.md` and `skills/scripts/deploy.md`).
 
 **Requirements for `initSchema`**:
 

@@ -1,6 +1,6 @@
-# Strategy
+# Skill
 
-Use this strategy when you need to search through logs to find specific information,
+Use this skill when you need to search through logs to find specific information,
 such as how a tool was used, whether a particular action was taken, or what happened
 during a specific phase of work.
 

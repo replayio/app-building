@@ -1,6 +1,6 @@
-# Strategy
+# Skill
 
-Use this strategy when the user asks about the last deployment, when something was
+Use this skill when the user asks about the last deployment, when something was
 last deployed, or wants the production URL for an app.
 
 ## Identifying the app

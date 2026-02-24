@@ -1,7 +1,7 @@
-# Strategy
+# Skill
 
-You are merging code and strategy changes from an app branch back to `main` without
-merging the apps themselves. This lets improvements to `src/`, `strategies/`, and
+You are merging code and skill changes from an app branch back to `main` without
+merging the apps themselves. This lets improvements to `src/`, `skills/`, and
 root config files flow back to `main` so that new app branches benefit from them.
 
 ## Prerequisites
@@ -26,7 +26,7 @@ Include these paths:
 
 ```
 src/
-strategies/
+skills/
 AGENTS.md
 CLAUDE.md
 Dockerfile
@@ -60,12 +60,12 @@ git checkout -b merge-to-main origin/main
 For each included path, check out the version from the `*-merge` branch:
 
 ```bash
-git checkout <merge-branch> -- src/ strategies/ AGENTS.md CLAUDE.md \
+git checkout <merge-branch> -- src/ skills/ AGENTS.md CLAUDE.md \
   Dockerfile .dockerignore .gitignore .rgignore .env.example \
   package.json package-lock.json tsconfig.json README.md
 ```
 
-If a file was deleted on the app branch (e.g. an old strategy file that was
+If a file was deleted on the app branch (e.g. an old skill file that was
 reorganized), remove it on this branch too. Use the diff to identify deletions:
 
 ```bash
@@ -115,7 +115,7 @@ docs directories are untouched on `main`.
 
 - If `package-lock.json` has conflicts, regenerate it: delete it, run `npm install`,
   and commit the result.
-- Strategy file reorganizations (moves/renames) are handled naturally since we check
-  out the full `strategies/` tree from the app branch and delete removed files.
+- Skill file reorganizations (moves/renames) are handled naturally since we check
+  out the full `skills/` tree from the app branch and delete removed files.
 - After the merge to main is complete, new app branches created from main will
   automatically inherit the updated infrastructure.

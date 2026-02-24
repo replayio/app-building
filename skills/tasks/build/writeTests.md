@@ -1,4 +1,4 @@
-# Strategy
+# Skill
 
 You are writing playwright tests which check that all the different entries in docs/tests.md are satisfied by the app.
 
@@ -8,7 +8,7 @@ Unpack the initial write tests task into subtasks using `add-task`. Add one task
 containing all test entries for that page:
 
 ```
-npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeTests.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" \
   --subtask "WriteTest<TestEntry1>: Write test for <TestEntry1>" \
   --subtask "WriteTest<TestEntry2>: Write test for <TestEntry2>" \
   --subtask "WriteTest<TestEntry3>: Write test for <TestEntry3>"
@@ -74,8 +74,8 @@ npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeTests.
   calls that can block indefinitely. Use locator chaining (`.filter()`, `.locator()`) and
   single-assertion expect matchers (`.toHaveCount()`, `.toContainText()`, `.toBeVisible()`) instead.
 
-- Strategy files are at `/repo/strategies/tasks/` and its subdirectories (the repo root), NOT inside
-  the app directory. Always use `/repo/strategies/tasks/build/writeTests.md`, etc.
+- Skill files are at `/repo/skills/tasks/` and its subdirectories (the repo root), NOT inside
+  the app directory. Always use `/repo/skills/tasks/build/writeTests.md`, etc.
 
 - When a test spec entry describes editing or interacting with a specific field (e.g., "edit client
   field", "change value"), the test must exercise that exact field with corresponding actions and

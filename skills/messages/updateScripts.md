@@ -1,4 +1,4 @@
-# Strategy
+# Skill
 
 You are writing a design doc for a new package script requested by the user. The design doc
 covers how the script should be called, what it does, and tips for implementation. After the
@@ -13,20 +13,20 @@ design doc is written, the agent implements the script for the app.
    understand naming conventions. Read any related existing scripts (e.g., if writing a new
    database script, read `init-db.ts`, `migrate-db.ts`, `seed-db.ts` for patterns).
 
-3. **Write the design doc**: Create `strategies/scripts/<script-name>.md` with the structure
+3. **Write the design doc**: Create `skills/scripts/<script-name>.md` with the structure
    described below. The script name should match the `package.json` script key (e.g., if the
-   script will be `npm run setup-test-branch`, the file is `strategies/scripts/setup-test-branch.md`).
+   script will be `npm run setup-test-branch`, the file is `skills/scripts/setup-test-branch.md`).
 
 4. **Add the implementation task**: Add a task to the queue:
    ```
-   npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/writeScript.md" --subtask "Implement <script-name> script" --trailing
+   npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/writeScript.md" --subtask "Implement <script-name> script" --trailing
    ```
 
 5. The worker will pick up and process the task.
 
 ## Design Doc Structure
 
-Every design doc in `strategies/scripts/` must follow this structure:
+Every design doc in `skills/scripts/` must follow this structure:
 
 ```markdown
 # <script-name>
