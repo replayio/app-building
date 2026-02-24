@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
-        "Unpack: Review fixed bug reports"
-      ],
-      "timestamp": "2026-02-23T21:23:41.406Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "Unpack: Check directive compliance"
