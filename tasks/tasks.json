@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageDashboard: Decide on components, add sections to docs/tests.md for DashboardPage (/)",
-        "PlanComponentLowInventoryAlerts: Add test entries for LowInventoryAlerts (alert rows with warning/critical severity, View Details links, Dismiss buttons, Reorder buttons)",
-        "PlanComponentMaterialsCategoriesOverview: Add test entries for MaterialsCategoriesOverview (category summaries with item counts, material links, View All Categories link)",
-        "PlanComponentRecentTransactionsTable: Add test entries for RecentTransactionsTable (columns: Date, Reference, Accounts Affected, Materials & Amounts, Action; View Full Details links; View All Transactions link)",
-        "PlanComponentDashboardFiltersAndActions: Add test entries for DateRangeFilter, CategoryFilter dropdown, and NewTransactionButton (opens new transaction page)"
-      ],
-      "timestamp": "2026-02-24T03:47:30.588Z"
-    },
-    {
       "strategy": "strategies/tasks/build/writeApp.md",
       "subtasks": [
         "Unpack: Write the InventoryTracker app"

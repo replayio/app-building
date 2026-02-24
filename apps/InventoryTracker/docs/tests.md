@@ -8,9 +8,225 @@ _Consistent sidebar navigation across all pages: Dashboard, Accounts, Materials,
 
 ## DashboardPage (`/`)
 
-Components: LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsTable, DateRangeFilter, CategoryFilter, NewTransactionButton
+Components: DashboardPageHeader, LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsTable, DateRangeFilter, CategoryFilter, NewTransactionButton
 
-<!-- Tests will be added by PlanPageDashboard -->
+### DashboardPageHeader
+
+#### Test: Page heading displays "Dashboard Overview"
+- **Components:** DashboardPageHeader
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** The page heading "Dashboard Overview" is displayed in large, bold text as the primary heading of the page.
+
+### LowInventoryAlerts
+
+#### Test: Low Inventory Alerts section heading is displayed with alert icon
+- **Components:** LowInventoryAlerts
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** A "Low Inventory Alerts" heading is displayed as the first content section on the dashboard (below the filter bar), with an alert/warning icon to the left of the heading text.
+
+#### Test: Warning-level alert row displays correctly
+- **Components:** LowInventoryAlerts
+- **Initial state:** User navigates to `/`. The material "Steel Bolts M6" has a current stock of 150 units and a reorder point of 200 units.
+- **Action:** Page loads.
+- **Expected:** An alert row is displayed with: a yellow/orange warning triangle icon, the severity label "Warning", description text "'Steel Bolts M6' is low. Current: 150 units. Reorder Point: 200 units.", a "View Details" link with a right-arrow chevron, a "Dismiss" button, and a "Reorder" button. The Dismiss and Reorder buttons are displayed to the right of the alert row.
+
+#### Test: Critical-level alert row displays correctly
+- **Components:** LowInventoryAlerts
+- **Initial state:** User navigates to `/`. The material "Aluminum Sheets" has a current stock of 25 kg and a reorder point of 100 kg.
+- **Action:** Page loads.
+- **Expected:** An alert row is displayed with: a red warning triangle icon, the severity label "Critical", description text "'Aluminum Sheets' is critically low. Current: 25 kg. Reorder Point: 100 kg.", a "View Details" link with a right-arrow chevron, a "Dismiss" button, and a "Reorder" button.
+
+#### Test: Multiple alert rows are displayed for all low-inventory materials
+- **Components:** LowInventoryAlerts
+- **Initial state:** User navigates to `/`. Three materials are below reorder point: "Steel Bolts M6" (Warning), "Aluminum Sheets" (Critical), "Copper Wire" (Warning).
+- **Action:** Page loads.
+- **Expected:** Three alert rows are displayed in the Low Inventory Alerts section. Row 1: Warning — "Steel Bolts M6" (Current: 150 units, Reorder Point: 200 units). Row 2: Critical — "Aluminum Sheets" (Current: 25 kg, Reorder Point: 100 kg). Row 3: Warning — "Copper Wire" (Current: 80 m, Reorder Point: 150 m). Each row has View Details, Dismiss, and Reorder controls.
+
+#### Test: View Details link navigates to material detail page
+- **Components:** LowInventoryAlerts
+- **Initial state:** User is on `/`. The "Steel Bolts M6" warning alert is displayed with a "View Details" link.
+- **Action:** User clicks the "View Details" link on the "Steel Bolts M6" alert row.
+- **Expected:** User is navigated to the MaterialDetailPage (`/materials/:materialId`) for "Steel Bolts M6".
+
+#### Test: Dismiss button removes the alert row
+- **Components:** LowInventoryAlerts
+- **Initial state:** User is on `/`. Three alert rows are displayed: "Steel Bolts M6", "Aluminum Sheets", "Copper Wire".
+- **Action:** User clicks the "Dismiss" button on the "Steel Bolts M6" alert row.
+- **Expected:** The "Steel Bolts M6" alert row is removed from the Low Inventory Alerts section. The remaining two alerts ("Aluminum Sheets" and "Copper Wire") are still displayed. The dismissal is persisted so the alert does not reappear on page refresh (until inventory levels change again).
+
+#### Test: Reorder button opens new transaction page pre-filled for reorder
+- **Components:** LowInventoryAlerts
+- **Initial state:** User is on `/`. The "Steel Bolts M6" warning alert is displayed with a "Reorder" button.
+- **Action:** User clicks the "Reorder" button on the "Steel Bolts M6" alert row.
+- **Expected:** User is navigated to the NewTransactionPage (`/transactions/new`) with the transaction pre-filled for a reorder of "Steel Bolts M6" — the material is pre-selected in a quantity transfer line.
+
+#### Test: Empty state when no low inventory alerts exist
+- **Components:** LowInventoryAlerts
+- **Initial state:** User navigates to `/`. All materials are at or above their reorder points.
+- **Action:** Page loads.
+- **Expected:** The "Low Inventory Alerts" section heading is still displayed. An empty state message such as "No low inventory alerts" or "All materials are sufficiently stocked" is shown instead of alert rows.
+
+### MaterialsCategoriesOverview
+
+#### Test: Materials Categories Overview section heading is displayed with grid icon
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** A "Materials Categories Overview" heading is displayed as the second content section on the dashboard (below Low Inventory Alerts), with a grid/category icon to the left of the heading text.
+
+#### Test: Category summaries are displayed in a multi-column layout
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`. The system has three material categories: "Raw Materials", "Finished Goods", "Packaging".
+- **Action:** Page loads.
+- **Expected:** Three category summary columns are displayed side by side in a row layout. Each column shows the category name as a bold heading.
+
+#### Test: Category summary shows total item count and total units
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`. The "Raw Materials" category has 450 items totaling 3,200 units.
+- **Action:** Page loads.
+- **Expected:** The "Raw Materials" column header displays "(Total: 450 Items, 3,200 Units)" next to or below the category name, showing the aggregate count of distinct material items and total quantity across all materials in that category.
+
+#### Test: Each category lists top materials with names and quantities
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`. The "Raw Materials" category contains materials including "Iron Rods" (1,200 units), "Plastic Granules" (800 kg), and "Wood Planks" (500 pieces).
+- **Action:** Page loads.
+- **Expected:** The "Raw Materials" column lists up to three materials: "Iron Rods: 1,200 units", "Plastic Granules: 800 kg", "Wood Planks: 500 pieces". Each material name is displayed as a clickable link.
+
+#### Test: Finished Goods category displays correctly
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`. The "Finished Goods" category has 120 items totaling 550 units, including "Chair A" (150 units), "Table B" (80 units), "Shelf C" (100 units).
+- **Action:** Page loads.
+- **Expected:** The "Finished Goods" column header shows "(Total: 120 Items, 550 Units)". Below, three materials are listed: "Chair A: 150 units", "Table B: 80 units", "Shelf C: 100 units". Each material name is a clickable link.
+
+#### Test: Packaging category displays correctly
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`. The "Packaging" category has 80 items totaling 900 units, including "Cardboard Boxes" (500 units), "Bubble Wrap" (200 m), "Tape Rolls" (150 rolls).
+- **Action:** Page loads.
+- **Expected:** The "Packaging" column header shows "(Total: 80 Items, 900 Units)". Below, three materials are listed: "Cardboard Boxes: 500 units", "Bubble Wrap: 200 m", "Tape Rolls: 150 rolls". Each material name is a clickable link.
+
+#### Test: Clicking a material name link navigates to MaterialDetailPage
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User is on `/`. The "Raw Materials" column shows "Iron Rods" as a clickable link.
+- **Action:** User clicks the "Iron Rods" link.
+- **Expected:** User is navigated to the MaterialDetailPage (`/materials/:materialId`) for "Iron Rods".
+
+#### Test: View All Categories link is displayed and navigates to MaterialsPage
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User is on `/`. The Materials Categories Overview section is displayed.
+- **Action:** User clicks the "View All Categories" link at the bottom-right of the section.
+- **Expected:** User is navigated to the MaterialsPage (`/materials`).
+
+#### Test: Empty state when no material categories exist
+- **Components:** MaterialsCategoriesOverview
+- **Initial state:** User navigates to `/`. No material categories or materials exist in the system.
+- **Action:** Page loads.
+- **Expected:** The "Materials Categories Overview" section heading is displayed. An empty state message such as "No material categories found" is shown instead of category columns.
+
+### RecentTransactionsTable
+
+#### Test: Recent Transactions section heading is displayed
+- **Components:** RecentTransactionsTable
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** A "Recent Transactions" heading is displayed as the third content section on the dashboard (below Materials Categories Overview).
+
+#### Test: Recent Transactions table displays all column headers
+- **Components:** RecentTransactionsTable
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** The Recent Transactions table displays column headers in order: "Date", "Reference", "Accounts Affected", "Materials & Amounts", "Action".
+
+#### Test: Transaction rows display correct data in all columns
+- **Components:** RecentTransactionsTable
+- **Initial state:** User navigates to `/`. Recent transactions exist in the system.
+- **Action:** Page loads.
+- **Expected:** Transaction rows are displayed with: Date (formatted as "Oct 25, 2023" style), Reference (e.g., "TRX-20231025-001"), Accounts Affected (e.g., "Supplier A -> Warehouse"), Materials & Amounts (e.g., "Steel Bolts M6: +500 units; Copper Wire: +200 m"), and an Action column with a "View Full Details" link with a right-arrow chevron.
+
+#### Test: Multiple transaction rows are displayed in reverse chronological order
+- **Components:** RecentTransactionsTable
+- **Initial state:** User navigates to `/`. Five recent transactions exist with dates Oct 23–25, 2023.
+- **Action:** Page loads.
+- **Expected:** Five transaction rows are displayed ordered by most recent first. Row 1: Oct 25, 2023 — TRX-20231025-001 — Supplier A -> Warehouse — Steel Bolts M6: +500 units; Copper Wire: +200 m. Row 2: Oct 24, 2023 — TRX-20231024-012 — Warehouse -> Production — Aluminum Sheets: -50 kg; Plastic Granules: -100 kg. Row 3: Oct 24, 2023 — TRX-20231024-011 — Production -> Finished Goods — Chair A: +20 units; Table B: +10 units. Row 4: Oct 23, 2023 — TRX-20231023-005 — Warehouse -> Customer X — Chair A: -5 units. Row 5: Oct 23, 2023 — TRX-20231023-004 — Supplier B -> Warehouse — Wood Planks: +300 pieces.
+
+#### Test: View Full Details link navigates to TransactionDetailPage
+- **Components:** RecentTransactionsTable
+- **Initial state:** User is on `/`. The Recent Transactions table shows a row for transaction TRX-20231025-001 with a "View Full Details" link.
+- **Action:** User clicks the "View Full Details" link on the TRX-20231025-001 row.
+- **Expected:** User is navigated to the TransactionDetailPage (`/transactions/:transactionId`) for transaction TRX-20231025-001.
+
+#### Test: View All Transactions link is displayed and navigates to TransactionsPage
+- **Components:** RecentTransactionsTable
+- **Initial state:** User is on `/`. The Recent Transactions section is displayed.
+- **Action:** User clicks the "View All Transactions" link at the bottom of the section.
+- **Expected:** User is navigated to the TransactionsPage (`/transactions`).
+
+#### Test: Empty state when no transactions exist
+- **Components:** RecentTransactionsTable
+- **Initial state:** User navigates to `/`. No transactions exist in the system.
+- **Action:** Page loads.
+- **Expected:** The "Recent Transactions" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No recent transactions" is displayed.
+
+### DateRangeFilter
+
+#### Test: Date range filter is displayed with label and calendar icon
+- **Components:** DateRangeFilter
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** A filter control labeled "Filter by Date:" is displayed in the filter bar area at the top of the dashboard (below the heading, above the content sections). It shows a date range picker with a calendar icon, displaying a default date range (e.g., "Oct 1, 2023 - Oct 31, 2023").
+
+#### Test: Clicking date range filter opens a date picker
+- **Components:** DateRangeFilter
+- **Initial state:** User is on `/`. The date range filter shows "Oct 1, 2023 - Oct 31, 2023".
+- **Action:** User clicks on the date range filter control.
+- **Expected:** A date picker UI opens allowing the user to select a start date and an end date. The currently selected range is highlighted.
+
+#### Test: Selecting a new date range filters dashboard data
+- **Components:** DateRangeFilter, LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsTable
+- **Initial state:** User is on `/`. The date range filter shows "Oct 1, 2023 - Oct 31, 2023". Dashboard data is displayed for October 2023.
+- **Action:** User selects a new date range of "Sep 1, 2023 - Sep 30, 2023" using the date picker.
+- **Expected:** The date range filter updates to display "Sep 1, 2023 - Sep 30, 2023". The RecentTransactionsTable updates to show only transactions within September 2023. The LowInventoryAlerts and MaterialsCategoriesOverview update to reflect inventory levels as of the selected date range.
+
+### CategoryFilter
+
+#### Test: Category filter dropdown is displayed with label and default value
+- **Components:** CategoryFilter
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** A dropdown control labeled "Category Filter:" is displayed in the filter bar area next to the date range filter. The dropdown shows "All Categories" as its default selected value.
+
+#### Test: Category filter dropdown shows available categories
+- **Components:** CategoryFilter
+- **Initial state:** User is on `/`. The category filter dropdown shows "All Categories". The system has categories: "Raw Materials", "Finished Goods", "Packaging".
+- **Action:** User clicks the category filter dropdown.
+- **Expected:** A dropdown menu opens showing options: "All Categories", "Raw Materials", "Finished Goods", "Packaging". "All Categories" is currently selected.
+
+#### Test: Selecting a specific category filters dashboard data
+- **Components:** CategoryFilter, LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsTable
+- **Initial state:** User is on `/`. The category filter shows "All Categories". All dashboard sections show data across all categories.
+- **Action:** User selects "Raw Materials" from the category filter dropdown.
+- **Expected:** The category filter updates to display "Raw Materials". The LowInventoryAlerts section shows only alerts for materials in the "Raw Materials" category. The MaterialsCategoriesOverview section shows only the "Raw Materials" category column. The RecentTransactionsTable shows only transactions involving materials in the "Raw Materials" category.
+
+#### Test: Selecting "All Categories" resets the category filter
+- **Components:** CategoryFilter, LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsTable
+- **Initial state:** User is on `/`. The category filter is set to "Raw Materials" and dashboard data is filtered to that category.
+- **Action:** User selects "All Categories" from the category filter dropdown.
+- **Expected:** The category filter updates to display "All Categories". All dashboard sections return to showing data across all categories without filtering.
+
+### NewTransactionButton
+
+#### Test: New Transaction button is displayed with plus icon
+- **Components:** NewTransactionButton
+- **Initial state:** User navigates to `/`.
+- **Action:** Page loads.
+- **Expected:** A "+ New Transaction" button is displayed prominently in the top-right area of the dashboard (in the filter bar / header area), styled as a primary/filled blue button with a "+" icon preceding the text "New Transaction".
+
+#### Test: Clicking New Transaction button navigates to NewTransactionPage
+- **Components:** NewTransactionButton
+- **Initial state:** User is on `/`. The "+ New Transaction" button is displayed.
+- **Action:** User clicks the "+ New Transaction" button.
+- **Expected:** User is navigated to the NewTransactionPage (`/transactions/new`).
 
 ---
 
