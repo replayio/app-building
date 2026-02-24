@@ -1,21 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
-        "WriteComponentDealHeader: Write the DealHeader component",
-        "WriteComponentStageProgressBar: Write the StageProgressBar component",
-        "WriteComponentDealHistorySection: Write the DealHistorySection component",
-        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
-        "WriteComponentWriteupsSection: Write the WriteupsSection component",
-        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
-        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
-        "WriteComponentDealContactsSection: Write the DealContactsSection component",
-        "WritePageDealDetailPage: Write the DealDetailPage page itself"
-      ],
-      "timestamp": "2026-02-24T01:56:23.099Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "FixViolation: Fix schema.ts initSchema to remove DROP TABLE statements and be truly idempotent/safe to re-run per writeApp.md directive",
