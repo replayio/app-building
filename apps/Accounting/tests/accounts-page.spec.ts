@@ -268,7 +268,7 @@ test.describe("AccountCard", () => {
 
     // Find the Checking Account card
     const assetsContent = page.getByTestId("category-content-assets");
-    const checkingCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const checkingCard = assetsContent.locator(".account-card").filter({
       hasText: "Checking Account (Chase Bank)",
     });
     await expect(checkingCard).toBeVisible();
@@ -283,7 +283,7 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
 
     const assetsContent = page.getByTestId("category-content-assets");
-    const checkingCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const checkingCard = assetsContent.locator(".account-card").filter({
       hasText: "Checking Account (Chase Bank)",
     });
 
@@ -297,7 +297,7 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
 
     const assetsContent = page.getByTestId("category-content-assets");
-    const checkingCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const checkingCard = assetsContent.locator(".account-card").filter({
       hasText: "Checking Account (Chase Bank)",
     });
 
@@ -318,7 +318,7 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
 
     const assetsContent = page.getByTestId("category-content-assets");
-    const checkingCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const checkingCard = assetsContent.locator(".account-card").filter({
       hasText: "Checking Account (Chase Bank)",
     });
 
@@ -336,7 +336,7 @@ test.describe("AccountCard", () => {
 
     // Find the checking account card and its menu button
     const assetsContent = page.getByTestId("category-content-assets");
-    const checkingCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const checkingCard = assetsContent.locator(".account-card").filter({
       hasText: "Checking Account (Chase Bank)",
     });
 
@@ -360,7 +360,7 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
 
     const assetsContent = page.getByTestId("category-content-assets");
-    const checkingCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const checkingCard = assetsContent.locator(".account-card").filter({
       hasText: "Checking Account (Chase Bank)",
     });
 
@@ -377,7 +377,7 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
 
     const assetsContent = page.getByTestId("category-content-assets");
-    const savingsCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const savingsCard = assetsContent.locator(".account-card").filter({
       hasText: "Savings Account (Ally)",
     });
     await expect(savingsCard).toBeVisible();
@@ -401,7 +401,7 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
 
     const assetsContent = page.getByTestId("category-content-assets");
-    const investmentCard = assetsContent.locator("[data-testid^='account-card-']").filter({
+    const investmentCard = assetsContent.locator(".account-card").filter({
       hasText: "Investment Portfolio (Vanguard)",
     });
     await expect(investmentCard).toBeVisible();
@@ -422,7 +422,7 @@ test.describe("AccountCard", () => {
     const liabilitiesContent = page.getByTestId("category-content-liabilities");
 
     // Credit Card (Visa)
-    const visaCard = liabilitiesContent.locator("[data-testid^='account-card-']").filter({
+    const visaCard = liabilitiesContent.locator(".account-card").filter({
       hasText: "Credit Card (Visa)",
     });
     await expect(visaCard).toBeVisible();
@@ -433,7 +433,7 @@ test.describe("AccountCard", () => {
     await expect(visaCard.getByTestId("credit-limit-usage")).toContainText("Credit Limit Usage: 35%");
 
     // Mortgage Loan (Wells Fargo)
-    const mortgageCard = liabilitiesContent.locator("[data-testid^='account-card-']").filter({
+    const mortgageCard = liabilitiesContent.locator(".account-card").filter({
       hasText: "Mortgage Loan (Wells Fargo)",
     });
     await expect(mortgageCard).toBeVisible();
@@ -442,7 +442,7 @@ test.describe("AccountCard", () => {
     await expect(mortgageCard.getByTestId("account-interest-rate")).toContainText("3.5%");
 
     // Car Loan (Toyota Financial)
-    const carLoanCard = liabilitiesContent.locator("[data-testid^='account-card-']").filter({
+    const carLoanCard = liabilitiesContent.locator(".account-card").filter({
       hasText: "Car Loan (Toyota Financial)",
     });
     await expect(carLoanCard).toBeVisible();

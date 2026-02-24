@@ -1,19 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testing.md",
-      "subtasks": [
-        "Fix: CategorySection shows correct category totals",
-        "Fix: AccountCard displays account name and balance",
-        "Fix: AccountCard three-dot menu opens actions",
-        "Fix: AccountCard click navigates to AccountDetailPage",
-        "Fix: AccountCard displays savings goal progress",
-        "Fix: AccountCard displays investment performance",
-        "Fix: AccountCard displays liability-specific information"
-      ],
-      "timestamp": "2026-02-24T20:22:41.482Z"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production for Accounting"

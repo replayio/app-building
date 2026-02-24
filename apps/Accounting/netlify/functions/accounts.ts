@@ -7,6 +7,22 @@ function getSQL() {
   return neon(url);
 }
 
+const NUMERIC_FIELDS = [
+  "balance", "budget_amount", "budget_actual", "interest_rate",
+  "credit_limit", "monthly_payment", "savings_goal_target",
+  "savings_goal_current", "performance_pct", "debits_ytd", "credits_ytd",
+];
+
+function parseNumericFields(row: Record<string, unknown>): Record<string, unknown> {
+  const parsed = { ...row };
+  for (const field of NUMERIC_FIELDS) {
+    if (parsed[field] !== null && parsed[field] !== undefined) {
+      parsed[field] = parseFloat(parsed[field] as string);
+    }
+  }
+  return parsed;
+}
+
 export default async function handler(req: Request, _context: Context) {
   const sql = getSQL();
   const url = new URL(req.url);
@@ -16,7 +32,7 @@ export default async function handler(req: Request, _context: Context) {
   try {
     if (req.method === "GET" && !id) {
       const rows = await sql`SELECT * FROM accounts ORDER BY category, name`;
-      return new Response(JSON.stringify(rows), {
+      return new Response(JSON.stringify(rows.map(parseNumericFields)), {
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -26,7 +42,7 @@ export default async function handler(req: Request, _context: Context) {
       if (rows.length === 0) {
         return new Response(JSON.stringify({ error: "Not found" }), { status: 404 });
       }
-      return new Response(JSON.stringify(rows[0]), {
+      return new Response(JSON.stringify(parseNumericFields(rows[0])), {
         headers: { "Content-Type": "application/json" },
       });
     }
