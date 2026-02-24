@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Write Playwright tests for PersonDetailPage covering all test entries (PersonHeader, RelationshipsSection, ContactHistorySection, AssociatedClientsSection)",
-        "RunTests: Verify PersonDetailPage tests pass"
-      ],
-      "timestamp": "2026-02-24T03:23:17.149Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
         "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
         "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"

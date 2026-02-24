@@ -19,24 +19,24 @@ async function seed() {
 
   // Insert clients with various statuses, types, and sources
   const clients = [
-    { name: 'Acme Corp', type: 'Organization', status: 'Active', source: 'Referral', tags: ['Enterprise', 'SaaS'] },
-    { name: 'Globex Solutions', type: 'Organization', status: 'Active', source: 'Campaign', tags: ['Enterprise', 'VIP'] },
-    { name: 'Jane Doe', type: 'Individual', status: 'Prospect', source: 'Direct', tags: ['Consultant'] },
-    { name: 'TechStart Inc', type: 'Organization', status: 'Inactive', source: 'Referral', tags: ['SaaS', 'Startup'] },
-    { name: 'MegaCorp Industries', type: 'Organization', status: 'Churned', source: 'Campaign', tags: ['Enterprise'] },
-    { name: 'Alpha Dynamics', type: 'Organization', status: 'Active', source: 'Direct', tags: ['Enterprise', 'Q3-Target'] },
-    { name: 'Beta Systems', type: 'Organization', status: 'Active', source: 'Referral', tags: ['SaaS'] },
-    { name: 'Gamma Consulting', type: 'Organization', status: 'Prospect', source: 'Campaign', tags: ['Consultant'] },
-    { name: 'Delta Partners', type: 'Organization', status: 'Inactive', source: 'Direct', tags: ['VIP'] },
-    { name: 'Epsilon Labs', type: 'Organization', status: 'Active', source: 'Referral', tags: ['SaaS', 'Startup'] },
+    { name: 'Acme Corp', type: 'Organization', status: 'Active', source: 'Referral', industry: 'Software', tags: ['Enterprise', 'SaaS'] },
+    { name: 'Globex Solutions', type: 'Organization', status: 'Active', source: 'Campaign', industry: 'Hardware', tags: ['Enterprise', 'VIP'] },
+    { name: 'Jane Doe', type: 'Individual', status: 'Prospect', source: 'Direct', industry: null, tags: ['Consultant'] },
+    { name: 'TechStart Inc', type: 'Organization', status: 'Inactive', source: 'Referral', industry: 'SaaS', tags: ['SaaS', 'Startup'] },
+    { name: 'MegaCorp Industries', type: 'Organization', status: 'Churned', source: 'Campaign', industry: 'Manufacturing', tags: ['Enterprise'] },
+    { name: 'Alpha Dynamics', type: 'Organization', status: 'Active', source: 'Direct', industry: 'Aerospace', tags: ['Enterprise', 'Q3-Target'] },
+    { name: 'Beta Systems', type: 'Organization', status: 'Active', source: 'Referral', industry: 'IT Services', tags: ['SaaS'] },
+    { name: 'Gamma Consulting', type: 'Organization', status: 'Prospect', source: 'Campaign', industry: 'Consulting', tags: ['Consultant'] },
+    { name: 'Delta Partners', type: 'Organization', status: 'Inactive', source: 'Direct', industry: 'Finance', tags: ['VIP'] },
+    { name: 'Epsilon Labs', type: 'Organization', status: 'Active', source: 'Referral', industry: 'Biotech', tags: ['SaaS', 'Startup'] },
   ]
 
   const clientIds: string[] = []
 
   for (const c of clients) {
     const result = await sql`
-      INSERT INTO clients (name, type, status, source)
-      VALUES (${c.name}, ${c.type}, ${c.status}, ${c.source})
+      INSERT INTO clients (name, type, status, source, industry)
+      VALUES (${c.name}, ${c.type}, ${c.status}, ${c.source}, ${c.industry})
       RETURNING id
     `
     const clientId = result[0].id as string
@@ -52,26 +52,75 @@ async function seed() {
 
   // Insert individuals as primary contacts
   const contacts = [
-    { name: 'Sarah Jenkins', title: 'CEO', clientIndex: 0, role: 'CEO' },
-    { name: 'Michael Chen', title: 'CTO', clientIndex: 1, role: 'CTO' },
-    { name: 'Jane Doe', title: 'Consultant', clientIndex: 2, role: 'Self' },
-    { name: 'Tom Wilson', title: 'VP Sales', clientIndex: 3, role: 'VP Sales' },
-    { name: 'Emily Davis', title: 'Director', clientIndex: 4, role: 'Director' },
-    { name: 'Alex Johnson', title: 'Manager', clientIndex: 5, role: 'Manager' },
+    { name: 'Sarah Jenkins', title: 'CEO', email: 'sarah.jenkins@acmecorp.com', phone: '+1 (555) 123-4567', location: 'San Francisco, CA', clientIndex: 0, role: 'CEO' },
+    { name: 'Michael Chen', title: 'CTO', email: 'michael.chen@globex.com', phone: '+1 (555) 234-5678', location: 'New York, NY', clientIndex: 1, role: 'CTO' },
+    { name: 'Jane Doe', title: 'Consultant', email: null, phone: null, location: null, clientIndex: 2, role: 'Self' },
+    { name: 'Tom Wilson', title: 'VP Sales', email: 'tom.wilson@techstart.com', phone: null, location: 'Austin, TX', clientIndex: 3, role: 'VP Sales' },
+    { name: 'Emily Davis', title: 'Director', email: 'emily.davis@megacorp.com', phone: '+1 (555) 345-6789', location: null, clientIndex: 4, role: 'Director' },
+    { name: 'Alex Johnson', title: 'Manager', email: null, phone: null, location: 'Chicago, IL', clientIndex: 5, role: 'Manager' },
   ]
+
+  const individualIds: string[] = []
 
   for (const contact of contacts) {
     const indResult = await sql`
-      INSERT INTO individuals (name, title)
-      VALUES (${contact.name}, ${contact.title})
+      INSERT INTO individuals (name, title, email, phone, location)
+      VALUES (${contact.name}, ${contact.title}, ${contact.email}, ${contact.phone}, ${contact.location})
       RETURNING id
     `
     const indId = indResult[0].id as string
+    individualIds.push(indId)
     await sql`
       INSERT INTO client_individuals (client_id, individual_id, role, is_primary)
       VALUES (${clientIds[contact.clientIndex]}, ${indId}, ${contact.role}, true)
     `
   }
+
+  // Associate Sarah Jenkins with a second client (Globex Solutions) for multi-association testing
+  await sql`
+    INSERT INTO client_individuals (client_id, individual_id, role, is_primary)
+    VALUES (${clientIds[1]}, ${individualIds[0]}, 'Advisor', false)
+  `
+
+  // Insert relationships between individuals
+  // Sarah Jenkins <-> Michael Chen (Colleague)
+  await sql`
+    INSERT INTO relationships (individual_id, related_individual_id, relationship_type)
+    VALUES (${individualIds[0]}, ${individualIds[1]}, 'Colleague')
+  `
+  await sql`
+    INSERT INTO relationships (individual_id, related_individual_id, relationship_type)
+    VALUES (${individualIds[1]}, ${individualIds[0]}, 'Colleague')
+  `
+  // Sarah Jenkins <-> Tom Wilson (Decision Maker)
+  await sql`
+    INSERT INTO relationships (individual_id, related_individual_id, relationship_type)
+    VALUES (${individualIds[0]}, ${individualIds[3]}, 'Decision Maker')
+  `
+  await sql`
+    INSERT INTO relationships (individual_id, related_individual_id, relationship_type)
+    VALUES (${individualIds[3]}, ${individualIds[0]}, 'Decision Maker')
+  `
+
+  // Insert contact history for Sarah Jenkins
+  const historyDate1 = new Date()
+  historyDate1.setDate(historyDate1.getDate() - 3)
+  const historyDate2 = new Date()
+  historyDate2.setDate(historyDate2.getDate() - 7)
+  await sql`
+    INSERT INTO contact_history (individual_id, interaction_type, summary, team_member, contact_date)
+    VALUES (${individualIds[0]}, 'Video Call', 'Discussed Q4 roadmap integration. Action items assigned.', 'Michael B. (Sales Lead)', ${historyDate1.toISOString()})
+  `
+  await sql`
+    INSERT INTO contact_history (individual_id, interaction_type, summary, team_member, contact_date)
+    VALUES (${individualIds[0]}, 'Email', 'Sent follow-up proposal with revised pricing.', 'Emily R. (Account Manager)', ${historyDate2.toISOString()})
+  `
+
+  // Insert a bare individual with no client association (for empty-state testing)
+  await sql`
+    INSERT INTO individuals (name, title, email, phone, location)
+    VALUES ('Unlinked Person', 'Freelancer', 'unlinked@example.com', null, null)
+  `
 
   // Insert deals for some clients
   const deals = [
@@ -109,7 +158,7 @@ async function seed() {
     `
   }
 
-  console.log(`Seeded ${clients.length} clients, ${contacts.length} contacts, ${deals.length} deals, ${tasks.length} tasks`)
+  console.log(`Seeded ${clients.length} clients, ${contacts.length} contacts, ${deals.length} deals, ${tasks.length} tasks, 2 relationships, 2 contact history entries`)
 }
 
 seed().catch((err) => {
