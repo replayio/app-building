@@ -1,11 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/review/mergeSkills.md",
-      "subtasks": [
-        "MergeSkills: report-testFailures-sales-crm-3-review-3-20260224-175633"
-      ],
-      "timestamp": "2026-02-24T17:56:42.372Z"
-    }
-  ]
+  "tasks": []
 }
