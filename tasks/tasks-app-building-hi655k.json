@@ -1,6 +1,13 @@
 {
   "tasks": [
     {
+      "skill": "skills/tasks/resolveConflicts.md",
+      "subtasks": [
+        "Resolve merge conflicts from auto-resolution with --theirs and verify the codebase is correct"
+      ],
+      "timestamp": "2026-02-24T15:41:34.132Z"
+    },
+    {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
         "AnalyzeGroup: report-testFailures-sales-crm-2-review-3-20260224-153943 skills/review/reportTestFailures.md /repo/logs/test-person-detail-1.log /repo/logs/test-person-detail-2.log /repo/logs/test-person-detail-3.log /repo/logs/worker-2026-02-23T21-47-46-261Z.log /repo/logs/worker-2026-02-23T21-48-09-025Z.log /repo/logs/worker-2026-02-23T21-50-30-030Z.log /repo/logs/worker-2026-02-23T21-53-07-148Z.log /repo/logs/worker-2026-02-23T21-54-10-708Z.log /repo/logs/worker-2026-02-23T22-01-47-357Z.log /repo/logs/worker-2026-02-23T22-19-38-367Z.log"
