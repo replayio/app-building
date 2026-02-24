@@ -3,11 +3,9 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecSettings: Check testSpec.md directive violations in SettingsPage test entries",
-        "CheckComponentsSettings: Check writeApp.md directive violations in SettingsPage components",
-        "CheckTestsSettings: Check writeTests.md directive violations in SettingsPage tests"
+        "FixViolationSettingsTestEntries: Write comprehensive test entries for SettingsPage in docs/tests.md covering Email Notifications (7 toggle preferences, auth-only visibility), Import & Export (import/export buttons for clients, deals, tasks, contacts), and Webhooks sections (CRUD with add/edit modal including platform-specific setup guides for Zapier/n8n/custom, enable/disable toggle, delete with confirmation, payload format preview) per testSpec.md directives and AppRevisions.md"
       ],
-      "timestamp": "2026-02-23T23:39:16.263Z"
+      "timestamp": "2026-02-24T00:56:33.896Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
@@ -638,6 +636,21 @@
         "PlanTaskDetailTests: Write playwright tests for TaskDetailPage based on docs/tests.md entries"
       ],
       "timestamp": "2026-02-24T00:34:43.391Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationSettingsComponents: Implement full SettingsPage with Email Notifications section (7 notification preference toggles with auth-only visibility, backed by notification-preferences API), Import & Export section (import/export buttons reusing existing CSV functionality), and Webhooks section (CRUD with add/edit modal including Zapier/n8n/custom setup guides, enable/disable toggle, delete with confirmation) per writeApp.md directives. Create notification-preferences and webhooks Netlify functions. Abstract into sub-components with data-testid attributes."
+      ],
+      "timestamp": "2026-02-24T00:56:39.587Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationSettingsTests: Write Playwright tests for all SettingsPage test entries per writeTests.md directives, covering Email Notifications toggles, Import & Export buttons, and Webhooks CRUD with setup guides",
+        "RunSettingsTests: Verify all SettingsPage Playwright tests pass"
+      ],
+      "timestamp": "2026-02-24T00:56:43.881Z"
     }
   ]
 }
