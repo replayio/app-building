@@ -1,17 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeTests.md",
-      "jobs": [
-        "WriteTestTasksListDisplay: Write test for TasksListPage displaying task cards with priority badges, titles, due dates, and assignees",
-        "WriteTestTasksListFilter: Write test for TasksListPage filter and search functionality",
-        "WriteTestTasksListCreateTask: Write test for creating a new task via New Task modal",
-        "WriteTestTasksListNavigation: Write test for clicking a task card navigates to TaskDetailPage",
-        "WriteTestTasksListCSVImport: Write test for CSV import dialog with format documentation"
-      ],
-      "timestamp": "2026-02-24T00:12:01.162Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "CheckTestSpecTaskDetail: Check testSpec.md directive violations in TaskDetailPage test entries",

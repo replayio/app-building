@@ -140,6 +140,7 @@ export default function ImportDialog({ open, onClose, entityName, columns, onImp
           </div>
 
           <button
+            data-testid="download-csv-template"
             type="button"
             onClick={handleDownloadTemplate}
             className="flex items-center gap-1.5 text-[13px] text-[var(--color-accent)] hover:underline cursor-pointer"
@@ -159,6 +160,7 @@ export default function ImportDialog({ open, onClose, entityName, columns, onImp
             </p>
             <input
               ref={fileInputRef}
+              data-testid="import-file-input"
               type="file"
               accept=".csv"
               className="hidden"
@@ -198,6 +200,7 @@ export default function ImportDialog({ open, onClose, entityName, columns, onImp
           </button>
           {!result && (
             <button
+              data-testid="import-submit-button"
               type="button"
               onClick={handleImport}
               disabled={!file || importing}
