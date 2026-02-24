@@ -923,6 +923,253 @@ Components: ClientHeader, ClientQuickActions, ClientSourceInfo, ClientTasks, Cli
 
 ## PersonDetailPage (/individuals/:individualId)
 
+Components: PersonHeader, PersonRelationships, PersonContactHistory, PersonAssociatedClients
+
+### PersonHeader
+
+#### Header displays person name prominently
+- **Initial state:** User navigates to /individuals/:individualId for a person named "Dr. Anya Sharma".
+- **Expected:** The page header displays the person's name "Dr. Anya Sharma" as the primary heading text, large and prominent at the top of the page.
+
+#### Header displays title and associated organizations
+- **Initial state:** PersonDetailPage is loaded for a person with title "Chief Technology Officer (CTO)" who is associated with clients "Innovate Solutions Inc." and "FutureTech Corp.".
+- **Expected:** Below the person's name, the title is displayed followed by a pipe separator and the names of associated client organizations (e.g., "Chief Technology Officer (CTO) | Innovate Solutions Inc. & FutureTech Corp.").
+
+#### Header displays email with mail icon
+- **Initial state:** PersonDetailPage is loaded for a person with email "anya.sharma@example.com".
+- **Expected:** The header shows an envelope/mail icon followed by the email address "anya.sharma@example.com". The email is displayed as a clickable link.
+
+#### Header displays phone number with phone icon
+- **Initial state:** PersonDetailPage is loaded for a person with phone "+1 (555) 123-4567".
+- **Expected:** The header shows a phone icon followed by the phone number "+1 (555) 123-4567".
+
+#### Header displays location with pin icon
+- **Initial state:** PersonDetailPage is loaded for a person with location "San Francisco, CA".
+- **Expected:** The header shows a map pin/location icon followed by the location text "San Francisco, CA".
+
+#### Header displays Associated Clients links
+- **Initial state:** PersonDetailPage is loaded for a person associated with clients "Innovate Solutions Inc." and "FutureTech Corp.".
+- **Expected:** Below the contact info row, the text "Associated Clients:" is displayed followed by clickable links for each associated client name separated by commas (e.g., "Innovate Solutions Inc., FutureTech Corp."). The links are visually styled as hyperlinks (underlined or colored).
+
+#### Clicking an associated client link in the header navigates to client detail page
+- **Initial state:** PersonDetailPage is loaded for a person associated with client "Innovate Solutions Inc." (clientId: 1).
+- **Action:** User clicks the "Innovate Solutions Inc." link in the header's Associated Clients row.
+- **Expected:** The browser navigates to /clients/1 and the ClientDetailPage for "Innovate Solutions Inc." is displayed.
+
+#### Header handles person with no title gracefully
+- **Initial state:** PersonDetailPage is loaded for a person who has no title set.
+- **Expected:** The header displays the person's name. The title/organization line is omitted or shows only the associated client names without a pipe separator. No layout breakage or error occurs.
+
+#### Header handles person with no email gracefully
+- **Initial state:** PersonDetailPage is loaded for a person who has no email set.
+- **Expected:** The email row (envelope icon and email) is not displayed. The remaining contact fields (phone, location) still display correctly.
+
+#### Header handles person with no phone gracefully
+- **Initial state:** PersonDetailPage is loaded for a person who has no phone number set.
+- **Expected:** The phone row (phone icon and number) is not displayed. The remaining contact fields (email, location) still display correctly.
+
+#### Header handles person with no location gracefully
+- **Initial state:** PersonDetailPage is loaded for a person who has no location set.
+- **Expected:** The location row (pin icon and location text) is not displayed. The remaining contact fields (email, phone) still display correctly.
+
+#### Header handles person with single associated client
+- **Initial state:** PersonDetailPage is loaded for a person associated with only one client "Innovate Solutions Inc.".
+- **Expected:** The Associated Clients row shows "Innovate Solutions Inc." as a single clickable link with no trailing comma or separator.
+
+#### Loading state shows while person data is being fetched
+- **Initial state:** User navigates to /individuals/:individualId and the API request for person data is in progress.
+- **Expected:** A loading indicator (spinner or skeleton) is displayed while data is being fetched. The page layout skeleton is visible.
+
+### PersonRelationships
+
+#### Relationships section displays section header with icon
+- **Initial state:** PersonDetailPage is loaded for a person with relationships.
+- **Expected:** A section titled "Relationships with Other Individuals" is displayed with a chain/link icon to the left of the heading. The section has a Filter button and a "+ Add Entry" button to the right of the heading.
+
+#### Relationships section displays Graph View and List View tabs
+- **Initial state:** PersonDetailPage is loaded for a person with relationships.
+- **Expected:** Below the section heading, two tabs are displayed: "Graph View" and "List View". One tab is active/selected (visually distinct with underline or bold text). By default, the List View tab is active.
+
+#### List View displays relationship entries with name, type, org, and link
+- **Initial state:** PersonDetailPage is loaded in List View for a person with relationships. The person has a relationship with "David Chen" (Colleague) who is "V.P. Engineering" at "Innovate Solutions Inc.".
+- **Expected:** Each relationship entry shows: the related person's name ("David Chen"), the relationship type in parentheses ("Colleague"), a dash separator, the person's title and organization ("V.P. Engineering, Innovate Solutions Inc."), and a clickable "[Link]" text. All relationship entries are listed vertically.
+
+#### Clicking Link on a relationship entry navigates to that person's detail page
+- **Initial state:** PersonDetailPage is loaded in List View. A relationship entry for "David Chen" shows a "[Link]" element.
+- **Action:** User clicks the "[Link]" text next to "David Chen".
+- **Expected:** The browser navigates to /individuals/:davidChenId and the PersonDetailPage for "David Chen" is displayed.
+
+#### Switching to Graph View tab displays relationship graph
+- **Initial state:** PersonDetailPage is loaded with the List View tab active.
+- **Action:** User clicks the "Graph View" tab.
+- **Expected:** The Graph View tab becomes active (visually highlighted). The list view content is replaced with a graphical/visual representation of the person's relationship network showing connected nodes for each related individual.
+
+#### Switching back to List View tab from Graph View
+- **Initial state:** PersonDetailPage is loaded with the Graph View tab active.
+- **Action:** User clicks the "List View" tab.
+- **Expected:** The List View tab becomes active. The graph is replaced with the list of relationship entries showing name, type, org, and link for each relationship.
+
+#### Filter button opens filter controls for relationships
+- **Initial state:** PersonDetailPage is loaded. The Relationships section is visible with a Filter button (with filter icon).
+- **Action:** User clicks the "Filter" button in the Relationships section.
+- **Expected:** A filter dropdown or panel appears allowing the user to filter relationships by type (e.g., Colleague, Decision Maker, Influencer). The filter options correspond to the relationship types present in the data.
+
+#### Filtering relationships by type shows only matching entries
+- **Initial state:** PersonDetailPage is loaded with relationships of types Colleague, Decision Maker, and Influencer. The filter controls are open.
+- **Action:** User selects "Decision Maker" from the filter options.
+- **Expected:** Only relationship entries with type "Decision Maker" are displayed (e.g., "Maria Rodriguez (Decision Maker)"). Other entries (Colleague, Influencer) are hidden. The filter indicator shows that a filter is active.
+
+#### Clearing relationship filter shows all entries again
+- **Initial state:** PersonDetailPage is loaded with a relationship type filter active showing only "Decision Maker" entries.
+- **Action:** User clears the filter (clicks a clear/reset option or deselects the filter).
+- **Expected:** All relationship entries are displayed again regardless of type.
+
+#### Add Entry button opens add relationship modal
+- **Initial state:** PersonDetailPage is loaded. The Relationships section is visible with a "+ Add Entry" button.
+- **Action:** User clicks the "+ Add Entry" button in the Relationships section.
+- **Expected:** A modal dialog opens for adding a new relationship. The modal contains: a field to select or search for an existing individual (person), a dropdown or input for relationship type (e.g., Colleague, Decision Maker, Influencer), the related person's title and organization (auto-populated or manually entered), and Save/Cancel buttons.
+
+#### Submitting add relationship modal creates a new relationship entry
+- **Initial state:** The add relationship modal is open. User has selected an individual "Alex Kim" and chosen relationship type "Colleague".
+- **Action:** User clicks "Save" in the modal.
+- **Expected:** The modal closes. A new relationship entry for "Alex Kim (Colleague)" appears in the List View. The relationship is persisted via the API. A reciprocal relationship is also created on Alex Kim's PersonDetailPage linking back to the current person with the corresponding relationship type.
+
+#### Reciprocal relationship is created when adding a relationship
+- **Initial state:** PersonDetailPage is loaded for "Dr. Anya Sharma". A relationship to "Alex Kim" (Colleague) has just been added.
+- **Action:** User navigates to /individuals/:alexKimId (Alex Kim's PersonDetailPage).
+- **Expected:** Alex Kim's Relationships section contains a reciprocal entry showing "Dr. Anya Sharma (Colleague)" with a link back to Anya Sharma's PersonDetailPage.
+
+#### Deleting a relationship removes it from both sides
+- **Initial state:** PersonDetailPage is loaded for "Dr. Anya Sharma" with a relationship to "David Chen" (Colleague). David Chen also has a reciprocal relationship to Anya Sharma.
+- **Action:** User deletes the relationship to "David Chen" (via a delete/remove action on the relationship entry).
+- **Expected:** The relationship entry for "David Chen" is removed from Anya Sharma's Relationships section. Navigating to David Chen's PersonDetailPage confirms the reciprocal relationship to "Dr. Anya Sharma" is also removed.
+
+#### Relationships section shows empty state when no relationships exist
+- **Initial state:** PersonDetailPage is loaded for a person with no relationships.
+- **Expected:** The Relationships section is displayed with the heading, Graph View/List View tabs, Filter button, and "+ Add Entry" button. The list area shows an empty state message (e.g., "No relationships found") instead of relationship entries.
+
+### PersonContactHistory
+
+#### History of Contact section displays section header with icon
+- **Initial state:** PersonDetailPage is loaded for a person with contact history entries.
+- **Expected:** A section titled "History of Contact" is displayed with a clock icon to the left of the heading. The section has a Filter button (with filter icon) and a "+ Add Entry" button to the right of the heading.
+
+#### Contact history displays entries with date/time, type, summary, and team member
+- **Initial state:** PersonDetailPage is loaded for a person with contact history entries.
+- **Expected:** Each history entry displays in a row with the following columns: date and time (e.g., "Oct 26, 2023, 2:30 PM"), interaction type (e.g., "Video Call", "Email", "Meeting (In-person)", "Note"), a summary prefixed with "Summary:" (e.g., "Summary: Discussed Q4 roadmap integration. Action items assigned."), team member prefixed with "Team Member:" (e.g., "Team Member: Michael B. (Sales Lead)"), and an edit pencil icon on the right.
+
+#### Contact history entries are displayed in reverse chronological order
+- **Initial state:** PersonDetailPage is loaded for a person with multiple contact history entries at different dates.
+- **Expected:** The most recent contact history entry appears first (at the top), followed by older entries in descending date/time order.
+
+#### Contact history shows Video Call type correctly
+- **Initial state:** PersonDetailPage is loaded with a contact history entry of type "Video Call".
+- **Expected:** The entry displays "Video Call" in the type column. The text is clearly readable and distinguishable from other types.
+
+#### Contact history shows Email type correctly
+- **Initial state:** PersonDetailPage is loaded with a contact history entry of type "Email".
+- **Expected:** The entry displays "Email" in the type column.
+
+#### Contact history shows Meeting type correctly
+- **Initial state:** PersonDetailPage is loaded with a contact history entry of type "Meeting (In-person)".
+- **Expected:** The entry displays "Meeting (In-person)" in the type column.
+
+#### Contact history shows Note type correctly
+- **Initial state:** PersonDetailPage is loaded with a contact history entry of type "Note".
+- **Expected:** The entry displays "Note" in the type column.
+
+#### Contact history shows team member with role
+- **Initial state:** PersonDetailPage is loaded with a contact history entry performed by team member "Michael B." with role "Sales Lead".
+- **Expected:** The team member column shows "Team Member: Michael B. (Sales Lead)".
+
+#### Contact history shows multiple team members on a single entry
+- **Initial state:** PersonDetailPage is loaded with a contact history entry involving multiple team members "Michael B." and "Emily R.".
+- **Expected:** The team member column shows "Team Member: Michael B., Emily R." with both names separated by a comma.
+
+#### Contact history shows auto-logged entries with System as team member
+- **Initial state:** PersonDetailPage is loaded with a contact history entry that was auto-logged (not manually created by a team member).
+- **Expected:** The team member column shows "Team Member: System (Auto-logged)".
+
+#### Filter button opens filter controls for contact history
+- **Initial state:** PersonDetailPage is loaded. The History of Contact section is visible with a Filter button.
+- **Action:** User clicks the "Filter" button in the History of Contact section.
+- **Expected:** A filter dropdown or panel appears allowing the user to filter contact history by interaction type (Video Call, Email, Meeting, Note) and/or by team member. The filter options correspond to the types and team members present in the data.
+
+#### Filtering contact history by type shows only matching entries
+- **Initial state:** PersonDetailPage is loaded with contact history entries of types Video Call, Email, Meeting, and Note. The filter controls are open.
+- **Action:** User selects "Email" from the type filter options.
+- **Expected:** Only contact history entries with type "Email" are displayed. Other entries (Video Call, Meeting, Note) are hidden. The filter indicator shows that a filter is active.
+
+#### Clearing contact history filter shows all entries again
+- **Initial state:** PersonDetailPage is loaded with a contact history type filter active showing only "Email" entries.
+- **Action:** User clears the filter.
+- **Expected:** All contact history entries are displayed again regardless of type, in reverse chronological order.
+
+#### Add Entry button opens add contact history modal
+- **Initial state:** PersonDetailPage is loaded. The History of Contact section is visible with a "+ Add Entry" button.
+- **Action:** User clicks the "+ Add Entry" button in the History of Contact section.
+- **Expected:** A modal dialog opens for adding a new contact history entry. The modal contains: a date/time picker (defaulting to the current date and time), a dropdown for interaction type (Video Call, Email, Meeting (In-person), Note), a text area for the summary, a field to select the team member(s) who participated, and Save/Cancel buttons.
+
+#### Submitting add contact history modal creates a new entry
+- **Initial state:** The add contact history modal is open. User has set the date to "Nov 1, 2023, 3:00 PM", selected type "Email", entered summary "Sent pricing proposal for Q1 renewal.", and selected team member "Emily R.".
+- **Action:** User clicks "Save" in the modal.
+- **Expected:** The modal closes. A new contact history entry appears in the list at the correct chronological position with the entered date/time, type "Email", the summary text, and "Team Member: Emily R.". The entry is persisted via the API.
+
+#### Edit icon opens edit contact history modal with pre-populated data
+- **Initial state:** PersonDetailPage is loaded with a contact history entry for "Oct 26, 2023, 2:30 PM" of type "Video Call" with summary "Discussed Q4 roadmap integration. Action items assigned." and team member "Michael B. (Sales Lead)".
+- **Action:** User clicks the edit pencil icon on that entry.
+- **Expected:** A modal dialog opens pre-populated with the existing entry data: the date/time is set to "Oct 26, 2023, 2:30 PM", the type dropdown shows "Video Call", the summary text area contains "Discussed Q4 roadmap integration. Action items assigned.", and the team member field shows "Michael B.". The modal has Save/Cancel buttons.
+
+#### Saving edits to contact history entry updates the entry
+- **Initial state:** The edit contact history modal is open for an entry. The user has changed the summary from "Discussed Q4 roadmap integration. Action items assigned." to "Discussed Q4 roadmap integration. Action items assigned. Follow-up scheduled for next week.".
+- **Action:** User clicks "Save" in the modal.
+- **Expected:** The modal closes. The contact history entry is updated to show the new summary text. The change is persisted via the API.
+
+#### Cancel button on add/edit modal closes without saving
+- **Initial state:** The add or edit contact history modal is open. User has made changes to the form fields.
+- **Action:** User clicks "Cancel" in the modal.
+- **Expected:** The modal closes. No new entry is created and no existing entry is modified. The contact history list remains unchanged.
+
+#### Contact history section shows empty state when no history exists
+- **Initial state:** PersonDetailPage is loaded for a person with no contact history entries.
+- **Expected:** The History of Contact section is displayed with the heading, Filter button, and "+ Add Entry" button. The list area shows an empty state message (e.g., "No contact history found") instead of history entries.
+
+### PersonAssociatedClients
+
+#### Associated Clients section displays section header with icon
+- **Initial state:** PersonDetailPage is loaded for a person associated with one or more clients.
+- **Expected:** A section titled "Associated Clients" is displayed with a building/grid icon to the left of the heading.
+
+#### Associated Clients displays client cards with name, status, and industry
+- **Initial state:** PersonDetailPage is loaded for a person associated with clients "Innovate Solutions Inc." (Active, Software) and "FutureTech Corp." (Prospect, Hardware).
+- **Expected:** Two client cards are displayed side by side. Each card shows: a client icon, the client name (e.g., "Innovate Solutions Inc."), "Status:" followed by the status value (e.g., "Active Client"), "Industry:" followed by the industry value (e.g., "Software"), and a "View Client Detail Page" button/link with an external link icon.
+
+#### Client card displays correct status for Active client
+- **Initial state:** PersonDetailPage is loaded for a person associated with a client with "Active" status.
+- **Expected:** The client card shows "Status: Active Client" for that client.
+
+#### Client card displays correct status for Prospect client
+- **Initial state:** PersonDetailPage is loaded for a person associated with a client with "Prospect" status.
+- **Expected:** The client card shows "Status: Prospect" for that client.
+
+#### View Client Detail Page link navigates to /clients/:clientId
+- **Initial state:** PersonDetailPage is loaded for a person associated with client "Innovate Solutions Inc." (clientId: 1). The client card shows a "View Client Detail Page" button.
+- **Action:** User clicks the "View Client Detail Page" button on the "Innovate Solutions Inc." card.
+- **Expected:** The browser navigates to /clients/1 and the ClientDetailPage for "Innovate Solutions Inc." is displayed.
+
+#### View Client Detail Page link navigates correctly for second client
+- **Initial state:** PersonDetailPage is loaded for a person associated with client "FutureTech Corp." (clientId: 2). The client card shows a "View Client Detail Page" button.
+- **Action:** User clicks the "View Client Detail Page" button on the "FutureTech Corp." card.
+- **Expected:** The browser navigates to /clients/2 and the ClientDetailPage for "FutureTech Corp." is displayed.
+
+#### Associated Clients section shows multiple cards for person with many clients
+- **Initial state:** PersonDetailPage is loaded for a person associated with three or more clients.
+- **Expected:** All associated client cards are displayed. Each card has the same layout with name, status, industry, and "View Client Detail Page" link. Cards are arranged in a responsive grid or row layout.
+
+#### Associated Clients section shows empty state when no clients are associated
+- **Initial state:** PersonDetailPage is loaded for a person with no associated clients.
+- **Expected:** The Associated Clients section is displayed with the heading and icon. The content area shows an empty state message (e.g., "No associated clients") instead of client cards.
+
 ## DealsListPage (/deals)
 
 ## DealDetailPage (/deals/:dealId)

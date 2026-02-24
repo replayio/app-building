@@ -3,17 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPagePersonDetailPage: Decide on components for PersonDetailPage, add sections to docs/tests.md",
-        "PlanComponentPersonHeader: Add test entries for person header (name, title, email, phone, location, associated clients links)",
-        "PlanComponentPersonRelationships: Add test entries for Relationships section (Graph View/List View tabs, relationship entries with name/type/org/link, Filter button, Add Entry button and modal)",
-        "PlanComponentPersonContactHistory: Add test entries for History of Contact section (date/time, type: Video Call/Email/Meeting/Note, summary, team member, Filter button, Add Entry button and modal, edit icon)",
-        "PlanComponentPersonAssociatedClients: Add test entries for Associated Clients section (client cards with name, status, industry, View Client Detail Page link navigates to /clients/:clientId)"
-      ],
-      "timestamp": "2026-02-23T21:26:40.339Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageDealsListPage: Decide on components for DealsListPage, add sections to docs/tests.md",
         "PlanComponentDealsSummaryCards: Add test entries for summary cards (Total Active Deals, Pipeline Value, Won Q3 count+value, Lost Q3 count+value)",
         "PlanComponentDealsTableView: Add test entries for Table View (columns: Deal Name, Client, Stage, Owner, Value, Close Date with sort arrow indicator, Status badges; row click; action menu; pagination)",
