@@ -1,8 +1,9 @@
 import { Command } from "commander";
-import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, readAgentState, type AgentState } from "./container";
+import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState } from "./container";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 import { httpGet, httpPost, type HttpOptions } from "./http-client";
 import { formatEvent } from "./format";
+import { httpOptsFor } from "./container-utils";
 
 // --- Input helpers ---
 
@@ -68,15 +69,6 @@ function readInput(): Promise<string | null> {
 
     process.stdin.on("data", onData);
   });
-}
-
-// --- Build HTTP options that pin requests to a specific Fly machine ---
-
-function buildHttpOpts(state: AgentState): HttpOptions {
-  if (state.type === "remote" && state.flyMachineId) {
-    return { headers: { "fly-force-instance-id": state.flyMachineId } };
-  }
-  return {};
 }
 
 // --- Event polling ---
@@ -157,7 +149,7 @@ async function runInteractive(opts: {
     : await startContainer(startOpts);
 
   const { containerName, baseUrl } = state;
-  const httpOpts = buildHttpOpts(state);
+  const httpOpts = httpOptsFor(state);
 
   console.log(`Container: ${containerName}`);
   console.log(`Server: ${baseUrl}`);
@@ -255,7 +247,7 @@ async function runDetached(opts: {
     : await startContainer(startOpts);
 
   const { containerName, baseUrl } = state;
-  const httpOpts = buildHttpOpts(state);
+  const httpOpts = httpOptsFor(state);
 
   console.log(`Container: ${containerName}`);
   console.log(`Server: ${baseUrl}`);
@@ -266,7 +258,7 @@ async function runDetached(opts: {
     console.log(`Message queued: ${id}`);
   }
 
-  // Detach — container will process message + job groups, then exit
+  // Detach — container will process message + tasks, then exit
   await httpPost(`${baseUrl}/detach`, undefined, httpOpts);
   console.log("Detached. Container will exit when all work is complete.");
   console.log(`Monitor: npm run status`);

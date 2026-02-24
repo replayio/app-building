@@ -8,8 +8,7 @@ prompt-*.txt
 */worker-current.log
 *~
 
-# Container agent state and home directory
-.agent-state.json
+# Container registry and home directory
 .container-registry.jsonl
 .agent-home
 .claude
