@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageRecipes: Decide on components, add sections to docs/tests.md",
-        "PlanComponentRecipesHeader: Add test entries for RecipesHeader (search bar, Filter Status dropdown, Add Recipe button)",
-        "PlanComponentRecipesTable: Add test entries for RecipesTable (Recipe Name/Product/Version/Status/Actions columns, Active/Draft/Archived status badges, edit icon, delete icon, row click to show details, pagination)",
-        "PlanComponentRecipeDetailsPanel: Add test entries for RecipeDetailsPanel (side panel title, General Info/Materials Breakdown/Instructions tabs, materials table with Material/Quantity/Unit, Notes & Instructions section)"
-      ],
-      "timestamp": "2026-02-24T23:26:57.955Z"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code for ProductionHub"

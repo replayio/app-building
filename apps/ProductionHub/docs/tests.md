@@ -2,7 +2,298 @@
 
 ## RecipesPage (/recipes)
 
-<!-- Tests for RecipesPage will be added by PlanPage tasks -->
+Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
+
+### RecipesHeader
+
+#### REC-HDR-1: Page title displays "Recipes"
+- **Components:** RecipesHeader
+- **Given** the user navigates to /recipes
+- **Then** the page title "Recipes" is displayed as a large heading with the route "/recipes" shown beside it
+
+#### REC-HDR-2: Search bar is displayed with placeholder text
+- **Components:** RecipesHeader
+- **Given** the user navigates to /recipes
+- **Then** a search input with a magnifying glass icon and placeholder text "Search by name or product..." is displayed below the page title
+
+#### REC-HDR-3: Search bar filters recipes by name
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with recipes "Standard Widget Assembly", "Deluxe Gadget Build", and "Eco-Pack Material Mix" in the table
+- **When** the user types "Widget" into the search bar
+- **Then** only the row for "Standard Widget Assembly" is displayed in the RecipesTable
+- **And** the other rows are hidden
+
+#### REC-HDR-4: Search bar filters recipes by product
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with recipes for products "Widget X-100", "Gadget Pro", and "Packaging Type C"
+- **When** the user types "Gadget" into the search bar
+- **Then** only the row for the recipe with product "Gadget Pro" is displayed in the RecipesTable
+
+#### REC-HDR-5: Clearing the search bar restores all recipes
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with the search bar containing "Widget" and only one recipe row shown
+- **When** the user clears the search bar
+- **Then** all recipe rows are displayed in the RecipesTable
+
+#### REC-HDR-6: Filter Status dropdown is displayed with default value "(All)"
+- **Components:** RecipesHeader
+- **Given** the user navigates to /recipes
+- **Then** a "Filter Status" dropdown is displayed to the right of the search bar with the default value "(All)"
+
+#### REC-HDR-7: Filter Status dropdown shows status options
+- **Components:** RecipesHeader
+- **Given** the user is on /recipes
+- **When** the user clicks the "Filter Status" dropdown
+- **Then** a dropdown menu appears with options including "All", "Active", "Draft", and "Archived"
+
+#### REC-HDR-8: Selecting "Active" filter shows only active recipes
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with recipes having statuses "Active", "Draft", and "Archived"
+- **When** the user selects "Active" from the "Filter Status" dropdown
+- **Then** only recipe rows with status "Active" are displayed in the RecipesTable
+- **And** rows with status "Draft" or "Archived" are hidden
+
+#### REC-HDR-9: Selecting "Draft" filter shows only draft recipes
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with recipes having statuses "Active", "Draft", and "Archived"
+- **When** the user selects "Draft" from the "Filter Status" dropdown
+- **Then** only recipe rows with status "Draft" are displayed in the RecipesTable
+
+#### REC-HDR-10: Selecting "Archived" filter shows only archived recipes
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with recipes having statuses "Active", "Draft", and "Archived"
+- **When** the user selects "Archived" from the "Filter Status" dropdown
+- **Then** only recipe rows with status "Archived" are displayed in the RecipesTable
+
+#### REC-HDR-11: Selecting "All" filter restores all recipes
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with the filter set to "Active"
+- **When** the user selects "All" from the "Filter Status" dropdown
+- **Then** all recipe rows are displayed in the RecipesTable regardless of status
+
+#### REC-HDR-12: Add Recipe button is displayed
+- **Components:** RecipesHeader
+- **Given** the user navigates to /recipes
+- **Then** a blue "Add Recipe" button is displayed to the right of the Filter Status dropdown
+
+#### REC-HDR-13: Add Recipe button opens a creation form
+- **Components:** RecipesHeader
+- **Given** the user is on /recipes
+- **When** the user clicks the "Add Recipe" button
+- **Then** a modal or form is displayed with fields for Recipe Name, Product, Version, and Status
+- **When** the user fills in Recipe Name "Test Recipe", Product "Test Product", Version "1.0", Status "Draft" and submits
+- **Then** the modal closes and a new row appears in the RecipesTable with Recipe Name "Test Recipe", Product "Test Product", Version "1.0", and Status "Draft"
+- **And** the new recipe persists after navigating away and returning to /recipes
+
+#### REC-HDR-14: Search and filter work together
+- **Components:** RecipesHeader, RecipesTable
+- **Given** the user is on /recipes with multiple recipes having different names and statuses
+- **When** the user selects "Active" from the "Filter Status" dropdown and types "Widget" into the search bar
+- **Then** only recipe rows that match both criteria (status "Active" AND name/product containing "Widget") are displayed
+
+### RecipesTable
+
+#### REC-TBL-1: Table displays Recipe Name, Product, Version, Status, and Actions column headers
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes
+- **Then** a table is displayed with column headers "Recipe Name", "Product", "Version", "Status", and "Actions"
+
+#### REC-TBL-2: Table rows display recipe data in the correct columns
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and recipe records exist including "Standard Widget Assembly" with Product "Widget X-100", Version "1.2", Status "Active"
+- **Then** the table displays a row with Recipe Name "Standard Widget Assembly", Product "Widget X-100", Version "1.2", and Status showing "Active"
+
+#### REC-TBL-3: Active status is displayed as a green badge
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and a recipe has status "Active"
+- **Then** the Status column for that recipe displays a green badge labeled "Active"
+
+#### REC-TBL-4: Draft status is displayed as a yellow badge
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and a recipe has status "Draft"
+- **Then** the Status column for that recipe displays a yellow badge labeled "Draft"
+
+#### REC-TBL-5: Archived status is displayed as a gray badge
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and a recipe has status "Archived"
+- **Then** the Status column for that recipe displays a gray badge labeled "Archived"
+
+#### REC-TBL-6: Edit pencil icon is displayed in the Actions column
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and recipe records exist
+- **Then** each row displays a pencil icon button in the Actions column
+
+#### REC-TBL-7: Clicking the edit pencil icon opens an edit form for the recipe
+- **Components:** RecipesTable
+- **Given** the user is on /recipes and a row shows recipe "Standard Widget Assembly"
+- **When** the user clicks the pencil icon in that row's Actions column
+- **Then** a modal or form is displayed pre-filled with the recipe's current Recipe Name, Product, Version, and Status
+- **When** the user changes the Version from "1.2" to "1.3" and saves
+- **Then** the table row updates to show Version as "1.3"
+- **And** the change persists after navigating away and returning to /recipes
+
+#### REC-TBL-8: Delete trash icon is displayed in the Actions column
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and recipe records exist
+- **Then** each row displays a red trash icon button in the Actions column, to the right of the pencil icon
+
+#### REC-TBL-9: Clicking the delete trash icon removes the recipe after confirmation
+- **Components:** RecipesTable
+- **Given** the user is on /recipes and a row shows recipe "Eco-Pack Material Mix"
+- **When** the user clicks the trash icon in that row's Actions column
+- **Then** a confirmation dialog is displayed asking the user to confirm deletion
+- **When** the user confirms the deletion
+- **Then** the recipe row "Eco-Pack Material Mix" is removed from the table
+- **And** the recipe no longer appears after navigating away and returning to /recipes
+
+#### REC-TBL-10: Cancelling delete confirmation does not remove the recipe
+- **Components:** RecipesTable
+- **Given** the user is on /recipes and a row shows recipe "Eco-Pack Material Mix"
+- **When** the user clicks the trash icon in that row's Actions column
+- **Then** a confirmation dialog is displayed
+- **When** the user cancels the deletion
+- **Then** the recipe row "Eco-Pack Material Mix" remains in the table
+
+#### REC-TBL-11: Clicking a table row opens the RecipeDetailsPanel
+- **Components:** RecipesTable, RecipeDetailsPanel
+- **Given** the user is on /recipes and a row shows recipe "Standard Widget Assembly"
+- **When** the user clicks on the row (not on the action icons)
+- **Then** the RecipeDetailsPanel opens on the right side of the page showing details for "Standard Widget Assembly"
+
+#### REC-TBL-12: Selected row is visually highlighted
+- **Components:** RecipesTable
+- **Given** the user is on /recipes and clicks on the row for "Standard Widget Assembly"
+- **Then** the "Standard Widget Assembly" row is visually highlighted (e.g., with a different background color) to indicate it is selected
+- **And** clicking a different row highlights that row and deselects the previous one
+
+#### REC-TBL-13: Pagination displays page number
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and there are enough recipe records to span multiple pages
+- **Then** pagination controls are displayed below the table showing the current page number (e.g., "1")
+
+#### REC-TBL-14: Pagination first-page button navigates to the first page
+- **Components:** RecipesTable
+- **Given** the user is on /recipes viewing page 2 or later
+- **When** the user clicks the "<<" (first page) button
+- **Then** the table updates to show the first set of recipe records and the page number shows "1"
+
+#### REC-TBL-15: Pagination previous button navigates to the previous page
+- **Components:** RecipesTable
+- **Given** the user is on /recipes viewing page 2
+- **When** the user clicks the "<" (previous page) button
+- **Then** the table updates to show the previous set of recipe records and the page number shows "1"
+
+#### REC-TBL-16: Pagination next button advances to the next page
+- **Components:** RecipesTable
+- **Given** the user is on /recipes viewing page 1 and there are multiple pages
+- **When** the user clicks the ">" (next page) button
+- **Then** the table updates to show the next set of recipe records and the page number shows "2"
+
+#### REC-TBL-17: Pagination last-page button navigates to the last page
+- **Components:** RecipesTable
+- **Given** the user is on /recipes viewing page 1 and there are multiple pages (e.g., 3 total)
+- **When** the user clicks the ">>" (last page) button
+- **Then** the table updates to show the last set of recipe records and the page number shows "3"
+
+#### REC-TBL-18: Pagination previous and first-page buttons are disabled on the first page
+- **Components:** RecipesTable
+- **Given** the user is on /recipes viewing page 1
+- **Then** the "<<" (first page) and "<" (previous page) buttons are disabled or visually inactive
+
+#### REC-TBL-19: Pagination next and last-page buttons are disabled on the last page
+- **Components:** RecipesTable
+- **Given** the user is on /recipes viewing the last page
+- **Then** the ">" (next page) and ">>" (last page) buttons are disabled or visually inactive
+
+#### REC-TBL-20: Version column displays version with Draft indicator when applicable
+- **Components:** RecipesTable
+- **Given** the user navigates to /recipes and a recipe has version "2.0.1" with status "Draft"
+- **Then** the Version column displays "2.0.1 (Draft)" for that recipe row
+
+### RecipeDetailsPanel
+
+#### REC-PNL-1: Side panel displays with recipe title
+- **Components:** RecipeDetailsPanel
+- **Given** the user is on /recipes and clicks on the row for "Standard Widget Assembly"
+- **Then** a side panel opens on the right with the heading "Recipe Details: Standard Widget Assembly"
+
+#### REC-PNL-2: Side panel title updates when a different recipe is selected
+- **Components:** RecipeDetailsPanel, RecipesTable
+- **Given** the user is on /recipes with the RecipeDetailsPanel open for "Standard Widget Assembly"
+- **When** the user clicks on the row for "Deluxe Gadget Build"
+- **Then** the side panel heading updates to "Recipe Details: Deluxe Gadget Build"
+- **And** the panel content updates to reflect the selected recipe's data
+
+#### REC-PNL-3: General Info tab is displayed
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe
+- **Then** a "General Info" tab is displayed in the panel's tab bar
+
+#### REC-PNL-4: Materials Breakdown tab is displayed
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe
+- **Then** a "Materials Breakdown" tab is displayed in the panel's tab bar
+
+#### REC-PNL-5: Instructions tab is displayed
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe
+- **Then** an "Instructions" tab is displayed in the panel's tab bar
+
+#### REC-PNL-6: General Info tab shows recipe general information
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for "Standard Widget Assembly"
+- **When** the user clicks the "General Info" tab
+- **Then** the tab content displays the recipe's general information including the recipe name, product, version, and status
+
+#### REC-PNL-7: Materials Breakdown tab shows materials table
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for "Standard Widget Assembly"
+- **When** the user clicks the "Materials Breakdown" tab
+- **Then** a table is displayed with column headers "Material", "Quantity (per unit)", and "Unit"
+
+#### REC-PNL-8: Materials table displays material rows with correct data
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for "Standard Widget Assembly" on the "Materials Breakdown" tab, and the recipe requires "Steel Alloy Sheet" (5.0 kg), "Circuit Board PCB-A" (1.0 pc), and "M3 Screws" (24.0 pc)
+- **Then** the table displays a row with Material "Steel Alloy Sheet", Quantity "5.0", and Unit "kg"
+- **And** the table displays a row with Material "Circuit Board PCB-A", Quantity "1.0", and Unit "pc"
+- **And** the table displays a row with Material "M3 Screws", Quantity "24.0", and Unit "pc"
+
+#### REC-PNL-9: Materials Breakdown tab shows Notes & Instructions section
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for "Standard Widget Assembly" on the "Materials Breakdown" tab
+- **Then** a "Notes & Instructions" section heading is displayed below the materials table
+- **And** the section displays the text "Ensure uniform heating during mixing phase. Follow safety protocol B-12 for handling the alloy."
+
+#### REC-PNL-10: Notes & Instructions section shows placeholder when empty
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe that has no notes or instructions on the "Materials Breakdown" tab
+- **Then** the "Notes & Instructions" section displays a placeholder message or is empty
+
+#### REC-PNL-11: Instructions tab shows recipe instructions
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe that has instructions
+- **When** the user clicks the "Instructions" tab
+- **Then** the tab content displays the recipe's detailed instructions text
+
+#### REC-PNL-12: Instructions tab shows placeholder when no instructions exist
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe that has no instructions
+- **When** the user clicks the "Instructions" tab
+- **Then** the tab content displays a placeholder message indicating no instructions are available
+
+#### REC-PNL-13: Switching between tabs preserves selected recipe
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for "Standard Widget Assembly" on the "General Info" tab
+- **When** the user clicks the "Materials Breakdown" tab
+- **Then** the panel still shows data for "Standard Widget Assembly"
+- **When** the user clicks the "Instructions" tab
+- **Then** the panel still shows data for "Standard Widget Assembly"
+
+#### REC-PNL-14: Materials table shows empty state when recipe has no materials
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe that has no materials defined
+- **When** the user clicks the "Materials Breakdown" tab
+- **Then** the materials table displays a placeholder message or empty table state
 
 ## CalendarPage (/calendar)
 
