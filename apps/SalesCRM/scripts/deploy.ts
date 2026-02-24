@@ -220,27 +220,73 @@ async function main(): Promise<void> {
 
   if (!siteId) {
     console.log('Creating new Netlify site...')
-    const output = execSync(
-      `npx netlify sites:create --account-slug ${process.env.NETLIFY_ACCOUNT_SLUG} --json`,
+    const netlifyToken = required('NETLIFY_AUTH_TOKEN')
+    const accountSlug = required('NETLIFY_ACCOUNT_SLUG')
+    const createRes = await fetch(
+      `https://api.netlify.com/api/v1/${accountSlug}/sites`,
       {
-        cwd: APP_DIR,
-        env: { ...process.env },
-        encoding: 'utf-8',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${netlifyToken}`,
+        },
+        body: JSON.stringify({ name: `salescrm-${Date.now()}` }),
       },
     )
-    const siteData = JSON.parse(output) as { id: string; ssl_url?: string; url?: string }
+    if (!createRes.ok) {
+      const errText = await createRes.text()
+      throw new Error(`Failed to create Netlify site (${createRes.status}): ${errText}`)
+    }
+    const siteData = (await createRes.json()) as { id: string; ssl_url?: string; url?: string }
     siteId = siteData.id
     writeEnvVar('NETLIFY_SITE_ID', siteId)
     process.env.NETLIFY_SITE_ID = siteId
     console.log(`Created Netlify site: ${siteId}`)
   }
 
-  // Set environment variables on the Netlify site
+  // Set environment variables on the Netlify site via API
   console.log('Setting Netlify environment variables...')
-  execSync(
-    `npx netlify env:set DATABASE_URL "${databaseUrl}" --site ${siteId}`,
-    { stdio: 'inherit', cwd: APP_DIR, env: { ...process.env } },
+  const netlifyToken = process.env.NETLIFY_AUTH_TOKEN!
+  const envSetRes = await fetch(
+    `https://api.netlify.com/api/v1/accounts/${process.env.NETLIFY_ACCOUNT_SLUG}/env?site_id=${siteId}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${netlifyToken}`,
+      },
+      body: JSON.stringify([
+        {
+          key: 'DATABASE_URL',
+          scopes: ['builds', 'functions', 'runtime', 'post-processing'],
+          values: [{ value: databaseUrl, context: 'all' }],
+        },
+      ]),
+    },
   )
+  if (!envSetRes.ok) {
+    // Try PATCH in case env var already exists
+    const patchRes = await fetch(
+      `https://api.netlify.com/api/v1/accounts/${process.env.NETLIFY_ACCOUNT_SLUG}/env/DATABASE_URL?site_id=${siteId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${netlifyToken}`,
+        },
+        body: JSON.stringify({
+          key: 'DATABASE_URL',
+          scopes: ['builds', 'functions', 'runtime', 'post-processing'],
+          values: [{ value: databaseUrl, context: 'all' }],
+        }),
+      },
+    )
+    if (!patchRes.ok) {
+      const errText = await patchRes.text()
+      throw new Error(`Failed to set Netlify env var (${patchRes.status}): ${errText}`)
+    }
+  }
+  console.log('Environment variables set.')
 
   // -------------------------------------------------------------------------
   // 4. Build and deploy
