@@ -10,7 +10,284 @@
 
 ## RunDetailsPage (/runs/:runId)
 
-<!-- Tests for RunDetailsPage will be added by PlanPage tasks -->
+Components: RunHeader, RunActions, RawMaterialsTable, ForecastTable, RunEquipmentTable, ExternalAppLinks
+
+### RunHeader
+
+#### RUN-HDR-1: Breadcrumb displays Home > Runs > Run ID
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a breadcrumb is displayed showing "Home" as a clickable link, followed by a ">" separator, "Runs" as a clickable link, followed by a ">" separator, and "RUN-12345"
+
+#### RUN-HDR-2: Breadcrumb Home link navigates to home/dashboard
+- **Components:** RunHeader
+- **Given** the user is on /runs/RUN-12345
+- **When** the user clicks the "Home" link in the breadcrumb
+- **Then** the app navigates to / (the home/dashboard page)
+
+#### RUN-HDR-3: Breadcrumb Runs link navigates to CalendarPage
+- **Components:** RunHeader
+- **Given** the user is on /runs/RUN-12345
+- **When** the user clicks the "Runs" link in the breadcrumb
+- **Then** the app navigates to /calendar (the calendar page where runs are scheduled)
+
+#### RUN-HDR-4: Page title displays "Run Details: RUN-ID"
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** the page title "Run Details: RUN-12345" is displayed as a large heading
+
+#### RUN-HDR-5: High-Level Information section heading is displayed
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a card is displayed with the heading "High-Level Information"
+
+#### RUN-HDR-6: Run ID field displays the run identifier
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** the High-Level Information card displays a "Run ID:" label with value "RUN-12345"
+
+#### RUN-HDR-7: Date/Time field displays the scheduled date and time
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345 for a run scheduled on 2023-10-27 at 08:00 AM
+- **Then** the High-Level Information card displays a "Date/Time:" label with value "2023-10-27 08:00 AM"
+
+#### RUN-HDR-8: Product field displays the product name
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345 for a run producing "Widget A"
+- **Then** the High-Level Information card displays a "Product:" label with value "Widget A"
+
+#### RUN-HDR-9: Associated Recipe field displays the recipe name
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345 for a run using "Recipe V3 (Widget A)"
+- **Then** the High-Level Information card displays an "Associated Recipe:" label with value "Recipe V3 (Widget A)"
+
+#### RUN-HDR-10: Planned Quantity field displays the quantity with units
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345 for a run with planned quantity of 500 units
+- **Then** the High-Level Information card displays a "Planned Quantity:" label with value "500 Units"
+
+#### RUN-HDR-11: Status field displays a "Scheduled" badge
+- **Components:** RunHeader
+- **Given** the user navigates to /runs/RUN-12345 for a run with status "Scheduled"
+- **Then** the High-Level Information card displays a "Status:" label with a blue badge labeled "Scheduled"
+
+#### RUN-HDR-12: Status badge shows "Confirmed" styling when run is confirmed
+- **Components:** RunHeader
+- **Given** the user navigates to a run details page for a run with status "Confirmed"
+- **Then** the Status field displays a green badge labeled "Confirmed"
+
+#### RUN-HDR-13: Status badge shows "Cancelled" styling when run is cancelled
+- **Components:** RunHeader
+- **Given** the user navigates to a run details page for a run with status "Cancelled"
+- **Then** the Status field displays a red badge labeled "Cancelled"
+
+### RunActions
+
+#### RUN-ACT-1: Adjust Quantities button is displayed
+- **Components:** RunActions
+- **Given** the user navigates to /runs/RUN-12345 for a run with status "Scheduled"
+- **Then** a blue "Adjust Quantities" button is displayed in the actions area to the right of the High-Level Information card
+
+#### RUN-ACT-2: Adjust Quantities button opens an edit form
+- **Components:** RunActions
+- **Given** the user is on /runs/RUN-12345 for a run with Planned Quantity "500 Units"
+- **When** the user clicks the "Adjust Quantities" button
+- **Then** a modal or form is displayed allowing the user to edit the planned quantity
+- **When** the user changes the planned quantity from "500" to "600" and saves
+- **Then** the Planned Quantity field in the High-Level Information card updates to "600 Units"
+- **And** the raw materials amounts in the RawMaterialsTable update to reflect the new quantity
+- **And** the change persists after navigating away and returning to /runs/RUN-12345
+
+#### RUN-ACT-3: Confirm Run button is displayed
+- **Components:** RunActions
+- **Given** the user navigates to /runs/RUN-12345 for a run with status "Scheduled"
+- **Then** a blue "Confirm Run" button is displayed below the "Adjust Quantities" button
+
+#### RUN-ACT-4: Confirm Run button changes status to Confirmed
+- **Components:** RunActions, RunHeader
+- **Given** the user is on /runs/RUN-12345 for a run with status "Scheduled"
+- **When** the user clicks the "Confirm Run" button
+- **Then** the Status badge in the High-Level Information card changes from blue "Scheduled" to green "Confirmed"
+- **And** the status change persists after navigating away and returning to /runs/RUN-12345
+- **And** the run appears as "Confirmed" on the CalendarPage
+
+#### RUN-ACT-5: Cancel Run button is displayed
+- **Components:** RunActions
+- **Given** the user navigates to /runs/RUN-12345 for a run with status "Scheduled"
+- **Then** a blue "Cancel Run" button is displayed below the "Confirm Run" button
+
+#### RUN-ACT-6: Cancel Run button changes status to Cancelled
+- **Components:** RunActions, RunHeader
+- **Given** the user is on /runs/RUN-12345 for a run with status "Scheduled"
+- **When** the user clicks the "Cancel Run" button
+- **Then** a confirmation dialog is displayed asking the user to confirm the cancellation
+- **When** the user confirms the cancellation
+- **Then** the Status badge in the High-Level Information card changes from blue "Scheduled" to red "Cancelled"
+- **And** the status change persists after navigating away and returning to /runs/RUN-12345
+- **And** the run appears as "Cancelled" on the CalendarPage
+
+#### RUN-ACT-7: Cancel Run confirmation can be dismissed
+- **Components:** RunActions
+- **Given** the user is on /runs/RUN-12345 for a run with status "Scheduled"
+- **When** the user clicks the "Cancel Run" button
+- **Then** a confirmation dialog is displayed
+- **When** the user dismisses or cancels the dialog
+- **Then** the run status remains "Scheduled" and no changes are made
+
+#### RUN-ACT-8: Action buttons are hidden or disabled for a Cancelled run
+- **Components:** RunActions
+- **Given** the user navigates to a run details page for a run with status "Cancelled"
+- **Then** the "Adjust Quantities", "Confirm Run", and "Cancel Run" buttons are hidden or disabled
+
+#### RUN-ACT-9: Action buttons are hidden or disabled for a Confirmed run except Cancel
+- **Components:** RunActions
+- **Given** the user navigates to a run details page for a run with status "Confirmed"
+- **Then** the "Adjust Quantities" button is hidden or disabled
+- **And** the "Confirm Run" button is hidden or disabled
+- **And** the "Cancel Run" button remains visible and enabled to allow cancelling a confirmed run
+
+### RawMaterialsTable
+
+#### RUN-MAT-1: Recipe and Raw Materials section heading is displayed
+- **Components:** RawMaterialsTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a section heading "Recipe and Raw Materials" is displayed below the High-Level Information card
+
+#### RUN-MAT-2: Table displays Material, Amount Needed, and Units column headers
+- **Components:** RawMaterialsTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a table in the Recipe and Raw Materials section displays column headers "Material", "Amount Needed", and "Units"
+
+#### RUN-MAT-3: Table rows display raw material data for the run
+- **Components:** RawMaterialsTable
+- **Given** the user navigates to /runs/RUN-12345 for a run that requires "Material X" at 100 kg and "Material Y" at 50 liters
+- **Then** the table displays a row with Material "Material X", Amount Needed "100", and Units "kg"
+- **And** the table displays a row with Material "Material Y", Amount Needed "50", and Units "liters"
+
+#### RUN-MAT-4: Material amounts reflect the planned quantity
+- **Components:** RawMaterialsTable
+- **Given** the user navigates to /runs/RUN-12345 where the planned quantity is 500 Units and the recipe specifies material amounts per batch
+- **Then** the Amount Needed column values are calculated based on the planned quantity multiplied by the recipe's per-batch amounts
+
+#### RUN-MAT-5: Material amounts update when quantity is adjusted
+- **Components:** RawMaterialsTable, RunActions
+- **Given** the user is on /runs/RUN-12345 with Material X showing Amount Needed "100"
+- **When** the user clicks "Adjust Quantities" and changes the planned quantity
+- **Then** the Amount Needed values in the Raw Materials table update proportionally to the new planned quantity
+
+#### RUN-MAT-6: Empty materials table shows placeholder when run has no recipe materials
+- **Components:** RawMaterialsTable
+- **Given** the user navigates to the details page for a run whose associated recipe has no raw materials defined
+- **Then** the Recipe and Raw Materials section displays a placeholder message or empty table state
+
+### ForecastTable
+
+#### RUN-FCST-1: Forecast/Availability section heading is displayed
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a section heading "Forecast/Availability" is displayed below the Recipe and Raw Materials section
+
+#### RUN-FCST-2: Table displays Material, Required Amount, Forecast Available, Shortage/Excess, and Pending Deliveries column headers
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a table in the Forecast/Availability section displays column headers "Material", "Required Amount", "Forecast Available", "Shortage/Excess", and "Pending Deliveries"
+
+#### RUN-FCST-3: Table rows display forecast data for each material
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345 for a run requiring Material X (100 kg, forecast 120 kg available) and Material Y (50 liters, forecast 40 liters available)
+- **Then** the table displays a row with Material "Material X", Required Amount "100 kg", Forecast Available "120 kg", Shortage/Excess "+20 kg", and Pending Deliveries "Delivery #DLV-987 (Arriving Today)"
+- **And** the table displays a row with Material "Material Y", Required Amount "50 liters", Forecast Available "40 liters", Shortage/Excess "-10 liters", and Pending Deliveries "Delivery #DLV-988 (Pending Approval)"
+
+#### RUN-FCST-4: Shortage/Excess column shows green background for surplus
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345 and Material X has a surplus of +20 kg
+- **Then** the Shortage/Excess cell for Material X displays "+20 kg" with a green background color indicating a surplus
+
+#### RUN-FCST-5: Shortage/Excess column shows red background for shortage
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345 and Material Y has a shortage of -10 liters
+- **Then** the Shortage/Excess cell for Material Y displays "-10 liters" with a red background color indicating a shortage
+
+#### RUN-FCST-6: Shortage/Excess values are computed from Required Amount and Forecast Available
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345 where Material X requires 100 kg and forecast available is 120 kg
+- **Then** the Shortage/Excess column shows "+20 kg" (Forecast Available minus Required Amount)
+- **And** for Material Y requiring 50 liters with forecast available 40 liters, Shortage/Excess shows "-10 liters"
+
+#### RUN-FCST-7: Pending Deliveries column displays delivery references with status
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345 and there are pending deliveries for the materials
+- **Then** the Pending Deliveries column for Material X shows "Delivery #DLV-987 (Arriving Today)"
+- **And** the Pending Deliveries column for Material Y shows "Delivery #DLV-988 (Pending Approval)"
+
+#### RUN-FCST-8: Forecast data reflects external inventory and delivery app data
+- **Components:** ForecastTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** the Forecast Available values are sourced from the external inventory tracking app
+- **And** the Pending Deliveries values are sourced from the external delivery scheduling app
+
+#### RUN-FCST-9: Empty forecast table shows placeholder when no materials exist
+- **Components:** ForecastTable
+- **Given** the user navigates to the details page for a run whose recipe has no raw materials
+- **Then** the Forecast/Availability section displays a placeholder message or empty table state
+
+### RunEquipmentTable
+
+#### RUN-EQP-1: Equipment and Availability section heading is displayed
+- **Components:** RunEquipmentTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a section heading "Equipment and Availability" is displayed below the Forecast/Availability section
+
+#### RUN-EQP-2: Table displays Equipment, Status, and Notes column headers
+- **Components:** RunEquipmentTable
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a table in the Equipment and Availability section displays column headers "Equipment", "Status", and "Notes"
+
+#### RUN-EQP-3: Table rows display equipment data for the run
+- **Components:** RunEquipmentTable
+- **Given** the user navigates to /runs/RUN-12345 for a run requiring "Mixer A" (Available) and "Oven B" (Scheduled Maintenance, Oct 28)
+- **Then** the table displays a row with Equipment "Mixer A", Status "Available", and Notes empty
+- **And** the table displays a row with Equipment "Oven B", Status "Scheduled Maintenance (Oct 28)", and Notes "Scheduled Maintenance (Oct 28)"
+
+#### RUN-EQP-4: Equipment status reflects current availability from the equipment system
+- **Components:** RunEquipmentTable
+- **Given** the user navigates to /runs/RUN-12345 and the equipment "Mixer A" is marked as available in the equipment system
+- **Then** the Status column for "Mixer A" displays "Available"
+
+#### RUN-EQP-5: Equipment with maintenance shows maintenance details in Status and Notes
+- **Components:** RunEquipmentTable
+- **Given** the user navigates to /runs/RUN-12345 and "Oven B" has a scheduled maintenance event on Oct 28
+- **Then** the Status column for "Oven B" displays "Scheduled Maintenance (Oct 28)"
+- **And** the Notes column for "Oven B" displays "Scheduled Maintenance (Oct 28)"
+
+#### RUN-EQP-6: Empty equipment table shows placeholder when run requires no equipment
+- **Components:** RunEquipmentTable
+- **Given** the user navigates to the details page for a run whose recipe requires no equipment
+- **Then** the Equipment and Availability section displays a placeholder message or empty table state
+
+### ExternalAppLinks
+
+#### RUN-EXT-1: "View in Inventory App" link is displayed
+- **Components:** ExternalAppLinks
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a blue "View in Inventory App" link is displayed below the Equipment and Availability section
+
+#### RUN-EXT-2: "View in Delivery App" link is displayed
+- **Components:** ExternalAppLinks
+- **Given** the user navigates to /runs/RUN-12345
+- **Then** a blue "View in Delivery App" link is displayed next to the "View in Inventory App" link, separated by a vertical divider
+
+#### RUN-EXT-3: "View in Inventory App" link opens the external inventory app
+- **Components:** ExternalAppLinks
+- **Given** the user is on /runs/RUN-12345
+- **When** the user clicks the "View in Inventory App" link
+- **Then** the external inventory tracking app opens in a new browser tab, showing data relevant to the materials in this run
+
+#### RUN-EXT-4: "View in Delivery App" link opens the external delivery app
+- **Components:** ExternalAppLinks
+- **Given** the user is on /runs/RUN-12345
+- **When** the user clicks the "View in Delivery App" link
+- **Then** the external delivery scheduling app opens in a new browser tab, showing delivery data relevant to this run
 
 ## RecipeDetailsPage (/recipe/:recipeId)
 

@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageRunDetails: Decide on components, add sections to docs/tests.md",
-        "PlanComponentRunHeader: Add test entries for RunHeader (breadcrumb navigation, Run ID title, high-level info fields: Run ID/Date-Time/Product/Associated Recipe/Planned Quantity/Status badge)",
-        "PlanComponentRunActions: Add test entries for RunActions (Adjust Quantities button opens edit, Confirm Run button changes status, Cancel Run button changes status)",
-        "PlanComponentRawMaterialsTable: Add test entries for RawMaterialsTable (Material/Amount Needed/Units columns)",
-        "PlanComponentForecastTable: Add test entries for ForecastTable (Material/Required Amount/Forecast Available/Shortage-Excess color-coded/Pending Deliveries columns)",
-        "PlanComponentRunEquipmentTable: Add test entries for RunEquipmentTable (Equipment/Status/Notes columns) and ExternalAppLinks (View in Inventory App, View in Delivery App)"
-      ],
-      "timestamp": "2026-02-24T23:27:29.155Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageCalendar: Decide on components, add sections to docs/tests.md",
         "PlanComponentCalendarHeader: Add test entries for CalendarHeader (Prev/Today/Next buttons, month/year display, Daily/Weekly/Monthly view toggle, New Production Run button, Filter by Status dropdown)",
         "PlanComponentCalendarGrid: Add test entries for CalendarGrid (monthly grid with day cells, production run event cards color-coded by status, legend for On Track/Material Shortage/Scheduled)",
