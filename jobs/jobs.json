@@ -3,11 +3,10 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
-        "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
-        "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
+        "FixViolation: Add Pipeline View deal card details (stage columns, card contents, card clickability) to DealsListPage test entries in docs/tests.md",
+        "FixViolation: Add missing cross-page side effect verification (timeline entry for deal creation, client Deals section update for deal deletion) to DealsListPage mutation test entries in docs/tests.md"
       ],
-      "timestamp": "2026-02-24T04:04:34.332Z"
+      "timestamp": "2026-02-24T04:34:25.149Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
