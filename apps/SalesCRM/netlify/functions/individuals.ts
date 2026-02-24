@@ -50,12 +50,47 @@ export default async function handler(req: Request, _context: Context) {
       const rows = await sql`
         SELECT i.*,
                COALESCE(
-                 (SELECT JSON_AGG(JSON_BUILD_OBJECT('id', c.id, 'name', c.name))
+                 (SELECT JSON_AGG(JSON_BUILD_OBJECT('id', c.id, 'name', c.name, 'status', c.status, 'type', c.type))
                   FROM client_individuals ci
                   JOIN clients c ON ci.client_id = c.id
                   WHERE ci.individual_id = i.id),
                  '[]'::json
-               ) as clients
+               ) as clients,
+               COALESCE(
+                 (SELECT JSON_AGG(JSON_BUILD_OBJECT(
+                   'id', ir.id,
+                   'related_individual_id', ri.id,
+                   'related_individual_name', ri.name,
+                   'related_individual_title', ri.title,
+                   'relationship_type', ir.relationship_type,
+                   'related_individual_clients', COALESCE(
+                     (SELECT STRING_AGG(c2.name, ', ' ORDER BY c2.name)
+                      FROM client_individuals ci2
+                      JOIN clients c2 ON ci2.client_id = c2.id
+                      WHERE ci2.individual_id = ri.id), '')
+                 ) ORDER BY ri.name)
+                  FROM individual_relationships ir
+                  JOIN individuals ri ON ir.related_individual_id = ri.id
+                  WHERE ir.individual_id = i.id),
+                 '[]'::json
+               ) as relationships,
+               COALESCE(
+                 (SELECT JSON_AGG(JSON_BUILD_OBJECT(
+                   'id', ch.id,
+                   'type', ch.type,
+                   'summary', ch.summary,
+                   'notes', ch.notes,
+                   'performed_by', ch.performed_by,
+                   'performer_name', COALESCE(u.name, 'System'),
+                   'performer_role', COALESCE(u.role, ''),
+                   'contact_date', ch.contact_date,
+                   'created_at', ch.created_at
+                 ) ORDER BY ch.contact_date DESC)
+                  FROM contact_history ch
+                  LEFT JOIN users u ON ch.performed_by = u.id
+                  WHERE ch.individual_id = i.id),
+                 '[]'::json
+               ) as contact_history
         FROM individuals i
         WHERE i.id = ${resourceId}
       `

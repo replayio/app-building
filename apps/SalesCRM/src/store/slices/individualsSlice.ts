@@ -12,9 +12,43 @@ export interface Individual {
   client_names?: string[]
 }
 
+export interface IndividualClient {
+  id: string
+  name: string
+  status: string
+  type: string
+}
+
+export interface IndividualRelationship {
+  id: string
+  related_individual_id: string
+  related_individual_name: string
+  related_individual_title: string | null
+  relationship_type: string
+  related_individual_clients: string
+}
+
+export interface ContactHistoryEntry {
+  id: string
+  type: string
+  summary: string
+  notes: string | null
+  performed_by: string | null
+  performer_name: string
+  performer_role: string
+  contact_date: string
+  created_at: string
+}
+
+export interface IndividualDetail extends Individual {
+  clients: IndividualClient[]
+  relationships: IndividualRelationship[]
+  contact_history: ContactHistoryEntry[]
+}
+
 interface IndividualsState {
   items: Individual[]
-  current: Individual | null
+  current: IndividualDetail | null
   loading: boolean
   error: string | null
   search: string
