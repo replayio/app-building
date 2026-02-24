@@ -1,0 +1,11 @@
+{
+  "name": "inventory-tracker",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "check": "tsx scripts/check.ts",
+    "deploy": "tsx scripts/deploy.ts",
+    "test": "tsx scripts/test.ts"
+  }
+}
