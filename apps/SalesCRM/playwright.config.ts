@@ -22,7 +22,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx netlify dev --port 8888',
+    command: 'npx netlify dev --port 8888 --functions ./netlify/functions',
     port: 8888,
     reuseExistingServer: !process.env.CI,
     timeout: 60000,
