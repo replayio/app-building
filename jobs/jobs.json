@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix clients.ts backend to handle source_detail, campaign, channel, date_acquired, and industry fields in create and update operations so Source Info section is fully functional end-to-end",
-        "RunTests: Verify tests pass after clients backend fix"
-      ],
-      "timestamp": "2026-02-24T02:37:56.494Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Build ClientDetailPage and all components (ClientHeader, QuickActions, SourceInfoSection, TasksSection with checkboxes/due dates/deals, DealsSection, AttachmentsSection with file upload, PeopleSection, TimelineSection) with backend functions and modals",
         "FixViolation: Add all missing data-testid attributes to ClientDetailPage components"
       ],

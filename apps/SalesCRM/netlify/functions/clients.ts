@@ -452,12 +452,12 @@ async function handleExport(sql: SqlFn, params: Record<string, string>) {
 
 async function handleCreate(sql: SqlFn, body: string | null) {
   const data = JSON.parse(body || '{}')
-  const { name, type, status, tags, source } = data
+  const { name, type, status, tags, source, source_detail, campaign, channel, date_acquired, industry } = data
   if (!name) return json(400, { error: 'Client name is required' })
 
   const result = await sql`
-    INSERT INTO clients (name, type, status, source)
-    VALUES (${name}, ${type || 'Organization'}, ${status || 'Prospect'}, ${source || null})
+    INSERT INTO clients (name, type, status, source, source_detail, campaign, channel, date_acquired, industry)
+    VALUES (${name}, ${type || 'Organization'}, ${status || 'Prospect'}, ${source || null}, ${source_detail || null}, ${campaign || null}, ${channel || null}, ${date_acquired || null}, ${industry || null})
     RETURNING *
   `
   const newClient = result[0]
@@ -483,8 +483,8 @@ async function handleImport(sql: SqlFn, body: string | null) {
   for (const c of clients) {
     if (!c.name) continue
     const inserted = await sql`
-      INSERT INTO clients (name, type, status, source)
-      VALUES (${c.name}, ${c.type || 'Organization'}, ${c.status || 'Prospect'}, ${c.source || null})
+      INSERT INTO clients (name, type, status, source, source_detail, campaign, channel, date_acquired, industry)
+      VALUES (${c.name}, ${c.type || 'Organization'}, ${c.status || 'Prospect'}, ${c.source || null}, ${c.source_detail || null}, ${c.campaign || null}, ${c.channel || null}, ${c.date_acquired || null}, ${c.industry || null})
       RETURNING id
     `
     const clientId = inserted[0].id
@@ -509,7 +509,7 @@ async function handleImport(sql: SqlFn, body: string | null) {
 
 async function handleUpdate(sql: SqlFn, id: string, body: string | null) {
   const data = JSON.parse(body || '{}')
-  const { name, type, status, tags, source, source_detail, campaign, channel, date_acquired } = data
+  const { name, type, status, tags, source, source_detail, campaign, channel, date_acquired, industry } = data
 
   const current = await sql`SELECT * FROM clients WHERE id = ${id}`
   if (!current.length) return json(404, { error: 'Not found' })
@@ -519,6 +519,7 @@ async function handleUpdate(sql: SqlFn, id: string, body: string | null) {
   const skipCampaign = campaign === undefined
   const skipChannel = channel === undefined
   const skipDateAcquired = date_acquired === undefined
+  const skipIndustry = industry === undefined
 
   await sql`
     UPDATE clients SET
@@ -530,6 +531,7 @@ async function handleUpdate(sql: SqlFn, id: string, body: string | null) {
       campaign = CASE WHEN ${skipCampaign}::boolean THEN campaign ELSE ${campaign || null} END,
       channel = CASE WHEN ${skipChannel}::boolean THEN channel ELSE ${channel || null} END,
       date_acquired = CASE WHEN ${skipDateAcquired}::boolean THEN date_acquired ELSE ${date_acquired || null} END,
+      industry = CASE WHEN ${skipIndustry}::boolean THEN industry ELSE ${industry || null} END,
       updated_at = now()
     WHERE id = ${id}
   `
