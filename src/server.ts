@@ -1,6 +1,6 @@
 import { createServer, IncomingMessage, ServerResponse } from "http";
 import { resolve } from "path";
-import { cloneRepo, checkoutPushBranch, commitAndPush, getRevision, toTokenUrl } from "./git";
+import { cloneRepo, checkoutTargetBranch, commitAndPushTarget, getRevision, toTokenUrl } from "./git";
 import {
   processMessage,
   processTasks,
@@ -72,8 +72,6 @@ type ContainerState = "starting" | "idle" | "processing" | "stopping" | "stopped
 let state: ContainerState = "starting";
 let detachRequested = false;
 let stopRequested = false;
-let unmergedBranch: string | null = null;
-
 // Wake signal for processing loop
 let wakeResolve: (() => void) | null = null;
 
@@ -206,11 +204,11 @@ async function processLoop(): Promise<void> {
         log(`Error: ${e.message}`);
       }
 
-      // Final commit and push after message (skip if stopping — unmerged branch gets these)
+      // Final commit and push after message
       if (!stopRequested) {
         const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
         archiveCurrentLog(LOGS_DIR);
-        commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
+        commitAndPushTarget(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
         log(`Final revision: ${getRevision(REPO_DIR)}`);
       }
 
@@ -231,7 +229,7 @@ async function processLoop(): Promise<void> {
         (label) => {
           if (!stopRequested) {
             archiveCurrentLog(LOGS_DIR);
-            commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
+            commitAndPushTarget(label, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
           }
         },
       );
@@ -257,17 +255,13 @@ async function processLoop(): Promise<void> {
   state = "stopping";
   log("Server shutting down.");
 
-  // Only create an unmerged branch on stop (interrupted work), not on detach (clean completion)
+  // Commit and push any remaining work on stop
   if (stopRequested) {
     try {
-      const branch = `${PUSH_BRANCH}-unmerged-${CONTAINER_NAME}`;
-      checkoutPushBranch(branch, REPO_DIR);
       archiveCurrentLog(LOGS_DIR);
-      commitAndPush(`Unmerged work from ${CONTAINER_NAME}`, branch, log, REPO_DIR);
-      unmergedBranch = branch;
-      log(`Unmerged branch: ${branch}`);
+      commitAndPushTarget(`Final work from ${CONTAINER_NAME}`, PUSH_BRANCH, log, () => true, REPO_DIR);
     } catch (e: any) {
-      log(`Warning: failed to push unmerged branch: ${e.message}`);
+      log(`Warning: failed to push final work: ${e.message}`);
     }
   }
 
@@ -376,7 +370,6 @@ const server = createServer(async (req, res) => {
         totalCost,
         iteration,
         detachRequested,
-        unmergedBranch,
         revision: getRevision(REPO_DIR),
       });
       return;
@@ -409,20 +402,15 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // Checkout push branch if different from clone branch
-  if (PUSH_BRANCH !== CLONE_BRANCH) {
-    console.log(`Checking out push branch: ${PUSH_BRANCH}`);
-    try {
-      checkoutPushBranch(PUSH_BRANCH, REPO_DIR);
-    } catch (e: any) {
-      console.error(`Warning: checkout push branch failed: ${e.message}`);
-    }
-  }
-
   // Now that /repo exists, initialize the logger
   log = createBufferedLogger(LOGS_DIR, (line) => {
     logBuffer.append(line);
   });
+
+  // Checkout target branch if different from clone branch
+  if (PUSH_BRANCH !== CLONE_BRANCH) {
+    checkoutTargetBranch(PUSH_BRANCH, log, REPO_DIR);
+  }
 
   log(`Revision: ${getRevision(REPO_DIR)}`);
   log(`Push branch: ${PUSH_BRANCH}`);

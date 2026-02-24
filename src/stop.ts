@@ -5,21 +5,20 @@ import type { RegistryEntry } from "./container-registry";
 import { RED, RESET } from "./format";
 import { httpOptsFor, findAliveContainers } from "./container-utils";
 
-async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<string | null> {
+async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     await new Promise((r) => setTimeout(r, 2000));
     try {
       const status = await httpGet(`${baseUrl}/status`, { timeout: 5000 });
       if (status.state === "stopped") {
-        return status.unmergedBranch ?? null;
+        return;
       }
     } catch {
       // Server may have already exited
-      return null;
+      return;
     }
   }
-  return null;
 }
 
 async function stopEntry(entry: RegistryEntry): Promise<void> {
@@ -34,11 +33,8 @@ async function stopEntry(entry: RegistryEntry): Promise<void> {
     console.log("Could not reach container (may already be stopped).");
   }
 
-  // Wait for the server to reach "stopped" state (it commits+pushes unmerged work)
-  const branch = await waitForStopped(entry.baseUrl);
-  if (branch) {
-    console.log(`Unmerged branch: ${branch}`);
-  }
+  // Wait for the server to reach "stopped" state
+  await waitForStopped(entry.baseUrl);
 
   if (entry.type === "remote") {
     // Destroy the Fly machine so it doesn't sit idle and cost money

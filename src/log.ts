@@ -80,7 +80,7 @@ export function redactSecrets(text: string): string {
  *    `git add -A` / commit.
  * 3. On the next `createLogFile` call a fresh `worker-current.log` is created.
  *
- * This means `archiveCurrentLog` must be called before `commitAndPush` for
+ * This means `archiveCurrentLog` must be called before `commitAndPushTarget` for
  * the logs to appear in the commit.
  */
 export function createLogFile(logsDir: string): Logger {
