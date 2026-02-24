@@ -905,8 +905,8 @@
 
 #### Test: Add Entry form validates required fields
 - **Given** the contact history creation form is open
-- **When** the user leaves the Summary field empty and clicks save
-- **Then** a validation error is shown (e.g., "Summary is required")
+- **When** the user leaves all fields empty and clicks save
+- **Then** validation errors are shown for all required fields (Date/Time, Interaction Type, Summary, Team Member)
 - **And** the form is not submitted
 
 #### Test: Add Entry form can be cancelled

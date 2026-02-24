@@ -673,8 +673,8 @@ test.describe('ContactHistorySection', () => {
     // Leave all fields empty and click save
     await page.getByTestId('contact-history-form-save').click()
 
-    // Validation errors should appear for required fields (date, type, summary)
-    await expect(page.locator('.form-error')).toHaveCount(3, { timeout: 5000 })
+    // Validation errors should appear for required fields (date, type, summary, team member)
+    await expect(page.locator('.form-error')).toHaveCount(4, { timeout: 5000 })
 
     // Modal should still be open
     await expect(page.getByTestId('contact-history-form-modal')).toBeVisible()

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Fix ContactHistoryFormModal team_member field to be required with validation, matching the test spec requirement (line 893: 'Team Member (required, search/select)')",
-        "RunTests: Verify tests pass after team member validation fix",
-        "DocumentFix: Document the team member validation fix"
-      ],
-      "timestamp": "2026-02-24T04:46:01.017Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add client-based filtering to RelationshipsSection and date range filtering to ContactHistorySection to match test spec requirements, and update person-detail.spec.ts filter tests accordingly",
         "RunTests: Verify tests pass after filter fix",
         "DocumentFix: Document the filter implementation fix"

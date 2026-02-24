@@ -203,6 +203,7 @@ function ContactHistoryFormModal({ individualId, entry, onClose, onSaved }: Cont
     if (!interactionType) newErrors.type = 'Interaction type is required'
     if (!summary) newErrors.summary = 'Summary is required'
     if (!contactDate) newErrors.date = 'Date/time is required'
+    if (!teamMember) newErrors.teamMember = 'Team member is required'
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
@@ -302,15 +303,16 @@ function ContactHistoryFormModal({ individualId, entry, onClose, onSaved }: Cont
           </div>
 
           <div className="form-field">
-            <label className="form-label">Team Member</label>
+            <label className="form-label">Team Member *</label>
             <input
               type="text"
-              className="form-input"
+              className={`form-input ${errors.teamMember ? 'error' : ''}`}
               value={teamMember}
               onChange={e => setTeamMember(e.target.value)}
               placeholder="e.g. Michael B. (Sales Lead)"
               data-testid="contact-history-team-input"
             />
+            {errors.teamMember && <span className="form-error">{errors.teamMember}</span>}
           </div>
         </div>
 
