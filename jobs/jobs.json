@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "WriteComponentSidebarNavLinks: Write the SidebarNavLinks component",
-        "WriteComponentSidebarUserArea: Write the SidebarUserArea component",
-        "WriteComponentAppLayout: Write the AppLayout component with routing"
-      ],
-      "timestamp": "2026-02-23T21:32:55.182Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
         "WriteComponentClientsFilterBar: Write the ClientsFilterBar component",
         "WriteComponentClientsTable: Write the ClientsTable component",
         "WriteComponentCreateClientModal: Write the CreateClientModal component",
