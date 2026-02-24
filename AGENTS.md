@@ -8,7 +8,7 @@ Key directories:
 * `apps`: Has one subdirectory for each app that has been built or has been specified and still needs to be built.
 * `strategies/messages`: Strategies for responding to messages from the user (e.g. bug reports, log analysis).
 * `strategies/tasks`: Strategies for performing tasks. See `strategies/AGENTS.md` for details.
-* `tasks`: The task queue (`tasks.json`) managed by scripts in `scripts/`.
+* `tasks`: The task queue (`tasks-<containerName>.json`) managed by scripts in `scripts/`.
 * `logs`: Log files from work that has been performed. `worker-current.log` is the log for
   the work currently being done.
 
@@ -28,7 +28,7 @@ matching strategy. This is the highest-priority rule when handling user messages
 
 ## Worker Execution
 
-The worker processes tasks from `tasks/tasks.json` sequentially. For each task,
+The worker processes tasks from `tasks/tasks-<containerName>.json` sequentially. For each task,
 it passes all subtasks to Claude as a single prompt and checks for a `<DONE>` signal.
 
 - If `<DONE>` is signaled: the task is dequeued and the worker moves to the next task.
@@ -41,7 +41,7 @@ When you have completed ALL subtasks in your task, output `<DONE>` to signal com
 
 ## Task System
 
-Work is managed through a JSON task queue at `tasks/tasks.json`. The file contains an object
+Work is managed through a JSON task queue at `tasks/tasks-<containerName>.json`. The file contains an object
 with a `tasks` array. Each task has a `strategy`, an array of `subtasks` (description strings),
 and a `timestamp`:
 
@@ -61,7 +61,7 @@ and a `timestamp`:
 }
 ```
 
-The agent NEVER reads or writes `tasks.json` directly. Instead, use:
+The agent NEVER reads or writes task files directly. Instead, use:
 
 * **`npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2"`**:
   Adds a task to the FRONT of the queue (next to be processed). Each `--subtask` flag

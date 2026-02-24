@@ -5,7 +5,8 @@ import type { Logger } from "./log";
 
 const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
-const TASKS_FILE = resolve(REPO_ROOT, "tasks/tasks.json");
+const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
+const TASKS_FILE = resolve(REPO_ROOT, `tasks/tasks-${CONTAINER_NAME}.json`);
 const MAX_TASK_RETRIES = 3;
 const DEBUG = !!process.env.DEBUG;
 const DEBUG_LOG = resolve(LOGS_DIR, "worker-debug.log");
@@ -192,8 +193,8 @@ function completeTask(assignedTask: Task, log: Logger): void {
   const data = readTasksFile();
   const idx = data.tasks.findIndex((g) => tasksMatch(g, assignedTask));
   if (idx === -1) {
-    debug(`completeTask: assigned task not found in tasks.json (strategy=${assignedTask.strategy})`);
-    log(`Warning: assigned task not found in tasks.json, may have already been removed`);
+    debug(`completeTask: assigned task not found in task file (strategy=${assignedTask.strategy})`);
+    log(`Warning: assigned task not found in task file, may have already been removed`);
     return;
   }
   const [completed] = data.tasks.splice(idx, 1);
@@ -261,7 +262,7 @@ export async function processTasks(
     if (shouldStop?.()) break;
 
     const data = readTasksFile();
-    debug(`processTasks: tasks.json has ${data.tasks.length} task(s)`);
+    debug(`processTasks: task file has ${data.tasks.length} task(s)`);
     if (data.tasks.length === 0) {
       log("No tasks remaining.");
       break;

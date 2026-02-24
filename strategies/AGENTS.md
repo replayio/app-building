@@ -26,7 +26,7 @@ implementation. The implementing agent reads the design doc and follows it.
 ## `tasks/` — Task strategies
 
 These strategies are referenced by tasks in the queue. Each worker invocation reads the
-next task from `tasks.json` and runs all subtasks in the task. Strategies that need to "unpack"
+next task from the container's task file and runs all subtasks in the task. Strategies that need to "unpack"
 into sub-tasks use `add-task` to insert them at the front of the queue.
 
 ### Root — Shared infrastructure

@@ -13,7 +13,8 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
 
-const TASKS_FILE = resolve("/repo/tasks/tasks.json");
+const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
+const TASKS_FILE = resolve(`/repo/tasks/tasks-${CONTAINER_NAME}.json`);
 
 interface Task {
   strategy: string;
