@@ -3,11 +3,19 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+        "FixViolation: Fix 'Task list shows empty state when no tasks exist' test in tasks-list.spec.ts to test true empty state (data-testid tasks-list-empty with message 'No upcoming tasks. Create a new task to get started.') instead of filtered no-results state (data-testid tasks-list-no-results)",
+        "FixViolation: Add cross-page side effect verifications to tasks-header.spec.ts (New Task created and New Task with deal) and tasks-list.spec.ts (Mark as Complete and Delete) - after each mutation navigate to the associated client detail page and verify the task appears/disappears in the client Tasks section",
+        "RunTests: Verify all TasksListPage tests pass after fixes"
       ],
-      "timestamp": "2026-02-24T02:35:06.787Z"
+      "timestamp": "2026-02-24T02:45:21.038Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Add missing 'Filter by Due Date category' test entry to docs/tests.md TasksListPage TasksFilter section and write corresponding Playwright test in tasks-filter.spec.ts",
+        "RunTests: Verify TasksListPage tests pass after adding Due Date filter test"
+      ],
+      "timestamp": "2026-02-24T02:45:14.475Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
