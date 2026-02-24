@@ -1,13 +1,30 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+        "PlanComponentTasksHeader: Add test entries for TasksHeader",
+        "PlanComponentTasksFilter: Add test entries for TasksFilter",
+        "PlanComponentTasksList: Add test entries for TasksList"
       ],
-      "timestamp": "2026-02-24T01:28:58.699Z"
+      "timestamp": "2026-02-24T02:02:52.510Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentTasksHeader: Write the TasksHeader component",
+        "WriteComponentTasksFilter: Write the TasksFilter component",
+        "WriteComponentTasksList: Write the TasksList component",
+        "WritePageTasksListPage: Write the TasksListPage page"
+      ],
+      "timestamp": "2026-02-24T02:02:48.774Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "WriteTestsTasksListPage: Write all Playwright tests for TasksListPage based on test entries in docs/tests.md"
+      ],
+      "timestamp": "2026-02-24T02:02:44.350Z"
     },
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
