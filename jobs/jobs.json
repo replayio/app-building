@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageContactsList: Decide on ContactsListPage components, add sections and test entries to docs/tests.md for ContactsListPage"
-      ],
-      "timestamp": "2026-02-24T00:41:02.769Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "PlanPageContactsList: Plan ContactsListPage components from docs/tests.md and add WriteComponent groups for ContactsListPage"
