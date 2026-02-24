@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "strategy": "strategies/tasks/build/writeApp.md",
-      "subtasks": [
-        "Unpack: Write the InventoryTracker app"
-      ],
-      "timestamp": "2026-02-24T03:43:01.097Z"
-    },
-    {
       "strategy": "strategies/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts for InventoryTracker"
@@ -202,6 +195,112 @@
         "Unpack: Deploy SupplierTracker to production"
       ],
       "timestamp": "2026-02-24T03:43:33.325Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "SetupShared: Create apps/shared/ with base layout, components, styles, and backend utilities",
+        "SetupApp: Setup the app (configure aliases, import shared styles)",
+        "DesignDatabase: Design the database"
+      ],
+      "timestamp": "2026-02-24T04:16:45.568Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentAccountsPageHeader: Write the AccountsPageHeader component",
+        "WriteComponentStockAccountsList: Write the StockAccountsList component",
+        "WriteComponentInputAccountsList: Write the InputAccountsList component",
+        "WriteComponentOutputAccountsList: Write the OutputAccountsList component",
+        "WriteComponentCreateAccountButton: Write the CreateAccountButton component",
+        "WriteComponentAccountRowActions: Write the AccountRowActions component",
+        "WritePageAccounts: Write the AccountsPage"
+      ],
+      "timestamp": "2026-02-24T04:16:50.663Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentAccountHeader: Write the AccountHeader component",
+        "WriteComponentTrackedMaterialsTable: Write the TrackedMaterialsTable component",
+        "WritePageAccountDetail: Write the AccountDetailPage"
+      ],
+      "timestamp": "2026-02-24T04:16:55.206Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentMaterialsToolbar: Write the MaterialsToolbar component",
+        "WriteComponentMaterialsFilterBar: Write the MaterialsFilterBar component",
+        "WriteComponentMaterialsTable: Write the MaterialsTable component",
+        "WritePageMaterials: Write the MaterialsPage"
+      ],
+      "timestamp": "2026-02-24T04:16:59.809Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentMaterialHeader: Write the MaterialHeader component",
+        "WriteComponentAccountsDistribution: Write the AccountsDistribution component",
+        "WriteComponentAllBatchesList: Write the AllBatchesList component",
+        "WriteComponentTransactionsHistory: Write the TransactionsHistory component",
+        "WritePageMaterialDetail: Write the MaterialDetailPage"
+      ],
+      "timestamp": "2026-02-24T04:17:04.571Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentBatchHeader: Write the BatchHeader component",
+        "WriteComponentBatchOverview: Write the BatchOverview component",
+        "WriteComponentLineageDiagram: Write the LineageDiagram component",
+        "WriteComponentUsageHistoryTable: Write the UsageHistoryTable component",
+        "WritePageBatchDetail: Write the BatchDetailPage"
+      ],
+      "timestamp": "2026-02-24T04:17:11.531Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTransactionsFilterBar: Write the TransactionsFilterBar component",
+        "WriteComponentTransactionsTable: Write the TransactionsTable component",
+        "WritePageTransactions: Write the TransactionsPage"
+      ],
+      "timestamp": "2026-02-24T04:17:16.050Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTransactionHeader: Write the TransactionHeader component",
+        "WriteComponentBasicInfoSection: Write the BasicInfoSection component",
+        "WriteComponentQuantityTransfersTable: Write the QuantityTransfersTable component",
+        "WriteComponentBatchesCreatedTable: Write the BatchesCreatedTable component",
+        "WritePageTransactionDetail: Write the TransactionDetailPage"
+      ],
+      "timestamp": "2026-02-24T04:17:21.257Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentBasicInfoForm: Write the BasicInfoForm component",
+        "WriteComponentQuantityTransfersList: Write the QuantityTransfersList component",
+        "WriteComponentBatchAllocationList: Write the BatchAllocationList component",
+        "WritePageNewTransaction: Write the NewTransactionPage"
+      ],
+      "timestamp": "2026-02-24T04:17:25.815Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentDashboardPageHeader: Write the DashboardPageHeader component",
+        "WriteComponentLowInventoryAlerts: Write the LowInventoryAlerts component",
+        "WriteComponentMaterialsCategoriesOverview: Write the MaterialsCategoriesOverview component",
+        "WriteComponentRecentTransactionsTable: Write the RecentTransactionsTable component",
+        "WriteComponentDateRangeFilter: Write the DateRangeFilter component",
+        "WriteComponentCategoryFilter: Write the CategoryFilter component",
+        "WritePageDashboard: Write the DashboardPage"
+      ],
+      "timestamp": "2026-02-24T04:17:31.251Z"
     }
   ]
 }
