@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
-        "Unpack: Deploy to production for InventoryTracker"
+        "DoDeploy: Deploy the app to production",
+        "TestDeploy: Test the deployed app"
       ],
-      "timestamp": "2026-02-24T19:26:30.619Z"
+      "timestamp": "2026-02-24T22:54:39.373Z"
     },
     {
       "skill": "skills/tasks/build/testSpec.md",
