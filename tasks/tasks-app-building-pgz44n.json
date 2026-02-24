@@ -1,6 +1,13 @@
 {
   "tasks": [
     {
+      "skill": "skills/tasks/resolveConflicts.md",
+      "subtasks": [
+        "Resolve merge conflicts from auto-resolution with --theirs and verify the codebase is correct"
+      ],
+      "timestamp": "2026-02-24T15:35:33.518Z"
+    },
+    {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
         "Unpack: report-testFailures-sales-crm-2-review-2-20260224-151900 skills/review/reportTestFailures.md"
