@@ -296,6 +296,9 @@ test.describe('RelationshipsSection', () => {
     await page.goto(`/individuals/${individual.id}`)
     await expect(page.getByTestId('relationships-section')).toBeVisible()
 
+    // Wait for relationships to load so client options are populated
+    await expect(page.getByTestId('relationships-list')).toBeVisible({ timeout: 10000 })
+
     // Click the filter button
     await page.getByTestId('relationships-filter-button').click()
 
@@ -303,11 +306,16 @@ test.describe('RelationshipsSection', () => {
     const filterMenu = page.getByTestId('relationships-filter-menu')
     await expect(filterMenu).toBeVisible()
 
-    // Should have relationship type options
+    // Should have relationship type filter section
+    await expect(page.getByTestId('relationships-filter-type-label')).toBeVisible()
     await expect(filterMenu).toContainText('All Types')
     await expect(filterMenu).toContainText('Colleague')
     await expect(filterMenu).toContainText('Decision Maker')
     await expect(filterMenu).toContainText('Influencer')
+
+    // Should have client filter section
+    await expect(page.getByTestId('relationships-filter-client-label')).toBeVisible()
+    await expect(filterMenu).toContainText('All Clients')
   })
 
   test('Add Entry button is displayed in Relationships section', async ({ page }) => {
@@ -586,12 +594,18 @@ test.describe('ContactHistorySection', () => {
     const filterMenu = page.getByTestId('contact-history-filter-menu')
     await expect(filterMenu).toBeVisible()
 
-    // Should have interaction type options
+    // Should have interaction type filter section
+    await expect(page.getByTestId('contact-history-filter-type-label')).toBeVisible()
     await expect(filterMenu).toContainText('All Types')
     await expect(filterMenu).toContainText('Video Call')
     await expect(filterMenu).toContainText('Email')
     await expect(filterMenu).toContainText('Meeting (In-person)')
     await expect(filterMenu).toContainText('Note')
+
+    // Should have date range filter section
+    await expect(page.getByTestId('contact-history-filter-date-label')).toBeVisible()
+    await expect(page.getByTestId('contact-history-date-start')).toBeVisible()
+    await expect(page.getByTestId('contact-history-date-end')).toBeVisible()
   })
 
   test('Add Entry button is displayed in Contact History section', async ({ page }) => {

@@ -30,6 +30,7 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
   const [showAddForm, setShowAddForm] = useState(false)
   const [showFilter, setShowFilter] = useState(false)
   const [filterType, setFilterType] = useState('')
+  const [filterClient, setFilterClient] = useState('')
   const [loading, setLoading] = useState(true)
 
   const fetchRelationships = useCallback(async () => {
@@ -48,9 +49,15 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
     fetchRelationships()
   }, [fetchRelationships])
 
-  const filteredRelationships = filterType
-    ? relationships.filter(r => r.relationship_type === filterType)
-    : relationships
+  const uniqueClients = Array.from(
+    new Set(relationships.map(r => r.related_client_name).filter((c): c is string => !!c))
+  ).sort()
+
+  const filteredRelationships = relationships.filter(r => {
+    if (filterType && r.relationship_type !== filterType) return false
+    if (filterClient && r.related_client_name !== filterClient) return false
+    return true
+  })
 
   return (
     <div className="person-section" data-testid="relationships-section">
@@ -79,6 +86,7 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
             </button>
             {showFilter && (
               <div className="filter-dropdown-menu" data-testid="relationships-filter-menu">
+                <div className="filter-section-label" data-testid="relationships-filter-type-label">By Type</div>
                 <button
                   className={`filter-dropdown-option ${filterType === '' ? 'selected' : ''}`}
                   onClick={() => { setFilterType(''); setShowFilter(false) }}
@@ -92,6 +100,25 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
                     onClick={() => { setFilterType(type); setShowFilter(false) }}
                   >
                     {type}
+                  </button>
+                ))}
+                <div className="filter-section-divider" />
+                <div className="filter-section-label" data-testid="relationships-filter-client-label">By Client</div>
+                <button
+                  className={`filter-dropdown-option ${filterClient === '' ? 'selected' : ''}`}
+                  data-testid="relationships-client-all"
+                  onClick={() => { setFilterClient(''); setShowFilter(false) }}
+                >
+                  All Clients
+                </button>
+                {uniqueClients.map(client => (
+                  <button
+                    key={client}
+                    className={`filter-dropdown-option ${filterClient === client ? 'selected' : ''}`}
+                    data-testid="relationships-client-option"
+                    onClick={() => { setFilterClient(client); setShowFilter(false) }}
+                  >
+                    {client}
                   </button>
                 ))}
               </div>

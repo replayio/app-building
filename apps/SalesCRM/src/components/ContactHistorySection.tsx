@@ -21,6 +21,8 @@ export default function ContactHistorySection({ individualId }: ContactHistorySe
   const [editingEntry, setEditingEntry] = useState<ContactEntry | null>(null)
   const [showFilter, setShowFilter] = useState(false)
   const [filterType, setFilterType] = useState('')
+  const [filterDateStart, setFilterDateStart] = useState('')
+  const [filterDateEnd, setFilterDateEnd] = useState('')
   const [loading, setLoading] = useState(true)
 
   const fetchHistory = useCallback(async () => {
@@ -39,9 +41,21 @@ export default function ContactHistorySection({ individualId }: ContactHistorySe
     fetchHistory()
   }, [fetchHistory])
 
-  const filteredEntries = filterType
-    ? entries.filter(e => e.interaction_type === filterType)
-    : entries
+  const filteredEntries = entries.filter(e => {
+    if (filterType && e.interaction_type !== filterType) return false
+    if (filterDateStart) {
+      const entryDate = new Date(e.contact_date)
+      const startDate = new Date(filterDateStart)
+      if (entryDate < startDate) return false
+    }
+    if (filterDateEnd) {
+      const entryDate = new Date(e.contact_date)
+      const endDate = new Date(filterDateEnd)
+      endDate.setHours(23, 59, 59, 999)
+      if (entryDate > endDate) return false
+    }
+    return true
+  })
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
@@ -77,6 +91,7 @@ export default function ContactHistorySection({ individualId }: ContactHistorySe
             </button>
             {showFilter && (
               <div className="filter-dropdown-menu" data-testid="contact-history-filter-menu">
+                <div className="filter-section-label" data-testid="contact-history-filter-type-label">By Interaction Type</div>
                 <button
                   className={`filter-dropdown-option ${filterType === '' ? 'selected' : ''}`}
                   onClick={() => { setFilterType(''); setShowFilter(false) }}
@@ -92,6 +107,37 @@ export default function ContactHistorySection({ individualId }: ContactHistorySe
                     {type}
                   </button>
                 ))}
+                <div className="filter-section-divider" />
+                <div className="filter-section-label" data-testid="contact-history-filter-date-label">By Date Range</div>
+                <div className="filter-date-range" data-testid="contact-history-date-range">
+                  <label className="filter-date-label">
+                    From
+                    <input
+                      type="date"
+                      className="filter-date-input"
+                      value={filterDateStart}
+                      onChange={e => setFilterDateStart(e.target.value)}
+                      data-testid="contact-history-date-start"
+                    />
+                  </label>
+                  <label className="filter-date-label">
+                    To
+                    <input
+                      type="date"
+                      className="filter-date-input"
+                      value={filterDateEnd}
+                      onChange={e => setFilterDateEnd(e.target.value)}
+                      data-testid="contact-history-date-end"
+                    />
+                  </label>
+                  <button
+                    className="filter-dropdown-option"
+                    data-testid="contact-history-date-clear"
+                    onClick={() => { setFilterDateStart(''); setFilterDateEnd(''); setShowFilter(false) }}
+                  >
+                    Clear Dates
+                  </button>
+                </div>
               </div>
             )}
           </div>

@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add client-based filtering to RelationshipsSection and date range filtering to ContactHistorySection to match test spec requirements, and update person-detail.spec.ts filter tests accordingly",
-        "RunTests: Verify tests pass after filter fix",
-        "DocumentFix: Document the filter implementation fix"
-      ],
-      "timestamp": "2026-02-24T04:45:56.147Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add delete relationship test entries to docs/tests.md with reciprocal deletion verification, and update person-detail.spec.ts relationship creation test to verify reciprocal entry on related person's page",
         "RunTests: Verify tests pass after reciprocal relationship fix",
         "DocumentFix: Document the reciprocal relationship fix"
