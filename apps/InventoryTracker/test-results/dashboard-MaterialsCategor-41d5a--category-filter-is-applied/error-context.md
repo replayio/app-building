@@ -1,0 +1,143 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "InventoryFlow" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - text: InventoryFlow
+    - navigation [ref=e9]:
+      - link "Accounts" [ref=e10] [cursor=pointer]:
+        - /url: /accounts
+      - link "Materials" [ref=e11] [cursor=pointer]:
+        - /url: /materials
+      - link "Batches" [ref=e12] [cursor=pointer]:
+        - /url: /batches
+      - link "Transactions" [ref=e13] [cursor=pointer]:
+        - /url: /transactions
+      - link "Settings" [ref=e14] [cursor=pointer]:
+        - /url: /settings
+    - generic [ref=e16]:
+      - generic [ref=e17]: A
+      - generic [ref=e18]: Admin
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - heading "Dashboard" [level=1] [ref=e21]
+      - button "New Transaction" [ref=e23] [cursor=pointer]:
+        - img [ref=e24]
+        - text: New Transaction
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: "Filter by Date:"
+        - button "-" [ref=e28] [cursor=pointer]:
+          - generic [ref=e29]: "-"
+          - img [ref=e30]
+      - generic [ref=e32]:
+        - generic [ref=e33]: "Category Filter:"
+        - button "Components" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: Components
+          - img [ref=e37]
+    - generic [ref=e39]:
+      - generic [ref=e41]:
+        - img [ref=e42]
+        - text: Low Inventory Alerts
+      - paragraph [ref=e46]: No low inventory alerts
+    - generic [ref=e47]:
+      - generic [ref=e49]:
+        - img [ref=e50]
+        - text: Materials Categories Overview
+      - generic [ref=e57]:
+        - generic [ref=e58]: Components
+        - generic [ref=e59]: "(Total: 2 Items, 140 Units)"
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - link "Circuit Board" [ref=e62] [cursor=pointer]:
+              - /url: /materials/c05f5d4e-0c30-4fcb-aaaf-d7138c358948
+            - text: ": 80 units"
+          - generic [ref=e63]:
+            - link "Motor Assembly" [ref=e64] [cursor=pointer]:
+              - /url: /materials/1814851f-986e-41bc-9ff1-bf88bea010ff
+            - text: ": 60 units"
+      - link "View All Categories" [ref=e66] [cursor=pointer]:
+        - /url: /materials
+    - generic [ref=e67]:
+      - generic [ref=e69]:
+        - img [ref=e70]
+        - text: Recent Transactions
+      - table [ref=e73]:
+        - rowgroup [ref=e74]:
+          - row "Date Reference Accounts Affected Materials & Amounts Action" [ref=e75]:
+            - columnheader "Date" [ref=e76]
+            - columnheader "Reference" [ref=e77]
+            - columnheader "Accounts Affected" [ref=e78]
+            - columnheader "Materials & Amounts" [ref=e79]
+            - columnheader "Action" [ref=e80]
+        - rowgroup [ref=e81]:
+          - 'row "Invalid Date ADJ-2026-001 Receiving Dock → Main Warehouse Motor Assembly: +10 units View Full Details >" [ref=e82]':
+            - cell "Invalid Date" [ref=e83]
+            - cell "ADJ-2026-001" [ref=e84]
+            - cell "Receiving Dock → Main Warehouse" [ref=e85]
+            - 'cell "Motor Assembly: +10 units" [ref=e86]'
+            - cell "View Full Details >" [ref=e87]:
+              - link "View Full Details >" [ref=e88] [cursor=pointer]:
+                - /url: /transactions/7cd8a1d0-7255-47cd-be6c-5fac36785307
+          - 'row "Invalid Date CO-2026-001 Main Warehouse → Production Floor Steel Sheet: +300 kg View Full Details >" [ref=e89]':
+            - cell "Invalid Date" [ref=e90]
+            - cell "CO-2026-001" [ref=e91]
+            - cell "Main Warehouse → Production Floor" [ref=e92]
+            - 'cell "Steel Sheet: +300 kg" [ref=e93]'
+            - cell "View Full Details >" [ref=e94]:
+              - link "View Full Details >" [ref=e95] [cursor=pointer]:
+                - /url: /transactions/3ae42e4a-1d41-4841-8467-d381248c11e9
+          - 'row "Invalid Date TR-2026-001 Main Warehouse → Secondary Warehouse Cardboard Box (Large): +200 units View Full Details >" [ref=e96]':
+            - cell "Invalid Date" [ref=e97]
+            - cell "TR-2026-001" [ref=e98]
+            - cell "Main Warehouse → Secondary Warehouse" [ref=e99]
+            - 'cell "Cardboard Box (Large): +200 units" [ref=e100]'
+            - cell "View Full Details >" [ref=e101]:
+              - link "View Full Details >" [ref=e102] [cursor=pointer]:
+                - /url: /transactions/60260d6d-0e8d-4f36-a242-69019329cc63
+          - row "Invalid Date WO-2026-001 View Full Details >" [ref=e103]:
+            - cell "Invalid Date" [ref=e104]
+            - cell "WO-2026-001" [ref=e105]
+            - cell [ref=e106]
+            - cell [ref=e107]
+            - cell "View Full Details >" [ref=e108]:
+              - link "View Full Details >" [ref=e109] [cursor=pointer]:
+                - /url: /transactions/83a2b38a-0617-48aa-b31b-6755e4f8a11b
+          - 'row "Invalid Date PO-2026-004 Receiving Dock → Main Warehouse Aluminum Sheets: +25 kg View Full Details >" [ref=e110]':
+            - cell "Invalid Date" [ref=e111]
+            - cell "PO-2026-004" [ref=e112]
+            - cell "Receiving Dock → Main Warehouse" [ref=e113]
+            - 'cell "Aluminum Sheets: +25 kg" [ref=e114]'
+            - cell "View Full Details >" [ref=e115]:
+              - link "View Full Details >" [ref=e116] [cursor=pointer]:
+                - /url: /transactions/42141234-301c-4caf-980a-fefd949b3be8
+          - 'row "Invalid Date PO-2026-003 Receiving Dock → Main Warehouse Steel Bolts M6: +150 units View Full Details >" [ref=e117]':
+            - cell "Invalid Date" [ref=e118]
+            - cell "PO-2026-003" [ref=e119]
+            - cell "Receiving Dock → Main Warehouse" [ref=e120]
+            - 'cell "Steel Bolts M6: +150 units" [ref=e121]'
+            - cell "View Full Details >" [ref=e122]:
+              - link "View Full Details >" [ref=e123] [cursor=pointer]:
+                - /url: /transactions/e16eff63-3f62-4d31-8479-dabd59ed24ec
+          - 'row "Invalid Date PO-2026-002 Receiving Dock → Main Warehouse Aluminum Rod: +450 kg; Copper Wire: +80 m View Full Details >" [ref=e124]':
+            - cell "Invalid Date" [ref=e125]
+            - cell "PO-2026-002" [ref=e126]
+            - cell "Receiving Dock → Main Warehouse" [ref=e127]
+            - 'cell "Aluminum Rod: +450 kg; Copper Wire: +80 m" [ref=e128]'
+            - cell "View Full Details >" [ref=e129]:
+              - link "View Full Details >" [ref=e130] [cursor=pointer]:
+                - /url: /transactions/699b0465-db3c-45a4-9015-f433c9be1945
+          - 'row "Invalid Date PO-2026-001 Receiving Dock → Main Warehouse Steel Sheet: +2,000 kg View Full Details >" [ref=e131]':
+            - cell "Invalid Date" [ref=e132]
+            - cell "PO-2026-001" [ref=e133]
+            - cell "Receiving Dock → Main Warehouse" [ref=e134]
+            - 'cell "Steel Sheet: +2,000 kg" [ref=e135]'
+            - cell "View Full Details >" [ref=e136]:
+              - link "View Full Details >" [ref=e137] [cursor=pointer]:
+                - /url: /transactions/4ec06d5b-ef07-400f-9367-00fa1900b549
+      - link "View All Transactions" [ref=e139] [cursor=pointer]:
+        - /url: /transactions
+```

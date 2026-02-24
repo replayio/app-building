@@ -3,9 +3,12 @@
     {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
-        "Unpack: Get all tests passing for InventoryTracker"
+        "Fix: LowInventoryAlerts Dismiss button removes the alert - missing data-testid alert-dismiss-btn",
+        "Fix: MaterialsCategoriesOverview category column count mismatch (expects 4 but gets 12/3) - affects 3 tests",
+        "Fix: RecentTransactionsTable reverse chronological order - dates not sorted descending",
+        "Fix: DateRangeFilter and CategoryFilter not properly filtering dashboard data - affects 4 tests"
       ],
-      "timestamp": "2026-02-24T19:26:30.009Z"
+      "timestamp": "2026-02-24T21:38:08.460Z"
     },
     {
       "skill": "skills/tasks/deployment.md",
