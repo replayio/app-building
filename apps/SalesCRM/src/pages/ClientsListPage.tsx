@@ -25,9 +25,13 @@ export default function ClientsListPage() {
         <h1 className="page-title">Clients</h1>
         <ClientsActions />
       </div>
-      <ClientsSearchAndFilters />
+      <div className="mb-4">
+        <ClientsSearchAndFilters />
+      </div>
       <ClientsTable />
-      <Pagination />
+      <div className="mt-4">
+        <Pagination />
+      </div>
     </div>
   )
 }

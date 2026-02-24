@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Move outer margin from .clients-filters and .pagination CSS to parent ClientsListPage layout (writeApp directive - components must be layout-agnostic)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-24T01:36:54.809Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add missing cancel/close test entries for Import dialog and Edit dialog in docs/tests.md (testSpec Directive 7 - complete modal testing)",
         "FixViolation: Write Playwright tests for Import dialog cancel and Edit dialog cancel",
         "RunTests: Verify tests pass after fix"
