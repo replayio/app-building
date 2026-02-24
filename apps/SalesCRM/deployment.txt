@@ -1,4 +1,0 @@
-deployed_url=https://sales-crm-mlzpt2ya.netlify.app
-site_id=b68892a0-a278-465c-89dc-324298b13435
-neon_project_id=quiet-dream-70913318
-database_url=postgresql://neondb_owner:npg_9c5WNZBFMXLn@ep-snowy-butterfly-ajkx94ph.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require
