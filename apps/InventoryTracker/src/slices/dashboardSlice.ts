@@ -38,7 +38,7 @@ export const fetchDashboardData = createAsyncThunk(
 export const dismissAlert = createAsyncThunk(
   "dashboard/dismissAlert",
   async (materialId: string) => {
-    const res = await fetch("/.netlify/functions/dashboard/dismiss-alert", {
+    const res = await fetch("/.netlify/functions/dismiss-alert", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ material_id: materialId }),

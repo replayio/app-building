@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { NavigationHeader } from "./components/NavigationHeader";
 import { DashboardPage } from "./pages/DashboardPage";
 import { AccountsPage } from "./pages/AccountsPage";
 import { AccountDetailPage } from "./pages/AccountDetailPage";
@@ -13,19 +14,22 @@ import { SettingsPage } from "./pages/SettingsPage";
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={<DashboardPage />} />
-      <Route path="/accounts" element={<AccountsPage />} />
-      <Route path="/accounts/:accountId" element={<AccountDetailPage />} />
-      <Route path="/materials" element={<MaterialsPage />} />
-      <Route path="/materials/:materialId" element={<MaterialDetailPage />} />
-      <Route path="/batches" element={<BatchesPage />} />
-      <Route path="/batches/:batchId" element={<BatchDetailPage />} />
-      <Route path="/transactions" element={<TransactionsPage />} />
-      <Route path="/transactions/new" element={<NewTransactionPage />} />
-      <Route path="/transactions/:transactionId" element={<TransactionDetailPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <div>
+      <NavigationHeader />
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/accounts" element={<AccountsPage />} />
+        <Route path="/accounts/:accountId" element={<AccountDetailPage />} />
+        <Route path="/materials" element={<MaterialsPage />} />
+        <Route path="/materials/:materialId" element={<MaterialDetailPage />} />
+        <Route path="/batches" element={<BatchesPage />} />
+        <Route path="/batches/:batchId" element={<BatchDetailPage />} />
+        <Route path="/transactions" element={<TransactionsPage />} />
+        <Route path="/transactions/new" element={<NewTransactionPage />} />
+        <Route path="/transactions/:transactionId" element={<TransactionDetailPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   );
 }
