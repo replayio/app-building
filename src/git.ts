@@ -19,8 +19,8 @@ const REPO_DIR = "/repo";
 //    is queued during stop.
 //
 // 4. PushTarget workflow (pushTarget):
-//    a. Fetch from origin and merge the target branch. Auto-resolve any
-//       conflicts using --theirs, but track whether conflicts occurred.
+//    a. Fetch from origin and merge the target branch. If there are
+//       conflicts, leave markers in the tree, commit, and push.
 //    b. Push to the target branch. On failure, retry up to 3 times
 //       (re-fetch + re-merge each time). If all retries fail, log an error
 //       and exit the process.
@@ -114,8 +114,7 @@ export function checkoutTargetBranch(targetBranch: string, log: Logger, dir: str
  * PushTarget workflow:
  * 1. git fetch origin targetBranch
  * 2. git merge origin/targetBranch --no-edit
- *    - If merge conflicts: auto-resolve with `git checkout --theirs . && git add -A && git commit --no-edit`
- *    - Track whether conflicts occurred
+ *    - If merge conflicts: leave conflict markers, add all files, commit
  * 3. git push origin HEAD:targetBranch
  *    - On failure: retry up to 3 times (re-fetch + re-merge each time)
  *    - If all retries fail: log error and exit process
@@ -154,28 +153,22 @@ export function pushTarget(
         stdio: "pipe",
       });
     } catch {
-      // Merge conflict — auto-resolve with --theirs
+      // Merge conflict — leave conflict markers in the tree
       hadConflicts = true;
       try {
-        execFileSync("git", ["checkout", "--theirs", "."], {
-          cwd: dir,
-          encoding: "utf-8",
-          timeout: 30000,
-          stdio: "pipe",
-        });
         execFileSync("git", ["add", "-A"], {
           cwd: dir,
           encoding: "utf-8",
           timeout: 30000,
         });
-        execFileSync("git", ["commit", "--no-edit"], {
+        execFileSync("git", ["commit", "-m", "Merge with conflicts (markers left in tree)"], {
           cwd: dir,
           encoding: "utf-8",
           timeout: 30000,
         });
-        log("Merge conflicts auto-resolved with --theirs");
+        log("Merged with conflict markers left in tree");
       } catch (e: any) {
-        log(`Warning: conflict auto-resolution failed: ${e.message}`);
+        log(`Warning: merge commit failed: ${e.message}`);
       }
     }
 

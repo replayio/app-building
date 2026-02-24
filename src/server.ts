@@ -365,6 +365,7 @@ const server = createServer(async (req, res) => {
     if (method === "GET" && url === "/status") {
       json(res, 200, {
         state,
+        containerName: CONTAINER_NAME,
         pushBranch: PUSH_BRANCH,
         queueLength: messageQueue.length,
         pendingTasks: getPendingTaskCount(),

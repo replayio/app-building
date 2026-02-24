@@ -66,18 +66,20 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   }
 }
 
-async function showRecentLogs(baseUrl: string, httpOpts: HttpOptions = {}, count = 20): Promise<void> {
+async function showRecentLogs(baseUrl: string, httpOpts: HttpOptions = {}, count?: number): Promise<void> {
+  const n = count ?? 20;
   const data = await httpGet(`${baseUrl}/logs?offset=0`, httpOpts);
   const lines: string[] = data.items;
-  const recent = lines.slice(-count);
+  const recent = n === Infinity ? lines : lines.slice(-n);
   console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
   displayFormattedLines(recent);
 }
 
-async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}): Promise<void> {
+async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}, contextCount?: number): Promise<void> {
+  const count = contextCount ?? 20;
   const data = await httpGet(`${baseUrl}/logs?offset=0`, httpOpts);
   const lines: string[] = data.items;
-  const recent = lines.slice(-20);
+  const recent = count === Infinity ? lines : lines.slice(-count);
   console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
   displayFormattedLines(recent);
   let offset = data.nextOffset;
@@ -143,13 +145,13 @@ function showStoppedEntries(entries: RegistryEntry[]): void {
   }
 }
 
-async function showAllContainers(alive: RegistryEntry[]): Promise<void> {
+async function showAllContainers(alive: RegistryEntry[], contextCount?: number): Promise<void> {
   console.log(`\n${BOLD}${alive.length} running containers:${RESET}`);
   for (const entry of alive) {
     const opts = httpOptsFor(entry);
     try {
       await showHttpStatus(entry.baseUrl, entry.containerName, opts);
-      await showRecentLogs(entry.baseUrl, opts);
+      await showRecentLogs(entry.baseUrl, opts, contextCount);
     } catch {
       console.log(`\n  ${RED}UNREACHABLE${RESET}  ${DIM}(${entry.containerName})${RESET}`);
       console.log(`  ${DIM}Server:${RESET}    ${entry.baseUrl}`);
@@ -160,10 +162,24 @@ async function showAllContainers(alive: RegistryEntry[]): Promise<void> {
 
 // --- Main ---
 
+function parseContextArg(args: string[]): number | undefined {
+  const idx = args.indexOf("--context");
+  if (idx === -1) return undefined;
+  const val = args[idx + 1];
+  if (val === "all") return Infinity;
+  const n = parseInt(val, 10);
+  if (isNaN(n) || n < 1) {
+    console.error(`${RED}--context requires a positive number or "all"${RESET}`);
+    process.exit(1);
+  }
+  return n;
+}
+
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const tailIdx = args.indexOf("--tail");
   const tailTarget = tailIdx !== -1 ? args[tailIdx + 1] : null;
+  const contextCount = parseContextArg(args);
 
   const entries = getRecentContainers();
 
@@ -181,7 +197,7 @@ async function main(): Promise<void> {
       console.error(`${RED}Cannot reach container "${tailTarget}" at ${entry.baseUrl} — may be stopped.${RESET}`);
       process.exit(1);
     }
-    await tailHttpLogs(entry.baseUrl, opts);
+    await tailHttpLogs(entry.baseUrl, opts, contextCount);
     return;
   }
 
@@ -198,10 +214,10 @@ async function main(): Promise<void> {
       console.error(`${RED}Cannot reach agent at ${alive[0].baseUrl} — container may be stopped.${RESET}`);
       process.exit(1);
     }
-    await tailHttpLogs(alive[0].baseUrl, opts);
+    await tailHttpLogs(alive[0].baseUrl, opts, contextCount);
   } else {
     // Multiple alive — show status and recent logs for each, then exit
-    await showAllContainers(alive);
+    await showAllContainers(alive, contextCount);
   }
 }
 
