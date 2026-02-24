@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeShared.md",
-      "subtasks": [
-        "WriteSharedAppWide: Write shared code for Accounting app-wide logic: backend database connection utilities, Redux store setup, authentication patterns, and navigation/sidebar layout components",
-        "WriteSharedAccountsPage: Write shared code for Accounting AccountsPage: reusable category-based expandable sections component for organizing items by type with totals",
-        "WriteSharedNewTransactionModal: Write shared code for Accounting NewTransactionModal: double-entry transaction validation and balance checking utilities"
-      ],
-      "timestamp": "2026-02-24T19:34:47.416Z"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "Unpack: Write the app for Accounting"
