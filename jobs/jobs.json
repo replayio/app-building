@@ -3,17 +3,6 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "WriteComponentPersonHeader: Write the PersonHeader component",
-        "WriteComponentRelationshipsSection: Write the RelationshipsSection component",
-        "WriteComponentContactHistorySection: Write the ContactHistorySection component",
-        "WriteComponentAssociatedClientsSection: Write the AssociatedClientsSection component",
-        "WritePagePersonDetailPage: Write the PersonDetailPage page"
-      ],
-      "timestamp": "2026-02-23T22:00:57.928Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
         "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
         "WriteComponentDealsViewTabs: Write the DealsViewTabs component",
         "WriteComponentDealsFilters: Write the DealsFilters component",
