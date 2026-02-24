@@ -135,3 +135,9 @@ contexts (testing, deployment).
 - Components should be layout-agnostic: do NOT include outer padding (`px-*`) or margin in component
   root elements. Let the parent page/layout control spacing. When components embed their own padding,
   composing them in flex rows causes double-padding conflicts that require rework.
+
+- Do not use `overflow: hidden` on containers that have children with absolutely-positioned elements
+  (e.g., dropdown menus, popovers, tooltips). The overflow clipping will cut off content that extends
+  beyond the container boundary. Additionally, elements that render floating/overlapping UI (such as
+  action menu wrappers) must establish their own stacking context with `position: relative` and an
+  explicit `z-index` so they appear above sibling elements.
