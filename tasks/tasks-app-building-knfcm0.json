@@ -3,9 +3,9 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "Unpack: Write test specification for InventoryTracker"
+        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
       ],
-      "timestamp": "2026-02-24T19:26:26.869Z"
+      "timestamp": "2026-02-24T20:40:10.986Z"
     },
     {
       "skill": "skills/tasks/build/writeShared.md",
