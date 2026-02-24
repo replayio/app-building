@@ -324,7 +324,388 @@
 - PeopleSection (list of associated individuals with avatar, name, role/title)
 - TimelineSection (chronological feed: task created, note added, deal stage changed, email sent, contact added)
 
-<!-- Test entries will be added by PlanComponent jobs -->
+### ClientHeader
+
+#### Test: Header displays client name prominently
+- **Given** the user navigates to a Client Detail Page (/clients/:clientId) for "Acme Corp"
+- **Then** the header displays "Acme Corp" as a large, bold heading at the top of the page
+
+#### Test: Header displays type badge
+- **Given** the user is on the Client Detail Page for "Acme Corp" which is an organization
+- **Then** the header shows an "Organization" badge next to the client name
+- **Given** the user is on the Client Detail Page for an individual client
+- **Then** the header shows an "Individual" badge next to the client name
+
+#### Test: Header displays status badge with correct color coding
+- **Given** the user is on the Client Detail Page for a client with "Active" status
+- **Then** the header shows an "Active" status badge styled with a green color
+- **Given** the client has "Inactive" status
+- **Then** the badge is styled with a grey color
+- **Given** the client has "Prospect" status
+- **Then** the badge is styled with a yellow/orange color
+- **Given** the client has "Churned" status
+- **Then** the badge is styled with a red color
+
+#### Test: Header displays tags as chips
+- **Given** the user is on the Client Detail Page for "Acme Corp" which has tags "Enterprise", "Software", "High Priority"
+- **Then** the header shows each tag as a distinct chip/badge element: "Enterprise", "Software", "High Priority"
+
+#### Test: Header displays source tag with edit pencil icon
+- **Given** the user is on the Client Detail Page for "Acme Corp" with source "Referral"
+- **Then** the header shows "Referral" as a tag with a pencil/edit icon next to it
+
+#### Test: Clicking tags area opens edit tags interface
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user clicks the edit pencil icon next to the tags
+- **Then** an edit interface (inline editor or modal) opens allowing the user to add, remove, or modify tags
+- **When** the user adds a new tag "VIP" and saves
+- **Then** the tag "VIP" appears as a new chip in the header
+- **And** the change is persisted to the database
+
+#### Test: Editing tags can be cancelled
+- **Given** the tag editing interface is open with modifications made
+- **When** the user cancels or closes the edit interface
+- **Then** the original tags remain unchanged
+
+### QuickActions
+
+#### Test: Quick action buttons are displayed with correct icons and labels
+- **Given** the user is on the Client Detail Page
+- **Then** four quick action buttons are displayed: "Add Task" with a list/task icon, "Add Deal" with a clock/deal icon, "Add Attachment" with a paperclip/attachment icon, "Add Person" with a person/user icon
+
+#### Test: Add Task button opens task creation dialog
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user clicks the "Add Task" quick action button
+- **Then** a modal dialog opens with a form for creating a new task
+- **And** the form includes fields: Task Name (required text input), Due Date (date/time picker), Priority (dropdown with options: High, Medium, Low, Normal), Assignee (dropdown or search), Deal (optional dropdown listing deals associated with this client)
+- **And** the client is automatically pre-associated with the task
+
+#### Test: Add Task form creates task successfully
+- **Given** the Add Task dialog is open from the Client Detail Page for "Acme Corp"
+- **When** the user enters "Send proposal draft" as Task Name, selects a due date, selects "High" as Priority, and clicks save
+- **Then** the dialog closes
+- **And** the new task "Send proposal draft" appears in the TasksSection on the Client Detail Page
+- **And** a success message is shown (e.g., "Task created successfully")
+- **And** the task also appears on the Tasks List Page (/tasks)
+- **And** a timeline entry is created recording the task creation
+
+#### Test: Add Task form validates required fields
+- **Given** the Add Task dialog is open
+- **When** the user leaves the Task Name field empty and clicks save
+- **Then** a validation error is shown (e.g., "Task name is required")
+- **And** the form is not submitted
+
+#### Test: Add Task dialog can be cancelled
+- **Given** the Add Task dialog is open with partial data entered
+- **When** the user clicks Cancel or closes the dialog
+- **Then** the dialog closes without creating a task
+- **And** no new task appears in the TasksSection
+
+#### Test: Add Deal button opens deal creation dialog
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user clicks the "Add Deal" quick action button
+- **Then** a modal dialog opens with a form for creating a new deal
+- **And** the form includes fields: Deal Name (required text input), Stage (dropdown with options: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won), Value (currency input), Owner (dropdown or text input)
+- **And** the client is automatically pre-associated with the deal
+
+#### Test: Add Deal form creates deal successfully
+- **Given** the Add Deal dialog is open from the Client Detail Page for "Acme Corp"
+- **When** the user enters "New Enterprise Deal" as Deal Name, selects "Discovery" as Stage, enters "$100,000" as Value, and clicks save
+- **Then** the dialog closes
+- **And** the new deal "New Enterprise Deal" appears in the DealsSection on the Client Detail Page with stage "Discovery" and value "$100,000"
+- **And** a success message is shown (e.g., "Deal created successfully")
+- **And** the deal also appears on the Deals List Page (/deals)
+- **And** a timeline entry is created recording the deal creation
+
+#### Test: Add Deal form validates required fields
+- **Given** the Add Deal dialog is open
+- **When** the user leaves the Deal Name field empty and clicks save
+- **Then** a validation error is shown (e.g., "Deal name is required")
+- **And** the form is not submitted
+
+#### Test: Add Deal dialog can be cancelled
+- **Given** the Add Deal dialog is open with partial data entered
+- **When** the user clicks Cancel or closes the dialog
+- **Then** the dialog closes without creating a deal
+- **And** no new deal appears in the DealsSection
+
+#### Test: Add Attachment button opens file upload dialog
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user clicks the "Add Attachment" quick action button
+- **Then** a file upload dialog opens allowing the user to select files from their device
+- **And** the dialog optionally allows associating the attachment with an existing deal for this client
+
+#### Test: Add Attachment uploads file successfully
+- **Given** the file upload dialog is open from the Client Detail Page for "Acme Corp"
+- **When** the user selects a file (e.g., "Proposal_v2.pdf", 1.2 MB) and confirms the upload
+- **Then** the dialog closes
+- **And** the new file "Proposal_v2.pdf" appears in the AttachmentsSection with the correct type, created date, and linked deal (if selected)
+- **And** a success message is shown
+- **And** a timeline entry is created recording the attachment upload
+
+#### Test: Add Attachment dialog can be cancelled
+- **Given** the file upload dialog is open
+- **When** the user clicks Cancel or closes the dialog
+- **Then** the dialog closes without uploading any file
+- **And** no new attachment appears in the AttachmentsSection
+
+#### Test: Add Person button opens person association dialog
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user clicks the "Add Person" quick action button
+- **Then** a modal dialog opens allowing the user to search for and select an existing individual from the system, or create a new person
+- **And** the dialog includes fields for: Person (required, search/select from existing individuals), Role/Title (text input)
+
+#### Test: Add Person associates person successfully
+- **Given** the Add Person dialog is open from the Client Detail Page for "Acme Corp"
+- **When** the user selects "Jane Doe" as the person and enters "VP Sales" as the role and clicks save
+- **Then** the dialog closes
+- **And** "Jane Doe - VP Sales" appears in the PeopleSection on the Client Detail Page with an avatar
+- **And** a success message is shown
+- **And** "Acme Corp" appears in the Associated Clients section on Jane Doe's Person Detail Page
+- **And** a timeline entry is created recording the contact addition
+
+#### Test: Add Person form validates required fields
+- **Given** the Add Person dialog is open
+- **When** the user leaves the Person field empty and clicks save
+- **Then** a validation error is shown (e.g., "Person is required")
+- **And** the form is not submitted
+
+#### Test: Add Person dialog can be cancelled
+- **Given** the Add Person dialog is open with partial data entered
+- **When** the user clicks Cancel or closes the dialog
+- **Then** the dialog closes without adding any person
+- **And** no new person appears in the PeopleSection
+
+### SourceInfoSection
+
+#### Test: Source Info section displays heading
+- **Given** the user is on the Client Detail Page
+- **Then** the section heading "Source Info" is visible
+
+#### Test: Source Info displays Acquisition Source field
+- **Given** the user is on the Client Detail Page for "Acme Corp" with acquisition source "Referral (John Smith)"
+- **Then** the Source Info section displays "Acquisition Source" as a field label with the value "Referral (John Smith)"
+
+#### Test: Source Info displays Campaign field
+- **Given** the user is on the Client Detail Page for "Acme Corp" with campaign "None"
+- **Then** the Source Info section displays "Campaign" as a field label with the value "None"
+
+#### Test: Source Info displays Channel field
+- **Given** the user is on the Client Detail Page for "Acme Corp" with channel "Direct Sales"
+- **Then** the Source Info section displays "Channel" as a field label with the value "Direct Sales"
+
+#### Test: Source Info displays Date Acquired field
+- **Given** the user is on the Client Detail Page for "Acme Corp" with date acquired "2023-01-15"
+- **Then** the Source Info section displays "Date Acquired" as a field label with the value "2023-01-15"
+
+#### Test: Source Info Edit button opens edit form
+- **Given** the user is on the Client Detail Page
+- **Then** an "Edit" button with a pencil icon is displayed in the Source Info section
+- **When** the user clicks the "Edit" button
+- **Then** an edit form or inline editing interface opens with editable fields for Acquisition Source, Campaign, Channel, and Date Acquired, pre-populated with current values
+
+#### Test: Source Info edit saves changes
+- **Given** the Source Info edit form is open
+- **When** the user changes the Campaign from "None" to "Q4 Outreach" and clicks save
+- **Then** the edit form closes
+- **And** the Campaign field now displays "Q4 Outreach"
+- **And** the change is persisted to the database
+
+#### Test: Source Info edit can be cancelled
+- **Given** the Source Info edit form is open with changes made
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without saving changes
+- **And** the original Source Info values remain unchanged
+
+### TasksSection
+
+#### Test: Tasks section displays heading with unresolved tasks label
+- **Given** the user is on the Client Detail Page for a client with unresolved tasks
+- **Then** the section heading "Tasks" is visible
+- **And** a label "Unresolved tasks" is displayed in the section header area
+
+#### Test: Tasks section shows unresolved tasks with checkboxes
+- **Given** the user is on the Client Detail Page for "Acme Corp" with unresolved tasks
+- **Then** each task displays: an unchecked checkbox, the task name (e.g., "Follow up on proposal"), a due date (e.g., "Due: Today"), and optionally a linked deal name (e.g., "Deal: 'Acme Software License'")
+
+#### Test: Tasks display due dates in relative format
+- **Given** the client has tasks with various due dates
+- **Then** a task due today shows "Due: Today"
+- **And** a task due tomorrow shows "Due: Tomorrow"
+- **And** a task due next week shows "Due: Next Week"
+
+#### Test: Tasks display linked deal name when associated
+- **Given** the client has a task "Follow up on proposal" linked to deal "Acme Software License"
+- **Then** the task entry shows "Deal: 'Acme Software License'" after the due date
+- **Given** the client has a task "Schedule onboarding call" not linked to any deal
+- **Then** the task entry does not show a deal association
+
+#### Test: Checking a task checkbox marks it as resolved
+- **Given** the task "Follow up on proposal" has an unchecked checkbox
+- **When** the user clicks the checkbox for "Follow up on proposal"
+- **Then** the task is marked as completed with a checked checkbox
+- **And** the change is persisted to the database
+- **And** a timeline entry is created recording the task completion
+- **And** the task's completed status is reflected on the Tasks List Page (/tasks)
+- **And** if the task is linked to a deal, the task's completed status is also reflected in the deal's Linked Tasks section on the Deal Detail Page
+
+#### Test: Unchecking a resolved task marks it as unresolved
+- **Given** a task has a checked checkbox (completed)
+- **When** the user clicks the checkbox to uncheck it
+- **Then** the task is marked as unresolved with an unchecked checkbox
+- **And** the change is persisted to the database
+
+#### Test: Tasks section shows empty state when no unresolved tasks exist
+- **Given** the client has no unresolved tasks
+- **Then** the Tasks section shows an empty state message (e.g., "No tasks for this client." or "No unresolved tasks")
+
+### DealsSection
+
+#### Test: Deals section displays heading
+- **Given** the user is on the Client Detail Page
+- **Then** the section heading "Deals" is visible
+
+#### Test: Deals section shows deal entries with name, stage, and value
+- **Given** the user is on the Client Detail Page for "Acme Corp" with deals
+- **Then** each deal entry displays: the deal name (e.g., "Acme Software License"), the stage (e.g., "Stage: Proposal Sent"), and the monetary value (e.g., "Value: $50,000")
+- **For example**: "Acme Software License - Stage: Proposal Sent, Value: $50,000"
+- **And**: "Additional Services - Stage: Qualification, Value: $10,000"
+
+#### Test: Deal entry is clickable and navigates to deal detail page
+- **Given** the Deals section shows deal "Acme Software License"
+- **When** the user clicks on the "Acme Software License" deal entry
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Acme Software License"
+
+#### Test: Each deal entry navigates to the correct deal detail page
+- **Given** the Deals section shows deal "Additional Services"
+- **When** the user clicks on the "Additional Services" deal entry
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Additional Services"
+
+#### Test: Deals section shows empty state when no deals exist
+- **Given** the client has no deals
+- **Then** the Deals section shows an empty state message (e.g., "No deals for this client")
+
+### AttachmentsSection
+
+#### Test: Attachments section displays heading
+- **Given** the user is on the Client Detail Page
+- **Then** the section heading "Attachments" is visible
+
+#### Test: Attachments section shows file list with all details
+- **Given** the user is on the Client Detail Page for "Acme Corp" with attachments
+- **Then** each attachment displays: a type icon (document icon for files, link icon for links), the filename (e.g., "Service Agreement.pdf"), the type label (e.g., "Document" or "Link"), the created date (e.g., "Created: 2023-02-01"), and the linked deal (e.g., "Linked Deal: 'Acme Software License'" or "Linked Deal: None")
+
+#### Test: Document attachment shows download and delete actions
+- **Given** the Attachments section shows a document file "Service Agreement.pdf"
+- **Then** the entry displays a download icon/button and a delete icon/button
+
+#### Test: Link attachment shows view and delete actions
+- **Given** the Attachments section shows a link "Client Website Link"
+- **Then** the entry displays a view icon/button (eye icon) and a delete icon/button (instead of a download button)
+
+#### Test: Download action downloads the attachment file
+- **Given** the Attachments section shows "Service Agreement.pdf" with a download icon
+- **When** the user clicks the download icon next to "Service Agreement.pdf"
+- **Then** the file is downloaded to the user's device
+
+#### Test: View action opens the link
+- **Given** the Attachments section shows "Client Website Link" with a view icon
+- **When** the user clicks the view icon next to "Client Website Link"
+- **Then** the link opens in a new browser tab
+
+#### Test: Delete action removes attachment with confirmation
+- **Given** the Attachments section shows "Project Scope.docx"
+- **When** the user clicks the delete icon next to "Project Scope.docx"
+- **Then** a confirmation dialog appears (e.g., "Are you sure you want to delete Project Scope.docx?")
+- **When** the user confirms deletion
+- **Then** the attachment is removed from the Attachments list
+- **And** the deletion is persisted to the database
+- **And** if the attachment was linked to a deal, it is also removed from the deal's Attachments section on the Deal Detail Page
+- **When** the user cancels deletion
+- **Then** the attachment remains in the list
+
+#### Test: Attachments display linked deal when associated
+- **Given** the attachment "Service Agreement.pdf" is linked to deal "Acme Software License"
+- **Then** the entry shows "Linked Deal: 'Acme Software License'"
+- **Given** the attachment "Project Scope.docx" is not linked to any deal
+- **Then** the entry shows "Linked Deal: None"
+
+#### Test: Attachments section shows empty state when no attachments exist
+- **Given** the client has no attachments
+- **Then** the Attachments section shows an empty state message (e.g., "No attachments for this client")
+
+### PeopleSection
+
+#### Test: People section displays heading
+- **Given** the user is on the Client Detail Page
+- **Then** the section heading "People" is visible
+
+#### Test: People section shows person entries with avatar, name, and role
+- **Given** the user is on the Client Detail Page for "Acme Corp" with associated individuals
+- **Then** each person entry displays: an avatar image, the person's name in bold (e.g., "Sarah Johnson"), a dash separator, and the person's role/title (e.g., "CEO")
+- **For example**: avatar, "Sarah Johnson - CEO"
+- **And**: avatar, "Michael Chen - CTO"
+- **And**: avatar, "Emily Davis - Project Manager"
+
+#### Test: Person entry is clickable and navigates to person detail page
+- **Given** the People section shows "Sarah Johnson - CEO"
+- **When** the user clicks on the "Sarah Johnson" entry
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for "Sarah Johnson"
+
+#### Test: Each person entry navigates to the correct person detail page
+- **Given** the People section shows "Michael Chen - CTO"
+- **When** the user clicks on the "Michael Chen" entry
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for "Michael Chen"
+
+#### Test: People section shows empty state when no individuals are associated
+- **Given** the client has no associated individuals
+- **Then** the People section shows an empty state message (e.g., "No people associated with this client")
+
+### TimelineSection
+
+#### Test: Timeline section displays heading
+- **Given** the user is on the Client Detail Page
+- **Then** the section heading "Timeline" is visible
+
+#### Test: Timeline shows entries in reverse chronological order
+- **Given** the user is on the Client Detail Page for "Acme Corp" with timeline entries
+- **Then** the Timeline section shows entries ordered from most recent first to oldest last
+- **And** each entry has a date/time indicator (e.g., "Today", "Yesterday", "2 days ago", "Last Week", "Last Month")
+
+#### Test: Timeline displays task created events
+- **Given** the timeline has a task creation event
+- **Then** the entry displays the date, "Task Created" as the event type, the task name in quotes (e.g., "'Follow up on proposal'"), and the user who created it as a clickable link (e.g., "by User A")
+
+#### Test: Timeline displays note added events
+- **Given** the timeline has a note added event
+- **Then** the entry displays the date, "Note Added" as the event type, the note summary in quotes (e.g., "'Client mentioned interest in new features.'"), and the user who added it as a clickable link (e.g., "by User B")
+
+#### Test: Timeline displays deal stage changed events
+- **Given** the timeline has a deal stage change event
+- **Then** the entry displays the date, "Deal Stage Changed" as the event type, the deal name in quotes (e.g., "'Acme Software License'"), the old and new stages (e.g., "from 'Qualification' to 'Proposal Sent'"), and the user who changed it as a clickable link (e.g., "by User A")
+
+#### Test: Timeline displays email sent events
+- **Given** the timeline has an email sent event
+- **Then** the entry displays the date, "Email Sent" as the event type, the email subject in quotes (e.g., "'Meeting Confirmation'"), and the recipient as a clickable link (e.g., "to Sarah Johnson")
+
+#### Test: Timeline displays contact added events
+- **Given** the timeline has a contact added event
+- **Then** the entry displays the date, "Contact Added" as the event type, the contact name in quotes (e.g., "'Michael Chen'"), and the user who added them as a clickable link (e.g., "by User C")
+
+#### Test: Timeline entry user links navigate to correct pages
+- **Given** the timeline shows an entry with a clickable user name or contact name
+- **When** the user clicks on a person name link (e.g., "Sarah Johnson") in a timeline entry
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for that person
+
+#### Test: Timeline updates when new actions occur
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user creates a new task via the Add Task quick action
+- **Then** a new "Task Created" entry appears at the top of the Timeline section with the current date and the action details
+- **And** exactly one timeline entry is created (no duplicates)
+
+#### Test: Timeline shows empty state when no events exist
+- **Given** the client has no timeline events
+- **Then** the Timeline section shows an empty state message (e.g., "No activity yet")
 
 ---
 
