@@ -21,9 +21,70 @@ export interface Client {
   updated_at: string
 }
 
+export interface ClientTask {
+  id: string
+  title: string
+  due_date: string | null
+  priority: string
+  status: string
+  deal_id: string | null
+  deal_name: string | null
+}
+
+export interface ClientDeal {
+  id: string
+  name: string
+  value: number | null
+  stage: string
+  status: string
+  owner: string | null
+}
+
+export interface ClientAttachment {
+  id: string
+  filename: string
+  file_url: string
+  file_type: string | null
+  file_size: number | null
+  deal_id: string | null
+  deal_name: string | null
+  created_at: string
+}
+
+export interface ClientPerson {
+  id: string
+  name: string
+  title: string | null
+  email: string | null
+  phone: string | null
+  association_role: string | null
+  is_primary: boolean
+}
+
+export interface ClientTimelineEvent {
+  id: string
+  event_type: string
+  description: string
+  metadata: Record<string, string> | null
+  actor_id: string | null
+  actor_name: string
+  task_id: string | null
+  deal_id: string | null
+  individual_id: string | null
+  created_at: string
+}
+
+export interface ClientDetail extends Client {
+  tasks: ClientTask[]
+  deals: ClientDeal[]
+  attachments: ClientAttachment[]
+  people: ClientPerson[]
+  timeline: ClientTimelineEvent[]
+}
+
 interface ClientsState {
   items: Client[]
-  current: Client | null
+  current: ClientDetail | null
   loading: boolean
   error: string | null
   search: string

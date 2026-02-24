@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "WriteComponentClientDetailHeader: Write the ClientDetailHeader component with quick actions",
-        "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
-        "WriteComponentClientSections: Write the Tasks, Deals, Attachments, People, and Timeline sections for client detail",
-        "WritePageClientDetailPage: Write the ClientDetailPage page"
-      ],
-      "timestamp": "2026-02-23T21:32:58.756Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
         "WriteComponentPersonDetailHeader: Write the PersonDetailHeader component",
         "WriteComponentPersonSections: Write the Relationships, ContactHistory, and AssociatedClients sections",
         "WritePagePersonDetailPage: Write the PersonDetailPage page"

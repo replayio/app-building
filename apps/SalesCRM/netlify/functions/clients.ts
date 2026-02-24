@@ -55,7 +55,69 @@ export default async function handler(req: Request, _context: Context) {
       if (rows.length === 0) {
         return Response.json({ error: 'Client not found' }, { status: 404 })
       }
-      return Response.json(rows[0])
+
+      const client = rows[0]
+
+      // Fetch unresolved tasks for this client
+      const tasks = await sql`
+        SELECT t.id, t.title, t.due_date, t.priority, t.status, t.deal_id,
+               d.name as deal_name
+        FROM tasks t
+        LEFT JOIN deals d ON t.deal_id = d.id
+        WHERE t.client_id = ${resourceId} AND t.status = 'open'
+        ORDER BY t.due_date ASC NULLS LAST
+      `
+
+      // Fetch deals for this client
+      const deals = await sql`
+        SELECT d.id, d.name, d.value, d.stage, d.status,
+               u.name as owner
+        FROM deals d
+        LEFT JOIN users u ON d.owner_id = u.id
+        WHERE d.client_id = ${resourceId}
+        ORDER BY d.created_at DESC
+      `
+
+      // Fetch attachments for this client
+      const attachments = await sql`
+        SELECT a.id, a.filename, a.file_url, a.file_type, a.file_size, a.deal_id, a.created_at,
+               d.name as deal_name
+        FROM attachments a
+        LEFT JOIN deals d ON a.deal_id = d.id
+        WHERE a.client_id = ${resourceId}
+        ORDER BY a.created_at DESC
+      `
+
+      // Fetch associated people
+      const people = await sql`
+        SELECT i.id, i.name, i.title, i.email, i.phone,
+               ci.role as association_role, ci.is_primary
+        FROM client_individuals ci
+        JOIN individuals i ON ci.individual_id = i.id
+        WHERE ci.client_id = ${resourceId}
+        ORDER BY ci.is_primary DESC, i.name ASC
+      `
+
+      // Fetch timeline events
+      const timeline = await sql`
+        SELECT te.id, te.event_type, te.description, te.metadata,
+               te.actor_id, te.actor_name,
+               te.task_id, te.deal_id, te.individual_id,
+               te.created_at
+        FROM timeline_events te
+        WHERE te.client_id = ${resourceId}
+        ORDER BY te.created_at DESC
+        LIMIT 50
+      `
+
+      return Response.json({
+        ...client,
+        tasks,
+        deals,
+        attachments,
+        people,
+        timeline,
+      })
     }
 
     // List clients with filters, search, sort, and pagination
