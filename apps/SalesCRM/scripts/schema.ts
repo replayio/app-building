@@ -3,22 +3,6 @@ import { neon } from '@neondatabase/serverless'
 export async function initSchema(databaseUrl: string): Promise<void> {
   const sql = neon(databaseUrl)
 
-  // Drop all tables in reverse dependency order so ephemeral branches start clean
-  await sql`DROP TABLE IF EXISTS timeline_events CASCADE`
-  await sql`DROP TABLE IF EXISTS attachments CASCADE`
-  await sql`DROP TABLE IF EXISTS tasks CASCADE`
-  await sql`DROP TABLE IF EXISTS deal_contacts CASCADE`
-  await sql`DROP TABLE IF EXISTS deal_writeups CASCADE`
-  await sql`DROP TABLE IF EXISTS deal_stage_history CASCADE`
-  await sql`DROP TABLE IF EXISTS deals CASCADE`
-  await sql`DROP TABLE IF EXISTS contact_history CASCADE`
-  await sql`DROP TABLE IF EXISTS relationships CASCADE`
-  await sql`DROP TABLE IF EXISTS client_individuals CASCADE`
-  await sql`DROP TABLE IF EXISTS individuals CASCADE`
-  await sql`DROP TABLE IF EXISTS client_tags CASCADE`
-  await sql`DROP TABLE IF EXISTS tags CASCADE`
-  await sql`DROP TABLE IF EXISTS clients CASCADE`
-
   // Clients table - organizations or individuals
   await sql`
     CREATE TABLE IF NOT EXISTS clients (
