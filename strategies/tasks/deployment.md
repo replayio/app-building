@@ -4,82 +4,31 @@ During this stage you will deploy the app to production and test it to make sure
 
 ## Unpack Subtasks
 
-Unpack the initial deployment task into the following subtasks:
+Unpack the initial deployment task into a single task:
 
-- SupportDeploy: Add deployment support to the app.
-- DoDeploy: Deploy the app to production.
-- TestDeploy: Test the app as described above.
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/deployment.md" \
+  --subtask "DoDeploy: Deploy the app to production" \
+  --subtask "TestDeploy: Test the deployed app"
+```
 
 ## Deployment
 
-The app must support `npm run deploy` which creates or reuses an existing netlify site (name doesn't matter) and the Neon database you set up earlier that is backing the supabase calls. This should read NETLIFY_ACCOUNT_SLUG, NETLIFY_AUTH_TOKEN, and NEON_API_KEY from the environment.
+Before running the deploy script, check whether the app has been deployed before by reading
+`deployment.txt`. If it exists, you MUST populate `.env` with the existing resource IDs so
+the script reuses them. See `strategies/scripts/deploy.md` § "Populating `.env` for
+Redeployments" for the exact steps.
 
-Make sure to update all URLs etc to match the deployed resources.
-
-Write information about the deployment to `deployment.txt`. This file must be updated
-after each deployment with the current deployed URL and any other relevant details.
-The deployment test reads the deployed URL from this file.
-
-### Database Schema Sync
-
-Before every deployment, you MUST run the `init-db.ts` script against the production
-database to ensure the schema is up to date. The script uses `CREATE TABLE IF NOT EXISTS`
-for all tables, so re-running it is safe and idempotent — it will create any missing
-tables without affecting existing ones.
-
-This is critical because schema changes (e.g. adding new tables like `users`) are only
-picked up by the local test database automatically via `seed-db.ts`. The production
-database does not run seed scripts, so new tables will be missing unless `init-db.ts`
-is re-run.
-
-Run the script with the production `DATABASE_URL`:
-
-```
-DATABASE_URL=<production-connection-string> npx tsx scripts/init-db.ts
-```
-
-If the script also creates a new Neon project (which it does on first run), skip that
-step and only run the schema portion against the existing production database. You may
-need to adapt the script or run the `CREATE TABLE IF NOT EXISTS` statements directly
-against the production database using the neon serverless driver.
-
-Failure to sync the schema will cause serverless functions that reference new tables to
-crash with `relation "..." does not exist` errors at runtime — and these errors will NOT
-be caught by the integration test suite (which uses a freshly seeded local database).
-
-If the app has a `migrate-db.ts` script, run that too: `DATABASE_URL=<prod-url> npx tsx scripts/migrate-db.ts`.
-This handles ALTER TABLE changes and column additions that `init-db.ts` (CREATE TABLE IF NOT EXISTS) cannot detect.
-
-A common symptom of schema drift is a 502 "error decoding lambda response" from Netlify when
-a function queries a missing table or column. If other functions work but one returns 502,
-check whether that function references a table added after the last production schema sync.
-
-## Build Configuration
-
-Production builds must enable source maps, disable minification, and use the React development
-bundle so that Replay recordings of the deployed app show readable source code with full
-component names and developer warnings. Ensure `vite.config.ts` includes:
-
-```ts
-build: {
-  sourcemap: true,
-  minify: false,
-},
-define: {
-  'process.env.NODE_ENV': '"development"',
-},
-```
-
-Do not change these settings. Without source maps, unminified code, and the React development
-build, Replay recordings will only show mangled variable names, collapsed source lines, and
-missing component display names, making runtime debugging impossible.
+Then run `npm run deploy` from the app directory. See `strategies/scripts/deploy.md` for the
+full script specification. The script handles database creation/sync, Netlify site
+creation/update, and writes the deployed URL to `deployment.txt`.
 
 ## Testing
 
 After deploying, you MUST perform a functional test to verify the app actually works in production.
 A deployment that serves HTTP 200 is not sufficient — the app must display real data and support updates.
 The deployment test lives at `tests/deployment.spec.ts`, separate from the integration tests.
-It must be excluded from regular `npm test` runs by adding it to `testIgnore` in
+It must be excluded from regular `npm run test` runs by adding it to `testIgnore` in
 `playwright.config.ts`:
 
 ```ts
@@ -136,3 +85,7 @@ https://raw.githubusercontent.com/replayio/skills/refs/heads/main/skills/replay-
   `@replayio/playwright` and handles browser setup correctly.
 - Do NOT install or start Xvfb. All browsers must run headless. If a browser complains about
   a missing display, the fix is to ensure it runs headless, not to add a virtual display.
+- NEVER stop, cancel, or skip a Replay recording upload that is in progress. The upload is a
+  prerequisite for Replay MCP analysis, which is mandatory for verifying the deployment. If the
+  upload is taking a long time, WAIT for it to finish. Do NOT decide you have "enough information"
+  and proceed without the recording — you must complete the full upload → MCP analysis cycle.

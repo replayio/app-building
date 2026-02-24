@@ -4,17 +4,27 @@ Bug reported by users for the app are tracked in `docs/bugReports.md`.
 Open bug reports are listed at the start of this file, with later sections for reports that
 were fixed and later reviewed.
 
-## Unpack subtasks
+## Unpack Subtasks
 
-If there are any open bug reports in the file, unpack each one into the following series of subtasks,
-which will be performed in order to make sure you thoroughly understand the problem and fix it correctly.
-Unpack reports starting with the oldest ones, which will be listed last.
+If there are any open bug reports in the file, add one task per bug using `add-task`.
+Each bug gets the following subtasks in the task, performed in order. Unpack reports starting with
+the oldest ones, which will be listed last.
 
 1. AnalyzeBug: Analyze and document the cause of the bug. Skip this for bugs asking for new functionality.
 2. FixBug: Update the app to fix the bug
 3. UpdateTests: Update the spec and tests to verify the fix and prevent regressions.
 4. UpdateRevisions: Record any spec changes in AppRevisions.md.
 5. ResolveBug: Mark the bug as resolved and in need of review.
+
+Example:
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/maintain/fixBugReport.md" \
+  --subtask "AnalyzeBug: Analyze <BugName>" \
+  --subtask "FixBug: Fix <BugName>" \
+  --subtask "UpdateTests: Update tests for <BugName>" \
+  --subtask "UpdateRevisions: Record spec changes for <BugName>" \
+  --subtask "ResolveBug: Mark <BugName> as resolved"
+```
 
 ## Analyzing bugs
 
@@ -45,12 +55,19 @@ After updating tests, make sure they pass. Read `strategies/tasks/build/testing.
 ## Updating revisions
 
 If the bug fix changed the app's behavior relative to the original `AppSpec.md` — for example,
-adding new functionality, removing a feature, or changing how something works — add an entry
-to `AppRevisions.md` (create the file next to `AppSpec.md` if it doesn't exist).
+adding new functionality, removing a feature, or changing how something works — update
+`AppRevisions.md` (create the file next to `AppSpec.md` if it doesn't exist).
 
-Each entry should include the date, a reference to the bug report, and a concise description
-of what changed in the app's spec. This file is the authoritative record of how the app has
-diverged from the original spec over time.
+`AppRevisions.md` is NOT a changelog. It is organized by topic sections that describe either
+new functionality added to the app or changes made to the app spec in particular areas. Each
+section has a heading describing the area (e.g., "## Attachment Uploads", "## Authentication",
+"## CSV Import") and a description of the current state of that functionality.
+
+When updating revisions:
+- If an existing section covers the area you changed, update that section's description to
+  reflect the current behavior.
+- If the change introduces a new area of functionality, add a new section.
+- Keep descriptions focused on **what the app does now**, not a history of changes.
 
 If the fix was purely a code bug that didn't change the intended behavior, skip this step.
 
@@ -59,6 +76,4 @@ If the fix was purely a code bug that didn't change the intended behavior, skip 
 Now that the bug is fixed, move it from the top section of the file to an "Unreviewed" section lower down.
 Label the bug with the git revision before / after the bug was fixed and tests updated.
 
-Update the section for the current round of maintenance in `docs/plan.md` with a note about the bug fix.
-
-Commit all changes and exit.
+Move the report to the appropriate section in `docs/bugReports.md`.

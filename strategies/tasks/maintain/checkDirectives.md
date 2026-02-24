@@ -4,33 +4,40 @@ The strategy documents used to build the app have directives sections for requir
 be adhered to when performing that stage of development. During this stage you will systematically
 go through the entire app and check that its behavior is following all directives.
 
-## Unpack subtasks
+## Unpack Subtasks
 
-Read `docs/tests.md` to understand the existing application structure. Add the following subtasks
-for every page in the app:
+Read `docs/tests.md` to understand the existing application structure. Add one task per
+page using `add-task`, with all checks for that page in the same task:
 
-- CheckTestSpec<PageName>: Check for `testSpec.md` (`strategies/tasks/build/`) directive violations in the test entries for the page.
-- CheckComponents<PageName>: Check for `writeApp.md` (`strategies/tasks/build/`) directive violations in the components for the page.
-- CheckTests<PageName>: Check for `writeTests.md` (`strategies/tasks/build/`) directive violations in the playwright tests for
-  each of the page's test entries.
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/maintain/checkDirectives.md" \
+  --subtask "CheckTestSpec<PageName>: Check testSpec.md directive violations in <PageName> test entries" \
+  --subtask "CheckComponents<PageName>: Check writeApp.md directive violations in <PageName> components" \
+  --subtask "CheckTests<PageName>: Check writeTests.md directive violations in <PageName> tests"
+```
 
-Also add additional non-page specific subtasks:
+Also add a separate task for non-page specific checks:
 
-- CheckBackend: Check for `writeApp.md` (`strategies/tasks/build/`) directive violations in all backend functions.
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/maintain/checkDirectives.md" \
+  --subtask "CheckBackend: Check writeApp.md directive violations in all backend functions"
+```
 
 ## Checking for violations
 
-During each checking task you need to read the strategy document and all the directives,
+During each checking subtask you need to read the strategy document and all the directives,
 and then go through all the documentation / code you are checking to look for violations of those directives.
 You must do this systematically and announce each entry name / file you are checking.
 
-For any violations you find, add the following pending tasks to `docs/plan.md`. Do not fix them immediately.
+For any violations you find, add a fix task using `add-task`. Do not fix them immediately.
 
-1. FixViolation: Fix the directive violation.
-2. RunTests: Make sure tests are passing.
-3. DocumentFix: Document the fix appropriately.
-
-Add a pending task to fix any violations you find. Do not fix them immediately.
+Example:
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/maintain/checkDirectives.md" \
+  --subtask "FixViolation: Fix <violation description>" \
+  --subtask "RunTests: Verify tests pass after fix" \
+  --subtask "DocumentFix: Document the fix"
+```
 
 ## Fixing violations
 
@@ -42,18 +49,7 @@ and playwright tests.
 
 Make sure all tests pass. Read `strategies/tasks/build/testing.md` to understand how to run tests and debug failures.
 
-## Documenting fixes
-
-Update the section for the current round of maintenance in `docs/plan.md`
-with a note about the fix you performed.
-
-Commit all changes and exit.
-
 ## Tips
 
-- When fixing violations, commit after each logical group of fixes (e.g. all SQL fixes together,
-  all data-testid fixes together) rather than trying to fix everything in one pass. The performTasks
-  strategy requires exiting after commits, and attempting to fix all violations without committing
-  leads to unproductive iterations with zero commits.
-- Group related fix tasks into a single FixViolation task when they share the same root cause
+- Group related fix subtasks into a single FixViolation subtask when they share the same root cause
   (e.g. "FixViolationMissingTestIds" for all modals missing data-testid attributes).

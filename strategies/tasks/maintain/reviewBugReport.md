@@ -3,14 +3,22 @@
 After being fixed, bug reports from users in `docs/bugReports.md` go into an "Unreviewed" section.
 These are then reviewed for improvements that can be made to the app building process.
 
-## Unpack subtasks
+## Unpack Subtasks
 
-If there are any unreviewed bug reports in bugReports.md, unpack each of them into the following
-series of subtasks:
+If there are any unreviewed bug reports in bugReports.md, add one task per bug
+using `add-task`:
 
 1. ClassifyBug: Classify the app building stage to improve to prevent similar bugs.
 2. UpdateDirectives: Update the directives to avoid the buggy behavior.
 3. FinishBug: Mark the bug as reviewed.
+
+Example:
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/maintain/reviewBugReport.md" \
+  --subtask "ClassifyBug: Classify <BugName>" \
+  --subtask "UpdateDirectives: Update directives for <BugName>" \
+  --subtask "FinishBug: Mark <BugName> as reviewed"
+```
 
 ## Classifying bugs
 
@@ -19,10 +27,10 @@ You'll be identifying any problem stage whose instructions need improvements to 
 Some bugs do not have problem stages.
 
 Also review `AppRevisions.md` to verify it was updated appropriately during the bug fix.
-If the fix changed the app's behavior but no revision entry was added, add one now.
+If the fix changed the app's behavior but the relevant section wasn't updated (or created), do so now.
 
 Follow these steps to figure out the problem stage (if any). Once you do, update bugReports.md
-to refer to it and move onto the next task.
+to refer to it and move onto the next subtask.
 
 1. Read the bug report to understand the problem and any associated analysis explaining the bug.
 2. Determine whether the bug is a problem with the app's style or UI. Styling and details of UI behavior
@@ -41,11 +49,11 @@ to refer to it and move onto the next task.
 
 ## Updating directives
 
-If non problem stage was identified for the bug report, skip this task.
+If no problem stage was identified for the bug report, skip this subtask.
 
 Read the strategy file for the stage which breaks down how to perform the stage into
-increasingly small and well defined tasks. These strategy files have directives for things to watch
-for when performing a task, which are reviewed afterwards and while maintaining the app to make sure
+increasingly small and well defined subtasks. These strategy files have directives for things to watch
+for when performing a subtask, which are reviewed afterwards and while maintaining the app to make sure
 they are all being followed.
 
 Check to see if the directives already prohibit the bad behavior. If so, add a note on the entry in
@@ -61,4 +69,4 @@ Directives should be general purpose and not include details or examples specifi
 Update `docs/bugReports.md` to move the report from the "Unreviewed" section to the "Finished" section,
 creating it at the end if necessary.
 
-Commit all changes and exit.
+Move the report from "Unreviewed" to "Finished" in `docs/bugReports.md`.

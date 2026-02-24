@@ -1,25 +1,50 @@
 # Strategy
 
-You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it contains subsequent changes to the spec from bug reports and must also be followed.
+You are writing the database and code for the app to match the specs in AppSpec.md and docs/tests.md, and to match an optional style guide in AppStyle.md. If `AppRevisions.md` exists, it describes new functionality and spec changes organized by topic section, and must also be followed.
 
 ## Unpack Subtasks
 
-Unpack the initial write app task into the following:
+Unpack the initial write app task into subtasks using `add-task`:
 
-- SetupApp: Setup the app.
-- DesignDatabase: Design the database.
-- (For each page) UnpackWritePage<Name>: Setup the tasks to implement each page.
+First, add a setup task:
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md" \
+  --subtask "SetupApp: Setup the app" \
+  --subtask "DesignDatabase: Design the database"
+```
 
-Unpack the task for implementing a page into the following:
-
-- (For each component) WriteComponent<Name>: Write the specified page component.
-- WritePage<Name>: Write the page itself, then commit changes and exit.
+Then add one task per page, containing all components and the page itself:
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeApp.md" \
+  --subtask "WriteComponent<Component1>: Write the <Component1> component" \
+  --subtask "WriteComponent<Component2>: Write the <Component2> component" \
+  --subtask "WritePage<Name>: Write the page itself"
+```
 
 ## Guidelines
 
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
 - All JSX rendered on a page must be abstracted into other React components with their own files.
 - If AppStyle.md is present, use it to style the pages and components appropriately. Prefer using CSS files with style variables instead of hardcoded styles.
+
+## Database Schema
+
+The app MUST have a reusable `initSchema` function exported from a shared module (e.g.,
+`scripts/schema.ts`). This is the single source of truth for the database schema, used by
+the test and deploy scripts (see `strategies/scripts/test.md` and `strategies/scripts/deploy.md`).
+
+**Requirements for `initSchema`**:
+
+- Exported function that accepts a database URL string and returns a Promise. It must NOT read
+  `DATABASE_URL` from the environment or `.env` — the caller passes the URL.
+- Must use `CREATE TABLE IF NOT EXISTS` for all tables, making it idempotent and safe to re-run.
+- Must create all tables, indices, and constraints needed by the app.
+- When a new table or column is added to the app, it MUST be added to `initSchema`. There must be
+  exactly one place where the schema is defined.
+
+The app should also have migration logic for `ALTER TABLE` changes (new columns, new indices)
+that `CREATE TABLE IF NOT EXISTS` cannot detect. Migrations run after `initSchema` in all
+contexts (testing, deployment).
 
 ## Directives
 
@@ -67,6 +92,10 @@ Unpack the task for implementing a page into the following:
 
 - Attachment functionality must support actual file uploads. Any UI that allows adding attachments
   must include a working file upload mechanism (e.g., file picker, drag-and-drop), not just link entry.
+
+- Every page component must include consistent padding on its root element (`p-6 max-sm:p-3`)
+  so content is never flush against the screen edges. This applies to all pages including
+  centered layouts (auth forms, error pages) — add padding alongside centering utilities.
 
 ## Tips
 

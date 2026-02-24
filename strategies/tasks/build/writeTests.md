@@ -4,9 +4,15 @@ You are writing playwright tests which check that all the different entries in d
 
 ## Unpack Subtasks
 
-Unpack the initial write tests task into WriteTest<Name> subtasks for every test entry name in docs/tests.md
+Unpack the initial write tests task into subtasks using `add-task`. Add one task per page,
+containing all test entries for that page:
 
-IMPORTANT: The last subtask for the tests on each page must require committing and exiting afterwards.
+```
+npx tsx /repo/scripts/add-task.ts --strategy "strategies/tasks/build/writeTests.md" \
+  --subtask "WriteTest<TestEntry1>: Write test for <TestEntry1>" \
+  --subtask "WriteTest<TestEntry2>: Write test for <TestEntry2>" \
+  --subtask "WriteTest<TestEntry3>: Write test for <TestEntry3>"
+```
 
 ## Guidelines
 
@@ -38,9 +44,44 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   `setInputFiles` on a file input). Do not substitute a URL/text input test for a file upload test —
   this masks missing upload functionality in the app.
 
+- NEVER put Playwright locator calls with auto-wait semantics (e.g. `count()`, `textContent()`,
+  `isVisible()`) inside a `.toPass()` retry block in a way that iterates over dynamic elements.
+  If the DOM changes mid-iteration, an inner locator call will auto-wait for an element that no
+  longer exists, and `.toPass()` cannot interrupt that inner wait to retry the block — the test
+  deadlocks. Instead, use a single atomic Playwright assertion that has built-in retry:
+
+  BAD — nested waits deadlock when DOM changes mid-loop:
+  ```ts
+  await expect(async () => {
+    const cards = page.locator('[data-testid^="card-"]');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      const text = await cards.nth(i).textContent(); // hangs if DOM shrinks
+      if (text?.includes(name)) found = true;
+    }
+    expect(found).toBeFalsy();
+  }).toPass({ timeout: 15000 });
+  ```
+
+  GOOD — single atomic assertion with built-in retry, no nested waits:
+  ```ts
+  await expect(
+    page.locator('[data-testid^="card-"]').filter({ hasText: name })
+  ).toHaveCount(0, { timeout: 15000 });
+  ```
+
+  The same principle applies to any `.toPass()` block: keep the body free of Playwright auto-waiting
+  calls that can block indefinitely. Use locator chaining (`.filter()`, `.locator()`) and
+  single-assertion expect matchers (`.toHaveCount()`, `.toContainText()`, `.toBeVisible()`) instead.
+
 - Strategy files are at `/repo/strategies/tasks/` and its subdirectories (the repo root), NOT inside
-  the app directory. Always use `/repo/strategies/tasks/reviewChanges.md`,
-  `/repo/strategies/tasks/build/writeTests.md`, etc.
+  the app directory. Always use `/repo/strategies/tasks/build/writeTests.md`, etc.
+
+- When a test spec entry describes editing or interacting with a specific field (e.g., "edit client
+  field", "change value"), the test must exercise that exact field with corresponding actions and
+  assertions. Do not write a test that only verifies a subset of the fields or operations mentioned
+  in the spec entry — each described interaction must be tested. A common bug is implementing editing
+  for some fields but not all; only per-field testing catches this.
 
 - Apps with login/signup functionality must have a complete e2e test that exercises the full
   sign-up and sign-in flow against the real auth backend. The test must create a new account,
@@ -48,6 +89,33 @@ IMPORTANT: The last subtask for the tests on each page must require committing a
   with the new credentials and verify the authenticated state. This catches issues like email
   confirmation requirements, incorrect error handling, and session establishment failures that
   unit-level or mocked tests miss.
+
+- Auth flows that involve email-based verification (email confirmation, password reset) must
+  have dedicated tests that exercise the real production code path — not the IS_TEST bypass.
+  These tests must run the backend without IS_TEST=true (or with IS_TEST=false) so that actual
+  tokens are generated and stored. The test should call the signup/forgot-password endpoint,
+  query the database directly for the generated token, then hit the confirmation/reset endpoint
+  with that token and verify success. This ensures the full flow works end-to-end: token
+  generation, storage, URL construction, and redemption. Other (non-auth-flow) tests may
+  continue to use IS_TEST=true to bypass auth for convenience.
+
+## Parallel Test Design
+
+Tests run in parallel across multiple Playwright workers, each with its own isolated database branch.
+Write tests with this in mind:
+
+- Tests within the same spec file share a worker and therefore a database branch. Tests across
+  different spec files may run in separate workers with separate databases.
+- Tests that create, modify, or delete records must not rely on a fixed total count of records
+  in the database (e.g., "expect 5 clients"). Other tests in the same worker may have already
+  created or deleted records. Instead, assert on specific records by name/ID, or use relative
+  assertions ("at least N", "contains this item").
+- Tests that need a pristine dataset should create their own records in `beforeAll`/`beforeEach`
+  and clean them up in `afterAll`/`afterEach`, rather than depending on the global seed data
+  being unmodified.
+- Never hardcode database IDs in tests. Query the UI or API to discover IDs for the records
+  you need to interact with.
+- The Playwright config must use `fullyParallel: true`. Do not set `workers: 1`.
 
 ## Tips
 
