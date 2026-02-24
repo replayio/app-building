@@ -3,13 +3,6 @@
     {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
-        "AnalyzeGroup: report-testFailures-sales-crm-2-review-5-20260224-164241 skills/review/reportTestFailures.md /repo/logs/worker-2026-02-24T02-33-19-888Z.log /repo/logs/worker-2026-02-24T02-33-41-624Z.log /repo/logs/worker-2026-02-24T02-34-00-813Z.log /repo/logs/worker-2026-02-24T02-35-12-414Z.log /repo/logs/worker-2026-02-24T02-38-03-903Z.log /repo/logs/worker-2026-02-24T02-45-31-066Z.log /repo/logs/worker-2026-02-24T03-05-08-611Z.log /repo/logs/worker-2026-02-24T03-08-57-205Z.log /repo/logs/worker-2026-02-24T03-12-18-618Z.log /repo/logs/worker-2026-02-24T03-13-24-081Z.log"
-      ],
-      "timestamp": "2026-02-24T16:44:01.558Z"
-    },
-    {
-      "skill": "skills/review/analyzeLogs.md",
-      "subtasks": [
         "AnalyzeGroup: report-testFailures-sales-crm-2-review-5-20260224-164241 skills/review/reportTestFailures.md /repo/logs/worker-2026-02-24T03-17-25-773Z.log /repo/logs/worker-2026-02-24T03-19-37-800Z.log /repo/logs/worker-2026-02-24T03-23-37-674Z.log /repo/logs/worker-2026-02-24T03-26-43-634Z.log /repo/logs/worker-2026-02-24T03-34-57-266Z.log /repo/logs/worker-2026-02-24T03-45-42-379Z.log /repo/logs/worker-2026-02-24T03-49-31-011Z.log /repo/logs/worker-2026-02-24T03-54-02-422Z.log /repo/logs/worker-2026-02-24T04-00-37-926Z.log /repo/logs/worker-2026-02-24T04-00-56-368Z.log"
       ],
       "timestamp": "2026-02-24T16:44:00.782Z"
