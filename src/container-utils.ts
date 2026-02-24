@@ -36,7 +36,7 @@ export async function probeAlive(entry: RegistryEntry): Promise<boolean> {
 export async function findAliveContainers(): Promise<RegistryEntry[]> {
   const entries = getRecentContainers();
   const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-  const candidates = entries.filter((e) => new Date(e.startedAt).getTime() > oneDayAgo);
+  const candidates = entries.filter((e) => !e.stoppedAt && new Date(e.startedAt).getTime() > oneDayAgo);
 
   const aliveResults = await Promise.all(
     candidates.map(async (entry) => ({
