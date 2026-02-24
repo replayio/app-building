@@ -3,9 +3,64 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageEquipmentDetails: Decide on components, add sections to docs/tests.md",
+        "PlanComponentEquipmentDetailHeader: Add test entries for EquipmentDetailHeader (breadcrumb Equipment > Details, title with equipment ID, Operational/Maintenance status badge)",
+        "PlanComponentEquipmentInfo: Add test entries for EquipmentInfo (photo/image upload, details panel: Model/Serial No/Location/Manufacturer/Installation Date, description text)",
+        "PlanComponentMaintenanceNotes: Add test entries for MaintenanceNotes (Add a note text input, Post Note button, comments list with author name/role/date/text, chronological ordering)"
       ],
-      "timestamp": "2026-02-24T23:24:03.871Z"
+      "timestamp": "2026-02-24T23:28:09.706Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageEquipment: Decide on components, add sections to docs/tests.md",
+        "PlanComponentEquipmentHeader: Add test entries for EquipmentHeader (page title, subtitle, Add Equipment button)",
+        "PlanComponentEquipmentTable: Add test entries for EquipmentTable (Title/Description/Available Units/Actions columns, edit pencil icon, delete trash icon, row click navigates to details, pagination with page count and prev/next)"
+      ],
+      "timestamp": "2026-02-24T23:27:55.074Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageRecipeDetails: Decide on components, add sections to docs/tests.md",
+        "PlanComponentRecipeDetailHeader: Add test entries for RecipeDetailHeader (breadcrumb Recipes > recipe name, title with recipe ID, Edit Recipe button)",
+        "PlanComponentDescriptionCard: Add test entries for DescriptionCard (recipe description text display)",
+        "PlanComponentProductsOutputTable: Add test entries for ProductsOutputTable (Product Name/Amount columns) and RawMaterialsCard (Material Name/Amount per batch table)",
+        "PlanComponentEquipmentRequiredList: Add test entries for EquipmentRequiredList (linked equipment items with IDs, links navigate to EquipmentDetailsPage)"
+      ],
+      "timestamp": "2026-02-24T23:27:42.831Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageRunDetails: Decide on components, add sections to docs/tests.md",
+        "PlanComponentRunHeader: Add test entries for RunHeader (breadcrumb navigation, Run ID title, high-level info fields: Run ID/Date-Time/Product/Associated Recipe/Planned Quantity/Status badge)",
+        "PlanComponentRunActions: Add test entries for RunActions (Adjust Quantities button opens edit, Confirm Run button changes status, Cancel Run button changes status)",
+        "PlanComponentRawMaterialsTable: Add test entries for RawMaterialsTable (Material/Amount Needed/Units columns)",
+        "PlanComponentForecastTable: Add test entries for ForecastTable (Material/Required Amount/Forecast Available/Shortage-Excess color-coded/Pending Deliveries columns)",
+        "PlanComponentRunEquipmentTable: Add test entries for RunEquipmentTable (Equipment/Status/Notes columns) and ExternalAppLinks (View in Inventory App, View in Delivery App)"
+      ],
+      "timestamp": "2026-02-24T23:27:29.155Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageCalendar: Decide on components, add sections to docs/tests.md",
+        "PlanComponentCalendarHeader: Add test entries for CalendarHeader (Prev/Today/Next buttons, month/year display, Daily/Weekly/Monthly view toggle, New Production Run button, Filter by Status dropdown)",
+        "PlanComponentCalendarGrid: Add test entries for CalendarGrid (monthly grid with day cells, production run event cards color-coded by status, legend for On Track/Material Shortage/Scheduled)",
+        "PlanComponentRunDetailsPopup: Add test entries for RunDetailsPopup (popup with Start/End/Quantity/Status/Materials/Notes, Edit Run button navigates to run details, Close button, drag-and-drop reschedule tooltip)"
+      ],
+      "timestamp": "2026-02-24T23:27:14.266Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageRecipes: Decide on components, add sections to docs/tests.md",
+        "PlanComponentRecipesHeader: Add test entries for RecipesHeader (search bar, Filter Status dropdown, Add Recipe button)",
+        "PlanComponentRecipesTable: Add test entries for RecipesTable (Recipe Name/Product/Version/Status/Actions columns, Active/Draft/Archived status badges, edit icon, delete icon, row click to show details, pagination)",
+        "PlanComponentRecipeDetailsPanel: Add test entries for RecipeDetailsPanel (side panel title, General Info/Materials Breakdown/Instructions tabs, materials table with Material/Quantity/Unit, Notes & Instructions section)"
+      ],
+      "timestamp": "2026-02-24T23:26:57.955Z"
     },
     {
       "skill": "skills/tasks/build/writeShared.md",
