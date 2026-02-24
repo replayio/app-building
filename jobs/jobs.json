@@ -3,9 +3,10 @@
     {
       "strategy": "strategies/jobs/deployment.md",
       "jobs": [
-        "Unpack: Deploy to production"
+        "DoDeploy: Deploy the app to production",
+        "TestDeploy: Test the deployed app"
       ],
-      "timestamp": "2026-02-23T21:23:34.809Z"
+      "timestamp": "2026-02-24T01:56:55.994Z"
     },
     {
       "strategy": "strategies/jobs/maintain/fixBugReport.md",
