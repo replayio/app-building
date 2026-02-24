@@ -443,6 +443,484 @@ Components: ClientsTable, ClientsSearchAndFilters, ClientsPagination, AddClientM
 
 ## ClientDetailPage (/clients/:clientId)
 
+Components: ClientHeader, ClientQuickActions, ClientSourceInfo, ClientTasks, ClientDeals, ClientAttachments, ClientPeople, ClientTimeline
+
+### ClientHeader
+
+#### Header displays client name prominently
+- **Initial state:** User navigates to /clients/:clientId for a client named "Acme Corp".
+- **Expected:** The page header displays the client name "Acme Corp" as the primary heading text, large and prominent.
+
+#### Header displays type badge for organization client
+- **Initial state:** ClientDetailPage is loaded for an organization-type client "Acme Corp".
+- **Expected:** A badge next to the client name shows "Organization". The badge is visually distinct (e.g., outlined or lightly colored background).
+
+#### Header displays type badge for individual client
+- **Initial state:** ClientDetailPage is loaded for an individual-type client "Jane Doe".
+- **Expected:** A badge next to the client name shows "Individual". The badge is visually distinct.
+
+#### Header displays status badge with correct color for Active
+- **Initial state:** ClientDetailPage is loaded for a client with "Active" status.
+- **Expected:** A status badge is displayed near the client name showing "Active" with a green background.
+
+#### Header displays status badge with correct color for Inactive
+- **Initial state:** ClientDetailPage is loaded for a client with "Inactive" status.
+- **Expected:** A status badge is displayed near the client name showing "Inactive" with a gray background.
+
+#### Header displays status badge with correct color for Prospect
+- **Initial state:** ClientDetailPage is loaded for a client with "Prospect" status.
+- **Expected:** A status badge is displayed near the client name showing "Prospect" with a yellow/amber background.
+
+#### Header displays status badge with correct color for Churned
+- **Initial state:** ClientDetailPage is loaded for a client with "Churned" status.
+- **Expected:** A status badge is displayed near the client name showing "Churned" with a red/orange background.
+
+#### Header displays tags as badges
+- **Initial state:** ClientDetailPage is loaded for a client with tags "Enterprise", "Software", "High Priority".
+- **Expected:** Tags are displayed as individual badges/chips below or next to the client name (e.g., "Enterprise", "Software", "High Priority"). Each tag is a separate visual element.
+
+#### Header displays tags with empty state when no tags
+- **Initial state:** ClientDetailPage is loaded for a client with no tags.
+- **Expected:** The tags area shows no badges. The layout does not break or show an error.
+
+#### Clicking edit icon on header opens edit functionality
+- **Initial state:** ClientDetailPage is loaded for a client. An edit pencil icon is visible in the header area (near the source/referral label or as a general edit button).
+- **Action:** User clicks the edit pencil icon on the header.
+- **Expected:** An edit modal or inline edit mode opens, allowing the user to modify the client's details (name, type, status, tags). The current client data is pre-populated in the form fields.
+
+#### Edit saves changes and updates the header
+- **Initial state:** The edit modal/form is open for a client with name "Acme Corp" and status "Active".
+- **Action:** User changes the status to "Inactive" and adds a new tag "VIP". User clicks "Save".
+- **Expected:** The client is updated via the API. The header now shows the status badge as "Inactive" with a gray background. The new tag "VIP" appears as an additional badge. A timeline entry is created recording the client update. If any user is following the client, they receive a client-updated notification (if their notification preferences allow).
+
+#### Follow button displayed when authenticated
+- **Initial state:** Authenticated user navigates to a ClientDetailPage for a client they are not following.
+- **Expected:** A follow/unfollow toggle button is visible in the header area (e.g., "Follow" with a bell or star icon). The button indicates the user is not currently following this client.
+
+#### Follow button not displayed when not authenticated
+- **Initial state:** User is not authenticated (no active session). User navigates to a ClientDetailPage.
+- **Expected:** The follow/unfollow toggle button is not visible in the header.
+
+#### Clicking Follow toggles to following state
+- **Initial state:** Authenticated user is on a ClientDetailPage for a client they are not following. The button shows "Follow".
+- **Action:** User clicks the "Follow" button.
+- **Expected:** The button toggles to "Following" (or "Unfollow") state via the POST /.netlify/functions/client-follow API. The button visual changes to indicate the user is now following the client.
+
+#### Clicking Unfollow toggles to not following state
+- **Initial state:** Authenticated user is on a ClientDetailPage for a client they are following. The button shows "Following" (or "Unfollow").
+- **Action:** User clicks the "Following"/"Unfollow" button.
+- **Expected:** The button toggles back to "Follow" state via the POST /.netlify/functions/client-follow API. The button visual changes to indicate the user is no longer following the client.
+
+#### Loading state shows while client data is being fetched
+- **Initial state:** User navigates to /clients/:clientId and the API request for client data is in progress.
+- **Expected:** A loading indicator (spinner or skeleton) is displayed while data is being fetched. The page layout skeleton is visible.
+
+#### Back navigation returns to clients list
+- **Initial state:** ClientDetailPage is loaded for any client.
+- **Action:** User clicks the back navigation element (breadcrumb or back link showing the route path).
+- **Expected:** The browser navigates to /clients and the ClientsListPage is displayed.
+
+### ClientQuickActions
+
+#### Four quick action buttons displayed with icons
+- **Initial state:** ClientDetailPage is loaded for any client.
+- **Expected:** Four quick action buttons are displayed in the header area to the right of the client name/badges: "Add Task" (with a list/check icon), "Add Deal" (with a clock/timer icon), "Add Attachment" (with a paperclip/attachment icon), and "Add Person" (with a person/user-plus icon). Each button has an icon above the label text.
+
+#### Clicking Add Task opens a task creation modal
+- **Initial state:** ClientDetailPage is loaded for client "Acme Corp".
+- **Action:** User clicks the "Add Task" quick action button.
+- **Expected:** A modal dialog opens for creating a new task. The modal contains form fields for: Title (text input, required), Description (textarea), Due Date (date/time picker), Priority (dropdown with High, Medium, Normal, Low), Assignee (searchable FilterSelect dropdown populated from users API). The Client field is pre-populated with "Acme Corp" and may be read-only or pre-selected. The modal has "Cancel" and "Create" buttons.
+
+#### Add Task modal validates required title field
+- **Initial state:** The Add Task modal is open from the ClientDetailPage.
+- **Action:** User clicks "Create" without entering a title.
+- **Expected:** A validation error is displayed for the Title field indicating it is required. The task is not created. The modal remains open.
+
+#### Add Task modal successfully creates a task for this client
+- **Initial state:** The Add Task modal is open from the ClientDetailPage for "Acme Corp".
+- **Action:** User fills in Title = "Prepare quarterly report", Due Date = next week, Priority = "Medium", Assignee = "Sarah Johnson". User clicks "Create".
+- **Expected:** The task is created via the API with the client automatically set to "Acme Corp". The modal closes. The new task "Prepare quarterly report" appears in the Tasks section of the ClientDetailPage with due date "Due: Next Week". A timeline entry is created on the client's timeline for the task creation (e.g., "Task Created: 'Prepare quarterly report' by [user]"). If any user is following "Acme Corp", they receive a task-created notification.
+
+#### Add Task modal cancel closes without creating
+- **Initial state:** The Add Task modal is open with some fields filled in.
+- **Action:** User clicks "Cancel".
+- **Expected:** The modal closes. No task is created. The Tasks section remains unchanged.
+
+#### Clicking Add Deal opens a deal creation modal
+- **Initial state:** ClientDetailPage is loaded for client "Acme Corp".
+- **Action:** User clicks the "Add Deal" quick action button.
+- **Expected:** A modal dialog opens for creating a new deal. The modal contains form fields for: Deal Name (text input, required), Value (number input for dollar amount), Stage (dropdown with pipeline stages e.g., Qualification, Proposal Sent, Negotiation, Closed Won, Closed Lost), Owner (searchable FilterSelect dropdown populated from users API), Probability (number input, percentage), Expected Close Date (date picker). The Client field is pre-populated with "Acme Corp". The modal has "Cancel" and "Create" buttons.
+
+#### Add Deal modal validates required name field
+- **Initial state:** The Add Deal modal is open from the ClientDetailPage.
+- **Action:** User clicks "Create" without entering a deal name.
+- **Expected:** A validation error is displayed for the Deal Name field indicating it is required. The deal is not created. The modal remains open.
+
+#### Add Deal modal successfully creates a deal for this client
+- **Initial state:** The Add Deal modal is open from the ClientDetailPage for "Acme Corp".
+- **Action:** User fills in Deal Name = "Enterprise Upgrade", Value = 75000, Stage = "Qualification", Owner = "David Lee". User clicks "Create".
+- **Expected:** The deal is created via the API with the client automatically set to "Acme Corp". The modal closes. The new deal "Enterprise Upgrade" appears in the Deals section showing "Stage: Qualification, Value: $75,000". A timeline entry is created on the client's timeline for the deal creation (e.g., "Deal Created: 'Enterprise Upgrade' by [user]"). If any user is following "Acme Corp", they receive a deal-created notification.
+
+#### Add Deal modal cancel closes without creating
+- **Initial state:** The Add Deal modal is open with some fields filled in.
+- **Action:** User clicks "Cancel".
+- **Expected:** The modal closes. No deal is created. The Deals section remains unchanged.
+
+#### Clicking Add Attachment opens an upload modal
+- **Initial state:** ClientDetailPage is loaded for client "Acme Corp".
+- **Action:** User clicks the "Add Attachment" quick action button.
+- **Expected:** A modal dialog opens for adding an attachment. The modal includes a toggle to switch between "File Upload" and "Link URL" modes. In File Upload mode: a file picker/drag-and-drop area is present for selecting a file. In Link URL mode: a URL text input and a Name/Label text input are present. An optional "Linked Deal" dropdown (populated from the client's deals) allows associating the attachment with a deal. The modal has "Cancel" and "Upload"/"Add" buttons.
+
+#### Add Attachment modal file upload mode works
+- **Initial state:** The Add Attachment modal is open in "File Upload" mode.
+- **Action:** User selects a file (e.g., "contract.pdf") via the file picker and clicks "Upload".
+- **Expected:** The file is uploaded via the API. The modal closes. The new attachment "contract.pdf" appears in the Attachments section with type "Document", the current date as created date, and a file-type icon for PDFs.
+
+#### Add Attachment modal link mode works
+- **Initial state:** The Add Attachment modal is open. User toggles to "Link URL" mode.
+- **Action:** User enters URL = "https://example.com/resources" and Name = "Resource Page". User clicks "Add".
+- **Expected:** The link attachment is created via the API. The modal closes. The new attachment "Resource Page" appears in the Attachments section with type "Link", the current date as created date, and a link icon.
+
+#### Add Attachment modal toggle switches between file and link modes
+- **Initial state:** The Add Attachment modal is open in "File Upload" mode.
+- **Action:** User clicks the toggle to switch to "Link URL" mode.
+- **Expected:** The file picker/drag-and-drop area is replaced by URL and Name text input fields. Clicking the toggle again switches back to File Upload mode with the file picker visible.
+
+#### Add Attachment modal allows linking to a deal
+- **Initial state:** The Add Attachment modal is open. The client "Acme Corp" has deals ("Acme Software License", "Additional Services").
+- **Action:** User selects "Acme Software License" from the Linked Deal dropdown and uploads a file.
+- **Expected:** The attachment is created with the deal association. In the Attachments section, the new attachment shows "Linked Deal: Acme Software License".
+
+#### Add Attachment modal cancel closes without uploading
+- **Initial state:** The Add Attachment modal is open with a file selected.
+- **Action:** User clicks "Cancel".
+- **Expected:** The modal closes. No attachment is created. The Attachments section remains unchanged.
+
+#### Clicking Add Person opens a person creation modal
+- **Initial state:** ClientDetailPage is loaded for client "Acme Corp".
+- **Action:** User clicks the "Add Person" quick action button.
+- **Expected:** A modal dialog opens for adding a person/contact to this client. The modal contains form fields for: Name (text input, required), Title/Role (text input, e.g., "CEO", "CTO"), Email (text input), Phone (text input), Location (text input). The client association is automatic. The modal has "Cancel" and "Create" (or "Add") buttons.
+
+#### Add Person modal validates required name field
+- **Initial state:** The Add Person modal is open from the ClientDetailPage.
+- **Action:** User clicks "Create" without entering a name.
+- **Expected:** A validation error is displayed for the Name field indicating it is required. The person is not created. The modal remains open.
+
+#### Add Person modal successfully creates a person for this client
+- **Initial state:** The Add Person modal is open from the ClientDetailPage for "Acme Corp".
+- **Action:** User fills in Name = "Robert Kim", Title = "VP of Engineering", Email = "robert@acme.com". User clicks "Create".
+- **Expected:** The person/contact is created via the API and automatically associated with "Acme Corp". The modal closes. The new person "Robert Kim - VP of Engineering" appears in the People section. A timeline entry is created on the client's timeline for the contact addition (e.g., "Contact Added: 'Robert Kim' by [user]"). If any user is following "Acme Corp", they receive a contact-added notification.
+
+#### Add Person modal cancel closes without creating
+- **Initial state:** The Add Person modal is open with some fields filled in.
+- **Action:** User clicks "Cancel".
+- **Expected:** The modal closes. No person is created. The People section remains unchanged.
+
+### ClientSourceInfo
+
+#### Source Info section displays heading and Edit button
+- **Initial state:** ClientDetailPage is loaded for a client with source information.
+- **Expected:** The Source Info section displays a "Source Info" heading. An "Edit" button (with a pencil icon) is visible at the top-right of the section.
+
+#### Source Info displays Acquisition Source field
+- **Initial state:** ClientDetailPage is loaded for a client with acquisition source "Referral (John Smith)".
+- **Expected:** The Source Info section displays a field labeled "Acquisition Source" with the value "Referral (John Smith)". The source type and detail are shown together.
+
+#### Source Info displays Campaign field
+- **Initial state:** ClientDetailPage is loaded for a client with campaign "None".
+- **Expected:** The Source Info section displays a field labeled "Campaign" with the value "None" (or the actual campaign name if set, e.g., "Q3 Enterprise Push").
+
+#### Source Info displays Channel field
+- **Initial state:** ClientDetailPage is loaded for a client with channel "Direct Sales".
+- **Expected:** The Source Info section displays a field labeled "Channel" with the value "Direct Sales".
+
+#### Source Info displays Date Acquired field
+- **Initial state:** ClientDetailPage is loaded for a client with date acquired "2023-01-15".
+- **Expected:** The Source Info section displays a field labeled "Date Acquired" with the value "2023-01-15" (or a formatted date such as "Jan 15, 2023").
+
+#### Source Info shows placeholders for empty fields
+- **Initial state:** ClientDetailPage is loaded for a client with no campaign and no channel set.
+- **Expected:** The Campaign and Channel fields show "None" or "—" as placeholders. The layout does not break.
+
+#### Clicking Edit button opens source info edit form
+- **Initial state:** ClientDetailPage is loaded for a client. The Source Info section has an "Edit" button.
+- **Action:** User clicks the "Edit" button in the Source Info section.
+- **Expected:** An edit modal or inline edit mode opens with fields for: Source Type (dropdown, e.g., Referral, Campaign, Website, Cold Call, Event), Source Detail (text input), Campaign (text input), Channel (text input), Date Acquired (date picker). The current values are pre-populated.
+
+#### Edit source info saves changes and updates the section
+- **Initial state:** The source info edit form is open for a client with Acquisition Source "Referral (John Smith)" and Channel "Direct Sales".
+- **Action:** User changes Channel to "Partner Referral" and sets Campaign to "Q3 Enterprise Push". User clicks "Save".
+- **Expected:** The source info is updated via the API. The Source Info section now shows Channel as "Partner Referral" and Campaign as "Q3 Enterprise Push". A timeline entry is created recording the client update. If any user is following the client, they receive a client-updated notification.
+
+#### Edit source info cancel closes without saving
+- **Initial state:** The source info edit form is open with modifications.
+- **Action:** User clicks "Cancel".
+- **Expected:** The form closes. The Source Info section displays the original values unchanged.
+
+### ClientTasks
+
+#### Tasks section displays heading with unresolved tasks label
+- **Initial state:** ClientDetailPage is loaded for a client with unresolved tasks.
+- **Expected:** The Tasks section displays a "Tasks" heading on the left and an "Unresolved tasks" label on the right side of the heading, indicating the list shows only unresolved/open tasks.
+
+#### Tasks section displays list of unresolved tasks
+- **Initial state:** ClientDetailPage is loaded for a client with three unresolved tasks: "Follow up on proposal" (due today), "Schedule onboarding call" (due tomorrow), "Prepare Q3 Review" (due next week).
+- **Expected:** The Tasks section displays all three tasks in a list. Each task row shows a checkbox on the left, the task title, and the due date. Tasks are listed in order.
+
+#### Task row displays checkbox
+- **Initial state:** ClientDetailPage is loaded for a client with unresolved tasks.
+- **Expected:** Each task row has an unchecked checkbox on the left side. The checkbox is clickable.
+
+#### Task row displays task title
+- **Initial state:** ClientDetailPage is loaded for a client with a task titled "Follow up on proposal".
+- **Expected:** The task row displays the task title "Follow up on proposal" prominently as the main text of the row.
+
+#### Task row displays formatted due date
+- **Initial state:** ClientDetailPage is loaded for a client with tasks having various due dates.
+- **Expected:** Each task row displays the due date prefixed with "Due:" (e.g., "Due: Today", "Due: Tomorrow", "Due: Next Week"). Dates for today and tomorrow show relative labels, while other dates show the calendar date or relative labels like "Next Week".
+
+#### Task row displays associated deal name when linked
+- **Initial state:** ClientDetailPage is loaded for a client with a task "Follow up on proposal" that is associated with deal "Acme Software License".
+- **Expected:** The task row displays the associated deal name (e.g., "Deal: 'Acme Software License'") alongside the due date. The deal association is visually indicated with a separator (e.g., "· Due: Today, Deal: 'Acme Software License'").
+
+#### Task row does not display deal info when no deal is linked
+- **Initial state:** ClientDetailPage is loaded for a client with a task "Schedule onboarding call" that has no associated deal.
+- **Expected:** The task row displays only the due date without any deal reference (e.g., "· Due: Tomorrow").
+
+#### Clicking task checkbox marks task as complete
+- **Initial state:** ClientDetailPage is loaded for a client with an unresolved task "Follow up on proposal".
+- **Action:** User clicks the checkbox on the "Follow up on proposal" task row.
+- **Expected:** The task status is updated to "completed" via the API. The task is removed from the unresolved tasks list (since the section only shows unresolved tasks). A timeline entry is created on the client's timeline recording the task completion (e.g., "Task Completed: 'Follow up on proposal' by [user]"). If any user is following the client, they receive a task-completed notification.
+
+#### Clicking task title navigates to /tasks/:taskId
+- **Initial state:** ClientDetailPage is loaded for a client with a task "Follow up on proposal" with task id 42.
+- **Action:** User clicks the task title "Follow up on proposal".
+- **Expected:** The browser navigates to /tasks/42 and the TaskDetailPage is displayed showing the full details for that task.
+
+#### Empty state when no unresolved tasks exist
+- **Initial state:** ClientDetailPage is loaded for a client with no unresolved tasks (all tasks are completed or cancelled, or no tasks exist).
+- **Expected:** The Tasks section displays an empty state message (e.g., "No unresolved tasks") instead of task rows. The section heading is still visible.
+
+### ClientDeals
+
+#### Deals section displays heading
+- **Initial state:** ClientDetailPage is loaded for a client with deals.
+- **Expected:** The Deals section displays a "Deals" heading.
+
+#### Deals section displays list of deals
+- **Initial state:** ClientDetailPage is loaded for a client with two deals: "Acme Software License" (Stage: Proposal Sent, Value: $50,000) and "Additional Services" (Stage: Qualification, Value: $10,000).
+- **Expected:** The Deals section lists both deals. Each deal row shows the deal name, stage, and value.
+
+#### Deal row displays deal name
+- **Initial state:** ClientDetailPage is loaded for a client with a deal named "Acme Software License".
+- **Expected:** The deal row displays the deal name "Acme Software License" as the primary text.
+
+#### Deal row displays deal stage
+- **Initial state:** ClientDetailPage is loaded for a client with a deal in "Proposal Sent" stage.
+- **Expected:** The deal row displays the stage (e.g., "Stage: Proposal Sent") next to or below the deal name. The stage is clearly labeled.
+
+#### Deal row displays deal value
+- **Initial state:** ClientDetailPage is loaded for a client with a deal valued at $50,000.
+- **Expected:** The deal row displays the value formatted as currency (e.g., "Value: $50,000"). The value is clearly labeled and formatted with commas/abbreviations as appropriate.
+
+#### Clicking a deal row navigates to /deals/:dealId
+- **Initial state:** ClientDetailPage is loaded for a client with a deal "Acme Software License" with deal id 10.
+- **Action:** User clicks on the "Acme Software License" deal row.
+- **Expected:** The browser navigates to /deals/10 and the DealDetailPage is displayed showing the full details for that deal.
+
+#### Clicking a different deal navigates to the correct deal detail page
+- **Initial state:** ClientDetailPage is loaded for a client with a deal "Additional Services" with deal id 15.
+- **Action:** User clicks on the "Additional Services" deal row.
+- **Expected:** The browser navigates to /deals/15 and the DealDetailPage is displayed showing the full details for "Additional Services".
+
+#### Empty state when no deals exist for this client
+- **Initial state:** ClientDetailPage is loaded for a client with no deals.
+- **Expected:** The Deals section displays an empty state message (e.g., "No deals") instead of deal rows. The section heading is still visible.
+
+### ClientAttachments
+
+#### Attachments section displays heading
+- **Initial state:** ClientDetailPage is loaded for a client with attachments.
+- **Expected:** The Attachments section displays an "Attachments" heading.
+
+#### Attachments section displays list of attachments
+- **Initial state:** ClientDetailPage is loaded for a client with three attachments: "Service Agreement.pdf" (Document, 2023-02-01, linked to Acme Software License deal), "Project Scope.docx" (Document, 2023-02-10, no linked deal), "Client Website Link" (Link, 2023-01-15, no linked deal).
+- **Expected:** The Attachments section lists all three attachments in a table-like layout. Each row shows an icon, filename, type, created date, linked deal, and action buttons.
+
+#### Attachment row displays file-type icon for documents
+- **Initial state:** ClientDetailPage is loaded for a client with a PDF attachment "Service Agreement.pdf".
+- **Expected:** The attachment row displays a file-type-specific icon to the left of the filename. PDF and document files show a document icon. The icon is visually distinct from link icons.
+
+#### Attachment row displays file-type icon for spreadsheets
+- **Initial state:** ClientDetailPage is loaded for a client with a spreadsheet attachment (e.g., "budget.xlsx").
+- **Expected:** The attachment row displays a spreadsheet-specific icon to the left of the filename, distinct from the document icon.
+
+#### Attachment row displays link icon for link attachments
+- **Initial state:** ClientDetailPage is loaded for a client with a link attachment "Client Website Link".
+- **Expected:** The attachment row displays a link/chain icon to the left of the attachment name, visually distinct from file-type icons.
+
+#### Attachment row displays thumbnail preview for image files
+- **Initial state:** ClientDetailPage is loaded for a client with an image attachment (e.g., "logo.png").
+- **Expected:** The attachment row displays a thumbnail preview of the image instead of a generic file-type icon. The thumbnail is small and proportionally sized.
+
+#### Attachment row displays filename
+- **Initial state:** ClientDetailPage is loaded for a client with an attachment named "Service Agreement.pdf".
+- **Expected:** The attachment row displays the filename "Service Agreement.pdf" as the primary text.
+
+#### Attachment row displays type label
+- **Initial state:** ClientDetailPage is loaded for a client with attachments of different types.
+- **Expected:** Each attachment row displays the type label: "Document" for uploaded files, "Link" for URL attachments. The type is shown as a text label (e.g., "Document", "Link").
+
+#### Attachment row displays created date
+- **Initial state:** ClientDetailPage is loaded for a client with an attachment created on 2023-02-01.
+- **Expected:** The attachment row displays the created date formatted as "Created: 2023-02-01" (or "Feb 1, 2023"). The date is clearly labeled.
+
+#### Attachment row displays linked deal when associated
+- **Initial state:** ClientDetailPage is loaded for a client with an attachment "Service Agreement.pdf" linked to deal "Acme Software License".
+- **Expected:** The attachment row displays "Linked Deal: Acme Software License" (or similar text showing the deal association). The deal name is visible.
+
+#### Attachment row shows no deal label when not linked
+- **Initial state:** ClientDetailPage is loaded for a client with an attachment "Project Scope.docx" not linked to any deal.
+- **Expected:** The attachment row displays "Linked Deal: None" (or "—") for the linked deal field.
+
+#### Download button on file attachment triggers download
+- **Initial state:** ClientDetailPage is loaded for a client with a file attachment "Service Agreement.pdf".
+- **Action:** User clicks the download icon/button on the "Service Agreement.pdf" row.
+- **Expected:** The file is downloaded to the user's device. The download starts immediately or a save dialog appears.
+
+#### View button on link attachment opens the link
+- **Initial state:** ClientDetailPage is loaded for a client with a link attachment "Client Website Link".
+- **Action:** User clicks the view icon/button (eye icon) on the "Client Website Link" row.
+- **Expected:** The linked URL opens in a new browser tab/window.
+
+#### Delete button removes an attachment with confirmation
+- **Initial state:** ClientDetailPage is loaded for a client with an attachment "Project Scope.docx".
+- **Action:** User clicks the delete icon/button (trash icon) on the "Project Scope.docx" row.
+- **Expected:** A confirmation dialog appears asking the user to confirm deletion (e.g., "Are you sure you want to delete this attachment?"). Upon confirmation, the attachment is deleted via the API. The attachment row is removed from the list.
+
+#### Delete attachment cancellation keeps the attachment
+- **Initial state:** The delete confirmation dialog is open for an attachment.
+- **Action:** User clicks "Cancel" on the confirmation dialog.
+- **Expected:** The dialog closes. The attachment remains in the list unchanged.
+
+#### Empty state when no attachments exist
+- **Initial state:** ClientDetailPage is loaded for a client with no attachments.
+- **Expected:** The Attachments section displays an empty state message (e.g., "No attachments") instead of attachment rows. The section heading is still visible.
+
+### ClientPeople
+
+#### People section displays heading
+- **Initial state:** ClientDetailPage is loaded for a client with associated people.
+- **Expected:** The People section displays a "People" heading.
+
+#### People section displays list of associated individuals
+- **Initial state:** ClientDetailPage is loaded for a client with three associated people: "Sarah Johnson - CEO", "Michael Chen - CTO", "Emily Davis - Project Manager".
+- **Expected:** The People section lists all three people. Each entry shows the person's avatar, name, and role/title.
+
+#### Person entry displays avatar
+- **Initial state:** ClientDetailPage is loaded for a client with associated people who have avatar images.
+- **Expected:** Each person entry displays a circular avatar image to the left of the person's name. If no avatar is available, a fallback with initials is shown.
+
+#### Person entry displays name
+- **Initial state:** ClientDetailPage is loaded for a client with an associated person "Sarah Johnson".
+- **Expected:** The person entry displays the full name "Sarah Johnson" as the primary text.
+
+#### Person entry displays role/title
+- **Initial state:** ClientDetailPage is loaded for a client with an associated person "Sarah Johnson" who has the title "CEO".
+- **Expected:** The person entry displays the role/title "CEO" after the name, separated by a dash or in a secondary text style (e.g., "Sarah Johnson - CEO").
+
+#### Person entry with no title shows name only
+- **Initial state:** ClientDetailPage is loaded for a client with an associated person who has no title set.
+- **Expected:** The person entry displays the person's name without a title. The layout does not break or show "undefined".
+
+#### Clicking a person entry navigates to /individuals/:id
+- **Initial state:** ClientDetailPage is loaded for a client with an associated person "Sarah Johnson" with individual id 5.
+- **Action:** User clicks on the "Sarah Johnson" person entry.
+- **Expected:** The browser navigates to /individuals/5 and the PersonDetailPage is displayed showing the full details for Sarah Johnson.
+
+#### Clicking a different person navigates to the correct person detail page
+- **Initial state:** ClientDetailPage is loaded for a client with an associated person "Michael Chen" with individual id 8.
+- **Action:** User clicks on the "Michael Chen" person entry.
+- **Expected:** The browser navigates to /individuals/8 and the PersonDetailPage is displayed showing the full details for Michael Chen.
+
+#### Empty state when no people are associated with this client
+- **Initial state:** ClientDetailPage is loaded for a client with no associated people.
+- **Expected:** The People section displays an empty state message (e.g., "No contacts") instead of person entries. The section heading is still visible.
+
+### ClientTimeline
+
+#### Timeline section displays heading
+- **Initial state:** ClientDetailPage is loaded for a client with timeline events.
+- **Expected:** The Timeline section displays a "Timeline" heading.
+
+#### Timeline displays events in reverse chronological order
+- **Initial state:** ClientDetailPage is loaded for a client with multiple timeline events spanning different dates (today, yesterday, 2 days ago, last week, last month).
+- **Expected:** The Timeline section displays events in reverse chronological order (most recent first). Each event is positioned along a vertical timeline with dot indicators. Events are grouped by relative date labels (e.g., "Today", "Yesterday", "2 days ago", "Last Week", "Last Month").
+
+#### Timeline displays Task Created event
+- **Initial state:** ClientDetailPage is loaded for a client. A task "Follow up on proposal" was created today by User A.
+- **Expected:** The timeline shows an entry: "Today - Task Created: 'Follow up on proposal' by User A". The event text includes the task name in quotes and the user who created it as a clickable link. The date label shows "Today".
+
+#### Timeline displays Note Added event
+- **Initial state:** ClientDetailPage is loaded for a client. A note "Client mentioned interest in new features." was added yesterday by User B.
+- **Expected:** The timeline shows an entry: "Yesterday - Note Added: 'Client mentioned interest in new features.' by User B". The event text includes the note content (or excerpt) in quotes and the user who added it as a clickable link. The date label shows "Yesterday".
+
+#### Timeline displays Deal Stage Changed event
+- **Initial state:** ClientDetailPage is loaded for a client. The deal "Acme Software License" had its stage changed from "Qualification" to "Proposal Sent" 2 days ago by User A.
+- **Expected:** The timeline shows an entry: "2 days ago - Deal Stage Changed: 'Acme Software License' from 'Qualification' to 'Proposal Sent' by User A". The event text includes the deal name, old stage, new stage, and the user who made the change. The user name is a clickable link.
+
+#### Timeline displays Email Sent event
+- **Initial state:** ClientDetailPage is loaded for a client. An email "Meeting Confirmation" was sent to Sarah Johnson last week.
+- **Expected:** The timeline shows an entry: "Last Week - Email Sent: 'Meeting Confirmation' to Sarah Johnson". The event text includes the email subject and the recipient name. The recipient name is a clickable link.
+
+#### Timeline displays Contact Added event
+- **Initial state:** ClientDetailPage is loaded for a client. Contact "Michael Chen" was added last month by User C.
+- **Expected:** The timeline shows an entry: "Last Month - Contact Added: 'Michael Chen' by User C". The event text includes the contact name and the user who added them. The user name is a clickable link.
+
+#### Timeline displays Status Changed event
+- **Initial state:** ClientDetailPage is loaded for a client whose status was changed from "Prospect" to "Active".
+- **Expected:** The timeline shows an entry describing the status change (e.g., "Client Status Changed: from 'Prospect' to 'Active' by [user]"). The event includes the old and new status values and the user who made the change.
+
+#### Timeline displays Task Completed event
+- **Initial state:** ClientDetailPage is loaded for a client. A task "Initial consultation" was completed.
+- **Expected:** The timeline shows an entry: "Task Completed: 'Initial consultation' by [user]". The event text includes the task name and the user who completed it.
+
+#### Timeline user attribution shows user name as clickable link
+- **Initial state:** ClientDetailPage is loaded for a client with timeline events attributed to specific users (e.g., "User A", "User B").
+- **Expected:** Each timeline event that was performed by a user displays the user's name as a clickable link. Clicking the user name navigates to /users/:userId for that user.
+
+#### Timeline user attribution shows "System" for unauthenticated actions
+- **Initial state:** ClientDetailPage is loaded for a client with timeline events that were created without authentication.
+- **Expected:** Timeline events without an associated user show "System" as the attribution instead of a user name. "System" is not a clickable link.
+
+#### Clicking a task event navigates to the task detail page
+- **Initial state:** ClientDetailPage is loaded for a client with a "Task Created" timeline event for task "Follow up on proposal" with task id 42.
+- **Action:** User clicks the task name "Follow up on proposal" in the timeline event.
+- **Expected:** The browser navigates to /tasks/42 and the TaskDetailPage is displayed.
+
+#### Clicking a deal event navigates to the deal detail page
+- **Initial state:** ClientDetailPage is loaded for a client with a "Deal Stage Changed" timeline event for deal "Acme Software License" with deal id 10.
+- **Action:** User clicks the deal name "Acme Software License" in the timeline event.
+- **Expected:** The browser navigates to /deals/10 and the DealDetailPage is displayed.
+
+#### Clicking a contact event navigates to the person detail page
+- **Initial state:** ClientDetailPage is loaded for a client with a "Contact Added" timeline event for contact "Michael Chen" with individual id 8.
+- **Action:** User clicks the contact name "Michael Chen" in the timeline event.
+- **Expected:** The browser navigates to /individuals/8 and the PersonDetailPage is displayed.
+
+#### Timeline dot indicators and vertical line
+- **Initial state:** ClientDetailPage is loaded for a client with multiple timeline events.
+- **Expected:** Each timeline event has a circular dot indicator to its left. A vertical line connects the dots, creating a visual timeline. The dots are consistently styled and positioned along the vertical line.
+
+#### Empty state when no timeline events exist
+- **Initial state:** ClientDetailPage is loaded for a newly created client with no timeline events (other than perhaps the creation event itself).
+- **Expected:** The Timeline section displays an empty state message (e.g., "No activity yet") or shows only the client creation event. The section heading is still visible.
+
+#### New timeline event appears after action on client
+- **Initial state:** ClientDetailPage is loaded for a client. The timeline shows existing events.
+- **Action:** User creates a new task for this client via the "Add Task" quick action.
+- **Expected:** After the task is created and the page updates, a new "Task Created" event appears at the top of the timeline (most recent). Only one timeline entry is created per action (no duplicates from re-renders).
+
 ## PersonDetailPage (/individuals/:individualId)
 
 ## DealsListPage (/deals)

@@ -3,21 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageClientDetailPage: Decide on components for ClientDetailPage, add sections to docs/tests.md",
-        "PlanComponentClientHeader: Add test entries for client header (name, type badge, status badge, tags, edit button click, follow/unfollow toggle)",
-        "PlanComponentClientQuickActions: Add test entries for quick action buttons (Add Task, Add Deal, Add Attachment, Add Person) and their modals",
-        "PlanComponentClientSourceInfo: Add test entries for Source Info section (Acquisition Source, Campaign, Channel, Date Acquired, Edit button)",
-        "PlanComponentClientTasks: Add test entries for Tasks section (unresolved tasks list, task with deal association, due date, checkbox, click navigates to /tasks/:taskId)",
-        "PlanComponentClientDeals: Add test entries for Deals section (deal name, stage, value, click navigates to /deals/:dealId)",
-        "PlanComponentClientAttachments: Add test entries for Attachments section (file-type icons, image thumbnails, filename, type, date, linked deal, download/view/delete, upload modal with file/link toggle)",
-        "PlanComponentClientPeople: Add test entries for People section (person name, role/title, click navigates to /individuals/:id)",
-        "PlanComponentClientTimeline: Add test entries for Timeline section (chronological feed of tasks, notes, status changes, deal stage changes, contacts added; click navigates to detail; user attribution)"
-      ],
-      "timestamp": "2026-02-23T21:26:31.149Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPagePersonDetailPage: Decide on components for PersonDetailPage, add sections to docs/tests.md",
         "PlanComponentPersonHeader: Add test entries for person header (name, title, email, phone, location, associated clients links)",
         "PlanComponentPersonRelationships: Add test entries for Relationships section (Graph View/List View tabs, relationship entries with name/type/org/link, Filter button, Add Entry button and modal)",
