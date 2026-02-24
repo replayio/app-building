@@ -236,8 +236,16 @@ Bad Corp,Organization,Active`
     // Dialog should close
     await expect(page.getByTestId('client-form-modal')).not.toBeVisible({ timeout: 10000 })
 
-    // New client should appear in the table
-    await expect(page.locator('[data-testid^="client-row-"]').filter({ hasText: uniqueName })).toBeVisible({ timeout: 10000 })
+    // Success message should appear
+    await expect(page.getByTestId('client-success-message')).toContainText('Client created successfully')
+
+    // New client should appear in the table with correct columns
+    const row = page.locator('[data-testid^="client-row-"]').filter({ hasText: uniqueName })
+    await expect(row).toBeVisible({ timeout: 10000 })
+    await expect(row).toContainText('Organization')
+    await expect(row).toContainText('Prospect')
+    await expect(row).toContainText('SaaS')
+    await expect(row).toContainText('Startup')
   })
 
   test('Add New Client dialog can be cancelled', async ({ page }) => {

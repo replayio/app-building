@@ -211,6 +211,7 @@ export default function ClientsActions() {
   const filters = useAppSelector(s => s.clients.filters)
   const [importOpen, setImportOpen] = useState(false)
   const [addOpen, setAddOpen] = useState(false)
+  const [successMsg, setSuccessMsg] = useState('')
 
   const handleExport = async () => {
     const params = new URLSearchParams()
@@ -236,6 +237,8 @@ export default function ClientsActions() {
   const handleCreate = async (data: { name: string; type: string; status: string; tags: string[]; source: string }) => {
     await dispatch(createClient(data)).unwrap()
     await dispatch(fetchClients())
+    setSuccessMsg('Client created successfully')
+    setTimeout(() => setSuccessMsg(''), 3000)
   }
 
   return (
@@ -252,6 +255,10 @@ export default function ClientsActions() {
         <Plus size={14} />
         <span>Add New Client</span>
       </button>
+
+      {successMsg && (
+        <div className="success-toast" data-testid="client-success-message">{successMsg}</div>
+      )}
 
       <ImportModal open={importOpen} onClose={() => setImportOpen(false)} />
       <ClientFormModal

@@ -1,15 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
-        "FixViolation: Add success toast to ClientsActions handleCreate (matching TasksHeader pattern) and add test assertions for success message and all created-client columns (Type, Status, Tags, Source) in actions.spec.ts 'Add New Client form creates a client successfully' test",
-        "RunTests: Verify tests pass after ClientsListPage fix",
-        "DocumentFix: Document the ClientsListPage success message and test assertion fix"
-      ],
-      "timestamp": "2026-02-24T05:13:59.917Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
         "Unpack: Polish app quality"

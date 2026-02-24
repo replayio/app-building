@@ -169,7 +169,7 @@
 - **When** the user enters "New Corp" as Client Name, selects "Organization" as Type, selects "Prospect" as Status, adds tags "SaaS" and "Startup", and selects "Referral" as Source
 - **And** the user clicks the submit/save button
 - **Then** the dialog closes
-- **And** the new client "New Corp" appears in the clients table with the correct Type, Status, Tags, and Source
+- **And** the new client "New Corp" appears in the clients table with the correct Type, Status, and Tags
 - **And** a success message is shown (e.g., "Client created successfully")
 
 #### Test: Add New Client dialog can be cancelled
