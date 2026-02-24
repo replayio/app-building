@@ -80,7 +80,7 @@ export function cloneRepo(url: string, branch: string, dir: string = REPO_DIR): 
  */
 export function checkoutTargetBranch(targetBranch: string, log: Logger, dir: string = REPO_DIR): void {
   try {
-    execFileSync("git", ["fetch", "origin", targetBranch], {
+    execFileSync("git", ["fetch", "origin", `${targetBranch}:refs/remotes/origin/${targetBranch}`], {
       cwd: dir,
       encoding: "utf-8",
       timeout: 60000,
@@ -132,10 +132,11 @@ export function pushTarget(
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     hadConflicts = false;
 
-    // Step 1: Fetch
+    // Step 1: Fetch (explicit refspec needed because --single-branch clone
+    // only tracks the clone branch, so a plain fetch won't create origin/<target>)
     let remoteExists = false;
     try {
-      execFileSync("git", ["fetch", "origin", targetBranch], {
+      execFileSync("git", ["fetch", "origin", `${targetBranch}:refs/remotes/origin/${targetBranch}`], {
         cwd: dir,
         encoding: "utf-8",
         timeout: 60000,
