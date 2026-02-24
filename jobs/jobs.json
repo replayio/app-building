@@ -3,11 +3,9 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
-        "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
-        "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests"
+        "FixViolation: Add missing 'Add Contact dialog can be cancelled' test entry in DealDetailPage DealContactsSection"
       ],
-      "timestamp": "2026-02-24T02:35:06.011Z"
+      "timestamp": "2026-02-24T03:11:55.868Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
