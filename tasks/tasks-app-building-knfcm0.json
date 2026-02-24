@@ -3,9 +3,9 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "Unpack: Write test specification for ProductionHub"
+        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
       ],
-      "timestamp": "2026-02-24T19:26:31.269Z"
+      "timestamp": "2026-02-24T23:24:03.871Z"
     },
     {
       "skill": "skills/tasks/build/writeShared.md",
