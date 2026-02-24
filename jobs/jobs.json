@@ -1,0 +1,13 @@
+{
+  "groups": [
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolation: Create ClientDetailPage Playwright test files covering all test entries (ClientHeader, QuickActions, SourceInfoSection, TasksSection, DealsSection, AttachmentsSection, PeopleSection, TimelineSection)",
+        "RunTests: Verify ClientDetailPage tests pass",
+        "DocumentFix: Document the ClientDetailPage test creation"
+      ],
+      "timestamp": "2026-02-24T05:07:37.170Z"
+    }
+  ]
+}
