@@ -3,9 +3,74 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "Unpack: Write the app for ProductionHub"
+        "WriteComponentEquipmentDetailHeader: Write the EquipmentDetailHeader component",
+        "WriteComponentEquipmentInfo: Write the EquipmentInfo component",
+        "WriteComponentMaintenanceNotes: Write the MaintenanceNotes component",
+        "WritePageEquipmentDetails: Write the EquipmentDetailsPage itself"
       ],
-      "timestamp": "2026-02-24T19:26:32.412Z"
+      "timestamp": "2026-02-24T23:56:46.552Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentEquipmentHeader: Write the EquipmentHeader component",
+        "WriteComponentEquipmentTable: Write the EquipmentTable component",
+        "WritePageEquipment: Write the EquipmentPage itself"
+      ],
+      "timestamp": "2026-02-24T23:56:42.972Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentRecipeDetailHeader: Write the RecipeDetailHeader component",
+        "WriteComponentDescriptionCard: Write the DescriptionCard component",
+        "WriteComponentProductsOutputTable: Write the ProductsOutputTable component",
+        "WriteComponentRawMaterialsCard: Write the RawMaterialsCard component",
+        "WriteComponentEquipmentRequiredList: Write the EquipmentRequiredList component",
+        "WritePageRecipeDetails: Write the RecipeDetailsPage itself"
+      ],
+      "timestamp": "2026-02-24T23:56:39.398Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentRunHeader: Write the RunHeader component",
+        "WriteComponentRunActions: Write the RunActions component",
+        "WriteComponentRawMaterialsTable: Write the RawMaterialsTable component",
+        "WriteComponentForecastTable: Write the ForecastTable component",
+        "WriteComponentRunEquipmentTable: Write the RunEquipmentTable component",
+        "WriteComponentExternalAppLinks: Write the ExternalAppLinks component",
+        "WritePageRunDetails: Write the RunDetailsPage itself"
+      ],
+      "timestamp": "2026-02-24T23:56:35.540Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentCalendarHeader: Write the CalendarHeader component",
+        "WriteComponentCalendarGrid: Write the CalendarGrid component",
+        "WriteComponentRunDetailsPopup: Write the RunDetailsPopup component",
+        "WritePageCalendar: Write the CalendarPage itself"
+      ],
+      "timestamp": "2026-02-24T23:56:31.428Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentRecipesHeader: Write the RecipesHeader component",
+        "WriteComponentRecipesTable: Write the RecipesTable component",
+        "WriteComponentRecipeDetailsPanel: Write the RecipeDetailsPanel component",
+        "WritePageRecipes: Write the RecipesPage itself"
+      ],
+      "timestamp": "2026-02-24T23:56:27.755Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
+      ],
+      "timestamp": "2026-02-24T23:56:23.422Z"
     },
     {
       "skill": "skills/tasks/writeScript.md",
