@@ -3,11 +3,24 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecConfirmEmail: Check testSpec.md directive violations in ConfirmEmailPage test entries",
-        "CheckComponentsConfirmEmail: Check writeApp.md directive violations in ConfirmEmailPage components",
-        "CheckTestsConfirmEmail: Check writeTests.md directive violations in ConfirmEmailPage tests"
+        "FixViolationConfirmEmailTestSpec: Write complete test entries for ConfirmEmailPage in docs/tests.md covering: loading state with token, successful confirmation with redirect to /clients, missing token error, invalid/expired token error, network error, and auto-login after confirmation"
       ],
-      "timestamp": "2026-02-23T23:39:10.310Z"
+      "timestamp": "2026-02-24T01:37:31.380Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationConfirmEmailComponent: Add missing data-testid on loading state element in ConfirmEmailPage.tsx, and fix backend confirm-email action in auth.ts to generate and return JWT token for auto-login after email confirmation (as specified in AppRevisions.md)"
+      ],
+      "timestamp": "2026-02-24T01:37:27.025Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationConfirmEmailTests: Write Playwright tests for ConfirmEmailPage confirm-email auth flow exercising the real production code path (not IS_TEST bypass) per writeTests.md directive",
+        "RunTests: Verify ConfirmEmailPage tests pass"
+      ],
+      "timestamp": "2026-02-24T01:37:22.641Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
