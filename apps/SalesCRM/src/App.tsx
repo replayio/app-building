@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Sidebar from './components/Sidebar/Sidebar'
 import ClientsListPage from './pages/ClientsListPage'
@@ -14,8 +15,20 @@ import UserDetailPage from './pages/UserDetailPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ConfirmEmailPage from './pages/ConfirmEmailPage'
+import { useAppDispatch, useAppSelector } from './store/hooks'
+import { loadSession } from './store/slices/authSlice'
 
 function App() {
+  const dispatch = useAppDispatch()
+  const token = useAppSelector((state) => state.auth.token)
+  const user = useAppSelector((state) => state.auth.user)
+
+  useEffect(() => {
+    if (token && !user) {
+      dispatch(loadSession())
+    }
+  }, [dispatch, token, user])
+
   return (
     <>
       <Sidebar />

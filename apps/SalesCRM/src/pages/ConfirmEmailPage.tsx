@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../store/hooks'
+import { setSession } from '../store/slices/authSlice'
 
 export default function ConfirmEmailPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const token = searchParams.get('token') || ''
 
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
@@ -29,8 +32,8 @@ export default function ConfirmEmailPage() {
           setError(data.error || 'Failed to confirm email')
         } else {
           const data = await res.json()
-          if (data.token) {
-            localStorage.setItem('token', data.token)
+          if (data.token && data.user) {
+            dispatch(setSession({ user: data.user, token: data.token }))
           }
           setStatus('success')
           setTimeout(() => navigate('/clients'), 2000)
@@ -42,7 +45,7 @@ export default function ConfirmEmailPage() {
     }
 
     confirm()
-  }, [token, navigate])
+  }, [token, navigate, dispatch])
 
   return (
     <div data-testid="confirm-email-page" className="p-6 max-sm:p-3 flex items-center justify-center min-h-screen">

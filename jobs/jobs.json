@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationConfirmEmailTests: Write Playwright tests for ConfirmEmailPage confirm-email auth flow exercising the real production code path (not IS_TEST bypass) per writeTests.md directive",
-        "RunTests: Verify ConfirmEmailPage tests pass"
-      ],
-      "timestamp": "2026-02-24T01:37:22.641Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
       "timestamp": "2026-02-23T23:39:04.312Z"
