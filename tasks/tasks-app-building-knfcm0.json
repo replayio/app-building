@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/writeScript.md",
-      "subtasks": [
-        "WriteDeployScript: Implement the deploy script for Accounting",
-        "WriteTestScript: Implement the test script for Accounting"
-      ],
-      "timestamp": "2026-02-24T19:59:02.101Z"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "Unpack: Write Playwright tests for Accounting"
