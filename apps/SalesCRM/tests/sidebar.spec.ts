@@ -42,23 +42,19 @@ test.describe('Sidebar Navigation', () => {
     await page.getByTestId('sidebar-link-dashboard').click()
     await expect(page).toHaveURL('/dashboard')
 
-    // Navigate back and click Deals
-    await page.goto('/clients')
+    // Click Deals from Dashboard (sidebar is present on all pages)
     await page.getByTestId('sidebar-link-deals').click()
     await expect(page).toHaveURL('/deals')
 
-    // Navigate back and click Tasks
-    await page.goto('/clients')
+    // Click Tasks from Deals
     await page.getByTestId('sidebar-link-tasks').click()
     await expect(page).toHaveURL('/tasks')
 
-    // Navigate back and click Reports
-    await page.goto('/clients')
+    // Click Reports from Tasks
     await page.getByTestId('sidebar-link-reports').click()
     await expect(page).toHaveURL('/reports')
 
-    // Navigate back and click Settings
-    await page.goto('/clients')
+    // Click Settings from Reports
     await page.getByTestId('sidebar-link-settings').click()
     await expect(page).toHaveURL('/settings')
   })

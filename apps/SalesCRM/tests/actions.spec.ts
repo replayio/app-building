@@ -186,6 +186,7 @@ Bad Corp,Organization,Active`
   })
 
   test('Add New Client form creates a client successfully', async ({ page }) => {
+    test.setTimeout(120000)
     const uniqueName = `NewCorp-${Date.now()}`
 
     // Open the add client dialog

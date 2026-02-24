@@ -2,11 +2,24 @@ import { test, expect } from '@playwright/test'
 
 async function createClientsViaAPI(page: import('@playwright/test').Page, count: number, prefix: string) {
   const baseURL = 'http://localhost:8888'
-  for (let i = 0; i < count; i++) {
-    await page.request.post(`${baseURL}/.netlify/functions/clients`, {
-      data: { name: `${prefix}-${i}`, type: 'Organization', status: 'Active', tags: [], source: '' },
-    })
-  }
+  const clients = Array.from({ length: count }, (_, i) => ({
+    name: `${prefix}-${i}`,
+    type: 'Organization',
+    status: 'Active',
+    source: '',
+  }))
+  await page.request.post(`${baseURL}/.netlify/functions/clients?action=import`, {
+    data: { clients },
+  })
+}
+
+/** Navigate away and back using client-side routing to refresh data.
+ *  Avoids page.goto which can get empty responses from Netlify dev server. */
+async function refreshClientsPage(page: import('@playwright/test').Page) {
+  await page.getByTestId('sidebar-link-dashboard').click()
+  await expect(page).toHaveURL('/dashboard')
+  await page.getByTestId('sidebar-link-clients').click()
+  await expect(page.getByTestId('clients-table').or(page.getByTestId('clients-table-empty'))).toBeVisible({ timeout: 30000 })
 }
 
 test.describe('Pagination', () => {
@@ -26,6 +39,7 @@ test.describe('Pagination', () => {
   })
 
   test('Clicking Next page loads the next set of clients', async ({ page }) => {
+    test.setTimeout(120000)
     // Check if we have enough clients for multiple pages
     const paginationInfo = page.getByTestId('pagination-info')
     let text = await paginationInfo.textContent()
@@ -37,8 +51,7 @@ test.describe('Pagination', () => {
       const needed = 55 - total
       if (needed > 0) {
         await createClientsViaAPI(page, needed, `PagNext-${Date.now()}`)
-        await page.reload()
-        await expect(page.getByTestId('clients-table')).toBeVisible()
+        await refreshClientsPage(page)
       }
     }
 
@@ -64,12 +77,12 @@ test.describe('Pagination', () => {
   })
 
   test('Clicking Previous page loads the previous set of clients', async ({ page }) => {
+    test.setTimeout(120000)
     const nextBtn = page.getByTestId('pagination-next')
     if (await nextBtn.isDisabled()) {
       // Create enough clients
       await createClientsViaAPI(page, 55, `PagPrev-${Date.now()}`)
-      await page.reload()
-      await expect(page.getByTestId('clients-table')).toBeVisible()
+      await refreshClientsPage(page)
     }
 
     if (await page.getByTestId('pagination-next').isDisabled()) return

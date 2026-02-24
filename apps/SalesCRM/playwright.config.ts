@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
-import { replayDevices } from '@replayio/playwright'
+import { devices as replayDevices, replayReporter } from '@replayio/playwright'
 
 export default defineConfig({
   testDir: './tests',
@@ -8,19 +8,23 @@ export default defineConfig({
   retries: 0,
   timeout: 60000,
   expect: { timeout: 15000 },
+  reporter: [
+    replayReporter({
+      apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY,
+      upload: false,
+    }),
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['list'],
+  ],
   use: {
     baseURL: 'http://localhost:8888',
     trace: 'on-first-retry',
-    ...(process.env.REPLAY
-      ? replayDevices['Replay Chromium']
-      : {}),
+    ...replayDevices['Replay Chromium'],
   },
   projects: [
     {
       name: 'chromium',
-      use: process.env.REPLAY
-        ? replayDevices['Replay Chromium']
-        : { ...devices['Desktop Chrome'] },
+      use: { ...replayDevices['Replay Chromium'] },
     },
   ],
   webServer: {

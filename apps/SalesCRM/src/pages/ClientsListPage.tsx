@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { fetchClients } from '@/store/clientsSlice'
-import Sidebar from '@/components/Sidebar'
 import ClientsSearchAndFilters from '@/components/ClientsSearchAndFilters'
 import ClientsActions from '@/components/ClientsActions'
 import ClientsTable from '@/components/ClientsTable'
@@ -21,19 +20,14 @@ export default function ClientsListPage() {
   }, [dispatch, page, search, status, tag, source, sort])
 
   return (
-    <div className="app-layout" data-testid="clients-list-page">
-      <Sidebar />
-      <main className="app-main">
-        <div className="page-content p-6 max-sm:p-3">
-          <div className="page-header">
-            <h1 className="page-title">Clients</h1>
-            <ClientsActions />
-          </div>
-          <ClientsSearchAndFilters />
-          <ClientsTable />
-          <Pagination />
-        </div>
-      </main>
+    <div className="page-content p-6 max-sm:p-3" data-testid="clients-list-page">
+      <div className="page-header">
+        <h1 className="page-title">Clients</h1>
+        <ClientsActions />
+      </div>
+      <ClientsSearchAndFilters />
+      <ClientsTable />
+      <Pagination />
     </div>
   )
 }
