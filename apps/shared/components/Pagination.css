@@ -1,0 +1,21 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.pagination-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: var(--text-secondary);
+  min-width: 80px;
+  text-align: center;
+}

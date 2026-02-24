@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../hooks";
 import { NewTransactionModal } from "./NewTransactionModal";
+import { Breadcrumb } from "../../../shared/components/Breadcrumb";
 
 const NAV_LINKS = [
   { label: "Dashboard", path: "/dashboard" },
@@ -73,7 +74,7 @@ export function NavBar(): React.ReactElement {
         </div>
       </nav>
 
-      <Breadcrumb />
+      <AccountingBreadcrumb />
 
       {showNewTransaction && (
         <NewTransactionModal onClose={() => setShowNewTransaction(false)} />
@@ -82,7 +83,7 @@ export function NavBar(): React.ReactElement {
   );
 }
 
-function Breadcrumb(): React.ReactElement {
+function AccountingBreadcrumb(): React.ReactElement {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -97,18 +98,11 @@ function Breadcrumb(): React.ReactElement {
   const currentLabel = labels[segments[0]] ?? segments[0] ?? "Home";
 
   return (
-    <div className="breadcrumb" data-testid="breadcrumb">
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          navigate("/");
-        }}
-      >
-        Home
-      </a>
-      <span className="breadcrumb-separator">&gt;</span>
-      <span className="breadcrumb-current">{currentLabel}</span>
-    </div>
+    <Breadcrumb
+      items={[
+        { label: "Home", onClick: () => navigate("/") },
+        { label: currentLabel },
+      ]}
+    />
   );
 }
