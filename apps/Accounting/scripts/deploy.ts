@@ -145,11 +145,24 @@ async function main() {
 
   if (!netlifySiteId) {
     console.log("\n--- Creating Netlify site ---");
-    const output = execSync(
-      `npx netlify sites:create --account-slug ${netlifyAccountSlug} --name accounting-${Date.now()} --json`,
-      { cwd: appDir, encoding: "utf-8" }
+    const netlifyToken = env("NETLIFY_AUTH_TOKEN");
+    const siteName = `accounting-${Date.now()}`;
+    const siteRes = await fetch(
+      `https://api.netlify.com/api/v1/${netlifyAccountSlug}/sites`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${netlifyToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: siteName }),
+      }
     );
-    const siteData = JSON.parse(output);
+    if (!siteRes.ok) {
+      console.error("Failed to create Netlify site:", await siteRes.text());
+      process.exit(1);
+    }
+    const siteData = await siteRes.json();
     netlifySiteId = siteData.id;
     writeEnvValue("NETLIFY_SITE_ID", netlifySiteId);
     console.log(`Netlify site created: ${netlifySiteId}`);

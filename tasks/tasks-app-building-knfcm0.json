@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production for Accounting",
-        "TestDeploy: Test the deployed app for Accounting"
-      ],
-      "timestamp": "2026-02-24T20:30:40.589Z"
-    },
-    {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
         "Unpack: Write test specification for InventoryTracker"

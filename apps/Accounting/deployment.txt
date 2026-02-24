@@ -1,0 +1,4 @@
+url=https://accounting-1771965127796.netlify.app
+site_id=807cbf1f-8855-4465-b15e-20f45905c93b
+neon_project_id=plain-paper-53653927
+database_url=postgresql://neondb_owner:npg_qrlAGy29bSMV@ep-snowy-bonus-ak5zq0uu.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require
