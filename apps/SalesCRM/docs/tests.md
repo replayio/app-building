@@ -366,7 +366,350 @@
 - DealAttachmentsSection (file list with filename, size, Download link, Delete link; upload button)
 - DealContactsSection (person entries with avatar, name, role, client, View Profile link)
 
-<!-- Test entries will be added by PlanComponent jobs -->
+### DealHeader
+
+#### Test: Deal header displays deal title with client name and deal name
+- **Given** the user navigates to a deal detail page for "Acme Corp - $250k Expansion Deal"
+- **Then** the header displays "DEAL DETAILS: Acme Corp - $250k Expansion Deal" as the page title
+
+#### Test: Deal header displays Client field
+- **Given** the user is on the Deal Detail Page
+- **Then** the header shows a "Client:" label with an editable text field displaying the client name (e.g., "Acme Corporation")
+
+#### Test: Deal header displays Value field
+- **Given** the user is on the Deal Detail Page
+- **Then** the header shows a "Value:" label with an editable text field displaying the deal value (e.g., "$250,000")
+
+#### Test: Deal header displays Owner field
+- **Given** the user is on the Deal Detail Page
+- **Then** the header shows an "Owner:" label with an editable text field displaying the deal owner (e.g., "Sarah Lee")
+
+#### Test: Deal header displays Stage dropdown
+- **Given** the user is on the Deal Detail Page
+- **Then** the header shows a "Stage:" label with a dropdown displaying the current stage (e.g., "Discovery")
+- **And** the dropdown has a chevron icon indicating it is expandable
+
+#### Test: Deal header Stage dropdown shows all stage options
+- **Given** the user is on the Deal Detail Page
+- **When** the user clicks the Stage dropdown
+- **Then** the dropdown shows options: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won
+
+#### Test: Deal header Change Stage button updates the stage
+- **Given** the user is on the Deal Detail Page with the deal in "Discovery" stage
+- **When** the user selects "Proposal" from the Stage dropdown
+- **And** the user clicks the "Change Stage" button (blue button)
+- **Then** the deal's stage updates to "Proposal"
+- **And** the Stage dropdown now shows "Proposal"
+- **And** the StageProgressBar updates to reflect "Proposal" as the current stage
+- **And** a new entry is added to the Deal History section recording the stage change from "Discovery" to "Proposal" with the current date/time and user
+
+#### Test: Deal header Client field is clickable and editable
+- **Given** the user is on the Deal Detail Page
+- **When** the user clicks the Client field and changes it to "Globex Solutions"
+- **And** the change is saved
+- **Then** the Client field displays "Globex Solutions"
+- **And** the deal title updates to reflect the new client name
+
+#### Test: Deal header Value field is editable
+- **Given** the user is on the Deal Detail Page with value "$250,000"
+- **When** the user clicks the Value field and changes it to "$300,000"
+- **And** the change is saved
+- **Then** the Value field displays "$300,000"
+- **And** the deal title updates to reflect the new value
+
+#### Test: Deal header Owner field is editable
+- **Given** the user is on the Deal Detail Page with owner "Sarah Lee"
+- **When** the user clicks the Owner field and changes it to "John Doe"
+- **And** the change is saved
+- **Then** the Owner field displays "John Doe"
+
+### StageProgressBar
+
+#### Test: Stage progress bar displays all six stages in order
+- **Given** the user is on the Deal Detail Page
+- **Then** the stage progress bar shows six stages in order: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won
+- **And** each stage has a circular icon and label text
+
+#### Test: Stage progress bar marks completed stages with blue checkmarks
+- **Given** the deal is currently in the "Discovery" stage
+- **Then** the "Lead" stage shows a blue filled circle with a checkmark icon
+- **And** the "Qualification" stage shows a blue filled circle with a checkmark icon
+- **And** the progress bar segment between Lead and Qualification is filled blue
+- **And** the progress bar segment between Qualification and Discovery is filled blue
+
+#### Test: Stage progress bar marks current stage with "(Current)" label
+- **Given** the deal is currently in the "Discovery" stage
+- **Then** the "Discovery" stage shows a blue filled circle with a checkmark icon
+- **And** the "Discovery" label includes "(Current)" text
+
+#### Test: Stage progress bar marks future stages as grey/incomplete
+- **Given** the deal is currently in the "Discovery" stage
+- **Then** the "Proposal" stage shows a grey unfilled circle
+- **And** the "Negotiation" stage shows a grey unfilled circle
+- **And** the "Closed Won" stage shows a grey unfilled circle
+- **And** the progress bar segments for future stages are grey/unfilled
+
+#### Test: Stage progress bar updates when stage changes
+- **Given** the deal is currently in the "Discovery" stage
+- **When** the user changes the stage to "Proposal" via the header Stage dropdown and Change Stage button
+- **Then** the "Discovery" stage no longer shows "(Current)"
+- **And** the "Discovery" stage still shows a blue checkmark (completed)
+- **And** the "Proposal" stage now shows a blue checkmark with "(Current)" label
+- **And** the progress bar fills blue up to the Proposal segment
+
+### DealHistorySection
+
+#### Test: Deal History section displays heading
+- **Given** the user is on the Deal Detail Page
+- **Then** the "Deal History" heading is visible
+
+#### Test: Deal History section shows chronological stage change entries
+- **Given** the deal has had stage changes
+- **Then** the Deal History section shows entries in reverse chronological order (most recent first)
+- **And** each entry displays: date/time, "Changed Stage from [old stage] to [new stage]", and the user who made the change in parentheses
+- **For example**: "Oct 25, 2023, 2:30 PM: Changed Stage from Qualification to Discovery (Sarah Lee)"
+- **And**: "Oct 18, 2023, 10:15 AM: Changed Stage from Lead to Qualification (John Doe)"
+
+#### Test: Deal History records a new entry when stage is changed
+- **Given** the deal is in "Discovery" stage with existing history entries
+- **When** the user changes the stage to "Proposal" via the Change Stage button
+- **Then** a new entry appears at the top of the Deal History section
+- **And** the entry shows the current date/time, "Changed Stage from Discovery to Proposal", and the current user's name
+- **And** exactly one new history entry is created (no duplicates)
+
+#### Test: Deal History shows empty state when no history exists
+- **Given** a newly created deal with no stage changes
+- **Then** the Deal History section shows an empty state or initial creation entry
+
+### DealMetricsSection
+
+#### Test: Deal Metrics section displays heading
+- **Given** the user is on the Deal Detail Page
+- **Then** the "Deal Metrics" heading is visible
+
+#### Test: Deal Metrics shows probability percentage
+- **Given** the deal has a probability of 40%
+- **Then** the Deal Metrics section displays "Probability: 40%"
+
+#### Test: Deal Metrics shows expected close date
+- **Given** the deal has an expected close date of Dec 15, 2023
+- **Then** the Deal Metrics section displays "Expected Close: Dec 15, 2023"
+
+#### Test: Deal Metrics probability is editable
+- **Given** the deal has a probability of 40%
+- **When** the user clicks on the probability value and changes it to 60%
+- **And** the change is saved
+- **Then** the Deal Metrics section displays "Probability: 60%"
+
+#### Test: Deal Metrics expected close date is editable
+- **Given** the deal has an expected close date of Dec 15, 2023
+- **When** the user clicks on the expected close date and changes it to Jan 31, 2024
+- **And** the change is saved
+- **Then** the Deal Metrics section displays "Expected Close: Jan 31, 2024"
+
+### WriteupsSection
+
+#### Test: Writeups section displays heading and New Entry button
+- **Given** the user is on the Deal Detail Page
+- **Then** the "Writeups" heading is visible
+- **And** a "+ New Entry" button with a plus icon is displayed next to the heading
+
+#### Test: Writeups section shows existing writeup entries
+- **Given** the deal has writeup entries
+- **Then** each entry displays: a bold title (e.g., "Strategy Update"), date (e.g., "Oct 20"), author name in parentheses (e.g., "Sarah Lee"), and a content summary below
+- **For example**: "Strategy Update - Oct 20 (Sarah Lee)" with summary "Emphasizing our cloud integration capabilities. Client seems receptive..."
+- **And**: "Needs Analysis - Oct 15 (John Doe)" with summary "Client requires scalability and enhanced security features."
+
+#### Test: Writeup entry has Edit button
+- **Given** the Writeups section shows entries
+- **Then** each entry shows an "Edit" button with a pencil icon at the bottom
+- **When** the user clicks the "Edit" button on "Strategy Update"
+- **Then** an edit form or modal opens pre-populated with the writeup title, content, and metadata
+
+#### Test: Writeup entry has Version History button
+- **Given** the Writeups section shows entries
+- **Then** each entry shows a "Version History" button with a clock/history icon
+- **When** the user clicks the "Version History" button on "Strategy Update"
+- **Then** a modal or panel shows previous versions of the writeup with dates and content changes
+
+#### Test: New Entry button opens writeup creation form
+- **Given** the user is on the Deal Detail Page
+- **When** the user clicks the "+ New Entry" button
+- **Then** a form or modal opens with fields for: Title (required text input), Content (required rich text or textarea)
+
+#### Test: New writeup entry can be created successfully
+- **Given** the writeup creation form is open
+- **When** the user enters "Competitive Analysis" as the title
+- **And** enters "Identified three competing proposals..." as the content
+- **And** clicks save/submit
+- **Then** the form closes
+- **And** the new entry "Competitive Analysis" appears in the Writeups section with the current date and user
+- **And** a success message is shown
+
+#### Test: New writeup entry form validates required fields
+- **Given** the writeup creation form is open
+- **When** the user leaves the Title field empty and clicks save
+- **Then** a validation error is shown (e.g., "Title is required")
+- **And** the form is not submitted
+
+#### Test: Writeup edit saves changes
+- **Given** the user clicks Edit on the "Strategy Update" writeup
+- **And** the edit form is open with existing content
+- **When** the user changes the title to "Strategy Update - Revised" and updates the content
+- **And** clicks save
+- **Then** the updated title and content are displayed in the Writeups section
+- **And** a new version is recorded in the version history
+
+#### Test: Writeup creation form can be cancelled
+- **Given** the writeup creation form is open with partial data entered
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without creating a new entry
+- **And** no new writeup appears in the section
+
+#### Test: Writeup edit form can be cancelled
+- **Given** the edit form is open for "Strategy Update" with changes made
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without saving changes
+- **And** the original writeup content remains unchanged
+
+### LinkedTasksSection
+
+#### Test: Linked Tasks section displays heading and Add Task button
+- **Given** the user is on the Deal Detail Page
+- **Then** the "Linked Tasks" heading is visible
+- **And** an "Add Task" button is displayed next to the heading
+
+#### Test: Linked Tasks section shows task list with checkboxes
+- **Given** the deal has linked tasks
+- **Then** each task shows a checkbox, task name, and due date or completed date
+- **For example**: an unchecked checkbox with "Prepare Proposal Draft (Due: Oct 30)"
+- **And**: a checked checkbox with strikethrough or completed style showing "Schedule Follow-up Meeting (Completed: Oct 22)"
+
+#### Test: Checking a task checkbox marks it as completed
+- **Given** the task "Prepare Proposal Draft" is unchecked (incomplete)
+- **When** the user clicks the checkbox for "Prepare Proposal Draft"
+- **Then** the task is marked as completed with a checked checkbox
+- **And** the task display changes to show a completed date instead of due date (e.g., "Completed: [today's date]")
+- **And** the change is persisted to the database
+- **And** the task's completed status is also reflected on the client's Tasks section
+
+#### Test: Unchecking a completed task marks it as incomplete
+- **Given** the task "Schedule Follow-up Meeting" is checked (completed)
+- **When** the user clicks the checkbox for "Schedule Follow-up Meeting"
+- **Then** the task is marked as incomplete with an unchecked checkbox
+- **And** the task display reverts to show the due date
+
+#### Test: Add Task button opens task creation form
+- **Given** the user is on the Deal Detail Page
+- **When** the user clicks the "Add Task" button
+- **Then** a form or modal opens with fields for: Task Name (required), Due Date (date picker)
+
+#### Test: New linked task can be created successfully
+- **Given** the task creation form is open
+- **When** the user enters "Send revised proposal" as the task name
+- **And** selects a due date of Nov 15
+- **And** clicks save/submit
+- **Then** the form closes
+- **And** the new task "Send revised proposal (Due: Nov 15)" appears in the Linked Tasks list with an unchecked checkbox
+- **And** the task also appears in the client's Tasks section linked to this deal
+
+#### Test: Add Task form validates required fields
+- **Given** the task creation form is open
+- **When** the user leaves the Task Name field empty and clicks save
+- **Then** a validation error is shown (e.g., "Task name is required")
+- **And** the form is not submitted
+
+#### Test: Add Task form can be cancelled
+- **Given** the task creation form is open with partial data entered
+- **When** the user clicks Cancel or closes the form
+- **Then** the form closes without creating a task
+- **And** no new task appears in the list
+
+### DealAttachmentsSection
+
+#### Test: Attachments section displays heading and upload button
+- **Given** the user is on the Deal Detail Page
+- **Then** the "Attachments" heading is visible
+- **And** an upload button with a cloud upload icon is displayed next to the heading
+
+#### Test: Attachments section shows file list with details
+- **Given** the deal has attachments
+- **Then** each attachment displays: filename, file size in parentheses, a "Download" link, and a "Delete" link separated by a pipe
+- **For example**: "Acme_Requirements.pdf (2.4 MB) - Download | Delete"
+- **And**: "Meeting_Notes_Oct18.docx (50 KB) - Download | Delete"
+
+#### Test: Upload button opens file upload dialog
+- **Given** the user is on the Deal Detail Page
+- **When** the user clicks the upload button (cloud upload icon)
+- **Then** a file upload dialog opens allowing the user to select files from their device
+
+#### Test: File upload adds new attachment to the list
+- **Given** the file upload dialog is open
+- **When** the user selects a file (e.g., "Proposal_v2.pdf", 1.2 MB)
+- **And** the upload completes
+- **Then** the new file "Proposal_v2.pdf (1.2 MB)" appears in the attachments list with Download and Delete links
+- **And** the attachment is also visible in the associated client's Attachments section linked to this deal
+
+#### Test: Download link downloads the attachment file
+- **Given** the attachments section shows "Acme_Requirements.pdf"
+- **When** the user clicks the "Download" link next to "Acme_Requirements.pdf"
+- **Then** the file is downloaded to the user's device
+
+#### Test: Delete link removes the attachment with confirmation
+- **Given** the attachments section shows "Meeting_Notes_Oct18.docx"
+- **When** the user clicks the "Delete" link next to "Meeting_Notes_Oct18.docx"
+- **Then** a confirmation dialog appears (e.g., "Are you sure you want to delete Meeting_Notes_Oct18.docx?")
+- **When** the user confirms deletion
+- **Then** the file is removed from the attachments list
+- **And** the file is also removed from the client's Attachments section
+- **When** the user cancels deletion
+- **Then** the file remains in the list
+
+#### Test: Attachments section shows empty state when no files exist
+- **Given** the deal has no attachments
+- **Then** the section shows an empty state (e.g., "No attachments yet") or just the upload button
+
+### DealContactsSection
+
+#### Test: Contacts/Individuals section displays heading
+- **Given** the user is on the Deal Detail Page
+- **Then** the "Contacts/Individuals" heading is visible
+
+#### Test: Contacts section shows person entries with details
+- **Given** the deal has associated contacts
+- **Then** each contact entry shows: an avatar image, the person's name in bold, their role and client in parentheses, and a "View Profile" link
+- **For example**: avatar, "Jane Smith (Decision Maker, Acme Corp) - View Profile"
+- **And**: avatar, "Bob Johnson (Influencer, Acme Corp) - View Profile"
+
+#### Test: View Profile link navigates to person detail page
+- **Given** the contacts section shows "Jane Smith"
+- **When** the user clicks the "View Profile" link next to Jane Smith
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for Jane Smith
+
+#### Test: View Profile link navigates correctly for each contact
+- **Given** the contacts section shows "Bob Johnson"
+- **When** the user clicks the "View Profile" link next to Bob Johnson
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for Bob Johnson
+
+#### Test: Contacts section shows empty state when no contacts exist
+- **Given** the deal has no associated contacts
+- **Then** the section shows an empty state (e.g., "No contacts linked to this deal")
+
+#### Test: Add contact to deal
+- **Given** the user is on the Deal Detail Page
+- **When** the user clicks an "Add Contact" button or action in the Contacts/Individuals section
+- **Then** a dialog or form opens allowing the user to search for and select an existing individual from the system
+- **When** the user selects "Mike Wilson (Technical Lead, Acme Corp)" and confirms
+- **Then** "Mike Wilson (Technical Lead, Acme Corp) - View Profile" appears in the contacts list
+- **And** the deal is reflected in the individual's associated deals
+
+#### Test: Remove contact from deal
+- **Given** the contacts section shows "Bob Johnson"
+- **When** the user clicks a remove/unlink action for Bob Johnson
+- **Then** a confirmation dialog appears (e.g., "Remove Bob Johnson from this deal?")
+- **When** the user confirms
+- **Then** Bob Johnson is removed from the contacts list
+- **And** the deal is no longer shown in Bob Johnson's associated deals
 
 ---
 

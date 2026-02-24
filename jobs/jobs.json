@@ -1,20 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanComponentDealHeader: Add test entries for DealHeader component",
-        "PlanComponentStageProgressBar: Add test entries for StageProgressBar component",
-        "PlanComponentDealHistorySection: Add test entries for DealHistorySection component",
-        "PlanComponentDealMetricsSection: Add test entries for DealMetricsSection component",
-        "PlanComponentWriteupsSection: Add test entries for WriteupsSection component",
-        "PlanComponentLinkedTasksSection: Add test entries for LinkedTasksSection component",
-        "PlanComponentDealAttachmentsSection: Add test entries for DealAttachmentsSection component",
-        "PlanComponentDealContactsSection: Add test entries for DealContactsSection component"
-      ],
-      "timestamp": "2026-02-24T01:56:17.084Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
