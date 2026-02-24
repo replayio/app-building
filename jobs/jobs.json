@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Replace .toPass() with textContent() in pagination.spec.ts with atomic toHaveText assertion; add pagination count assertion to delete test in table.spec.ts (writeTests directives 7 and 3)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-24T01:36:59.417Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Move outer margin from .clients-filters and .pagination CSS to parent ClientsListPage layout (writeApp directive - components must be layout-agnostic)",
         "RunTests: Verify tests pass after fix"
       ],

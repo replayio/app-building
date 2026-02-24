@@ -182,10 +182,7 @@ test.describe('Pagination', () => {
     // Pagination should reset to page 1
     const paginationInfo = page.getByTestId('pagination-info')
     // With few results it may show "Showing 1-X" or "Showing 0 of 0"
-    await expect(async () => {
-      const infoText = await paginationInfo.textContent()
-      expect(infoText).toMatch(/Showing (1-|0 of 0)/)
-    }).toPass({ timeout: 10000 })
+    await expect(paginationInfo).toHaveText(/Showing (1-|0 of 0)/, { timeout: 10000 })
 
     // If there's a page 1 button, it should be active
     const page1Btn = page.getByTestId('pagination-page-1')

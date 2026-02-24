@@ -259,6 +259,12 @@ test.describe('ClientsTable', () => {
     const newRow = page.locator('[data-testid^="client-row-"]').filter({ hasText: uniqueName })
     await expect(newRow).toBeVisible({ timeout: 10000 })
 
+    // Capture pagination count before deletion
+    const paginationInfo = page.getByTestId('pagination-info')
+    const beforeText = await paginationInfo.textContent()
+    const beforeMatch = beforeText?.match(/of (\d+) clients/)
+    const beforeTotal = beforeMatch ? parseInt(beforeMatch[1]) : 0
+
     // Get the client ID and open action menu
     const actionBtn = newRow.locator('[data-testid^="client-actions-"]')
     const testId = await actionBtn.getAttribute('data-testid')
@@ -285,6 +291,10 @@ test.describe('ClientsTable', () => {
 
     // Client should be removed from the table
     await expect(newRow).not.toBeVisible({ timeout: 10000 })
+
+    // Pagination count should decrease by 1 (side effect assertion)
+    const expectedTotal = beforeTotal - 1
+    await expect(paginationInfo).toHaveText(new RegExp(`of ${expectedTotal} clients`), { timeout: 10000 })
   })
 
   test('Table shows empty state when no clients exist', async ({ page }) => {
