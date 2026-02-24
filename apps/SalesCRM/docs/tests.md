@@ -1603,6 +1603,287 @@ Components: DealsSummaryCards, DealsTableView, DealsPipelineView, DealsFiltersAn
 
 ## DealDetailPage (/deals/:dealId)
 
+Components: DealHeader, DealStageAndMetrics, DealWriteups, DealLinkedTasks, DealAttachments, DealContacts
+
+### DealHeader
+
+#### Header displays deal name as page title
+- **Initial state:** User navigates to /deals/:dealId for a deal named "Acme Corp - $250k Expansion Deal".
+- **Expected:** The page displays "DEAL DETAILS: Acme Corp - $250k Expansion Deal" as the prominent heading at the top of the page. The deal name includes the client name, value, and deal title.
+
+#### Header displays Client field with client name
+- **Initial state:** DealDetailPage is loaded for a deal associated with "Acme Corporation".
+- **Expected:** A "Client:" label is displayed in the header area followed by an editable text field showing "Acme Corporation". The field displays the associated client's name.
+
+#### Clicking Client field allows editing the associated client
+- **Initial state:** DealDetailPage is loaded with Client field showing "Acme Corporation".
+- **Action:** User clicks on the Client field and changes the value to "Beta Industries".
+- **Expected:** The Client field updates to show "Beta Industries". The deal's associated client is updated in the database. A timeline/history entry is created recording the client change.
+
+#### Header displays Value field with dollar amount
+- **Initial state:** DealDetailPage is loaded for a deal with value $250,000.
+- **Expected:** A "Value:" label is displayed in the header area followed by an editable text field showing "$250,000". The value is formatted as a dollar amount.
+
+#### Editing Value field updates the deal value
+- **Initial state:** DealDetailPage is loaded with Value field showing "$250,000".
+- **Action:** User clicks on the Value field, changes it to "$300,000", and confirms.
+- **Expected:** The Value field updates to show "$300,000". The deal's value is persisted in the database. The page title updates to reflect the new value if applicable.
+
+#### Header displays Owner field with user name from dropdown
+- **Initial state:** DealDetailPage is loaded for a deal owned by "Sarah Lee".
+- **Expected:** An "Owner:" label is displayed in the header area followed by a user selection dropdown (FilterSelect) showing "Sarah Lee". The dropdown is populated from the users API.
+
+#### Changing Owner via dropdown updates the deal owner
+- **Initial state:** DealDetailPage is loaded with Owner showing "Sarah Lee".
+- **Action:** User clicks the Owner dropdown, selects "John Doe" from the list of team members.
+- **Expected:** The Owner field updates to show "John Doe". The deal's owner is updated in the database. A timeline/history entry is created recording the owner change.
+
+#### Header displays Stage dropdown with current stage
+- **Initial state:** DealDetailPage is loaded for a deal in "Discovery" stage.
+- **Expected:** A "Stage:" label is displayed in the header area followed by a dropdown showing "Discovery". The dropdown contains all pipeline stages: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won.
+
+#### Change Stage button is displayed next to stage dropdown
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Expected:** A "Change Stage" button is displayed to the right of the Stage dropdown. The button has a distinct visual style (e.g., blue/primary background with white text).
+
+#### Clicking Change Stage updates deal stage and creates history entry
+- **Initial state:** DealDetailPage is loaded for a deal in "Discovery" stage. User selects "Proposal" from the Stage dropdown.
+- **Action:** User clicks the "Change Stage" button.
+- **Expected:** The deal's stage is updated to "Proposal" in the database. The stage progress bar updates to show "Proposal" as the current stage. A new entry is added to the Deal History section recording the stage change (old stage: Discovery, new stage: Proposal, date/time, and user who made the change). Only one history entry is created per stage change (no duplicates from re-renders).
+
+#### Stage dropdown shows all pipeline stages
+- **Initial state:** DealDetailPage is loaded.
+- **Action:** User clicks the Stage dropdown.
+- **Expected:** The dropdown displays all six pipeline stages in order: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won. The current stage is pre-selected.
+
+### DealStageAndMetrics
+
+#### Stage progress bar displays all six stages
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Expected:** A horizontal stage progress bar is displayed below the header. It shows six stages in order from left to right: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won. Each stage has a label and a checkmark icon. The progress bar spans the full width of the content area.
+
+#### Stage progress bar highlights completed stages with checkmarks
+- **Initial state:** DealDetailPage is loaded for a deal in "Discovery" stage.
+- **Expected:** The stages Lead and Qualification show filled/completed checkmark icons (blue/teal circles with white checkmarks). Discovery is labeled "(Current)" and also shows a completed checkmark. Proposal, Negotiation, and Closed Won show unfilled/incomplete checkmark icons (gray circles). The progress bar beneath the stages is filled with color up to and including Discovery, and gray/dashed for the remaining stages.
+
+#### Stage progress bar updates when stage changes
+- **Initial state:** DealDetailPage is loaded for a deal in "Discovery" stage.
+- **Action:** User changes the stage to "Proposal" via the header Stage dropdown and clicks "Change Stage".
+- **Expected:** The progress bar updates: Lead, Qualification, Discovery, and Proposal all show completed checkmarks. Proposal is now labeled "(Current)". Negotiation and Closed Won remain gray/incomplete. The colored portion of the progress bar extends to include Proposal.
+
+#### Stage progress bar shows all stages complete for Closed Won
+- **Initial state:** DealDetailPage is loaded for a deal in "Closed Won" stage.
+- **Expected:** All six stages (Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won) show completed checkmarks with filled icons. Closed Won is labeled "(Current)". The entire progress bar is filled with color.
+
+#### Deal History section displays stage change log
+- **Initial state:** DealDetailPage is loaded for a deal with stage change history (e.g., two previous changes).
+- **Expected:** A "Deal History" section is displayed below the progress bar. It shows a chronological list of stage changes. Each entry displays the date/time, a description "Changed Stage from [old stage] to [new stage]", and the user who made the change in parentheses. For example: "Oct 25, 2023, 2:30 PM: Changed Stage from Qualification to Discovery (Sarah Lee)" and "Oct 18, 2023, 10:15 AM: Changed Stage from Lead to Qualification (John Doe)". Entries are ordered with the most recent first.
+
+#### Deal History adds new entry when stage changes
+- **Initial state:** DealDetailPage is loaded for a deal in "Discovery" stage with existing history entries.
+- **Action:** User changes the stage to "Proposal" via the header and clicks "Change Stage".
+- **Expected:** A new entry appears at the top of the Deal History list showing the current date/time, "Changed Stage from Discovery to Proposal", and the current user's name. The previous entries remain below. Exactly one new entry is created (no duplicates).
+
+#### Deal History shows empty state when no history
+- **Initial state:** DealDetailPage is loaded for a newly created deal with no stage changes.
+- **Expected:** The Deal History section is displayed but shows an empty state message or is simply empty with no entries listed.
+
+#### Deal Metrics displays probability percentage
+- **Initial state:** DealDetailPage is loaded for a deal with probability set to 40%.
+- **Expected:** A "Deal Metrics" section is displayed (to the right of or below Deal History). It shows "Probability: 40%" as a labeled value.
+
+#### Deal Metrics displays expected close date
+- **Initial state:** DealDetailPage is loaded for a deal with expected close date of Dec 15, 2023.
+- **Expected:** The Deal Metrics section shows "Expected Close: Dec 15, 2023" as a labeled value, formatted with month abbreviation, day, and year.
+
+#### Deal Metrics probability and close date are editable
+- **Initial state:** DealDetailPage is loaded for a deal with probability 40% and expected close Dec 15, 2023.
+- **Action:** User clicks on the probability value and changes it to 60%. User clicks on the expected close date and changes it to Jan 15, 2024.
+- **Expected:** The probability updates to show "Probability: 60%". The expected close date updates to show "Expected Close: Jan 15, 2024". Both changes are persisted to the database.
+
+### DealWriteups
+
+#### Writeups section displays heading and New Entry button
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Expected:** A "Writeups" section is displayed with the heading "Writeups". A "+ New Entry" button with a plus icon is displayed to the right of the heading. The button is clickable.
+
+#### Writeups section displays existing writeup entries
+- **Initial state:** DealDetailPage is loaded for a deal with two writeups (e.g., "Strategy Update" by Sarah Lee on Oct 20, and "Needs Analysis" by John Doe on Oct 15).
+- **Expected:** Each writeup entry is displayed as a card/block showing: the title in bold (e.g., "Strategy Update"), the date and author (e.g., "- Oct 20 (Sarah Lee)"), and the content text below (e.g., "Emphasizing our cloud integration capabilities. Client seems receptive..."). Entries are ordered with the most recent first.
+
+#### Writeup entry displays Edit button with pencil icon
+- **Initial state:** DealDetailPage is loaded for a deal with at least one writeup entry.
+- **Expected:** Each writeup entry displays an "Edit" button with a pencil icon at the bottom of the entry card. The button is clickable.
+
+#### Writeup entry displays Version History button with icon
+- **Initial state:** DealDetailPage is loaded for a deal with at least one writeup entry.
+- **Expected:** Each writeup entry displays a "Version History" button with an eye/history icon at the bottom of the entry card, next to the Edit button. The button is clickable.
+
+#### Clicking New Entry button opens writeup creation form
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Action:** User clicks the "+ New Entry" button in the Writeups section.
+- **Expected:** A modal or inline form appears with fields for: title (text input), content (textarea/rich text area). The form has "Save" and "Cancel" buttons. The author and date are set automatically from the current user and current date.
+
+#### Submitting new writeup entry adds it to the list
+- **Initial state:** The new writeup form is open. User has entered title "Competitive Analysis" and content "Key competitor pricing information gathered from latest RFP response."
+- **Action:** User clicks "Save".
+- **Expected:** The form closes. A new writeup entry appears at the top of the Writeups list showing "Competitive Analysis" as the title, the current date, the current user's name (or "System" if unauthenticated), and the entered content. The entry is persisted to the database.
+
+#### Canceling new writeup entry discards changes
+- **Initial state:** The new writeup form is open with some text entered.
+- **Action:** User clicks "Cancel".
+- **Expected:** The form closes. No new writeup entry is added to the list. The Writeups section remains unchanged.
+
+#### Clicking Edit button opens writeup editing form
+- **Initial state:** DealDetailPage is loaded with a writeup entry "Strategy Update" with content "Emphasizing our cloud integration capabilities."
+- **Action:** User clicks the "Edit" button (pencil icon) on the "Strategy Update" entry.
+- **Expected:** A modal or inline form appears with the title field pre-populated with "Strategy Update" and the content field pre-populated with the existing content. "Save" and "Cancel" buttons are available.
+
+#### Saving edited writeup updates the entry and creates a version
+- **Initial state:** The edit form is open for "Strategy Update" writeup. User changes the content to "Updated strategy focusing on cloud and AI integration capabilities."
+- **Action:** User clicks "Save".
+- **Expected:** The writeup entry updates to show the new content. The title, date, and author remain correct. A new version is saved in the version history. The change is persisted to the database.
+
+#### Clicking Version History button shows previous versions
+- **Initial state:** DealDetailPage is loaded with a writeup entry that has been edited at least once (has version history).
+- **Action:** User clicks the "Version History" button (eye/history icon) on the writeup entry.
+- **Expected:** A modal or expandable section appears showing a list of previous versions of the writeup. Each version shows the date/time it was saved, the author, and the content at that point in time. Versions are ordered with the most recent first.
+
+#### Writeups section shows empty state when no writeups exist
+- **Initial state:** DealDetailPage is loaded for a deal with no writeups.
+- **Expected:** The Writeups section displays the heading and the "+ New Entry" button. The content area shows an empty state message (e.g., "No writeups yet") or is simply empty with no entry cards.
+
+### DealLinkedTasks
+
+#### Linked Tasks section displays heading and Add Task button
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Expected:** A "Linked Tasks" section is displayed with the heading "Linked Tasks". An "Add Task" button is displayed to the right of the heading. The button is clickable and styled consistently with other action buttons on the page.
+
+#### Linked Tasks section displays task list with checkboxes
+- **Initial state:** DealDetailPage is loaded for a deal with linked tasks (e.g., "Prepare Proposal Draft" due Oct 30, and "Schedule Follow-up Meeting" completed Oct 22).
+- **Expected:** Each task is displayed as a row with: a checkbox on the left, the task title/description, and the due date or completed date. Uncompleted tasks show an empty checkbox and "(Due: [date])" text. Completed tasks show a filled/checked checkbox with strikethrough or distinct styling and "(Completed: [date])" text.
+
+#### Uncompleted task displays with empty checkbox and due date
+- **Initial state:** DealDetailPage is loaded with an uncompleted task "Prepare Proposal Draft" due Oct 30.
+- **Expected:** The task row shows an empty/unchecked checkbox, the task title "Prepare Proposal Draft", and the text "(Due: Oct 30)". The task title is not struck through and appears in normal text styling.
+
+#### Completed task displays with checked checkbox and completed date
+- **Initial state:** DealDetailPage is loaded with a completed task "Schedule Follow-up Meeting" completed Oct 22.
+- **Expected:** The task row shows a filled/checked checkbox (with an X or checkmark), the task title "Schedule Follow-up Meeting", and the text "(Completed: Oct 22)". The task title may appear in a muted or strikethrough style to indicate completion.
+
+#### Clicking checkbox toggles task completion status
+- **Initial state:** DealDetailPage is loaded with an uncompleted task "Prepare Proposal Draft".
+- **Action:** User clicks the checkbox next to "Prepare Proposal Draft".
+- **Expected:** The checkbox becomes checked/filled. The task status updates to completed. The due date text changes to show the completion date. The change is persisted to the database. A timeline entry is created recording the task completion. The task remains visible in the list (does not disappear).
+
+#### Unchecking a completed task marks it as incomplete
+- **Initial state:** DealDetailPage is loaded with a completed task "Schedule Follow-up Meeting" (checkbox is checked).
+- **Action:** User clicks the checked checkbox next to "Schedule Follow-up Meeting".
+- **Expected:** The checkbox becomes unchecked/empty. The task status reverts to incomplete. The completed date text reverts to showing the due date. The change is persisted to the database.
+
+#### Clicking a task title navigates to /tasks/:taskId
+- **Initial state:** DealDetailPage is loaded with a linked task "Prepare Proposal Draft" with task id 5.
+- **Action:** User clicks on the task title "Prepare Proposal Draft".
+- **Expected:** The browser navigates to /tasks/5 and the TaskDetailPage is displayed showing the full details for that task.
+
+#### Clicking Add Task button opens task creation form
+- **Initial state:** DealDetailPage is loaded for a deal associated with client "Acme Corp".
+- **Action:** User clicks the "Add Task" button in the Linked Tasks section.
+- **Expected:** A modal or form appears for creating a new task. The form includes fields for: title (text input), description (textarea), due date (date picker), priority (dropdown), and assignee (user dropdown populated from users API). The deal and client associations are pre-populated/automatic.
+
+#### Submitting new task adds it to the linked tasks list
+- **Initial state:** The task creation form is open. User has entered title "Send Contract Draft", due date "Nov 15", priority "High", and assignee "Sarah Lee".
+- **Action:** User clicks "Save" or "Create".
+- **Expected:** The form closes. A new task appears in the Linked Tasks list showing "Send Contract Draft" with an empty checkbox and "(Due: Nov 15)". The task is persisted to the database and associated with the current deal and its client. A timeline entry is created on the client recording the task creation.
+
+#### Linked Tasks section shows empty state when no tasks
+- **Initial state:** DealDetailPage is loaded for a deal with no linked tasks.
+- **Expected:** The Linked Tasks section displays the heading and the "Add Task" button. The content area shows an empty state message (e.g., "No linked tasks") or is simply empty.
+
+### DealAttachments
+
+#### Attachments section displays heading and upload button
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Expected:** An "Attachments" section is displayed with the heading "Attachments". An upload button (cloud upload icon) is displayed to the right of the heading. The button is clickable.
+
+#### Attachments section displays file list with names and sizes
+- **Initial state:** DealDetailPage is loaded for a deal with attachments (e.g., "Acme_Requirements.pdf" 2.4 MB, "Meeting_Notes_Oct18.docx" 50 KB).
+- **Expected:** Each attachment is displayed as a row showing: the filename (e.g., "Acme_Requirements.pdf"), the file size in parentheses (e.g., "(2.4 MB)"), a "Download" link, and a "Delete" link separated by a pipe character. The file size uses appropriate units (KB, MB).
+
+#### Attachment rows display file-type-specific icons
+- **Initial state:** DealDetailPage is loaded for a deal with attachments of different types (e.g., PDF, DOCX, image files).
+- **Expected:** Each attachment row displays a file-type-specific icon to the left of the filename. Document files (PDF, DOC, DOCX) show a document icon. Image files (PNG, JPG, GIF) show an image icon. Spreadsheet files (XLS, XLSX, CSV) show a spreadsheet icon. Code files show a code icon. Generic/unknown file types show a default file icon.
+
+#### Image attachments display thumbnail previews
+- **Initial state:** DealDetailPage is loaded for a deal with image attachments (e.g., "mockup-screenshot.png").
+- **Expected:** Image-type attachments display a small thumbnail preview of the image alongside the filename instead of (or in addition to) the generic file-type icon. The thumbnail is a recognizable scaled-down version of the image.
+
+#### Clicking Download link downloads the attachment file
+- **Initial state:** DealDetailPage is loaded with an attachment "Acme_Requirements.pdf".
+- **Action:** User clicks the "Download" link on the "Acme_Requirements.pdf" row.
+- **Expected:** The file download initiates for "Acme_Requirements.pdf". The browser downloads the file or opens it in a new tab depending on file type and browser settings.
+
+#### Clicking Delete link removes the attachment with confirmation
+- **Initial state:** DealDetailPage is loaded with an attachment "Meeting_Notes_Oct18.docx".
+- **Action:** User clicks the "Delete" link on the "Meeting_Notes_Oct18.docx" row.
+- **Expected:** A confirmation dialog appears asking the user to confirm deletion (e.g., "Are you sure you want to delete this attachment?"). Upon confirmation, the attachment is removed from the list and deleted from the database/storage. The file is also removed from the client's attachments section if it was visible there.
+
+#### Delete attachment cancellation keeps the attachment
+- **Initial state:** The delete confirmation dialog is open for an attachment.
+- **Action:** User clicks "Cancel" on the confirmation dialog.
+- **Expected:** The dialog closes. The attachment remains in the list unchanged.
+
+#### Clicking upload button opens upload modal with file/link toggle
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Action:** User clicks the upload button (cloud icon) in the Attachments section.
+- **Expected:** An upload modal appears with a toggle to switch between "File Upload" and "Link URL" modes. In File Upload mode, a file picker/drop zone is displayed allowing the user to select a file from their device. In Link URL mode, a text input field is displayed for entering a URL. The modal has "Upload"/"Add" and "Cancel" buttons.
+
+#### Uploading a file via file picker adds attachment to list
+- **Initial state:** The upload modal is open in File Upload mode.
+- **Action:** User selects a file "Proposal_v2.pdf" (1.5 MB) via the file picker and clicks "Upload".
+- **Expected:** The file is uploaded to storage. The modal closes. A new attachment "Proposal_v2.pdf (1.5 MB)" appears in the Attachments list with Download and Delete links. The attachment is associated with the current deal and persisted to the database.
+
+#### Adding a link URL adds attachment to list
+- **Initial state:** The upload modal is open in Link URL mode.
+- **Action:** User enters a URL "https://docs.example.com/requirements" and clicks "Add".
+- **Expected:** The modal closes. A new attachment entry appears in the list showing the URL or a derived name. The link attachment is persisted to the database and associated with the deal.
+
+#### Attachments section shows empty state when no attachments
+- **Initial state:** DealDetailPage is loaded for a deal with no attachments.
+- **Expected:** The Attachments section displays the heading and the upload button. The content area shows an empty state message (e.g., "No attachments") or is simply empty.
+
+### DealContacts
+
+#### Contacts/Individuals section displays heading
+- **Initial state:** DealDetailPage is loaded for a deal.
+- **Expected:** A "Contacts/Individuals" section is displayed with the heading "Contacts/Individuals". The section is positioned below the Attachments section.
+
+#### Contacts section displays person entries with avatar, name, role, and organization
+- **Initial state:** DealDetailPage is loaded for a deal with associated contacts (e.g., "Jane Smith" as Decision Maker at Acme Corp, "Bob Johnson" as Influencer at Acme Corp).
+- **Expected:** Each contact entry displays: a circular avatar image (or initials placeholder), the person's name in bold (e.g., "Jane Smith"), their role in parentheses (e.g., "(Decision Maker, Acme Corp)"), and a "View Profile" link. The avatar, name, role, and organization are all visible in each row.
+
+#### Contact entry displays View Profile link
+- **Initial state:** DealDetailPage is loaded with a contact "Jane Smith" (individual id 10) listed in the Contacts/Individuals section.
+- **Expected:** A "View Profile" link is displayed to the right of Jane Smith's name and role information. The link text reads "View Profile" and is styled as a clickable link (e.g., blue underlined text).
+
+#### Clicking View Profile link navigates to /individuals/:id
+- **Initial state:** DealDetailPage is loaded with contact "Jane Smith" (individual id 10).
+- **Action:** User clicks the "View Profile" link next to "Jane Smith".
+- **Expected:** The browser navigates to /individuals/10 and the PersonDetailPage is displayed showing Jane Smith's full profile including relationships, contact history, and associated clients.
+
+#### Clicking View Profile on different contact navigates correctly
+- **Initial state:** DealDetailPage is loaded with contact "Bob Johnson" (individual id 15).
+- **Action:** User clicks the "View Profile" link next to "Bob Johnson".
+- **Expected:** The browser navigates to /individuals/15 and the PersonDetailPage is displayed showing Bob Johnson's full profile.
+
+#### Contacts section shows empty state when no contacts
+- **Initial state:** DealDetailPage is loaded for a deal with no associated contacts/individuals.
+- **Expected:** The Contacts/Individuals section displays the heading. The content area shows an empty state message (e.g., "No contacts associated with this deal") or is simply empty.
+
+#### Multiple contacts are listed in the section
+- **Initial state:** DealDetailPage is loaded for a deal with three associated contacts.
+- **Expected:** All three contacts are displayed in the section, each as a separate row with avatar, name, role, organization, and View Profile link. The contacts are listed vertically one after another.
+
 ## TasksListPage (/tasks)
 
 Components: TasksFilterBar, TaskCard, CreateTaskModal, TasksListContent

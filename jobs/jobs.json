@@ -3,19 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageDealDetailPage: Decide on components for DealDetailPage, add sections to docs/tests.md",
-        "PlanComponentDealHeader: Add test entries for deal header (deal name, client field, value field, owner user dropdown, stage dropdown, Change Stage button)",
-        "PlanComponentDealStageAndMetrics: Add test entries for stage progress bar (Lead/Qualification/Discovery/Proposal/Negotiation/Closed Won), Deal History section (stage change log with old/new/date/user), Deal Metrics (probability, expected close date)",
-        "PlanComponentDealWriteups: Add test entries for Writeups section (entries with title/date/author/content, New Entry button, Edit button, Version History button)",
-        "PlanComponentDealLinkedTasks: Add test entries for Linked Tasks section (task list with checkboxes, due dates, completed status, Add Task button, click navigates to /tasks/:taskId)",
-        "PlanComponentDealAttachments: Add test entries for Attachments section (file list with size, Download/Delete links, upload button with file/link toggle, file-type icons, image thumbnails)",
-        "PlanComponentDealContacts: Add test entries for Contacts/Individuals section (person name, role, organization, View Profile link navigates to /individuals/:id)"
-      ],
-      "timestamp": "2026-02-23T21:27:02.064Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageTasksListPage: Decide on components for TasksListPage, add sections to docs/tests.md",
         "PlanComponentTasksList: Add test entries for task cards (priority badge High/Medium/Low/Normal, title, due date, assignee avatar+name+role, action menu; click navigates to /tasks/:taskId)",
         "PlanComponentTasksFilterAndCreate: Add test entries for filter control (filter dropdown + text input), New Task button and CreateTaskModal (title, description, due date, priority, client searchable dropdown, assignee user dropdown, validation)"
