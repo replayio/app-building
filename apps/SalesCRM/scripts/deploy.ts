@@ -265,25 +265,36 @@ async function main(): Promise<void> {
     },
   )
   if (!envSetRes.ok) {
-    // Try PATCH in case env var already exists
-    const patchRes = await fetch(
+    // Delete existing env var then re-create it
+    await fetch(
       `https://api.netlify.com/api/v1/accounts/${process.env.NETLIFY_ACCOUNT_SLUG}/env/DATABASE_URL?site_id=${siteId}`,
       {
-        method: 'PATCH',
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${netlifyToken}`,
+        },
+      },
+    )
+    const retryRes = await fetch(
+      `https://api.netlify.com/api/v1/accounts/${process.env.NETLIFY_ACCOUNT_SLUG}/env?site_id=${siteId}`,
+      {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${netlifyToken}`,
         },
-        body: JSON.stringify({
-          key: 'DATABASE_URL',
-          scopes: ['builds', 'functions', 'runtime', 'post-processing'],
-          values: [{ value: databaseUrl, context: 'all' }],
-        }),
+        body: JSON.stringify([
+          {
+            key: 'DATABASE_URL',
+            scopes: ['builds', 'functions', 'runtime', 'post-processing'],
+            values: [{ value: databaseUrl, context: 'all' }],
+          },
+        ]),
       },
     )
-    if (!patchRes.ok) {
-      const errText = await patchRes.text()
-      throw new Error(`Failed to set Netlify env var (${patchRes.status}): ${errText}`)
+    if (!retryRes.ok) {
+      const errText = await retryRes.text()
+      throw new Error(`Failed to set Netlify env var (${retryRes.status}): ${errText}`)
     }
   }
   console.log('Environment variables set.')
