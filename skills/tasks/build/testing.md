@@ -289,3 +289,18 @@ When testing the app after deployment, use the Replay browser to record the app 
   OOM or crash with `ERR_STRING_TOO_LONG` on large suites. Always run tests one spec file at a
   time using `npm run test tests/<file>.spec.ts` (which uses the test script that manages
   database branches). When verifying broad changes, pick the most relevant 2-3 spec files.
+- Tests that run in `fullyParallel` mode must use unique test data per worker. Tests that share
+  mutable state (same client IDs, same task names) will cause cross-test data contamination.
+  Use unique identifiers (e.g., worker-specific prefixes) or run stateful tests serially.
+- The Vite dev server cold start can cause the first test in a suite to timeout. Consider adding
+  a warm-up navigation in `beforeAll` or increasing the first test's timeout to account for
+  cold start latency.
+- Avoid hardcoding expected values in assertions. Tests that hardcode specific counts (e.g.,
+  `expect 1 remaining task`) or specific names (e.g., `"David Lee"`) break when test data
+  changes. Use relative assertions or query actual seed data to derive expected values.
+- Validate that seed data exists before asserting on it. If a test expects a specific assignee
+  name or record count, verify the data is present first. This catches seed data mismatches
+  early instead of producing confusing assertion failures.
+- Before writing tests that rely on `data-testid` attributes, verify those attributes exist in
+  the component source. Missing `data-testid` attributes cause test failures that are easy to
+  prevent with a quick source check.
