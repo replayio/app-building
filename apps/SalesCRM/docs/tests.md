@@ -350,7 +350,281 @@
 - CreateDealButton
 - Pagination
 
-<!-- Test entries will be added by PlanComponent jobs -->
+### DealsSummaryCards
+
+#### Test: Summary cards display Total Active Deals count
+- **Given** the user navigates to the Deals List Page (/deals)
+- **Then** a summary card labeled "Total Active Deals:" is displayed
+- **And** the card shows the count of all active deals (e.g., "124")
+- **And** the card has an icon to the left of the text
+
+#### Test: Summary cards display Pipeline Value
+- **Given** the user is on the Deals List Page
+- **Then** a summary card labeled "Pipeline Value:" is displayed
+- **And** the card shows the total monetary value of the active pipeline (e.g., "$4.5M")
+- **And** the card has an icon to the left of the text
+
+#### Test: Summary cards display Won Q3 count and value
+- **Given** the user is on the Deals List Page
+- **Then** a summary card labeled "Won (Q3):" is displayed
+- **And** the card shows the count of deals won in Q3 followed by the total value in parentheses (e.g., "32 ($1.2M)")
+- **And** the card has an icon to the left of the text
+
+#### Test: Summary cards display Lost Q3 count and value
+- **Given** the user is on the Deals List Page
+- **Then** a summary card labeled "Lost (Q3):" is displayed
+- **And** the card shows the count of deals lost in Q3 followed by the total value in parentheses (e.g., "18 ($0.6M)")
+- **And** the card has an icon to the left of the text
+
+#### Test: Summary cards update when deals data changes
+- **Given** the user is on the Deals List Page with summary cards showing current totals
+- **When** a new deal is created
+- **Then** the "Total Active Deals" count increments by 1
+- **And** the "Pipeline Value" updates to include the new deal's value
+
+### DealsViewTabs
+
+#### Test: View tabs display Table View and Pipeline View options
+- **Given** the user is on the Deals List Page
+- **Then** two view tabs are displayed: "Table View" and "Pipeline View"
+- **And** "Table View" is selected/active by default with a visual highlight (e.g., underline or bold text)
+
+#### Test: Table View tab shows deals in table format
+- **Given** the user is on the Deals List Page with "Table View" active
+- **Then** the deals are displayed in a table with columns: Deal Name, Client, Stage, Owner, Value, Close Date, Status
+- **And** each row has a "..." action menu on the right side
+
+#### Test: Pipeline View tab shows deals in pipeline/board format
+- **Given** the user is on the Deals List Page
+- **When** the user clicks the "Pipeline View" tab
+- **Then** the "Pipeline View" tab becomes visually highlighted as active
+- **And** the "Table View" tab returns to its default non-active state
+- **And** the deals are displayed in a pipeline/board layout grouped by deal stage columns
+
+#### Test: Switching back to Table View from Pipeline View
+- **Given** the user is on the Deals List Page with "Pipeline View" active
+- **When** the user clicks the "Table View" tab
+- **Then** the "Table View" tab becomes visually highlighted as active
+- **And** the deals are displayed in the table format again
+
+### DealsFilters
+
+#### Test: Stage dropdown filters by deal stage
+- **Given** the Deals List Page is loaded with deals in various stages (e.g., Discovery, Qualification, Proposal Sent, Negotiation, Closed Won)
+- **When** the user selects "Discovery" from the Stage dropdown (default "All Stages")
+- **Then** only deals with stage "Discovery" are shown in the table
+- **And** the Stage dropdown displays "Discovery"
+- **When** the user selects "All Stages" from the Stage dropdown
+- **Then** all deals are shown regardless of stage
+
+#### Test: Client dropdown filters by associated client
+- **Given** the Deals List Page is loaded with deals associated with various clients (e.g., "Acme Corp.", "Beta Industries", "Gamma Solutions")
+- **When** the user selects "Acme Corp." from the Client dropdown (default "All Clients")
+- **Then** only deals associated with "Acme Corp." are shown in the table
+- **And** the Client dropdown displays "Acme Corp."
+- **When** the user selects "All Clients" from the Client dropdown
+- **Then** all deals are shown regardless of client
+
+#### Test: Status dropdown filters by deal status
+- **Given** the Deals List Page is loaded with deals of various statuses (On Track, Needs Attention, At Risk, Won)
+- **When** the user selects "On Track" from the Status dropdown (default "Active")
+- **Then** only deals with status "On Track" are shown in the table
+- **And** the Status dropdown displays "On Track"
+- **When** the user selects "Active" from the Status dropdown
+- **Then** all active deals are shown
+
+#### Test: Date Range picker filters by close date range
+- **Given** the Deals List Page is loaded with deals having various close dates
+- **When** the user selects a date range (e.g., from "2023-10-01" to "2023-11-30") using the Date Range picker
+- **Then** only deals with a close date within the selected range are shown
+- **And** the Date Range picker displays the selected range
+
+#### Test: Sort by dropdown changes table ordering
+- **Given** the Deals List Page is loaded with multiple deals
+- **When** the user selects "Close Date (Newest)" from the Sort by dropdown
+- **Then** deals are ordered by close date with the newest first
+- **When** the user selects "Close Date (Oldest)" from the Sort by dropdown
+- **Then** deals are ordered by close date with the oldest first
+- **When** the user selects "Value (Highest)" from the Sort by dropdown
+- **Then** deals are ordered by value with the highest first
+- **When** the user selects "Value (Lowest)" from the Sort by dropdown
+- **Then** deals are ordered by value with the lowest first
+
+#### Test: Search input filters deals by name
+- **Given** the Deals List Page is loaded with multiple deals (e.g., "Project Alpha Expansion", "Q4 Marketing Campaign", "Enterprise License Renewal")
+- **When** the user types "Alpha" into the search input (placeholder "Search deals...")
+- **Then** only deals whose name matches "Alpha" are shown (e.g., "Project Alpha Expansion")
+- **And** non-matching deals are hidden
+
+#### Test: Search input shows empty state when no results match
+- **Given** the Deals List Page is loaded with deals
+- **When** the user types "zzzznonexistent" into the search input
+- **Then** the table shows an empty state message (e.g., "No deals found")
+- **And** the pagination is hidden or shows no results
+
+#### Test: Clearing search resets the filter
+- **Given** the user has typed "Alpha" into the search input and the table is filtered
+- **When** the user clears the search input (backspace or clear icon)
+- **Then** all deals are shown again (subject to any active dropdown filters)
+
+#### Test: Multiple filters combine correctly
+- **Given** the Deals List Page is loaded with deals
+- **When** the user selects "Discovery" from the Stage dropdown
+- **And** the user selects "Acme Corp." from the Client dropdown
+- **Then** only deals that are in "Discovery" stage AND associated with "Acme Corp." are shown
+- **When** the user additionally types "Platform" into the search input
+- **Then** only deals matching all three filters are shown
+
+### DealsTable
+
+#### Test: Table displays all column headers
+- **Given** the Deals List Page is loaded with Table View active
+- **Then** the table shows column headers: Deal Name, Client, Stage, Owner, Value, Close Date, Status
+- **And** each row has a "..." action menu on the right side
+
+#### Test: Deal Name column displays deal names as clickable links
+- **Given** the table shows deals
+- **Then** each deal name is displayed as a clickable link
+- **When** the user clicks on a deal name (e.g., "Project Alpha Expansion")
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for that deal
+
+#### Test: Client column displays associated client name
+- **Given** the table shows deals
+- **Then** each row displays the associated client name in the Client column (e.g., "Acme Corp.", "Beta Industries")
+
+#### Test: Stage column displays deal stage
+- **Given** the table shows deals in different stages
+- **Then** each row displays the deal's current stage (e.g., "Proposal Sent", "Qualification", "Negotiation", "Discovery", "Closed Won")
+
+#### Test: Owner column displays deal owner name
+- **Given** the table shows deals with different owners
+- **Then** each row displays the deal owner's abbreviated name (e.g., "Sarah K.", "Mike R.", "Emily L.", "Chris B.")
+
+#### Test: Value column displays deal monetary value
+- **Given** the table shows deals with different values
+- **Then** each row displays the deal's value formatted as currency (e.g., "$250,000", "$75,000", "$450,000")
+
+#### Test: Close Date column displays date and supports sorting
+- **Given** the table shows deals with different close dates
+- **Then** each row displays the close date (e.g., "2023-11-15", "2023-12-01")
+- **And** the Close Date column header has a sort indicator arrow
+- **When** the user clicks the Close Date column header
+- **Then** the table sorts by close date
+
+#### Test: Status column shows color-coded badges
+- **Given** the table shows deals with different statuses
+- **Then** "On Track" status is shown as a blue/teal badge
+- **And** "Needs Attention" status is shown as a yellow/orange badge
+- **And** "At Risk" status is shown as a red badge
+- **And** "Won" status is shown as a green badge
+
+#### Test: Row action menu opens with options
+- **Given** the table shows deals
+- **When** the user clicks the "..." action menu on a deal row
+- **Then** a dropdown menu appears with options such as "View Details", "Edit", "Delete"
+
+#### Test: Row action menu "View Details" navigates to deal detail
+- **Given** the row action menu is open for deal "Project Alpha Expansion"
+- **When** the user clicks "View Details"
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Project Alpha Expansion"
+
+#### Test: Row action menu "Edit" opens edit dialog
+- **Given** the row action menu is open for a deal
+- **When** the user clicks "Edit"
+- **Then** an edit dialog opens pre-populated with the deal's current data (Deal Name, Client, Stage, Owner, Value, Close Date, Status)
+- **When** the user changes the deal value and saves
+- **Then** the updated value is reflected in the deals table
+
+#### Test: Row action menu "Edit" dialog can be cancelled
+- **Given** the row action menu is open for a deal
+- **When** the user clicks "Edit"
+- **Then** an edit dialog opens pre-populated with the deal's current data
+- **When** the user changes the deal value and clicks Cancel
+- **Then** the dialog closes without saving changes
+- **And** the original deal value remains unchanged in the table
+
+#### Test: Row action menu "Delete" with confirmation
+- **Given** the row action menu is open for deal "Q4 Marketing Campaign"
+- **When** the user clicks "Delete"
+- **Then** a confirmation dialog appears (e.g., "Are you sure you want to delete Q4 Marketing Campaign?")
+- **When** the user confirms deletion
+- **Then** the deal is removed from the table
+- **And** the summary cards update to reflect the removal (e.g., Total Active Deals decrements)
+- **And** the pagination count updates accordingly
+- **When** the user cancels deletion
+- **Then** the deal remains in the table
+
+#### Test: Table shows empty state when no deals exist
+- **Given** there are no deals in the system
+- **Then** the table shows an empty state message (e.g., "No deals yet. Create your first deal to get started.")
+- **And** there may be a call-to-action button to create a deal
+
+### CreateDealButton
+
+#### Test: Create New Deal button is displayed as a blue primary button
+- **Given** the user is on the Deals List Page
+- **Then** a "Create New Deal" button is displayed in the top-right area of the page
+- **And** the button is styled as a blue primary button
+
+#### Test: Create New Deal button opens creation dialog
+- **Given** the user is on the Deals List Page
+- **When** the user clicks the "Create New Deal" button
+- **Then** a modal dialog opens with a form for creating a new deal
+- **And** the form includes fields: Deal Name (required text input), Client (dropdown to select an existing client), Stage (dropdown with options: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won), Owner (dropdown or text input), Value (currency input), Close Date (date picker), Status (dropdown with options: On Track, Needs Attention, At Risk)
+
+#### Test: Create New Deal form validates required fields
+- **Given** the Create New Deal dialog is open
+- **When** the user leaves the Deal Name field empty and submits the form
+- **Then** a validation error is shown on the Deal Name field (e.g., "Deal name is required")
+- **And** the form is not submitted
+
+#### Test: Create New Deal form creates a deal successfully
+- **Given** the Create New Deal dialog is open
+- **When** the user enters "New Enterprise Deal" as Deal Name, selects "Acme Corp." as Client, selects "Discovery" as Stage, enters "Sarah K." as Owner, enters "$500,000" as Value, selects a close date, and selects "On Track" as Status
+- **And** the user clicks the submit/save button
+- **Then** the dialog closes
+- **And** the new deal "New Enterprise Deal" appears in the deals table with the correct Client, Stage, Owner, Value, Close Date, and Status
+- **And** a success message is shown (e.g., "Deal created successfully")
+- **And** the summary cards update to reflect the new deal (Total Active Deals increments, Pipeline Value increases)
+- **And** the deal appears in the associated client's Deals section on the Client Detail Page
+
+#### Test: Create New Deal dialog can be cancelled
+- **Given** the Create New Deal dialog is open and the user has entered partial data
+- **When** the user clicks the Cancel button or closes the dialog
+- **Then** the dialog closes without creating a deal
+- **And** no new deal appears in the table
+
+### Pagination
+
+#### Test: Pagination displays current page information
+- **Given** the system has multiple pages of deals and the page size is configured
+- **Then** the pagination shows "Page 1 of X" (e.g., "Page 1 of 9")
+
+#### Test: Clicking Next page loads the next set of deals
+- **Given** the user is on page 1 of deals
+- **When** the user clicks the Next page button
+- **Then** the table updates to show the next page of deals
+- **And** the pagination text updates to "Page 2 of 9"
+
+#### Test: Clicking Previous page loads the previous set of deals
+- **Given** the user is on page 2 of deals
+- **When** the user clicks the Previous page button
+- **Then** the table updates to show the first page of deals
+- **And** the pagination text updates to "Page 1 of 9"
+
+#### Test: Previous button is disabled on first page
+- **Given** the user is on the first page of deals
+- **Then** the Previous page button is disabled or visually inactive
+
+#### Test: Next button is disabled on last page
+- **Given** the user is on the last page of deals
+- **Then** the Next page button is disabled or visually inactive
+
+#### Test: Pagination resets when filters change
+- **Given** the user is on page 3 of deals
+- **When** the user applies a filter (e.g., Stage: Discovery)
+- **Then** the pagination resets to page 1
+- **And** the page count updates to reflect the filtered total
 
 ---
 
