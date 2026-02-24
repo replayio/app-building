@@ -3,11 +3,12 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+        "FixViolation: Fix imprecise navigation URL assertions in tasks-list.spec.ts View Details and Clicking card tests to verify specific client URL or page content",
+        "FixViolation: Fix incomplete field assertions in tasks-header.spec.ts New Task creation (missing due date and assignee verification) and tasks-list.spec.ts Edit dialog (missing pre-population checks for due date, priority, assignee, client, deal)",
+        "RunTests: Verify tests pass after TasksListPage test assertion fixes",
+        "DocumentFix: Document the TasksListPage test assertion fixes"
       ],
-      "timestamp": "2026-02-24T04:04:36.652Z"
+      "timestamp": "2026-02-24T04:16:50.666Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
