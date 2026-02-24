@@ -2,6 +2,7 @@ import { ChildProcess, spawn } from "child_process";
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import type { Logger } from "./log";
+import { ensureBranch } from "./git";
 
 const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
@@ -253,6 +254,7 @@ export async function processTasks(
   onEvent?: EventCallback,
   shouldStop?: () => boolean,
   commitFn?: (label: string) => void,
+  pushBranch?: string,
 ): Promise<{ tasksProcessed: number; totalCost: number }> {
   let tasksProcessed = 0;
   let totalCost = 0;
@@ -282,6 +284,15 @@ export async function processTasks(
       log(`Error running claude: ${e.message}`);
       commitFn?.("Agent error recovery");
       continue;
+    }
+
+    // Restore push branch in case the task switched branches (e.g. mergeSkills)
+    if (pushBranch) {
+      try {
+        ensureBranch(pushBranch, log);
+      } catch (e: any) {
+        log(`Warning: failed to restore branch ${pushBranch}: ${e.message}`);
+      }
     }
 
     if (response.cost_usd != null) {

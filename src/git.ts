@@ -68,6 +68,24 @@ export function getLocalBranch(cwd: string = "."): string {
   }).trim();
 }
 
+/**
+ * Ensure the repo is on the expected branch. If a task switched branches,
+ * this checks out back to the target branch so task-file and commit
+ * operations happen on the correct branch.
+ */
+export function ensureBranch(branch: string, log: Logger, dir: string = REPO_DIR): void {
+  const current = getLocalBranch(dir);
+  if (current !== branch) {
+    log(`Branch drifted to "${current}", checking out "${branch}"`);
+    execFileSync("git", ["checkout", branch], {
+      cwd: dir,
+      encoding: "utf-8",
+      timeout: 10000,
+      stdio: "pipe",
+    });
+  }
+}
+
 export function cloneRepo(url: string, branch: string, dir: string = REPO_DIR): void {
   const args = ["clone", "--branch", branch, "--single-branch", url, dir];
   execFileSync("git", args, { encoding: "utf-8", timeout: 120000, stdio: "pipe" });

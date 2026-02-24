@@ -233,6 +233,7 @@ async function processLoop(): Promise<void> {
             commitAndPushTarget(label, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
           }
         },
+        PUSH_BRANCH,
       );
       tasksProcessed += jobResult.tasksProcessed;
       totalCost += jobResult.totalCost;
