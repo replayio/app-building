@@ -3,10 +3,12 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
+        "WriteComponentNavBar: Write the NavBar component",
+        "WriteComponentAccountsOverviewHeader: Write the AccountsOverviewHeader component",
+        "WriteComponentAccountCard: Write the AccountCard component",
+        "WritePageAccountsPage: Write the AccountsPage page itself"
       ],
-      "timestamp": "2026-02-24T19:42:13.438Z"
+      "timestamp": "2026-02-24T19:52:20.449Z"
     },
     {
       "skill": "skills/tasks/writeScript.md",
@@ -349,6 +351,60 @@
         "WritePageReportList: Write the ReportList page itself"
       ],
       "timestamp": "2026-02-24T19:42:25.901Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentAccountHeader: Write the AccountHeader component",
+        "WriteComponentBudgetOverview: Write the BudgetOverview component",
+        "WriteComponentTransactionsTab: Write the TransactionsTab component",
+        "WriteComponentBudgetDetailsTab: Write the BudgetDetailsTab component",
+        "WriteComponentReportingLinks: Write the ReportingLinks component",
+        "WritePageAccountDetailPage: Write the AccountDetailPage page itself"
+      ],
+      "timestamp": "2026-02-24T19:52:27.517Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTransactionHeaderFields: Write the TransactionHeaderFields component",
+        "WriteComponentLineItemsTable: Write the LineItemsTable component",
+        "WriteComponentBalanceIndicator: Write the BalanceIndicator component",
+        "WriteComponentTagsInput: Write the TagsInput component",
+        "WritePageNewTransactionModal: Write the NewTransactionModal page itself"
+      ],
+      "timestamp": "2026-02-24T19:52:32.493Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentReportTypeSelector: Write the ReportTypeSelector component",
+        "WriteComponentDateRangeSelector: Write the DateRangeSelector component",
+        "WriteComponentAccountCategoryFilter: Write the AccountCategoryFilter component",
+        "WriteComponentReportPreview: Write the ReportPreview component",
+        "WritePageCreateReportDialog: Write the CreateReportDialog page itself"
+      ],
+      "timestamp": "2026-02-24T19:52:37.272Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentReportHeader: Write the ReportHeader component",
+        "WriteComponentVarianceSummary: Write the VarianceSummary component",
+        "WriteComponentVarianceChart: Write the VarianceChart component",
+        "WriteComponentDetailedReportTable: Write the DetailedReportTable component",
+        "WritePageReportDetails: Write the ReportDetails page itself"
+      ],
+      "timestamp": "2026-02-24T19:52:41.930Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentReportListHeader: Write the ReportListHeader component",
+        "WriteComponentReportTable: Write the ReportTable component",
+        "WritePageReportList: Write the ReportList page itself"
+      ],
+      "timestamp": "2026-02-24T19:52:46.072Z"
     }
   ]
 }
