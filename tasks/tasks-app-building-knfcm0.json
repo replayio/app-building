@@ -3,9 +3,11 @@
     {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
-        "Unpack: Implement package scripts for InventoryTracker"
+        "Implement deploy.ts for InventoryTracker",
+        "Implement seed-db.ts for InventoryTracker",
+        "Implement test.ts for InventoryTracker"
       ],
-      "timestamp": "2026-02-24T19:26:28.736Z"
+      "timestamp": "2026-02-24T21:11:00.922Z"
     },
     {
       "skill": "skills/tasks/build/writeTests.md",
