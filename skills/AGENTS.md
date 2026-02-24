@@ -9,8 +9,8 @@ build or maintain an app, or a question about logs). They add tasks to the queue
 `add-task --trailing`.
 
 - **addBugReport.md**: Record a user-reported bug in `docs/bugReports.md`.
-- **analyzeLogs.md**: Search through log files to find specific information.
 - **buildInitialApp.md**: Build a new app from an AppSpec. Adds build stage tasks to the queue.
+- **generateReport.md**: Generate a report by analyzing logs. Matches user request to a report type, queues the review pipeline.
 - **maintainApp.md**: Run a maintenance cycle on an existing app. Adds maintain stage tasks to the queue.
 - **updateScripts.md**: Write a design doc for a new package script, then add a task to implement it.
 
@@ -51,3 +51,14 @@ Used when maintaining an existing app (see `messages/maintainApp.md` for stage o
 - **reviewBugReport.md**: Review fixed bugs for process improvements and directive updates.
 - **checkDirectives.md**: Systematically check the app against all skill directives.
 - **polishApp.md**: Improve the app's overall quality.
+
+### `review/` — Report generation and review
+
+Used when generating reports from worker logs (see `messages/generateReport.md` for pipeline):
+
+- **analyzeLogs.md**: Analyze log files and produce per-log analysis files. Has Unpack (list logs, queue groups) and AnalyzeGroup (process ~10 logs) subtask types.
+- **synthesizeReport.md**: Read all analysis files and compile a final report.
+- **updateSkills.md**: Apply report recommendations to update skill files.
+- **mergeSkills.md**: Prepare a clean branch with skill changes and the report for PR to main.
+- **reportTestFailures.md**: Report definition for test failure analysis — per-log template and synthesis instructions.
+- **reportShellCommands.md**: Report definition for shell command usage — per-log template and synthesis instructions.

@@ -173,6 +173,9 @@ mandatory — do NOT skip or reorder steps.
    You MUST fill in every section before making any code changes.
 7. Only after completing the Replay analysis AND the bug writeup, fix the test and/or app based
    on what you found.
+8. After fixing the failure, commit your changes and announce:
+   CHANGESET REVISION: <git rev-parse HEAD> FAILING TEST: <test name>
+   This line MUST appear in the log exactly as formatted — report tools search for it.
 
 ### Bug Writeup Template
 
