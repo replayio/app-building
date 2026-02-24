@@ -3,21 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageClientDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentClientHeader: Add test entries for ClientHeader",
-        "PlanComponentQuickActions: Add test entries for QuickActions (Add Task, Add Deal, Add Attachment, Add Person)",
-        "PlanComponentSourceInfoSection: Add test entries for SourceInfoSection",
-        "PlanComponentTasksSection: Add test entries for TasksSection",
-        "PlanComponentDealsSection: Add test entries for DealsSection",
-        "PlanComponentAttachmentsSection: Add test entries for AttachmentsSection",
-        "PlanComponentPeopleSection: Add test entries for PeopleSection",
-        "PlanComponentTimelineSection: Add test entries for TimelineSection"
-      ],
-      "timestamp": "2026-02-23T21:49:48.453Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPagePersonDetailPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentPersonHeader: Add test entries for PersonHeader",
         "PlanComponentRelationshipsSection: Add test entries for RelationshipsSection (Graph/List View, Filter, Add Entry)",

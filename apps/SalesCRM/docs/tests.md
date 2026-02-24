@@ -367,6 +367,38 @@
 - **When** the user cancels or closes the edit interface
 - **Then** the original tags remain unchanged
 
+#### Test: Clicking client name opens inline edit for name
+- **Given** the user is on the Client Detail Page for "Acme Corp"
+- **When** the user clicks on the client name "Acme Corp"
+- **Then** the name becomes an editable text input pre-populated with "Acme Corp"
+- **When** the user changes the name to "Acme Corporation" and presses Enter or clicks away to confirm
+- **Then** the header displays "Acme Corporation" as the client name
+- **And** the change is persisted to the database
+- **And** a timeline entry is created recording the name change (e.g., "Client name changed from 'Acme Corp' to 'Acme Corporation'")
+- **And** the client's name is updated on the Clients List Page (/clients)
+
+#### Test: Editing client name can be cancelled
+- **Given** the client name inline edit is active
+- **When** the user presses Escape or cancels the edit
+- **Then** the original client name is restored
+- **And** no changes are persisted
+
+#### Test: Clicking status badge opens status selection
+- **Given** the user is on the Client Detail Page for a client with "Active" status
+- **When** the user clicks on the "Active" status badge
+- **Then** a dropdown or selection interface appears with options: Active, Inactive, Prospect, Churned
+- **When** the user selects "Churned"
+- **Then** the status badge updates to "Churned" with a red color
+- **And** the change is persisted to the database
+- **And** a timeline entry is created recording the status change (e.g., "Status changed from 'Active' to 'Churned'")
+- **And** the client's status is updated on the Clients List Page (/clients)
+
+#### Test: Status change can be dismissed without changing
+- **Given** the status selection interface is open
+- **When** the user clicks outside or presses Escape without selecting a new status
+- **Then** the selection interface closes
+- **And** the original status remains unchanged
+
 ### QuickActions
 
 #### Test: Quick action buttons are displayed with correct icons and labels
@@ -443,6 +475,13 @@
 - **And** a success message is shown
 - **And** a timeline entry is created recording the attachment upload
 
+#### Test: Add Attachment dialog shows deal association dropdown
+- **Given** the file upload dialog is open from the Client Detail Page for "Acme Corp" which has deals "Acme Software License" and "Additional Services"
+- **Then** the dialog includes an optional "Link to Deal" dropdown listing "None", "Acme Software License", and "Additional Services"
+- **When** the user selects "Acme Software License", uploads a file "Specs.pdf", and confirms
+- **Then** the new attachment "Specs.pdf" appears in the AttachmentsSection with "Linked Deal: 'Acme Software License'"
+- **And** the attachment also appears in the Attachments section on the Deal Detail Page for "Acme Software License"
+
 #### Test: Add Attachment dialog can be cancelled
 - **Given** the file upload dialog is open
 - **When** the user clicks Cancel or closes the dialog
@@ -462,6 +501,18 @@
 - **And** "Jane Doe - VP Sales" appears in the PeopleSection on the Client Detail Page with an avatar
 - **And** a success message is shown
 - **And** "Acme Corp" appears in the Associated Clients section on Jane Doe's Person Detail Page
+- **And** a timeline entry is created recording the contact addition
+
+#### Test: Add Person dialog supports creating a new person
+- **Given** the Add Person dialog is open from the Client Detail Page for "Acme Corp"
+- **When** the user chooses to create a new person instead of selecting an existing one
+- **Then** the dialog shows fields for: Name (required), Role/Title (text input), Email (text input), Phone (text input)
+- **When** the user enters "Tom Wilson" as Name, "Sales Director" as Role/Title, and clicks save
+- **Then** the dialog closes
+- **And** "Tom Wilson - Sales Director" appears in the PeopleSection on the Client Detail Page
+- **And** a new person record is created in the system and is accessible at their Person Detail Page (/individuals/:individualId)
+- **And** "Acme Corp" appears in the Associated Clients section on Tom Wilson's Person Detail Page
+- **And** a success message is shown
 - **And** a timeline entry is created recording the contact addition
 
 #### Test: Add Person form validates required fields
@@ -510,6 +561,7 @@
 - **Then** the edit form closes
 - **And** the Campaign field now displays "Q4 Outreach"
 - **And** the change is persisted to the database
+- **And** a timeline entry is created recording the source info change (e.g., "Source Info updated: Campaign changed from 'None' to 'Q4 Outreach'")
 
 #### Test: Source Info edit can be cancelled
 - **Given** the Source Info edit form is open with changes made
@@ -555,6 +607,11 @@
 - **Then** the task is marked as unresolved with an unchecked checkbox
 - **And** the change is persisted to the database
 
+#### Test: Clicking a task name navigates to the task detail page
+- **Given** the Tasks section shows task "Follow up on proposal"
+- **When** the user clicks on the task name "Follow up on proposal"
+- **Then** the app navigates to the task detail or opens the task for viewing/editing on the Tasks List Page (/tasks) with that task highlighted or expanded
+
 #### Test: Tasks section shows empty state when no unresolved tasks exist
 - **Given** the client has no unresolved tasks
 - **Then** the Tasks section shows an empty state message (e.g., "No tasks for this client." or "No unresolved tasks")
@@ -580,6 +637,12 @@
 - **Given** the Deals section shows deal "Additional Services"
 - **When** the user clicks on the "Additional Services" deal entry
 - **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Additional Services"
+
+#### Test: Deal entries display as interactive rows with hover state
+- **Given** the Deals section shows deal entries
+- **Then** each deal entry is displayed as a clickable row with a subtle background color
+- **When** the user hovers over a deal entry
+- **Then** the row displays a hover state indicating it is clickable
 
 #### Test: Deals section shows empty state when no deals exist
 - **Given** the client has no deals
@@ -621,6 +684,7 @@
 - **Then** the attachment is removed from the Attachments list
 - **And** the deletion is persisted to the database
 - **And** if the attachment was linked to a deal, it is also removed from the deal's Attachments section on the Deal Detail Page
+- **And** a timeline entry is created recording the attachment deletion (e.g., "Attachment deleted: 'Project Scope.docx'")
 - **When** the user cancels deletion
 - **Then** the attachment remains in the list
 
@@ -657,6 +721,20 @@
 - **When** the user clicks on the "Michael Chen" entry
 - **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for "Michael Chen"
 
+#### Test: Person entry shows remove action on hover or via context menu
+- **Given** the People section shows "Sarah Johnson - CEO"
+- **When** the user hovers over the "Sarah Johnson" entry or accesses a context/action menu
+- **Then** a remove icon or "Remove" action is visible
+- **When** the user clicks the remove action
+- **Then** a confirmation dialog appears (e.g., "Remove Sarah Johnson from Acme Corp?")
+- **When** the user confirms removal
+- **Then** "Sarah Johnson" is removed from the People section
+- **And** "Acme Corp" is removed from the Associated Clients section on Sarah Johnson's Person Detail Page
+- **And** a timeline entry is created recording the contact removal (e.g., "Contact removed: 'Sarah Johnson'")
+- **And** the removal is persisted to the database
+- **When** the user cancels removal
+- **Then** the person remains in the People section
+
 #### Test: People section shows empty state when no individuals are associated
 - **Given** the client has no associated individuals
 - **Then** the People section shows an empty state message (e.g., "No people associated with this client")
@@ -692,6 +770,45 @@
 - **Given** the timeline has a contact added event
 - **Then** the entry displays the date, "Contact Added" as the event type, the contact name in quotes (e.g., "'Michael Chen'"), and the user who added them as a clickable link (e.g., "by User C")
 
+#### Test: Timeline displays status changed events
+- **Given** the timeline has a status change event
+- **Then** the entry displays the date, "Status Changed" as the event type, the old and new statuses (e.g., "from 'Prospect' to 'Active'"), and the user who changed it as a clickable link (e.g., "by User A")
+
+#### Test: Timeline displays task completed events
+- **Given** the timeline has a task completed event
+- **Then** the entry displays the date, "Task Completed" as the event type, the task name in quotes (e.g., "'Follow up on proposal'"), and the user who completed it as a clickable link
+
+#### Test: Timeline displays deal created events
+- **Given** the timeline has a deal creation event
+- **Then** the entry displays the date, "Deal Created" as the event type, the deal name in quotes (e.g., "'Acme Software License'"), and the user who created it as a clickable link
+
+#### Test: Timeline displays attachment uploaded events
+- **Given** the timeline has an attachment uploaded event
+- **Then** the entry displays the date, "Attachment Uploaded" as the event type, the filename in quotes (e.g., "'Service Agreement.pdf'"), and the user who uploaded it as a clickable link
+
+#### Test: Timeline displays attachment deleted events
+- **Given** the timeline has an attachment deleted event
+- **Then** the entry displays the date, "Attachment Deleted" as the event type, and the filename in quotes (e.g., "'Project Scope.docx'")
+
+#### Test: Timeline displays source info updated events
+- **Given** the timeline has a source info update event
+- **Then** the entry displays the date, "Source Info Updated" as the event type, and a summary of the changed fields (e.g., "Campaign changed from 'None' to 'Q4 Outreach'")
+
+#### Test: Timeline displays contact removed events
+- **Given** the timeline has a contact removed event
+- **Then** the entry displays the date, "Contact Removed" as the event type, the contact name in quotes (e.g., "'Sarah Johnson'"), and the user who removed them as a clickable link
+
+#### Test: Timeline entries are clickable and navigate to detail pages
+- **Given** the timeline shows a "Task Created" entry for "'Follow up on proposal'"
+- **When** the user clicks on the task name in the timeline entry
+- **Then** the app navigates to the task detail or opens the task for viewing/editing on the Tasks List Page (/tasks)
+- **Given** the timeline shows a "Deal Stage Changed" entry for "'Acme Software License'"
+- **When** the user clicks on the deal name in the timeline entry
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Acme Software License"
+- **Given** the timeline shows a "Contact Added" entry for "'Michael Chen'"
+- **When** the user clicks on the contact name in the timeline entry
+- **Then** the app navigates to the Person Detail Page (/individuals/:individualId) for "Michael Chen"
+
 #### Test: Timeline entry user links navigate to correct pages
 - **Given** the timeline shows an entry with a clickable user name or contact name
 - **When** the user clicks on a person name link (e.g., "Sarah Johnson") in a timeline entry
@@ -701,6 +818,12 @@
 - **Given** the user is on the Client Detail Page for "Acme Corp"
 - **When** the user creates a new task via the Add Task quick action
 - **Then** a new "Task Created" entry appears at the top of the Timeline section with the current date and the action details
+- **And** exactly one timeline entry is created (no duplicates)
+- **When** the user creates a new deal via the Add Deal quick action
+- **Then** a new "Deal Created" entry appears at the top of the Timeline
+- **And** exactly one timeline entry is created (no duplicates)
+- **When** the user changes the client's status from "Active" to "Churned"
+- **Then** a new "Status Changed" entry appears at the top of the Timeline
 - **And** exactly one timeline entry is created (no duplicates)
 
 #### Test: Timeline shows empty state when no events exist
