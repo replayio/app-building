@@ -1,13 +1,11 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "CheckTestSpecTaskDetail: Check testSpec.md directive violations in TaskDetailPage test entries",
-        "CheckComponentsTaskDetail: Check writeApp.md directive violations in TaskDetailPage components",
-        "CheckTestsTaskDetail: Check writeTests.md directive violations in TaskDetailPage tests"
+        "PlanPageTaskDetail: Decide on TaskDetailPage components, add sections and test entries to docs/tests.md for TaskDetailPage"
       ],
-      "timestamp": "2026-02-23T23:39:18.637Z"
+      "timestamp": "2026-02-24T00:34:33.607Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
@@ -642,6 +640,20 @@
         "WriteTestsDealsListPage: Write all Playwright tests for DealsListPage"
       ],
       "timestamp": "2026-02-24T00:03:19.091Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "PlanTaskDetailComponents: Plan and write TaskDetailPage components (sections, backend functions for task notes) based on docs/tests.md"
+      ],
+      "timestamp": "2026-02-24T00:34:38.028Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "PlanTaskDetailTests: Write playwright tests for TaskDetailPage based on docs/tests.md entries"
+      ],
+      "timestamp": "2026-02-24T00:34:43.391Z"
     }
   ]
 }
