@@ -3,9 +3,13 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageAccountsPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentNavBar: Add test entries for NavBar (navigation links, New Transaction button, user menu, Log Out)",
+        "PlanComponentAccountsOverviewHeader: Add test entries for AccountsOverviewHeader (page title, Generate Reports button)",
+        "PlanComponentCategorySection: Add test entries for CategorySection (expand/collapse categories, category totals, 5 categories displayed)",
+        "PlanComponentAccountCard: Add test entries for AccountCard (account name, balance, debits/credits YTD, budget vs actual bar, View Budget Details link, three-dot menu, click to navigate to detail)"
       ],
-      "timestamp": "2026-02-24T19:27:20.282Z"
+      "timestamp": "2026-02-24T19:29:18.573Z"
     },
     {
       "skill": "skills/tasks/build/writeShared.md",
@@ -244,6 +248,60 @@
         "Unpack: Deploy to production for SupplierTracker"
       ],
       "timestamp": "2026-02-24T19:26:43.495Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAccountDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentAccountHeader: Add test entries for AccountHeader (account name, category label, New Transaction button, search bar)",
+        "PlanComponentBudgetOverview: Add test entries for BudgetOverview (progress bar, actual vs budgeted amounts, percentage used)",
+        "PlanComponentTransactionsTab: Add test entries for TransactionsTab (table with Date/Description/Amount/Direction/Actions columns, View/Edit links, tab switching)",
+        "PlanComponentBudgetDetailsTab: Add test entries for BudgetDetailsTab (budget line items with actual/budgeted, progress bars per item)",
+        "PlanComponentReportingLinks: Add test entries for ReportingLinks (Actual vs Budget Report link, Transaction History Report link)"
+      ],
+      "timestamp": "2026-02-24T19:29:25.540Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageNewTransactionModal: Decide on components, add sections to docs/tests.md",
+        "PlanComponentTransactionHeaderFields: Add test entries for TransactionHeaderFields (date picker, description input, currency dropdown)",
+        "PlanComponentLineItemsTable: Add test entries for LineItemsTable (account dropdown, type Credit/Debit dropdown, amount input, delete row button, Add Line Item button)",
+        "PlanComponentBalanceIndicator: Add test entries for BalanceIndicator (total debits/credits display, Transaction is Balanced/Unbalanced indicator, validation prevents saving unbalanced)",
+        "PlanComponentTagsInput: Add test entries for TagsInput (add tags, remove tags with X, optional field)"
+      ],
+      "timestamp": "2026-02-24T19:29:33.217Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageCreateReportDialog: Decide on components, add sections to docs/tests.md",
+        "PlanComponentReportTypeSelector: Add test entries for ReportTypeSelector (Summary Overview, Detailed Transactions, Budget vs Actual tabs)",
+        "PlanComponentDateRangeSelector: Add test entries for DateRangeSelector (start/end date pickers, This Month/Last Quarter/YTD preset buttons)",
+        "PlanComponentAccountCategoryFilter: Add test entries for AccountCategoryFilter (tree checkboxes for Assets/Liabilities/Equity/Revenue/Expenses with sub-categories, Include Zero Balance toggle)",
+        "PlanComponentReportPreview: Add test entries for ReportPreview (preview table with Category/Account/Budget/Actual/Variance/Variance%, Refresh Preview button, expandable account rows, Cancel and Generate Report buttons)"
+      ],
+      "timestamp": "2026-02-24T19:29:43.396Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageReportDetails: Decide on components, add sections to docs/tests.md",
+        "PlanComponentReportHeader: Add test entries for ReportHeader (report title with ID, breadcrumb navigation, Export PDF button, Export CSV button)",
+        "PlanComponentVarianceSummary: Add test entries for VarianceSummary (Total Variance with arrow, Actual Spend, Budgeted Spend, mini trend chart)",
+        "PlanComponentVarianceChart: Add test entries for VarianceChart (bar chart showing Actual vs Budgeted per account, account labels on x-axis)",
+        "PlanComponentDetailedReportTable: Add test entries for DetailedReportTable (Account/Item, Actual, Budget, Variance $, Variance %, Trend sparkline, Actions View button, expandable sub-item rows)"
+      ],
+      "timestamp": "2026-02-24T19:29:50.271Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageReportList: Decide on components, add sections to docs/tests.md",
+        "PlanComponentReportListHeader: Add test entries for ReportListHeader (page title, search bar, Generate New Report button)",
+        "PlanComponentReportTable: Add test entries for ReportTable (Report Name sortable column, Type, Date Range, Accounts Included, Status badge, Actions with refresh/download/View Details, pagination)"
+      ],
+      "timestamp": "2026-02-24T19:29:55.925Z"
     }
   ]
 }
