@@ -1,0 +1,87 @@
+# Debugging Race Conditions with Replay
+
+Race conditions cause flaky tests — they pass sometimes and fail others. The root cause is
+usually parallel tests modifying shared state, or async operations completing in an unexpected
+order. Replay recordings capture the exact execution, making the non-determinism visible.
+
+## Tool Sequence
+
+1. **`PlaywrightSteps`** — Establish the test flow. Identify which step's assertion failed
+   and what value it received vs. expected.
+
+2. **`Logpoint`** — Place logpoints on the code that produces the contested value. Inspect
+   how many times it was called and what values flowed through. Key locations:
+   - API response handlers (where state is set from fetched data)
+   - Redux/state dispatches
+   - Component render functions (to see re-render counts)
+
+3. **`SearchSources`** — Check hit counts on specific lines. If a line that should execute
+   once has multiple hits, something is triggering it repeatedly (e.g., React strict mode
+   double-firing effects, or concurrent test workers hitting the same endpoint).
+
+4. **`Evaluate`** — Evaluate expressions at specific execution points to inspect intermediate
+   state. Useful for checking array lengths, object properties, or computed values at the
+   exact moment an assertion runs.
+
+5. **`NetworkRequest`** — Check for overlapping or out-of-order API calls. A common pattern:
+   a PATCH (optimistic update) followed by a GET (refresh), where the GET response arrives
+   after the PATCH and overwrites the optimistic state with stale data.
+
+## Common Root Causes (from observed failures)
+
+### Parallel test interference on shared records
+Multiple tests in the same spec file modify the same database record (e.g., adding
+relationships to the same person). Count-based assertions (`toHaveCount(1)`) fail because
+another test added an extra record concurrently.
+
+**Fix**: Switch from count-based assertions to name-based assertions (check for a specific
+item by name rather than exact count). Or create isolated test data per test.
+
+*Example*: `worker-2026-02-20T21-05-51-266Z.log` — PDP-REL-04a expected relationship count 1,
+got 2. Logpoints showed a parallel test added a relationship to the same person simultaneously.
+
+### Optimistic update overwritten by late GET response
+A test clicks a toggle (PATCH request), then immediately asserts the new state. But a
+previously-triggered GET request returns with stale data and overwrites the optimistic update.
+
+**Fix**: Intercept routes in the test to prevent the stale GET from overwriting, or wait for
+the GET to complete before asserting.
+
+*Example*: `worker-2026-02-21T09-35-37-625Z.log` — Webhook toggle test. SearchSources showed
+the GET response handler had more hits than expected, and the late GET overwrote the PATCH
+result.
+
+### React strict mode double-firing effects
+In development mode, React strict mode runs effects twice. If an effect makes an API call
+(e.g., fetching data on mount), the second call's response can arrive and overwrite state
+set by earlier interactions.
+
+**Fix**: Ensure effects are idempotent, or use abort controllers to cancel stale requests.
+
+### Cross-test data contamination
+When tests fail intermittently with unexpected data states (wrong counts, unexpected records,
+stale values), check for parallel test interference. This happens when multiple tests or
+workers modify the same database records concurrently.
+
+**Diagnosis**: Tests pass in isolation but fail when run in the full suite. Error messages
+show unexpected counts or data values that don't match what the test created.
+
+**Fix**: Apply one or more of these strategies:
+- Use unique test data per parallel worker (unique names, IDs, or prefixes)
+- Run stateful tests serially (`test.describe.serial`) when they must share state
+- Add per-test database cleanup in `beforeEach`/`afterEach`
+- Use per-worker database branches (already the default in this repo)
+
+*Example*: 5 failures (15% of all failures) in `sales-crm-2-review-5` were caused by
+cross-test contamination in `fullyParallel` mode where tests shared the same client IDs
+and task names.
+
+### Date.now() or shared identifiers across workers
+When parallel Playwright workers share a module-level `Date.now()` value for generating
+unique IDs (like test emails), all workers get the same value, causing collisions.
+
+**Fix**: Generate unique values inside `beforeAll`/`beforeEach` using `Math.random()` or
+worker-specific identifiers.
+
+*Example*: `worker-2026-02-21T04-44-16-693Z.log` — Parallel workers tried to sign up with
+the same email (Date.now() evaluated at module load). Fixed with per-worker random emails.

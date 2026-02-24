@@ -1,11 +1,11 @@
 import { createServer, IncomingMessage, ServerResponse } from "http";
 import { resolve } from "path";
-import { cloneRepo, checkoutPushBranch, commitAndPush, getRevision, toTokenUrl } from "./git";
+import { cloneRepo, checkoutTargetBranch, commitAndPushTarget, getRevision, toTokenUrl } from "./git";
 import {
   processMessage,
-  processJobGroups,
+  processTasks,
   currentClaudeProcess,
-  getPendingGroupCount,
+  getPendingTaskCount,
   type ClaudeResult,
   type EventCallback,
 } from "./worker";
@@ -64,7 +64,7 @@ const logBuffer = new OffsetBuffer<string>();
 let nextMessageId = 1;
 let totalCost = 0;
 let iteration = 0;
-let groupsProcessed = 0;
+let tasksProcessed = 0;
 
 // --- Container state ---
 
@@ -72,8 +72,6 @@ type ContainerState = "starting" | "idle" | "processing" | "stopping" | "stopped
 let state: ContainerState = "starting";
 let detachRequested = false;
 let stopRequested = false;
-let unmergedBranch: string | null = null;
-
 // Wake signal for processing loop
 let wakeResolve: (() => void) | null = null;
 
@@ -206,11 +204,11 @@ async function processLoop(): Promise<void> {
         log(`Error: ${e.message}`);
       }
 
-      // Final commit and push after message (skip if stopping — unmerged branch gets these)
+      // Final commit and push after message
       if (!stopRequested) {
         const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
-        archiveCurrentLog(LOGS_DIR);
-        commitAndPush(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, REPO_DIR);
+        archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
+        commitAndPushTarget(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
         log(`Final revision: ${getRevision(REPO_DIR)}`);
       }
 
@@ -218,38 +216,40 @@ async function processLoop(): Promise<void> {
       continue;
     }
 
-    // Process pending job groups (after message handling above, or standalone)
-    const pendingGroups = getPendingGroupCount();
-    if (!stopRequested && pendingGroups > 0) {
-      log(`Processing ${pendingGroups} pending job group(s)...`);
+    // Process pending tasks (after message handling above, or standalone)
+    const pendingTasks = getPendingTaskCount();
+    if (!stopRequested && pendingTasks > 0) {
+      log(`Processing ${pendingTasks} pending task(s)...`);
       state = "processing";
-      const jobResult = await processJobGroups(
+      const jobResult = await processTasks(
         extraArgs,
         log,
         onEvent,
         () => stopRequested,
         (label) => {
           if (!stopRequested) {
-            archiveCurrentLog(LOGS_DIR);
-            commitAndPush(label, PUSH_BRANCH, log, REPO_DIR);
+            iteration++;
+            archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
+            commitAndPushTarget(label, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
           }
         },
+        PUSH_BRANCH,
       );
-      groupsProcessed += jobResult.groupsProcessed;
+      tasksProcessed += jobResult.tasksProcessed;
       totalCost += jobResult.totalCost;
-      log(`Job processing complete. ${jobResult.groupsProcessed} group(s) processed, cost: $${jobResult.totalCost.toFixed(4)}`);
+      log(`Task processing complete. ${jobResult.tasksProcessed} task(s) processed, cost: $${jobResult.totalCost.toFixed(4)}`);
       state = "idle";
       continue;
     }
 
-    // Check for detach: exit when queue is empty and no pending groups
-    if (detachRequested && messageQueue.length === 0 && getPendingGroupCount() === 0) {
+    // Check for detach: exit when queue is empty and no pending tasks
+    if (detachRequested && messageQueue.length === 0 && getPendingTaskCount() === 0) {
       log("Detach requested and all work complete. Shutting down.");
       break;
     }
 
     // Wait for something to happen
-    log(`Idle. Queue: ${messageQueue.length} messages, ${getPendingGroupCount()} groups pending. Waiting...`);
+    log(`Idle. Queue: ${messageQueue.length} messages, ${getPendingTaskCount()} tasks pending. Waiting...`);
     state = "idle";
     await waitForWake();
   }
@@ -257,17 +257,14 @@ async function processLoop(): Promise<void> {
   state = "stopping";
   log("Server shutting down.");
 
-  // Only create an unmerged branch on stop (interrupted work), not on detach (clean completion)
+  // Commit and push any remaining work on stop
   if (stopRequested) {
     try {
-      const branch = `${PUSH_BRANCH}-unmerged-${CONTAINER_NAME}`;
-      checkoutPushBranch(branch, REPO_DIR);
-      archiveCurrentLog(LOGS_DIR);
-      commitAndPush(`Unmerged work from ${CONTAINER_NAME}`, branch, log, REPO_DIR);
-      unmergedBranch = branch;
-      log(`Unmerged branch: ${branch}`);
+      iteration++;
+      archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
+      commitAndPushTarget(`Final work from ${CONTAINER_NAME}`, PUSH_BRANCH, log, () => true, REPO_DIR);
     } catch (e: any) {
-      log(`Warning: failed to push unmerged branch: ${e.message}`);
+      log(`Warning: failed to push final work: ${e.message}`);
     }
   }
 
@@ -369,13 +366,14 @@ const server = createServer(async (req, res) => {
     if (method === "GET" && url === "/status") {
       json(res, 200, {
         state,
+        containerName: CONTAINER_NAME,
+        pushBranch: PUSH_BRANCH,
         queueLength: messageQueue.length,
-        pendingGroups: getPendingGroupCount(),
-        groupsProcessed,
+        pendingTasks: getPendingTaskCount(),
+        tasksProcessed,
         totalCost,
         iteration,
         detachRequested,
-        unmergedBranch,
         revision: getRevision(REPO_DIR),
       });
       return;
@@ -408,20 +406,15 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // Checkout push branch if different from clone branch
-  if (PUSH_BRANCH !== CLONE_BRANCH) {
-    console.log(`Checking out push branch: ${PUSH_BRANCH}`);
-    try {
-      checkoutPushBranch(PUSH_BRANCH, REPO_DIR);
-    } catch (e: any) {
-      console.error(`Warning: checkout push branch failed: ${e.message}`);
-    }
-  }
-
   // Now that /repo exists, initialize the logger
-  log = createBufferedLogger(LOGS_DIR, (line) => {
+  log = createBufferedLogger(LOGS_DIR, CONTAINER_NAME, iteration, (line) => {
     logBuffer.append(line);
   });
+
+  // Checkout target branch if different from clone branch
+  if (PUSH_BRANCH !== CLONE_BRANCH) {
+    checkoutTargetBranch(PUSH_BRANCH, log, REPO_DIR);
+  }
 
   log(`Revision: ${getRevision(REPO_DIR)}`);
   log(`Push branch: ${PUSH_BRANCH}`);
