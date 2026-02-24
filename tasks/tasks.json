@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageNewTransaction: Decide on components, add sections to docs/tests.md for NewTransactionPage (/transactions/new)",
-        "PlanComponentBasicInfoForm: Add test entries for BasicInfoForm (Date picker, Reference ID text input, Description textarea, Transaction Type dropdown selector) and page header (Cancel button navigates back, Post button submits form)",
-        "PlanComponentQuantityTransfersList: Add test entries for QuantityTransfersList (list of existing transfers showing Source Account/Destination Account/Amount/unit/Source Batch ID with delete button per row; Add Quantity Transfer button; inline form row with Source Account dropdown, Destination Account dropdown, Amount input, unit selector, Source Batch ID input)",
-        "PlanComponentBatchAllocationList: Add test entries for BatchAllocationList (list of batches being created showing Material/Amount with delete button per row; Create New Batch button; inline form with Material dropdown, Amount input; double-entry validation ensuring debits equal credits before Post)"
-      ],
-      "timestamp": "2026-02-24T03:48:25.361Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageTransactionDetail: Decide on components, add sections to docs/tests.md for TransactionDetailPage (/transactions/:transactionId)",
         "PlanComponentTransactionHeader: Add test entries for TransactionHeader (Transaction ID, Completed status badge, Date/Time, Creator, Description) and breadcrumb navigation (Home > Transactions > TXN-ID)",
         "PlanComponentBasicInfoSection: Add test entries for BasicInfo section (Date field, Reference ID field, Description field, Transaction Type field - all read-only)",
