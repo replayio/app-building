@@ -1,12 +1,11 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, writeFileSync, appendFileSync, existsSync } from "fs";
+import { readFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import { remoteBuildAndPush, createApp, createMachine, waitForMachine, destroyMachine, listMachines } from "./fly";
 import { logContainer, markStopped } from "./container-registry";
 
 const IMAGE_NAME = "app-building";
 const CONTAINER_PORT = 3000;
-const STATE_FILE = resolve(__dirname, "..", ".agent-state.json");
 
 export interface AgentState {
   type: "local" | "remote";
@@ -91,38 +90,8 @@ function findFreePort(): number {
   return port;
 }
 
-export function writeAgentState(state: AgentState): void {
-  writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + "\n");
+function registerContainer(state: AgentState): void {
   logContainer(state);
-}
-
-export function readAgentState(): AgentState | null {
-  if (!existsSync(STATE_FILE)) return null;
-  try {
-    const state = JSON.parse(readFileSync(STATE_FILE, "utf-8"));
-    if (!state.type) state.type = "local";
-    return state;
-  } catch {
-    return null;
-  }
-}
-
-export function clearAgentState(containerName?: string): void {
-  if (containerName) {
-    markStopped(containerName);
-  } else {
-    // Try to read the current state to get the container name before clearing
-    const state = readAgentState();
-    if (state) {
-      markStopped(state.containerName);
-    }
-  }
-  try {
-    const { unlinkSync } = require("fs");
-    unlinkSync(STATE_FILE);
-  } catch {
-    // Already gone
-  }
 }
 
 export interface StartContainerOptions {
@@ -247,7 +216,7 @@ export async function startContainer(
   }
 
   const agentState: AgentState = { type: "local", containerName, port: hostPort, baseUrl };
-  writeAgentState(agentState);
+  registerContainer(agentState);
 
   return agentState;
 }
@@ -359,7 +328,7 @@ export async function startRemoteContainer(
     flyApp,
     flyMachineId: machineId,
   };
-  writeAgentState(agentState);
+  registerContainer(agentState);
 
   return agentState;
 }
@@ -378,7 +347,7 @@ export async function stopRemoteContainer(state: AgentState): Promise<void> {
   console.log(`Destroying Fly machine ${state.flyMachineId}...`);
   await destroyMachine(state.flyApp, flyToken, state.flyMachineId);
   console.log("Machine destroyed.");
-  clearAgentState();
+  markStopped(state.containerName);
 }
 
 export function stopContainer(containerName: string): void {
@@ -387,7 +356,7 @@ export function stopContainer(containerName: string): void {
   } catch {
     // Container may already be stopped
   }
-  clearAgentState(containerName);
+  markStopped(containerName);
 }
 
 export function spawnTestContainer(): Promise<void> {

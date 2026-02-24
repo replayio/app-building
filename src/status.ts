@@ -1,6 +1,7 @@
 import { httpGet, type HttpOptions } from "./http-client";
-import { getRecentContainers, markStopped, RegistryEntry } from "./container-registry";
+import { getRecentContainers, RegistryEntry } from "./container-registry";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
+import { httpOptsFor, findAliveContainers } from "./container-utils";
 
 function stripTimestamp(rawLine: string): string {
   const tsMatch = rawLine.match(/^\[\d{4}-\d{2}-\d{2}T[\d:.]+Z\]\s*(.*)/);
@@ -27,29 +28,6 @@ function formatAge(isoDate: string): string {
   return `${days}d ago`;
 }
 
-function httpOptsFor(entry: RegistryEntry): HttpOptions {
-  if (entry.type === "remote" && entry.flyMachineId) {
-    return { headers: { "fly-force-instance-id": entry.flyMachineId } };
-  }
-  return {};
-}
-
-async function probeAlive(entry: RegistryEntry): Promise<boolean> {
-  try {
-    const headers: Record<string, string> = {};
-    if (entry.type === "remote" && entry.flyMachineId) {
-      headers["fly-force-instance-id"] = entry.flyMachineId;
-    }
-    const res = await fetch(`${entry.baseUrl}/status`, {
-      headers,
-      signal: AbortSignal.timeout(5000),
-    });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
 async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: HttpOptions = {}): Promise<void> {
   const status = await httpGet(`${baseUrl}/status`, httpOpts);
 
@@ -73,9 +51,11 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
   console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
 
-  const queueInfo = `${status.queueLength} queued, ${status.pendingTasks} tasks pending`;
+  const pendingTasks = status.pendingTasks ?? status.pendingGroups ?? 0;
+  const tasksProcessed = status.tasksProcessed ?? status.groupsProcessed ?? 0;
+  const queueInfo = `${status.queueLength} queued, ${pendingTasks} tasks pending`;
   console.log(`  ${DIM}Queue:${RESET}     ${queueInfo}`);
-  console.log(`  ${DIM}Progress:${RESET}  ${status.tasksProcessed} tasks processed, iteration ${status.iteration}`);
+  console.log(`  ${DIM}Progress:${RESET}  ${tasksProcessed} tasks processed, iteration ${status.iteration}`);
 
   if (status.totalCost > 0) {
     console.log(`  ${DIM}Cost:${RESET}      $${status.totalCost.toFixed(4)}`);
@@ -205,21 +185,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  // Probe all entries without stoppedAt to find alive containers
-  const candidates = entries.filter((e) => !e.stoppedAt);
-  const aliveResults = await Promise.all(
-    candidates.map(async (entry) => ({
-      entry,
-      alive: await probeAlive(entry),
-    })),
-  );
-
-  // Mark dead entries as stopped so they don't get probed again
-  for (const r of aliveResults) {
-    if (!r.alive) markStopped(r.entry.containerName);
-  }
-
-  const alive = aliveResults.filter((r) => r.alive).map((r) => r.entry);
+  const alive = await findAliveContainers();
 
   if (alive.length === 0) {
     showStoppedEntries(entries);

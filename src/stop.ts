@@ -1,8 +1,9 @@
-import { readAgentState, clearAgentState, stopRemoteContainer } from "./container";
-import { findContainer } from "./container-registry";
+import { stopRemoteContainer } from "./container";
+import { findContainer, markStopped } from "./container-registry";
 import { httpGet, httpPost } from "./http-client";
-import type { AgentState } from "./container";
+import type { RegistryEntry } from "./container-registry";
 import { RED, RESET } from "./format";
+import { httpOptsFor, findAliveContainers } from "./container-utils";
 
 async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<string | null> {
   const start = Date.now();
@@ -21,26 +22,27 @@ async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Prom
   return null;
 }
 
-async function stopByState(agentState: AgentState): Promise<void> {
-  console.log(`Stopping container ${agentState.containerName}...`);
+async function stopEntry(entry: RegistryEntry): Promise<void> {
+  console.log(`Stopping container ${entry.containerName}...`);
+  const httpOpts = httpOptsFor(entry);
 
   // Send HTTP stop signal to the container's server
   try {
-    await httpPost(`${agentState.baseUrl}/stop`);
+    await httpPost(`${entry.baseUrl}/stop`, undefined, httpOpts);
     console.log("Stop signal sent. Waiting for graceful shutdown...");
   } catch {
     console.log("Could not reach container (may already be stopped).");
   }
 
   // Wait for the server to reach "stopped" state (it commits+pushes unmerged work)
-  const branch = await waitForStopped(agentState.baseUrl);
+  const branch = await waitForStopped(entry.baseUrl);
   if (branch) {
     console.log(`Unmerged branch: ${branch}`);
   }
 
-  if (agentState.type === "remote") {
+  if (entry.type === "remote") {
     // Destroy the Fly machine so it doesn't sit idle and cost money
-    await stopRemoteContainer(agentState);
+    await stopRemoteContainer(entry);
     return;
   }
 
@@ -48,12 +50,12 @@ async function stopByState(agentState: AgentState): Promise<void> {
   for (let i = 0; i < 10; i++) {
     await new Promise((r) => setTimeout(r, 500));
     try {
-      await fetch(`${agentState.baseUrl}/status`);
+      await fetch(`${entry.baseUrl}/status`);
       // Still running, keep waiting
     } catch {
       // Connection refused = container is gone
       console.log("Container stopped.");
-      clearAgentState(agentState.containerName);
+      markStopped(entry.containerName);
       return;
     }
   }
@@ -72,19 +74,21 @@ async function main(): Promise<void> {
       console.error(`${RED}Container "${targetName}" not found in registry.${RESET}`);
       process.exit(1);
     }
-    await stopByState(entry);
+    await stopEntry(entry);
     return;
   }
 
-  // Default: stop the current container from .agent-state.json
-  const agentState = readAgentState();
+  // No name given: find all alive containers and stop them.
+  const alive = await findAliveContainers();
 
-  if (!agentState) {
-    console.error("No active agent found (no .agent-state.json).");
-    process.exit(1);
+  if (alive.length === 0) {
+    console.log("No running containers found.");
+    return;
   }
 
-  await stopByState(agentState);
+  for (const entry of alive) {
+    await stopEntry(entry);
+  }
 }
 
 main().catch((e) => {

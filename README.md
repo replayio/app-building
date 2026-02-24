@@ -60,9 +60,10 @@ Connects to the running container's HTTP API and shows state, revision, queue de
 
 ```bash
 npm run stop
+npm run stop -- <containerName>
 ```
 
-Sends an HTTP stop signal to the container. Errors if the container is unreachable.
+Sends an HTTP stop signal. Without arguments, finds and stops all running containers. Pass a container name to stop a specific one.
 
 ## Strategies
 
