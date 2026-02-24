@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { store } from './store'
 import Sidebar from './components/Sidebar'
 import ClientsListPage from './pages/ClientsListPage'
+import TasksListPage from './pages/TasksListPage'
 
 function AppLayout() {
   return (
@@ -29,7 +30,7 @@ function App() {
             <Route path="/individuals/:individualId" element={<PlaceholderPage name="Person Detail" />} />
             <Route path="/deals" element={<PlaceholderPage name="Deals" />} />
             <Route path="/deals/:dealId" element={<PlaceholderPage name="Deal Detail" />} />
-            <Route path="/tasks" element={<PlaceholderPage name="Tasks" />} />
+            <Route path="/tasks" element={<TasksListPage />} />
             <Route path="/reports" element={<PlaceholderPage name="Reports" />} />
             <Route path="/settings" element={<PlaceholderPage name="Settings" />} />
           </Route>

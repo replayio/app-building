@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig } from '@playwright/test'
 import { devices as replayDevices, replayReporter } from '@replayio/playwright'
 
 export default defineConfig({
