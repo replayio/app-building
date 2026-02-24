@@ -16,9 +16,307 @@ Components: LowInventoryAlerts, MaterialsCategoriesOverview, RecentTransactionsT
 
 ## AccountsPage (`/accounts`)
 
-Components: StockAccountsList, InputAccountsList, OutputAccountsList, CreateAccountButton, AccountRowActions
+Components: AccountsPageHeader, StockAccountsList, InputAccountsList, OutputAccountsList, CreateAccountButton, AccountRowActions
 
-<!-- Tests will be added by PlanPageAccounts -->
+### AccountsPageHeader
+
+#### Test: Breadcrumb navigation displays Home > Accounts
+- **Components:** AccountsPageHeader
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** A breadcrumb trail is displayed showing "Home > Accounts". "Home" is a clickable link that navigates to the DashboardPage (`/`). "Accounts" is the current page label and is not clickable.
+
+#### Test: Breadcrumb Home link navigates to Dashboard
+- **Components:** AccountsPageHeader
+- **Initial state:** User is on `/accounts`. Breadcrumb shows "Home > Accounts".
+- **Action:** User clicks "Home" in the breadcrumb.
+- **Expected:** User is navigated to the DashboardPage (`/`).
+
+#### Test: Page heading displays "Accounts"
+- **Components:** AccountsPageHeader
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** The page heading "Accounts" is displayed in large, bold text as the primary heading of the page, above the breadcrumb.
+
+### StockAccountsList
+
+#### Test: Stock Accounts section heading is displayed
+- **Components:** StockAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** A "Stock Accounts" heading is displayed as the first section on the page, in large bold text.
+
+#### Test: Stock Accounts table displays all column headers
+- **Components:** StockAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** The Stock Accounts table displays column headers in order: "Account Name", "Account Type", "Description", "Actions".
+
+#### Test: Stock Accounts table shows correct account data
+- **Components:** StockAccountsList
+- **Initial state:** User navigates to `/accounts`. The system has four stock accounts: "Main Inventory" (default, "Primary storage for all physical goods."), "Raw Materials" ("Components for manufacturing."), "Finished Goods" ("Completed products ready for sale."), "Safety Stock" ("Buffer inventory for emergencies.").
+- **Action:** Page loads.
+- **Expected:** Four rows are displayed in the Stock Accounts table. Row 1: Account Name "Main Inventory", Account Type "Stock (Default)", Description "Primary storage for all physical goods.". Row 2: Account Name "Raw Materials", Account Type "Stock", Description "Components for manufacturing.". Row 3: Account Name "Finished Goods", Account Type "Stock", Description "Completed products ready for sale.". Row 4: Account Name "Safety Stock", Account Type "Stock", Description "Buffer inventory for emergencies.". Each row has three action icons in the Actions column.
+
+#### Test: Default stock account shows "(Default)" indicator in Account Type
+- **Components:** StockAccountsList
+- **Initial state:** User navigates to `/accounts`. "Main Inventory" is the default stock account.
+- **Action:** Page loads.
+- **Expected:** The Account Type column for "Main Inventory" displays "Stock (Default)". Non-default stock accounts display just "Stock" without the "(Default)" suffix.
+
+#### Test: Stock Accounts empty state when no stock accounts exist
+- **Components:** StockAccountsList
+- **Initial state:** User navigates to `/accounts`. No stock accounts exist in the system.
+- **Action:** Page loads.
+- **Expected:** The "Stock Accounts" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No stock accounts found" is displayed.
+
+### InputAccountsList
+
+#### Test: Input Accounts section heading is displayed
+- **Components:** InputAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** An "Input Accounts" heading is displayed as the second section on the page, below the Stock Accounts section, in large bold text.
+
+#### Test: Input Accounts table displays all column headers
+- **Components:** InputAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** The Input Accounts table displays column headers in order: "Account Name", "Account Type", "Description", "Actions".
+
+#### Test: Input Accounts table shows correct account data
+- **Components:** InputAccountsList
+- **Initial state:** User navigates to `/accounts`. The system has three input accounts: "Purchases" (default, "General account for acquiring stock."), "Vendor Credits" ("Credits received from suppliers."), "Shipping Costs (Inbound)" ("Freight and delivery fees for purchases.").
+- **Action:** Page loads.
+- **Expected:** Three rows are displayed in the Input Accounts table. Row 1: Account Name "Purchases", Account Type "Input (Default)", Description "General account for acquiring stock.". Row 2: Account Name "Vendor Credits", Account Type "Input", Description "Credits received from suppliers.". Row 3: Account Name "Shipping Costs (Inbound)", Account Type "Input", Description "Freight and delivery fees for purchases.". Each row has three action icons in the Actions column.
+
+#### Test: Default input account shows "(Default)" indicator in Account Type
+- **Components:** InputAccountsList
+- **Initial state:** User navigates to `/accounts`. "Purchases" is the default input account.
+- **Action:** Page loads.
+- **Expected:** The Account Type column for "Purchases" displays "Input (Default)". Non-default input accounts display just "Input" without the "(Default)" suffix.
+
+#### Test: Input Accounts empty state when no input accounts exist
+- **Components:** InputAccountsList
+- **Initial state:** User navigates to `/accounts`. No input accounts exist in the system.
+- **Action:** Page loads.
+- **Expected:** The "Input Accounts" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No input accounts found" is displayed.
+
+### OutputAccountsList
+
+#### Test: Output Accounts section heading is displayed
+- **Components:** OutputAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** An "Output Accounts" heading is displayed as the third section on the page, below the Input Accounts section, in large bold text.
+
+#### Test: Output Accounts table displays all column headers
+- **Components:** OutputAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** The Output Accounts table displays column headers in order: "Account Name", "Account Type", "Description", "Actions".
+
+#### Test: Output Accounts table shows correct account data
+- **Components:** OutputAccountsList
+- **Initial state:** User navigates to `/accounts`. The system has four output accounts: "Sales Revenue" (default, "Income from product sales."), "Service Income" ("Revenue from non-product services."), "Customer Discounts" ("Reductions given to customers."), "Returns & Damages" ("Buffer for returned or damaged goods.").
+- **Action:** Page loads.
+- **Expected:** Four rows are displayed in the Output Accounts table. Row 1: Account Name "Sales Revenue", Account Type "Output (Default)", Description "Income from product sales.". Row 2: Account Name "Service Income", Account Type "Output", Description "Revenue from non-product services.". Row 3: Account Name "Customer Discounts", Account Type "Output", Description "Reductions given to customers.". Row 4: Account Name "Returns & Damages", Account Type "Output", Description "Buffer for returned or damaged goods.". Each row has three action icons in the Actions column.
+
+#### Test: Default output account shows "(Default)" indicator in Account Type
+- **Components:** OutputAccountsList
+- **Initial state:** User navigates to `/accounts`. "Sales Revenue" is the default output account.
+- **Action:** Page loads.
+- **Expected:** The Account Type column for "Sales Revenue" displays "Output (Default)". Non-default output accounts display just "Output" without the "(Default)" suffix.
+
+#### Test: Output Accounts empty state when no output accounts exist
+- **Components:** OutputAccountsList
+- **Initial state:** User navigates to `/accounts`. No output accounts exist in the system.
+- **Action:** Page loads.
+- **Expected:** The "Output Accounts" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No output accounts found" is displayed.
+
+### CreateAccountButton
+
+#### Test: Create Stock Account button is displayed with plus icon
+- **Components:** CreateAccountButton, StockAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** A "+ Create Stock Account" button is displayed in the top-right area of the Stock Accounts section header, styled as a primary/filled blue button with a "+" icon preceding the text "Create Stock Account".
+
+#### Test: Create Stock Account button opens create account form
+- **Components:** CreateAccountButton
+- **Initial state:** User is on `/accounts`.
+- **Action:** User clicks the "+ Create Stock Account" button.
+- **Expected:** A create account form or modal opens. The form contains fields for Account Name (text input) and Description (text area). The Account Type is pre-set to "Stock" and is not editable. The form has Save and Cancel buttons. All fields are initially empty.
+
+#### Test: Saving create stock account form persists new account
+- **Components:** CreateAccountButton, StockAccountsList
+- **Initial state:** User clicked "+ Create Stock Account" on `/accounts`. The form is open. User fills in: Account Name "Overflow Storage", Description "Secondary storage for excess inventory.".
+- **Action:** User saves the form.
+- **Expected:** The form closes. The new account "Overflow Storage" is persisted to the database. The StockAccountsList updates to include a new row with Account Name "Overflow Storage", Account Type "Stock", Description "Secondary storage for excess inventory.". The new account is not marked as "(Default)".
+
+#### Test: Cancelling create stock account form does not persist changes
+- **Components:** CreateAccountButton, StockAccountsList
+- **Initial state:** User clicked "+ Create Stock Account" on `/accounts`. The form is open. User has entered Account Name "Overflow Storage".
+- **Action:** User cancels the form.
+- **Expected:** The form closes. No new account is created. The StockAccountsList is unchanged.
+
+#### Test: Create Input Account button is displayed with plus icon
+- **Components:** CreateAccountButton, InputAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** A "+ Create Input Account" button is displayed in the top-right area of the Input Accounts section header, styled as a primary/filled blue button with a "+" icon preceding the text "Create Input Account".
+
+#### Test: Create Input Account button opens create account form
+- **Components:** CreateAccountButton
+- **Initial state:** User is on `/accounts`.
+- **Action:** User clicks the "+ Create Input Account" button.
+- **Expected:** A create account form or modal opens. The form contains fields for Account Name (text input) and Description (text area). The Account Type is pre-set to "Input" and is not editable. The form has Save and Cancel buttons. All fields are initially empty.
+
+#### Test: Saving create input account form persists new account
+- **Components:** CreateAccountButton, InputAccountsList
+- **Initial state:** User clicked "+ Create Input Account" on `/accounts`. The form is open. User fills in: Account Name "Supplier Returns", Description "Goods returned to suppliers for credit.".
+- **Action:** User saves the form.
+- **Expected:** The form closes. The new account "Supplier Returns" is persisted to the database. The InputAccountsList updates to include a new row with Account Name "Supplier Returns", Account Type "Input", Description "Goods returned to suppliers for credit.". The new account is not marked as "(Default)".
+
+#### Test: Cancelling create input account form does not persist changes
+- **Components:** CreateAccountButton, InputAccountsList
+- **Initial state:** User clicked "+ Create Input Account" on `/accounts`. The form is open. User has entered Account Name "Supplier Returns".
+- **Action:** User cancels the form.
+- **Expected:** The form closes. No new account is created. The InputAccountsList is unchanged.
+
+#### Test: Create Output Account button is displayed with plus icon
+- **Components:** CreateAccountButton, OutputAccountsList
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** A "+ Create Output Account" button is displayed in the top-right area of the Output Accounts section header, styled as a primary/filled blue button with a "+" icon preceding the text "Create Output Account".
+
+#### Test: Create Output Account button opens create account form
+- **Components:** CreateAccountButton
+- **Initial state:** User is on `/accounts`.
+- **Action:** User clicks the "+ Create Output Account" button.
+- **Expected:** A create account form or modal opens. The form contains fields for Account Name (text input) and Description (text area). The Account Type is pre-set to "Output" and is not editable. The form has Save and Cancel buttons. All fields are initially empty.
+
+#### Test: Saving create output account form persists new account
+- **Components:** CreateAccountButton, OutputAccountsList
+- **Initial state:** User clicked "+ Create Output Account" on `/accounts`. The form is open. User fills in: Account Name "Waste Disposal", Description "Materials disposed of or written off.".
+- **Action:** User saves the form.
+- **Expected:** The form closes. The new account "Waste Disposal" is persisted to the database. The OutputAccountsList updates to include a new row with Account Name "Waste Disposal", Account Type "Output", Description "Materials disposed of or written off.". The new account is not marked as "(Default)".
+
+#### Test: Cancelling create output account form does not persist changes
+- **Components:** CreateAccountButton, OutputAccountsList
+- **Initial state:** User clicked "+ Create Output Account" on `/accounts`. The form is open. User has entered Account Name "Waste Disposal".
+- **Action:** User cancels the form.
+- **Expected:** The form closes. No new account is created. The OutputAccountsList is unchanged.
+
+#### Test: Create account form validates required Account Name field
+- **Components:** CreateAccountButton
+- **Initial state:** User clicked "+ Create Stock Account" on `/accounts`. The form is open. The Account Name field is left empty. Description is "Some description.".
+- **Action:** User attempts to save the form.
+- **Expected:** The form does not submit. A validation error message is displayed on the Account Name field indicating it is required (e.g., "Account Name is required"). The form remains open.
+
+### AccountRowActions
+
+#### Test: Clicking an account row navigates to AccountDetailPage
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User is on `/accounts`. The Stock Accounts table shows "Main Inventory" in the first row.
+- **Action:** User clicks on the "Main Inventory" row (on the account name, type, or description area — not on an action icon).
+- **Expected:** User is navigated to the AccountDetailPage (`/accounts/:accountId`) for "Main Inventory".
+
+#### Test: View action icon is displayed as eye icon on each row
+- **Components:** AccountRowActions
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** Each account row in all three category tables (Stock, Input, Output) displays a View action icon in the Actions column, rendered as an eye icon. The icon is the first of the three action icons.
+
+#### Test: Clicking View icon navigates to AccountDetailPage
+- **Components:** AccountRowActions, InputAccountsList
+- **Initial state:** User is on `/accounts`. The Input Accounts table shows "Purchases" with a View (eye) icon in the Actions column.
+- **Action:** User clicks the View (eye) icon on the "Purchases" row.
+- **Expected:** User is navigated to the AccountDetailPage (`/accounts/:accountId`) for "Purchases".
+
+#### Test: Edit action icon is displayed as pencil icon on each row
+- **Components:** AccountRowActions
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** Each account row in all three category tables (Stock, Input, Output) displays an Edit action icon in the Actions column, rendered as a pencil icon. The icon is the second of the three action icons.
+
+#### Test: Clicking Edit icon opens edit form pre-filled with account data
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User is on `/accounts`. The Stock Accounts table shows "Raw Materials" with Account Type "Stock" and Description "Components for manufacturing.".
+- **Action:** User clicks the Edit (pencil) icon on the "Raw Materials" row.
+- **Expected:** An edit form or modal opens. The form contains fields for Account Name (pre-filled with "Raw Materials"), Description (pre-filled with "Components for manufacturing."). The Account Type "Stock" is displayed but not editable. The form has Save and Cancel buttons.
+
+#### Test: Saving edit account form persists changes
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User clicked the Edit icon on "Raw Materials" in the Stock Accounts table. The edit form is open with Account Name "Raw Materials" and Description "Components for manufacturing.".
+- **Action:** User changes the Account Name to "Raw Materials & Supplies" and the Description to "Components and supplies for manufacturing." and saves the form.
+- **Expected:** The form closes. The StockAccountsList updates the row to show Account Name "Raw Materials & Supplies" and Description "Components and supplies for manufacturing.". The changes are persisted to the database. The Account Type remains "Stock".
+
+#### Test: Cancelling edit account form does not persist changes
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User clicked the Edit icon on "Raw Materials" in the Stock Accounts table. The edit form is open. User has changed the Account Name to "Raw Materials & Supplies".
+- **Action:** User cancels the form.
+- **Expected:** The form closes. The StockAccountsList still shows Account Name "Raw Materials" and the original Description. No changes are persisted to the database.
+
+#### Test: Archive action icon is displayed as archive icon on each row
+- **Components:** AccountRowActions
+- **Initial state:** User navigates to `/accounts`.
+- **Action:** Page loads.
+- **Expected:** Each account row in all three category tables (Stock, Input, Output) displays an Archive action icon in the Actions column, rendered as an archive/box icon. The icon is the third of the three action icons.
+
+#### Test: Clicking Archive icon shows confirmation dialog
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User is on `/accounts`. The Stock Accounts table shows "Safety Stock" (a non-default account).
+- **Action:** User clicks the Archive (archive/box) icon on the "Safety Stock" row.
+- **Expected:** A confirmation dialog appears asking the user to confirm archiving the account, e.g., "Are you sure you want to archive 'Safety Stock'? This account will no longer appear in active lists." The dialog has Confirm and Cancel buttons.
+
+#### Test: Confirming archive removes account from active list
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User clicked the Archive icon on "Safety Stock". The confirmation dialog is displayed.
+- **Action:** User clicks the Confirm button.
+- **Expected:** The confirmation dialog closes. "Safety Stock" is removed from the StockAccountsList. The account is marked as archived in the database. The archived account no longer appears in the active accounts list.
+
+#### Test: Cancelling archive does not change account
+- **Components:** AccountRowActions, StockAccountsList
+- **Initial state:** User clicked the Archive icon on "Safety Stock". The confirmation dialog is displayed.
+- **Action:** User clicks the Cancel button.
+- **Expected:** The confirmation dialog closes. "Safety Stock" remains in the StockAccountsList with unchanged data. No changes are persisted to the database.
+
+#### Test: Clicking row in Input Accounts navigates to correct AccountDetailPage
+- **Components:** AccountRowActions, InputAccountsList
+- **Initial state:** User is on `/accounts`. The Input Accounts table shows "Vendor Credits".
+- **Action:** User clicks on the "Vendor Credits" row.
+- **Expected:** User is navigated to the AccountDetailPage (`/accounts/:accountId`) for "Vendor Credits".
+
+#### Test: Clicking row in Output Accounts navigates to correct AccountDetailPage
+- **Components:** AccountRowActions, OutputAccountsList
+- **Initial state:** User is on `/accounts`. The Output Accounts table shows "Service Income".
+- **Action:** User clicks on the "Service Income" row.
+- **Expected:** User is navigated to the AccountDetailPage (`/accounts/:accountId`) for "Service Income".
+
+#### Test: Edit action works on Input Accounts
+- **Components:** AccountRowActions, InputAccountsList
+- **Initial state:** User is on `/accounts`. The Input Accounts table shows "Shipping Costs (Inbound)" with Description "Freight and delivery fees for purchases.".
+- **Action:** User clicks the Edit (pencil) icon on the "Shipping Costs (Inbound)" row.
+- **Expected:** An edit form or modal opens with Account Name pre-filled as "Shipping Costs (Inbound)" and Description pre-filled as "Freight and delivery fees for purchases.". The Account Type "Input" is displayed but not editable.
+
+#### Test: Edit action works on Output Accounts
+- **Components:** AccountRowActions, OutputAccountsList
+- **Initial state:** User is on `/accounts`. The Output Accounts table shows "Customer Discounts" with Description "Reductions given to customers.".
+- **Action:** User clicks the Edit (pencil) icon on the "Customer Discounts" row.
+- **Expected:** An edit form or modal opens with Account Name pre-filled as "Customer Discounts" and Description pre-filled as "Reductions given to customers.". The Account Type "Output" is displayed but not editable.
+
+#### Test: Archive action works on Input Accounts
+- **Components:** AccountRowActions, InputAccountsList
+- **Initial state:** User is on `/accounts`. The Input Accounts table shows "Shipping Costs (Inbound)" (a non-default account).
+- **Action:** User clicks the Archive icon on the "Shipping Costs (Inbound)" row, then confirms in the dialog.
+- **Expected:** "Shipping Costs (Inbound)" is removed from the InputAccountsList. The account is marked as archived in the database.
+
+#### Test: Archive action works on Output Accounts
+- **Components:** AccountRowActions, OutputAccountsList
+- **Initial state:** User is on `/accounts`. The Output Accounts table shows "Customer Discounts" (a non-default account).
+- **Action:** User clicks the Archive icon on the "Customer Discounts" row, then confirms in the dialog.
+- **Expected:** "Customer Discounts" is removed from the OutputAccountsList. The account is marked as archived in the database.
 
 ---
 

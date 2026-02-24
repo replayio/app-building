@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageAccounts: Decide on components, add sections to docs/tests.md for AccountsPage (/accounts)",
-        "PlanComponentAccountCategoryLists: Add test entries for StockAccountsList, InputAccountsList, OutputAccountsList (columns: Account Name, Account Type, Description, Actions with View/Edit/Archive icons)",
-        "PlanComponentCreateAccountButton: Add test entries for Create Stock/Input/Output Account buttons (one per category section, opens create form/modal)",
-        "PlanComponentAccountRowActions: Add test entries for account row click navigation, View/Edit/Archive action icons, and edit/archive confirmation flows"
-      ],
-      "timestamp": "2026-02-24T03:47:36.733Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageDashboard: Decide on components, add sections to docs/tests.md for DashboardPage (/)",
         "PlanComponentLowInventoryAlerts: Add test entries for LowInventoryAlerts (alert rows with warning/critical severity, View Details links, Dismiss buttons, Reorder buttons)",
         "PlanComponentMaterialsCategoriesOverview: Add test entries for MaterialsCategoriesOverview (category summaries with item counts, material links, View All Categories link)",
