@@ -1,17 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageTasksList: Plan TasksListPage components and add sections to docs/tests.md",
-        "PlanComponentTasksFilterBar: Add test entries for TasksFilterBar (search input, priority filter, status filter)",
-        "PlanComponentTaskCard: Add test entries for TaskCard (priority badge display, title, due date, assignee, click navigates to detail, action menu)",
-        "PlanComponentCreateTaskModal: Add test entries for CreateTaskModal (form fields, validation, submit creates task, modal close)",
-        "PlanComponentTasksListContent: Add test entries for TasksListContent (pagination, empty state, loading state, CSV import/export)"
-      ],
-      "timestamp": "2026-02-24T00:12:14.813Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
         "WriteComponentTasksFilterBar: Write the TasksFilterBar component (search input, priority filter dropdown, status filter dropdown)",
