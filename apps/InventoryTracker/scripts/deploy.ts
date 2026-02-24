@@ -169,6 +169,13 @@ async function main() {
     console.log(`Netlify site created: ${netlifySiteId}`);
   }
 
+  // --- Set DATABASE_URL on Netlify site so functions can access the database ---
+  console.log("\n--- Setting DATABASE_URL on Netlify ---");
+  execSync(
+    `npx netlify env:set DATABASE_URL "${databaseUrl}" --scope functions --site ${netlifySiteId}`,
+    { cwd: appDir, stdio: "inherit" }
+  );
+
   // --- Build ---
   run("npx vite build", "Building app");
 

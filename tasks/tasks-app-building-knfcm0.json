@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-24T22:54:39.373Z"
-    },
-    {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
         "Unpack: Write test specification for ProductionHub"
