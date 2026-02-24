@@ -3,9 +3,11 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+        "FixViolation: Remove DROP TABLE IF EXISTS statements from initSchema in scripts/schema.ts to make it idempotent and safe to re-run per writeApp.md directive",
+        "RunTests: Verify tests pass after fix",
+        "DocumentFix: Document the fix"
       ],
-      "timestamp": "2026-02-24T04:04:37.524Z"
+      "timestamp": "2026-02-24T04:07:54.415Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
