@@ -3,11 +3,12 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecForgotPassword: Check testSpec.md directive violations in ForgotPasswordPage test entries",
-        "CheckComponentsForgotPassword: Check writeApp.md directive violations in ForgotPasswordPage components",
-        "CheckTestsForgotPassword: Check writeTests.md directive violations in ForgotPasswordPage tests"
+        "FixViolationForgotPasswordTestSpec: Write complete test entries for ForgotPasswordPage in docs/tests.md covering all interactive elements (email input, submit button, success/error states)",
+        "FixViolationForgotPasswordComponents: Add missing data-testid on error message element in ForgotPasswordPage.tsx and add JSX comments referencing test titles",
+        "FixViolationForgotPasswordTests: Write Playwright tests for ForgotPasswordPage functionality including form display, email submission, success message, and error handling",
+        "RunTestsForgotPassword: Verify tests pass after ForgotPasswordPage fixes"
       ],
-      "timestamp": "2026-02-23T23:39:12.671Z"
+      "timestamp": "2026-02-24T01:25:15.806Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
