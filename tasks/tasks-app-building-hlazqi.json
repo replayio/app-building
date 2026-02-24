@@ -3,13 +3,6 @@
     {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
-        "AnalyzeGroup: report-testFailures-sales-crm-3-review-3-20260224-175633 skills/review/reportTestFailures.md logs/worker-2026-02-24T02-07-03-313Z.log logs/worker-2026-02-24T02-06-26-586Z.log logs/worker-2026-02-24T02-22-50-876Z.log logs/worker-2026-02-24T02-28-11-464Z.log logs/worker-2026-02-24T02-31-43-217Z.log logs/worker-2026-02-24T02-36-57-197Z.log logs/worker-2026-02-24T02-39-18-881Z.log logs/worker-2026-02-24T02-43-16-680Z.log logs/worker-2026-02-24T02-45-47-113Z.log logs/worker-2026-02-24T02-49-07-172Z.log"
-      ],
-      "timestamp": "2026-02-24T17:57:49.999Z"
-    },
-    {
-      "skill": "skills/review/analyzeLogs.md",
-      "subtasks": [
         "AnalyzeGroup: report-testFailures-sales-crm-3-review-3-20260224-175633 skills/review/reportTestFailures.md logs/worker-2026-02-24T02-53-33-847Z.log logs/worker-2026-02-24T02-56-34-382Z.log logs/worker-2026-02-24T02-57-43-371Z.log logs/worker-2026-02-24T03-01-05-202Z.log logs/worker-2026-02-24T03-03-40-614Z.log logs/worker-2026-02-24T03-07-00-512Z.log logs/worker-2026-02-24T03-16-52-931Z.log logs/worker-2026-02-24T03-30-19-357Z.log logs/worker-app-building-hlazqi-1-2026-02-24T17-56-47-947Z.log logs/worker-current.log"
       ],
       "timestamp": "2026-02-24T17:57:44.456Z"
