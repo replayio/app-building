@@ -3,11 +3,9 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecUsersList: Check testSpec.md directive violations in UsersListPage test entries",
-        "CheckComponentsUsersList: Check writeApp.md directive violations in UsersListPage components",
-        "CheckTestsUsersList: Check writeTests.md directive violations in UsersListPage tests"
+        "FixViolationUsersListTestSpec: Write complete test entries for UsersListPage in docs/tests.md - add components (UsersGrid, UserCard), test entries for page heading, user card grid display, avatar/name/email/deals-count/tasks-count on each card, clicking card navigates to /users/:userId, loading state, empty state"
       ],
-      "timestamp": "2026-02-23T23:39:15.074Z"
+      "timestamp": "2026-02-24T01:02:21.943Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
@@ -644,6 +642,22 @@
         "RunSettingsTests: Verify all SettingsPage Playwright tests pass"
       ],
       "timestamp": "2026-02-24T00:56:43.881Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationUsersListComponents: Build UsersListPage - create users Netlify function (GET list with stats, GET detail), create UserCard and UsersGrid components, implement UsersListPage with card grid showing avatar/name/email/active-deals/open-tasks, add data-testid attributes, ensure navigation to /users/:userId on card click",
+        "RunTestsAfterUsersListFix: Run tests to verify UsersListPage implementation"
+      ],
+      "timestamp": "2026-02-24T01:02:27.995Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "FixViolationUsersListTests: Write Playwright tests for all UsersListPage test entries - verify page heading, user cards display, avatar/name/email/deals/tasks shown, card click navigates to /users/:userId, loading state, empty state",
+        "RunTestsAfterUsersListTestsFix: Run tests to verify UsersListPage Playwright tests pass"
+      ],
+      "timestamp": "2026-02-24T01:02:32.366Z"
     }
   ]
 }
