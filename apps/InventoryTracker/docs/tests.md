@@ -26,7 +26,123 @@ Components: StockAccountsList, InputAccountsList, OutputAccountsList, CreateAcco
 
 Components: AccountHeader, TrackedMaterialsTable
 
-<!-- Tests will be added by PlanPageAccountDetail -->
+### AccountHeader
+
+#### Test: Breadcrumb navigation displays Home > Accounts > Account Name
+- **Components:** AccountHeader
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The account name is "Finished Goods Warehouse 2".
+- **Action:** Page loads.
+- **Expected:** A breadcrumb trail is displayed showing "Home > Accounts > Finished Goods Warehouse 2". "Home" is a clickable link that navigates to the DashboardPage (`/`). "Accounts" is a clickable link that navigates to the AccountsPage (`/accounts`). "Finished Goods Warehouse 2" is the current page label and is not clickable.
+
+#### Test: Breadcrumb Home link navigates to Dashboard
+- **Components:** AccountHeader
+- **Initial state:** User is on `/accounts/A-1024-INV`. Breadcrumb shows "Home > Accounts > Finished Goods Warehouse 2".
+- **Action:** User clicks "Home" in the breadcrumb.
+- **Expected:** User is navigated to the DashboardPage (`/`).
+
+#### Test: Breadcrumb Accounts link navigates to Accounts list
+- **Components:** AccountHeader
+- **Initial state:** User is on `/accounts/A-1024-INV`. Breadcrumb shows "Home > Accounts > Finished Goods Warehouse 2".
+- **Action:** User clicks "Accounts" in the breadcrumb.
+- **Expected:** User is navigated to the AccountsPage (`/accounts`).
+
+#### Test: Account name is displayed as the primary page heading
+- **Components:** AccountHeader
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The account name is "Finished Goods Warehouse 2".
+- **Action:** Page loads.
+- **Expected:** The header displays "Account: Finished Goods Warehouse 2" in large, bold text as the primary heading of the page. The "Account:" prefix label precedes the account name.
+
+#### Test: Account type is displayed below the account name
+- **Components:** AccountHeader
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The account type is "Inventory Account".
+- **Action:** Page loads.
+- **Expected:** A "Type:" label is displayed below the account name heading with the value "Inventory Account" inline.
+
+#### Test: Status badge is displayed next to the account type
+- **Components:** AccountHeader
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The account status is "Active".
+- **Action:** Page loads.
+- **Expected:** A "Status:" label is displayed inline after the account type, separated by a pipe character "|", with the value "Active" shown as a green-colored badge or text indicating the active status.
+
+#### Test: Edit Account button is displayed with pencil icon
+- **Components:** AccountHeader
+- **Initial state:** User navigates to `/accounts/A-1024-INV`.
+- **Action:** Page loads.
+- **Expected:** An "Edit Account" button is displayed in the top-right area of the header, styled as an outline/secondary button with a pencil icon preceding the text.
+
+#### Test: Edit Account button opens edit form
+- **Components:** AccountHeader
+- **Initial state:** User is on `/accounts/A-1024-INV`.
+- **Action:** User clicks the "Edit Account" button.
+- **Expected:** An edit form or modal opens allowing the user to modify the account's name, type, description, and status. The form is pre-filled with the current values (Name: "Finished Goods Warehouse 2", Type: "Inventory Account", Status: "Active"). The user can save changes or cancel.
+
+#### Test: Saving Edit Account form persists changes
+- **Components:** AccountHeader
+- **Initial state:** User has clicked "Edit Account" on `/accounts/A-1024-INV`. The edit form is open with the current account name "Finished Goods Warehouse 2".
+- **Action:** User changes the name to "Finished Goods Warehouse 3" and saves the form.
+- **Expected:** The edit form closes. The AccountHeader updates to show "Account: Finished Goods Warehouse 3" as the heading. The change is persisted to the database. The breadcrumb also updates to show the new name "Finished Goods Warehouse 3".
+
+#### Test: Cancelling Edit Account form does not persist changes
+- **Components:** AccountHeader
+- **Initial state:** User has clicked "Edit Account" on `/accounts/A-1024-INV`. The edit form is open. User has changed the name to "Finished Goods Warehouse 3".
+- **Action:** User cancels the form.
+- **Expected:** The edit form closes. The AccountHeader continues to show "Account: Finished Goods Warehouse 2" as the heading. No changes are persisted to the database.
+
+#### Test: New Transaction button is displayed with plus icon
+- **Components:** AccountHeader
+- **Initial state:** User navigates to `/accounts/A-1024-INV`.
+- **Action:** Page loads.
+- **Expected:** A "+ New Transaction" button is displayed in the top-right area of the header next to the Edit Account button, styled as a primary/filled button with a "+" icon preceding the text.
+
+#### Test: New Transaction button navigates to NewTransactionPage pre-filled with account
+- **Components:** AccountHeader
+- **Initial state:** User is on `/accounts/A-1024-INV` for "Finished Goods Warehouse 2".
+- **Action:** User clicks the "+ New Transaction" button.
+- **Expected:** User is navigated to the NewTransactionPage (`/transactions/new`). The new transaction form is pre-filled or pre-configured to reference the current account "Finished Goods Warehouse 2" as the source or destination account.
+
+### TrackedMaterialsTable
+
+#### Test: Tracked Materials section heading is displayed
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User navigates to `/accounts/A-1024-INV`.
+- **Action:** Page loads.
+- **Expected:** A "Tracked Materials" heading is displayed below the AccountHeader, above the tracked materials table.
+
+#### Test: Table displays all column headers
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User navigates to `/accounts/A-1024-INV`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers in order: "Material Name", "Category", "Unit of Measure", "Total Quantity", "Number of Batches", "Actions".
+
+#### Test: Table rows display correct material data
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The account "Finished Goods Warehouse 2" tracks five materials: "Steel Sheets (3mm)" (Raw Materials, Sheets, 1250.0, 12 batches), "Aluminum Extrusion A" (Components, Meters, 4500.0, 8 batches), "Polymer Granules (Blue)" (Raw Materials, Kilograms, 750.5, 15 batches), "Copper Wiring (Rolls)" (Components, Meters, 2100.0, 5 batches), "Circuit Boards (Model X)" (Sub-Assemblies, Units, 350, 20 batches).
+- **Action:** Page loads.
+- **Expected:** Five rows are displayed. Each row shows the material's name, category, unit of measure, total quantity with unit, number of batches, and an action link. For example, Row 1: Material Name "Steel Sheets (3mm)", Category "Raw Materials", Unit of Measure "Sheets", Total Quantity "1,250.0 Sheets", Number of Batches "12 Batches", Actions "View Material in this Account".
+
+#### Test: Total Quantity column displays sum across batches with sigma icon
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The material "Steel Sheets (3mm)" has 12 batches in this account totaling 1,250.0 sheets.
+- **Action:** Page loads.
+- **Expected:** The Total Quantity cell for "Steel Sheets (3mm)" displays "1,250.0 Sheets" with a sigma (Σ) icon and "Batches" label below (displayed as "Σ Batches"), indicating the value is the sum across all batches in this account for that material. The unit of measure is appended to the numeric value.
+
+#### Test: Number of Batches column displays batch count
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User navigates to `/accounts/A-1024-INV`. The material "Steel Sheets (3mm)" has 12 batches in this account.
+- **Action:** Page loads.
+- **Expected:** The Number of Batches cell for "Steel Sheets (3mm)" displays "12 Batches". The word "Batches" is appended to the count.
+
+#### Test: View Material in this Account link navigates to MaterialDetailPage
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User is on `/accounts/A-1024-INV`. The table shows "Steel Sheets (3mm)" with a "View Material in this Account" link and an external link icon (↗) in the Actions column.
+- **Action:** User clicks the "View Material in this Account" link on the "Steel Sheets (3mm)" row.
+- **Expected:** User is navigated to the MaterialDetailPage (`/materials/:materialId`) for "Steel Sheets (3mm)", filtered or scrolled to show the material's details within the context of account "Finished Goods Warehouse 2".
+
+#### Test: Empty state when no materials are tracked in the account
+- **Components:** TrackedMaterialsTable
+- **Initial state:** User navigates to an account that has no materials tracked in it.
+- **Action:** Page loads.
+- **Expected:** The "Tracked Materials" heading is displayed. The table shows column headers but no data rows. An empty state message such as "No materials are currently tracked in this account" is displayed.
 
 ---
 

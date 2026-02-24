@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageAccountDetail: Decide on components, add sections to docs/tests.md for AccountDetailPage (/accounts/:accountId)",
-        "PlanComponentAccountHeader: Add test entries for AccountHeader (account name, type, status badge, Edit Account button opens edit form, New Transaction button navigates to new transaction pre-filled with account)",
-        "PlanComponentTrackedMaterialsTable: Add test entries for TrackedMaterialsTable (columns: Material Name, Category, Unit of Measure, Total Quantity with sum icon, Number of Batches, Actions with View Material in this Account link)"
-      ],
-      "timestamp": "2026-02-24T03:47:42.364Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageAccounts: Decide on components, add sections to docs/tests.md for AccountsPage (/accounts)",
         "PlanComponentAccountCategoryLists: Add test entries for StockAccountsList, InputAccountsList, OutputAccountsList (columns: Account Name, Account Type, Description, Actions with View/Edit/Archive icons)",
         "PlanComponentCreateAccountButton: Add test entries for Create Stock/Input/Output Account buttons (one per category section, opens create form/modal)",
