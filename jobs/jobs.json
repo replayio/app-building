@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "CheckTestSpecDealsList: Check testSpec.md directive violations in DealsListPage test entries",
-        "CheckComponentsDealsList: Check writeApp.md directive violations in DealsListPage components",
-        "CheckTestsDealsList: Check writeTests.md directive violations in DealsListPage tests"
-      ],
-      "timestamp": "2026-02-23T23:39:22.167Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecDealDetail: Check testSpec.md directive violations in DealDetailPage test entries",
         "CheckComponentsDealDetail: Check writeApp.md directive violations in DealDetailPage components",
         "CheckTestsDealDetail: Check writeTests.md directive violations in DealDetailPage tests"
@@ -648,6 +639,27 @@
         "WriteTestPersonAssociatedClients: Write tests for PersonAssociatedClients"
       ],
       "timestamp": "2026-02-23T23:59:19.240Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/testSpec.md",
+      "jobs": [
+        "PlanPageDealsListPage: Decide on components and add test entries to docs/tests.md for DealsListPage"
+      ],
+      "timestamp": "2026-02-24T00:03:10.497Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WritePageDealsListPage: Write all DealsListPage components, backend function, and page"
+      ],
+      "timestamp": "2026-02-24T00:03:14.507Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "WriteTestsDealsListPage: Write all Playwright tests for DealsListPage"
+      ],
+      "timestamp": "2026-02-24T00:03:19.091Z"
     }
   ]
 }
