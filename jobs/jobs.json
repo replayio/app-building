@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Build ClientDetailPage missing section components (ClientHeader with badges/tags, QuickActions with 4 buttons, SourceInfoSection, DealsSection, AttachmentsSection, PeopleSection, TimelineSection) and abstract all JSX into components",
-        "FixViolation: Fix ClientTasksSection to include checkboxes, relative due dates, linked deal names, Unresolved tasks label, and data-testid attributes",
-        "RunTests: Verify tests pass after ClientDetailPage component fixes",
-        "DocumentFix: Document the ClientDetailPage component fixes"
-      ],
-      "timestamp": "2026-02-24T05:06:58.723Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Create ClientDetailPage Playwright test files covering all test entries (ClientHeader, QuickActions, SourceInfoSection, TasksSection, DealsSection, AttachmentsSection, PeopleSection, TimelineSection)",
         "RunTests: Verify ClientDetailPage tests pass",
         "DocumentFix: Document the ClientDetailPage test creation"
