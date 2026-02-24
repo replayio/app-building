@@ -6,6 +6,7 @@ import ClientsListPage from './pages/ClientsListPage'
 import TasksListPage from './pages/TasksListPage'
 import ClientDetailPage from './pages/ClientDetailPage'
 import PersonDetailPage from './pages/PersonDetailPage'
+import DealDetailPage from './pages/DealDetailPage'
 
 function AppLayout() {
   return (
@@ -31,7 +32,7 @@ function App() {
             <Route path="/clients/:clientId" element={<ClientDetailPage />} />
             <Route path="/individuals/:individualId" element={<PersonDetailPage />} />
             <Route path="/deals" element={<PlaceholderPage name="Deals" />} />
-            <Route path="/deals/:dealId" element={<PlaceholderPage name="Deal Detail" />} />
+            <Route path="/deals/:dealId" element={<DealDetailPage />} />
             <Route path="/tasks" element={<TasksListPage />} />
             <Route path="/reports" element={<PlaceholderPage name="Reports" />} />
             <Route path="/settings" element={<PlaceholderPage name="Settings" />} />

@@ -3,21 +3,6 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "WriteComponentDealHeader: Write the DealHeader component",
-        "WriteComponentStageProgressBar: Write the StageProgressBar component",
-        "WriteComponentDealHistorySection: Write the DealHistorySection component",
-        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
-        "WriteComponentWriteupsSection: Write the WriteupsSection component",
-        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
-        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
-        "WriteComponentDealContactsSection: Write the DealContactsSection component",
-        "WritePageDealDetailPage: Write the page itself"
-      ],
-      "timestamp": "2026-02-23T21:53:57.859Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
         "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
         "WriteComponentDealsViewTabs: Write the DealsViewTabs component",
         "WriteComponentDealsFilters: Write the DealsFilters component",
