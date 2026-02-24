@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
-        "Unpack: Implement package scripts for Accounting"
+        "WriteDeployScript: Implement the deploy script for Accounting",
+        "WriteTestScript: Implement the test script for Accounting"
       ],
-      "timestamp": "2026-02-24T19:26:24.418Z"
+      "timestamp": "2026-02-24T19:59:02.101Z"
     },
     {
       "skill": "skills/tasks/build/writeTests.md",
