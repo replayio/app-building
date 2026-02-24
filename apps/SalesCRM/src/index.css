@@ -1551,6 +1551,27 @@ body {
   text-decoration: underline;
 }
 
+.relationship-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: background 0.1s ease;
+}
+
+.relationship-delete:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-status-churned);
+}
+
 /* Relationships Graph */
 .relationships-graph-view {
   display: flex;

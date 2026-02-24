@@ -236,12 +236,12 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
             <div className="modal-header">
               <h3 className="modal-title">Delete Relationship</h3>
             </div>
-            <p style={{ padding: '0 var(--spacing-lg)', color: 'var(--color-text-secondary)' }}>
+            <p className="modal-text">
               Are you sure you want to delete this relationship? This will also remove the reciprocal relationship entry.
             </p>
             <div className="modal-actions">
               <button className="btn-secondary" onClick={() => setDeleteConfirmId(null)} data-testid="delete-relationship-cancel">Cancel</button>
-              <button className="btn-primary" style={{ backgroundColor: 'var(--color-danger, #dc2626)' }} onClick={() => handleDeleteRelationship(deleteConfirmId)} data-testid="delete-relationship-confirm-button">Delete</button>
+              <button className="btn-danger" onClick={() => handleDeleteRelationship(deleteConfirmId)} data-testid="delete-relationship-confirm-button">Delete</button>
             </div>
           </div>
         </div>
