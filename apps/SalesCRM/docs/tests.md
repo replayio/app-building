@@ -963,6 +963,7 @@
 - DealsViewTabs (Table View, Pipeline View)
 - DealsFilters (Stage dropdown, Client dropdown, Status dropdown, Date Range picker, Sort by dropdown, Search input)
 - DealsTable (columns: Deal Name, Client, Stage, Owner, Value, Close Date, Status badge, row action menu)
+- DealsPipelineView (stage columns: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won; deal cards with name, client, value, status badge; drag-and-drop stage changes)
 - CreateDealButton
 - Pagination
 
@@ -1015,7 +1016,28 @@
 - **When** the user clicks the "Pipeline View" tab
 - **Then** the "Pipeline View" tab becomes visually highlighted as active
 - **And** the "Table View" tab returns to its default non-active state
-- **And** the deals are displayed in a pipeline/board layout grouped by deal stage columns
+- **And** the deals are displayed in a pipeline/board layout with six stage columns: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won
+- **And** each column header displays the stage name, a count badge showing the number of deals in that stage, and the total pipeline value for that stage (e.g., "$500k", "$2.3M")
+
+#### Test: Pipeline View deal cards display deal details
+- **Given** the user is on the Deals List Page with "Pipeline View" active
+- **Then** each deal is shown as a card within its corresponding stage column
+- **And** each card displays the deal name (bold, truncated if long)
+- **And** each card displays the client name in muted/secondary text below the deal name
+- **And** each card displays the deal value formatted as currency (e.g., "$250k")
+- **And** each card displays a color-coded status badge (e.g., "On Track" in green, "Needs Attention" in yellow, "At Risk" in red, "Won" in green)
+
+#### Test: Pipeline View deal cards are clickable and navigate to deal detail
+- **Given** the user is on the Deals List Page with "Pipeline View" active
+- **When** the user clicks on a deal card (e.g., "Project Alpha Expansion")
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for that deal
+
+#### Test: Pipeline View drag and drop changes deal stage
+- **Given** the user is on the Deals List Page with "Pipeline View" active and a deal card in the "Discovery" column
+- **When** the user drags the deal card from the "Discovery" column and drops it onto the "Proposal" column
+- **Then** the deal card moves to the "Proposal" column
+- **And** the deal's stage is updated to "Proposal" in the database
+- **And** the column headers update their deal counts and total values to reflect the change
 
 #### Test: Switching back to Table View from Pipeline View
 - **Given** the user is on the Deals List Page with "Pipeline View" active
@@ -1167,6 +1189,7 @@
 - **Then** the deal is removed from the table
 - **And** the summary cards update to reflect the removal (e.g., Total Active Deals decrements)
 - **And** the pagination count updates accordingly
+- **And** the deal is removed from the associated client's Deals section on the Client Detail Page
 - **When** the user cancels deletion
 - **Then** the deal remains in the table
 
@@ -1203,6 +1226,7 @@
 - **And** a success message is shown (e.g., "Deal created successfully")
 - **And** the summary cards update to reflect the new deal (Total Active Deals increments, Pipeline Value increases)
 - **And** the deal appears in the associated client's Deals section on the Client Detail Page
+- **And** a timeline entry is created on the associated client's timeline recording the deal creation
 
 #### Test: Create New Deal dialog can be cancelled
 - **Given** the Create New Deal dialog is open and the user has entered partial data
