@@ -3,9 +3,63 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "Unpack: Check directive compliance"
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
-      "timestamp": "2026-02-23T21:47:30.607Z"
+      "timestamp": "2026-02-24T04:04:37.524Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
+        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
+        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+      ],
+      "timestamp": "2026-02-24T04:04:36.652Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
+        "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
+        "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests"
+      ],
+      "timestamp": "2026-02-24T04:04:35.472Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
+        "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
+        "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
+      ],
+      "timestamp": "2026-02-24T04:04:34.332Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecPersonDetailPage: Check testSpec.md directive violations in PersonDetailPage test entries",
+        "CheckComponentsPersonDetailPage: Check writeApp.md directive violations in PersonDetailPage components",
+        "CheckTestsPersonDetailPage: Check writeTests.md directive violations in PersonDetailPage tests"
+      ],
+      "timestamp": "2026-02-24T04:04:32.943Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
+        "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
+        "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"
+      ],
+      "timestamp": "2026-02-24T04:04:31.786Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
+        "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
+        "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests"
+      ],
+      "timestamp": "2026-02-24T04:04:30.709Z"
     },
     {
       "strategy": "strategies/jobs/maintain/polishApp.md",
