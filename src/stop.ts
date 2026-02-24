@@ -36,6 +36,18 @@ async function stopEntry(entry: RegistryEntry): Promise<void> {
   // Wait for the server to reach "stopped" state
   await waitForStopped(entry.baseUrl);
 
+  // Show the last "Pushed" log line
+  try {
+    const data = await httpGet(`${entry.baseUrl}/logs?offset=0`, { ...httpOpts, timeout: 5000 });
+    const lines: string[] = data.items ?? [];
+    const pushLine = [...lines].reverse().find((l: string) => l.includes("Pushed to "));
+    if (pushLine) {
+      console.log(pushLine);
+    }
+  } catch {
+    // Server already gone
+  }
+
   if (entry.type === "remote") {
     // Destroy the Fly machine so it doesn't sit idle and cost money
     await stopRemoteContainer(entry);

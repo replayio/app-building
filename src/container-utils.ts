@@ -20,7 +20,14 @@ export async function probeAlive(entry: RegistryEntry): Promise<boolean> {
       headers,
       signal: AbortSignal.timeout(5000),
     });
-    return res.ok;
+    if (!res.ok) return false;
+    // Verify the response is actually from the expected container,
+    // not a different machine on the same Fly app.
+    const body = await res.json() as { containerName?: string };
+    if (body.containerName && body.containerName !== entry.containerName) {
+      return false;
+    }
+    return true;
   } catch {
     return false;
   }
@@ -29,7 +36,7 @@ export async function probeAlive(entry: RegistryEntry): Promise<boolean> {
 export async function findAliveContainers(): Promise<RegistryEntry[]> {
   const entries = getRecentContainers();
   const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-  const candidates = entries.filter((e) => new Date(e.startedAt).getTime() > oneDayAgo);
+  const candidates = entries.filter((e) => !e.stoppedAt && new Date(e.startedAt).getTime() > oneDayAgo);
 
   const aliveResults = await Promise.all(
     candidates.map(async (entry) => ({

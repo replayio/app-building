@@ -19,8 +19,8 @@ const REPO_DIR = "/repo";
 //    is queued during stop.
 //
 // 4. PushTarget workflow (pushTarget):
-//    a. Fetch from origin and merge the target branch. Auto-resolve any
-//       conflicts using --theirs, but track whether conflicts occurred.
+//    a. Fetch from origin and merge the target branch. If there are
+//       conflicts, leave markers in the tree, commit, and push.
 //    b. Push to the target branch. On failure, retry up to 3 times
 //       (re-fetch + re-merge each time). If all retries fail, log an error
 //       and exit the process.
@@ -80,7 +80,7 @@ export function cloneRepo(url: string, branch: string, dir: string = REPO_DIR): 
  */
 export function checkoutTargetBranch(targetBranch: string, log: Logger, dir: string = REPO_DIR): void {
   try {
-    execFileSync("git", ["fetch", "origin", targetBranch], {
+    execFileSync("git", ["fetch", "origin", `${targetBranch}:refs/remotes/origin/${targetBranch}`], {
       cwd: dir,
       encoding: "utf-8",
       timeout: 60000,
@@ -114,8 +114,7 @@ export function checkoutTargetBranch(targetBranch: string, log: Logger, dir: str
  * PushTarget workflow:
  * 1. git fetch origin targetBranch
  * 2. git merge origin/targetBranch --no-edit
- *    - If merge conflicts: auto-resolve with `git checkout --theirs . && git add -A && git commit --no-edit`
- *    - Track whether conflicts occurred
+ *    - If merge conflicts: leave conflict markers, add all files, commit
  * 3. git push origin HEAD:targetBranch
  *    - On failure: retry up to 3 times (re-fetch + re-merge each time)
  *    - If all retries fail: log error and exit process
@@ -133,49 +132,48 @@ export function pushTarget(
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     hadConflicts = false;
 
-    // Step 1: Fetch
+    // Step 1: Fetch (explicit refspec needed because --single-branch clone
+    // only tracks the clone branch, so a plain fetch won't create origin/<target>)
+    let remoteExists = false;
     try {
-      execFileSync("git", ["fetch", "origin", targetBranch], {
+      execFileSync("git", ["fetch", "origin", `${targetBranch}:refs/remotes/origin/${targetBranch}`], {
         cwd: dir,
         encoding: "utf-8",
         timeout: 60000,
         stdio: "pipe",
       });
+      remoteExists = true;
     } catch {
-      // Branch may not exist remotely yet — push will create it
+      // Branch doesn't exist remotely yet — push will create it
     }
 
-    // Step 2: Merge
-    try {
-      execFileSync("git", ["merge", `origin/${targetBranch}`, "--no-edit"], {
-        cwd: dir,
-        encoding: "utf-8",
-        timeout: 30000,
-        stdio: "pipe",
-      });
-    } catch {
-      // Merge conflict — auto-resolve with --theirs
-      hadConflicts = true;
+    // Step 2: Merge (only if remote branch exists)
+    if (remoteExists) {
       try {
-        execFileSync("git", ["checkout", "--theirs", "."], {
+        execFileSync("git", ["merge", `origin/${targetBranch}`, "--no-edit"], {
           cwd: dir,
           encoding: "utf-8",
           timeout: 30000,
           stdio: "pipe",
         });
-        execFileSync("git", ["add", "-A"], {
-          cwd: dir,
-          encoding: "utf-8",
-          timeout: 30000,
-        });
-        execFileSync("git", ["commit", "--no-edit"], {
-          cwd: dir,
-          encoding: "utf-8",
-          timeout: 30000,
-        });
-        log("Merge conflicts auto-resolved with --theirs");
-      } catch (e: any) {
-        log(`Warning: conflict auto-resolution failed: ${e.message}`);
+      } catch {
+        // Merge conflict — leave conflict markers in the tree
+        hadConflicts = true;
+        try {
+          execFileSync("git", ["add", "-A"], {
+            cwd: dir,
+            encoding: "utf-8",
+            timeout: 30000,
+          });
+          execFileSync("git", ["commit", "-m", "Merge with conflicts (markers left in tree)"], {
+            cwd: dir,
+            encoding: "utf-8",
+            timeout: 30000,
+          });
+          log("Merged with conflict markers left in tree");
+        } catch (e: any) {
+          log(`Warning: merge commit failed: ${e.message}`);
+        }
       }
     }
 
@@ -187,7 +185,7 @@ export function pushTarget(
         timeout: 120000,
         stdio: "pipe",
       });
-      log(`Pushed to ${targetBranch}`);
+      log(`Pushed to ${targetBranch}${hadConflicts ? " (with conflicts)" : ""}`);
 
       // Step 4: Queue conflict resolution task if needed
       if (hadConflicts && !shouldStop()) {
@@ -220,6 +218,7 @@ export function pushTarget(
       }
     }
   }
+
 }
 
 /**
