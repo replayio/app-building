@@ -3,9 +3,11 @@
     {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
-        "Unpack: Write app shared code for ProductionHub"
+        "WriteSharedAppWide: Write/refactor shared app-wide code for ProductionHub - extract Breadcrumb component from Accounting NavBar into apps/shared/components, create shared ConfirmDialog component",
+        "WriteSharedRecipesEquipment: Write/refactor shared Pagination component for ProductionHub RecipesPage and EquipmentPage paginated tables",
+        "WriteSharedEquipmentDetails: Write/refactor shared CommentsSection component for ProductionHub EquipmentDetailsPage MaintenanceNotes (also needed by SupplierTracker)"
       ],
-      "timestamp": "2026-02-24T19:26:31.841Z"
+      "timestamp": "2026-02-24T23:50:20.515Z"
     },
     {
       "skill": "skills/tasks/build/writeApp.md",
