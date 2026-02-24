@@ -3,9 +3,91 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageNewTransaction: Decide on components, add sections to docs/tests.md for NewTransactionPage (/transactions/new)",
+        "PlanComponentBasicInfoForm: Add test entries for BasicInfoForm (Date picker, Reference ID text input, Description textarea, Transaction Type dropdown selector) and page header (Cancel button navigates back, Post button submits form)",
+        "PlanComponentQuantityTransfersList: Add test entries for QuantityTransfersList (list of existing transfers showing Source Account/Destination Account/Amount/unit/Source Batch ID with delete button per row; Add Quantity Transfer button; inline form row with Source Account dropdown, Destination Account dropdown, Amount input, unit selector, Source Batch ID input)",
+        "PlanComponentBatchAllocationList: Add test entries for BatchAllocationList (list of batches being created showing Material/Amount with delete button per row; Create New Batch button; inline form with Material dropdown, Amount input; double-entry validation ensuring debits equal credits before Post)"
       ],
-      "timestamp": "2026-02-24T03:45:22.623Z"
+      "timestamp": "2026-02-24T03:48:25.361Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTransactionDetail: Decide on components, add sections to docs/tests.md for TransactionDetailPage (/transactions/:transactionId)",
+        "PlanComponentTransactionHeader: Add test entries for TransactionHeader (Transaction ID, Completed status badge, Date/Time, Creator, Description) and breadcrumb navigation (Home > Transactions > TXN-ID)",
+        "PlanComponentBasicInfoSection: Add test entries for BasicInfo section (Date field, Reference ID field, Description field, Transaction Type field - all read-only)",
+        "PlanComponentQuantityTransfersAndBatches: Add test entries for QuantityTransfersTable (Source Account with direction icon, Source Amount, Source Batch ID, Destination Account, Destination Amount, Net Transfer; Balanced indicator checkmark; Total Debits/Credits row) and BatchesCreatedTable (Batch ID, Material, Quantity)"
+      ],
+      "timestamp": "2026-02-24T03:48:17.560Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTransactions: Decide on components, add sections to docs/tests.md for TransactionsPage (/transactions)",
+        "PlanComponentTransactionsFilterBar: Add test entries for filters (Date Range picker, Involved Accounts multi-select, Material multi-select, Transaction Type dropdown, Clear Filters button) and search bar (search by ID or description)",
+        "PlanComponentTransactionsTable: Add test entries for TransactionsTable (columns: Date sortable, Transaction ID, Description, Accounts affected showing Dr/Cr notation, Materials and amounts; row click navigates to detail; Sort by dropdown; Pagination with Previous/Next/page numbers/rows per page; Showing X of Y results) and New Transaction button"
+      ],
+      "timestamp": "2026-02-24T03:48:09.953Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageBatchDetail: Decide on components, add sections to docs/tests.md for BatchDetailPage (/batches/:batchId)",
+        "PlanComponentBatchHeader: Add test entries for BatchHeader (Batch ID, Material name, Account name, Status with green dot, Created date/time, Originating Transaction link, Create New Transaction button)",
+        "PlanComponentBatchOverview: Add test entries for BatchOverview (Quantity with large display, Unit, Location, Lot Number, Expiration Date, Quality Grade, Storage Condition)",
+        "PlanComponentLineageAndUsageHistory: Add test entries for LineageDiagram (source transaction box, input batches with clickable IDs, output batch, visual flow arrows) and UsageHistoryTable (columns: Date & Time, Transaction ID link, Type, Movement In/Out, Amount, Created Batches with clickable links)"
+      ],
+      "timestamp": "2026-02-24T03:48:03.274Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageMaterialDetail: Decide on components, add sections to docs/tests.md for MaterialDetailPage (/materials/:materialId)",
+        "PlanComponentMaterialHeader: Add test entries for MaterialHeader (material name, category, description, unit of measure, Edit Material button, New Batch button, New Transaction button)",
+        "PlanComponentAccountsDistribution: Add test entries for AccountsDistribution table (Account Name, Account Type, Quantity, Number of Batches, View Account link; collapsible rows showing batches within each account with Batch ID, Quantity, Unit, Created Date)",
+        "PlanComponentAllBatchesAndTransactions: Add test entries for AllBatchesList (filters by Account/Date; columns: Batch ID, Location, Quantity, Created Date, View Lineage link) and TransactionsHistory (filters by Type/Date; columns: Date, Transaction ID, Accounts Involved, Batch References, Quantity Moved)"
+      ],
+      "timestamp": "2026-02-24T03:47:55.706Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageMaterials: Decide on components, add sections to docs/tests.md for MaterialsPage (/materials)",
+        "PlanComponentMaterialsToolbar: Add test entries for New Material button (opens create material form/modal) and New Category button (opens create category form/modal)",
+        "PlanComponentMaterialsFilterBar: Add test entries for search by name input, Filter by Category dropdown, Filter by Account dropdown, Sort by dropdown (Name A-Z etc)",
+        "PlanComponentMaterialsTable: Add test entries for MaterialsTable (columns: Material Name, Category, Unit of Measure, Stock, Actions with View Detail link, Edit link, eye icon, edit icon) and Pagination (Previous/Next, page numbers, showing X of Y items)"
+      ],
+      "timestamp": "2026-02-24T03:47:48.683Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAccountDetail: Decide on components, add sections to docs/tests.md for AccountDetailPage (/accounts/:accountId)",
+        "PlanComponentAccountHeader: Add test entries for AccountHeader (account name, type, status badge, Edit Account button opens edit form, New Transaction button navigates to new transaction pre-filled with account)",
+        "PlanComponentTrackedMaterialsTable: Add test entries for TrackedMaterialsTable (columns: Material Name, Category, Unit of Measure, Total Quantity with sum icon, Number of Batches, Actions with View Material in this Account link)"
+      ],
+      "timestamp": "2026-02-24T03:47:42.364Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAccounts: Decide on components, add sections to docs/tests.md for AccountsPage (/accounts)",
+        "PlanComponentAccountCategoryLists: Add test entries for StockAccountsList, InputAccountsList, OutputAccountsList (columns: Account Name, Account Type, Description, Actions with View/Edit/Archive icons)",
+        "PlanComponentCreateAccountButton: Add test entries for Create Stock/Input/Output Account buttons (one per category section, opens create form/modal)",
+        "PlanComponentAccountRowActions: Add test entries for account row click navigation, View/Edit/Archive action icons, and edit/archive confirmation flows"
+      ],
+      "timestamp": "2026-02-24T03:47:36.733Z"
+    },
+    {
+      "strategy": "strategies/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageDashboard: Decide on components, add sections to docs/tests.md for DashboardPage (/)",
+        "PlanComponentLowInventoryAlerts: Add test entries for LowInventoryAlerts (alert rows with warning/critical severity, View Details links, Dismiss buttons, Reorder buttons)",
+        "PlanComponentMaterialsCategoriesOverview: Add test entries for MaterialsCategoriesOverview (category summaries with item counts, material links, View All Categories link)",
+        "PlanComponentRecentTransactionsTable: Add test entries for RecentTransactionsTable (columns: Date, Reference, Accounts Affected, Materials & Amounts, Action; View Full Details links; View All Transactions link)",
+        "PlanComponentDashboardFiltersAndActions: Add test entries for DateRangeFilter, CategoryFilter dropdown, and NewTransactionButton (opens new transaction page)"
+      ],
+      "timestamp": "2026-02-24T03:47:30.588Z"
     },
     {
       "strategy": "strategies/tasks/build/writeApp.md",
