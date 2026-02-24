@@ -41,8 +41,8 @@ module requests returning `text/html` content. ReactComponents showed no compone
 
 **Fix**: Configure the dev server or redirect rules to exclude `/.netlify/` and module paths.
 
-*Example*: `worker-2026-02-21T03-34-33-230Z.log` — All 22 tests failed. Screenshots showed
-blank page. Network analysis revealed the SPA redirect was serving HTML for JS modules.
+*Example*: All 22 tests failed. Screenshots showed blank page. Network analysis revealed
+the SPA redirect was serving HTML for JS modules.
 
 ### Missing environment variables preventing API responses
 An API endpoint (e.g., auth signup) doesn't return expected data because a required env var
@@ -53,8 +53,8 @@ returned. Tracing the conditional revealed `IS_TEST` was undefined.
 
 **Fix**: Add the env var to the Playwright process configuration.
 
-*Example*: `worker-2026-02-21T03-34-33-230Z.log` — Auth tests failed because signup returned
-no token. Logpoints on the auth handler revealed IS_TEST was not set.
+*Example*: Auth tests failed because signup returned no token. Logpoints on the auth
+handler revealed IS_TEST was not set.
 
 ### Silent API errors leaving state empty
 A component fetches data in `useEffect`, but the API call fails and the catch block swallows
@@ -65,5 +65,5 @@ error). ConsoleMessages may show nothing if the error is caught silently.
 
 **Fix**: Either fix the API endpoint, or add error handling that surfaces the problem.
 
-*Example*: `worker-2026-02-18T15-59-54-937Z.log` — Webhook event checkboxes didn't render
-because `availableEvents` stayed empty when the API call failed silently in a catch block.
+*Example*: Webhook event checkboxes didn't render because `availableEvents` stayed empty
+when the API call failed silently in a catch block.

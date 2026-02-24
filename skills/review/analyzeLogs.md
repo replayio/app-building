@@ -19,9 +19,7 @@ formats the output into a readable summary. Read the full output to understand t
 
 Subtask format: `Unpack: <report-name> <report-file>`
 
-1. List all log files. Log files live in:
-   - `/repo/logs/` and `/repo/logs/reviewed/` — worker and iteration logs.
-   - `apps/*/logs/` — app-specific logs including test runs. Some may be in a `reviewed/` subdirectory.
+1. List all log files in `/repo/logs/`.
 
 2. Create the analysis directory: `reports/<report-name>-analysis/`
 

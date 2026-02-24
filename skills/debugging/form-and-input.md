@@ -37,8 +37,8 @@ app-level error message appeared. InspectElement reveals `type="email"` on the i
 **Fix**: Add `noValidate` to the `<form>` element to disable browser-native validation,
 allowing the app's custom validation to handle all cases.
 
-*Example*: `worker-2026-02-21T04-24-50-090Z.log` — Forgot-password "Submit with Invalid
-Email Format" test. PlaywrightSteps confirmed click, but form handler never fired.
+*Example*: Forgot-password "Submit with Invalid Email Format" test. PlaywrightSteps
+confirmed click, but form handler never fired.
 
 ### Native `<select>` vs. custom dropdown
 Playwright's `.selectOption()` only works on native `<select>` elements. If the component
@@ -61,8 +61,8 @@ the element is still invisible (opacity 0).
 **Fix**: Don't assert CSS opacity state. Use `force: true` on the click, and verify the
 functional outcome (e.g., row disappears after delete) instead of the visual hover state.
 
-*Example*: `worker-2026-02-21T05-32-01-460Z.log` — "Delete on Hover" test. Hover didn't
-trigger opacity change. Fixed with `force:true` click + functional assertion.
+*Example*: "Delete on Hover" test. Hover didn't trigger opacity change. Fixed with
+`force:true` click + functional assertion.
 
 ### `toBeChecked` targeting label instead of input
 `toBeChecked()` only works on `<input>` elements. If the test targets the `<label>` wrapping
@@ -73,8 +73,8 @@ on the asserted element shows it's a `<label>`, not an `<input>`.
 
 **Fix**: Target the `<input>` element inside the label for `toBeChecked` assertions.
 
-*Example*: `worker-2026-02-20T13-25-51-930Z.log` — STP-WH-07 webhook toggle. Replay showed
-`toBeChecked` was called on a `<label>`, not the underlying `<input>`.
+*Example*: STP-WH-07 webhook toggle. Replay showed `toBeChecked` was called on a
+`<label>`, not the underlying `<input>`.
 
 ### `data-testid` on sr-only/hidden input
 When a `data-testid` is placed on a hidden `sr-only` input (e.g., inside an accessible
@@ -86,5 +86,5 @@ event handler confirms 0 hits (the click never reached the handler).
 **Fix**: Move the `data-testid` to the visible label or wrapper element that the user would
 actually click.
 
-*Example*: `worker-2026-02-20T13-25-51-930Z.log` — STP-WH-07 webhook toggle. The testid was
-on the hidden `sr-only` input. Moving it to the visible label fixed the timeout.
+*Example*: STP-WH-07 webhook toggle. The testid was on the hidden `sr-only` input.
+Moving it to the visible label fixed the timeout.

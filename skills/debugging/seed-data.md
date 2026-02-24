@@ -36,9 +36,9 @@ confirms `entries: []`.
 **Fix**: Either seed the specific data the test needs, or have the test create the data via
 the UI before asserting on it.
 
-*Example*: `worker-2026-02-20T21-13-04-828Z.log` — PDP-CH-01 failed. SearchSources showed
-entry-rendering code had 0 hits. Logpoint confirmed empty entries array. Fixed by creating a
-contact history entry via the UI before running assertions.
+*Example*: PDP-CH-01 failed. SearchSources showed entry-rendering code had 0 hits.
+Logpoint confirmed empty entries array. Fixed by creating a contact history entry via
+the UI before running assertions.
 
 ### First navigated-to record lacks writeups/attachments
 Detail page tests navigate to the first deal/task/client and then assert on writeups,
@@ -51,8 +51,8 @@ sections. NetworkRequest confirms empty arrays in the API response.
 **Fix**: Have the test create the needed data before asserting, rather than relying on seed
 data existing.
 
-*Example*: `worker-2026-02-21T00-21-51-482Z.log` — DDP-WRT-01 and DDP-ATT-01 failed because
-the first deal had no writeups or attachments. Fixed by making tests create data first.
+*Example*: DDP-WRT-01 and DDP-ATT-01 failed because the first deal had no writeups or
+attachments. Fixed by making tests create data first.
 
 ### Ephemeral branch inherits outdated schema
 `CREATE TABLE IF NOT EXISTS` doesn't add new columns to existing tables. When a new column
@@ -63,8 +63,8 @@ have the new column.
 
 **Fix**: Add `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` migration logic.
 
-*Example*: `worker-2026-02-21T04-05-00-483Z.log` — Tests failed with "column owner_id does
-not exist". The ephemeral branch was created from a parent that lacked the new column.
+*Example*: Tests failed with "column owner_id does not exist". The ephemeral branch was
+created from a parent that lacked the new column.
 
 ## General Guidance
 

@@ -32,9 +32,8 @@ Screenshot shows the element exists with a different testid.
 **Fix**: Update the locator to match the actual testid. Use `getByTestId` with a pattern
 or the exact value.
 
-*Example*: `worker-2026-02-20T12-51-54-645Z.log` — TDP-HDR-02 timed out clicking a client
-row. PlaywrightSteps showed step 31 stuck. Screenshot showed rows existed with
-`data-testid="client-row-*"` not plain `tr`.
+*Example*: TDP-HDR-02 timed out clicking a client row. PlaywrightSteps showed step 31
+stuck. Screenshot showed rows existed with `data-testid="client-row-*"` not plain `tr`.
 
 ### `.toPass()` deadlock (nested auto-wait)
 A `.toPass()` retry block contains `count()`, `textContent()`, or other auto-waiting locator
@@ -46,8 +45,8 @@ which blocks `.toPass()` from retrying.
 - `textContent()` → `toContainText()`
 - `isVisible()` → `toBeVisible()`
 
-*Example*: `worker-2026-02-19T23-29-46-713Z.log` — DATA-02 timed out because
-`taskCards.nth(4).textContent()` auto-waited inside `.toPass()`.
+*Example*: DATA-02 timed out because `taskCards.nth(4).textContent()` auto-waited
+inside `.toPass()`.
 
 ### Wrong input format
 A `fill()` call provides a value in the wrong format for the input type. For example,
@@ -55,8 +54,8 @@ A `fill()` call provides a value in the wrong format for the input type. For exa
 
 **Fix**: Match the format to the HTML input type.
 
-*Example*: `worker-2026-02-20T13-00-10-123Z.log` — TDP-HDR-01 failed with "Malformed value"
-on date input. PlaywrightSteps showed the fill step, Replay confirmed the input type.
+*Example*: TDP-HDR-01 failed with "Malformed value" on date input. PlaywrightSteps
+showed the fill step, Replay confirmed the input type.
 
 ### Replay browser overhead (bulk timeouts on fresh builds)
 When multiple tests fail with timeouts in the first test run of a fresh build, and
@@ -72,9 +71,9 @@ limit (e.g., 25.7s vs 30s timeout). `PlaywrightSteps` shows no stuck steps — j
 `expect.toBeVisible({ timeout: 10000 })` for post-navigation assertions. These should be
 set in `playwright.config.ts` from the start for any project using Replay Chromium.
 
-*Example*: `worker-2026-02-23T23-21-34.log` — 7 of 10 failures were timeouts caused by
-Replay browser overhead. DescribeComponent confirmed elements rendered close to the timeout
-limit. Fixed by increasing config timeouts.
+*Example*: 7 of 10 failures were timeouts caused by Replay browser overhead.
+DescribeComponent confirmed elements rendered close to the timeout limit. Fixed by
+increasing config timeouts.
 
 ### Browser-native validation blocking form submission
 A form has `<input type="email">` and the test fills an intentionally invalid email to test
@@ -83,5 +82,5 @@ app-level validation. But the browser's native validation fires first, preventin
 
 **Fix**: Add `noValidate` to the `<form>` element so app-level validation handles it.
 
-*Example*: `worker-2026-02-21T04-24-50-090Z.log` — "Submit with Invalid Email Format" test.
-PlaywrightSteps confirmed the click happened but no validation error appeared.
+*Example*: "Submit with Invalid Email Format" test. PlaywrightSteps confirmed the click
+happened but no validation error appeared.

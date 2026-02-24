@@ -26,6 +26,7 @@ npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" \
 - Write clean, working code. No TODOs, placeholder implementations, or mock data. All features must be real and fully functional end-to-end, backed by the database.
 - All JSX rendered on a page must be abstracted into other React components with their own files.
 - Check for style guides at both `apps/AppStyle.md` (shared across all apps) and `apps/<AppName>/AppStyle.md` (app-specific). Read both if they exist and use them to style the pages and components appropriately. The app-specific style guide takes precedence when they conflict. Prefer using CSS files with style variables instead of hardcoded styles.
+- Check for reusable library and component code in `apps/shared` and use these when appropriate. Set up the app build system so it can use code from this directory.
 
 ## Database Schema
 

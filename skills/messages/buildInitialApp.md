@@ -7,20 +7,23 @@ You will build the app in the following stages, with task skill files in `skills
 
 1. testSpec.md: Create a detailed test specification for the tests the app must pass in order to match the app spec.
 
-2. writeApp.md: Write the app's code according to the two specs.
+2. writeShared.md: Write or refactor code which the app needs and that can be shared with other apps.
 
-3. writeScript.md: For each design doc in `skills/scripts/`, implement the script.
+3. writeApp.md: Write the app's code according to the two specs.
 
-4. writeTests.md: Write the tests according to the two specs.
+4. writeScript.md: For each design doc in `skills/scripts/`, implement the script.
 
-5. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
+5. writeTests.md: Write the tests according to the two specs.
 
-6. deployment.md: Deploy the app to production.
+6. testing.md: Get all tests to pass, debugging and fixing the app / tests as needed.
+
+7. deployment.md: Deploy the app to production.
 
 Add tasks to the queue for each stage:
 
 ```
 npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" --subtask "Unpack: Write test specification" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeShared.md" --subtask "Unpack: Write app shared code" --trailing
 npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" --subtask "Unpack: Write the app" --trailing
 npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/writeScript.md" --subtask "Unpack: Implement package scripts" --trailing
 npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" --subtask "Unpack: Write Playwright tests" --trailing

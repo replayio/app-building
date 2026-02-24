@@ -37,8 +37,8 @@ another test added an extra record concurrently.
 **Fix**: Switch from count-based assertions to name-based assertions (check for a specific
 item by name rather than exact count). Or create isolated test data per test.
 
-*Example*: `worker-2026-02-20T21-05-51-266Z.log` — PDP-REL-04a expected relationship count 1,
-got 2. Logpoints showed a parallel test added a relationship to the same person simultaneously.
+*Example*: PDP-REL-04a expected relationship count 1, got 2. Logpoints showed a parallel
+test added a relationship to the same person simultaneously.
 
 ### Optimistic update overwritten by late GET response
 A test clicks a toggle (PATCH request), then immediately asserts the new state. But a
@@ -47,9 +47,8 @@ previously-triggered GET request returns with stale data and overwrites the opti
 **Fix**: Intercept routes in the test to prevent the stale GET from overwriting, or wait for
 the GET to complete before asserting.
 
-*Example*: `worker-2026-02-21T09-35-37-625Z.log` — Webhook toggle test. SearchSources showed
-the GET response handler had more hits than expected, and the late GET overwrote the PATCH
-result.
+*Example*: Webhook toggle test. SearchSources showed the GET response handler had more
+hits than expected, and the late GET overwrote the PATCH result.
 
 ### React strict mode double-firing effects
 In development mode, React strict mode runs effects twice. If an effect makes an API call
@@ -72,9 +71,8 @@ show unexpected counts or data values that don't match what the test created.
 - Add per-test database cleanup in `beforeEach`/`afterEach`
 - Use per-worker database branches (already the default in this repo)
 
-*Example*: 5 failures (15% of all failures) in `sales-crm-2-review-5` were caused by
-cross-test contamination in `fullyParallel` mode where tests shared the same client IDs
-and task names.
+*Example*: 5 failures (15% of all failures) were caused by cross-test contamination in
+`fullyParallel` mode where tests shared the same client IDs and task names.
 
 ### Date.now() or shared identifiers across workers
 When parallel Playwright workers share a module-level `Date.now()` value for generating
@@ -83,5 +81,5 @@ unique IDs (like test emails), all workers get the same value, causing collision
 **Fix**: Generate unique values inside `beforeAll`/`beforeEach` using `Math.random()` or
 worker-specific identifiers.
 
-*Example*: `worker-2026-02-21T04-44-16-693Z.log` — Parallel workers tried to sign up with
-the same email (Date.now() evaluated at module load). Fixed with per-worker random emails.
+*Example*: Parallel workers tried to sign up with the same email (Date.now() evaluated
+at module load). Fixed with per-worker random emails.

@@ -41,9 +41,9 @@ use this sequence to trace data from API response through state management to co
 This is especially useful for seed data mismatches where tests expect specific values
 (e.g., assignee names) that don't exist in the database.
 
-*Example*: `worker-…04-27-52.log` — "Action menu Edit opens task edit dialog" failed because
-tests expected fictional assignee names. SearchSources → Logpoint → NetworkRequest traced
-the mismatch from API response through to component rendering.
+*Example*: "Action menu Edit opens task edit dialog" failed because tests expected
+fictional assignee names. SearchSources → Logpoint → NetworkRequest traced the mismatch
+from API response through to component rendering.
 
 ## Common Root Causes (from observed failures)
 
@@ -62,9 +62,8 @@ This pinpoints the bug to UI state management (e.g., `isSignUp` not resetting on
 management bug. Common causes: toggle state not resetting, form reusing stale state from a
 previous interaction.
 
-*Example*: `worker-2026-02-23T23-21-34.log` — Sign In form test failed. NetworkRequest
-revealed a 409 "Email already in use" because the frontend sent `action: "signup"` instead
-of `"signin"`.
+*Example*: Sign In form test failed. NetworkRequest revealed a 409 "Email already in use"
+because the frontend sent `action: "signup"` instead of `"signin"`.
 
 ### State hydration gap (action succeeds but UI doesn't update)
 An action completes successfully (data visible in localStorage or network response) but the
@@ -83,9 +82,9 @@ shows the component didn't re-render, or rendered with stale props.
 **Fix**: Ensure the state management layer (Redux, Context, etc.) is hydrated from persistent
 storage on app startup and that successful operations dispatch the appropriate state updates.
 
-*Example*: `worker-2026-02-24T01-51-45.log` — Auto-login test. Token was stored in
-localStorage but sidebar didn't update. Fix: added `loadSession` on app startup and
-`setSession` Redux action dispatched from ConfirmEmailPage.
+*Example*: Auto-login test. Token was stored in localStorage but sidebar didn't update.
+Fix: added `loadSession` on app startup and `setSession` Redux action dispatched from
+ConfirmEmailPage.
 
 ### Missing database columns (schema migration)
 `CREATE TABLE IF NOT EXISTS` doesn't modify existing tables. When new columns are added to
@@ -96,8 +95,8 @@ output shows `NeonDbError: column "X" does not exist`.
 
 **Fix**: Add `ALTER TABLE ADD COLUMN IF NOT EXISTS` migration statements.
 
-*Example*: `worker-2026-02-21T04-05-00-483Z.log` — "column owner_id does not exist". Fixed
-by adding a `runMigrations` function with ALTER TABLE statements.
+*Example*: "column owner_id does not exist". Fixed by adding a `runMigrations` function
+with ALTER TABLE statements.
 
 ### Missing environment variables on deployment
 Netlify functions return errors because DATABASE_URL or other env vars aren't configured
@@ -108,8 +107,7 @@ JSON. ConsoleMessages shows connection/auth errors.
 
 **Fix**: Set env vars via `netlify env:set` or the Netlify dashboard.
 
-*Example*: `worker-2026-02-21T03-42-03-835Z.log` — Deployment test failed because Netlify
-functions lacked DATABASE_URL.
+*Example*: Deployment test failed because Netlify functions lacked DATABASE_URL.
 
 ### Database authentication errors
 A stale or rotated database password causes all API calls to fail with authentication errors.
@@ -128,8 +126,8 @@ shows the results rendering code has 0 hits (component unmounted before it could
 **Fix**: Delay calling `onImported()` until after results are displayed, or keep the dialog
 open until the user dismisses it.
 
-*Example*: `worker-2026-02-21T09-35-37-625Z.log` — Import dialog test. Replay showed the
-API succeeded but `onImported()` closed the dialog before results rendered.
+*Example*: Import dialog test. Replay showed the API succeeded but `onImported()` closed
+the dialog before results rendered.
 
 ### Database CHECK constraint violation
 A form sends a value that violates a database CHECK constraint (e.g., status `'active'` when
@@ -142,8 +140,8 @@ ReadSource on the handler confirms which values are sent.
 
 **Fix**: Update the form/component to send only values that match the database enum.
 
-*Example*: `worker-2026-02-21T17-31-25-892Z.log` — CreateDealModal sent `'on_track'` as
-status but DB only accepted `'open'`/`'won'`/`'lost'`. 10 Replay tools used to trace.
+*Example*: CreateDealModal sent `'on_track'` as status but DB only accepted
+`'open'`/`'won'`/`'lost'`. 10 Replay tools used to trace.
 
 ### Stale dev server with deleted Neon branch
 When `reuseExistingServer` in Playwright config reuses a dev server whose `DATABASE_URL`
@@ -156,5 +154,5 @@ recording shows the frontend working but all data requests failing.
 **Fix**: Kill the stale dev server and let Playwright start a fresh one with the correct
 `DATABASE_URL`. Set `reuseExistingServer: false` or add cleanup logic.
 
-*Example*: `worker-2026-02-18T19-13-46-356Z.log` — 8 Replay tools traced from "no API
-calls" → "auth token removed" → "JWT ok but DB query fails on deleted branch".
+*Example*: 8 Replay tools traced from "no API calls" → "auth token removed" → "JWT ok
+but DB query fails on deleted branch".

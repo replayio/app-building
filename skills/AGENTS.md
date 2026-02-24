@@ -39,6 +39,7 @@ into sub-tasks use `add-task` to insert them at the front of the queue.
 Used when building a new app (see `messages/buildInitialApp.md` for stage ordering):
 
 - **testSpec.md**: Write a detailed test specification from the app spec.
+- **writeShared.md**: Write code shared with other apps.
 - **writeApp.md**: Write the app's database, backend, and frontend code.
 - **writeTests.md**: Write Playwright tests matching the test specification.
 - **testing.md**: Run tests and debug/fix failures using Replay.
