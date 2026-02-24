@@ -8,6 +8,251 @@
         "DocumentFix: Document the ClientDetailPage test creation"
       ],
       "timestamp": "2026-02-24T05:07:37.170Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/test-person-detail-1.log for test failures",
+        "AnalyzeLogs: Check logs/test-person-detail-2.log for test failures",
+        "AnalyzeLogs: Check logs/test-person-detail-3.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T21-47-46-261Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T21-48-09-025Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:37.884Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-23T21-50-30-030Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T21-53-07-148Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T21-54-10-708Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-01-47-357Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-19-38-367Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:38.653Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-20-21-552Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-24-05-844Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-25-51-263Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-26-58-212Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-35-49-644Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:39.438Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-23T22-36-18-638Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-10-03-545Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-10-27-352Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-16-38-512Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-17-49-379Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:40.229Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-20-21-005Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-21-57-247Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-24-33-117Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-28-30-281Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-29-13-508Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:41.028Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-37-05-389Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-39-06-104Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-44-39-576Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-47-45-911Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-50-00-993Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:41.833Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-51-42-992Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-53-27-137Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-56-37-428Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T01-59-15-048Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-03-01-689Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:42.619Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-06-00-213Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-12-52-878Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-29-26-508Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-29-48-423Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-30-06-432Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:43.375Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-33-19-888Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-33-41-624Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-34-00-813Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-35-12-414Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-38-03-903Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:44.216Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T02-45-31-066Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-05-08-611Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-08-57-205Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-12-18-618Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-13-24-081Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:45.027Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-17-25-773Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-19-37-800Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-23-37-674Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-26-43-634Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-34-57-266Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:45.807Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-45-42-379Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-49-31-011Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T03-54-02-422Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-00-37-926Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-00-56-368Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:46.619Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-01-11-664Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-03-26-671Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-03-45-133Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-04-02-310Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-04-42-440Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:47.382Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-08-02-628Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-10-07-390Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-17-01-578Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-27-52-748Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-30-41-286Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:48.158Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-35-07-775Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-38-50-834Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-46-06-115Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-49-04-891Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-53-42-489Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:48.968Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T04-59-28-315Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-07-50-082Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-14-10-260Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-17-29-515Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-17-49-466Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:49.810Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-18-07-815Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-19-58-670Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-24-37-543Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-28-52-646Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-33-10-451Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:50.658Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-38-58-899Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-42-50-326Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-45-50-342Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T05-57-04-681Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-08-19-478Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:51.450Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-13-44-433Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-25-29-488Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-38-07-201Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-43-20-467Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-46-38-486Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:52.259Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T06-49-41-906Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-04-20-895Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-09-53-548Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-12-48-814Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-17-25-303Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:53.103Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-21-23-977Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-26-08-839Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-32-46-333Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T07-53-29-736Z.log for test failures",
+        "AnalyzeLogs: Check logs/worker-2026-02-24T08-00-05-574Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:53.900Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "AnalyzeLogs: Check logs/worker-2026-02-24T10-23-02-883Z.log for test failures"
+      ],
+      "timestamp": "2026-02-24T15:11:54.705Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "CompileReport: Read logs/test-failure-report.md and add a summary section with failure counts, common patterns, and recommendations"
+      ],
+      "timestamp": "2026-02-24T15:12:01.295Z"
     }
   ]
 }
