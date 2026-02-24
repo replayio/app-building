@@ -207,7 +207,7 @@ async function processLoop(): Promise<void> {
       // Final commit and push after message
       if (!stopRequested) {
         const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
-        archiveCurrentLog(LOGS_DIR);
+        archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
         commitAndPushTarget(`${CONTAINER_NAME} iteration ${iteration}: ${summary}`, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
         log(`Final revision: ${getRevision(REPO_DIR)}`);
       }
@@ -228,7 +228,8 @@ async function processLoop(): Promise<void> {
         () => stopRequested,
         (label) => {
           if (!stopRequested) {
-            archiveCurrentLog(LOGS_DIR);
+            iteration++;
+            archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
             commitAndPushTarget(label, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
           }
         },
@@ -258,7 +259,8 @@ async function processLoop(): Promise<void> {
   // Commit and push any remaining work on stop
   if (stopRequested) {
     try {
-      archiveCurrentLog(LOGS_DIR);
+      iteration++;
+      archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
       commitAndPushTarget(`Final work from ${CONTAINER_NAME}`, PUSH_BRANCH, log, () => true, REPO_DIR);
     } catch (e: any) {
       log(`Warning: failed to push final work: ${e.message}`);
@@ -403,7 +405,7 @@ async function main(): Promise<void> {
   }
 
   // Now that /repo exists, initialize the logger
-  log = createBufferedLogger(LOGS_DIR, (line) => {
+  log = createBufferedLogger(LOGS_DIR, CONTAINER_NAME, iteration, (line) => {
     logBuffer.append(line);
   });
 
