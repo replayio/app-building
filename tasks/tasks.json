@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageTransactionDetail: Decide on components, add sections to docs/tests.md for TransactionDetailPage (/transactions/:transactionId)",
-        "PlanComponentTransactionHeader: Add test entries for TransactionHeader (Transaction ID, Completed status badge, Date/Time, Creator, Description) and breadcrumb navigation (Home > Transactions > TXN-ID)",
-        "PlanComponentBasicInfoSection: Add test entries for BasicInfo section (Date field, Reference ID field, Description field, Transaction Type field - all read-only)",
-        "PlanComponentQuantityTransfersAndBatches: Add test entries for QuantityTransfersTable (Source Account with direction icon, Source Amount, Source Batch ID, Destination Account, Destination Amount, Net Transfer; Balanced indicator checkmark; Total Debits/Credits row) and BatchesCreatedTable (Batch ID, Material, Quantity)"
-      ],
-      "timestamp": "2026-02-24T03:48:17.560Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageTransactions: Decide on components, add sections to docs/tests.md for TransactionsPage (/transactions)",
         "PlanComponentTransactionsFilterBar: Add test entries for filters (Date Range picker, Involved Accounts multi-select, Material multi-select, Transaction Type dropdown, Clear Filters button) and search bar (search by ID or description)",
         "PlanComponentTransactionsTable: Add test entries for TransactionsTable (columns: Date sortable, Transaction ID, Description, Accounts affected showing Dr/Cr notation, Materials and amounts; row click navigates to detail; Sort by dropdown; Pagination with Previous/Next/page numbers/rows per page; Showing X of Y results) and New Transaction button"

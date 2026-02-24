@@ -66,7 +66,205 @@ Components: TransactionsFilterBar, TransactionsTable, Pagination
 
 Components: TransactionHeader, BasicInfoSection, QuantityTransfersTable, BatchesCreatedTable
 
-<!-- Tests will be added by PlanPageTransactionDetail -->
+### TransactionHeader
+
+#### Test: Breadcrumb navigation displays Home > Transactions > TXN-ID
+- **Components:** TransactionHeader
+- **Initial state:** User navigates to `/transactions/TXN-123456`.
+- **Action:** Page loads.
+- **Expected:** A breadcrumb trail is displayed below the app header showing "Home > Transactions > TXN-123456". "Home" is a clickable link. "Transactions" is a clickable link. "TXN-123456" is the current page label and is not clickable. The ">" separator characters are visible between each breadcrumb segment.
+
+#### Test: Breadcrumb Home link navigates to Dashboard
+- **Components:** TransactionHeader
+- **Initial state:** User is on `/transactions/TXN-123456`. Breadcrumb shows "Home > Transactions > TXN-123456".
+- **Action:** User clicks "Home" in the breadcrumb.
+- **Expected:** User is navigated to the DashboardPage (`/`).
+
+#### Test: Breadcrumb Transactions link navigates to Transactions list
+- **Components:** TransactionHeader
+- **Initial state:** User is on `/transactions/TXN-123456`. Breadcrumb shows "Home > Transactions > TXN-123456".
+- **Action:** User clicks "Transactions" in the breadcrumb.
+- **Expected:** User is navigated to the TransactionsPage (`/transactions`).
+
+#### Test: Transaction ID is displayed prominently in the header
+- **Components:** TransactionHeader
+- **Initial state:** User navigates to `/transactions/TXN-123456`.
+- **Action:** Page loads.
+- **Expected:** The header section displays "Transaction ID: TXN-123456" in large, bold text as the primary heading of the page.
+
+#### Test: Completed status badge is displayed next to Transaction ID
+- **Components:** TransactionHeader
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has a "Completed" status.
+- **Action:** Page loads.
+- **Expected:** A green badge with the text "Completed" is displayed inline immediately to the right of the Transaction ID heading. The badge has a distinct green background color to indicate the completed state.
+
+#### Test: Date/Time field is displayed in the header
+- **Components:** TransactionHeader
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction was created on Oct 26, 2023 at 10:30 AM PST.
+- **Action:** Page loads.
+- **Expected:** The header displays a "Date/Time:" label followed by the formatted date and time (e.g., "Oct 26, 2023, 10:30 AM PST"). This field is read-only and displayed as text below the Transaction ID line.
+
+#### Test: Creator field is displayed in the header
+- **Components:** TransactionHeader
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction was created by "Jane Doe".
+- **Action:** Page loads.
+- **Expected:** The header displays a "Creator:" label followed by the creator's name (e.g., "Jane Doe"). This field is read-only and displayed as text below the Date/Time line.
+
+#### Test: Description field is displayed in the header
+- **Components:** TransactionHeader
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has a description "Q4 Inventory Adjustment for Raw Materials".
+- **Action:** Page loads.
+- **Expected:** The header displays a "Description:" label followed by the description text (e.g., "Q4 Inventory Adjustment for Raw Materials"). This field is read-only and displayed as text below the Creator line.
+
+### BasicInfoSection
+
+#### Test: Basic Info section displays section heading
+- **Components:** BasicInfoSection
+- **Initial state:** User navigates to `/transactions/TXN-123456`.
+- **Action:** Page loads.
+- **Expected:** A section titled "Basic Info" is displayed below the TransactionHeader, inside a card or bordered container.
+
+#### Test: Date field displays the transaction date in read-only format
+- **Components:** BasicInfoSection
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction date is 10/26/2023.
+- **Action:** Page loads.
+- **Expected:** A "Date" label is displayed with the value "10/26/2023" below it in a read-only input field. The field is not editable by the user.
+
+#### Test: Reference ID field displays the reference identifier in read-only format
+- **Components:** BasicInfoSection
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction reference ID is "REF-Q4-ADJ-001".
+- **Action:** Page loads.
+- **Expected:** A "Reference Id" label is displayed with the value "REF-Q4-ADJ-001" below it in a read-only input field. The field is not editable by the user.
+
+#### Test: Description field displays the transaction description in read-only format
+- **Components:** BasicInfoSection
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction description is "Adjustment for end-of-quarter physical count discrepancy in Warehouse A."
+- **Action:** Page loads.
+- **Expected:** A "Description" label is displayed with the full description text below it in a read-only textarea or text block. The text may wrap across multiple lines. The field is not editable by the user.
+
+#### Test: Transaction Type field displays the type in read-only format
+- **Components:** BasicInfoSection
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction type is "Inventory Adjustment".
+- **Action:** Page loads.
+- **Expected:** A "Transaction Type" label is displayed with the value "Inventory Adjustment" below it in a read-only input field. The field is not editable by the user.
+
+#### Test: Basic Info fields are arranged in a horizontal row layout
+- **Components:** BasicInfoSection
+- **Initial state:** User navigates to `/transactions/TXN-123456`.
+- **Action:** Page loads.
+- **Expected:** The four fields (Date, Reference Id, Description, Transaction Type) are laid out horizontally in a single row within the Basic Info card. Each field has its label above the value. The Description field is wider than the others to accommodate longer text.
+
+### QuantityTransfersTable
+
+#### Test: Quantity Transfers section displays heading
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has quantity transfers.
+- **Action:** Page loads.
+- **Expected:** A section titled "Quantity Transfers (Double-Entry View)" is displayed below the BasicInfoSection, inside a card or bordered container.
+
+#### Test: Balanced indicator checkmark is shown when debits equal credits
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction's total debits equal total credits (e.g., both 515.00).
+- **Action:** Page loads.
+- **Expected:** A green checkmark icon with the text "Balanced" is displayed in the top-right corner of the Quantity Transfers section header, indicating the double-entry transaction is balanced.
+
+#### Test: Quantity Transfers table displays all column headers
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Source Account", "Source Amount", "Source Batch ID (Optional)", "Destination Account", "Destination Amount", and "Net Transfer".
+
+#### Test: Source Account column shows account name with direction icon
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has a transfer where "Warehouse A - Raw Materials (Asset)" is the source account with a debit.
+- **Action:** Page loads.
+- **Expected:** The Source Account cell displays a directional arrow icon (down arrow ↓ for debit/outgoing) followed by the account name and type, e.g., "↓ Warehouse A - Raw Materials (Asset)". The icon visually indicates the direction of the flow.
+
+#### Test: Source Amount column shows negative amount with units
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. A transfer debits 500 Units from the source account.
+- **Action:** Page loads.
+- **Expected:** The Source Amount cell displays "-500.00 Units" — a negative value with the unit of measure, indicating the amount leaving the source account.
+
+#### Test: Source Batch ID column shows batch reference or N/A
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The first transfer references source batch "BATCH-RM-2023-A". The second transfer has no source batch.
+- **Action:** Page loads.
+- **Expected:** The first row's Source Batch ID cell displays "BATCH-RM-2023-A". The second row's Source Batch ID cell displays "N/A". Batch IDs that are present are clickable links that navigate to the corresponding BatchDetailPage (`/batches/:batchId`).
+
+#### Test: Destination Account column shows account name with direction icon
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has a transfer where "Production Line B - WIP (Asset)" is the destination account with a credit.
+- **Action:** Page loads.
+- **Expected:** The Destination Account cell displays a directional arrow icon (up arrow ↑ for credit/incoming) followed by the account name and type, e.g., "↑ Production Line B - WIP (Asset)". The icon visually indicates the direction of the flow.
+
+#### Test: Destination Amount column shows positive amount with units
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. A transfer credits 500 Units to the destination account.
+- **Action:** Page loads.
+- **Expected:** The Destination Amount cell displays "+500.00 Units" — a positive value with the unit of measure, indicating the amount entering the destination account.
+
+#### Test: Net Transfer column shows absolute transfer amount
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. A transfer moves 500 Units between accounts.
+- **Action:** Page loads.
+- **Expected:** The Net Transfer cell displays "500.00" — the absolute amount transferred without sign or unit, representing the net quantity moved in that transfer line.
+
+#### Test: Multiple transfer rows are displayed
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has two quantity transfers: (1) 500 Units from Warehouse A to Production Line B, (2) 15 Units from Inventory Shrinkage Expense to Warehouse A.
+- **Action:** Page loads.
+- **Expected:** Two rows are displayed in the table. Row 1: Source "↓ Warehouse A - Raw Materials (Asset)", Source Amount "-500.00 Units", Source Batch ID "BATCH-RM-2023-A", Destination "↑ Production Line B - WIP (Asset)", Destination Amount "+500.00 Units", Net Transfer "500.00". Row 2: Source "↑ Inventory Shrinkage Expense (Expense)", Source Amount "+15.00 Units", Source Batch ID "N/A", Destination "↓ Warehouse A - Raw Materials (Asset)", Destination Amount "-15.00 Units", Net Transfer "15.00".
+
+#### Test: Total Debits and Total Credits are displayed in footer row
+- **Components:** QuantityTransfersTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction has total debits of 515.00 and total credits of 515.00.
+- **Action:** Page loads.
+- **Expected:** A footer row at the bottom of the table displays "Total Debits: 515.00 | Total Credits: 515.00" right-aligned. Both values match, confirming the double-entry balance.
+
+#### Test: Clicking a Source Batch ID link navigates to BatchDetailPage
+- **Components:** QuantityTransfersTable
+- **Initial state:** User is on `/transactions/TXN-123456`. The first transfer row shows Source Batch ID "BATCH-RM-2023-A" as a clickable link.
+- **Action:** User clicks "BATCH-RM-2023-A" in the Source Batch ID column.
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/BATCH-RM-2023-A`) for that batch.
+
+### BatchesCreatedTable
+
+#### Test: Batches Created section displays heading
+- **Components:** BatchesCreatedTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction created batches.
+- **Action:** Page loads.
+- **Expected:** A section titled "Batches Created" is displayed below the QuantityTransfersTable, inside a card or bordered container.
+
+#### Test: Batches Created table displays all column headers
+- **Components:** BatchesCreatedTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`.
+- **Action:** Page loads.
+- **Expected:** The table displays column headers: "Batch ID", "Material", and "Quantity".
+
+#### Test: Batch rows display correct data
+- **Components:** BatchesCreatedTable
+- **Initial state:** User navigates to `/transactions/TXN-123456`. The transaction created two batches: (1) BATCH-WIP-2023-Q4-001 for "Widget Assembly Component X" with quantity 500.00, (2) BATCH-SCRAP-2023-Q4-005 for "Scrap Material - Metal" with quantity 15.00.
+- **Action:** Page loads.
+- **Expected:** Two rows are displayed. Row 1: Batch ID "BATCH-WIP-2023-Q4-001", Material "Widget Assembly Component X", Quantity "500.00". Row 2: Batch ID "BATCH-SCRAP-2023-Q4-005", Material "Scrap Material - Metal", Quantity "15.00".
+
+#### Test: Clicking a Batch ID navigates to BatchDetailPage
+- **Components:** BatchesCreatedTable
+- **Initial state:** User is on `/transactions/TXN-123456`. The Batches Created table shows "BATCH-WIP-2023-Q4-001" as a clickable link.
+- **Action:** User clicks "BATCH-WIP-2023-Q4-001" in the Batch ID column.
+- **Expected:** User is navigated to the BatchDetailPage (`/batches/BATCH-WIP-2023-Q4-001`) for that batch.
+
+#### Test: Clicking a Material name navigates to MaterialDetailPage
+- **Components:** BatchesCreatedTable
+- **Initial state:** User is on `/transactions/TXN-123456`. The Batches Created table shows "Widget Assembly Component X" as a clickable link.
+- **Action:** User clicks "Widget Assembly Component X" in the Material column.
+- **Expected:** User is navigated to the MaterialDetailPage (`/materials/:materialId`) for "Widget Assembly Component X".
+
+#### Test: Empty Batches Created section when no batches were created
+- **Components:** BatchesCreatedTable
+- **Initial state:** User navigates to a transaction that did not create any new batches (e.g., a pure transfer between existing batches).
+- **Action:** Page loads.
+- **Expected:** The "Batches Created" section is displayed with the table headers but no data rows. An empty state message such as "No batches were created in this transaction" is shown.
 
 ---
 
