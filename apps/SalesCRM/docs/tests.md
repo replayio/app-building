@@ -1581,6 +1581,20 @@
 - **And** the change is saved
 - **Then** the Owner field displays "John Doe"
 
+#### Test: Deal header Change Stage button does nothing when stage is unchanged
+- **Given** the user is on the Deal Detail Page with the deal in "Discovery" stage
+- **When** the user does not change the Stage dropdown (it still shows "Discovery")
+- **And** the user clicks the "Change Stage" button
+- **Then** no new entry is added to the Deal History section
+- **And** the StageProgressBar remains unchanged
+
+#### Test: Deal header fields persist changes after page reload
+- **Given** the user is on the Deal Detail Page
+- **When** the user changes the Value field from "$250,000" to "$300,000" and the change is saved
+- **And** the user reloads the page
+- **Then** the Value field still displays "$300,000"
+- **And** the deal title reflects the updated value
+
 ### StageProgressBar
 
 #### Test: Stage progress bar displays all six stages in order
@@ -1639,6 +1653,11 @@
 - **Given** a newly created deal with no stage changes
 - **Then** the Deal History section shows an empty state or initial creation entry
 
+#### Test: Deal History entries are read-only
+- **Given** the Deal History section has stage change entries
+- **Then** the entries are displayed as read-only text (no edit or delete controls)
+- **And** the user cannot modify or remove history entries
+
 ### DealMetricsSection
 
 #### Test: Deal Metrics section displays heading
@@ -1664,6 +1683,12 @@
 - **When** the user clicks on the expected close date and changes it to Jan 31, 2024
 - **And** the change is saved
 - **Then** the Deal Metrics section displays "Expected Close: Jan 31, 2024"
+
+#### Test: Deal Metrics probability validates range 0-100
+- **Given** the user is editing the probability value
+- **When** the user enters a value greater than 100 or less than 0
+- **Then** a validation error is shown (e.g., "Probability must be between 0 and 100")
+- **And** the invalid value is not saved
 
 ### WriteupsSection
 
@@ -1730,6 +1755,24 @@
 - **Then** the form closes without saving changes
 - **And** the original writeup content remains unchanged
 
+#### Test: Writeup entry can be deleted with confirmation
+- **Given** the Writeups section shows "Needs Analysis" entry
+- **When** the user clicks a delete action on the "Needs Analysis" entry
+- **Then** a confirmation dialog appears (e.g., "Are you sure you want to delete this writeup?")
+- **When** the user confirms deletion
+- **Then** the "Needs Analysis" entry is removed from the Writeups section
+- **And** the entry is permanently deleted
+
+#### Test: Writeup delete can be cancelled
+- **Given** the delete confirmation dialog is open for a writeup entry
+- **When** the user clicks Cancel
+- **Then** the dialog closes and the writeup entry remains unchanged
+
+#### Test: Writeups entries are displayed in reverse chronological order
+- **Given** the deal has multiple writeup entries with different dates
+- **Then** the entries are displayed with the most recent entry first
+- **And** older entries appear below newer ones
+
 ### LinkedTasksSection
 
 #### Test: Linked Tasks section displays heading and Add Task button
@@ -1783,6 +1826,23 @@
 - **Then** the form closes without creating a task
 - **And** no new task appears in the list
 
+#### Test: Clicking a task name navigates to the task detail page
+- **Given** the Linked Tasks section shows "Prepare Proposal Draft"
+- **When** the user clicks on the task name "Prepare Proposal Draft"
+- **Then** the app navigates to the Task Detail Page (/tasks/:taskId) for that task
+
+#### Test: Linked task can be removed from the deal
+- **Given** the Linked Tasks section shows "Prepare Proposal Draft"
+- **When** the user clicks a remove/unlink action for "Prepare Proposal Draft"
+- **Then** a confirmation dialog appears (e.g., "Remove this task from the deal?")
+- **When** the user confirms
+- **Then** "Prepare Proposal Draft" is removed from the Linked Tasks list
+- **And** the task still exists in the system but is no longer linked to this deal
+
+#### Test: Linked Tasks section shows empty state when no tasks exist
+- **Given** the deal has no linked tasks
+- **Then** the section shows an empty state (e.g., "No tasks linked to this deal") or just the Add Task button
+
 ### DealAttachmentsSection
 
 #### Test: Attachments section displays heading and upload button
@@ -1826,6 +1886,12 @@
 #### Test: Attachments section shows empty state when no files exist
 - **Given** the deal has no attachments
 - **Then** the section shows an empty state (e.g., "No attachments yet") or just the upload button
+
+#### Test: File upload shows progress and success feedback
+- **Given** the user selects a file to upload
+- **Then** a loading/progress indicator is shown during upload
+- **When** the upload completes successfully
+- **Then** a success message is shown and the new file appears in the list
 
 ### DealContactsSection
 
@@ -1874,6 +1940,17 @@
 - **When** the user confirms
 - **Then** Bob Johnson is removed from the contacts list
 - **And** the deal is no longer shown in Bob Johnson's associated deals
+
+#### Test: Remove contact confirmation can be cancelled
+- **Given** the remove confirmation dialog is open for Bob Johnson
+- **When** the user clicks Cancel
+- **Then** the dialog closes and Bob Johnson remains in the contacts list
+
+#### Test: Add Contact search filters individuals
+- **Given** the Add Contact dialog is open
+- **When** the user types "Jane" in the search field
+- **Then** only individuals whose name matches "Jane" are shown in the search results
+- **And** the user can select a matching individual to add
 
 ---
 

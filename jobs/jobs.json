@@ -3,19 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageDealDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentDealHeader: Add test entries for DealHeader and StageProgressBar",
-        "PlanComponentDealHistorySection: Add test entries for DealHistorySection and DealMetricsSection",
-        "PlanComponentWriteupsSection: Add test entries for WriteupsSection",
-        "PlanComponentLinkedTasksSection: Add test entries for LinkedTasksSection",
-        "PlanComponentDealAttachmentsSection: Add test entries for DealAttachmentsSection",
-        "PlanComponentDealContactsSection: Add test entries for DealContactsSection"
-      ],
-      "timestamp": "2026-02-23T21:50:11.295Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageTasksListPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentTasksHeader: Add test entries for TasksHeader and New Task button",
         "PlanComponentTasksFilter: Add test entries for TasksFilter",
