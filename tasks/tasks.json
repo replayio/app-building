@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageMaterials: Decide on components, add sections to docs/tests.md for MaterialsPage (/materials)",
-        "PlanComponentMaterialsToolbar: Add test entries for New Material button (opens create material form/modal) and New Category button (opens create category form/modal)",
-        "PlanComponentMaterialsFilterBar: Add test entries for search by name input, Filter by Category dropdown, Filter by Account dropdown, Sort by dropdown (Name A-Z etc)",
-        "PlanComponentMaterialsTable: Add test entries for MaterialsTable (columns: Material Name, Category, Unit of Measure, Stock, Actions with View Detail link, Edit link, eye icon, edit icon) and Pagination (Previous/Next, page numbers, showing X of Y items)"
-      ],
-      "timestamp": "2026-02-24T03:47:48.683Z"
-    },
-    {
-      "strategy": "strategies/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageAccountDetail: Decide on components, add sections to docs/tests.md for AccountDetailPage (/accounts/:accountId)",
         "PlanComponentAccountHeader: Add test entries for AccountHeader (account name, type, status badge, Edit Account button opens edit form, New Transaction button navigates to new transaction pre-filled with account)",
         "PlanComponentTrackedMaterialsTable: Add test entries for TrackedMaterialsTable (columns: Material Name, Category, Unit of Measure, Total Quantity with sum icon, Number of Batches, Actions with View Material in this Account link)"
