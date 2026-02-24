@@ -1,43 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeTests.md",
-      "jobs": [
-        "WriteTestSearchInputFiltersContactsByName: Write test for Search input filters contacts by name",
-        "WriteTestSearchInputFiltersContactsByEmail: Write test for Search input filters contacts by email",
-        "WriteTestSearchInputFiltersContactsByTitle: Write test for Search input filters contacts by title",
-        "WriteTestSearchInputFiltersContactsByPhone: Write test for Search input filters contacts by phone",
-        "WriteTestSearchInputFiltersContactsByLocation: Write test for Search input filters contacts by location",
-        "WriteTestSearchInputClearsAndShowsAllContacts: Write test for Search input clears and shows all contacts",
-        "WriteTestTableDisplaysCorrectColumnHeaders: Write test for Table displays correct column headers",
-        "WriteTestTableRowsDisplayContactName: Write test for Table rows display contact name",
-        "WriteTestTableRowsDisplayContactTitle: Write test for Table rows display contact title",
-        "WriteTestTableRowsDisplayContactEmail: Write test for Table rows display contact email",
-        "WriteTestTableRowsDisplayContactPhone: Write test for Table rows display contact phone",
-        "WriteTestTableRowsDisplayContactLocation: Write test for Table rows display contact location",
-        "WriteTestTableRowsDisplayAssociatedClients: Write test for Table rows display associated clients",
-        "WriteTestClickingContactRowNavigatesToPersonDetailPage: Write test for Clicking a contact row navigates to PersonDetailPage",
-        "WriteTestClickingAddContactButtonOpensCreateContactModal: Write test for Clicking Add Contact button opens CreateContactModal",
-        "WriteTestCreateContactModalFormValidatesRequiredFields: Write test for CreateContactModal form validates required fields",
-        "WriteTestCreateContactModalSuccessfullyCreatesAContact: Write test for CreateContactModal successfully creates a contact",
-        "WriteTestCreateContactModalClientDropdownIsSearchableFilterSelect: Write test for CreateContactModal client dropdown is searchable FilterSelect",
-        "WriteTestCreateContactModalCancelButtonClosesModalWithoutCreating: Write test for CreateContactModal cancel button closes modal without creating",
-        "WriteTestCreateContactModalClosesOnOverlayClick: Write test for CreateContactModal closes on overlay click",
-        "WriteTestPageDisplaysHeadingAndAddContactButton: Write test for Page displays heading and Add Contact button",
-        "WriteTestLoadingStateShowsWhileContactsAreBeingFetched: Write test for Loading state shows while contacts are being fetched",
-        "WriteTestEmptyStateShownWhenNoContactsMatchSearch: Write test for Empty state shown when no contacts match search",
-        "WriteTestEmptyStateShownWhenNoContactsExist: Write test for Empty state shown when no contacts exist",
-        "WriteTestPaginationControlsAppearWhenContactsExceedPageSize: Write test for Pagination controls appear when contacts exceed page size",
-        "WriteTestClickingNextPageLoadsTheNextSetOfContacts: Write test for Clicking next page loads the next set of contacts",
-        "WriteTestClickingPreviousPageLoadsThePreviousSetOfContacts: Write test for Clicking previous page loads the previous set of contacts",
-        "WriteTestCSVExportDownloadsContactsAsCSVFile: Write test for CSV export downloads contacts as CSV file",
-        "WriteTestCSVImportButtonOpensImportDialog: Write test for CSV import button opens import dialog",
-        "WriteTestCSVImportProcessesValidFileAndCreatesContacts: Write test for CSV import processes valid file and creates contacts",
-        "WriteTestCSVImportShowsValidationErrorsForInvalidData: Write test for CSV import shows validation errors for invalid data"
-      ],
-      "timestamp": "2026-02-24T00:49:51.395Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "CheckTestSpecSettings: Check testSpec.md directive violations in SettingsPage test entries",
