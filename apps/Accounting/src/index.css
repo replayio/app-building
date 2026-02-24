@@ -965,3 +965,11 @@
 .font-tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/* Account cards grid layout within category sections */
+[data-testid="accounts-page"] .category-section-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  padding: 4px 8px 8px;
+}

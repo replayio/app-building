@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteComponentNavBar: Write the NavBar component",
-        "WriteComponentAccountsOverviewHeader: Write the AccountsOverviewHeader component",
-        "WriteComponentAccountCard: Write the AccountCard component",
-        "WritePageAccountsPage: Write the AccountsPage page itself"
-      ],
-      "timestamp": "2026-02-24T19:52:20.449Z"
-    },
-    {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts for Accounting"
