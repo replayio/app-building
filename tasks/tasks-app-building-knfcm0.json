@@ -3,9 +3,33 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "Unpack: Write Playwright tests for Accounting"
+        "WriteTestNavBarDisplays: Write test for NavBar displays logo and navigation links",
+        "WriteTestNavBarAccounts: Write test for NavBar Accounts link navigates to AccountsPage",
+        "WriteTestNavBarDashboard: Write test for NavBar Dashboard link navigates to Dashboard",
+        "WriteTestNavBarReports: Write test for NavBar Reports link navigates to ReportList",
+        "WriteTestNavBarBudgets: Write test for NavBar Budgets link navigates to Budgets page",
+        "WriteTestNavBarNewTransaction: Write test for NavBar New Transaction button opens NewTransactionModal",
+        "WriteTestNavBarUserInfo: Write test for NavBar displays user name and avatar",
+        "WriteTestNavBarLogOut: Write test for NavBar Log Out button logs the user out",
+        "WriteTestAccountsOverviewTitle: Write test for AccountsOverviewHeader displays page title",
+        "WriteTestAccountsOverviewGenerate: Write test for AccountsOverviewHeader Generate Reports button opens CreateReportDialog",
+        "WriteTestCategorySectionAll: Write test for CategorySection displays all five accounting categories",
+        "WriteTestCategorySectionTotals: Write test for CategorySection shows correct category totals",
+        "WriteTestCategorySectionExpand: Write test for CategorySection expand reveals account cards",
+        "WriteTestCategorySectionCollapse: Write test for CategorySection collapse hides account cards",
+        "WriteTestCategorySectionAssetsDefault: Write test for CategorySection Assets expanded by default with three accounts",
+        "WriteTestCategorySectionLiabilitiesDefault: Write test for CategorySection Liabilities expanded by default with three accounts",
+        "WriteTestAccountCardNameBalance: Write test for AccountCard displays account name and balance",
+        "WriteTestAccountCardDebitsCredits: Write test for AccountCard displays debits and credits YTD",
+        "WriteTestAccountCardBudgetBar: Write test for AccountCard displays budget vs actual progress bar",
+        "WriteTestAccountCardViewBudget: Write test for AccountCard View Budget Details link navigates to budget details",
+        "WriteTestAccountCardMenu: Write test for AccountCard three-dot menu opens actions",
+        "WriteTestAccountCardClick: Write test for AccountCard click navigates to AccountDetailPage",
+        "WriteTestAccountCardSavingsGoal: Write test for AccountCard displays savings goal progress",
+        "WriteTestAccountCardInvestment: Write test for AccountCard displays investment performance",
+        "WriteTestAccountCardLiability: Write test for AccountCard displays liability-specific information"
       ],
-      "timestamp": "2026-02-24T19:26:25.040Z"
+      "timestamp": "2026-02-24T20:03:13.566Z"
     },
     {
       "skill": "skills/tasks/build/testing.md",
