@@ -3,17 +3,6 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPagePersonDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentPersonHeader: Add test entries for PersonHeader",
-        "PlanComponentRelationshipsSection: Add test entries for RelationshipsSection (Graph/List View, Filter, Add Entry)",
-        "PlanComponentContactHistorySection: Add test entries for ContactHistorySection",
-        "PlanComponentAssociatedClientsSection: Add test entries for AssociatedClientsSection"
-      ],
-      "timestamp": "2026-02-23T21:49:53.526Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
         "PlanPageDealsListPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentDealsSummaryCards: Add test entries for DealsSummaryCards",
         "PlanComponentDealsViewTabs: Add test entries for DealsViewTabs (Table View, Pipeline View)",

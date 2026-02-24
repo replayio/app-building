@@ -87,6 +87,11 @@ export default function RelationshipsSection({ individualId }: RelationshipsSect
         <div className="person-section-actions">
           {/* Test: Filter button is displayed in Relationships section */}
           {/* Test: Filter button opens filter options for relationships */}
+          {/* Test: Filtering relationships by type shows only matching entries */}
+          {/* Test: Filtering relationships by client shows only matching entries */}
+          {/* Test: Resetting relationship type filter to All Types shows all entries */}
+          {/* Test: Resetting relationship client filter to All Clients shows all entries */}
+          {/* Test: Relationship filter applies to both List View and Graph View */}
           <div className="filter-dropdown-wrapper">
             <button
               className="btn-ghost"
@@ -361,6 +366,7 @@ function AddRelationshipModal({ individualId, onClose, onCreated }: AddRelations
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="searchable-select-icon">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                   </svg>
+                  {/* Test: Add relationship person search shows results after typing */}
                   <input
                     className="searchable-select-input"
                     placeholder="Search individuals..."

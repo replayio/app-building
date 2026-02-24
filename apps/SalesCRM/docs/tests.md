@@ -908,7 +908,7 @@
 - **When** the user clicks the "Graph View" tab
 - **Then** the "Graph View" tab becomes visually highlighted as active
 - **And** the "List View" tab returns to its default non-active state
-- **And** a visual relationship graph is displayed showing the person and their connections
+- **And** a visual relationship graph is displayed with a center node labeled "You" and connected nodes showing each related person's name and relationship type
 
 #### Test: Switching back to List View from Graph View
 - **Given** the user is on the Person Detail Page with Graph View active
@@ -923,7 +923,39 @@
 #### Test: Filter button opens filter options for relationships
 - **Given** the user is on the Person Detail Page
 - **When** the user clicks the "Filter" button in the Relationships section
-- **Then** filter options appear allowing the user to filter relationships by type (e.g., Colleague, Decision Maker, Influencer) or by client
+- **Then** a filter dropdown menu appears with two sections: "By Type" and "By Client"
+- **And** the "By Type" section lists: All Types, Colleague, Decision Maker, Influencer, Manager, Report, Partner
+- **And** the "By Client" section lists: All Clients, followed by each unique client name from the relationships
+
+#### Test: Filtering relationships by type shows only matching entries
+- **Given** the user is on the Person Detail Page with multiple relationships of different types (Colleague, Decision Maker, Influencer)
+- **When** the user clicks the "Filter" button and selects "Colleague" from the type options
+- **Then** only relationships with type "Colleague" are shown (e.g., "David Chen (Colleague)", "Sarah Lee (Colleague)")
+- **And** relationships of other types (e.g., "Maria Rodriguez (Decision Maker)") are hidden
+- **And** the filter dropdown closes after selection
+
+#### Test: Filtering relationships by client shows only matching entries
+- **Given** the user is on the Person Detail Page with relationships spanning multiple clients
+- **When** the user clicks the "Filter" button and selects "Innovate Solutions Inc." from the client options
+- **Then** only relationships associated with "Innovate Solutions Inc." are shown
+- **And** relationships associated with other clients are hidden
+
+#### Test: Resetting relationship type filter to All Types shows all entries
+- **Given** the user has filtered relationships by type "Colleague"
+- **When** the user clicks the "Filter" button and selects "All Types"
+- **Then** all relationships are shown again regardless of type
+
+#### Test: Resetting relationship client filter to All Clients shows all entries
+- **Given** the user has filtered relationships by client "Innovate Solutions Inc."
+- **When** the user clicks the "Filter" button and selects "All Clients"
+- **Then** all relationships are shown again regardless of client association
+
+#### Test: Relationship filter applies to both List View and Graph View
+- **Given** the user has filtered relationships by type "Colleague" in List View
+- **When** the user switches to Graph View
+- **Then** only "Colleague" relationships are displayed in the graph
+- **When** the user switches back to List View
+- **Then** the filter remains active showing only "Colleague" relationships
 
 #### Test: Add Entry button is displayed in Relationships section
 - **Given** the user is on the Person Detail Page
@@ -932,7 +964,17 @@
 #### Test: Add Entry button opens relationship creation form
 - **Given** the user is on the Person Detail Page
 - **When** the user clicks the "+ Add Entry" button in the Relationships section
-- **Then** a modal or form opens with fields for: Related Person (required, search/select from existing individuals), Relationship Type (required, dropdown with options such as Colleague, Decision Maker, Influencer), and optionally Client association
+- **Then** a modal opens titled "Add Relationship" with a close (X) button
+- **And** the modal contains: a "Related Person *" field with a search input (placeholder "Search individuals...") with a search icon, a "Relationship Type *" dropdown (placeholder "Select type..." with options: Colleague, Decision Maker, Influencer, Manager, Report, Partner), and Cancel and Save buttons at the bottom
+
+#### Test: Add relationship person search shows results after typing
+- **Given** the Add Relationship modal is open
+- **When** the user types "Da" (2+ characters) into the Related Person search input
+- **Then** a dropdown list appears showing matching individuals (e.g., "David Chen - V.P. Engineering")
+- **When** the user clicks on "David Chen - V.P. Engineering"
+- **Then** the search input is replaced by a chip showing "David Chen" with a remove (X) button
+- **When** the user clicks the remove button on the chip
+- **Then** the chip is removed and the search input reappears
 
 #### Test: New relationship entry can be created successfully
 - **Given** the relationship creation form is open
@@ -958,8 +1000,9 @@
 #### Test: Relationship entry can be deleted
 - **Given** the user is on the Person Detail Page with at least one relationship entry visible in the Relationships list
 - **When** the user clicks the delete (trash) icon on a relationship entry
-- **Then** a confirmation dialog appears asking the user to confirm deletion
-- **When** the user confirms the deletion
+- **Then** a confirmation dialog titled "Delete Relationship" appears with the message "Are you sure you want to delete this relationship? This will also remove the reciprocal relationship entry."
+- **And** the dialog has a "Cancel" button and a red "Delete" button
+- **When** the user clicks "Delete"
 - **Then** the relationship entry is removed from the Relationships list
 - **And** the reciprocal relationship entry on the related person's Person Detail Page is also deleted
 
@@ -998,7 +1041,8 @@
 #### Test: Contact History entry edit icon opens edit form
 - **Given** the Contact History section shows entries with edit (pencil) icons
 - **When** the user clicks the edit icon on a contact history entry
-- **Then** an edit form or modal opens pre-populated with the entry's date/time, interaction type, summary, and team member
+- **Then** a modal opens titled "Edit Contact History" with a close (X) button
+- **And** the form fields are pre-populated with the entry's date/time, interaction type, summary, and team member
 
 #### Test: Contact History entry edit saves changes
 - **Given** the edit form is open for a contact history entry
@@ -1019,7 +1063,33 @@
 #### Test: Filter button opens filter options for contact history
 - **Given** the user is on the Person Detail Page
 - **When** the user clicks the "Filter" button in the Contact History section
-- **Then** filter options appear allowing the user to filter entries by interaction type (e.g., Video Call, Email, Meeting, Note) or by date range
+- **Then** a filter dropdown menu appears with two sections: "By Interaction Type" and "By Date Range"
+- **And** the "By Interaction Type" section lists: All Types, Video Call, Email, Meeting (In-person), Note
+- **And** the "By Date Range" section shows "From" and "To" date inputs and a "Clear Dates" button
+
+#### Test: Filtering contact history by interaction type shows only matching entries
+- **Given** the user is on the Person Detail Page with contact history entries of various types (Video Call, Email, Meeting, Note)
+- **When** the user clicks the "Filter" button and selects "Email" from the interaction type options
+- **Then** only contact history entries with type "Email" are shown
+- **And** entries of other types (e.g., Video Call, Meeting, Note) are hidden
+- **And** the filter dropdown closes after selection
+
+#### Test: Resetting contact history type filter to All Types shows all entries
+- **Given** the user has filtered contact history by type "Email"
+- **When** the user clicks the "Filter" button and selects "All Types"
+- **Then** all contact history entries are shown again regardless of type
+
+#### Test: Filtering contact history by date range shows only entries within range
+- **Given** the user is on the Person Detail Page with contact history entries on various dates
+- **When** the user clicks the "Filter" button and sets "From" to "2023-10-20" and "To" to "2023-10-26"
+- **Then** only contact history entries with a contact date between Oct 20, 2023 and Oct 26, 2023 (inclusive) are shown
+- **And** entries outside that range are hidden
+
+#### Test: Clear Dates button resets the date range filter
+- **Given** the user has filtered contact history by date range (From: 2023-10-20, To: 2023-10-26)
+- **When** the user clicks the "Filter" button and clicks "Clear Dates"
+- **Then** both the From and To date inputs are cleared
+- **And** all contact history entries are shown again regardless of date
 
 #### Test: Add Entry button is displayed in Contact History section
 - **Given** the user is on the Person Detail Page
@@ -1028,7 +1098,8 @@
 #### Test: Add Entry button opens contact history creation form
 - **Given** the user is on the Person Detail Page
 - **When** the user clicks the "+ Add Entry" button in the Contact History section
-- **Then** a modal or form opens with fields for: Date/Time (required, date/time picker), Interaction Type (required, dropdown with options: Video Call, Email, Meeting (In-person), Note), Summary (required, text area), Team Member (required, search/select)
+- **Then** a modal opens titled "Add Contact History Entry" with a close (X) button
+- **And** the modal contains: a "Date/Time *" datetime-local input, an "Interaction Type *" dropdown (placeholder "Select type..." with options: Video Call, Email, Meeting (In-person), Note), a "Summary *" textarea (placeholder "Enter summary..."), a "Team Member *" text input (placeholder "e.g. Michael B. (Sales Lead)"), and Cancel and Save buttons at the bottom
 
 #### Test: New contact history entry can be created successfully
 - **Given** the contact history creation form is open

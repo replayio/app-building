@@ -78,6 +78,10 @@ export default function ContactHistorySection({ individualId }: ContactHistorySe
         <div className="person-section-actions">
           {/* Test: Filter button is displayed in Contact History section */}
           {/* Test: Filter button opens filter options for contact history */}
+          {/* Test: Filtering contact history by interaction type shows only matching entries */}
+          {/* Test: Resetting contact history type filter to All Types shows all entries */}
+          {/* Test: Filtering contact history by date range shows only entries within range */}
+          {/* Test: Clear Dates button resets the date range filter */}
           <div className="filter-dropdown-wrapper">
             <button
               className="btn-ghost"
