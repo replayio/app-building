@@ -48,7 +48,7 @@ export default function ConfirmEmailPage() {
     <div data-testid="confirm-email-page" className="p-6 max-sm:p-3 flex items-center justify-center min-h-screen">
       <div className="w-full max-w-sm text-center">
         {status === 'loading' && (
-          <p className="text-[13px] text-[var(--color-text-muted)]">Confirming your email...</p>
+          <p data-testid="confirm-loading" className="text-[13px] text-[var(--color-text-muted)]">Confirming your email...</p>
         )}
         {status === 'success' && (
           <div>

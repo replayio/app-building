@@ -226,8 +226,12 @@ export default async function handler(req: Request, context: Context) {
 
       await sql`UPDATE email_tokens SET used_at = NOW() WHERE id = ${rows[0].id}`
 
+      const userRows = await sql`SELECT id, email, name FROM users WHERE id = ${rows[0].user_id}`
+      const user = userRows[0]
+      const authToken = generateToken(user.id, user.email)
+
       return new Response(
-        JSON.stringify({ message: 'Email confirmed successfully.' }),
+        JSON.stringify({ message: 'Email confirmed successfully.', token: authToken, user: { id: user.id, email: user.email, name: user.name } }),
         { status: 200, headers: { 'Content-Type': 'application/json' } },
       )
     }
