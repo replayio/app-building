@@ -3,14 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Write Playwright tests for ClientDetailPage (all sections and components)",
-        "RunTests: Verify all ClientDetailPage tests pass"
-      ],
-      "timestamp": "2026-02-24T03:49:22.631Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Add task click navigation test entry to ClientDetailPage TasksSection in docs/tests.md",
         "FixViolation: Add timeline deal entity link navigation test entry to ClientDetailPage TimelineSection in docs/tests.md",
         "RunTests: Verify tests pass after ClientDetailPage testSpec fixes",

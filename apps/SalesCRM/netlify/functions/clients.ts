@@ -515,6 +515,7 @@ async function handleUpdate(sql: SqlFn, id: string, body: string | null) {
   if (!current.length) return json(404, { error: 'Not found' })
   const oldClient = current[0]
 
+  const skipSource = source === undefined
   const skipSourceDetail = source_detail === undefined
   const skipCampaign = campaign === undefined
   const skipChannel = channel === undefined
@@ -526,7 +527,7 @@ async function handleUpdate(sql: SqlFn, id: string, body: string | null) {
       name = COALESCE(${name || null}, name),
       type = COALESCE(${type || null}, type),
       status = COALESCE(${status || null}, status),
-      source = ${source === undefined ? null : (source || null)},
+      source = CASE WHEN ${skipSource}::boolean THEN source ELSE ${source || null} END,
       source_detail = CASE WHEN ${skipSourceDetail}::boolean THEN source_detail ELSE ${source_detail || null} END,
       campaign = CASE WHEN ${skipCampaign}::boolean THEN campaign ELSE ${campaign || null} END,
       channel = CASE WHEN ${skipChannel}::boolean THEN channel ELSE ${channel || null} END,
