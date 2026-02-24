@@ -983,6 +983,34 @@ Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, Use
 
 ## ForgotPasswordPage (/auth/forgot-password)
 
+Components: ForgotPasswordPage
+
+### ForgotPasswordPage
+
+#### Forgot password form displays email input and submit button
+- **Initial state:** User navigates to /auth/forgot-password.
+- **Expected:** The page displays a heading "Forgot Password", an email input field with placeholder "Enter your email", and a "Send Reset Link" submit button.
+
+#### Submitting email shows success message
+- **Initial state:** The forgot password form is displayed with the email input and submit button visible.
+- **Action:** User enters a valid email address into the email input and clicks the "Send Reset Link" button.
+- **Expected:** After submission, the form is replaced by a success message: "If an account exists with that email, a password reset link has been sent." The email input and submit button are no longer visible.
+
+#### Submit button shows loading state during submission
+- **Initial state:** The forgot password form is displayed.
+- **Action:** User enters an email and clicks the "Send Reset Link" button.
+- **Expected:** While the request is in progress, the submit button text changes to "Sending..." and the button is disabled to prevent duplicate submissions.
+
+#### Error message displayed on server error
+- **Initial state:** The forgot password form is displayed.
+- **Action:** User enters an email and clicks "Send Reset Link", but the server returns an error response.
+- **Expected:** An error message is displayed below the email input (e.g., "Failed to send reset email"). The form remains visible so the user can retry. The error message disappears when the user submits again.
+
+#### Error message displayed on network failure
+- **Initial state:** The forgot password form is displayed.
+- **Action:** User enters an email and clicks "Send Reset Link", but a network error occurs.
+- **Expected:** An error message "Network error" is displayed below the email input. The form remains visible so the user can retry.
+
 ## ResetPasswordPage (/auth/reset-password)
 
 ## ConfirmEmailPage (/auth/confirm-email)
