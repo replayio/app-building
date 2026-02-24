@@ -3,9 +3,14 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageDashboard: Decide on components, add sections to docs/tests.md",
+        "PlanComponentNavigationHeader: Add test entries for NavigationHeader",
+        "PlanComponentLowInventoryAlerts: Add test entries for LowInventoryAlerts",
+        "PlanComponentMaterialsCategoriesOverview: Add test entries for MaterialsCategoriesOverview",
+        "PlanComponentRecentTransactionsTable: Add test entries for RecentTransactionsTable",
+        "PlanComponentDashboardFiltersAndActions: Add test entries for DateRangeFilter, CategoryFilter, NewTransactionButton"
       ],
-      "timestamp": "2026-02-24T20:40:10.986Z"
+      "timestamp": "2026-02-24T20:41:45.637Z"
     },
     {
       "skill": "skills/tasks/build/writeShared.md",
@@ -367,6 +372,89 @@
         "WritePageReportList: Write the ReportList page itself"
       ],
       "timestamp": "2026-02-24T19:52:46.072Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAccounts: Decide on components, add sections to docs/tests.md",
+        "PlanComponentStockAccountsList: Add test entries for StockAccountsList",
+        "PlanComponentInputAccountsList: Add test entries for InputAccountsList",
+        "PlanComponentOutputAccountsList: Add test entries for OutputAccountsList",
+        "PlanComponentAccountRowActions: Add test entries for CreateAccountButton and AccountRowActions (View, Edit, Archive)"
+      ],
+      "timestamp": "2026-02-24T20:41:50.960Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAccountDetail: Decide on components, add sections to docs/tests.md",
+        "PlanComponentAccountHeader: Add test entries for AccountHeader (name, type, status)",
+        "PlanComponentTrackedMaterialsTable: Add test entries for TrackedMaterialsTable",
+        "PlanComponentAccountDetailActions: Add test entries for EditAccountButton, NewTransactionButton"
+      ],
+      "timestamp": "2026-02-24T20:41:52.605Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageMaterials: Decide on components, add sections to docs/tests.md",
+        "PlanComponentMaterialsTableAndActions: Add test entries for MaterialsTable, NewMaterialButton, NewCategoryButton",
+        "PlanComponentMaterialsFiltersAndSearch: Add test entries for SearchBar, CategoryFilter, AccountFilter, SortDropdown, Pagination"
+      ],
+      "timestamp": "2026-02-24T20:41:54.477Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageMaterialDetail: Decide on components, add sections to docs/tests.md",
+        "PlanComponentMaterialDetailHeader: Add test entries for MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionButton",
+        "PlanComponentAccountsDistribution: Add test entries for AccountsDistributionTable with nested batches",
+        "PlanComponentAllBatchesTable: Add test entries for AllBatchesTable with filters",
+        "PlanComponentMaterialTransactionsHistory: Add test entries for TransactionsHistoryTable with filters"
+      ],
+      "timestamp": "2026-02-24T20:41:56.425Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageBatchDetail: Decide on components, add sections to docs/tests.md",
+        "PlanComponentBatchHeader: Add test entries for BatchHeader (ID, material, account, status, created date, originating transaction)",
+        "PlanComponentBatchOverview: Add test entries for BatchOverview (quantity, unit, location, lot number, expiration, quality grade, storage condition)",
+        "PlanComponentLineageDiagram: Add test entries for LineageDiagram (source transaction, inputs used, output)",
+        "PlanComponentUsageHistoryTable: Add test entries for UsageHistoryTable and CreateNewTransactionButton"
+      ],
+      "timestamp": "2026-02-24T20:41:58.754Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTransactions: Decide on components, add sections to docs/tests.md",
+        "PlanComponentTransactionsFilters: Add test entries for DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar",
+        "PlanComponentTransactionsTableAndPagination: Add test entries for TransactionsTable (sortable columns, row click navigation), Pagination, NewTransactionButton"
+      ],
+      "timestamp": "2026-02-24T20:42:00.492Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTransactionDetail: Decide on components, add sections to docs/tests.md",
+        "PlanComponentTransactionHeader: Add test entries for TransactionHeader (ID, status badge, date/time, creator, description)",
+        "PlanComponentBasicInfoSection: Add test entries for BasicInfoSection (date, reference ID, description, transaction type)",
+        "PlanComponentQuantityTransfersTable: Add test entries for QuantityTransfersTable (double-entry view, balanced indicator)",
+        "PlanComponentBatchesCreatedTable: Add test entries for BatchesCreatedTable"
+      ],
+      "timestamp": "2026-02-24T20:42:02.598Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageNewTransaction: Decide on components, add sections to docs/tests.md",
+        "PlanComponentBasicInfoForm: Add test entries for BasicInfoForm (Date, Reference ID, Description, Transaction Type dropdown)",
+        "PlanComponentQuantityTransfersSection: Add test entries for QuantityTransfersSection (add/remove transfers, source/destination accounts, amounts, source batch ID)",
+        "PlanComponentBatchAllocationSection: Add test entries for BatchAllocationSection (add/remove batches, material, amount)",
+        "PlanComponentNewTransactionActions: Add test entries for PostButton (validation, double-entry balance check), CancelButton"
+      ],
+      "timestamp": "2026-02-24T20:42:05.562Z"
     }
   ]
 }
