@@ -2229,39 +2229,7 @@ Components: TaskDetailHeader, TaskDetailInfo, TaskNotesSection, EditTaskModal
 
 ## ContactsListPage (/contacts)
 
-Components: ContactsSearchBar, ContactsTable, CreateContactModal, ContactsListContent
-
-### ContactsSearchBar
-
-#### Search input filters contacts by name
-- **Initial state:** ContactsListPage is loaded with multiple contacts visible (e.g., "Sarah Johnson", "David Lee", "Emily Carter").
-- **Action:** User types "Sarah" into the search input (placeholder text "Search contacts...").
-- **Expected:** The contacts table updates to show only contacts whose name, email, title, phone, or location contains "Sarah" (e.g., "Sarah Johnson"). Non-matching contacts are hidden. The search is case-insensitive and debounced.
-
-#### Search input filters contacts by email
-- **Initial state:** ContactsListPage is loaded with multiple contacts.
-- **Action:** User types "sarah@" into the search input.
-- **Expected:** The contacts table updates to show only contacts whose email contains "sarah@". Other contacts are hidden.
-
-#### Search input filters contacts by title
-- **Initial state:** ContactsListPage is loaded with contacts having various titles (e.g., "VP of Sales", "CTO", "Marketing Director").
-- **Action:** User types "CTO" into the search input.
-- **Expected:** The contacts table updates to show only contacts whose title contains "CTO".
-
-#### Search input filters contacts by phone
-- **Initial state:** ContactsListPage is loaded with contacts having phone numbers.
-- **Action:** User types "555" into the search input.
-- **Expected:** The contacts table updates to show only contacts whose phone number contains "555".
-
-#### Search input filters contacts by location
-- **Initial state:** ContactsListPage is loaded with contacts in various locations (e.g., "New York", "San Francisco", "Chicago").
-- **Action:** User types "New York" into the search input.
-- **Expected:** The contacts table updates to show only contacts whose location contains "New York".
-
-#### Search input clears and shows all contacts
-- **Initial state:** The search input contains "Sarah" and only matching contacts are shown.
-- **Action:** User clears the search input.
-- **Expected:** All contacts are displayed again without any filter applied.
+Components: ContactsTable, ContactsSearchAndActions, ContactsListContent
 
 ### ContactsTable
 
@@ -2270,11 +2238,11 @@ Components: ContactsSearchBar, ContactsTable, CreateContactModal, ContactsListCo
 - **Expected:** The table displays six column headers in order: Name, Title, Email, Phone, Location, and Associated Clients. The headers are visible and clearly labeled.
 
 #### Table rows display contact name
-- **Initial state:** ContactsListPage is loaded with contacts.
-- **Expected:** Each table row displays the contact's full name (e.g., "Sarah Johnson", "David Lee") as the primary identifier in the Name column.
+- **Initial state:** ContactsListPage is loaded with contacts (e.g., "Sarah Johnson", "David Lee", "Emily Carter").
+- **Expected:** Each table row displays the contact's full name (e.g., "Sarah Johnson") as the primary identifier in the Name column. The name is prominent and clearly readable.
 
 #### Table rows display contact title
-- **Initial state:** ContactsListPage is loaded with contacts that have titles.
+- **Initial state:** ContactsListPage is loaded with contacts that have titles (e.g., "VP of Sales", "CTO", "Marketing Director").
 - **Expected:** Each table row displays the contact's title/role in the Title column (e.g., "VP of Sales", "CTO", "Marketing Director"). Contacts without a title show an empty cell or placeholder.
 
 #### Table rows display contact email
@@ -2298,43 +2266,184 @@ Components: ContactsSearchBar, ContactsTable, CreateContactModal, ContactsListCo
 - **Action:** User clicks on a contact row (e.g., the row for "Sarah Johnson" with individual id 5).
 - **Expected:** The browser navigates to /individuals/5 and the PersonDetailPage is displayed showing the full details for that contact.
 
-### CreateContactModal
+#### Clicking a different contact row navigates to correct PersonDetailPage
+- **Initial state:** ContactsListPage is loaded with contacts.
+- **Action:** User clicks on a different contact row (e.g., the row for "David Lee" with individual id 8).
+- **Expected:** The browser navigates to /individuals/8 and the PersonDetailPage is displayed showing the full details for David Lee. Each row navigates to the correct individual's detail page based on their id.
+
+#### Pagination controls appear when contacts exceed page size
+- **Initial state:** The system has more than 50 contacts (e.g., 120 contacts).
+- **Expected:** Pagination controls are displayed below the contacts table. The controls include a "Previous" button, numbered page buttons (e.g., 1, 2, 3), and a "Next" button. A text indicator shows "Showing 1-50 of 120 contacts". Each page shows up to 50 contacts. The current page number (1) is visually highlighted/selected.
+
+#### Clicking Next loads the next page of contacts
+- **Initial state:** ContactsListPage is loaded with pagination controls visible. User is on page 1.
+- **Action:** User clicks the "Next" button.
+- **Expected:** The contacts table updates to show the next page of contacts (contacts 51–100). The text indicator updates to "Showing 51-100 of 120 contacts". The page number 2 becomes highlighted. The "Previous" button becomes enabled.
+
+#### Clicking Previous loads the previous page of contacts
+- **Initial state:** User is on page 2 of the contacts list.
+- **Action:** User clicks the "Previous" button.
+- **Expected:** The contacts table updates to show the first page of contacts (contacts 1–50). The text indicator updates to "Showing 1-50 of 120 contacts". The page number 1 becomes highlighted. The "Previous" button becomes disabled (since it's the first page).
+
+#### Clicking a page number navigates directly to that page
+- **Initial state:** ContactsListPage is loaded with pagination visible. User is on page 1.
+- **Action:** User clicks page number "3".
+- **Expected:** The contacts table updates to show page 3 of contacts (contacts 101–120). The text indicator updates to "Showing 101-120 of 120 contacts". Page number 3 becomes highlighted. Both "Previous" and "Next" buttons reflect correct enabled/disabled state.
+
+#### Previous button is disabled on first page
+- **Initial state:** User is on page 1 of the contacts list.
+- **Expected:** The "Previous" button is disabled (visually grayed out and not clickable). The "Next" button is enabled. Page number 1 is highlighted.
+
+#### Next button is disabled on last page
+- **Initial state:** User navigates to the last page of contacts (e.g., page 3 of 120 contacts with 50 per page).
+- **Expected:** The "Next" button is disabled (visually grayed out and not clickable). The "Previous" button is enabled. The last page number is highlighted. The text indicator shows the remaining contacts (e.g., "Showing 101-120 of 120 contacts").
+
+#### Pagination updates when search reduces result count
+- **Initial state:** ContactsListPage shows 120 contacts with 3 pages of pagination.
+- **Action:** User types a search term that returns only 30 contacts.
+- **Expected:** The pagination controls update to reflect the filtered count. The text indicator shows "Showing 1-30 of 30 contacts". Since all results fit on one page, the "Previous" and "Next" buttons are both disabled and page numbers show only page 1.
+
+#### Pagination hidden when all results fit on one page
+- **Initial state:** ContactsListPage is loaded with fewer than 50 contacts (or search results return fewer than 50).
+- **Expected:** The pagination controls are either hidden or show a single page with no Previous/Next navigation needed. The text indicator still shows the count (e.g., "Showing 1-25 of 25 contacts").
+
+### ContactsSearchAndActions
+
+#### Search input is displayed with placeholder text
+- **Initial state:** ContactsListPage is loaded.
+- **Expected:** A search input field is visible above the contacts table with placeholder text "Search contacts..." (or similar). The input is empty by default.
+
+#### Search input filters contacts by name
+- **Initial state:** ContactsListPage is loaded with multiple contacts visible (e.g., "Sarah Johnson", "David Lee", "Emily Carter").
+- **Action:** User types "Sarah" into the search input.
+- **Expected:** The contacts table updates to show only contacts whose name, email, title, phone, or location contains "Sarah" (e.g., "Sarah Johnson"). Non-matching contacts are hidden. The search is case-insensitive.
+
+#### Search input filters contacts by email
+- **Initial state:** ContactsListPage is loaded with multiple contacts.
+- **Action:** User types "sarah@" into the search input.
+- **Expected:** The contacts table updates to show only contacts whose email contains "sarah@". Other contacts are hidden.
+
+#### Search input filters contacts by title
+- **Initial state:** ContactsListPage is loaded with contacts having various titles (e.g., "VP of Sales", "CTO", "Marketing Director").
+- **Action:** User types "CTO" into the search input.
+- **Expected:** The contacts table updates to show only contacts whose title contains "CTO".
+
+#### Search input filters contacts by phone
+- **Initial state:** ContactsListPage is loaded with contacts having phone numbers.
+- **Action:** User types "555" into the search input.
+- **Expected:** The contacts table updates to show only contacts whose phone number contains "555".
+
+#### Search input filters contacts by location
+- **Initial state:** ContactsListPage is loaded with contacts in various locations (e.g., "New York", "San Francisco", "Chicago").
+- **Action:** User types "New York" into the search input.
+- **Expected:** The contacts table updates to show only contacts whose location contains "New York".
+
+#### Search is debounced
+- **Initial state:** ContactsListPage is loaded with contacts.
+- **Action:** User rapidly types "Sar" into the search input (typing each character in quick succession).
+- **Expected:** The contacts table does not update after each individual keystroke. Instead, the search waits for the user to stop typing (debounce delay, e.g., 300ms) before filtering the table. This prevents excessive API calls or re-renders during rapid typing. After the debounce delay, the table updates to show contacts matching "Sar".
+
+#### Search input clears and shows all contacts
+- **Initial state:** The search input contains "Sarah" and only matching contacts are shown.
+- **Action:** User clears the search input (selects all text and deletes, or clicks a clear button if present).
+- **Expected:** All contacts are displayed again without any filter applied. The pagination resets to page 1 with the full contact count.
+
+#### Add Contact button is displayed in page header
+- **Initial state:** ContactsListPage is loaded.
+- **Expected:** An "Add Contact" button is visible in the top-right area of the page header. The button is styled prominently (e.g., blue/primary color).
 
 #### Clicking Add Contact button opens CreateContactModal
-- **Initial state:** ContactsListPage is loaded. An "Add Contact" button is visible in the top-right area of the page header.
+- **Initial state:** ContactsListPage is loaded. The "Add Contact" button is visible.
 - **Action:** User clicks the "Add Contact" button.
-- **Expected:** A modal dialog opens with the title "Add Contact" (or "Create Contact"). The modal contains a form with fields for: Name (text input, required), Title (text input), Email (text input), Phone (text input), Location (text input), Client (searchable FilterSelect dropdown populated from clients API, optional). The modal has "Cancel" and "Create" (or "Save") buttons at the bottom.
+- **Expected:** A modal dialog opens with the title "Add Contact" (or "Create Contact"). The modal contains a form with fields for: Name (text input, required), Title (text input, optional), Email (text input, optional), Phone (text input, optional), Location (text input, optional), Client (searchable FilterSelect dropdown populated from clients API, optional). The modal has "Cancel" and "Create" (or "Save") buttons at the bottom.
 
-#### CreateContactModal form validates required fields
+#### CreateContactModal form validates required Name field
 - **Initial state:** CreateContactModal is open with all fields empty.
 - **Action:** User clicks the "Create" submit button without filling in any fields.
 - **Expected:** The form displays a validation error for the Name field indicating it is required. The contact is not created. The modal remains open.
 
-#### CreateContactModal successfully creates a contact
+#### CreateContactModal successfully creates a contact with all fields
 - **Initial state:** CreateContactModal is open.
 - **Action:** User fills in: Name = "Alex Turner", Title = "Director of Engineering", Email = "alex@techstart.com", Phone = "(555) 987-6543", Location = "Austin, TX", Client = "TechStart Inc" (selected from dropdown). User clicks the "Create" button.
 - **Expected:** The contact is created via the API. The modal closes. The new contact appears in the contacts table with the name "Alex Turner", title "Director of Engineering", email "alex@techstart.com", phone "(555) 987-6543", location "Austin, TX", and associated client "TechStart Inc". A timeline entry is created on the associated client's timeline for the new contact being added. If any user is following the client "TechStart Inc", they receive a notification (if notification preferences allow).
 
+#### CreateContactModal successfully creates a contact with only required fields
+- **Initial state:** CreateContactModal is open.
+- **Action:** User fills in only: Name = "Jane Smith". All other fields are left empty. User clicks the "Create" button.
+- **Expected:** The contact is created via the API with only a name. The modal closes. The new contact "Jane Smith" appears in the contacts table with empty values for Title, Email, Phone, Location, and Associated Clients columns.
+
 #### CreateContactModal client dropdown is searchable FilterSelect
 - **Initial state:** CreateContactModal is open.
 - **Action:** User clicks the Client dropdown and types "Acme" into the search field.
-- **Expected:** A searchable FilterSelect dropdown appears listing clients fetched from the clients API. The dropdown filters to show only clients whose names contain "Acme". The user can select a client from the filtered results. Selecting a client populates the Client field.
+- **Expected:** A searchable FilterSelect dropdown appears listing clients fetched from the clients API. The dropdown filters to show only clients whose names contain "Acme". The user can select a client from the filtered results. Selecting a client populates the Client field. When the search field is focused, it auto-focuses and shows "No matches" when no options match the search term.
 
 #### CreateContactModal cancel button closes modal without creating
-- **Initial state:** CreateContactModal is open with some fields filled in.
+- **Initial state:** CreateContactModal is open with some fields filled in (e.g., Name = "Test Contact").
 - **Action:** User clicks the "Cancel" button.
-- **Expected:** The modal closes. No contact is created. The contacts table remains unchanged.
+- **Expected:** The modal closes. No contact is created. The contacts table remains unchanged. The filled-in data is discarded.
 
 #### CreateContactModal closes on overlay click
 - **Initial state:** CreateContactModal is open.
 - **Action:** User clicks the modal overlay (area outside the modal dialog).
 - **Expected:** The modal closes. No contact is created.
 
+#### Import button displayed in page header
+- **Initial state:** ContactsListPage is loaded.
+- **Expected:** An "Import" button with an import icon is visible in the top-right area of the page header, near the "Export" button and "Add Contact" button.
+
+#### Export button displayed in page header
+- **Initial state:** ContactsListPage is loaded.
+- **Expected:** An "Export" button with an export icon is visible in the top-right area of the page header, between the "Import" button and the "Add Contact" button.
+
+#### Clicking Import button opens ImportDialog for contacts
+- **Initial state:** ContactsListPage is loaded.
+- **Action:** User clicks the "Import" button.
+- **Expected:** An ImportDialog modal opens with the title indicating contacts import. The dialog displays a CSV column format specification table listing all supported columns (Name, Title, Email, Phone, Location, Client Name) with required/optional indicators and value descriptions. The Name column is marked as required. Title, Email, Phone, and Location are optional text fields. Client Name is optional and performs a lookup by name against existing clients to create the association. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
+
+#### ImportDialog CSV format specification is visible before upload
+- **Initial state:** The ImportDialog for contacts is open.
+- **Expected:** The CSV column format specification table is immediately visible to the user before they attempt any upload. The table lists each column name, whether it is required or optional, and a description of accepted values. This ensures the user knows the expected format before preparing their CSV.
+
+#### ImportDialog Download CSV template button generates template
+- **Initial state:** The ImportDialog for contacts is open.
+- **Action:** User clicks the "Download CSV template" button.
+- **Expected:** A CSV template file is downloaded containing the correct column headers for contacts (Name, Title, Email, Phone, Location, Client Name) with no data rows. The template can be used as a starting point for populating import data.
+
+#### ImportDialog processes valid CSV file and creates contacts
+- **Initial state:** The ImportDialog is open. User has a valid CSV file with contacts data matching the expected format (e.g., rows with Name, Title, Email, Phone, Location, Client Name).
+- **Action:** User uploads the CSV file and confirms the import.
+- **Expected:** The contacts from the CSV are created via the bulk import API. Client names in the CSV are matched to existing clients in the system for association. The dialog shows a success message with the count of contacts imported (e.g., "Successfully imported 12 contacts"). After closing the dialog, the contacts table refreshes and the newly imported contacts appear in the list. Timeline entries are created on associated clients for newly added contacts. If any user is following the associated clients, they receive notifications (if notification preferences allow).
+
+#### ImportDialog shows validation errors for invalid CSV data
+- **Initial state:** The ImportDialog is open. User has a CSV file with invalid data (e.g., missing required Name column, unrecognized client name).
+- **Action:** User uploads the invalid CSV file and confirms the import.
+- **Expected:** The dialog displays per-row validation errors indicating which rows failed and why (e.g., "Row 3: Name is required", "Row 5: Client 'Unknown Corp' not found"). The error messages are specific enough for the user to correct the CSV. Valid rows may still be imported, or the user may be asked to fix errors and retry.
+
+#### ImportDialog cancel button closes without importing
+- **Initial state:** The ImportDialog is open with a file selected.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The dialog closes. No data is imported. The contacts table remains unchanged.
+
+#### ImportDialog closes on overlay click without importing
+- **Initial state:** The ImportDialog is open.
+- **Action:** User clicks the modal overlay (area outside the dialog).
+- **Expected:** The dialog closes. No data is imported.
+
+#### Clicking Export button downloads contacts CSV
+- **Initial state:** ContactsListPage is loaded with contacts in the system.
+- **Action:** User clicks the "Export" button.
+- **Expected:** A CSV file is downloaded containing all contact data. The CSV includes columns: Name, Title, Email, Phone, Location, Client Name. Each row corresponds to a contact in the system. The file name includes "contacts" (e.g., "contacts.csv" or "contacts-export.csv").
+
+#### Exported CSV contains correct data for all contacts
+- **Initial state:** The system has contacts with various titles, emails, phone numbers, locations, and client associations.
+- **Action:** User clicks the "Export" button and opens the downloaded CSV.
+- **Expected:** The CSV correctly contains all contacts' data. Client names are populated from the associated client records. Fields that are empty for a contact result in empty CSV cells. All contacts in the system are included regardless of the current search filter or pagination state.
+
 ### ContactsListContent
 
-#### Page displays heading and Add Contact button
+#### Page displays heading and action buttons
 - **Initial state:** User navigates to /contacts.
-- **Expected:** The page displays a heading "Contacts" at the top. An "Add Contact" button is displayed in the top-right corner of the page header. The sidebar "Contacts" link is highlighted as active.
+- **Expected:** The page displays a heading "Contacts" at the top. Three buttons are displayed in the top-right area: an "Import" button with an import icon, an "Export" button with an export icon, and a prominently styled "Add Contact" button. The sidebar "Contacts" link is highlighted as active.
 
 #### Loading state shows while contacts are being fetched
 - **Initial state:** User navigates to /contacts and the API request for contacts is in progress.
@@ -2347,40 +2456,6 @@ Components: ContactsSearchBar, ContactsTable, CreateContactModal, ContactsListCo
 #### Empty state shown when no contacts exist
 - **Initial state:** User navigates to /contacts and there are no contacts in the system.
 - **Expected:** The contacts table area displays an empty state message (e.g., "No contacts yet") with a prompt or button to add the first contact. The "Add Contact" button remains visible in the header.
-
-#### Pagination controls appear when contacts exceed page size
-- **Initial state:** The system has more than 50 contacts.
-- **Expected:** Pagination controls are displayed below the contacts table (e.g., "Previous" / "Next" buttons or page numbers). The current page number is indicated. The total number of contacts or pages is shown. Each page shows up to 50 contacts.
-
-#### Clicking next page loads the next set of contacts
-- **Initial state:** ContactsListPage is loaded with pagination controls visible. User is on page 1.
-- **Action:** User clicks the "Next" page button.
-- **Expected:** The contacts table updates to show the next page of contacts (contacts 51–100). The page indicator updates to show page 2. The "Previous" button becomes enabled. If there are no more pages, the "Next" button is disabled.
-
-#### Clicking previous page loads the previous set of contacts
-- **Initial state:** User is on page 2 of the contacts list.
-- **Action:** User clicks the "Previous" page button.
-- **Expected:** The contacts table updates to show the first page of contacts (contacts 1–50). The page indicator updates to show page 1. The "Previous" button becomes disabled (since it's the first page).
-
-#### CSV export downloads contacts as CSV file
-- **Initial state:** ContactsListPage is loaded with contacts.
-- **Action:** User clicks the CSV export button (or selects export from a menu).
-- **Expected:** A CSV file is downloaded containing the contact data. The CSV includes columns: Name, Title, Email, Phone, Location, Client Name. Each row corresponds to a contact in the system.
-
-#### CSV import button opens import dialog
-- **Initial state:** ContactsListPage is loaded.
-- **Action:** User clicks the CSV import button (or selects import from a menu).
-- **Expected:** An ImportDialog modal opens. The dialog displays a CSV column format specification table listing all supported columns (Name, Title, Email, Phone, Location, Client Name) with required/optional indicators and value descriptions. A "Download CSV template" button is available. A file upload area or file picker is present for selecting a CSV file.
-
-#### CSV import processes valid file and creates contacts
-- **Initial state:** The ImportDialog is open. User has a valid CSV file with contacts data matching the expected format.
-- **Action:** User uploads the CSV file and confirms the import.
-- **Expected:** The contacts from the CSV are created via the bulk import API. The dialog shows a success message with the count of contacts imported. After closing the dialog, the contacts table refreshes and the newly imported contacts appear in the list. Client names in the CSV are matched to existing clients in the system for association. Timeline entries are created on associated clients for newly added contacts.
-
-#### CSV import shows validation errors for invalid data
-- **Initial state:** The ImportDialog is open. User has a CSV file with invalid data (e.g., missing required Name column, malformed email).
-- **Action:** User uploads the invalid CSV file and confirms the import.
-- **Expected:** The dialog displays per-row validation errors indicating which rows failed and why (e.g., "Row 3: Name is required"). Valid rows may still be imported, or the user may be asked to fix errors and retry. The error messages are specific enough for the user to correct the CSV.
 
 ## SettingsPage (/settings)
 
