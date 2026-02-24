@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "Unpack: Write the app for InventoryTracker"
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
       ],
-      "timestamp": "2026-02-24T19:26:28.097Z"
+      "timestamp": "2026-02-24T21:00:36.132Z"
     },
     {
       "skill": "skills/tasks/writeScript.md",
@@ -436,6 +437,92 @@
         "PlanComponentNewTransactionActions: Add test entries for PostButton (validation, double-entry balance check), CancelButton"
       ],
       "timestamp": "2026-02-24T20:42:05.562Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentAccountsList: Write the AccountsList component",
+        "WriteComponentAccountRowActions: Write the AccountRowActions component",
+        "WritePageAccounts: Write the AccountsPage"
+      ],
+      "timestamp": "2026-02-24T21:00:40.536Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentAccountHeader: Write the AccountHeader component",
+        "WriteComponentTrackedMaterialsTable: Write the TrackedMaterialsTable component",
+        "WritePageAccountDetail: Write the AccountDetailPage"
+      ],
+      "timestamp": "2026-02-24T21:00:44.327Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentMaterialsTable: Write the MaterialsTable component",
+        "WritePageMaterials: Write the MaterialsPage"
+      ],
+      "timestamp": "2026-02-24T21:00:47.748Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentMaterialHeader: Write the MaterialHeader component",
+        "WriteComponentAccountsDistributionTable: Write the AccountsDistributionTable component",
+        "WriteComponentAllBatchesTable: Write the AllBatchesTable component",
+        "WriteComponentTransactionsHistoryTable: Write the TransactionsHistoryTable component",
+        "WritePageMaterialDetail: Write the MaterialDetailPage"
+      ],
+      "timestamp": "2026-02-24T21:00:52.096Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentBatchHeader: Write the BatchHeader component",
+        "WriteComponentBatchOverview: Write the BatchOverview component",
+        "WriteComponentLineageSection: Write the LineageSection component",
+        "WriteComponentUsageHistoryTable: Write the UsageHistoryTable component",
+        "WritePageBatchDetail: Write the BatchDetailPage and BatchesPage listing"
+      ],
+      "timestamp": "2026-02-24T21:00:56.557Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTransactionsTable: Write the TransactionsTable component",
+        "WritePageTransactions: Write the TransactionsPage"
+      ],
+      "timestamp": "2026-02-24T21:01:00.076Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTransactionHeader: Write the TransactionHeader component",
+        "WriteComponentQuantityTransfersTable: Write the QuantityTransfersTable component",
+        "WriteComponentBatchesCreatedTable: Write the BatchesCreatedTable component",
+        "WritePageTransactionDetail: Write the TransactionDetailPage"
+      ],
+      "timestamp": "2026-02-24T21:01:04.122Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentBasicInfoForm: Write the BasicInfoForm component",
+        "WriteComponentQuantityTransfersSection: Write the QuantityTransfersSection component",
+        "WriteComponentBatchAllocationSection: Write the BatchAllocationSection component",
+        "WritePageNewTransaction: Write the NewTransactionPage"
+      ],
+      "timestamp": "2026-02-24T21:01:08.038Z"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentLowInventoryAlerts: Write the LowInventoryAlerts component",
+        "WriteComponentMaterialsCategoriesOverview: Write the MaterialsCategoriesOverview component",
+        "WriteComponentRecentTransactionsTable: Write the RecentTransactionsTable component",
+        "WritePageDashboard: Write the DashboardPage"
+      ],
+      "timestamp": "2026-02-24T21:01:11.948Z"
     }
   ]
 }
