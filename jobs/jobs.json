@@ -3,21 +3,6 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "WriteComponentClientHeader: Write the ClientHeader component",
-        "WriteComponentQuickActions: Write the QuickActions component",
-        "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
-        "WriteComponentTasksSection: Write the TasksSection component",
-        "WriteComponentDealsSection: Write the DealsSection component",
-        "WriteComponentAttachmentsSection: Write the AttachmentsSection component",
-        "WriteComponentPeopleSection: Write the PeopleSection component",
-        "WriteComponentTimelineSection: Write the TimelineSection component",
-        "WritePageClientDetailPage: Write the page itself"
-      ],
-      "timestamp": "2026-02-23T21:54:02.700Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
         "WriteComponentSidebar: Write the Sidebar navigation component",
         "WriteComponentClientsSearchAndFilters: Write the ClientsSearchAndFilters component",
         "WriteComponentClientsActions: Write the ClientsActions component",

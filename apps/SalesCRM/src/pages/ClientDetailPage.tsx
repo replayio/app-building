@@ -1,29 +1,130 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import ClientTasksSection from '@/components/ClientTasksSection'
+import ClientHeader from '@/components/ClientHeader'
+import QuickActions from '@/components/QuickActions'
+import SourceInfoSection from '@/components/SourceInfoSection'
+import ClientTasksSectionFull from '@/components/ClientTasksSectionFull'
+import ClientDealsSection from '@/components/ClientDealsSection'
+import ClientAttachmentsSection from '@/components/ClientAttachmentsSection'
+import ClientPeopleSection from '@/components/ClientPeopleSection'
+import ClientTimelineSection from '@/components/ClientTimelineSection'
 
 interface ClientInfo {
   id: string
   name: string
   type: string
   status: string
+  source: string | null
+  source_detail: string | null
+  campaign: string | null
+  channel: string | null
+  date_acquired: string | null
+  tags: string[]
+  created_at: string
+  updated_at: string
 }
 
 export default function ClientDetailPage() {
   const { clientId } = useParams<{ clientId: string }>()
   const [client, setClient] = useState<ClientInfo | null>(null)
   const [loading, setLoading] = useState(true)
+  const [tasksRefreshKey, setTasksRefreshKey] = useState(0)
+  const [dealsRefreshKey, setDealsRefreshKey] = useState(0)
+  const [attachmentsRefreshKey, setAttachmentsRefreshKey] = useState(0)
+  const [peopleRefreshKey, setPeopleRefreshKey] = useState(0)
+  const [timelineRefreshKey, setTimelineRefreshKey] = useState(0)
+
+  const fetchClient = useCallback(async () => {
+    if (!clientId) return
+    try {
+      const res = await fetch(`/.netlify/functions/clients/${clientId}`)
+      const data = await res.json()
+      setClient(data)
+    } catch {
+      // silently fail
+    } finally {
+      setLoading(false)
+    }
+  }, [clientId])
 
   useEffect(() => {
-    if (!clientId) return
+    fetchClient()
+  }, [fetchClient])
 
-    fetch(`/.netlify/functions/clients/${clientId}`)
-      .then(r => r.json())
-      .then(data => {
-        setClient(data)
-        setLoading(false)
+  const handleUpdateName = async (name: string) => {
+    if (!clientId) return
+    try {
+      const res = await fetch(`/.netlify/functions/clients/${clientId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
       })
-  }, [clientId])
+      if (res.ok) {
+        const updated = await res.json()
+        setClient(updated)
+        setTimelineRefreshKey(k => k + 1)
+      }
+    } catch {
+      // silently fail
+    }
+  }
+
+  const handleUpdateStatus = async (status: string) => {
+    if (!clientId) return
+    try {
+      const res = await fetch(`/.netlify/functions/clients/${clientId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      })
+      if (res.ok) {
+        const updated = await res.json()
+        setClient(updated)
+        setTimelineRefreshKey(k => k + 1)
+      }
+    } catch {
+      // silently fail
+    }
+  }
+
+  const handleUpdateTags = async (tags: string[]) => {
+    if (!clientId) return
+    try {
+      const res = await fetch(`/.netlify/functions/clients/${clientId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tags }),
+      })
+      if (res.ok) {
+        const updated = await res.json()
+        setClient(updated)
+      }
+    } catch {
+      // silently fail
+    }
+  }
+
+  const handleUpdateSourceInfo = async (fields: Record<string, string | undefined>) => {
+    if (!clientId) return
+    try {
+      const res = await fetch(`/.netlify/functions/clients/${clientId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields),
+      })
+      if (res.ok) {
+        const updated = await res.json()
+        setClient(updated)
+        setTimelineRefreshKey(k => k + 1)
+      }
+    } catch {
+      // silently fail
+    }
+  }
+
+  const refreshAll = () => {
+    setTimelineRefreshKey(k => k + 1)
+  }
 
   if (loading) {
     return (
@@ -33,10 +134,69 @@ export default function ClientDetailPage() {
     )
   }
 
+  if (!client) {
+    return (
+      <div className="page-content p-6 max-sm:p-3" data-testid="client-detail-page">
+        <p>Client not found</p>
+      </div>
+    )
+  }
+
   return (
     <div className="page-content p-6 max-sm:p-3" data-testid="client-detail-page">
-      <h1 className="page-title" data-testid="client-detail-name">{client?.name}</h1>
-      {clientId && <ClientTasksSection clientId={clientId} />}
+      <ClientHeader
+        name={client.name}
+        type={client.type}
+        status={client.status}
+        tags={client.tags || []}
+        source={client.source}
+        onUpdateName={handleUpdateName}
+        onUpdateStatus={handleUpdateStatus}
+        onUpdateTags={handleUpdateTags}
+      />
+
+      <QuickActions
+        clientId={client.id}
+        clientName={client.name}
+        onTaskCreated={() => { setTasksRefreshKey(k => k + 1); refreshAll() }}
+        onDealCreated={() => { setDealsRefreshKey(k => k + 1); refreshAll() }}
+        onAttachmentUploaded={() => { setAttachmentsRefreshKey(k => k + 1); refreshAll() }}
+        onPersonAdded={() => { setPeopleRefreshKey(k => k + 1); refreshAll() }}
+      />
+
+      <SourceInfoSection
+        source={client.source}
+        sourceDetail={client.source_detail}
+        campaign={client.campaign}
+        channel={client.channel}
+        dateAcquired={client.date_acquired}
+        onUpdate={handleUpdateSourceInfo}
+      />
+
+      <ClientTasksSectionFull
+        clientId={client.id}
+        refreshKey={tasksRefreshKey}
+      />
+
+      <ClientDealsSection
+        clientId={client.id}
+        refreshKey={dealsRefreshKey}
+      />
+
+      <ClientAttachmentsSection
+        clientId={client.id}
+        refreshKey={attachmentsRefreshKey}
+      />
+
+      <ClientPeopleSection
+        clientId={client.id}
+        refreshKey={peopleRefreshKey}
+      />
+
+      <ClientTimelineSection
+        clientId={client.id}
+        refreshKey={timelineRefreshKey}
+      />
     </div>
   )
 }
