@@ -184,7 +184,7 @@ export function pushTarget(
         timeout: 120000,
         stdio: "pipe",
       });
-      log(`Pushed to ${targetBranch}`);
+      log(`Pushed to ${targetBranch}${hadConflicts ? " (with conflicts)" : ""}`);
 
       // Step 4: Queue conflict resolution task if needed
       if (hadConflicts && !shouldStop()) {
@@ -217,6 +217,7 @@ export function pushTarget(
       }
     }
   }
+
 }
 
 /**
