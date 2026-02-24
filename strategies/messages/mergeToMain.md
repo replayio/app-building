@@ -1,7 +1,7 @@
 # Strategy
 
 You are preparing the current branch for merging to `main` via PR.
-The goal is to land only strategies, scripts, and job-system changes — **not** app code
+The goal is to land only strategies, scripts, and task-system changes — **not** app code
 or logs.
 
 The server will push this branch automatically after you finish. Do NOT push to `main`
@@ -32,9 +32,9 @@ or checkout `main`. Just prepare the current branch.
 
 ## What gets merged
 
-- `strategies/` — message strategies, job strategies, script design docs
-- `scripts/` (repo-root) — job queue tooling, worker scripts
-- `jobs/` — job queue state
+- `strategies/` — message strategies, task strategies, script design docs
+- `scripts/` (repo-root) — task queue tooling, worker scripts
+- `tasks/` — task queue state
 - Any other top-level files outside `apps/` and `logs/`
 
 ## What does NOT get merged

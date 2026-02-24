@@ -11,7 +11,7 @@
     "test-container": "tsx src/test-container.ts",
     "stop": "tsx src/stop.ts",
     "fly-machines": "tsx src/fly-machines.ts",
-    "add-group": "tsx scripts/add-group.ts"
+    "add-task": "tsx scripts/add-task.ts"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",

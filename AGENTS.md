@@ -7,8 +7,8 @@ Key directories:
 
 * `apps`: Has one subdirectory for each app that has been built or has been specified and still needs to be built.
 * `strategies/messages`: Strategies for responding to messages from the user (e.g. bug reports, log analysis).
-* `strategies/jobs`: Strategies for performing jobs. See `strategies/AGENTS.md` for details.
-* `jobs`: The job queue (`jobs.json`) managed by scripts in `scripts/`.
+* `strategies/tasks`: Strategies for performing tasks. See `strategies/AGENTS.md` for details.
+* `tasks`: The task queue (`tasks.json`) managed by scripts in `scripts/`.
 * `logs`: Log files from work that has been performed. `worker-current.log` is the log for
   the work currently being done.
 
@@ -28,29 +28,29 @@ matching strategy. This is the highest-priority rule when handling user messages
 
 ## Worker Execution
 
-The worker processes job groups from `jobs/jobs.json` sequentially. For each group,
-it passes all jobs to Claude as a single prompt and checks for a `<DONE>` signal.
+The worker processes tasks from `tasks/tasks.json` sequentially. For each task,
+it passes all subtasks to Claude as a single prompt and checks for a `<DONE>` signal.
 
-- If `<DONE>` is signaled: the group is dequeued and the worker moves to the next group.
-- If `<DONE>` is NOT signaled: the group is retried (up to 3 times before being skipped).
+- If `<DONE>` is signaled: the task is dequeued and the worker moves to the next task.
+- If `<DONE>` is NOT signaled: the task is retried (up to 3 times before being skipped).
 
-The worker commits changes after each group automatically. Focus on completing the
-jobs — do not worry about committing or exiting.
+The worker commits changes after each task automatically. Focus on completing the
+subtasks — do not worry about committing or exiting.
 
-When you have completed ALL jobs in your group, output `<DONE>` to signal completion.
+When you have completed ALL subtasks in your task, output `<DONE>` to signal completion.
 
-## Job System
+## Task System
 
-Work is managed through a JSON job queue at `jobs/jobs.json`. The file contains an object
-with a `groups` array. Each group has a `strategy`, an array of `jobs` (description strings),
+Work is managed through a JSON task queue at `tasks/tasks.json`. The file contains an object
+with a `tasks` array. Each task has a `strategy`, an array of `subtasks` (description strings),
 and a `timestamp`:
 
 ```json
 {
-  "groups": [
+  "tasks": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
+      "strategy": "strategies/tasks/maintain/checkDirectives.md",
+      "subtasks": [
         "CheckTestSpecAuth: Check testSpec.md directive violations in Authentication",
         "CheckComponentsAuth: Check writeApp.md directive violations in Authentication",
         "CheckTestsAuth: Check writeTests.md directive violations in Authentication"
@@ -61,27 +61,27 @@ and a `timestamp`:
 }
 ```
 
-The agent NEVER reads or writes `jobs.json` directly. Instead, use:
+The agent NEVER reads or writes `tasks.json` directly. Instead, use:
 
-* **`npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2"`**:
-  Adds a job group to the FRONT of the queue (next to be processed). Each `--job` flag
-  adds one job to the group. Jobs execute in the order listed.
+* **`npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2"`**:
+  Adds a task to the FRONT of the queue (next to be processed). Each `--subtask` flag
+  adds one subtask to the task. Subtasks execute in the order listed.
   Add `--trailing` to append to the END of the queue instead.
 
-All jobs in a group share the same strategy. Group related jobs together — for example,
-all checks for a single page go in one group. When a strategy needs to "unpack" into
-sub-groups, use `add-group` to insert them at the front of the queue.
+All subtasks in a task share the same strategy. Group related subtasks together — for example,
+all checks for a single page go in one task. When a strategy needs to "unpack" into
+sub-tasks, use `add-task` to insert them at the front of the queue.
 
-**CRITICAL: Job scope rules**
+**CRITICAL: Task scope rules**
 
-- You MUST only work on jobs that were assigned to you in your current prompt. Your assigned
-  jobs are the ones passed to you by the worker — nothing else.
-- When you add new job groups via `add-group`, you MUST NOT start working on those jobs.
+- You MUST only work on subtasks that were assigned to you in your current prompt. Your assigned
+  subtasks are the ones passed to you by the worker — nothing else.
+- When you add new tasks via `add-task`, you MUST NOT start working on those tasks.
   They will be picked up by a future worker iteration.
-- If you have completed all of your assigned jobs and the only remaining work is jobs you
+- If you have completed all of your assigned subtasks and the only remaining work is tasks you
   added to the queue, you are DONE. Commit your changes and output `<DONE>` immediately.
-  Do NOT continue working on the newly queued jobs.
-- Adding jobs to the queue is NOT the same as doing those jobs. Add them and stop.
+  Do NOT continue working on the newly queued tasks.
+- Adding tasks to the queue is NOT the same as doing those tasks. Add them and stop.
 
 ## Tech Stack
 

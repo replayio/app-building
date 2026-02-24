@@ -5,8 +5,8 @@ import type { Logger } from "./log";
 
 const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
-const JOBS_FILE = resolve(REPO_ROOT, "jobs/jobs.json");
-const MAX_GROUP_RETRIES = 3;
+const TASKS_FILE = resolve(REPO_ROOT, "tasks/tasks.json");
+const MAX_TASK_RETRIES = 3;
 const DEBUG = !!process.env.DEBUG;
 const DEBUG_LOG = resolve(LOGS_DIR, "worker-debug.log");
 
@@ -18,14 +18,14 @@ function debug(msg: string): void {
 
 // --- Types ---
 
-export interface Group {
+export interface Task {
   strategy: string;
-  jobs: string[];
+  subtasks: string[];
   timestamp: string;
 }
 
-interface JobsFile {
-  groups: Group[];
+interface TasksFile {
+  tasks: Task[];
 }
 
 // --- Claude invocation ---
@@ -165,61 +165,61 @@ function runClaude(
   });
 }
 
-// --- Job system helpers ---
+// --- Task system helpers ---
 
-function readJobsFile(): JobsFile {
-  if (!existsSync(JOBS_FILE)) return { groups: [] };
-  const content = readFileSync(JOBS_FILE, "utf-8").trim();
-  if (!content) return { groups: [] };
+function readTasksFile(): TasksFile {
+  if (!existsSync(TASKS_FILE)) return { tasks: [] };
+  const content = readFileSync(TASKS_FILE, "utf-8").trim();
+  if (!content) return { tasks: [] };
   return JSON.parse(content);
 }
 
-function writeJobsFile(data: JobsFile): void {
-  mkdirSync(resolve(REPO_ROOT, "jobs"), { recursive: true });
-  writeFileSync(JOBS_FILE, JSON.stringify(data, null, 2) + "\n");
+function writeTasksFile(data: TasksFile): void {
+  mkdirSync(resolve(REPO_ROOT, "tasks"), { recursive: true });
+  writeFileSync(TASKS_FILE, JSON.stringify(data, null, 2) + "\n");
 }
 
-function groupsMatch(a: Group, b: Group): boolean {
+function tasksMatch(a: Task, b: Task): boolean {
   return (
     a.strategy === b.strategy &&
     a.timestamp === b.timestamp &&
-    a.jobs.length === b.jobs.length &&
-    a.jobs.every((j, i) => j === b.jobs[i])
+    a.subtasks.length === b.subtasks.length &&
+    a.subtasks.every((j, i) => j === b.subtasks[i])
   );
 }
 
-function completeGroup(assignedGroup: Group, log: Logger): void {
-  const data = readJobsFile();
-  const idx = data.groups.findIndex((g) => groupsMatch(g, assignedGroup));
+function completeTask(assignedTask: Task, log: Logger): void {
+  const data = readTasksFile();
+  const idx = data.tasks.findIndex((g) => tasksMatch(g, assignedTask));
   if (idx === -1) {
-    debug(`completeGroup: assigned group not found in jobs.json (strategy=${assignedGroup.strategy})`);
-    log(`Warning: assigned group not found in jobs.json, may have already been removed`);
+    debug(`completeTask: assigned task not found in tasks.json (strategy=${assignedTask.strategy})`);
+    log(`Warning: assigned task not found in tasks.json, may have already been removed`);
     return;
   }
-  const [completed] = data.groups.splice(idx, 1);
-  writeJobsFile(data);
-  debug(`completeGroup: removed group at index ${idx} (strategy=${completed.strategy})`);
-  log(`Dequeued group: ${completed.jobs.length} job(s) (strategy: ${completed.strategy})`);
+  const [completed] = data.tasks.splice(idx, 1);
+  writeTasksFile(data);
+  debug(`completeTask: removed task at index ${idx} (strategy=${completed.strategy})`);
+  log(`Dequeued task: ${completed.subtasks.length} subtask(s) (strategy: ${completed.strategy})`);
 }
 
-function buildGroupPrompt(group: Group): string {
-  const jobList = group.jobs.map((j, i) => `${i + 1}. ${j}`).join("\n");
+function buildTaskPrompt(task: Task): string {
+  const subtaskList = task.subtasks.map((j, i) => `${i + 1}. ${j}`).join("\n");
   return (
-    `Read strategy file: ${group.strategy}\n` +
+    `Read strategy file: ${task.strategy}\n` +
     `\n` +
-    `Jobs to complete:\n${jobList}\n` +
+    `Subtasks to complete:\n${subtaskList}\n` +
     `\n` +
-    `Work through each job following the strategy. When you have completed ALL jobs,\n` +
+    `Work through each subtask following the strategy. When you have completed ALL subtasks,\n` +
     `output <DONE> to signal completion.\n` +
     `\n` +
-    `When you need to add new job groups, use:\n` +
-    `- Add to front (default): npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2"\n` +
-    `- Add to end: npx tsx /repo/scripts/add-group.ts --strategy "<path>" --job "desc1" --job "desc2" --trailing`
+    `When you need to add new tasks, use:\n` +
+    `- Add to front (default): npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2"\n` +
+    `- Add to end: npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2" --trailing`
   );
 }
 
-export function getPendingGroupCount(): number {
-  return readJobsFile().groups.length;
+export function getPendingTaskCount(): number {
+  return readTasksFile().tasks.length;
 }
 
 // --- Exported API ---
@@ -242,36 +242,36 @@ export async function processMessage(
 }
 
 /**
- * Process all pending job groups until the queue is empty.
- * Calls commitFn after each group completes.
- * Returns the number of groups processed.
+ * Process all pending tasks until the queue is empty.
+ * Calls commitFn after each task completes.
+ * Returns the number of tasks processed.
  */
-export async function processJobGroups(
+export async function processTasks(
   extraArgs: string[],
   log: Logger,
   onEvent?: EventCallback,
   shouldStop?: () => boolean,
   commitFn?: (label: string) => void,
-): Promise<{ groupsProcessed: number; totalCost: number }> {
-  let groupsProcessed = 0;
+): Promise<{ tasksProcessed: number; totalCost: number }> {
+  let tasksProcessed = 0;
   let totalCost = 0;
   let consecutiveRetries = 0;
 
   while (true) {
     if (shouldStop?.()) break;
 
-    const data = readJobsFile();
-    debug(`processJobGroups: jobs.json has ${data.groups.length} group(s)`);
-    if (data.groups.length === 0) {
-      log("No groups remaining.");
+    const data = readTasksFile();
+    debug(`processTasks: tasks.json has ${data.tasks.length} task(s)`);
+    if (data.tasks.length === 0) {
+      log("No tasks remaining.");
       break;
     }
 
-    const assignedGroup = { ...data.groups[0], jobs: [...data.groups[0].jobs] };
-    const prompt = buildGroupPrompt(assignedGroup);
-    log(`Running group: ${assignedGroup.jobs.length} job(s) (strategy: ${assignedGroup.strategy})`);
-    for (const job of assignedGroup.jobs) {
-      log(`  - ${job}`);
+    const assignedTask = { ...data.tasks[0], subtasks: [...data.tasks[0].subtasks] };
+    const prompt = buildTaskPrompt(assignedTask);
+    log(`Running task: ${assignedTask.subtasks.length} subtask(s) (strategy: ${assignedTask.strategy})`);
+    for (const subtask of assignedTask.subtasks) {
+      log(`  - ${subtask}`);
     }
 
     let response: ClaudeResult;
@@ -292,31 +292,31 @@ export async function processJobGroups(
     }
 
     const done = response.doneSignaled;
-    debug(`processJobGroups: done=${done} assignedGroup strategy=${assignedGroup.strategy}`);
+    debug(`processTasks: done=${done} assignedTask strategy=${assignedTask.strategy}`);
 
     if (done) {
-      log(`Group signaled <DONE>. Completing group.`);
-      completeGroup(assignedGroup, log);
+      log(`Task signaled <DONE>. Completing task.`);
+      completeTask(assignedTask, log);
       consecutiveRetries = 0;
     } else {
       consecutiveRetries++;
-      if (consecutiveRetries >= MAX_GROUP_RETRIES) {
-        log(`Group failed ${MAX_GROUP_RETRIES} times. Skipping.`);
-        completeGroup(assignedGroup, log);
+      if (consecutiveRetries >= MAX_TASK_RETRIES) {
+        log(`Task failed ${MAX_TASK_RETRIES} times. Skipping.`);
+        completeTask(assignedTask, log);
         consecutiveRetries = 0;
       } else {
-        log(`Group did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_GROUP_RETRIES}.`);
+        log(`Task did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_TASK_RETRIES}.`);
       }
     }
 
-    groupsProcessed++;
-    const jobSummary = assignedGroup.jobs[0].length > 60
-      ? assignedGroup.jobs[0].slice(0, 57) + "..."
-      : assignedGroup.jobs[0];
-    commitFn?.(assignedGroup.jobs.length === 1
-      ? jobSummary
-      : `${jobSummary} (+${assignedGroup.jobs.length - 1} more)`);
+    tasksProcessed++;
+    const subtaskSummary = assignedTask.subtasks[0].length > 60
+      ? assignedTask.subtasks[0].slice(0, 57) + "..."
+      : assignedTask.subtasks[0];
+    commitFn?.(assignedTask.subtasks.length === 1
+      ? subtaskSummary
+      : `${subtaskSummary} (+${assignedTask.subtasks.length - 1} more)`);
   }
 
-  return { groupsProcessed, totalCost };
+  return { tasksProcessed, totalCost };
 }

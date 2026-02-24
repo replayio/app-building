@@ -11,8 +11,8 @@ Core ideas:
 
 * The agent runs within a docker container that clones the target repo and exposes an HTTP server for control.
 * The host communicates with the container via HTTP — sending prompts, polling events/logs, and managing lifecycle.
-* The agent builds by following a set of strategy documents with guides and directives
-  for breaking its work down into tasks and performing those tasks.
+* The agent builds by following a set of strategy documents with guides
+  for breaking its work down into jobs and directives for performing those tasks.
 * The agent commits logs for it to review later and improve its strategies.
 * All code changes are committed and pushed back to the remote from inside the container.
 
@@ -38,7 +38,7 @@ npm run agent -- -p "<prompt>"
 npm run agent -- --branch dev --push-branch feature/xyz -p "<prompt>"
 ```
 
-Starts a container, optionally queues a prompt, then detaches. The container processes the prompt followed by any pending job groups, commits and pushes results, then exits.
+Starts a container, optionally queues a prompt, then detaches. The container processes the prompt followed by any pending tasks, commits and pushes results, then exits.
 
 ### Interactive mode
 

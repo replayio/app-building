@@ -73,9 +73,9 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
   console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
 
-  const queueInfo = `${status.queueLength} queued, ${status.pendingGroups} groups pending`;
+  const queueInfo = `${status.queueLength} queued, ${status.pendingTasks} tasks pending`;
   console.log(`  ${DIM}Queue:${RESET}     ${queueInfo}`);
-  console.log(`  ${DIM}Progress:${RESET}  ${status.groupsProcessed} groups processed, iteration ${status.iteration}`);
+  console.log(`  ${DIM}Progress:${RESET}  ${status.tasksProcessed} tasks processed, iteration ${status.iteration}`);
 
   if (status.totalCost > 0) {
     console.log(`  ${DIM}Cost:${RESET}      $${status.totalCost.toFixed(4)}`);

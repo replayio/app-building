@@ -3,9 +3,9 @@ import { resolve } from "path";
 import { cloneRepo, checkoutPushBranch, commitAndPush, getRevision, toTokenUrl } from "./git";
 import {
   processMessage,
-  processJobGroups,
+  processTasks,
   currentClaudeProcess,
-  getPendingGroupCount,
+  getPendingTaskCount,
   type ClaudeResult,
   type EventCallback,
 } from "./worker";
@@ -64,7 +64,7 @@ const logBuffer = new OffsetBuffer<string>();
 let nextMessageId = 1;
 let totalCost = 0;
 let iteration = 0;
-let groupsProcessed = 0;
+let tasksProcessed = 0;
 
 // --- Container state ---
 
@@ -218,12 +218,12 @@ async function processLoop(): Promise<void> {
       continue;
     }
 
-    // Process pending job groups (after message handling above, or standalone)
-    const pendingGroups = getPendingGroupCount();
-    if (!stopRequested && pendingGroups > 0) {
-      log(`Processing ${pendingGroups} pending job group(s)...`);
+    // Process pending tasks (after message handling above, or standalone)
+    const pendingTasks = getPendingTaskCount();
+    if (!stopRequested && pendingTasks > 0) {
+      log(`Processing ${pendingTasks} pending task(s)...`);
       state = "processing";
-      const jobResult = await processJobGroups(
+      const jobResult = await processTasks(
         extraArgs,
         log,
         onEvent,
@@ -235,21 +235,21 @@ async function processLoop(): Promise<void> {
           }
         },
       );
-      groupsProcessed += jobResult.groupsProcessed;
+      tasksProcessed += jobResult.tasksProcessed;
       totalCost += jobResult.totalCost;
-      log(`Job processing complete. ${jobResult.groupsProcessed} group(s) processed, cost: $${jobResult.totalCost.toFixed(4)}`);
+      log(`Task processing complete. ${jobResult.tasksProcessed} task(s) processed, cost: $${jobResult.totalCost.toFixed(4)}`);
       state = "idle";
       continue;
     }
 
-    // Check for detach: exit when queue is empty and no pending groups
-    if (detachRequested && messageQueue.length === 0 && getPendingGroupCount() === 0) {
+    // Check for detach: exit when queue is empty and no pending tasks
+    if (detachRequested && messageQueue.length === 0 && getPendingTaskCount() === 0) {
       log("Detach requested and all work complete. Shutting down.");
       break;
     }
 
     // Wait for something to happen
-    log(`Idle. Queue: ${messageQueue.length} messages, ${getPendingGroupCount()} groups pending. Waiting...`);
+    log(`Idle. Queue: ${messageQueue.length} messages, ${getPendingTaskCount()} tasks pending. Waiting...`);
     state = "idle";
     await waitForWake();
   }
@@ -371,8 +371,8 @@ const server = createServer(async (req, res) => {
         state,
         pushBranch: PUSH_BRANCH,
         queueLength: messageQueue.length,
-        pendingGroups: getPendingGroupCount(),
-        groupsProcessed,
+        pendingTasks: getPendingTaskCount(),
+        tasksProcessed,
         totalCost,
         iteration,
         detachRequested,

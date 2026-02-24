@@ -266,7 +266,7 @@ async function runDetached(opts: {
     console.log(`Message queued: ${id}`);
   }
 
-  // Detach — container will process message + job groups, then exit
+  // Detach — container will process message + tasks, then exit
   await httpPost(`${baseUrl}/detach`, undefined, httpOpts);
   console.log("Detached. Container will exit when all work is complete.");
   console.log(`Monitor: npm run status`);
