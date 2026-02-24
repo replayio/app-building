@@ -31,13 +31,14 @@ export function CategorySection<T>({
   const [expanded, setExpanded] = useState(defaultExpanded);
 
   return (
-    <div className="category-section">
+    <div className="category-section" data-testid={`category-section-${title.toLowerCase()}`}>
       <button
         className="category-section-header"
+        data-testid={`category-header-${title.toLowerCase()}`}
         onClick={() => setExpanded((prev) => !prev)}
         aria-expanded={expanded}
       >
-        <span className="category-section-chevron" data-expanded={expanded}>
+        <span className="category-section-chevron" data-testid={`category-chevron-${title.toLowerCase()}`} data-expanded={expanded}>
           <svg
             width="16"
             height="16"
@@ -54,14 +55,14 @@ export function CategorySection<T>({
             />
           </svg>
         </span>
-        <span className="category-section-title">{title}</span>
+        <span className="category-section-title" data-testid={`category-title-${title.toLowerCase()}`}>{title}</span>
         {total !== undefined && (
-          <span className="category-section-total">{total}</span>
+          <span className="category-section-total" data-testid={`category-total-${title.toLowerCase()}`}>{total}</span>
         )}
       </button>
 
       {expanded && (
-        <div className="category-section-content">
+        <div className="category-section-content" data-testid={`category-content-${title.toLowerCase()}`}>
           {items.map((item, index) => (
             <React.Fragment
               key={getItemKey ? getItemKey(item, index) : index}

@@ -5,11 +5,13 @@ import { ReportListPage } from "./pages/ReportListPage";
 import { ReportDetailsPage } from "./pages/ReportDetailsPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { BudgetsPage } from "./pages/BudgetsPage";
+import { LoginPage } from "./pages/LoginPage";
 
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/accounts" replace />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/accounts" element={<AccountsPage />} />
       <Route path="/accounts/:id" element={<AccountDetailPage />} />
