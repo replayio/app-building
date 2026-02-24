@@ -55,6 +55,8 @@
   --color-priority-medium-bg: rgba(245, 158, 11, 0.1);
   --color-priority-low: #22c55e;
   --color-priority-low-bg: rgba(34, 197, 94, 0.1);
+  --color-priority-normal: #14b8a6;
+  --color-priority-normal-bg: rgba(20, 184, 166, 0.1);
 
   /* Deal stage colors */
   --color-stage-lead: #94a3b8;

@@ -5,7 +5,7 @@ export interface Task {
   title: string
   description: string | null
   due_date: string | null
-  priority: 'high' | 'medium' | 'low'
+  priority: 'high' | 'medium' | 'normal' | 'low'
   status: 'open' | 'completed' | 'cancelled'
   client_id: string | null
   client_name: string | null
@@ -13,6 +13,8 @@ export interface Task {
   deal_name: string | null
   assignee: string | null
   assignee_id: string | null
+  assignee_avatar: string | null
+  assignee_role: string | null
   created_at: string
   updated_at: string
 }
@@ -38,7 +40,7 @@ const initialState: TasksState = {
   error: null,
   search: '',
   filterPriority: '',
-  filterStatus: '',
+  filterStatus: 'open',
   sortBy: 'due_date',
   sortDir: 'asc',
   page: 1,

@@ -1,18 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
-        "WriteComponentTasksFilterBar: Write the TasksFilterBar component (search input, priority filter dropdown, status filter dropdown)",
-        "WriteComponentTaskCard: Write the TaskCard component (priority badge, title, due date, assignee avatar/name, action menu)",
-        "WriteComponentCreateTaskModal: Write the CreateTaskModal component (form with title, description, due date, priority, client, assignee)",
-        "WriteComponentTasksListContent: Write the TasksListContent component (task list with pagination)",
-        "WriteBackendTasks: Write the tasks Netlify Function (GET list with filters/sort/pagination, GET by id, POST create, PUT update, DELETE)",
-        "WritePageTasksList: Write the TasksListPage connecting all components"
-      ],
-      "timestamp": "2026-02-24T00:12:07.935Z"
-    },
-    {
       "strategy": "strategies/jobs/build/writeTests.md",
       "jobs": [
         "WriteTestTasksListDisplay: Write test for TasksListPage displaying task cards with priority badges, titles, due dates, and assignees",

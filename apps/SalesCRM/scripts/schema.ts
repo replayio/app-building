@@ -11,6 +11,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       email TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
       avatar_url TEXT,
+      role TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
@@ -160,8 +161,8 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       title TEXT NOT NULL,
       description TEXT,
-      due_date DATE,
-      priority TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('high', 'medium', 'low')),
+      due_date TIMESTAMPTZ,
+      priority TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('high', 'medium', 'normal', 'low')),
       status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'completed', 'cancelled')),
       client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
       deal_id UUID REFERENCES deals(id) ON DELETE SET NULL,
@@ -324,5 +325,21 @@ export async function runMigrations(databaseUrl: string): Promise<void> {
   // Ensure webhooks table has enabled column
   try {
     await sql`ALTER TABLE webhooks ADD COLUMN IF NOT EXISTS enabled BOOLEAN NOT NULL DEFAULT true`
+  } catch { /* already exists */ }
+
+  // Migration: Change tasks due_date from DATE to TIMESTAMPTZ
+  try {
+    await sql`ALTER TABLE tasks ALTER COLUMN due_date TYPE TIMESTAMPTZ USING due_date::TIMESTAMPTZ`
+  } catch { /* already timestamptz */ }
+
+  // Migration: Add 'normal' to tasks priority check constraint
+  try {
+    await sql`ALTER TABLE tasks DROP CONSTRAINT IF EXISTS tasks_priority_check`
+    await sql`ALTER TABLE tasks ADD CONSTRAINT tasks_priority_check CHECK (priority IN ('high', 'medium', 'normal', 'low'))`
+  } catch { /* already updated */ }
+
+  // Migration: Add role column to users
+  try {
+    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS role TEXT`
   } catch { /* already exists */ }
 }
