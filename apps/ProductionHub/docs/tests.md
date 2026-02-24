@@ -18,7 +18,116 @@
 
 ## EquipmentPage (/equipment)
 
-<!-- Tests for EquipmentPage will be added by PlanPage tasks -->
+Components: EquipmentHeader, EquipmentTable
+
+### EquipmentHeader
+
+#### EQ-HDR-1: Page title displays "Equipment Inventory"
+- **Components:** EquipmentHeader
+- **Given** the user navigates to /equipment
+- **Then** the page title "Equipment Inventory" is displayed as a large heading
+
+#### EQ-HDR-2: Page subtitle describes the equipment listing
+- **Components:** EquipmentHeader
+- **Given** the user navigates to /equipment
+- **Then** the subtitle "Describes all the equipment available for production runs." is displayed below the page title
+
+#### EQ-HDR-3: Add Equipment button is displayed
+- **Components:** EquipmentHeader
+- **Given** the user navigates to /equipment
+- **Then** a blue "+ Add Equipment" button is displayed in the top-right area of the header
+
+#### EQ-HDR-4: Add Equipment button opens a form to create new equipment
+- **Components:** EquipmentHeader
+- **Given** the user is on /equipment
+- **When** the user clicks the "+ Add Equipment" button
+- **Then** a modal or form is displayed with fields for Title, Description, and Available Units
+- **When** the user fills in Title "Test Equipment", Description "A test item", Available Units "2" and submits
+- **Then** the new equipment appears in the equipment table with the entered values
+- **And** the data persists after navigating away and returning to /equipment
+
+### EquipmentTable
+
+#### EQ-TBL-1: Table displays Title, Description, Available Units, and Actions column headers
+- **Components:** EquipmentTable
+- **Given** the user navigates to /equipment
+- **Then** a table is displayed with column headers "Title", "Description", "Available Units", and "Actions"
+
+#### EQ-TBL-2: Table rows display equipment data in the correct columns
+- **Components:** EquipmentTable
+- **Given** the user navigates to /equipment and equipment records exist
+- **Then** each table row displays the equipment's title in the Title column, its description in the Description column, and its available unit count in the Available Units column
+
+#### EQ-TBL-3: Edit pencil icon is displayed in the Actions column
+- **Components:** EquipmentTable
+- **Given** the user navigates to /equipment and equipment records exist
+- **Then** each row displays a pencil icon button in the Actions column
+
+#### EQ-TBL-4: Clicking the edit pencil icon opens an edit form for the equipment
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment and a row shows equipment "High-Speed Mixer (HSM-2000)"
+- **When** the user clicks the pencil icon in that row's Actions column
+- **Then** a modal or form is displayed pre-filled with the equipment's current Title, Description, and Available Units
+- **When** the user changes the Available Units from "3" to "4" and saves
+- **Then** the table row updates to show Available Units as "4"
+- **And** the change persists after navigating away and returning to /equipment
+
+#### EQ-TBL-5: Delete trash icon is displayed in the Actions column
+- **Components:** EquipmentTable
+- **Given** the user navigates to /equipment and equipment records exist
+- **Then** each row displays a trash icon button in the Actions column, to the right of the pencil icon
+
+#### EQ-TBL-6: Clicking the delete trash icon removes the equipment after confirmation
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment and a row shows equipment "Heavy-Duty Forklift (HDF-5T)"
+- **When** the user clicks the trash icon in that row's Actions column
+- **Then** a confirmation dialog is displayed asking the user to confirm deletion
+- **When** the user confirms the deletion
+- **Then** the equipment row "Heavy-Duty Forklift (HDF-5T)" is removed from the table
+- **And** the equipment no longer appears after navigating away and returning to /equipment
+
+#### EQ-TBL-7: Cancelling delete confirmation does not remove the equipment
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment and a row shows equipment "Heavy-Duty Forklift (HDF-5T)"
+- **When** the user clicks the trash icon in that row's Actions column
+- **Then** a confirmation dialog is displayed
+- **When** the user cancels the deletion
+- **Then** the equipment row "Heavy-Duty Forklift (HDF-5T)" remains in the table
+
+#### EQ-TBL-8: Clicking a table row navigates to the equipment details page
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment and a row shows equipment with ID "E-4021"
+- **When** the user clicks on the row (not on the action icons)
+- **Then** the app navigates to /equipment/E-4021 (the equipment details page)
+
+#### EQ-TBL-9: Pagination displays page count text
+- **Components:** EquipmentTable
+- **Given** the user navigates to /equipment and there are enough equipment records to span multiple pages
+- **Then** pagination text "Page 1 of N" is displayed below the table (where N is the total number of pages)
+
+#### EQ-TBL-10: Pagination next button advances to the next page
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment viewing page 1 of 3
+- **When** the user clicks the ">" (next page) button
+- **Then** the table updates to show the next set of equipment records
+- **And** the pagination text updates to "Page 2 of 3"
+
+#### EQ-TBL-11: Pagination previous button goes to the previous page
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment viewing page 2 of 3
+- **When** the user clicks the "<" (previous page) button
+- **Then** the table updates to show the previous set of equipment records
+- **And** the pagination text updates to "Page 1 of 3"
+
+#### EQ-TBL-12: Pagination previous button is disabled on the first page
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment viewing page 1
+- **Then** the "<" (previous page) button is disabled or visually inactive
+
+#### EQ-TBL-13: Pagination next button is disabled on the last page
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment viewing the last page (e.g., page 3 of 3)
+- **Then** the ">" (next page) button is disabled or visually inactive
 
 ## EquipmentDetailsPage (/equipment/:id)
 

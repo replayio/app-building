@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageEquipment: Decide on components, add sections to docs/tests.md",
-        "PlanComponentEquipmentHeader: Add test entries for EquipmentHeader (page title, subtitle, Add Equipment button)",
-        "PlanComponentEquipmentTable: Add test entries for EquipmentTable (Title/Description/Available Units/Actions columns, edit pencil icon, delete trash icon, row click navigates to details, pagination with page count and prev/next)"
-      ],
-      "timestamp": "2026-02-24T23:27:55.074Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageRecipeDetails: Decide on components, add sections to docs/tests.md",
         "PlanComponentRecipeDetailHeader: Add test entries for RecipeDetailHeader (breadcrumb Recipes > recipe name, title with recipe ID, Edit Recipe button)",
         "PlanComponentDescriptionCard: Add test entries for DescriptionCard (recipe description text display)",
