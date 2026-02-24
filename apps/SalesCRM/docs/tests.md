@@ -703,6 +703,12 @@
 - **Then** "Mike Wilson (Technical Lead, Acme Corp) - View Profile" appears in the contacts list
 - **And** the deal is reflected in the individual's associated deals
 
+#### Test: Add Contact dialog can be cancelled
+- **Given** the Add Contact dialog is open
+- **When** the user clicks the Cancel button or closes the dialog
+- **Then** the dialog closes without adding any contact
+- **And** no new contact appears in the contacts list
+
 #### Test: Remove contact from deal
 - **Given** the contacts section shows "Bob Johnson"
 - **When** the user clicks a remove/unlink action for Bob Johnson
