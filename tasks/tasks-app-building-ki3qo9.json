@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/review/updateSkills.md",
-      "subtasks": [
-        "UpdateSkills: report-testFailures-sales-crm-2-review-5-20260224-164241"
-      ],
-      "timestamp": "2026-02-24T16:42:49.134Z"
-    },
-    {
       "skill": "skills/review/mergeSkills.md",
       "subtasks": [
         "MergeSkills: report-testFailures-sales-crm-2-review-5-20260224-164241"
