@@ -12,8 +12,11 @@ export interface Client {
   channel: string | null
   date_acquired: string | null
   primary_contact_name: string | null
+  primary_contact_title: string | null
   open_deal_count: number
+  open_deal_value: number
   next_task: string | null
+  next_task_due: string | null
   created_at: string
   updated_at: string
 }
@@ -25,11 +28,14 @@ interface ClientsState {
   error: string | null
   search: string
   filterStatus: string
-  filterTags: string[]
+  filterTag: string
+  filterSource: string
   sortBy: string
   sortDir: 'asc' | 'desc'
   page: number
   total: number
+  availableTags: string[]
+  availableSources: string[]
 }
 
 const initialState: ClientsState = {
@@ -39,11 +45,14 @@ const initialState: ClientsState = {
   error: null,
   search: '',
   filterStatus: '',
-  filterTags: [],
-  sortBy: 'name',
-  sortDir: 'asc',
+  filterTag: '',
+  filterSource: '',
+  sortBy: 'updated_at',
+  sortDir: 'desc',
   page: 1,
   total: 0,
+  availableTags: [],
+  availableSources: [],
 }
 
 export const fetchClients = createAsyncThunk(
@@ -54,7 +63,8 @@ export const fetchClients = createAsyncThunk(
       const params = new URLSearchParams()
       if (state.search) params.set('search', state.search)
       if (state.filterStatus) params.set('status', state.filterStatus)
-      if (state.filterTags.length > 0) params.set('tags', state.filterTags.join(','))
+      if (state.filterTag) params.set('tag', state.filterTag)
+      if (state.filterSource) params.set('source', state.filterSource)
       params.set('sortBy', state.sortBy)
       params.set('sortDir', state.sortDir)
       params.set('page', String(state.page))
@@ -92,17 +102,17 @@ const clientsSlice = createSlice({
       state.filterStatus = action.payload
       state.page = 1
     },
-    setFilterTags(state, action) {
-      state.filterTags = action.payload
+    setFilterTag(state, action) {
+      state.filterTag = action.payload
       state.page = 1
     },
-    setSortBy(state, action) {
-      if (state.sortBy === action.payload) {
-        state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'
-      } else {
-        state.sortBy = action.payload
-        state.sortDir = 'asc'
-      }
+    setFilterSource(state, action) {
+      state.filterSource = action.payload
+      state.page = 1
+    },
+    setSort(state, action: { payload: { sortBy: string; sortDir: 'asc' | 'desc' } }) {
+      state.sortBy = action.payload.sortBy
+      state.sortDir = action.payload.sortDir
     },
     setPage(state, action) {
       state.page = action.payload
@@ -121,6 +131,12 @@ const clientsSlice = createSlice({
         state.loading = false
         state.items = action.payload.clients
         state.total = action.payload.total
+        if (action.payload.availableTags) {
+          state.availableTags = action.payload.availableTags
+        }
+        if (action.payload.availableSources) {
+          state.availableSources = action.payload.availableSources
+        }
       })
       .addCase(fetchClients.rejected, (state, action) => {
         state.loading = false
@@ -141,5 +157,5 @@ const clientsSlice = createSlice({
   },
 })
 
-export const { setSearch, setFilterStatus, setFilterTags, setSortBy, setPage, clearCurrent } = clientsSlice.actions
+export const { setSearch, setFilterStatus, setFilterTag, setFilterSource, setSort, setPage, clearCurrent } = clientsSlice.actions
 export default clientsSlice.reducer

@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "WriteComponentClientsFilterBar: Write the ClientsFilterBar component",
-        "WriteComponentClientsTable: Write the ClientsTable component",
-        "WriteComponentCreateClientModal: Write the CreateClientModal component",
-        "WritePageClientsListPage: Write the ClientsListPage page"
-      ],
-      "timestamp": "2026-02-23T21:32:56.242Z"
-    },
-    {
-      "strategy": "strategies/jobs/build/writeApp.md",
-      "jobs": [
         "WriteComponentClientDetailHeader: Write the ClientDetailHeader component with quick actions",
         "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
         "WriteComponentClientSections: Write the Tasks, Deals, Attachments, People, and Timeline sections for client detail",
