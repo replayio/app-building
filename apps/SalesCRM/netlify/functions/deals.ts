@@ -105,8 +105,7 @@ export const handler = async (event: HandlerEvent) => {
         return json(200, { deleted: true })
       }
       if (resourceId && !subResource) {
-        await sql`DELETE FROM deals WHERE id = ${resourceId}`
-        return json(200, { deleted: true })
+        return await handleDeleteDeal(sql, resourceId)
       }
       return json(400, { error: 'Invalid endpoint' })
     }
@@ -132,49 +131,160 @@ async function handleGetDeal(sql: SqlFn, id: string) {
 }
 
 async function handleListDeals(sql: SqlFn, params?: Record<string, string> | null) {
-  const clientId = params?.client_id || null
-  const rows = clientId
-    ? await sql`
-      SELECT d.*, c.name as client_name
-      FROM deals d
-      LEFT JOIN clients c ON d.client_id = c.id
-      WHERE d.client_id = ${clientId}
-      ORDER BY d.updated_at DESC
-    `
-    : await sql`
-      SELECT d.*, c.name as client_name
-      FROM deals d
-      LEFT JOIN clients c ON d.client_id = c.id
-      ORDER BY d.updated_at DESC
-    `
-  return json(200, { deals: rows })
+  const p = params || {}
+  const page = parseInt(p.page || '1')
+  const pageSize = parseInt(p.pageSize || '15')
+  const offset = (page - 1) * pageSize
+  const search = p.search || ''
+  const stageFilter = p.stage || ''
+  const clientFilter = p.client || ''
+  const statusFilter = p.status || ''
+  const sort = p.sort || 'close_date_newest'
+  const dateFrom = p.date_from || null
+  const dateTo = p.date_to || null
+  const clientId = p.client_id || ''
+  const searchPattern = search ? `%${search}%` : ''
+
+  const countResult = await sql`
+    SELECT COUNT(*)::int as total FROM deals d
+    LEFT JOIN clients c ON d.client_id = c.id
+    WHERE
+      (${clientId} = '' OR d.client_id::text = ${clientId})
+      AND (${stageFilter} = '' OR d.stage = ${stageFilter})
+      AND (${clientFilter} = '' OR c.name = ${clientFilter})
+      AND (
+        ${statusFilter} = ''
+        OR (${statusFilter} = 'Active' AND d.status NOT IN ('Won', 'Lost'))
+        OR (${statusFilter} != '' AND ${statusFilter} != 'Active' AND d.status = ${statusFilter})
+      )
+      AND (${searchPattern} = '' OR d.name ILIKE ${searchPattern})
+      AND (${dateFrom} IS NULL OR d.close_date >= ${dateFrom}::date)
+      AND (${dateTo} IS NULL OR d.close_date <= ${dateTo}::date)
+  `
+  const total = countResult[0].total
+
+  const rows = await sql`
+    SELECT d.*, c.name as client_name
+    FROM deals d
+    LEFT JOIN clients c ON d.client_id = c.id
+    WHERE
+      (${clientId} = '' OR d.client_id::text = ${clientId})
+      AND (${stageFilter} = '' OR d.stage = ${stageFilter})
+      AND (${clientFilter} = '' OR c.name = ${clientFilter})
+      AND (
+        ${statusFilter} = ''
+        OR (${statusFilter} = 'Active' AND d.status NOT IN ('Won', 'Lost'))
+        OR (${statusFilter} != '' AND ${statusFilter} != 'Active' AND d.status = ${statusFilter})
+      )
+      AND (${searchPattern} = '' OR d.name ILIKE ${searchPattern})
+      AND (${dateFrom} IS NULL OR d.close_date >= ${dateFrom}::date)
+      AND (${dateTo} IS NULL OR d.close_date <= ${dateTo}::date)
+    ORDER BY
+      CASE WHEN ${sort} = 'close_date_oldest' THEN d.close_date END ASC NULLS LAST,
+      CASE WHEN ${sort} = 'value_highest' THEN d.value END DESC NULLS LAST,
+      CASE WHEN ${sort} = 'value_lowest' THEN d.value END ASC NULLS LAST,
+      CASE WHEN ${sort} NOT IN ('close_date_oldest', 'value_highest', 'value_lowest') THEN d.close_date END DESC NULLS LAST
+    LIMIT ${pageSize} OFFSET ${offset}
+  `
+
+  const now = new Date()
+  const currentQuarter = Math.ceil((now.getMonth() + 1) / 3)
+  const qYear = now.getFullYear()
+  const qStartMonth = (currentQuarter - 1) * 3
+  const qStart = `${qYear}-${String(qStartMonth + 1).padStart(2, '0')}-01`
+  const qEndDate = new Date(qYear, qStartMonth + 3, 0)
+  const qEnd = `${qYear}-${String(qStartMonth + 3).padStart(2, '0')}-${String(qEndDate.getDate()).padStart(2, '0')}`
+
+  const summary = await sql`
+    SELECT
+      COUNT(*) FILTER (WHERE status NOT IN ('Won', 'Lost'))::int as total_active,
+      COALESCE(SUM(value) FILTER (WHERE status NOT IN ('Won', 'Lost')), 0)::numeric as pipeline_value,
+      COUNT(*) FILTER (WHERE status = 'Won' AND close_date >= ${qStart}::date AND close_date <= ${qEnd}::date)::int as won_count,
+      COALESCE(SUM(value) FILTER (WHERE status = 'Won' AND close_date >= ${qStart}::date AND close_date <= ${qEnd}::date), 0)::numeric as won_value,
+      COUNT(*) FILTER (WHERE status = 'Lost' AND close_date >= ${qStart}::date AND close_date <= ${qEnd}::date)::int as lost_count,
+      COALESCE(SUM(value) FILTER (WHERE status = 'Lost' AND close_date >= ${qStart}::date AND close_date <= ${qEnd}::date), 0)::numeric as lost_value
+    FROM deals
+  `
+
+  const availableClients = await sql`
+    SELECT DISTINCT c.name FROM clients c
+    JOIN deals d ON d.client_id = c.id
+    WHERE c.name IS NOT NULL
+    ORDER BY c.name
+  `
+
+  return json(200, {
+    deals: rows,
+    total,
+    page,
+    pageSize,
+    summary: {
+      totalActive: summary[0].total_active,
+      pipelineValue: Number(summary[0].pipeline_value),
+      wonCount: summary[0].won_count,
+      wonValue: Number(summary[0].won_value),
+      lostCount: summary[0].lost_count,
+      lostValue: Number(summary[0].lost_value),
+      currentQuarter,
+    },
+    availableClients: availableClients.map((c: Record<string, string>) => c.name),
+  })
 }
 
 async function handleCreateDeal(sql: SqlFn, body: string | null) {
   const data = JSON.parse(body || '{}')
-  const { name, client_id, stage, value, owner, probability, expected_close_date } = data
+  const { name, client_id, stage, value, owner, status, probability, expected_close_date, close_date } = data
   if (!name) return json(400, { error: 'Deal name is required' })
   if (!client_id) return json(400, { error: 'Client is required' })
 
   const result = await sql`
-    INSERT INTO deals (name, client_id, stage, value, owner, probability, expected_close_date)
+    INSERT INTO deals (name, client_id, stage, value, owner, status, probability, expected_close_date, close_date)
     VALUES (
       ${name},
       ${client_id},
       ${stage || 'Lead'},
       ${value || null},
       ${owner || null},
+      ${status || 'On Track'},
       ${probability === undefined ? null : probability},
-      ${expected_close_date || null}
+      ${expected_close_date || null},
+      ${close_date || null}
     )
     RETURNING *
   `
-  return json(201, result[0])
+
+  const newDeal = result[0]
+
+  await sql`
+    INSERT INTO timeline_events (client_id, event_type, title, description, actor, reference_id, reference_type)
+    VALUES (
+      ${client_id},
+      'deal_created',
+      ${'Deal Created: ' + name},
+      ${'New deal "' + name + '" was created' + (stage ? ' in stage ' + (stage || 'Lead') : '')},
+      ${owner || null},
+      ${newDeal.id},
+      'deal'
+    )
+  `
+
+  const dealWithClient = await sql`
+    SELECT d.*, c.name as client_name
+    FROM deals d
+    LEFT JOIN clients c ON d.client_id = c.id
+    WHERE d.id = ${newDeal.id}
+  `
+
+  return json(201, dealWithClient[0])
 }
 
 async function handleUpdateDeal(sql: SqlFn, id: string, body: string | null) {
   const data = JSON.parse(body || '{}')
   const { name, client_id, stage, value, owner, status, probability, expected_close_date, close_date } = data
+
+  const current = await sql`SELECT * FROM deals WHERE id = ${id}`
+  if (!current.length) return json(404, { error: 'Not found' })
+  const oldDeal = current[0]
 
   const skipName = name === undefined
   const skipClientId = client_id === undefined
@@ -201,6 +311,25 @@ async function handleUpdateDeal(sql: SqlFn, id: string, body: string | null) {
     WHERE id = ${id}
   `
 
+  if (!skipStage && stage !== oldDeal.stage) {
+    await sql`
+      INSERT INTO deal_stage_history (deal_id, old_stage, new_stage, changed_by)
+      VALUES (${id}, ${oldDeal.stage}, ${stage}, ${owner || oldDeal.owner || null})
+    `
+    await sql`
+      INSERT INTO timeline_events (client_id, event_type, title, description, actor, reference_id, reference_type)
+      VALUES (
+        ${oldDeal.client_id},
+        'deal_stage_change',
+        ${'Deal Stage Changed: ' + (name || oldDeal.name)},
+        ${'Deal "' + (name || oldDeal.name) + '" stage changed from ' + oldDeal.stage + ' to ' + stage},
+        ${owner || oldDeal.owner || null},
+        ${id},
+        'deal'
+      )
+    `
+  }
+
   const updated = await sql`
     SELECT d.*, c.name as client_name
     FROM deals d
@@ -209,6 +338,32 @@ async function handleUpdateDeal(sql: SqlFn, id: string, body: string | null) {
   `
   if (!updated.length) return json(404, { error: 'Not found' })
   return json(200, updated[0])
+}
+
+async function handleDeleteDeal(sql: SqlFn, id: string) {
+  const current = await sql`
+    SELECT d.*, c.name as client_name
+    FROM deals d
+    LEFT JOIN clients c ON d.client_id = c.id
+    WHERE d.id = ${id}
+  `
+  if (current.length) {
+    const deal = current[0]
+    await sql`
+      INSERT INTO timeline_events (client_id, event_type, title, description, actor, reference_id, reference_type)
+      VALUES (
+        ${deal.client_id},
+        'deal_deleted',
+        ${'Deal Deleted: ' + deal.name},
+        ${'Deal "' + deal.name + '" was deleted'},
+        ${deal.owner || null},
+        ${id},
+        'deal'
+      )
+    `
+  }
+  await sql`DELETE FROM deals WHERE id = ${id}`
+  return json(200, { deleted: true })
 }
 
 async function handleGetHistory(sql: SqlFn, dealId: string) {

@@ -2372,3 +2372,262 @@ body {
 .deal-contact-search-title {
   color: var(--color-text-muted);
 }
+
+/* ===== Deals List Page ===== */
+
+/* Summary Cards */
+.deals-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .deals-summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.deals-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-base);
+}
+
+.deals-summary-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.deals-summary-card-icon--active {
+  background: #eef0ff;
+  color: var(--color-accent);
+}
+
+.deals-summary-card-icon--pipeline {
+  background: var(--color-deal-on-track-bg);
+  color: var(--color-deal-on-track);
+}
+
+.deals-summary-card-icon--won {
+  background: #eef0ff;
+  color: var(--color-accent-purple);
+}
+
+.deals-summary-card-icon--lost {
+  background: var(--color-deal-at-risk-bg);
+  color: var(--color-deal-at-risk);
+}
+
+.deals-summary-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.deals-summary-card-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.deals-summary-card-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* View Tabs */
+.deals-view-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.deals-view-tab {
+  padding: 8px 16px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.deals-view-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.deals-view-tab.active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+/* Deals Toolbar */
+.deals-toolbar {
+  margin-bottom: 12px;
+}
+
+/* Deals Filters */
+.deals-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deals-filters-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.deals-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 160px;
+  max-width: 240px;
+}
+
+.deals-search-icon {
+  position: absolute;
+  left: 8px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.deals-search-input {
+  width: 100%;
+  height: 28px;
+  padding: 0 28px 0 28px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-base);
+  font-size: 12px;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.deals-search-input::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.deals-search-input:focus {
+  border-color: var(--color-accent);
+}
+
+.deals-search-clear {
+  position: absolute;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-bg-hover);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+/* Deals Table */
+.deals-table {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+}
+
+.deals-table-header {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr 1fr 1fr 44px;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--color-bg-sidebar);
+  border-bottom: 1px solid var(--color-border-default);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.deals-table-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr 1fr 1fr 44px;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--color-border-light);
+  transition: background 0.1s ease;
+  cursor: default;
+}
+
+.deals-table-row:last-child {
+  border-bottom: none;
+}
+
+.deals-table-row:hover {
+  background: var(--color-bg-hover);
+}
+
+.deals-table-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.1s ease;
+}
+
+.deals-table-sort-btn:hover {
+  color: var(--color-text-primary);
+}
+
+/* Deal Status Badges */
+.deal-status-on-track {
+  color: var(--color-deal-on-track);
+  background: var(--color-deal-on-track-bg);
+}
+
+.deal-status-needs-attention {
+  color: var(--color-deal-needs-attention);
+  background: var(--color-deal-needs-attention-bg);
+}
+
+.deal-status-at-risk {
+  color: var(--color-deal-at-risk);
+  background: var(--color-deal-at-risk-bg);
+}
+
+.deal-status-won {
+  color: var(--color-deal-won);
+  background: var(--color-deal-won-bg);
+}
+
+.deal-status-lost {
+  color: var(--color-status-churned);
+  background: var(--color-status-churned-bg);
+}
