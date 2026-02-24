@@ -144,25 +144,27 @@ export default function ClientDetailPage() {
 
   return (
     <div className="page-content p-6 max-sm:p-3" data-testid="client-detail-page">
-      <ClientHeader
-        name={client.name}
-        type={client.type}
-        status={client.status}
-        tags={client.tags || []}
-        source={client.source}
-        onUpdateName={handleUpdateName}
-        onUpdateStatus={handleUpdateStatus}
-        onUpdateTags={handleUpdateTags}
-      />
+      <div className="client-detail-top">
+        <ClientHeader
+          name={client.name}
+          type={client.type}
+          status={client.status}
+          tags={client.tags || []}
+          source={client.source}
+          onUpdateName={handleUpdateName}
+          onUpdateStatus={handleUpdateStatus}
+          onUpdateTags={handleUpdateTags}
+        />
 
-      <QuickActions
-        clientId={client.id}
-        clientName={client.name}
-        onTaskCreated={() => { setTasksRefreshKey(k => k + 1); refreshAll() }}
-        onDealCreated={() => { setDealsRefreshKey(k => k + 1); refreshAll() }}
-        onAttachmentUploaded={() => { setAttachmentsRefreshKey(k => k + 1); refreshAll() }}
-        onPersonAdded={() => { setPeopleRefreshKey(k => k + 1); refreshAll() }}
-      />
+        <QuickActions
+          clientId={client.id}
+          clientName={client.name}
+          onTaskCreated={() => { setTasksRefreshKey(k => k + 1); refreshAll() }}
+          onDealCreated={() => { setDealsRefreshKey(k => k + 1); refreshAll() }}
+          onAttachmentUploaded={() => { setAttachmentsRefreshKey(k => k + 1); refreshAll() }}
+          onPersonAdded={() => { setPeopleRefreshKey(k => k + 1); refreshAll() }}
+        />
+      </div>
 
       <SourceInfoSection
         source={client.source}
@@ -173,30 +175,36 @@ export default function ClientDetailPage() {
         onUpdate={handleUpdateSourceInfo}
       />
 
-      <ClientTasksSectionFull
-        clientId={client.id}
-        refreshKey={tasksRefreshKey}
-      />
+      <div className="client-detail-grid">
+        <div className="client-detail-col">
+          <ClientTasksSectionFull
+            clientId={client.id}
+            refreshKey={tasksRefreshKey}
+          />
 
-      <ClientDealsSection
-        clientId={client.id}
-        refreshKey={dealsRefreshKey}
-      />
+          <ClientDealsSection
+            clientId={client.id}
+            refreshKey={dealsRefreshKey}
+          />
 
-      <ClientAttachmentsSection
-        clientId={client.id}
-        refreshKey={attachmentsRefreshKey}
-      />
+          <ClientAttachmentsSection
+            clientId={client.id}
+            refreshKey={attachmentsRefreshKey}
+          />
+        </div>
 
-      <ClientPeopleSection
-        clientId={client.id}
-        refreshKey={peopleRefreshKey}
-      />
+        <div className="client-detail-col">
+          <ClientPeopleSection
+            clientId={client.id}
+            refreshKey={peopleRefreshKey}
+          />
 
-      <ClientTimelineSection
-        clientId={client.id}
-        refreshKey={timelineRefreshKey}
-      />
+          <ClientTimelineSection
+            clientId={client.id}
+            refreshKey={timelineRefreshKey}
+          />
+        </div>
+      </div>
     </div>
   )
 }

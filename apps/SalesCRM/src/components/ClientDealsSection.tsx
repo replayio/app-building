@@ -72,12 +72,12 @@ export default function ClientDealsSection({ clientId, refreshKey }: ClientDeals
               data-testid="deal-item"
             >
               <span className="client-deal-name" data-testid="deal-name">{deal.name}</span>
-              <span className={`status-badge ${getStageClass(deal.stage)}`} data-testid="deal-stage">
-                {deal.stage}
+              <span className={`client-deal-stage ${getStageClass(deal.stage)}`} data-testid="deal-stage">
+                Stage: {deal.stage}
               </span>
               {deal.value && (
                 <span className="client-deal-value" data-testid="deal-value">
-                  {formatValue(deal.value)}
+                  Value: {formatValue(deal.value)}
                 </span>
               )}
             </button>
