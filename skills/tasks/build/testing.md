@@ -95,6 +95,13 @@ The Playwright config MUST:
 `replayDevices['Replay Chromium']`. Manual config misses `RECORD_REPLAY_METADATA_FILE`,
 which breaks the recording-to-test metadata association.
 
+**IMPORTANT**: The Replay Chromium browser adds instrumentation overhead that makes all
+operations ~2–3x slower than standard Chromium. Always set higher timeouts from the start:
+
+- `actionTimeout: 15000` (15s for clicks, fills, etc.)
+- `navigationTimeout: 30000` (30s for page navigations)
+- Use `expect.toBeVisible({ timeout: 10000 })` for post-navigation assertions
+
 Example:
 
 ```ts
@@ -102,6 +109,9 @@ import { defineConfig, devices } from '@playwright/test';
 import { devices as replayDevices, replayReporter } from '@replayio/playwright';
 
 export default defineConfig({
+  // Replay Chromium is slower due to instrumentation — use generous timeouts
+  actionTimeout: 15000,
+  navigationTimeout: 30000,
   reporter: [
     replayReporter({
       apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY,
@@ -222,6 +232,10 @@ When testing the app after deployment, use the Replay browser to record the app 
   directory to resolve incorrectly without this flag. Example:
   `npx netlify dev --port 8888 --functions ./netlify/functions`
 
+- The Playwright `webServer` command should also include `--functions ./netlify/functions` when
+  using Netlify Functions, to ensure function endpoints resolve correctly during test runs.
+  Example: `npx netlify dev --port 8888 --functions ./netlify/functions`
+
 - After making code changes to Netlify Functions or frontend code during a testing session, ALWAYS
   restart the dev server before re-running tests. The dev server may cache old function bundles.
   Kill background processes with `pkill -f "netlify"` and `pkill -f "vite"` before restarting.
@@ -282,6 +296,9 @@ When testing the app after deployment, use the Replay browser to record the app 
   or fix a meaningful issue, commit those changes immediately even if other failures remain. An
   iteration that produces zero commits despite significant work (skill updates, code fixes,
   debugging progress) is wasted effort because the next iteration starts from scratch.
+- Before running deployment tests, verify that required environment variables (DATABASE_URL,
+  etc.) are set on the deployment target (e.g., Netlify). Missing env vars cause infrastructure
+  failures that waste a full test cycle. Use `netlify env:list` to check.
 - Before running tests, verify `NEON_PROJECT_ID` is set in the environment. The test script
   requires it for creating ephemeral Neon branches. The project ID for SalesCRM is
   `rough-lake-81841975` — set it with `export NEON_PROJECT_ID=rough-lake-81841975`.

@@ -58,6 +58,24 @@ A `fill()` call provides a value in the wrong format for the input type. For exa
 *Example*: `worker-2026-02-20T13-00-10-123Z.log` — TDP-HDR-01 failed with "Malformed value"
 on date input. PlaywrightSteps showed the fill step, Replay confirmed the input type.
 
+### Replay browser overhead (bulk timeouts on fresh builds)
+When multiple tests fail with timeouts in the first test run of a fresh build, and
+`PlaywrightSteps` shows actions completing but slowly (e.g., SettingsPage rendering at 25s+),
+the most likely cause is insufficient timeouts for Replay Chromium. The Replay browser adds
+instrumentation overhead that makes all operations ~2–3x slower than standard Chromium.
+
+**Diagnosis with Replay**: `DescribeComponent` shows components rendering close to the timeout
+limit (e.g., 25.7s vs 30s timeout). `PlaywrightSteps` shows no stuck steps — just slow ones.
+`Screenshot` confirms the UI rendered correctly but late.
+
+**Fix**: Increase `actionTimeout` to 15000ms+, `navigationTimeout` to 30000ms+, and use
+`expect.toBeVisible({ timeout: 10000 })` for post-navigation assertions. These should be
+set in `playwright.config.ts` from the start for any project using Replay Chromium.
+
+*Example*: `worker-2026-02-23T23-21-34.log` — 7 of 10 failures were timeouts caused by
+Replay browser overhead. DescribeComponent confirmed elements rendered close to the timeout
+limit. Fixed by increasing config timeouts.
+
 ### Browser-native validation blocking form submission
 A form has `<input type="email">` and the test fills an intentionally invalid email to test
 app-level validation. But the browser's native validation fires first, preventing
