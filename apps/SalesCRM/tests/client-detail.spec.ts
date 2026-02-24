@@ -910,7 +910,7 @@ test.describe('TasksSection', () => {
     }
   })
 
-  test('Clicking a task name navigates to the task detail page', async ({ page }) => {
+  test('Clicking a task name navigates to the Tasks List Page', async ({ page }) => {
     const client = await findClient(page.request, 'Acme Corp')
     await page.goto(`/clients/${client.id}`)
     await expect(page.getByTestId('tasks-section')).toBeVisible()
@@ -921,6 +921,23 @@ test.describe('TasksSection', () => {
     if (count > 0) {
       // Click the task name
       await taskItems.first().getByTestId('task-name').click()
+
+      // Should navigate to tasks page
+      await expect(page).toHaveURL(/\/tasks/)
+    }
+  })
+
+  test('Each task entry navigates to the Tasks List Page', async ({ page }) => {
+    const client = await findClient(page.request, 'Acme Corp')
+    await page.goto(`/clients/${client.id}`)
+    await expect(page.getByTestId('tasks-section')).toBeVisible()
+    await expect(page.getByTestId('tasks-list').or(page.getByTestId('tasks-empty'))).toBeVisible({ timeout: 10000 })
+
+    const taskItems = page.getByTestId('task-item')
+    const count = await taskItems.count()
+    if (count > 1) {
+      // Click the second task name to verify each task navigates correctly
+      await taskItems.nth(1).getByTestId('task-name').click()
 
       // Should navigate to tasks page
       await expect(page).toHaveURL(/\/tasks/)

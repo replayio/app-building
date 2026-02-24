@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolation: Add task click navigation test entry to ClientDetailPage TasksSection in docs/tests.md",
-        "FixViolation: Add timeline deal entity link navigation test entry to ClientDetailPage TimelineSection in docs/tests.md",
-        "RunTests: Verify tests pass after ClientDetailPage testSpec fixes",
-        "DocumentFix: Document the ClientDetailPage testSpec fixes"
-      ],
-      "timestamp": "2026-02-24T05:04:26.649Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "FixViolation: Build ClientDetailPage missing section components (ClientHeader with badges/tags, QuickActions with 4 buttons, SourceInfoSection, DealsSection, AttachmentsSection, PeopleSection, TimelineSection) and abstract all JSX into components",
         "FixViolation: Fix ClientTasksSection to include checkboxes, relative due dates, linked deal names, Unresolved tasks label, and data-testid attributes",
         "RunTests: Verify tests pass after ClientDetailPage component fixes",

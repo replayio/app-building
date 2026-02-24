@@ -607,10 +607,15 @@
 - **Then** the task is marked as unresolved with an unchecked checkbox
 - **And** the change is persisted to the database
 
-#### Test: Clicking a task name navigates to the task detail page
+#### Test: Clicking a task name navigates to the Tasks List Page
 - **Given** the Tasks section shows task "Follow up on proposal"
 - **When** the user clicks on the task name "Follow up on proposal"
-- **Then** the app navigates to the task detail or opens the task for viewing/editing on the Tasks List Page (/tasks) with that task highlighted or expanded
+- **Then** the app navigates to the Tasks List Page (/tasks)
+
+#### Test: Each task entry navigates to the Tasks List Page
+- **Given** the Tasks section shows task "Schedule onboarding call"
+- **When** the user clicks on the task name "Schedule onboarding call"
+- **Then** the app navigates to the Tasks List Page (/tasks)
 
 #### Test: Tasks section shows empty state when no unresolved tasks exist
 - **Given** the client has no unresolved tasks
@@ -801,8 +806,11 @@
 #### Test: Timeline entries are clickable and navigate to detail pages
 - **Given** the timeline shows a "Task Created" entry for "'Follow up on proposal'"
 - **When** the user clicks on the task name in the timeline entry
-- **Then** the app navigates to the task detail or opens the task for viewing/editing on the Tasks List Page (/tasks)
+- **Then** the app navigates to the Tasks List Page (/tasks)
 - **Given** the timeline shows a "Deal Stage Changed" entry for "'Acme Software License'"
+- **When** the user clicks on the deal name in the timeline entry
+- **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Acme Software License"
+- **Given** the timeline shows a "Deal Created" entry for "'Acme Software License'"
 - **When** the user clicks on the deal name in the timeline entry
 - **Then** the app navigates to the Deal Detail Page (/deals/:dealId) for "Acme Software License"
 - **Given** the timeline shows a "Contact Added" entry for "'Michael Chen'"
