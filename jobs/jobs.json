@@ -1,13 +1,25 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "CheckTestSpecContactsList: Check testSpec.md directive violations in ContactsListPage test entries",
-        "CheckComponentsContactsList: Check writeApp.md directive violations in ContactsListPage components",
-        "CheckTestsContactsList: Check writeTests.md directive violations in ContactsListPage tests"
+        "PlanPageContactsList: Decide on ContactsListPage components, add sections and test entries to docs/tests.md for ContactsListPage"
       ],
-      "timestamp": "2026-02-23T23:39:17.500Z"
+      "timestamp": "2026-02-24T00:41:02.769Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "PlanPageContactsList: Plan ContactsListPage components from docs/tests.md and add WriteComponent groups for ContactsListPage"
+      ],
+      "timestamp": "2026-02-24T00:40:58.490Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "PlanContactsListTests: Read docs/tests.md ContactsListPage section and add WriteTest groups for ContactsListPage"
+      ],
+      "timestamp": "2026-02-24T00:40:53.718Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
