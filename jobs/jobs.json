@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/reviewBugReport.md",
       "jobs": [
-        "ClassifyBug: Classify RowActionMenu",
-        "UpdateDirectives: Update directives for RowActionMenu",
-        "FinishBug: Mark RowActionMenu as reviewed"
-      ],
-      "timestamp": "2026-02-24T01:20:16.431Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/reviewBugReport.md",
-      "jobs": [
         "ClassifyBug: Classify SidebarNavigationLinks",
         "UpdateDirectives: Update directives for SidebarNavigationLinks",
         "FinishBug: Mark SidebarNavigationLinks as reviewed"
