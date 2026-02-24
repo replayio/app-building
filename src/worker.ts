@@ -2,10 +2,12 @@ import { ChildProcess, spawn } from "child_process";
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import type { Logger } from "./log";
+import { ensureBranch } from "./git";
 
 const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
-const TASKS_FILE = resolve(REPO_ROOT, "tasks/tasks.json");
+const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
+const TASKS_FILE = resolve(REPO_ROOT, `tasks/tasks-${CONTAINER_NAME}.json`);
 const MAX_TASK_RETRIES = 3;
 const DEBUG = !!process.env.DEBUG;
 const DEBUG_LOG = resolve(LOGS_DIR, "worker-debug.log");
@@ -19,7 +21,7 @@ function debug(msg: string): void {
 // --- Types ---
 
 export interface Task {
-  strategy: string;
+  skill: string;
   subtasks: string[];
   timestamp: string;
 }
@@ -181,7 +183,7 @@ function writeTasksFile(data: TasksFile): void {
 
 function tasksMatch(a: Task, b: Task): boolean {
   return (
-    a.strategy === b.strategy &&
+    a.skill === b.skill &&
     a.timestamp === b.timestamp &&
     a.subtasks.length === b.subtasks.length &&
     a.subtasks.every((j, i) => j === b.subtasks[i])
@@ -192,29 +194,29 @@ function completeTask(assignedTask: Task, log: Logger): void {
   const data = readTasksFile();
   const idx = data.tasks.findIndex((g) => tasksMatch(g, assignedTask));
   if (idx === -1) {
-    debug(`completeTask: assigned task not found in tasks.json (strategy=${assignedTask.strategy})`);
-    log(`Warning: assigned task not found in tasks.json, may have already been removed`);
+    debug(`completeTask: assigned task not found in task file (skill=${assignedTask.skill})`);
+    log(`Warning: assigned task not found in task file, may have already been removed`);
     return;
   }
   const [completed] = data.tasks.splice(idx, 1);
   writeTasksFile(data);
-  debug(`completeTask: removed task at index ${idx} (strategy=${completed.strategy})`);
-  log(`Dequeued task: ${completed.subtasks.length} subtask(s) (strategy: ${completed.strategy})`);
+  debug(`completeTask: removed task at index ${idx} (skill=${completed.skill})`);
+  log(`Dequeued task: ${completed.subtasks.length} subtask(s) (skill: ${completed.skill})`);
 }
 
 function buildTaskPrompt(task: Task): string {
   const subtaskList = task.subtasks.map((j, i) => `${i + 1}. ${j}`).join("\n");
   return (
-    `Read strategy file: ${task.strategy}\n` +
+    `Read skill file: ${task.skill}\n` +
     `\n` +
     `Subtasks to complete:\n${subtaskList}\n` +
     `\n` +
-    `Work through each subtask following the strategy. When you have completed ALL subtasks,\n` +
+    `Work through each subtask following the skill. When you have completed ALL subtasks,\n` +
     `output <DONE> to signal completion.\n` +
     `\n` +
     `When you need to add new tasks, use:\n` +
-    `- Add to front (default): npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2"\n` +
-    `- Add to end: npx tsx /repo/scripts/add-task.ts --strategy "<path>" --subtask "desc1" --subtask "desc2" --trailing`
+    `- Add to front (default): npx tsx /repo/scripts/add-task.ts --skill "<path>" --subtask "desc1" --subtask "desc2"\n` +
+    `- Add to end: npx tsx /repo/scripts/add-task.ts --skill "<path>" --subtask "desc1" --subtask "desc2" --trailing`
   );
 }
 
@@ -252,6 +254,7 @@ export async function processTasks(
   onEvent?: EventCallback,
   shouldStop?: () => boolean,
   commitFn?: (label: string) => void,
+  pushBranch?: string,
 ): Promise<{ tasksProcessed: number; totalCost: number }> {
   let tasksProcessed = 0;
   let totalCost = 0;
@@ -261,7 +264,7 @@ export async function processTasks(
     if (shouldStop?.()) break;
 
     const data = readTasksFile();
-    debug(`processTasks: tasks.json has ${data.tasks.length} task(s)`);
+    debug(`processTasks: task file has ${data.tasks.length} task(s)`);
     if (data.tasks.length === 0) {
       log("No tasks remaining.");
       break;
@@ -269,7 +272,7 @@ export async function processTasks(
 
     const assignedTask = { ...data.tasks[0], subtasks: [...data.tasks[0].subtasks] };
     const prompt = buildTaskPrompt(assignedTask);
-    log(`Running task: ${assignedTask.subtasks.length} subtask(s) (strategy: ${assignedTask.strategy})`);
+    log(`Running task: ${assignedTask.subtasks.length} subtask(s) (skill: ${assignedTask.skill})`);
     for (const subtask of assignedTask.subtasks) {
       log(`  - ${subtask}`);
     }
@@ -283,6 +286,15 @@ export async function processTasks(
       continue;
     }
 
+    // Restore push branch in case the task switched branches (e.g. mergeSkills)
+    if (pushBranch) {
+      try {
+        ensureBranch(pushBranch, log);
+      } catch (e: any) {
+        log(`Warning: failed to restore branch ${pushBranch}: ${e.message}`);
+      }
+    }
+
     if (response.cost_usd != null) {
       totalCost += response.cost_usd;
       log(`Cost: $${response.cost_usd.toFixed(4)} (total: $${totalCost.toFixed(4)})`);
@@ -292,7 +304,7 @@ export async function processTasks(
     }
 
     const done = response.doneSignaled;
-    debug(`processTasks: done=${done} assignedTask strategy=${assignedTask.strategy}`);
+    debug(`processTasks: done=${done} assignedTask skill=${assignedTask.skill}`);
 
     if (done) {
       log(`Task signaled <DONE>. Completing task.`);

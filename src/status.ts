@@ -1,6 +1,7 @@
 import { httpGet, type HttpOptions } from "./http-client";
-import { getRecentContainers, markStopped, RegistryEntry } from "./container-registry";
+import { getRecentContainers, RegistryEntry } from "./container-registry";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
+import { httpOptsFor, findAliveContainers } from "./container-utils";
 
 function stripTimestamp(rawLine: string): string {
   const tsMatch = rawLine.match(/^\[\d{4}-\d{2}-\d{2}T[\d:.]+Z\]\s*(.*)/);
@@ -27,29 +28,6 @@ function formatAge(isoDate: string): string {
   return `${days}d ago`;
 }
 
-function httpOptsFor(entry: RegistryEntry): HttpOptions {
-  if (entry.type === "remote" && entry.flyMachineId) {
-    return { headers: { "fly-force-instance-id": entry.flyMachineId } };
-  }
-  return {};
-}
-
-async function probeAlive(entry: RegistryEntry): Promise<boolean> {
-  try {
-    const headers: Record<string, string> = {};
-    if (entry.type === "remote" && entry.flyMachineId) {
-      headers["fly-force-instance-id"] = entry.flyMachineId;
-    }
-    const res = await fetch(`${entry.baseUrl}/status`, {
-      headers,
-      signal: AbortSignal.timeout(5000),
-    });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
 async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: HttpOptions = {}): Promise<void> {
   const status = await httpGet(`${baseUrl}/status`, httpOpts);
 
@@ -73,9 +51,11 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
   console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
 
-  const queueInfo = `${status.queueLength} queued, ${status.pendingTasks} tasks pending`;
+  const pendingTasks = status.pendingTasks ?? status.pendingGroups ?? 0;
+  const tasksProcessed = status.tasksProcessed ?? status.groupsProcessed ?? 0;
+  const queueInfo = `${status.queueLength} queued, ${pendingTasks} tasks pending`;
   console.log(`  ${DIM}Queue:${RESET}     ${queueInfo}`);
-  console.log(`  ${DIM}Progress:${RESET}  ${status.tasksProcessed} tasks processed, iteration ${status.iteration}`);
+  console.log(`  ${DIM}Progress:${RESET}  ${tasksProcessed} tasks processed, iteration ${status.iteration}`);
 
   if (status.totalCost > 0) {
     console.log(`  ${DIM}Cost:${RESET}      $${status.totalCost.toFixed(4)}`);
@@ -86,18 +66,20 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
   }
 }
 
-async function showRecentLogs(baseUrl: string, httpOpts: HttpOptions = {}, count = 20): Promise<void> {
+async function showRecentLogs(baseUrl: string, httpOpts: HttpOptions = {}, count?: number): Promise<void> {
+  const n = count ?? 20;
   const data = await httpGet(`${baseUrl}/logs?offset=0`, httpOpts);
   const lines: string[] = data.items;
-  const recent = lines.slice(-count);
+  const recent = n === Infinity ? lines : lines.slice(-n);
   console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
   displayFormattedLines(recent);
 }
 
-async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}): Promise<void> {
+async function tailHttpLogs(baseUrl: string, httpOpts: HttpOptions = {}, contextCount?: number): Promise<void> {
+  const count = contextCount ?? 20;
   const data = await httpGet(`${baseUrl}/logs?offset=0`, httpOpts);
   const lines: string[] = data.items;
-  const recent = lines.slice(-20);
+  const recent = count === Infinity ? lines : lines.slice(-count);
   console.log(`\n${BOLD}${CYAN}--- Recent output ---${RESET}`);
   displayFormattedLines(recent);
   let offset = data.nextOffset;
@@ -163,13 +145,13 @@ function showStoppedEntries(entries: RegistryEntry[]): void {
   }
 }
 
-async function showAllContainers(alive: RegistryEntry[]): Promise<void> {
+async function showAllContainers(alive: RegistryEntry[], contextCount?: number): Promise<void> {
   console.log(`\n${BOLD}${alive.length} running containers:${RESET}`);
   for (const entry of alive) {
     const opts = httpOptsFor(entry);
     try {
       await showHttpStatus(entry.baseUrl, entry.containerName, opts);
-      await showRecentLogs(entry.baseUrl, opts);
+      await showRecentLogs(entry.baseUrl, opts, contextCount);
     } catch {
       console.log(`\n  ${RED}UNREACHABLE${RESET}  ${DIM}(${entry.containerName})${RESET}`);
       console.log(`  ${DIM}Server:${RESET}    ${entry.baseUrl}`);
@@ -180,10 +162,60 @@ async function showAllContainers(alive: RegistryEntry[]): Promise<void> {
 
 // --- Main ---
 
+const KNOWN_FLAGS: Record<string, number> = {
+  "--tail": 1,     // consumes 1 arg
+  "--context": 1,
+  "--all": 0,      // no arg
+};
+
+function parseArgs(args: string[]): { tailTarget: string | null; contextCount: number | undefined } {
+  let tailTarget: string | null = null;
+  let contextCount: number | undefined;
+  let hasAll = false;
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (!arg.startsWith("--")) {
+      console.error(`${RED}Unexpected argument: ${arg}${RESET}`);
+      process.exit(1);
+    }
+    const consumed = KNOWN_FLAGS[arg];
+    if (consumed === undefined) {
+      console.error(`${RED}Unknown flag: ${arg}${RESET}`);
+      process.exit(1);
+    }
+    if (arg === "--tail") {
+      tailTarget = args[++i];
+      if (!tailTarget) {
+        console.error(`${RED}--tail requires a container name${RESET}`);
+        process.exit(1);
+      }
+    } else if (arg === "--context") {
+      const val = args[++i];
+      if (val === "all") {
+        contextCount = Infinity;
+      } else {
+        const n = parseInt(val, 10);
+        if (isNaN(n) || n < 1) {
+          console.error(`${RED}--context requires a positive number or "all"${RESET}`);
+          process.exit(1);
+        }
+        contextCount = n;
+      }
+    } else if (arg === "--all") {
+      hasAll = true;
+    }
+  }
+
+  if (hasAll && contextCount === undefined) {
+    contextCount = Infinity;
+  }
+
+  return { tailTarget, contextCount };
+}
+
 async function main(): Promise<void> {
-  const args = process.argv.slice(2);
-  const tailIdx = args.indexOf("--tail");
-  const tailTarget = tailIdx !== -1 ? args[tailIdx + 1] : null;
+  const { tailTarget, contextCount } = parseArgs(process.argv.slice(2));
 
   const entries = getRecentContainers();
 
@@ -201,25 +233,11 @@ async function main(): Promise<void> {
       console.error(`${RED}Cannot reach container "${tailTarget}" at ${entry.baseUrl} — may be stopped.${RESET}`);
       process.exit(1);
     }
-    await tailHttpLogs(entry.baseUrl, opts);
+    await tailHttpLogs(entry.baseUrl, opts, contextCount);
     return;
   }
 
-  // Probe all entries without stoppedAt to find alive containers
-  const candidates = entries.filter((e) => !e.stoppedAt);
-  const aliveResults = await Promise.all(
-    candidates.map(async (entry) => ({
-      entry,
-      alive: await probeAlive(entry),
-    })),
-  );
-
-  // Mark dead entries as stopped so they don't get probed again
-  for (const r of aliveResults) {
-    if (!r.alive) markStopped(r.entry.containerName);
-  }
-
-  const alive = aliveResults.filter((r) => r.alive).map((r) => r.entry);
+  const alive = await findAliveContainers();
 
   if (alive.length === 0) {
     showStoppedEntries(entries);
@@ -232,10 +250,10 @@ async function main(): Promise<void> {
       console.error(`${RED}Cannot reach agent at ${alive[0].baseUrl} — container may be stopped.${RESET}`);
       process.exit(1);
     }
-    await tailHttpLogs(alive[0].baseUrl, opts);
+    await tailHttpLogs(alive[0].baseUrl, opts, contextCount);
   } else {
     // Multiple alive — show status and recent logs for each, then exit
-    await showAllContainers(alive);
+    await showAllContainers(alive, contextCount);
   }
 }
 

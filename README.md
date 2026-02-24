@@ -11,9 +11,9 @@ Core ideas:
 
 * The agent runs within a docker container that clones the target repo and exposes an HTTP server for control.
 * The host communicates with the container via HTTP — sending prompts, polling events/logs, and managing lifecycle.
-* The agent builds by following a set of strategy documents with guides
+* The agent builds by following a set of skill documents with guides
   for breaking its work down into jobs and directives for performing those tasks.
-* The agent commits logs for it to review later and improve its strategies.
+* The agent commits logs for it to review later and improve its skills.
 * All code changes are committed and pushed back to the remote from inside the container.
 
 Containers can run locally or remotely.
@@ -60,13 +60,14 @@ Connects to the running container's HTTP API and shows state, revision, queue de
 
 ```bash
 npm run stop
+npm run stop -- <containerName>
 ```
 
-Sends an HTTP stop signal to the container. Errors if the container is unreachable.
+Sends an HTTP stop signal. Without arguments, finds and stops all running containers. Pass a container name to stop a specific one.
 
-## Strategies
+## Skills
 
-The provided strategy documents emphasize a structured approach for autonomously building
+The provided skill documents emphasize a structured approach for autonomously building
 high quality, well tested apps from the initial spec. During the initial app build
 it does the following:
 
@@ -75,13 +76,13 @@ it does the following:
 3. Gets all the tests to pass, deploys to production, and does further testing.
 
 The initial build will not come out perfect. The agent can followup with maintenance passes
-where it checks to make sure it closely followed the spec and strategy directives and fixes
-any issues it finds. It will also fix reported bugs and update the strategies to avoid
+where it checks to make sure it closely followed the spec and skill directives and fixes
+any issues it finds. It will also fix reported bugs and update the skills to avoid
 similar problems in the future.
 
 As long as each individual step the agent takes is within its capabilities (it can usually
 do it but not always) the agent will converge on an app that follows the initial spec
-and strategy directives.
+and skill directives.
 
 Key things to watch out for:
 

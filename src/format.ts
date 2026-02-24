@@ -23,8 +23,8 @@ export function formatLogLine(line: string): string | null {
   if (
     line.startsWith("Container:") ||
     line.startsWith("Target:") ||
-    line.startsWith("Strategy:") ||
-    line.startsWith("Strategies:") ||
+    line.startsWith("Skill:") ||
+    line.startsWith("Skills:") ||
     line.startsWith("Max iterations:") ||
     line.startsWith("Log file:")
   ) {

@@ -1,7 +1,7 @@
 /**
  * add-task: Adds a task to the queue.
  *
- * Usage: npx tsx /repo/scripts/add-task.ts --strategy <path> --subtask "desc1" --subtask "desc2" [--trailing]
+ * Usage: npx tsx /repo/scripts/add-task.ts --skill <path> --subtask "desc1" --subtask "desc2" [--trailing]
  *
  * By default, adds to the FRONT of the queue (next to be processed).
  * With --trailing, adds to the END of the queue.
@@ -13,10 +13,11 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { resolve } from "path";
 
-const TASKS_FILE = resolve("/repo/tasks/tasks.json");
+const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
+const TASKS_FILE = resolve(`/repo/tasks/tasks-${CONTAINER_NAME}.json`);
 
 interface Task {
-  strategy: string;
+  skill: string;
   subtasks: string[];
   timestamp: string;
 }
@@ -25,14 +26,14 @@ interface TasksFile {
   tasks: Task[];
 }
 
-function parseArgs(): { strategy: string; subtasks: string[]; trailing: boolean } {
+function parseArgs(): { skill: string; subtasks: string[]; trailing: boolean } {
   const args = process.argv.slice(2);
-  let strategy = "";
+  let skill = "";
   let trailing = false;
   const subtasks: string[] = [];
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--strategy" && i + 1 < args.length) {
-      strategy = args[i + 1];
+    if (args[i] === "--skill" && i + 1 < args.length) {
+      skill = args[i + 1];
       i++;
     } else if (args[i] === "--subtask" && i + 1 < args.length) {
       subtasks.push(args[i + 1]);
@@ -41,11 +42,11 @@ function parseArgs(): { strategy: string; subtasks: string[]; trailing: boolean 
       trailing = true;
     }
   }
-  if (!strategy || subtasks.length === 0) {
-    console.error('Usage: add-task --strategy "<path>" --subtask "desc1" [--subtask "desc2" ...] [--trailing]');
+  if (!skill || subtasks.length === 0) {
+    console.error('Usage: add-task --skill "<path>" --subtask "desc1" [--subtask "desc2" ...] [--trailing]');
     process.exit(1);
   }
-  return { strategy, subtasks, trailing };
+  return { skill, subtasks, trailing };
 }
 
 function readTasksFile(): TasksFile {
@@ -61,9 +62,9 @@ function writeTasksFile(data: TasksFile): void {
 }
 
 function main() {
-  const { strategy, subtasks, trailing } = parseArgs();
+  const { skill, subtasks, trailing } = parseArgs();
   const data = readTasksFile();
-  const newTask: Task = { strategy, subtasks, timestamp: new Date().toISOString() };
+  const newTask: Task = { skill, subtasks, timestamp: new Date().toISOString() };
 
   if (trailing) {
     data.tasks.push(newTask);
@@ -73,7 +74,7 @@ function main() {
 
   writeTasksFile(data);
   const position = trailing ? "end" : "front";
-  console.log(`Added task at ${position}: ${subtasks.length} subtask(s) (strategy: ${strategy})`);
+  console.log(`Added task at ${position}: ${subtasks.length} subtask(s) (skill: ${skill})`);
   for (const subtask of subtasks) {
     console.log(`  - ${subtask}`);
   }
