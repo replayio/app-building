@@ -26,6 +26,8 @@ npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" \
 
 - Tests must verify navigation targets precisely — assert the URL or page content after a click, not just that a click handler exists. A link going to the wrong page is a common bug that only surfaces if the test checks where it actually lands.
 
+- When a test spec entry implies a component is available across multiple pages (e.g., a sequential navigation flow that clicks sidebar links after navigating away from the starting page), tests must interact with that component on each page it should appear on. Never use `page.goto()` to navigate back to a known page as a workaround for a missing component — this masks the bug instead of catching it. If the spec says "click X in the sidebar" after navigating to a different page, the test must click the sidebar on that page, not reload the original page first.
+
 - For actions that produce side effects (e.g. history entries, timeline updates), write assertions that verify both the primary effect and the side effect. Also assert the side effect happens exactly once — duplicate entries from redundant API calls are a common bug.
 
 - Avoid using `getByText()` with common words that may appear as substrings in other elements (labels,

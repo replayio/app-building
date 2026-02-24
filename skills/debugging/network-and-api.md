@@ -25,6 +25,26 @@ the exact network requests and responses that occurred during the test run.
 
 5. **`ReadSource`** — Read the actual source code of API handlers to verify the logic.
 
+## Data-Flow Tracing with Logpoint + SearchSources
+
+When the UI renders but displays wrong values (wrong names, incorrect counts, stale data),
+use this sequence to trace data from API response through state management to component props:
+
+1. **`SearchSources`** — Search for the API handler or fetch call. Check hit counts to
+   confirm the code executed.
+2. **`Logpoint`** — Place logpoints on the API response handler to see the exact data
+   returned. Then place logpoints on state update dispatches and component render functions
+   to trace how the data flowed through the app.
+3. **`NetworkRequest`** — Verify the raw API response matches what the logpoints showed.
+   Discrepancies indicate a transformation bug between fetch and state update.
+
+This is especially useful for seed data mismatches where tests expect specific values
+(e.g., assignee names) that don't exist in the database.
+
+*Example*: `worker-…04-27-52.log` — "Action menu Edit opens task edit dialog" failed because
+tests expected fictional assignee names. SearchSources → Logpoint → NetworkRequest traced
+the mismatch from API response through to component rendering.
+
 ## Common Root Causes (from observed failures)
 
 ### Missing database columns (schema migration)
