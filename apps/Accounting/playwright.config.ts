@@ -25,7 +25,7 @@ export default defineConfig({
     navigationTimeout: 30000,
   },
   webServer: {
-    command: "npx netlify dev --port 8888",
+    command: "npx netlify dev --port 8888 --functions ./netlify/functions",
     port: 8888,
     timeout: 60000,
     reuseExistingServer: !process.env.CI,

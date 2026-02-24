@@ -3,9 +3,15 @@
     {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
-        "Unpack: Get all tests passing for Accounting"
+        "Fix: CategorySection shows correct category totals",
+        "Fix: AccountCard displays account name and balance",
+        "Fix: AccountCard three-dot menu opens actions",
+        "Fix: AccountCard click navigates to AccountDetailPage",
+        "Fix: AccountCard displays savings goal progress",
+        "Fix: AccountCard displays investment performance",
+        "Fix: AccountCard displays liability-specific information"
       ],
-      "timestamp": "2026-02-24T19:26:25.655Z"
+      "timestamp": "2026-02-24T20:22:41.482Z"
     },
     {
       "skill": "skills/tasks/deployment.md",
