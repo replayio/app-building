@@ -286,6 +286,160 @@ Components: TasksFilterBar, TaskCard, CreateTaskModal, TasksListContent
 
 ## TaskDetailPage (/tasks/:taskId)
 
+Components: TaskDetailHeader, TaskDetailInfo, TaskNotesSection, EditTaskModal
+
+### TaskDetailHeader
+
+#### Header displays task title prominently
+- **Initial state:** User navigates to /tasks/:taskId for a task titled "Finalize Q3 Marketing Plan".
+- **Expected:** The page header displays the task title "Finalize Q3 Marketing Plan" as the primary heading text. A back navigation element (arrow or "Back" link) is visible to return to the tasks list.
+
+#### Header displays priority badge with correct color
+- **Initial state:** TaskDetailPage is loaded for a task with "High" priority.
+- **Expected:** A priority badge is displayed near the task title showing the priority text. The badge is color-coded: "High" has a red/coral background, "Medium" has a yellow/amber background, "Low" has a green background, and "Normal" has a teal/blue-green background.
+
+#### Header displays status badge
+- **Initial state:** TaskDetailPage is loaded for an open task.
+- **Expected:** A status badge is displayed near the task title showing the current task status (e.g., "Open"). The badge is visually distinct from the priority badge (different color scheme). Completed tasks show a "Completed" badge and cancelled tasks show a "Cancelled" badge.
+
+#### Back button navigates to tasks list
+- **Initial state:** TaskDetailPage is loaded for any task.
+- **Action:** User clicks the back navigation element (back arrow or "Back" link).
+- **Expected:** The browser navigates to /tasks and the TasksListPage is displayed.
+
+#### Edit button opens EditTaskModal
+- **Initial state:** TaskDetailPage is loaded for an open task.
+- **Action:** User clicks the "Edit" button in the header.
+- **Expected:** The EditTaskModal opens with all current task data pre-populated in the form fields (title, description, due date, priority, client, assignee).
+
+#### Mark Complete button updates task status to completed
+- **Initial state:** TaskDetailPage is loaded for an open task associated with a client.
+- **Action:** User clicks the "Mark Complete" button.
+- **Expected:** The task status is updated to "completed" via the API. The status badge on the page changes to "Completed". The "Mark Complete" and "Cancel Task" action buttons are no longer available (since the task is already resolved). A timeline entry is created on the associated client's timeline recording the status change to completed. If any user is following the associated client, they receive a task-completed notification (if their notification preferences allow).
+
+#### Cancel Task button updates task status to cancelled
+- **Initial state:** TaskDetailPage is loaded for an open task associated with a client.
+- **Action:** User clicks the "Cancel Task" button.
+- **Expected:** The task status is updated to "cancelled" via the API. The status badge on the page changes to "Cancelled". The "Mark Complete" and "Cancel Task" action buttons are no longer available. A timeline entry is created on the associated client's timeline recording the status change to cancelled.
+
+#### Action buttons hidden when task is already completed
+- **Initial state:** TaskDetailPage is loaded for a task with status "completed".
+- **Expected:** The "Mark Complete" and "Cancel Task" buttons are not displayed. The "Edit" button may still be visible. The status badge shows "Completed".
+
+#### Action buttons hidden when task is already cancelled
+- **Initial state:** TaskDetailPage is loaded for a task with status "cancelled".
+- **Expected:** The "Mark Complete" and "Cancel Task" buttons are not displayed. The "Edit" button may still be visible. The status badge shows "Cancelled".
+
+### TaskDetailInfo
+
+#### Due date displayed with formatted date and time
+- **Initial state:** TaskDetailPage is loaded for a task with a due date of tomorrow at 2:00 PM.
+- **Expected:** The info section displays the due date in a readable format (e.g., "Due: Tomorrow, 2:00 PM"). Dates for today and tomorrow show relative labels with time, while other dates show the calendar date (e.g., "Oct 25, 2024, 3:00 PM"). A calendar or clock icon is shown next to the due date.
+
+#### Assignee displayed with avatar and name linking to user detail
+- **Initial state:** TaskDetailPage is loaded for a task assigned to "Sarah Johnson".
+- **Expected:** The info section displays the assignee's circular avatar image and full name "Sarah Johnson". The assignee name is a clickable link.
+- **Action:** User clicks the assignee name.
+- **Expected:** The browser navigates to /users/:userId for that user, displaying the UserDetailPage.
+
+#### Client displayed with name linking to client detail page
+- **Initial state:** TaskDetailPage is loaded for a task associated with client "Acme Corp".
+- **Expected:** The info section displays the associated client name "Acme Corp". The client name is a clickable link.
+- **Action:** User clicks the client name.
+- **Expected:** The browser navigates to /clients/:clientId for Acme Corp, displaying the ClientDetailPage.
+
+#### Deal displayed with name linking to deal detail page
+- **Initial state:** TaskDetailPage is loaded for a task associated with a deal "Enterprise License Renewal".
+- **Expected:** The info section displays the associated deal name "Enterprise License Renewal". The deal name is a clickable link.
+- **Action:** User clicks the deal name.
+- **Expected:** The browser navigates to /deals/:dealId for that deal, displaying the DealDetailPage.
+
+#### Optional fields show placeholder when not set
+- **Initial state:** TaskDetailPage is loaded for a task that has no associated deal and no assignee.
+- **Expected:** The deal field shows a placeholder such as "No deal" or "—" instead of a link. The assignee field shows a placeholder such as "Unassigned" or "—". The layout does not break or collapse; the fields still occupy their expected positions.
+
+#### Description text displayed
+- **Initial state:** TaskDetailPage is loaded for a task with description "Discuss renewal terms and finalize pricing for next quarter".
+- **Expected:** The info section displays the full description text "Discuss renewal terms and finalize pricing for next quarter" in a readable format below or alongside the metadata fields.
+
+#### Empty description shows appropriate placeholder
+- **Initial state:** TaskDetailPage is loaded for a task with no description.
+- **Expected:** The description area shows a placeholder such as "No description" or is gracefully omitted. The layout does not break.
+
+### TaskNotesSection
+
+#### Notes section displays existing notes in chronological order
+- **Initial state:** TaskDetailPage is loaded for a task that has three existing notes.
+- **Expected:** The notes section displays a heading (e.g., "Notes"). All three notes are listed in chronological order (oldest first or newest first). Each note displays the note content text, the author name (or "System" if no author), and a formatted timestamp showing when the note was created.
+
+#### Add note form with text input and submit button
+- **Initial state:** TaskDetailPage is loaded for any task.
+- **Expected:** The notes section includes an input area (text input or textarea) for writing a new note and a submit button (e.g., "Add Note" or a send icon). The input has placeholder text (e.g., "Add a note...").
+
+#### Submitting a note adds it to the list
+- **Initial state:** TaskDetailPage is loaded. The add note input is empty.
+- **Action:** User types "Called client to discuss timeline" into the note input and clicks the submit button.
+- **Expected:** The note is created via the POST API endpoint. The new note appears in the notes list with the content "Called client to discuss timeline", the current user as author (or "System" if unauthenticated), and the current timestamp. The input field is cleared after successful submission.
+
+#### Submit button disabled when note input is empty
+- **Initial state:** TaskDetailPage is loaded. The add note input is empty.
+- **Expected:** The submit button is disabled or visually indicates it cannot be clicked when the note input is empty. Clicking it does nothing.
+
+#### Delete button removes a note
+- **Initial state:** TaskDetailPage is loaded for a task with existing notes. Each note has a delete button (trash icon or "Delete" text).
+- **Action:** User clicks the delete button on a specific note.
+- **Expected:** The note is deleted via the DELETE API endpoint. The note is removed from the notes list. The remaining notes are still displayed in their original order. The total count of notes decreases by one.
+
+#### Empty state when no notes exist
+- **Initial state:** TaskDetailPage is loaded for a task with no notes.
+- **Expected:** The notes section displays an empty state message (e.g., "No notes yet" or "Add a note to get started"). The add note form is still visible and functional.
+
+### EditTaskModal
+
+#### Edit button opens modal with current task data pre-populated
+- **Initial state:** TaskDetailPage is loaded for a task titled "Finalize Q3 Marketing Plan" with priority "High", due date of Oct 25 at 3:00 PM, client "Acme Corp", and assignee "Sarah Johnson".
+- **Action:** User clicks the "Edit" button.
+- **Expected:** The EditTaskModal opens. The Title field contains "Finalize Q3 Marketing Plan". The Priority dropdown shows "High". The Due Date picker shows Oct 25 at 3:00 PM. The Client dropdown shows "Acme Corp". The Assignee dropdown shows "Sarah Johnson". The Description textarea contains any existing description text.
+
+#### EditTaskModal form fields
+- **Initial state:** EditTaskModal is open.
+- **Expected:** The modal contains a form with fields: Title (text input, required), Description (textarea), Due Date (date/time picker), Priority (dropdown with High, Medium, Normal, Low), Client (searchable FilterSelect dropdown populated from clients API), Assignee (searchable FilterSelect dropdown populated from users API). The modal has "Cancel" and "Save" buttons.
+
+#### EditTaskModal validates required title field
+- **Initial state:** EditTaskModal is open with task data pre-populated.
+- **Action:** User clears the Title field and clicks "Save".
+- **Expected:** A validation error is displayed for the Title field indicating it is required. The task is not updated. The modal remains open.
+
+#### EditTaskModal saves changes and updates the page
+- **Initial state:** EditTaskModal is open for a task with title "Finalize Q3 Marketing Plan" and priority "Medium".
+- **Action:** User changes the title to "Complete Q3 Marketing Plan" and changes the priority to "High". User clicks "Save".
+- **Expected:** The task is updated via the API. The modal closes. The TaskDetailPage header now shows the updated title "Complete Q3 Marketing Plan" and the priority badge shows "High" with a red/coral background. A timeline entry is created on the associated client's timeline recording the task update.
+
+#### EditTaskModal priority dropdown shows all priority levels
+- **Initial state:** EditTaskModal is open.
+- **Action:** User clicks the Priority dropdown.
+- **Expected:** A dropdown appears with four options: High, Medium, Normal, and Low. The current task's priority is pre-selected.
+
+#### EditTaskModal client dropdown is searchable FilterSelect
+- **Initial state:** EditTaskModal is open.
+- **Action:** User clicks the Client dropdown and types "Acme" into the search field.
+- **Expected:** The dropdown filters to show only clients whose names contain "Acme". The user can select a client from the filtered results to change the task's associated client.
+
+#### EditTaskModal assignee dropdown is searchable FilterSelect
+- **Initial state:** EditTaskModal is open.
+- **Action:** User clicks the Assignee dropdown and types "Sarah" into the search field.
+- **Expected:** The dropdown filters to show only team members whose names contain "Sarah". The user can select a team member from the filtered results to change the task's assignee.
+
+#### EditTaskModal cancel button closes without saving
+- **Initial state:** EditTaskModal is open with some fields modified.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The modal closes. No changes are saved. The TaskDetailPage still shows the original task data.
+
+#### EditTaskModal closes on overlay click
+- **Initial state:** EditTaskModal is open.
+- **Action:** User clicks the modal overlay (area outside the modal dialog).
+- **Expected:** The modal closes. No changes are saved.
+
 ## ContactsListPage (/contacts)
 
 ## SettingsPage (/settings)

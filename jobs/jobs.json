@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/build/testSpec.md",
-      "jobs": [
-        "PlanPageTaskDetail: Decide on TaskDetailPage components, add sections and test entries to docs/tests.md for TaskDetailPage"
-      ],
-      "timestamp": "2026-02-24T00:34:33.607Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
         "CheckTestSpecContactsList: Check testSpec.md directive violations in ContactsListPage test entries",
