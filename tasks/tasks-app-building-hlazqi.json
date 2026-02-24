@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "skill": "skills/review/analyzeLogs.md",
+      "subtasks": [
+        "Unpack: report-testFailures-sales-crm-3-review-3-20260224-175633 skills/review/reportTestFailures.md"
+      ],
+      "timestamp": "2026-02-24T17:56:39.133Z"
+    },
+    {
+      "skill": "skills/review/synthesizeReport.md",
+      "subtasks": [
+        "Synthesize: report-testFailures-sales-crm-3-review-3-20260224-175633 skills/review/reportTestFailures.md"
+      ],
+      "timestamp": "2026-02-24T17:56:39.876Z"
+    },
+    {
+      "skill": "skills/review/updateSkills.md",
+      "subtasks": [
+        "UpdateSkills: report-testFailures-sales-crm-3-review-3-20260224-175633"
+      ],
+      "timestamp": "2026-02-24T17:56:41.647Z"
+    },
+    {
+      "skill": "skills/review/mergeSkills.md",
+      "subtasks": [
+        "MergeSkills: report-testFailures-sales-crm-3-review-3-20260224-175633"
+      ],
+      "timestamp": "2026-02-24T17:56:42.372Z"
+    }
+  ]
+}
