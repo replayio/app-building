@@ -3,16 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationResetPasswordTestSpec: Write complete test entries for ResetPasswordPage in docs/tests.md covering all interactive elements (password input, confirm password input, submit button), form validation (password mismatch), success navigation to /clients, server error handling, network error handling, and loading state",
-        "FixViolationResetPasswordCode: Fix ResetPasswordPage component - change request body field from 'password' to 'newPassword' to match backend, remove broken auto-login logic (backend returns message not token), add data-testid to error message element, add JSX comments referencing test entries",
-        "FixViolationResetPasswordTests: Write Playwright tests for ResetPasswordPage matching the new test entries in docs/tests.md",
-        "RunTestsResetPassword: Verify tests pass after ResetPasswordPage fixes"
-      ],
-      "timestamp": "2026-02-24T01:31:33.223Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecConfirmEmail: Check testSpec.md directive violations in ConfirmEmailPage test entries",
         "CheckComponentsConfirmEmail: Check writeApp.md directive violations in ConfirmEmailPage components",
         "CheckTestsConfirmEmail: Check writeTests.md directive violations in ConfirmEmailPage tests"

@@ -1013,4 +1013,37 @@ Components: ForgotPasswordPage
 
 ## ResetPasswordPage (/auth/reset-password)
 
+Components: ResetPasswordPage
+
+### ResetPasswordPage
+
+#### Reset password form displays password input, confirm password input, and submit button
+- **Initial state:** User navigates to /auth/reset-password?token=sometoken.
+- **Expected:** The page displays a heading "Reset Password", a password input field with placeholder "New password", a confirm password input field with placeholder "Confirm password", and a "Reset Password" submit button.
+
+#### Submitting mismatched passwords shows validation error
+- **Initial state:** The reset password form is displayed with both password inputs visible.
+- **Action:** User enters "password123" in the password input and "password456" in the confirm password input, then clicks "Reset Password".
+- **Expected:** An error message "Passwords do not match" is displayed below the inputs. The form remains visible and the password is not reset.
+
+#### Successful password reset navigates to /clients
+- **Initial state:** The reset password form is displayed.
+- **Action:** User enters "newpassword123" in both the password input and confirm password input, then clicks "Reset Password".
+- **Expected:** The form submits the new password to the backend. On success, the browser navigates to /clients, displaying the ClientsListPage.
+
+#### Submit button shows loading state during submission
+- **Initial state:** The reset password form is displayed.
+- **Action:** User enters matching passwords and clicks "Reset Password".
+- **Expected:** While the request is in progress, the submit button text changes to "Resetting..." and the button is disabled to prevent duplicate submissions.
+
+#### Error message displayed on server error
+- **Initial state:** The reset password form is displayed.
+- **Action:** User enters matching passwords and clicks "Reset Password", but the server returns an error response (e.g., invalid or expired token).
+- **Expected:** An error message is displayed below the inputs (e.g., "Invalid or expired token"). The form remains visible so the user can retry.
+
+#### Error message displayed on network failure
+- **Initial state:** The reset password form is displayed.
+- **Action:** User enters matching passwords and clicks "Reset Password", but a network error occurs.
+- **Expected:** An error message "Network error" is displayed below the inputs. The form remains visible so the user can retry.
+
 ## ConfirmEmailPage (/auth/confirm-email)
