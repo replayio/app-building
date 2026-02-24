@@ -1,14 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/deployment.md",
-      "jobs": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-24T05:18:04.196Z"
-    },
-    {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
         "PlanPageClientDetailPage: Decide on components, add sections to docs/tests.md",
