@@ -3,14 +3,10 @@
     {
       "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "PlanPageDealsListPage: Decide on components for DealsListPage, add sections to docs/tests.md",
-        "PlanComponentDealsSummaryCards: Add test entries for summary cards (Total Active Deals, Pipeline Value, Won Q3 count+value, Lost Q3 count+value)",
-        "PlanComponentDealsTableView: Add test entries for Table View (columns: Deal Name, Client, Stage, Owner, Value, Close Date with sort arrow indicator, Status badges; row click; action menu; pagination)",
-        "PlanComponentDealsPipelineView: Add test entries for Pipeline View (stage columns, deal cards, drag-and-drop between columns updates stage via API)",
-        "PlanComponentDealsFiltersAndSearch: Add test entries for filter bar (Stage dropdown, Client dropdown searchable, Status dropdown, Date Range picker, Sort by dropdown, Search input) and custom FilterSelect dropdowns",
-        "PlanComponentCreateDealModal: Add test entries for Create New Deal button and modal (name, client searchable dropdown, value, stage, owner user dropdown, probability, expected close date, status, validation)"
+        "PlanComponentDealsImportExport: Add test entries for CSV import/export (import with column format table and template download, export to CSV)",
+        "PlanComponentDealsListContent: Add test entries for DealsListContent (view toggle Table/Pipeline, loading states, empty states, page heading, breadcrumb)"
       ],
-      "timestamp": "2026-02-23T21:26:50.446Z"
+      "timestamp": "2026-02-24T02:33:48.022Z"
     },
     {
       "strategy": "strategies/jobs/build/testSpec.md",

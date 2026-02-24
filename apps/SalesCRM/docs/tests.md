@@ -1172,6 +1172,345 @@ Components: PersonHeader, PersonRelationships, PersonContactHistory, PersonAssoc
 
 ## DealsListPage (/deals)
 
+Components: DealsSummaryCards, DealsTableView, DealsPipelineView, DealsFiltersAndSearch, CreateDealModal, DealsImportExport, DealsListContent
+
+### DealsSummaryCards
+
+#### Summary cards section displays four metric cards
+- **Initial state:** DealsListPage is loaded with deals in the database.
+- **Expected:** Four summary cards are displayed in a horizontal row at the top of the page below the page heading. Each card has an icon on the left, a label, and a prominent metric value. The four cards are: "Total Active Deals", "Pipeline Value", "Won (Q3)", and "Lost (Q3)".
+
+#### Total Active Deals card shows count of active deals
+- **Initial state:** DealsListPage is loaded with deals in various statuses (e.g., 124 active deals).
+- **Expected:** The first summary card displays the label "Total Active Deals:" with a document/clipboard icon on the left. The metric value shows the count of deals with active status (e.g., "124"). The count updates to reflect the actual number of active deals in the database.
+
+#### Pipeline Value card shows total value of active pipeline
+- **Initial state:** DealsListPage is loaded with deals that have monetary values.
+- **Expected:** The second summary card displays the label "Pipeline Value:" with a document/chart icon on the left. The metric value shows the total dollar value of all active pipeline deals formatted with appropriate abbreviations (e.g., "$4.5M" for $4,500,000). Values in thousands use "K" suffix, values in millions use "M" suffix.
+
+#### Won Q3 card shows count and value of won deals in Q3
+- **Initial state:** DealsListPage is loaded with deals including some with "Closed Won" stage in Q3.
+- **Expected:** The third summary card displays the label "Won (Q3):" with a trophy/award icon on the left. The metric value shows the count of won deals in Q3 followed by the total value in parentheses (e.g., "32 ($1.2M)"). The count and value reflect only deals that were won during the Q3 period.
+
+#### Lost Q3 card shows count and value of lost deals in Q3
+- **Initial state:** DealsListPage is loaded with deals including some with "Closed Lost" stage in Q3.
+- **Expected:** The fourth summary card displays the label "Lost (Q3):" with an icon on the left. The metric value shows the count of lost deals in Q3 followed by the total value in parentheses (e.g., "18 ($0.6M)"). The count and value reflect only deals that were lost during the Q3 period.
+
+#### Summary cards reflect filtered data
+- **Initial state:** DealsListPage is loaded with all deals visible and summary cards showing totals.
+- **Action:** User applies a filter (e.g., selects "Negotiation" in the Stage filter).
+- **Expected:** The summary cards update to reflect the filtered dataset. Total Active Deals count, Pipeline Value, Won Q3 count/value, and Lost Q3 count/value all recalculate based on the currently filtered deals.
+
+### DealsTableView
+
+#### Table displays correct column headers
+- **Initial state:** DealsListPage is loaded with deals, Table View is active.
+- **Expected:** The table displays eight column headers in order: Deal Name, Client, Stage, Owner, Value, Close Date, Status. An action menu column (no header text) is present as the last column. The headers are visible and clearly labeled.
+
+#### Table rows display deal name
+- **Initial state:** DealsListPage is loaded with deals (e.g., "Project Alpha Expansion", "Q4 Marketing Campaign", "Enterprise License Renewal").
+- **Expected:** Each table row displays the deal's name in the Deal Name column as the primary identifier. The name is prominent and clearly readable.
+
+#### Table rows display associated client name
+- **Initial state:** DealsListPage is loaded with deals associated with clients.
+- **Expected:** Each table row displays the associated client's name in the Client column (e.g., "Acme Corp.", "Beta Industries", "Gamma Solutions"). The client name corresponds to the client linked to the deal.
+
+#### Table rows display deal stage
+- **Initial state:** DealsListPage is loaded with deals in various stages.
+- **Expected:** Each table row displays the deal's current stage in the Stage column (e.g., "Proposal Sent", "Qualification", "Negotiation", "Discovery", "Closed Won"). The stage text reflects the deal's current position in the pipeline.
+
+#### Table rows display deal owner
+- **Initial state:** DealsListPage is loaded with deals assigned to different owners.
+- **Expected:** Each table row displays the deal owner's name in the Owner column (e.g., "Sarah K.", "Mike R.", "Emily L.", "Chris B."). The owner name is displayed in a short format (first name + last initial).
+
+#### Table rows display deal value formatted as currency
+- **Initial state:** DealsListPage is loaded with deals that have monetary values.
+- **Expected:** Each table row displays the deal's value in the Value column formatted as currency with a dollar sign and comma separators (e.g., "$250,000", "$75,000", "$450,000", "$180,000", "$120,000"). Values are right-aligned or consistently formatted.
+
+#### Table rows display close date
+- **Initial state:** DealsListPage is loaded with deals with expected close dates.
+- **Expected:** Each table row displays the deal's expected close date in the Close Date column in YYYY-MM-DD format (e.g., "2023-11-15", "2023-12-01", "2023-10-28", "2024-01-10").
+
+#### Close Date column header shows sort arrow indicator
+- **Initial state:** DealsListPage is loaded with deals, Table View is active. Sort is set to "Close Date (Newest)".
+- **Expected:** The Close Date column header displays a clickable sort button with a directional arrow icon. When sorted descending (newest first), it shows an ArrowDown icon. When sorted ascending (oldest first), it shows an ArrowUp icon. When not sorted by close date, it shows an ArrowUpDown icon. The sort button has a `data-sort-direction` attribute reflecting the current direction ("desc", "asc", or "none").
+
+#### Clicking Close Date header toggles sort direction
+- **Initial state:** DealsListPage is loaded with deals sorted by Close Date descending (newest first). The Close Date header shows an ArrowDown icon.
+- **Action:** User clicks the Close Date column header sort button.
+- **Expected:** The sort direction toggles to ascending (oldest first). The ArrowDown icon changes to ArrowUp. The table rows reorder so that the earliest close dates appear first. The `data-sort-direction` attribute updates to "asc".
+
+#### Table rows display status badges with correct colors
+- **Initial state:** DealsListPage is loaded with deals in different statuses.
+- **Expected:** Each table row displays the deal's status as a colored badge in the Status column. "On Track" has a blue/teal background, "Needs Attention" has an amber/yellow background, "At Risk" has a red/pink background, and "Won" has a green background. The badge text matches the deal's current status.
+
+#### Clicking a deal row navigates to DealDetailPage
+- **Initial state:** DealsListPage is loaded with deals in Table View.
+- **Action:** User clicks on a deal row (e.g., the row for "Project Alpha Expansion" with deal id 1).
+- **Expected:** The browser navigates to /deals/1 and the DealDetailPage is displayed showing the full details for that deal.
+
+#### Action menu icon displayed on each row
+- **Initial state:** DealsListPage is loaded with deals in Table View.
+- **Expected:** Each table row has a three-dot menu icon ("...") on the far right side. The icon is visible and clickable.
+
+#### Action menu shows options on click
+- **Initial state:** DealsListPage is loaded with deals in Table View.
+- **Action:** User clicks the three-dot menu icon ("...") on a deal row.
+- **Expected:** A dropdown menu appears with options including: "View Details", "Edit", and "Delete". The menu is positioned near the three-dot icon.
+
+#### Action menu View Details navigates to DealDetailPage
+- **Initial state:** The three-dot action menu is open on a deal row (e.g., deal id 2).
+- **Action:** User clicks "View Details" from the action menu.
+- **Expected:** The browser navigates to /deals/2 and the DealDetailPage is displayed.
+
+#### Action menu Edit opens edit functionality
+- **Initial state:** The three-dot action menu is open on a deal row.
+- **Action:** User clicks "Edit" from the action menu.
+- **Expected:** An edit modal or inline edit mode opens, allowing the user to modify the deal's details (name, client, stage, owner, value, probability, expected close date, status). The current deal data is pre-populated in the form fields.
+
+#### Action menu Delete removes the deal with confirmation
+- **Initial state:** The three-dot action menu is open on a deal row.
+- **Action:** User clicks "Delete" from the action menu.
+- **Expected:** A confirmation dialog appears asking the user to confirm deletion (e.g., "Are you sure you want to delete this deal?"). Upon confirmation, the deal is deleted via the API and the row is removed from the table. The summary cards update to reflect the removal. A timeline entry is created for the associated client recording the deal deletion.
+
+#### Action menu Delete cancellation keeps the deal
+- **Initial state:** The delete confirmation dialog is open for a deal.
+- **Action:** User clicks "Cancel" on the confirmation dialog.
+- **Expected:** The dialog closes. The deal remains in the table unchanged.
+
+#### Pagination displays current page and total pages
+- **Initial state:** DealsListPage is loaded with more deals than fit on one page (e.g., 15 deals per page, 130 total deals).
+- **Expected:** A pagination control is displayed below the table showing the current page number and total pages (e.g., "Page 1 of 9"). Navigation buttons (previous/next) are visible.
+
+#### Pagination next button loads next page
+- **Initial state:** DealsListPage is loaded showing page 1 of 9 in Table View.
+- **Action:** User clicks the next page button.
+- **Expected:** The table updates to show the next set of deals (page 2). The pagination indicator updates to "Page 2 of 9". The previous button becomes enabled. The table scrolls to the top.
+
+#### Pagination previous button loads previous page
+- **Initial state:** DealsListPage is showing page 2 of 9 in Table View.
+- **Action:** User clicks the previous page button.
+- **Expected:** The table updates to show the previous set of deals (page 1). The pagination indicator updates to "Page 1 of 9". The previous button becomes disabled (since it's the first page).
+
+#### Pagination previous button is disabled on first page
+- **Initial state:** DealsListPage is loaded showing page 1 of 9.
+- **Expected:** The previous page button is disabled/grayed out and not clickable. The next page button is enabled.
+
+#### Pagination next button is disabled on last page
+- **Initial state:** DealsListPage is showing the last page (e.g., page 9 of 9).
+- **Expected:** The next page button is disabled/grayed out and not clickable. The previous page button is enabled.
+
+### DealsPipelineView
+
+#### Pipeline view displays stage columns
+- **Initial state:** DealsListPage is loaded with deals, Pipeline View tab is selected.
+- **Expected:** The pipeline view displays one column for each deal stage (e.g., "Discovery", "Qualification", "Proposal Sent", "Negotiation", "Closed Won", "Closed Lost"). Each column has a header showing the stage name. Columns are arranged horizontally and scrollable if they exceed the viewport width.
+
+#### Pipeline view shows deal cards in correct stage columns
+- **Initial state:** DealsListPage is loaded with deals in various stages, Pipeline View is active.
+- **Expected:** Each deal appears as a card in the column corresponding to its current stage. For example, a deal in "Discovery" stage appears in the Discovery column, a deal in "Negotiation" appears in the Negotiation column. Each card shows the deal name, client name, and value.
+
+#### Deal cards display deal information
+- **Initial state:** DealsListPage is loaded with deals, Pipeline View is active.
+- **Expected:** Each deal card in the pipeline view displays the deal name prominently, the associated client name, and the deal value formatted as currency. The card may also show the deal owner and status badge.
+
+#### Deal cards are draggable
+- **Initial state:** DealsListPage is loaded with deals, Pipeline View is active.
+- **Expected:** Each deal card has a draggable appearance (e.g., grab cursor on hover). The user can click and hold a deal card to initiate a drag operation. A visual drag preview follows the cursor.
+
+#### Drag-and-drop deal card to different stage column updates stage via API
+- **Initial state:** DealsListPage is loaded with deals, Pipeline View is active. A deal (e.g., "Project Alpha Expansion") is in the "Proposal Sent" column.
+- **Action:** User drags the deal card from "Proposal Sent" and drops it onto the "Negotiation" column.
+- **Expected:** The deal card moves to the "Negotiation" column. The deal's stage is updated to "Negotiation" via an API call. A timeline entry is created on the associated client recording the stage change from "Proposal Sent" to "Negotiation". The summary cards update to reflect the change.
+
+#### Drag-and-drop to same column does not trigger update
+- **Initial state:** DealsListPage is loaded with deals, Pipeline View is active. A deal is in the "Discovery" column.
+- **Action:** User drags a deal card within the "Discovery" column and drops it back in the same column.
+- **Expected:** No API call is made. The deal remains in its current stage. No timeline entry is created.
+
+#### Pipeline view reflects filters
+- **Initial state:** DealsListPage is loaded with deals in Pipeline View with filters applied (e.g., Client filter set to "Acme Corp.").
+- **Expected:** Only deals matching the active filters appear as cards in the pipeline columns. Other deals are hidden. The stage column headers remain visible even if a column has no matching deals.
+
+#### Clicking a deal card in pipeline view navigates to DealDetailPage
+- **Initial state:** DealsListPage is loaded with deals, Pipeline View is active.
+- **Action:** User clicks on a deal card (e.g., "Enterprise License Renewal" with deal id 3).
+- **Expected:** The browser navigates to /deals/3 and the DealDetailPage is displayed showing the full details for that deal.
+
+### DealsFiltersAndSearch
+
+#### Filter bar displays all filter controls
+- **Initial state:** DealsListPage is loaded with deals.
+- **Expected:** A filter bar is displayed between the summary cards and the table/pipeline view. The filter bar contains six controls in order: Stage dropdown (labeled "Stage:"), Client dropdown (labeled "Client:"), Status dropdown (labeled "Status:"), Date Range picker (labeled "Date - Range"), Sort by dropdown (labeled "Sort by:"), and a Search input with a search icon. All controls use custom styled FilterSelect dropdown components (not native HTML select elements).
+
+#### Stage dropdown shows all stage options
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the Stage dropdown.
+- **Expected:** A custom FilterSelect dropdown opens showing stage options: "All Stages", "Discovery", "Qualification", "Proposal Sent", "Negotiation", "Closed Won", "Closed Lost". The default selected value is "All Stages".
+
+#### Stage dropdown filters deals by selected stage
+- **Initial state:** DealsListPage is loaded with deals in various stages. Stage dropdown shows "All Stages".
+- **Action:** User opens the Stage dropdown and selects "Negotiation".
+- **Expected:** The table/pipeline view updates to show only deals with "Negotiation" stage. The Stage dropdown displays "Negotiation" as the selected value. The summary cards update to reflect the filtered data. The pagination updates to reflect the new total count.
+
+#### Client dropdown is searchable with FilterSelect
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the Client dropdown.
+- **Expected:** A custom FilterSelect dropdown opens with "All Clients" as the default option. Because the client list may contain many entries, a search input field appears at the top of the dropdown that auto-focuses when opened. The dropdown lists all clients available in the system.
+
+#### Client dropdown search filters options as user types
+- **Initial state:** The Client FilterSelect dropdown is open showing all clients.
+- **Action:** User types "Acme" into the search input within the dropdown.
+- **Expected:** The dropdown options filter in real-time to show only clients whose names match the search text (e.g., "Acme Corp." appears, other clients are hidden). The filtering is case-insensitive.
+
+#### Client dropdown shows no matches message
+- **Initial state:** The Client FilterSelect dropdown is open.
+- **Action:** User types "XYZNONEXISTENT" into the search input.
+- **Expected:** The dropdown displays a "No matches" message indicating no clients match the search text. No selectable options are shown.
+
+#### Client dropdown filters deals by selected client
+- **Initial state:** DealsListPage is loaded with deals across multiple clients.
+- **Action:** User opens the Client dropdown and selects "Acme Corp.".
+- **Expected:** The table/pipeline view updates to show only deals associated with "Acme Corp.". The Client dropdown displays "Acme Corp." as the selected value. The summary cards and pagination update accordingly.
+
+#### Status dropdown shows status options
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the Status dropdown.
+- **Expected:** A custom FilterSelect dropdown opens showing status options including: "All", "Active", "On Track", "Needs Attention", "At Risk", "Won", "Lost". The default selected value is "Active".
+
+#### Status dropdown filters deals by selected status
+- **Initial state:** DealsListPage is loaded with deals in various statuses. Status dropdown shows "Active".
+- **Action:** User opens the Status dropdown and selects "At Risk".
+- **Expected:** The table/pipeline view updates to show only deals with "At Risk" status. The Status dropdown displays "At Risk" as the selected value. The summary cards and pagination update accordingly.
+
+#### Date Range picker allows selecting a date range
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the Date Range picker control.
+- **Expected:** A date range picker interface opens allowing the user to select a start date and an end date. The picker has calendar controls for navigating months. The control displays "Date - Range" as placeholder text when no range is selected.
+
+#### Date Range picker filters deals by close date range
+- **Initial state:** DealsListPage is loaded with deals with various close dates.
+- **Action:** User selects a date range in the Date Range picker (e.g., from 2023-10-01 to 2023-12-31).
+- **Expected:** The table/pipeline view updates to show only deals whose expected close date falls within the selected range. The Date Range picker displays the selected range. The summary cards and pagination update accordingly.
+
+#### Sort by dropdown shows sort options
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the Sort by dropdown.
+- **Expected:** A custom FilterSelect dropdown opens showing sort options including: "Close Date (Newest)", "Close Date (Oldest)", "Value (Highest)", "Value (Lowest)", "Deal Name (A-Z)", "Deal Name (Z-A)". The default selected value is "Close Date (Newest)".
+
+#### Sort by dropdown changes table sort order
+- **Initial state:** DealsListPage is loaded with deals sorted by Close Date (Newest).
+- **Action:** User opens the Sort by dropdown and selects "Value (Highest)".
+- **Expected:** The table rows reorder so that deals with the highest values appear first. The Sort by dropdown displays "Value (Highest)" as the selected value. The Close Date column sort arrow indicator updates to ArrowUpDown (since the sort is no longer by close date).
+
+#### Search input filters deals by name
+- **Initial state:** DealsListPage is loaded with deals in Table View.
+- **Action:** User types "Alpha" into the Search input field.
+- **Expected:** The table updates to show only deals whose name contains "Alpha" (e.g., "Project Alpha Expansion"). The search is case-insensitive and uses debounced input. The summary cards and pagination update to reflect the filtered results.
+
+#### Search input placeholder text
+- **Initial state:** DealsListPage is loaded. The Search input is empty.
+- **Expected:** The Search input displays placeholder text "Search deals..." with a search icon to the left of the input field.
+
+#### Search input clears and resets results
+- **Initial state:** DealsListPage is loaded with a search filter active (e.g., "Alpha" typed in the Search input, showing filtered results).
+- **Action:** User clears the Search input (backspaces or clears the field).
+- **Expected:** The table resets to show all deals (subject to other active filters). The summary cards and pagination update to reflect the full dataset.
+
+#### Multiple filters combine with AND logic
+- **Initial state:** DealsListPage is loaded with all deals visible.
+- **Action:** User selects "Negotiation" in the Stage dropdown and "Acme Corp." in the Client dropdown.
+- **Expected:** The table/pipeline view shows only deals that are both in the "Negotiation" stage AND associated with "Acme Corp.". Both filter dropdowns show their selected values. The summary cards and pagination reflect the combined filter results.
+
+#### Filters persist when switching between Table and Pipeline views
+- **Initial state:** DealsListPage is loaded in Table View with filters applied (e.g., Stage set to "Discovery").
+- **Action:** User switches to Pipeline View by clicking the "Pipeline View" tab.
+- **Expected:** The Pipeline View displays only deals matching the active filters. The filter bar retains the selected filter values. Switching back to Table View also retains the filters.
+
+### CreateDealModal
+
+#### Create New Deal button is displayed in page header
+- **Initial state:** DealsListPage is loaded.
+- **Expected:** A "Create New Deal" button is displayed in the upper right area of the page header, next to the "Deals List" heading. The button has a prominent style (e.g., blue/primary background with white text).
+
+#### Clicking Create New Deal button opens the modal
+- **Initial state:** DealsListPage is loaded.
+- **Action:** User clicks the "Create New Deal" button.
+- **Expected:** A modal dialog opens with the title "Create New Deal" (or similar). The modal overlays the page with a backdrop. The modal contains a form with all required fields for creating a deal.
+
+#### Modal displays all form fields
+- **Initial state:** The Create New Deal modal is open.
+- **Expected:** The modal form contains the following fields: Deal Name (text input), Client (searchable FilterSelect dropdown), Value (number/currency input), Stage (dropdown), Owner (FilterSelect dropdown populated from users API), Probability (number input, percentage), Expected Close Date (date picker), and Status (dropdown). Each field has a label. The form also has "Create" (or "Save") and "Cancel" buttons at the bottom.
+
+#### Client field is a searchable FilterSelect dropdown
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User clicks the Client field.
+- **Expected:** A searchable FilterSelect dropdown opens listing all clients in the system. A search input field appears at the top of the dropdown that auto-focuses. The user can type to filter client options. The dropdown is populated from the clients API.
+
+#### Client dropdown search filters client options
+- **Initial state:** The Client FilterSelect dropdown is open in the Create New Deal modal.
+- **Action:** User types "Beta" into the search field.
+- **Expected:** The dropdown options filter to show only clients matching "Beta" (e.g., "Beta Industries"). Non-matching clients are hidden. Filtering is case-insensitive.
+
+#### Owner field is a FilterSelect dropdown populated from users API
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User clicks the Owner field.
+- **Expected:** A FilterSelect dropdown opens listing all team members/users from the users API (e.g., "Sarah K.", "Mike R.", "Emily L.", "Chris B."). The user can select a deal owner from this list.
+
+#### Stage field shows pipeline stage options
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User clicks the Stage dropdown.
+- **Expected:** The dropdown shows pipeline stage options: "Discovery", "Qualification", "Proposal Sent", "Negotiation", "Closed Won", "Closed Lost".
+
+#### Status field shows status options
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User clicks the Status dropdown.
+- **Expected:** The dropdown shows status options: "On Track", "Needs Attention", "At Risk", "Won", "Lost".
+
+#### Probability field accepts percentage value
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User enters "75" in the Probability field.
+- **Expected:** The field accepts the numeric value representing a percentage (0-100). The field may display a "%" suffix or label.
+
+#### Expected Close Date field opens a date picker
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User clicks the Expected Close Date field.
+- **Expected:** A date picker interface opens allowing the user to select a date. The selected date is displayed in the field in a standard format (e.g., YYYY-MM-DD).
+
+#### Value field accepts currency amount
+- **Initial state:** The Create New Deal modal is open.
+- **Action:** User enters "250000" in the Value field.
+- **Expected:** The field accepts the numeric value. The field may display a "$" prefix or format the value as currency.
+
+#### Form validation requires deal name
+- **Initial state:** The Create New Deal modal is open. The Deal Name field is empty. Other fields are filled.
+- **Action:** User clicks "Create" without entering a deal name.
+- **Expected:** The form does not submit. A validation error message appears near the Deal Name field (e.g., "Deal name is required"). The modal remains open.
+
+#### Form validation requires client selection
+- **Initial state:** The Create New Deal modal is open. The Client field has no selection. Other required fields are filled.
+- **Action:** User clicks "Create" without selecting a client.
+- **Expected:** The form does not submit. A validation error message appears near the Client field (e.g., "Client is required"). The modal remains open.
+
+#### Successful deal creation adds deal to the list
+- **Initial state:** The Create New Deal modal is open with all fields filled (e.g., name: "New Strategic Partnership", client: "Acme Corp.", value: 500000, stage: "Discovery", owner: "Sarah K.", probability: 50, expected close date: 2024-03-15, status: "On Track").
+- **Action:** User clicks the "Create" button.
+- **Expected:** The deal is created via an API call. The modal closes. The deals table/pipeline view refreshes and shows the newly created deal. The summary cards update (e.g., Total Active Deals count increases by 1, Pipeline Value increases). A timeline entry is created on the associated client recording that the deal was created.
+
+#### Cancel button closes modal without creating a deal
+- **Initial state:** The Create New Deal modal is open with some fields filled.
+- **Action:** User clicks the "Cancel" button.
+- **Expected:** The modal closes. No deal is created. The deals list remains unchanged. Any data entered in the form is discarded.
+
+#### Closing modal via backdrop click discards form data
+- **Initial state:** The Create New Deal modal is open with some fields filled.
+- **Action:** User clicks the backdrop/overlay outside the modal.
+- **Expected:** The modal closes. No deal is created. The deals list remains unchanged.
+
+### DealsImportExport
+
+### DealsListContent
+
 ## DealDetailPage (/deals/:dealId)
 
 ## TasksListPage (/tasks)
