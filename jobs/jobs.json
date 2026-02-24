@@ -607,6 +607,55 @@
         "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
       "timestamp": "2026-02-24T02:06:17.930Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch1: Scan logs for test failures: logs/worker-2026-02-23T21-23-53-131Z.log, logs/worker-2026-02-23T21-24-26-863Z.log, logs/worker-2026-02-23T21-28-04-379Z.log, logs/worker-2026-02-23T21-29-55-400Z.log, logs/worker-2026-02-23T21-33-23-301Z.log, logs/worker-2026-02-23T21-44-35-894Z.log, logs/worker-2026-02-23T21-47-01-431Z.log, logs/worker-2026-02-23T21-48-11-643Z.log, logs/worker-2026-02-23T21-52-15-062Z.log, logs/worker-2026-02-23T21-56-18-073Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:15.988Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch2: Scan logs for test failures: logs/worker-2026-02-23T21-57-07-360Z.log, logs/worker-2026-02-23T22-07-19-188Z.log, logs/worker-2026-02-23T22-08-30-826Z.log, logs/worker-2026-02-23T23-21-34-717Z.log, logs/worker-2026-02-23T23-21-54-548Z.log, logs/worker-2026-02-23T23-30-52-104Z.log, logs/worker-2026-02-23T23-31-41-980Z.log, logs/worker-2026-02-23T23-33-26-257Z.log, logs/worker-2026-02-23T23-36-22-612Z.log, logs/worker-2026-02-23T23-38-26-261Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:21.938Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch3: Scan logs for test failures: logs/worker-2026-02-23T23-39-32-635Z.log, logs/worker-2026-02-23T23-45-10-276Z.log, logs/worker-2026-02-23T23-47-37-997Z.log, logs/worker-2026-02-23T23-52-26-219Z.log, logs/worker-2026-02-23T23-55-05-926Z.log, logs/worker-2026-02-23T23-59-30-104Z.log, logs/worker-2026-02-24T00-03-31-240Z.log, logs/worker-2026-02-24T00-07-14-882Z.log, logs/worker-2026-02-24T00-12-24-081Z.log, logs/worker-2026-02-24T00-16-19-326Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:24.199Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch4: Scan logs for test failures: logs/worker-2026-02-24T00-26-57-485Z.log, logs/worker-2026-02-24T00-31-03-274Z.log, logs/worker-2026-02-24T00-34-54-324Z.log, logs/worker-2026-02-24T00-37-28-543Z.log, logs/worker-2026-02-24T00-41-14-401Z.log, logs/worker-2026-02-24T00-43-19-139Z.log, logs/worker-2026-02-24T00-44-53-930Z.log, logs/worker-2026-02-24T00-49-14-604Z.log, logs/worker-2026-02-24T00-49-56-870Z.log, logs/worker-2026-02-24T00-53-16-585Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:26.556Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch5: Scan logs for test failures: logs/worker-2026-02-24T00-56-54-986Z.log, logs/worker-2026-02-24T00-59-41-563Z.log, logs/worker-2026-02-24T01-02-41-259Z.log, logs/worker-2026-02-24T01-05-00-438Z.log, logs/worker-2026-02-24T01-07-48-982Z.log, logs/worker-2026-02-24T01-21-29-522Z.log, logs/worker-2026-02-24T01-25-26-806Z.log, logs/worker-2026-02-24T01-29-03-881Z.log, logs/worker-2026-02-24T01-31-43-693Z.log, logs/worker-2026-02-24T01-34-43-840Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:33.915Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch6: Scan logs for test failures: logs/worker-2026-02-24T01-37-41-787Z.log, logs/worker-2026-02-24T01-38-52-832Z.log, logs/worker-2026-02-24T01-40-43-665Z.log, logs/worker-2026-02-24T01-51-45-967Z.log, logs/worker-2026-02-24T01-55-18-019Z.log, logs/worker-2026-02-24T01-56-16-526Z.log, logs/worker-2026-02-24T01-56-39-119Z.log, logs/worker-2026-02-24T01-56-59-203Z.log, logs/worker-2026-02-24T01-59-23-913Z.log, logs/worker-2026-02-24T01-59-46-849Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:37.415Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/testFailureReport.md",
+      "jobs": [
+        "ScanBatch7: Scan logs for test failures: logs/worker-2026-02-24T02-00-06-364Z.log, logs/worker-2026-02-24T02-01-24-371Z.log, logs/worker-2026-02-24T02-01-43-825Z.log, logs/worker-2026-02-24T02-02-02-224Z.log, logs/worker-2026-02-24T02-04-21-820Z.log, logs/worker-2026-02-24T02-04-42-865Z.log, logs/worker-2026-02-24T02-05-04-023Z.log, logs/worker-2026-02-24T02-06-26-586Z.log, logs/worker-2026-02-24T02-06-45-097Z.log, logs/worker-2026-02-24T02-07-03-313Z.log"
+      ],
+      "timestamp": "2026-02-24T17:49:40.451Z"
     }
   ]
 }
