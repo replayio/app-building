@@ -1,13 +1,6 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
-        "Unpack: Check directive compliance"
-      ],
-      "timestamp": "2026-02-23T21:23:37.632Z"
-    },
-    {
       "strategy": "strategies/jobs/maintain/polishApp.md",
       "jobs": [
         "Unpack: Polish app quality"
@@ -580,6 +573,103 @@
         "RunTestsAfterUsersListTestsFix: Run tests to verify UsersListPage Playwright tests pass"
       ],
       "timestamp": "2026-02-24T01:02:32.366Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecSidebarNav: Check testSpec.md directive violations in Sidebar Navigation test entries",
+        "CheckComponentsSidebarNav: Check writeApp.md directive violations in Sidebar Navigation components",
+        "CheckTestsSidebarNav: Check writeTests.md directive violations in Sidebar Navigation tests"
+      ],
+      "timestamp": "2026-02-24T02:01:05.898Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecTasksList: Check testSpec.md directive violations in TasksListPage test entries",
+        "CheckComponentsTasksList: Check writeApp.md directive violations in TasksListPage components",
+        "CheckTestsTasksList: Check writeTests.md directive violations in TasksListPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:07.131Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecTaskDetail: Check testSpec.md directive violations in TaskDetailPage test entries",
+        "CheckComponentsTaskDetail: Check writeApp.md directive violations in TaskDetailPage components",
+        "CheckTestsTaskDetail: Check writeTests.md directive violations in TaskDetailPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:08.180Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecContactsList: Check testSpec.md directive violations in ContactsListPage test entries",
+        "CheckComponentsContactsList: Check writeApp.md directive violations in ContactsListPage components",
+        "CheckTestsContactsList: Check writeTests.md directive violations in ContactsListPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:09.396Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecSettings: Check testSpec.md directive violations in SettingsPage test entries",
+        "CheckComponentsSettings: Check writeApp.md directive violations in SettingsPage components",
+        "CheckTestsSettings: Check writeTests.md directive violations in SettingsPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:10.567Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecUsersList: Check testSpec.md directive violations in UsersListPage test entries",
+        "CheckComponentsUsersList: Check writeApp.md directive violations in UsersListPage components",
+        "CheckTestsUsersList: Check writeTests.md directive violations in UsersListPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:11.802Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecUserDetail: Check testSpec.md directive violations in UserDetailPage test entries",
+        "CheckComponentsUserDetail: Check writeApp.md directive violations in UserDetailPage components",
+        "CheckTestsUserDetail: Check writeTests.md directive violations in UserDetailPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:12.990Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecForgotPassword: Check testSpec.md directive violations in ForgotPasswordPage test entries",
+        "CheckComponentsForgotPassword: Check writeApp.md directive violations in ForgotPasswordPage components",
+        "CheckTestsForgotPassword: Check writeTests.md directive violations in ForgotPasswordPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:14.171Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecResetPassword: Check testSpec.md directive violations in ResetPasswordPage test entries",
+        "CheckComponentsResetPassword: Check writeApp.md directive violations in ResetPasswordPage components",
+        "CheckTestsResetPassword: Check writeTests.md directive violations in ResetPasswordPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:15.317Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckTestSpecConfirmEmail: Check testSpec.md directive violations in ConfirmEmailPage test entries",
+        "CheckComponentsConfirmEmail: Check writeApp.md directive violations in ConfirmEmailPage components",
+        "CheckTestsConfirmEmail: Check writeTests.md directive violations in ConfirmEmailPage tests"
+      ],
+      "timestamp": "2026-02-24T02:01:16.623Z"
+    },
+    {
+      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "jobs": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-24T02:01:17.626Z"
     }
   ]
 }
