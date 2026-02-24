@@ -3,9 +3,14 @@
     {
       "strategy": "strategies/jobs/build/writeApp.md",
       "jobs": [
-        "PlanPageContactsList: Plan ContactsListPage components from docs/tests.md and add WriteComponent groups for ContactsListPage"
+        "WriteBackendIndividuals: Write the individuals Netlify function with GET list (search, pagination, enriched client names), GET detail, POST create, PUT update, DELETE, POST bulk-import, and GET export endpoints",
+        "WriteComponentContactsSearchBar: Write the ContactsSearchBar component",
+        "WriteComponentContactsTable: Write the ContactsTable component",
+        "WriteComponentCreateContactModal: Write the CreateContactModal component",
+        "WriteComponentContactsListContent: Write the ContactsListContent component with pagination and CSV import/export",
+        "WritePageContactsList: Write the ContactsListPage page itself"
       ],
-      "timestamp": "2026-02-24T00:40:58.490Z"
+      "timestamp": "2026-02-24T00:44:45.059Z"
     },
     {
       "strategy": "strategies/jobs/build/writeTests.md",
