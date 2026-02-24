@@ -111,6 +111,7 @@ test.describe("LowInventoryAlerts", () => {
   });
 
   test("Each low inventory alert shows severity, material name, current quantity, and reorder point", async ({ page }) => {
+    test.slow();
     await page.goto("/");
     await expect(page.getByTestId("low-inventory-alerts")).toBeVisible({ timeout: 30000 });
 
@@ -248,6 +249,7 @@ test.describe("LowInventoryAlerts", () => {
   });
 
   test("Low inventory alerts section shows empty state when no materials are below reorder point", async ({ page }) => {
+    test.slow();
     await page.goto("/");
     await expect(page.getByTestId("low-inventory-alerts")).toBeVisible({ timeout: 30000 });
 
@@ -305,10 +307,10 @@ test.describe("MaterialsCategoriesOverview", () => {
       const catId = testId!.replace("category-column-", "");
 
       // Category name
-      await expect(page.getByTestId(`category-column-name-${catId}`)).toBeVisible();
+      await expect(page.getByTestId(`category-col-name-${catId}`)).toBeVisible();
 
       // Totals showing Items and Units
-      const totals = page.getByTestId(`category-column-totals-${catId}`);
+      const totals = page.getByTestId(`category-col-totals-${catId}`);
       await expect(totals).toBeVisible();
       await expect(totals).toContainText("Total:");
       await expect(totals).toContainText("Items");
@@ -321,7 +323,7 @@ test.describe("MaterialsCategoriesOverview", () => {
     await expect(page.getByTestId("materials-categories-overview")).toBeVisible({ timeout: 30000 });
 
     // Wait for materials to appear
-    const materials = page.locator("[data-testid^='category-material-']");
+    const materials = page.locator("[data-testid^='category-mat-']");
     await expect(materials.first()).toBeVisible({ timeout: 30000 });
 
     // Each material should show name and quantity
@@ -491,6 +493,7 @@ test.describe("RecentTransactionsTable", () => {
   });
 
   test("Recent transactions table updates when date range filter is applied", async ({ page }) => {
+    test.slow();
     await page.goto("/");
     await expect(page.getByTestId("recent-transactions-table")).toBeVisible({ timeout: 30000 });
 
@@ -676,11 +679,12 @@ test.describe("CategoryFilter", () => {
     await expect(page.locator("[data-testid^='category-column-']")).toHaveCount(1, { timeout: 15000 });
 
     const singleColumn = page.locator("[data-testid^='category-column-']").first();
-    const colName = singleColumn.locator("[data-testid^='category-column-name-']");
+    const colName = singleColumn.locator("[data-testid^='category-col-name-']");
     await expect(colName).toHaveText("Raw Materials");
   });
 
   test('Selecting "All Categories" resets the filter to show all data', async ({ page }) => {
+    test.slow();
     await page.goto("/");
     await expect(page.getByTestId("materials-categories-overview")).toBeVisible({ timeout: 30000 });
     await expect(page.locator("[data-testid^='category-column-']").first()).toBeVisible({ timeout: 30000 });

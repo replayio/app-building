@@ -8,7 +8,8 @@ interface DateRangeFilterProps {
 
 function formatDisplayDate(dateStr: string): string {
   if (!dateStr) return "";
-  const d = new Date(dateStr + "T00:00:00");
+  const dateOnly = dateStr.split("T")[0];
+  const d = new Date(dateOnly + "T00:00:00");
   return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 

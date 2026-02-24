@@ -7,6 +7,7 @@ interface DashboardState {
   recentTransactions: Transaction[];
   loading: boolean;
   error: string | null;
+  dismissedMaterialIds: string[];
 }
 
 const initialState: DashboardState = {
@@ -15,6 +16,7 @@ const initialState: DashboardState = {
   recentTransactions: [],
   loading: false,
   error: null,
+  dismissedMaterialIds: [],
 };
 
 export const fetchDashboardData = createAsyncThunk(
@@ -56,10 +58,13 @@ const dashboardSlice = createSlice({
     builder
       .addCase(fetchDashboardData.pending, (state) => {
         if (state.categoryOverviews.length === 0) state.loading = true;
+        state.recentTransactions = [];
         state.error = null;
       })
       .addCase(fetchDashboardData.fulfilled, (state, action) => {
-        state.alerts = action.payload.alerts;
+        state.alerts = action.payload.alerts.filter(
+          (a) => !state.dismissedMaterialIds.includes(a.material_id)
+        );
         state.categoryOverviews = action.payload.categoryOverviews;
         state.recentTransactions = action.payload.recentTransactions;
         state.loading = false;
@@ -69,6 +74,7 @@ const dashboardSlice = createSlice({
         state.error = action.error.message ?? "Failed to fetch dashboard data";
       })
       .addCase(dismissAlert.fulfilled, (state, action) => {
+        state.dismissedMaterialIds.push(action.payload);
         state.alerts = state.alerts.filter((a) => a.material_id !== action.payload);
       });
   },

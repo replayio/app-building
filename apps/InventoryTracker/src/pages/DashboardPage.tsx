@@ -37,7 +37,7 @@ export function DashboardPage() {
   }, [loadData]);
 
   const handleDismiss = (materialId: string) => {
-    dispatch(dismissAlert(materialId));
+    dispatch(dismissAlert(materialId)).then(() => loadData());
   };
 
   const handleDateRangeChange = (from: string, to: string) => {

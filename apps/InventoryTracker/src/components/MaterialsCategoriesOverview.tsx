@@ -43,11 +43,11 @@ export function MaterialsCategoriesOverview({ categoryOverviews }: MaterialsCate
                 padding: 16,
               }}
             >
-              <div data-testid={`category-column-name-${cat.category_id}`} style={{ fontWeight: 600, marginBottom: 4 }}>
+              <div data-testid={`category-col-name-${cat.category_id}`} style={{ fontWeight: 600, marginBottom: 4 }}>
                 {cat.category_name}
               </div>
               <div
-                data-testid={`category-column-totals-${cat.category_id}`}
+                data-testid={`category-col-totals-${cat.category_id}`}
                 style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 12 }}
               >
                 (Total: {cat.total_items.toLocaleString()} Items, {cat.total_quantity.toLocaleString()} Units)
@@ -56,7 +56,7 @@ export function MaterialsCategoriesOverview({ categoryOverviews }: MaterialsCate
                 {cat.materials.map((material) => (
                   <div
                     key={material.id}
-                    data-testid={`category-material-${material.id}`}
+                    data-testid={`category-mat-${material.id}`}
                     style={{ fontSize: 13 }}
                   >
                     <a

@@ -1,0 +1,167 @@
+
+> inventory-tracker@1.0.0 test
+> tsx scripts/test.ts tests/dashboard.spec.ts
+
+
+--- Killing stale processes ---
+
+--- Cleaning up stale test branches ---
+
+--- Creating ephemeral branch: test-worker-1771971002000-uucgij ---
+Branch created: br-dry-cherry-aizejyws
+
+--- Initializing schema on test branch ---
+Schema initialized.
+
+--- Seeding test data ---
+Seed data inserted successfully.
+
+--- Removing stale recordings ---
+
+--- Running Playwright: tests/dashboard.spec.ts ---
+[2m[WebServer] [22m[33m⠋[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠙[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠹[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[32m√[39m Vite dev server ready on port 5173
+
+Running 35 tests using 2 workers
+
+[2m[WebServer] [22m(node:20520) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+[2m[WebServer] [22m(Use `node --trace-deprecation ...` to show where the warning was created)
+  ✓   2 tests/dashboard.spec.ts:33:3 › NavigationHeader › Navigation link for Accounts navigates to AccountsPage (1.8s)
+  ✓   1 tests/dashboard.spec.ts:4:3 › NavigationHeader › Navigation header displays app branding and all navigation links (2.4s)
+  ✓   3 tests/dashboard.spec.ts:43:3 › NavigationHeader › Navigation link for Materials navigates to MaterialsPage (1.2s)
+  ✓   4 tests/dashboard.spec.ts:53:3 › NavigationHeader › Navigation link for Batches navigates to batch listing (1.1s)
+  ✓   5 tests/dashboard.spec.ts:63:3 › NavigationHeader › Navigation link for Transactions navigates to TransactionsPage (1.2s)
+  ✓   6 tests/dashboard.spec.ts:73:3 › NavigationHeader › Navigation link for Settings navigates to Settings page (1.1s)
+  ✓   7 tests/dashboard.spec.ts:83:3 › NavigationHeader › Active navigation link is visually highlighted for the current page (1.2s)
+  ✓   8 tests/dashboard.spec.ts:103:3 › LowInventoryAlerts › Low inventory alerts section displays with heading and warning icon (1.9s)
+  ✓   9 tests/dashboard.spec.ts:282:3 › MaterialsCategoriesOverview › Materials categories overview section displays with heading and icon (1.9s)
+  ✓  10 tests/dashboard.spec.ts:113:3 › LowInventoryAlerts › Each low inventory alert shows severity, material name, current quantity, and reorder point (11.8s)
+  ✓  11 tests/dashboard.spec.ts:291:3 › MaterialsCategoriesOverview › Each category column shows category name, total items count, and total units count (11.2s)
+  ✓  12 tests/dashboard.spec.ts:173:3 › LowInventoryAlerts › Low inventory alert View Details link navigates to material detail page (15.4s)
+  ✓  13 tests/dashboard.spec.ts:320:3 › MaterialsCategoriesOverview › Each category shows a sample of materials with names and quantities (20.6s)
+  ✓  14 tests/dashboard.spec.ts:193:3 › LowInventoryAlerts › Low inventory alert Dismiss button removes the alert (22.5s)
+  ✓  15 tests/dashboard.spec.ts:343:3 › MaterialsCategoriesOverview › Clicking a material name navigates to the material detail page (17.9s)
+  ✓  16 tests/dashboard.spec.ts:226:3 › LowInventoryAlerts › Low inventory alert Reorder button opens new transaction pre-filled for reorder (17.5s)
+  ✓  17 tests/dashboard.spec.ts:364:3 › MaterialsCategoriesOverview › View All Categories link navigates to MaterialsPage (15.5s)
+  ✓  19 tests/dashboard.spec.ts:374:3 › MaterialsCategoriesOverview › Materials categories overview updates when category filter is applied (23.8s)
+  ✓  18 tests/dashboard.spec.ts:250:3 › LowInventoryAlerts › Low inventory alerts section shows empty state when no materials are below reorder point (45.8s)
+  ✓  20 tests/dashboard.spec.ts:399:3 › RecentTransactionsTable › Recent transactions table displays with correct column headers (38.9s)
+  ✓  21 tests/dashboard.spec.ts:418:3 › RecentTransactionsTable › Recent transactions table shows transaction rows with correct data (32.6s)
+  ✓  23 tests/dashboard.spec.ts:465:3 › RecentTransactionsTable › View Full Details link navigates to TransactionDetailPage (35.9s)
+  ✓  22 tests/dashboard.spec.ts:437:3 › RecentTransactionsTable › Recent transactions table shows multiple transactions in reverse chronological order (50.4s)
+  ✓  24 tests/dashboard.spec.ts:484:3 › RecentTransactionsTable › View All Transactions link navigates to TransactionsPage (37.5s)
+  ✘  25 tests/dashboard.spec.ts:494:3 › RecentTransactionsTable › Recent transactions table updates when date range filter is applied (1.0m)
+  ✓  26 tests/dashboard.spec.ts:532:3 › RecentTransactionsTable › Recent transactions table shows empty state when no transactions exist (39.5s)
+  ✓  27 tests/dashboard.spec.ts:566:3 › DateRangeFilter › Clicking the date range picker opens a calendar to select dates (25.4s)
+  ✓  28 tests/dashboard.spec.ts:551:3 › DateRangeFilter › Date range filter displays with label, date range, and calendar icon (28.4s)
+  ✓  30 tests/dashboard.spec.ts:616:3 › CategoryFilter › Category filter displays as a dropdown with "All Categories" default (33.2s)
+  ✓  29 tests/dashboard.spec.ts:582:3 › DateRangeFilter › Selecting a new date range updates all dashboard widgets (1.2m)
+  ✓  31 tests/dashboard.spec.ts:629:3 › CategoryFilter › Opening the category filter dropdown lists all material categories (37.7s)
+  ✓  32 tests/dashboard.spec.ts:659:3 › CategoryFilter › Selecting a category filters dashboard content to that category (52.5s)
+  ✓  34 tests/dashboard.spec.ts:715:3 › NewTransactionButton › New Transaction button is displayed prominently with plus icon (34.9s)
+  ✓  33 tests/dashboard.spec.ts:684:3 › CategoryFilter › Selecting "All Categories" resets the filter to show all data (1.2m)
+  ✓  35 tests/dashboard.spec.ts:731:3 › NewTransactionButton › Clicking New Transaction button navigates to NewTransactionPage (28.1s)
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+
+  1) tests/dashboard.spec.ts:494:3 › RecentTransactionsTable › Recent transactions table updates when date range filter is applied 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.textContent: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for getByTestId('recent-transaction-date-bad2db28-a671-4315-8fcb-31cfd3655c4e')[22m
+
+
+      524 |       const rowTestId = await row.getAttribute("data-testid");
+      525 |       const txnId = rowTestId!.replace("recent-transaction-row-", "");
+    > 526 |       const dateText = await page.getByTestId(`recent-transaction-date-${txnId}`).textContent();
+          |                                                                                   ^
+      527 |       expect(dateText).toContain("2026");
+      528 |       expect(dateText).toContain("Jan");
+      529 |     }
+        at /repo/apps/InventoryTracker/tests/dashboard.spec.ts:526:83
+
+    Error Context: test-results/dashboard-RecentTransactio-3056b-ate-range-filter-is-applied/error-context.md
+
+  1 failed
+    tests/dashboard.spec.ts:494:3 › RecentTransactionsTable › Recent transactions table updates when date range filter is applied 
+  34 passed (8.8m)
+
+Playwright exited with code 1
+
+=== REPLAY RECORDINGS METADATA ===
+{"id":"2ad6619f-c5bd-4b60-a5e4-d2691a26adaa","testResult":"passed"}
+{"id":"6d34cbf9-db37-4014-9def-ee19bc00535e","testResult":"passed"}
+{"id":"9afdb658-4ac2-4dc0-97ac-8d0dc2069cc2","testResult":"passed"}
+{"id":"8d823d6b-0033-4f71-b3b4-4080903c3d16","testResult":"passed"}
+{"id":"102ac6d9-3f6a-49a9-a238-ada121b0be95","testResult":"passed"}
+{"id":"9e3e7f53-c75f-427a-9bad-066b13c55fc3","testResult":"passed"}
+{"id":"5236f506-f2b1-4a4d-b264-b779b314ce0c","testResult":"passed"}
+{"id":"8ff3563d-dcd8-4e86-ba14-fcfe5c9e6106","testResult":"passed"}
+{"id":"945dd46a-2a27-402c-bed7-0f36e057ad1a","testResult":"passed"}
+{"id":"964f9e19-b6d0-4556-931c-3563a5cd4051","testResult":"passed"}
+{"id":"0ad5ea95-7118-4e45-b06b-a91c2276530f","testResult":"passed"}
+{"id":"d2fa99d9-06ef-40db-9c98-9f336e9f12df","testResult":"passed"}
+{"id":"60a11d8f-a706-4495-9366-cf5820ee1ea1","testResult":"passed"}
+{"id":"b0e1da42-2af0-46fe-a7c1-2906f1400f06","testResult":"passed"}
+{"id":"fe6f998f-4187-4cfc-8977-cc96e2182f1c","testResult":"passed"}
+{"id":"040c8a54-1c87-41a2-bb18-186ee11d7505","testResult":"passed"}
+{"id":"456a19f2-737a-409a-86cf-903e5eaec7e4","testResult":"passed"}
+{"id":"b628742a-75e7-452b-bc8c-197193174f43","testResult":"passed"}
+{"id":"00fa005f-bee7-40cf-a3f0-1f4cb0926d8e","testResult":"passed"}
+{"id":"b5b5cf44-dc2f-49bf-90c7-ecc1d7a34632","testResult":"passed"}
+{"id":"f234594a-ee1b-42ec-aa26-a54f6f5a8231","testResult":"passed"}
+{"id":"ef754679-795b-4fa7-a362-e9954d7059e3","testResult":"passed"}
+{"id":"116c24f5-2e19-4116-a2a8-d36a109d73f0","testResult":"passed"}
+{"id":"57c2f882-f966-4ccb-8bfc-945d337ff4e0","testResult":"passed"}
+{"id":"f622bfcc-1bea-498f-b4b9-9a8324981f6a","testResult":"timedOut"}
+{"id":"f92506cf-807a-48e5-b32d-6c964ef210d0","testResult":"passed"}
+{"id":"4bfd5683-571f-4afb-ac51-eb384ba36513","testResult":"passed"}
+{"id":"522e1534-10af-45aa-ac93-32e63fb0fe2b","testResult":"passed"}
+{"id":"5bc90beb-cc95-4bdb-8849-5eb8c6826c5d","testResult":"passed"}
+{"id":"deb9e11d-0b87-4e21-9aa2-ae283adc0f99","testResult":"passed"}
+{"id":"967936f3-51fd-4242-84f2-8b6b850f8c24","testResult":"passed"}
+{"id":"9dd9ff69-1d3d-4004-9d37-6dfd31566168","testResult":"passed"}
+{"id":"b3f382dc-bbc8-4460-ba5f-b22d0acf7d53","testResult":"passed"}
+{"id":"b7f24087-8d1f-4aad-9b97-1d44597731db","testResult":"passed"}
+{"id":"beabe886-1b6f-405f-861b-d29a0900dad8","testResult":"passed"}
+=== END REPLAY RECORDINGS METADATA ===
+
+Uploading recording f622bfcc-1bea-498f-b4b9-9a8324981f6a (duration: 0)...
+⠙ Initializing…
+Uploading recordings...
+   f622bfcc…  Recent transactions table updates when date range…  5m ago  58.5s   
+
+Uploaded recordings
+ ✔  f622bfcc…  Recent transactions table updates when date range…  5m ago  58.5s  (uploaded) 
+
+View recording at:
+https://app.replay.io/recording/f622bfcc-1bea-498f-b4b9-9a8324981f6a
+REPLAY UPLOADED: f622bfcc-1bea-498f-b4b9-9a8324981f6a
+
+--- Cleaning up ---
+Deleting ephemeral branch: test-worker-1771971002000-uucgij
+Test script failed: TypeError: fetch failed
+    at node:internal/deps/undici/undici:14902:13
+    at async deleteBranch (/repo/apps/InventoryTracker/scripts/test.ts:76:15)
+    at async main (/repo/apps/InventoryTracker/scripts/test.ts:310:5) {
+  [cause]: Error: write ETIMEDOUT
+      at WriteWrap.onWriteComplete [as oncomplete] (node:internal/stream_base_commons:87:19)
+      at handleWriteReq (node:internal/stream_base_commons:59:21)
+      at writeGeneric (node:internal/stream_base_commons:148:15)
+      at Socket._writeGeneric (node:net:966:11)
+      at Socket._write (node:net:978:8)
+      at writeOrBuffer (node:internal/streams/writable:572:12)
+      at _write (node:internal/streams/writable:501:10)
+      at Writable.write (node:internal/streams/writable:510:10)
+      at writeBuffer (node:internal/deps/undici/undici:6714:20)
+      at writeH1 (node:internal/deps/undici/undici:6616:9) {
+    errno: -110,
+    code: 'ETIMEDOUT',
+    syscall: 'write'
+  }
+}
