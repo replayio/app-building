@@ -1,13 +1,38 @@
 {
   "groups": [
     {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
+      "strategy": "strategies/jobs/build/testSpec.md",
       "jobs": [
-        "CheckTestSpecTasksList: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksList: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksList: Check writeTests.md directive violations in TasksListPage tests"
+        "PlanPageTasksList: Plan TasksListPage components and add sections to docs/tests.md",
+        "PlanComponentTasksFilterBar: Add test entries for TasksFilterBar (search input, priority filter, status filter)",
+        "PlanComponentTaskCard: Add test entries for TaskCard (priority badge display, title, due date, assignee, click navigates to detail, action menu)",
+        "PlanComponentCreateTaskModal: Add test entries for CreateTaskModal (form fields, validation, submit creates task, modal close)",
+        "PlanComponentTasksListContent: Add test entries for TasksListContent (pagination, empty state, loading state, CSV import/export)"
       ],
-      "timestamp": "2026-02-23T23:39:19.752Z"
+      "timestamp": "2026-02-24T00:12:14.813Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeApp.md",
+      "jobs": [
+        "WriteComponentTasksFilterBar: Write the TasksFilterBar component (search input, priority filter dropdown, status filter dropdown)",
+        "WriteComponentTaskCard: Write the TaskCard component (priority badge, title, due date, assignee avatar/name, action menu)",
+        "WriteComponentCreateTaskModal: Write the CreateTaskModal component (form with title, description, due date, priority, client, assignee)",
+        "WriteComponentTasksListContent: Write the TasksListContent component (task list with pagination)",
+        "WriteBackendTasks: Write the tasks Netlify Function (GET list with filters/sort/pagination, GET by id, POST create, PUT update, DELETE)",
+        "WritePageTasksList: Write the TasksListPage connecting all components"
+      ],
+      "timestamp": "2026-02-24T00:12:07.935Z"
+    },
+    {
+      "strategy": "strategies/jobs/build/writeTests.md",
+      "jobs": [
+        "WriteTestTasksListDisplay: Write test for TasksListPage displaying task cards with priority badges, titles, due dates, and assignees",
+        "WriteTestTasksListFilter: Write test for TasksListPage filter and search functionality",
+        "WriteTestTasksListCreateTask: Write test for creating a new task via New Task modal",
+        "WriteTestTasksListNavigation: Write test for clicking a task card navigates to TaskDetailPage",
+        "WriteTestTasksListCSVImport: Write test for CSV import dialog with format documentation"
+      ],
+      "timestamp": "2026-02-24T00:12:01.162Z"
     },
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
