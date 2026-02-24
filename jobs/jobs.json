@@ -3,15 +3,6 @@
     {
       "strategy": "strategies/jobs/maintain/checkDirectives.md",
       "jobs": [
-        "FixViolationUserDetailTestSpec: Write complete test entries in docs/tests.md for UserDetailPage covering all sections (user info header, summary stats, owned deals list, assigned tasks list, activity feed) with component groupings, per the AppRevisions.md spec",
-        "FixViolationUserDetailComponents: Implement full UserDetailPage with sub-components (UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, UserActivityFeed), create users.ts Netlify function, and connect to Redux store per writeApp.md directives",
-        "FixViolationUserDetailTests: Write Playwright tests for all UserDetailPage test entries per writeTests.md directives"
-      ],
-      "timestamp": "2026-02-24T01:07:38.357Z"
-    },
-    {
-      "strategy": "strategies/jobs/maintain/checkDirectives.md",
-      "jobs": [
         "CheckTestSpecForgotPassword: Check testSpec.md directive violations in ForgotPasswordPage test entries",
         "CheckComponentsForgotPassword: Check writeApp.md directive violations in ForgotPasswordPage components",
         "CheckTestsForgotPassword: Check writeTests.md directive violations in ForgotPasswordPage tests"

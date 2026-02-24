@@ -882,6 +882,105 @@ Components: UsersGrid, UserCard
 
 ## UserDetailPage (/users/:userId)
 
+Components: UserDetailHeader, UserDetailStats, UserDealsList, UserTasksList, UserActivityFeed
+
+### UserDetailHeader
+
+#### Header displays user name prominently
+- **Initial state:** User navigates to /users/:userId for a team member named "Sarah Johnson".
+- **Expected:** The page header displays the user name "Sarah Johnson" as the primary heading text. A back navigation element (arrow or "Back to Team" link) is visible to return to the team list.
+
+#### Header displays user avatar or initials
+- **Initial state:** UserDetailPage is loaded for a team member with an avatar URL.
+- **Expected:** The header displays the user's circular avatar image. If the user has no avatar URL, a fallback with the user's initials is displayed on an accent-colored circular background (e.g., "SJ" for "Sarah Johnson").
+
+#### Header displays user email
+- **Initial state:** UserDetailPage is loaded for a team member with email "sarah@example.com".
+- **Expected:** The header displays the user's email address "sarah@example.com" with a mail icon to its left. The email is displayed below or near the user's name.
+
+#### Header displays join date
+- **Initial state:** UserDetailPage is loaded for a team member who joined on Jan 15, 2024.
+- **Expected:** The header displays the join date in a readable format (e.g., "Joined Jan 15, 2024") with a calendar icon to its left.
+
+#### Back button navigates to team list
+- **Initial state:** UserDetailPage is loaded for any team member.
+- **Action:** User clicks the back navigation element (back arrow or "Back to Team" link).
+- **Expected:** The browser navigates to /users and the UsersListPage is displayed.
+
+#### Loading state shows while user data is being fetched
+- **Initial state:** User navigates to /users/:userId and the API request for user data is in progress.
+- **Expected:** A loading indicator (spinner or skeleton) is displayed while data is being fetched.
+
+### UserDetailStats
+
+#### Stats section displays active deals count
+- **Initial state:** UserDetailPage is loaded for a team member who owns 3 active deals.
+- **Expected:** The stats section displays an "Active Deals" stat showing the number 3 with a label "Active Deals" and a briefcase icon.
+
+#### Stats section displays open tasks count
+- **Initial state:** UserDetailPage is loaded for a team member who has 5 open tasks.
+- **Expected:** The stats section displays an "Open Tasks" stat showing the number 5 with a label "Open Tasks" and a check-square icon.
+
+#### Stats section displays total deals count
+- **Initial state:** UserDetailPage is loaded for a team member who owns 8 total deals (including closed).
+- **Expected:** The stats section displays a "Total Deals" stat showing the number 8 with a label "Total Deals" and a bar-chart icon.
+
+### UserDealsList
+
+#### Owned deals section displays heading
+- **Initial state:** UserDetailPage is loaded for a team member who owns deals.
+- **Expected:** The deals section displays a heading (e.g., "Owned Deals"). The section lists deals owned by this user.
+
+#### Owned deals list displays deal name, client, value, and stage
+- **Initial state:** UserDetailPage is loaded for a team member who owns a deal "Enterprise License Renewal" for client "Acme Corp" valued at $50,000 in "Proposal" stage.
+- **Expected:** The deals list shows a row/card with the deal name "Enterprise License Renewal", the client name "Acme Corp", the value "$50,000", and the stage "Proposal" displayed as a badge. Each deal entry is visible with all four data fields.
+
+#### Clicking a deal navigates to deal detail page
+- **Initial state:** UserDetailPage is loaded with owned deals visible.
+- **Action:** User clicks on a deal entry (e.g., "Enterprise License Renewal").
+- **Expected:** The browser navigates to /deals/:dealId and the DealDetailPage is displayed showing the full details for that deal.
+
+#### Empty state when user owns no deals
+- **Initial state:** UserDetailPage is loaded for a team member who owns no deals.
+- **Expected:** The deals section displays an empty state message (e.g., "No deals owned" or "No owned deals yet") instead of deal entries.
+
+### UserTasksList
+
+#### Assigned tasks section displays heading
+- **Initial state:** UserDetailPage is loaded for a team member who has assigned tasks.
+- **Expected:** The tasks section displays a heading (e.g., "Assigned Tasks"). The section lists tasks assigned to this user.
+
+#### Assigned tasks list displays task title, priority, status, and due date
+- **Initial state:** UserDetailPage is loaded for a team member who has a task "Finalize Q3 Marketing Plan" with High priority, Open status, and due date of Oct 25.
+- **Expected:** The tasks list shows a row/card with the task title "Finalize Q3 Marketing Plan", a priority badge showing "High" with a red/coral color, status "Open", and the formatted due date. Each task entry is visible with all data fields.
+
+#### Clicking a task navigates to task detail page
+- **Initial state:** UserDetailPage is loaded with assigned tasks visible.
+- **Action:** User clicks on a task entry (e.g., "Finalize Q3 Marketing Plan").
+- **Expected:** The browser navigates to /tasks/:taskId and the TaskDetailPage is displayed showing the full details for that task.
+
+#### Empty state when user has no assigned tasks
+- **Initial state:** UserDetailPage is loaded for a team member who has no assigned tasks.
+- **Expected:** The tasks section displays an empty state message (e.g., "No tasks assigned" or "No assigned tasks yet") instead of task entries.
+
+### UserActivityFeed
+
+#### Activity feed section displays heading
+- **Initial state:** UserDetailPage is loaded for a team member who has recent activity.
+- **Expected:** The activity feed section displays a heading (e.g., "Recent Activity"). The section shows timeline events where this user was the actor.
+
+#### Activity feed displays event description and timestamp
+- **Initial state:** UserDetailPage is loaded for a team member with recent activity events (e.g., "Deal created: Enterprise License" at "Feb 20, 2024, 3:00 PM").
+- **Expected:** Each activity entry displays the event description text and a formatted timestamp showing when the event occurred. Events are listed in reverse chronological order (most recent first).
+
+#### Activity feed displays event type icon
+- **Initial state:** UserDetailPage is loaded for a team member with activity events of different types (deal created, task completed, contact added, etc.).
+- **Expected:** Each activity entry displays an icon corresponding to the event type (e.g., briefcase icon for deal events, check icon for task events, user icon for contact events). The icons help visually distinguish event types.
+
+#### Empty state when user has no activity
+- **Initial state:** UserDetailPage is loaded for a team member who has no recent activity events.
+- **Expected:** The activity feed section displays an empty state message (e.g., "No recent activity") instead of activity entries.
+
 ## ForgotPasswordPage (/auth/forgot-password)
 
 ## ResetPasswordPage (/auth/reset-password)

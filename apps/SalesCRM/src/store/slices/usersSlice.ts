@@ -10,9 +10,44 @@ export interface User {
   created_at: string
 }
 
+export interface UserDeal {
+  id: string
+  name: string
+  value: number | null
+  stage: string
+  status: string
+  expected_close_date: string | null
+  client_name: string | null
+}
+
+export interface UserTask {
+  id: string
+  title: string
+  priority: string
+  status: string
+  due_date: string | null
+  client_name: string | null
+}
+
+export interface UserActivity {
+  id: string
+  event_type: string
+  description: string
+  created_at: string
+  client_name: string | null
+}
+
+export interface UserDetail extends User {
+  role: string | null
+  total_deals_count: number
+  deals: UserDeal[]
+  tasks: UserTask[]
+  activity: UserActivity[]
+}
+
 interface UsersState {
   items: User[]
-  current: User | null
+  current: UserDetail | null
   loading: boolean
   error: string | null
 }
