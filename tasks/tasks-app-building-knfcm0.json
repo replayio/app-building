@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentBasicInfoForm: Write the BasicInfoForm component",
-        "WriteComponentQuantityTransfersSection: Write the QuantityTransfersSection component",
-        "WriteComponentBatchAllocationSection: Write the BatchAllocationSection component",
-        "WritePageNewTransaction: Write the NewTransactionPage"
-      ],
-      "timestamp": "2026-02-24T21:01:08.038Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentLowInventoryAlerts: Write the LowInventoryAlerts component",
         "WriteComponentMaterialsCategoriesOverview: Write the MaterialsCategoriesOverview component",
         "WriteComponentRecentTransactionsTable: Write the RecentTransactionsTable component",
