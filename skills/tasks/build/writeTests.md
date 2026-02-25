@@ -93,6 +93,17 @@ npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" --a
 - Skill files are at `/repo/skills/tasks/` and its subdirectories (the repo root), NOT inside
   the app directory. Always use `/repo/skills/tasks/build/writeTests.md`, etc.
 
+- For deployment tests (tests run against a live deployed site rather than a local dev server):
+  - Always use `data-testid` values that match the actual component markup. Read the component
+    source to verify testid values before writing the test — do not guess.
+  - Handle empty-state scenarios gracefully. A freshly deployed app may have no data, so tests
+    must not assume specific records exist. Check for empty-state UI (e.g., "No items" messages)
+    or create test data before asserting on table/list contents.
+  - Use generous timeouts (e.g., `{ timeout: 10000 }`) for element assertions. First-load
+    performance on a cold deploy is slower than local development.
+  - Verify that API endpoints are healthy before running deployment tests. See
+    `skills/scripts/deploy-verification.md`.
+
 - When a test spec entry describes editing or interacting with a specific field (e.g., "edit client
   field", "change value"), the test must exercise that exact field with corresponding actions and
   assertions. Do not write a test that only verifies a subset of the fields or operations mentioned
