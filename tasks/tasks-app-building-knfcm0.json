@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPagePersonDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentPersonHeader: Add test entries for PersonHeader (name, title, organization, email, phone, location, associated clients links)",
-        "PlanComponentRelationshipsSection: Add test entries for RelationshipsSection (Graph View/List View tabs, relationship entries with name, type Colleague/Decision Maker/Influencer, org, Link to person detail, Filter button, Add Entry button)",
-        "PlanComponentContactHistoryAndClients: Add test entries for ContactHistorySection (date/time, type Video Call/Email/Meeting/Note, summary, team member, edit icon, Filter button, Add Entry button), AssociatedClientsSection (client cards with name, status, industry, View Client Detail Page link)"
-      ],
-      "timestamp": "2026-02-25T03:31:34.811Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageDealsListPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentDealsSummaryAndViews: Add test entries for DealsSummaryCards (Total Active Deals, Pipeline Value, Won Q3 count+value, Lost Q3 count+value), ViewToggle (Table View/Pipeline View tabs)",
         "PlanComponentDealsFilters: Add test entries for DealsFilters (Stage dropdown searchable, Client dropdown searchable, Status dropdown, Date Range picker, Sort by dropdown with Close Date arrow indicator, Search input)",

@@ -706,7 +706,172 @@ Given the AddPersonModal is open and the user has entered data, when they click 
 
 ### Components: PersonHeader, RelationshipsSection, ContactHistorySection, AssociatedClientsSection
 
-<!-- Tests for header info, relationships graph/list views, contact history entries, associated clients navigation -->
+#### PersonHeader
+
+**Person name is displayed as a large heading**
+Given the user navigates to /individuals/:individualId for a person named "Dr. Anya Sharma", the page displays "Dr. Anya Sharma" as a large heading at the top of the content area.
+
+**Title and organization are displayed below the name**
+Given the user is viewing a person with title "Chief Technology Officer (CTO)" associated with "Innovate Solutions Inc." and "FutureTech Corp.", the header displays "Chief Technology Officer (CTO) | Innovate Solutions Inc. & FutureTech Corp." below the name.
+
+**Email is displayed with mail icon**
+Given the user is viewing a person with email "anya.sharma@example.com", the header displays a mail icon followed by "anya.sharma@example.com".
+
+**Phone number is displayed with phone icon**
+Given the user is viewing a person with phone "+1 (555) 123-4567", the header displays a phone icon followed by "+1 (555) 123-4567".
+
+**Location is displayed with pin icon**
+Given the user is viewing a person with location "San Francisco, CA", the header displays a location/pin icon followed by "San Francisco, CA".
+
+**Associated clients are displayed as clickable links**
+Given the user is viewing a person associated with clients "Innovate Solutions Inc." and "FutureTech Corp.", the header displays "Associated Clients:" followed by "Innovate Solutions Inc." and "FutureTech Corp." as clickable links separated by a comma.
+
+**Clicking an associated client link navigates to client detail page**
+Given the user is viewing a person associated with "Innovate Solutions Inc.", when they click the "Innovate Solutions Inc." link in the Associated Clients row, the app navigates to /clients/:clientId for that client and the ClientDetailPage is displayed.
+
+**Header displays correctly when optional fields are missing**
+Given the user is viewing a person with no phone number and no location set, the header displays the name, title/organization, and email, and the phone and location rows are either hidden or show placeholder text. The layout does not break.
+
+#### RelationshipsSection
+
+**Section displays "Relationships with Other Individuals" title with icon**
+Given the user is on a person detail page, the Relationships section displays the heading "Relationships with Other Individuals" with a relationship/connection icon.
+
+**Graph View and List View tabs are displayed**
+Given the user is on a person detail page, the Relationships section displays two tab buttons: "Graph View" and "List View".
+
+**List View tab is selected by default**
+Given the user navigates to a person detail page, the "List View" tab is selected/active by default and the relationship entries are displayed in list format.
+
+**Clicking Graph View tab switches to graph view**
+Given the user is on a person detail page with List View active, when they click the "Graph View" tab, the view switches to a visual graph/network representation of the person's relationships. The "Graph View" tab becomes active and "List View" becomes inactive.
+
+**Clicking List View tab switches back to list view**
+Given the user is on a person detail page with Graph View active, when they click the "List View" tab, the view switches back to the list format. The "List View" tab becomes active and "Graph View" becomes inactive.
+
+**Filter button is visible with icon and label**
+Given the user is on a person detail page, the Relationships section displays a "Filter" button with a filter icon and the text "Filter".
+
+**Filter button opens filter controls**
+Given the user is on a person detail page, when they click the "Filter" button in the Relationships section, filter controls appear allowing the user to filter relationships by type (e.g., Colleague, Decision Maker, Influencer).
+
+**Filtering by relationship type shows only matching entries**
+Given the user is on a person detail page with relationships of types Colleague, Decision Maker, and Influencer, when they apply a filter for "Colleague", only relationships with type "Colleague" are displayed in the list.
+
+**Add Entry button is visible with plus icon**
+Given the user is on a person detail page, the Relationships section displays a "+ Add Entry" button with a plus icon.
+
+**Add Entry button opens add relationship modal**
+Given the user is on a person detail page, when they click the "+ Add Entry" button in the Relationships section, a modal or form opens allowing the user to add a new relationship with fields for the related person (searchable dropdown), relationship type (Colleague, Decision Maker, Influencer), and optionally organization.
+
+**Relationship entries display person name in bold**
+Given a person has a relationship with "David Chen", the relationship entry displays "David Chen" in bold text.
+
+**Relationship entries display relationship type in parentheses**
+Given a person has a "Colleague" relationship with "David Chen", the entry displays "(Colleague)" after the person name.
+
+**Relationship entries display role and organization**
+Given a relationship entry for "David Chen (Colleague)" who is "V.P. Engineering" at "Innovate Solutions Inc.", the entry displays "V.P. Engineering, Innovate Solutions Inc." after the relationship type.
+
+**Relationship entries display Link to person detail page**
+Given a relationship entry for "David Chen", a "[Link]" clickable element is displayed at the end of the entry row.
+
+**Clicking Link navigates to related person's detail page**
+Given a relationship entry for "David Chen" with a [Link], when the user clicks [Link], the app navigates to /individuals/:individualId for David Chen and displays their PersonDetailPage.
+
+**Multiple relationship types are displayed correctly**
+Given a person has relationships with "David Chen (Colleague)", "Maria Rodriguez (Decision Maker)", "Kenji Tanaka (Influencer)", and "Sarah Lee (Colleague)", all four entries are displayed in the list view with their respective types.
+
+**Creating a relationship creates reciprocal entry on the other person**
+Given the user adds a new "Colleague" relationship between the current person and "Alex Rivera", the relationship is created on both sides: Alex Rivera appears in the current person's relationships, and the current person appears in Alex Rivera's relationships. Both sides show the same relationship type.
+
+**Deleting a relationship removes both sides**
+Given a reciprocal relationship exists between the current person and "David Chen", when the user deletes the relationship entry for David Chen, the relationship is removed from both the current person's list and from David Chen's list.
+
+**Empty state when no relationships exist**
+Given the person has no relationships with other individuals, the Relationships section displays an empty state message (e.g., "No relationships") and the "+ Add Entry" button remains available.
+
+#### ContactHistorySection
+
+**Section displays "History of Contact" title with icon**
+Given the user is on a person detail page, the Contact History section displays the heading "History of Contact" with a clock/history icon.
+
+**Filter button is visible with icon and label**
+Given the user is on a person detail page, the Contact History section displays a "Filter" button with a filter icon and the text "Filter".
+
+**Filter button opens filter controls for contact type**
+Given the user is on a person detail page, when they click the "Filter" button in the Contact History section, filter controls appear allowing the user to filter entries by contact type (Video Call, Email, Meeting, Note).
+
+**Filtering by contact type shows only matching entries**
+Given the contact history has entries of types Video Call, Email, Meeting, and Note, when the user applies a filter for "Email", only contact history entries of type "Email" are displayed.
+
+**Add Entry button is visible with plus icon**
+Given the user is on a person detail page, the Contact History section displays a "+ Add Entry" button with a plus icon.
+
+**Add Entry button opens add contact history modal**
+Given the user is on a person detail page, when they click the "+ Add Entry" button in the Contact History section, a modal or form opens allowing the user to add a new contact history entry with fields for date/time, type (Video Call, Email, Meeting, Note), summary text, and team member(s).
+
+**Submitting add entry form creates a new contact history entry**
+Given the add contact history modal is open and the user fills in date "Oct 28, 2023, 3:00 PM", type "Email", summary "Sent updated pricing proposal", and team member "Emily R.", when they click submit, the modal closes and the new entry appears in the contact history list with the correct date, type, summary, and team member.
+
+**Contact history entries display date and time**
+Given a contact history entry occurred on "Oct 26, 2023, 2:30 PM", the entry row displays "Oct 26, 2023, 2:30 PM" as the date/time.
+
+**Contact history entries display interaction type**
+Given a contact history entry of type "Video Call", the entry row displays the text "Video Call" as the interaction type. Similarly for "Email", "Meeting (In-person)", and "Note".
+
+**Contact history entries display summary**
+Given a contact history entry with summary "Discussed Q4 roadmap integration. Action items assigned.", the entry row displays "Summary: Discussed Q4 roadmap integration. Action items assigned."
+
+**Contact history entries display team member name and role**
+Given a contact history entry with team member "Michael B. (Sales Lead)", the entry row displays "Team Member: Michael B. (Sales Lead)".
+
+**Contact history entries display multiple team members**
+Given a contact history entry performed by multiple team members "Michael B., Emily R.", the entry row displays "Team Member: Michael B., Emily R." showing all participants.
+
+**Contact history entries display System for auto-logged entries**
+Given a contact history entry auto-logged by the system, the entry row displays "Team Member: System (Auto-logged)".
+
+**Edit icon is visible on each contact history entry**
+Given a contact history entry is displayed, a pencil/edit icon is visible on the right side of the entry row.
+
+**Clicking edit icon opens edit mode for that entry**
+Given the user clicks the pencil/edit icon on a contact history entry, an edit modal or inline edit mode opens allowing the user to modify the date/time, type, summary, and team member fields for that entry.
+
+**Saving edited contact history entry persists changes**
+Given the edit mode is open for a contact history entry and the user changes the summary from "Discussed Q4 roadmap integration." to "Discussed Q4 roadmap and budget review.", when they save, the entry updates to reflect the new summary and the changes are persisted to the database.
+
+**Contact history entries are displayed in reverse chronological order**
+Given multiple contact history entries exist with different dates, they are displayed with the most recent entry at the top and oldest at the bottom.
+
+**Empty state when no contact history exists**
+Given the person has no contact history entries, the section displays an empty state message (e.g., "No contact history") and the "+ Add Entry" button remains available.
+
+#### AssociatedClientsSection
+
+**Section displays "Associated Clients" title with icon**
+Given the user is on a person detail page, the Associated Clients section displays the heading "Associated Clients" with a building/client icon.
+
+**Client cards display client name with icon**
+Given the person is associated with a client "Innovate Solutions Inc.", the Associated Clients section displays a card with an icon and the text "Innovate Solutions Inc.".
+
+**Client cards display status**
+Given the person is associated with a client with status "Active Client", the client card displays "Status: Active Client". For a prospect, it displays "Status: Prospect".
+
+**Client cards display industry**
+Given the person is associated with a client in the "Software" industry, the client card displays "Industry: Software".
+
+**Client cards display "View Client Detail Page" button with external link icon**
+Given the person is associated with a client, the client card displays a "View Client Detail Page" button with an external link icon.
+
+**Clicking "View Client Detail Page" navigates to client detail page**
+Given the person is associated with "Innovate Solutions Inc.", when the user clicks the "View Client Detail Page" button on that client's card, the app navigates to /clients/:clientId for Innovate Solutions Inc. and the ClientDetailPage is displayed.
+
+**Multiple associated clients display as separate cards**
+Given the person is associated with two clients "Innovate Solutions Inc." and "FutureTech Corp.", both are displayed as separate cards in the Associated Clients section with their respective status and industry information.
+
+**Empty state when no associated clients exist**
+Given the person has no associated clients, the section displays an empty state message (e.g., "No associated clients").
 
 ---
 
