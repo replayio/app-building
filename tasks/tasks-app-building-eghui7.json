@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageTransactions: Write test entries for TransactionsPage components (NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar, TransactionsTable, Pagination) following testSpec.md directives"
-      ],
-      "timestamp": "2026-02-25T16:52:17.408Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "CheckTestSpecBatchDetailPage: Check testSpec.md directive violations in BatchDetailPage test entries",
