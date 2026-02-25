@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentSidebarNavigation: Write the SidebarNavigation component",
-        "WriteComponentSidebarAuth: Write the SidebarAuth component",
-        "WriteLayoutSidebar: Write the Sidebar layout and app shell"
-      ],
-      "timestamp": "2026-02-25T03:49:26.927Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentForgotPasswordForm: Write the ForgotPasswordForm component",
         "WriteComponentResetPasswordForm: Write the ResetPasswordForm component",
         "WriteComponentConfirmEmailHandler: Write the ConfirmEmailHandler component",
