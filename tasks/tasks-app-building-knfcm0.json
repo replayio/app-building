@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeShared.md",
-      "subtasks": [
-        "WriteShared: App-wide logic - write backend auth middleware with optional JWT verification for Netlify Functions in apps/shared/backend/auth-middleware.ts (extracts user from Authorization Bearer token, passes user info to handler when present, allows unauthenticated requests in optional mode)",
-        "WriteShared: List page components - write shared FilterSelect dropdown component in apps/shared/components/ (custom styled dropdown button with optional search input for many options, click-outside close, data-testid attributes), write shared ImportDialog component for CSV import (template download, column spec table, file upload, parse with quote handling, per-row validation errors), and write CSV parse/generate utility functions in apps/shared/utils/csv.ts"
-      ],
-      "timestamp": "2026-02-25T03:41:32.436Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "Unpack: Write the app for SalesCRM"
