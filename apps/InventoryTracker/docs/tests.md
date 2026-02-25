@@ -1102,7 +1102,419 @@ Components: NewMaterialButton, NewCategoryButton, SearchBar, CategoryFilter, Acc
 
 Components: MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionButton, AccountsDistributionTable, AllBatchesTable, TransactionsHistoryTable
 
-<!-- Tests to be added by PlanPageMaterialDetail -->
+### MaterialHeader
+
+**Test: Material header displays material name as large heading**
+- Components: MaterialHeader
+- Given: The user navigates to the Material Detail page for "Carbon Fiber Sheets"
+- Then: The header displays "Carbon Fiber Sheets" as a large heading
+
+**Test: Material header displays category and unit of measure**
+- Components: MaterialHeader
+- Given: The user navigates to the Material Detail page for "Carbon Fiber Sheets" which has category "Composite" and unit of measure "sq meters"
+- Then: The header displays "Category: Composite | Unit of Measure: sq meters" below the material name
+
+**Test: Material header displays material description**
+- Components: MaterialHeader
+- Given: The user navigates to the Material Detail page for "Carbon Fiber Sheets" which has description "High-strength, lightweight composite sheets used for structural applications and panels. Standard grade."
+- Then: The header displays the description text below the category/unit line
+
+**Test: Breadcrumb displays Home > Materials > Material Name**
+- Components: MaterialHeader
+- Given: The user navigates to the Material Detail page for "Carbon Fiber Sheets"
+- Then: A breadcrumb trail "Home > Materials > Carbon Fiber Sheets" is displayed above the material header
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+- And: "Materials" is a clickable link that navigates to /materials (MaterialsPage)
+
+**Test: Sidebar shows Materials link as active on Material Detail page**
+- Components: MaterialHeader
+- Given: The user navigates to the Material Detail page
+- Then: The sidebar "Materials" link is visually highlighted as the active page
+
+### EditMaterialButton
+
+**Test: Edit Material button is displayed with secondary styling**
+- Components: EditMaterialButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets"
+- Then: An "Edit Material" button is displayed in the top-right area of the header
+- And: The button is styled as a secondary/outlined button
+
+**Test: Clicking Edit Material button opens edit modal with pre-filled data**
+- Components: EditMaterialButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets" with category "Composite", unit "sq meters", and a description
+- When: The user clicks the "Edit Material" button
+- Then: A modal dialog opens with the title "Edit Material"
+- And: The Material Name field is pre-filled with "Carbon Fiber Sheets"
+- And: The Category dropdown is pre-set to "Composite"
+- And: The Unit of Measure field is pre-filled with "sq meters"
+- And: The Description field is pre-filled with the current description
+- And: The modal has "Save" and "Cancel" buttons
+
+**Test: Submitting edit material modal updates material header immediately**
+- Components: EditMaterialButton, MaterialHeader
+- Given: The edit material modal is open for "Carbon Fiber Sheets"
+- When: The user changes the Material Name to "Carbon Fiber Sheets (Premium)"
+- And: The user clicks the "Save" button
+- Then: The modal closes
+- And: The material header updates to show "Carbon Fiber Sheets (Premium)"
+- And: The change is persisted to the database
+
+**Test: Canceling edit material modal discards changes**
+- Components: EditMaterialButton
+- Given: The edit material modal is open for "Carbon Fiber Sheets"
+- And: The user has changed the Material Name to "Something Else"
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: The material header still shows "Carbon Fiber Sheets"
+
+**Test: Edit material modal validates that Material Name is required**
+- Components: EditMaterialButton
+- Given: The edit material modal is open
+- When: The user clears the Material Name field
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Material Name is required
+- And: The modal remains open and changes are not saved
+
+**Test: Edit material modal validates that Category is required**
+- Components: EditMaterialButton
+- Given: The edit material modal is open
+- When: The user clears the Category selection
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Category is required
+- And: The modal remains open and changes are not saved
+
+**Test: Edit material modal validates that Unit of Measure is required**
+- Components: EditMaterialButton
+- Given: The edit material modal is open
+- When: The user clears the Unit of Measure field
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Unit of Measure is required
+- And: The modal remains open and changes are not saved
+
+### NewBatchButton
+
+**Test: New Batch button is displayed with filled/primary styling**
+- Components: NewBatchButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets"
+- Then: A "New Batch" button is displayed in the top-right area of the header, next to the Edit Material button
+- And: The button is styled as a primary action button (filled blue)
+
+**Test: Clicking New Batch button opens a create batch modal pre-filled with this material**
+- Components: NewBatchButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets"
+- When: The user clicks the "New Batch" button
+- Then: A modal dialog opens with the title "Create Batch" (or "New Batch")
+- And: The Material field is pre-filled with "Carbon Fiber Sheets" and is read-only
+- And: The modal contains form fields for: Account (dropdown of available accounts), Quantity (number input), and optional properties (Location, Lot Number, Expiration Date)
+- And: The modal has "Create" and "Cancel" buttons
+
+**Test: Submitting the create batch form adds a new batch**
+- Components: NewBatchButton, AllBatchesTable, AccountsDistributionTable
+- Given: The create batch modal is open with material "Carbon Fiber Sheets"
+- When: The user selects "Warehouse A - Main Storage" from the Account dropdown
+- And: The user enters "300" in the Quantity field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: A new batch appears in the All Batches table with the entered quantity and location "Warehouse A"
+- And: The Accounts Distribution table updates to reflect the new batch count and quantity for "Warehouse A - Main Storage"
+- And: The new batch is persisted to the database
+
+**Test: Create batch modal validates that Account is required**
+- Components: NewBatchButton
+- Given: The create batch modal is open
+- And: The Account dropdown is not selected
+- When: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Account is required
+- And: The modal remains open and the batch is not created
+
+**Test: Create batch modal validates that Quantity is required and positive**
+- Components: NewBatchButton
+- Given: The create batch modal is open
+- And: The Quantity field is empty or set to 0
+- When: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Quantity must be a positive number
+- And: The modal remains open and the batch is not created
+
+**Test: Cancel button in create batch modal closes the modal without creating a batch**
+- Components: NewBatchButton
+- Given: The create batch modal is open and the user has entered some data
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: No new batch is created
+
+### NewTransactionButton
+
+**Test: New Transaction button is displayed with filled/primary styling**
+- Components: NewTransactionButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets"
+- Then: A "New Transaction" button is displayed in the top-right area of the header, next to the New Batch button
+- And: The button is styled as a primary action button (filled blue)
+
+**Test: Clicking New Transaction button navigates to NewTransactionPage pre-filled with this material**
+- Components: NewTransactionButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets"
+- When: The user clicks the "New Transaction" button
+- Then: The app navigates to /transactions/new (NewTransactionPage)
+- And: The transaction form is pre-filled with "Carbon Fiber Sheets" as the material in the batch allocation or quantity transfers section
+
+### AccountsDistributionTable
+
+**Test: Accounts Distribution section displays with heading**
+- Components: AccountsDistributionTable
+- Given: The user navigates to the Material Detail page for a material that exists in multiple accounts
+- Then: An "Accounts Distribution" section heading is displayed below the material header
+
+**Test: Accounts Distribution table displays correct column headers**
+- Components: AccountsDistributionTable
+- Given: The user navigates to the Material Detail page
+- Then: The Accounts Distribution table shows columns: Account Name, Account Type, Quantity (with unit), Number of Batches, Link
+
+**Test: Accounts Distribution table shows account rows with correct data**
+- Components: AccountsDistributionTable
+- Given: "Carbon Fiber Sheets" exists in "Warehouse A - Main Storage" (Storage, 1,200 sq m, 3 batches) and "Production Line B" (Manufacturing, 450 sq m, 1 batch)
+- Then: A row for "Warehouse A - Main Storage" shows Account Name "Warehouse A - Main Storage", Account Type "Storage", Quantity "1,200", Number of Batches "3", and a "View Account" link
+- And: A row for "Production Line B" shows Account Name "Production Line B", Account Type "Manufacturing", Quantity "450", Number of Batches "1", and a "View Account" link
+
+**Test: View Account link navigates to the AccountDetailPage for that account**
+- Components: AccountsDistributionTable
+- Given: The row for "Warehouse A - Main Storage" is displayed with a "View Account" link
+- When: The user clicks the "View Account" link on the "Warehouse A - Main Storage" row
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Warehouse A - Main Storage"
+
+**Test: Expanding an account row reveals nested batches in that account**
+- Components: AccountsDistributionTable
+- Given: The row for "Warehouse A - Main Storage" has an expand/collapse chevron
+- When: The user clicks the chevron on the "Warehouse A - Main Storage" row
+- Then: A nested sub-table expands below the row with the heading "Batches in Warehouse A - Main Storage"
+- And: The sub-table shows columns: Batch ID, Quantity (sq m), Unit, Created Date
+- And: The sub-table displays rows for each batch in that account (e.g., B-2023-001 with 500 sq m, Oct 15, 2023 and B-2023-005 with 700 sq m, Oct 22, 2023)
+
+**Test: Collapsing an expanded account row hides the nested batches**
+- Components: AccountsDistributionTable
+- Given: The "Warehouse A - Main Storage" row is expanded showing its batches
+- When: The user clicks the chevron on the "Warehouse A - Main Storage" row again
+- Then: The nested batch sub-table collapses and is hidden
+- And: The chevron icon rotates back to its collapsed orientation
+
+**Test: Nested batch rows show correct data for each batch**
+- Components: AccountsDistributionTable
+- Given: The "Warehouse A - Main Storage" row is expanded
+- Then: Batch "B-2023-001" shows Quantity "500", Unit "sq m", Created Date "Oct 15, 2023"
+- And: Batch "B-2023-005" shows Quantity "700", Unit "sq m", Created Date "Oct 22, 2023"
+
+**Test: Clicking a Batch ID in the nested table navigates to BatchDetailPage**
+- Components: AccountsDistributionTable
+- Given: The "Warehouse A - Main Storage" row is expanded showing its batches
+- When: The user clicks on the Batch ID "B-2023-001" in the nested sub-table
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "B-2023-001"
+
+**Test: Account with one batch shows single nested row when expanded**
+- Components: AccountsDistributionTable
+- Given: "Production Line B" has 1 batch for this material
+- When: The user clicks the chevron on the "Production Line B" row
+- Then: A nested sub-table expands showing exactly one batch row
+
+**Test: Accounts Distribution table shows empty state when material is not in any account**
+- Components: AccountsDistributionTable
+- Given: The user navigates to a material detail page for a material with no batches in any account
+- Then: The Accounts Distribution section shows an empty state message (e.g., "This material is not tracked in any account")
+
+### AllBatchesTable
+
+**Test: All Batches section displays with heading**
+- Components: AllBatchesTable
+- Given: The user navigates to the Material Detail page for a material with batches
+- Then: An "All Batches" section heading is displayed below the Accounts Distribution section
+
+**Test: All Batches table displays correct column headers**
+- Components: AllBatchesTable
+- Given: The user navigates to the Material Detail page
+- Then: The All Batches table shows columns: Batch ID, Location, Quantity (with unit), Created Date, Actions
+
+**Test: All Batches table shows batch rows with correct data**
+- Components: AllBatchesTable
+- Given: "Carbon Fiber Sheets" has batches B-2023-001 (Warehouse A, 500 sq m, Oct 15, 2023), B-2023-005 (Warehouse A, 700 sq m, Oct 22, 2023), and B-2023-010 (Production Line B, 450 sq m, Nov 01, 2023)
+- Then: A row for "B-2023-001" shows Batch ID "B-2023-001", Location "Warehouse A", Quantity "500", Created Date "Oct 15, 2023", and a "View Lineage" link
+- And: A row for "B-2023-005" shows Batch ID "B-2023-005", Location "Warehouse A", Quantity "700", Created Date "Oct 22, 2023", and a "View Lineage" link
+- And: A row for "B-2023-010" shows Batch ID "B-2023-010", Location "Production Line B", Quantity "450", Created Date "Nov 01, 2023", and a "View Lineage" link
+
+**Test: View Lineage link navigates to BatchDetailPage for that batch**
+- Components: AllBatchesTable
+- Given: The row for batch "B-2023-001" shows a "View Lineage" link with a chain link icon
+- When: The user clicks the "View Lineage" link on the "B-2023-001" row
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "B-2023-001"
+
+**Test: Clicking a Batch ID navigates to BatchDetailPage**
+- Components: AllBatchesTable
+- Given: A row for batch "B-2023-005" is displayed
+- When: The user clicks on the Batch ID "B-2023-005"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "B-2023-005"
+
+**Test: Filter by Account dropdown displays with "All Accounts" default**
+- Components: AllBatchesTable
+- Given: The user navigates to the Material Detail page
+- Then: A "Filter by Account:" dropdown is displayed above the All Batches table with default value "[All Accounts]"
+
+**Test: Opening the Filter by Account dropdown lists all accounts containing this material**
+- Components: AllBatchesTable
+- Given: "Carbon Fiber Sheets" exists in "Warehouse A - Main Storage" and "Production Line B"
+- When: The user clicks the "Filter by Account" dropdown
+- Then: The dropdown shows "[All Accounts]", "Warehouse A - Main Storage", and "Production Line B"
+
+**Test: Selecting an account from the Filter by Account dropdown filters batches to that account**
+- Components: AllBatchesTable
+- Given: The All Batches table shows batches across all accounts
+- When: The user selects "Warehouse A - Main Storage" from the "Filter by Account" dropdown
+- Then: The table shows only batches in "Warehouse A" (B-2023-001 and B-2023-005)
+- And: Batch B-2023-010 (Production Line B) is hidden
+
+**Test: Selecting "All Accounts" resets the account filter**
+- Components: AllBatchesTable
+- Given: The "Filter by Account" dropdown is set to "Warehouse A - Main Storage"
+- When: The user selects "[All Accounts]" from the dropdown
+- Then: The All Batches table shows batches across all accounts again
+
+**Test: Filter by Date dropdown displays with "All Dates" default**
+- Components: AllBatchesTable
+- Given: The user navigates to the Material Detail page
+- Then: A "Filter by Date:" dropdown is displayed next to the Account filter with default value "[All Dates]"
+
+**Test: Opening the Filter by Date dropdown shows date range options**
+- Components: AllBatchesTable
+- Given: The user is on the Material Detail page
+- When: The user clicks the "Filter by Date" dropdown
+- Then: The dropdown shows date range options such as "[All Dates]", "Last 7 Days", "Last 30 Days", "Last 90 Days", or a custom date range picker
+
+**Test: Selecting a date range from the Filter by Date dropdown filters batches by created date**
+- Components: AllBatchesTable
+- Given: The All Batches table shows batches created on Oct 15, Oct 22, and Nov 01
+- When: The user selects a date range that only includes October dates
+- Then: Only batches B-2023-001 (Oct 15) and B-2023-005 (Oct 22) are shown
+- And: Batch B-2023-010 (Nov 01) is hidden
+
+**Test: Account and Date filters work together to narrow results**
+- Components: AllBatchesTable
+- Given: The All Batches table shows batches across multiple accounts and dates
+- When: The user selects "Warehouse A - Main Storage" from the Account filter
+- And: The user selects a date range that includes only Oct 15
+- Then: Only batch B-2023-001 (Warehouse A, Oct 15, 2023) is shown
+
+**Test: All Batches table shows empty state when no batches exist**
+- Components: AllBatchesTable
+- Given: The user navigates to a material detail page for a material with no batches
+- Then: The All Batches table shows an empty state message (e.g., "No batches found for this material")
+
+**Test: All Batches table shows empty state when filters match no batches**
+- Components: AllBatchesTable
+- Given: The user applies an account filter that has no batches for this material
+- Then: The All Batches table shows an empty state message (e.g., "No batches found")
+
+### TransactionsHistoryTable
+
+**Test: Transactions History section displays with heading**
+- Components: TransactionsHistoryTable
+- Given: The user navigates to the Material Detail page for a material involved in transactions
+- Then: A "Transactions History" section heading is displayed below the All Batches section
+
+**Test: Transactions History table displays correct column headers**
+- Components: TransactionsHistoryTable
+- Given: The user navigates to the Material Detail page
+- Then: The Transactions History table shows columns: Date, Transaction ID, Accounts Involved, Batch References, Quantity Moved (with unit)
+
+**Test: Transactions History table shows transaction rows with correct data**
+- Components: TransactionsHistoryTable
+- Given: "Carbon Fiber Sheets" has transactions: T-2311-567 (Nov 05, 2023, Warehouse A → Production Line B, B-2023-010, 450 sq m), T-2310-210 (Oct 25, 2023, Supplier X → Warehouse A, B-2023-005, 700 sq m), T-2310-015 (Oct 15, 2023, Supplier X → Warehouse A, B-2023-001, 500 sq m)
+- Then: A row for "T-2311-567" shows Date "Nov 05, 2023", Transaction ID "T-2311-567", Accounts Involved "Warehouse A → Production Line B", Batch References "B-2023-010", Quantity Moved "450"
+- And: A row for "T-2310-210" shows Date "Oct 25, 2023", Transaction ID "T-2310-210", Accounts Involved "Supplier X → Warehouse A", Batch References "B-2023-005", Quantity Moved "700"
+- And: A row for "T-2310-015" shows Date "Oct 15, 2023", Transaction ID "T-2310-015", Accounts Involved "Supplier X → Warehouse A", Batch References "B-2023-001", Quantity Moved "500"
+
+**Test: Accounts Involved column shows arrow notation between source and destination**
+- Components: TransactionsHistoryTable
+- Given: A transaction moves material from "Warehouse A" to "Production Line B"
+- Then: The Accounts Involved column displays "Warehouse A → Production Line B" with an arrow symbol between the source and destination account names
+
+**Test: Clicking a Transaction ID navigates to TransactionDetailPage**
+- Components: TransactionsHistoryTable
+- Given: A transaction row for "T-2311-567" is displayed
+- When: The user clicks on the Transaction ID "T-2311-567"
+- Then: The app navigates to /transactions/:transactionId (TransactionDetailPage) for that transaction
+
+**Test: Clicking a Batch Reference navigates to BatchDetailPage**
+- Components: TransactionsHistoryTable
+- Given: A transaction row shows Batch References "B-2023-010"
+- When: The user clicks on the batch reference "B-2023-010"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "B-2023-010"
+
+**Test: Filter by Type dropdown displays with "All Types" default**
+- Components: TransactionsHistoryTable
+- Given: The user navigates to the Material Detail page
+- Then: A "Filter by Type:" dropdown is displayed above the Transactions History table with default value "[All Types]"
+
+**Test: Opening the Filter by Type dropdown lists transaction type options**
+- Components: TransactionsHistoryTable
+- Given: The user is on the Material Detail page
+- When: The user clicks the "Filter by Type" dropdown
+- Then: The dropdown shows options such as "[All Types]", "Purchase", "Consumption", "Transfer", and any other transaction types in the system
+
+**Test: Selecting a transaction type from the Filter by Type dropdown filters transactions**
+- Components: TransactionsHistoryTable
+- Given: The Transactions History table shows transactions of different types
+- When: The user selects "Transfer" from the "Filter by Type" dropdown
+- Then: Only transactions of type "Transfer" are shown (e.g., T-2311-567 Warehouse A → Production Line B)
+- And: Transactions of other types are hidden
+
+**Test: Selecting "All Types" resets the type filter**
+- Components: TransactionsHistoryTable
+- Given: The "Filter by Type" dropdown is set to "Transfer"
+- When: The user selects "[All Types]" from the dropdown
+- Then: The Transactions History table shows all transactions again regardless of type
+
+**Test: Filter by Date dropdown displays with "Last 30 Days" default**
+- Components: TransactionsHistoryTable
+- Given: The user navigates to the Material Detail page
+- Then: A "Filter by Date:" dropdown is displayed next to the Type filter with default value "[Last 30 Days]"
+
+**Test: Opening the Filter by Date dropdown shows date range options**
+- Components: TransactionsHistoryTable
+- Given: The user is on the Material Detail page
+- When: The user clicks the "Filter by Date" dropdown
+- Then: The dropdown shows date range options such as "[Last 7 Days]", "[Last 30 Days]", "[Last 90 Days]", "[All Time]", or a custom date range option
+
+**Test: Selecting a different date range from the Filter by Date dropdown filters transactions**
+- Components: TransactionsHistoryTable
+- Given: The Transactions History table shows transactions from October and November
+- When: The user selects "[Last 7 Days]" from the "Filter by Date" dropdown (assuming current date only covers recent transactions)
+- Then: Only transactions within the last 7 days are shown
+- And: Older transactions are hidden
+
+**Test: Type and Date filters work together to narrow results**
+- Components: TransactionsHistoryTable
+- Given: Transactions of multiple types and dates exist
+- When: The user selects "Purchase" from the Type filter
+- And: The user selects "[Last 30 Days]" from the Date filter
+- Then: Only purchase transactions within the last 30 days are shown
+
+**Test: Transactions History table shows empty state when no transactions exist for this material**
+- Components: TransactionsHistoryTable
+- Given: The user navigates to a material detail page for a material with no transactions
+- Then: The Transactions History table shows an empty state message (e.g., "No transactions found for this material")
+
+**Test: Transactions History table shows empty state when filters match no transactions**
+- Components: TransactionsHistoryTable
+- Given: The user applies filters that match no transactions
+- Then: The Transactions History table shows an empty state message (e.g., "No transactions found")
+
+**Test: Transactions are displayed in reverse chronological order**
+- Components: TransactionsHistoryTable
+- Given: Transactions exist with dates Nov 05, Oct 25, and Oct 15
+- Then: The table rows are ordered with the most recent transaction first (Nov 05 at the top, Oct 15 at the bottom)
+
+**Test: Creating a new transaction from this page adds an entry to Transactions History**
+- Components: TransactionsHistoryTable, NewTransactionButton
+- Given: The user is on the Material Detail page for "Carbon Fiber Sheets"
+- When: The user clicks "New Transaction", creates a transaction involving "Carbon Fiber Sheets", and returns to the Material Detail page
+- Then: The new transaction appears in the Transactions History table
+- And: The Accounts Distribution and All Batches sections also update to reflect any batch/quantity changes from the transaction
 
 ---
 

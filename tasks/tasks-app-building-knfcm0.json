@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageMaterialDetail: Decide on components, add sections to docs/tests.md",
-        "PlanComponentMaterialDetailHeader: Add test entries for MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionButton",
-        "PlanComponentAccountsDistribution: Add test entries for AccountsDistributionTable with nested batches",
-        "PlanComponentAllBatchesTable: Add test entries for AllBatchesTable with filters",
-        "PlanComponentMaterialTransactionsHistory: Add test entries for TransactionsHistoryTable with filters"
-      ],
-      "timestamp": "2026-02-24T20:41:56.425Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageBatchDetail: Decide on components, add sections to docs/tests.md",
         "PlanComponentBatchHeader: Add test entries for BatchHeader (ID, material, account, status, created date, originating transaction)",
         "PlanComponentBatchOverview: Add test entries for BatchOverview (quantity, unit, location, lot number, expiration, quality grade, storage condition)",
