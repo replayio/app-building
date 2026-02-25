@@ -1570,3 +1570,131 @@
   color: var(--status-error);
   font-size: 14px;
 }
+
+/* ===== ReportListPage ===== */
+
+/* ReportListHeader */
+.report-list-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.report-list-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.report-list-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-list-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.report-list-search-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.report-list-search-input {
+  height: 36px;
+  width: 240px;
+  padding: 0 12px 0 32px;
+  font-size: 13px;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: var(--bg-base-color);
+  border: 1px solid var(--normal-border);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.report-list-search-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(77, 124, 94, 0.15);
+}
+
+.report-list-search-input::placeholder {
+  color: var(--text-disabled);
+}
+
+/* ReportTable */
+.report-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.report-table-sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.report-table-sort-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.report-table-sort-arrow {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.report-table-empty {
+  padding: 48px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.report-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.report-action-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.report-action-icon-btn:hover {
+  background: rgba(50, 45, 35, 0.08);
+  color: var(--text-primary);
+}
+
+.report-view-link {
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--accent-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.1s ease;
+  white-space: nowrap;
+}
+
+.report-view-link:hover {
+  color: var(--accent-dark);
+}
