@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteComponentReportListHeader: Write the ReportListHeader component",
-        "WriteComponentReportTable: Write the ReportTable component",
-        "WritePageReportList: Write the ReportList page itself"
-      ],
-      "timestamp": "2026-02-24T19:52:46.072Z"
-    },
-    {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
         "PlanPageAccounts: Decide on components, add sections to docs/tests.md",
