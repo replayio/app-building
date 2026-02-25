@@ -1,4 +1,4 @@
-url=https://699e8559958c4e637f3a389a--supplier-tracker-1771996496854.netlify.app
+url=https://699e8667958c4e657c3a398b--supplier-tracker-1771996496854.netlify.app
 site_id=721b0e88-ad0c-4231-b2b6-f365cc0625ad
 neon_project_id=solitary-king-65398738
 database_url=postgresql://neondb_owner:npg_spWO9TmAi3yP@ep-patient-mud-ajoza2ex.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require
