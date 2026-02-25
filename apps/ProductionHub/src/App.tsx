@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { NavigationSidebar } from "./components/NavigationSidebar";
 import { EquipmentDetailsPage } from "./pages/EquipmentDetailsPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
+import { RecipeDetailsPage } from "./pages/RecipeDetailsPage";
 
 export function App() {
   return (
@@ -11,7 +12,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/recipes" replace />} />
           <Route path="/recipes" element={<PlaceholderPage title="Recipes" />} />
-          <Route path="/recipe/:recipeId" element={<PlaceholderPage title="Recipe Details" />} />
+          <Route path="/recipe/:recipeId" element={<RecipeDetailsPage />} />
           <Route path="/calendar" element={<PlaceholderPage title="Calendar" />} />
           <Route path="/runs/:runId" element={<PlaceholderPage title="Run Details" />} />
           <Route path="/equipment" element={<EquipmentPage />} />

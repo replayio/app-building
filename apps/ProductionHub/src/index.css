@@ -590,3 +590,16 @@
   color: var(--text-secondary);
   line-height: 1.6;
 }
+
+/* Recipe details page grid */
+.recipe-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .recipe-details-grid {
+    grid-template-columns: 1fr;
+  }
+}

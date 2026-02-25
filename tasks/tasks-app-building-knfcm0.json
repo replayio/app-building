@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentRecipeDetailHeader: Write the RecipeDetailHeader component",
-        "WriteComponentDescriptionCard: Write the DescriptionCard component",
-        "WriteComponentProductsOutputTable: Write the ProductsOutputTable component",
-        "WriteComponentRawMaterialsCard: Write the RawMaterialsCard component",
-        "WriteComponentEquipmentRequiredList: Write the EquipmentRequiredList component",
-        "WritePageRecipeDetails: Write the RecipeDetailsPage itself"
-      ],
-      "timestamp": "2026-02-24T23:56:39.398Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentRunHeader: Write the RunHeader component",
         "WriteComponentRunActions: Write the RunActions component",
         "WriteComponentRawMaterialsTable: Write the RawMaterialsTable component",
