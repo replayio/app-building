@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentNavBar: Write the NavBar component",
-        "WriteComponentAccountsOverviewHeader: Write the AccountsOverviewHeader component",
-        "WriteComponentAccountCard: Write the AccountCard component",
-        "WritePageAccountsPage: Write the AccountsPage itself"
-      ],
-      "timestamp": "2026-02-24T19:42:19.164Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentAccountHeader: Write the AccountHeader component",
         "WriteComponentBudgetOverview: Write the BudgetOverview component",
         "WriteComponentTransactionsTab: Write the TransactionsTab component",
