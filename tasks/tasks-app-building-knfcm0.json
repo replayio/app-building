@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeShared.md",
-      "subtasks": [
-        "WriteSharedSupplierDetailsPage: Write shared DocumentsSection component for document/attachment management (upload, view, download, search). Used by SupplierTracker DocumentsTab and OrderDocuments, and SalesCRM AttachmentsSection and DealAttachmentsSection.",
-        "WriteSharedOrderDetailsPage: Write shared TimelineSection component for activity history/event timeline display (timestamps, descriptions, event type icons, reverse chronological). Used by SupplierTracker OrderHistory and SalesCRM TimelineSection and RecentActivityFeed."
-      ],
-      "timestamp": "2026-02-25T04:33:35.667Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "Unpack: Write the app for SupplierTracker"
