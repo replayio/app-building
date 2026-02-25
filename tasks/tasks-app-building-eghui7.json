@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/reviewBugReport.md",
-      "subtasks": [
-        "Unpack: Review fixed bug reports"
-      ],
-      "timestamp": "2026-02-25T15:29:12.244Z",
-      "app": "ProductionHub"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "Unpack: Check directive compliance"
