@@ -3,34 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestRD-HDR-1: Write test for RD-HDR-1",
-        "WriteTestRD-HDR-2: Write test for RD-HDR-2",
-        "WriteTestRD-HDR-3: Write test for RD-HDR-3",
-        "WriteTestRD-HDR-4: Write test for RD-HDR-4",
-        "WriteTestRD-HDR-5: Write test for RD-HDR-5",
-        "WriteTestRD-DESC-1: Write test for RD-DESC-1",
-        "WriteTestRD-DESC-2: Write test for RD-DESC-2",
-        "WriteTestRD-DESC-3: Write test for RD-DESC-3",
-        "WriteTestRD-PROD-1: Write test for RD-PROD-1",
-        "WriteTestRD-PROD-2: Write test for RD-PROD-2",
-        "WriteTestRD-PROD-3: Write test for RD-PROD-3",
-        "WriteTestRD-PROD-4: Write test for RD-PROD-4",
-        "WriteTestRD-MAT-1: Write test for RD-MAT-1",
-        "WriteTestRD-MAT-2: Write test for RD-MAT-2",
-        "WriteTestRD-MAT-3: Write test for RD-MAT-3",
-        "WriteTestRD-MAT-4: Write test for RD-MAT-4",
-        "WriteTestRD-EQUIP-1: Write test for RD-EQUIP-1",
-        "WriteTestRD-EQUIP-2: Write test for RD-EQUIP-2",
-        "WriteTestRD-EQUIP-3: Write test for RD-EQUIP-3",
-        "WriteTestRD-EQUIP-4: Write test for RD-EQUIP-4",
-        "WriteTestRD-EQUIP-5: Write test for RD-EQUIP-5"
-      ],
-      "timestamp": "2026-02-25T00:49:24.432Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestEQ-HDR-1: Write test for EQ-HDR-1",
         "WriteTestEQ-HDR-2: Write test for EQ-HDR-2",
         "WriteTestEQ-HDR-3: Write test for EQ-HDR-3",
