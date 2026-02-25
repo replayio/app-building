@@ -1,4 +1,0 @@
-url=https://699e76ecc0da65359d129562--sales-crm-1771992804138.netlify.app
-site_id=438e307e-770c-4e43-843b-ca4ab9723eec
-neon_project_id=empty-darkness-57346856
-database_url=postgresql://neondb_owner:npg_QZmyci4uUx2k@ep-shy-band-aij8odpl.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require

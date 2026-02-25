@@ -1,4 +1,0 @@
-url=https://699e2f296d417e5f043f7eb5--inventory-tracker-1771968892859.netlify.app
-site_id=b6ac3057-5dd4-495a-85b3-72d89caf0a12
-neon_project_id=frosty-hat-69372999
-database_url=postgresql://neondb_owner:npg_KeQ1adowM8Ul@ep-super-sunset-aiij41wc.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require
