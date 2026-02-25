@@ -58,7 +58,6 @@ const dashboardSlice = createSlice({
     builder
       .addCase(fetchDashboardData.pending, (state) => {
         if (state.categoryOverviews.length === 0) state.loading = true;
-        state.recentTransactions = [];
         state.error = null;
       })
       .addCase(fetchDashboardData.fulfilled, (state, action) => {

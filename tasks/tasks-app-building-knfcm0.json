@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteComponentLowInventoryAlerts: Write the LowInventoryAlerts component",
-        "WriteComponentMaterialsCategoriesOverview: Write the MaterialsCategoriesOverview component",
-        "WriteComponentRecentTransactionsTable: Write the RecentTransactionsTable component",
-        "WritePageDashboard: Write the DashboardPage"
-      ],
-      "timestamp": "2026-02-24T21:01:11.948Z"
-    },
-    {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
         "PlanPageClientsListPage: Decide on components, add sections to docs/tests.md",
