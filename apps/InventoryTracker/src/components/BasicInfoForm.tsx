@@ -57,14 +57,16 @@ export function BasicInfoForm({ data, onChange, errors }: BasicInfoFormProps) {
       >
         1. Basic Info
       </h2>
-      <div
-        data-testid="basic-info-fields"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 2fr 1fr",
-          gap: 16,
-        }}
-      >
+      <div className="section-card" style={{ marginBottom: 0 }}>
+        <div className="section-card-body">
+          <div
+            data-testid="basic-info-fields"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 2fr 1fr",
+              gap: 16,
+            }}
+          >
         {/* Date field */}
         <div className="form-group" style={{ marginBottom: 0 }}>
           <label className="form-label" htmlFor="txn-date">
@@ -220,6 +222,8 @@ export function BasicInfoForm({ data, onChange, errors }: BasicInfoFormProps) {
               {errors.transactionType}
             </span>
           )}
+        </div>
+          </div>
         </div>
       </div>
     </div>
