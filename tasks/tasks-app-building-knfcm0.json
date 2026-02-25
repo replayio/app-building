@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageAccounts: Decide on components, add sections to docs/tests.md",
-        "PlanComponentStockAccountsList: Add test entries for StockAccountsList",
-        "PlanComponentInputAccountsList: Add test entries for InputAccountsList",
-        "PlanComponentOutputAccountsList: Add test entries for OutputAccountsList",
-        "PlanComponentAccountRowActions: Add test entries for CreateAccountButton and AccountRowActions (View, Edit, Archive)"
-      ],
-      "timestamp": "2026-02-24T20:41:50.960Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageAccountDetail: Decide on components, add sections to docs/tests.md",
         "PlanComponentAccountHeader: Add test entries for AccountHeader (name, type, status)",
         "PlanComponentTrackedMaterialsTable: Add test entries for TrackedMaterialsTable",

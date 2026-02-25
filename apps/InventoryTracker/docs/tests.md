@@ -250,7 +250,274 @@ Components: NavigationHeader, DateRangeFilter, CategoryFilter, LowInventoryAlert
 
 Components: SidebarNavigation, StockAccountsList, InputAccountsList, OutputAccountsList, CreateAccountButton, AccountRowActions
 
-<!-- Tests to be added by PlanPageAccounts -->
+### SidebarNavigation
+
+**Test: Sidebar displays navigation links with Accounts link active**
+- Components: SidebarNavigation
+- Given: The user navigates to the Accounts page (/accounts)
+- Then: The sidebar displays navigation links: Dashboard, Inventory (expandable), Orders, Accounts, Reports, Settings
+- And: The "Accounts" link is visually highlighted as active
+
+**Test: Breadcrumb displays Home / Accounts**
+- Components: SidebarNavigation
+- Given: The user is on the Accounts page
+- Then: A breadcrumb trail "Home / Accounts" is displayed below the page header
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+
+### StockAccountsList
+
+**Test: Stock Accounts section displays with heading and table**
+- Components: StockAccountsList
+- Given: The user navigates to the Accounts page
+- Then: A "Stock Accounts" section heading is displayed
+- And: A table is shown below the heading with column headers: Account Name, Account Type, Description, Actions
+
+**Test: Stock Accounts table shows default Main Inventory account with "(Default)" badge**
+- Components: StockAccountsList
+- Given: The system has a default stock account "Main Inventory"
+- Then: The Stock Accounts table displays a row for "Main Inventory"
+- And: The Account Type column shows "Stock (Default)" indicating it is the default stock account
+- And: The Description column shows "Primary storage for all physical goods."
+
+**Test: Stock Accounts table shows additional stock accounts**
+- Components: StockAccountsList
+- Given: Stock accounts "Raw Materials", "Finished Goods", and "Safety Stock" exist
+- Then: The Stock Accounts table displays rows for each account
+- And: "Raw Materials" shows Account Type "Stock" and Description "Components for manufacturing."
+- And: "Finished Goods" shows Account Type "Stock" and Description "Completed products ready for sale."
+- And: "Safety Stock" shows Account Type "Stock" and Description "Buffer inventory for emergencies."
+
+**Test: Clicking a stock account row navigates to Account Detail page**
+- Components: StockAccountsList
+- Given: The Stock Accounts table shows "Main Inventory"
+- When: The user clicks on the "Main Inventory" row (anywhere except the action icons)
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Main Inventory"
+
+**Test: Stock Accounts table shows empty state when no stock accounts exist beyond default**
+- Components: StockAccountsList
+- Given: Only the default "Main Inventory" stock account exists
+- Then: The Stock Accounts table shows exactly one row for "Main Inventory"
+
+### InputAccountsList
+
+**Test: Input Accounts section displays with heading and table**
+- Components: InputAccountsList
+- Given: The user navigates to the Accounts page
+- Then: An "Input Accounts" section heading is displayed below the Stock Accounts section
+- And: A table is shown below the heading with column headers: Account Name, Account Type, Description, Actions
+
+**Test: Input Accounts table shows default Purchases account with "(Default)" badge**
+- Components: InputAccountsList
+- Given: The system has a default input account "Purchases"
+- Then: The Input Accounts table displays a row for "Purchases"
+- And: The Account Type column shows "Input (Default)" indicating it is the default input account
+- And: The Description column shows "General account for acquiring stock."
+
+**Test: Input Accounts table shows additional input accounts**
+- Components: InputAccountsList
+- Given: Input accounts "Vendor Credits" and "Shipping Costs (Inbound)" exist
+- Then: The Input Accounts table displays rows for each account
+- And: "Vendor Credits" shows Account Type "Input" and Description "Credits received from suppliers."
+- And: "Shipping Costs (Inbound)" shows Account Type "Input" and Description "Freight and delivery fees for purchases."
+
+**Test: Clicking an input account row navigates to Account Detail page**
+- Components: InputAccountsList
+- Given: The Input Accounts table shows "Purchases"
+- When: The user clicks on the "Purchases" row (anywhere except the action icons)
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Purchases"
+
+### OutputAccountsList
+
+**Test: Output Accounts section displays with heading and table**
+- Components: OutputAccountsList
+- Given: The user navigates to the Accounts page
+- Then: An "Output Accounts" section heading is displayed below the Input Accounts section
+- And: A table is shown below the heading with column headers: Account Name, Account Type, Description, Actions
+
+**Test: Output Accounts table shows default Sales Revenue account with "(Default)" badge**
+- Components: OutputAccountsList
+- Given: The system has a default output account "Sales Revenue"
+- Then: The Output Accounts table displays a row for "Sales Revenue"
+- And: The Account Type column shows "Output (Default)" indicating it is the default output account
+- And: The Description column shows "Income from product sales."
+
+**Test: Output Accounts table shows additional output accounts**
+- Components: OutputAccountsList
+- Given: Output accounts "Service Income" and "Customer Discounts" exist
+- Then: The Output Accounts table displays rows for each account
+- And: "Service Income" shows Account Type "Output" and Description "Revenue from non-product services."
+- And: "Customer Discounts" shows Account Type "Output" and Description "Reductions given to customers."
+
+**Test: Clicking an output account row navigates to Account Detail page**
+- Components: OutputAccountsList
+- Given: The Output Accounts table shows "Sales Revenue"
+- When: The user clicks on the "Sales Revenue" row (anywhere except the action icons)
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Sales Revenue"
+
+### CreateAccountButton
+
+**Test: Create Stock Account button is displayed with plus icon next to Stock Accounts heading**
+- Components: CreateAccountButton, StockAccountsList
+- Given: The user is on the Accounts page
+- Then: A "+ Create Stock Account" button is displayed to the right of the "Stock Accounts" heading
+- And: The button has a plus (+) icon and the text "Create Stock Account"
+- And: The button is styled as a primary action button (blue/filled)
+
+**Test: Clicking Create Stock Account button opens a create account modal for stock type**
+- Components: CreateAccountButton
+- Given: The user is on the Accounts page
+- When: The user clicks the "+ Create Stock Account" button
+- Then: A modal dialog opens with the title "Create Stock Account"
+- And: The modal contains form fields for: Account Name (text input), Description (text area)
+- And: The Account Type is pre-set to "Stock" and cannot be changed
+- And: The modal has "Create" (or "Save") and "Cancel" buttons
+
+**Test: Submitting the create stock account form adds a new stock account**
+- Components: CreateAccountButton, StockAccountsList
+- Given: The create stock account modal is open
+- When: The user enters "Quarantine Storage" in the Account Name field
+- And: The user enters "Holding area for quality inspection items." in the Description field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: A new row for "Quarantine Storage" appears in the Stock Accounts table with type "Stock" and the entered description
+- And: The new account is persisted to the database
+
+**Test: Create account modal validates that Account Name is required**
+- Components: CreateAccountButton
+- Given: The create stock account modal is open
+- And: The Account Name field is empty
+- When: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Account Name is required
+- And: The modal remains open and the account is not created
+
+**Test: Cancel button in create account modal closes the modal without creating an account**
+- Components: CreateAccountButton
+- Given: The create stock account modal is open and the user has entered some data
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: No new account is created in the Stock Accounts table
+
+**Test: Create Input Account button is displayed next to Input Accounts heading**
+- Components: CreateAccountButton, InputAccountsList
+- Given: The user is on the Accounts page
+- Then: A "+ Create Input Account" button is displayed to the right of the "Input Accounts" heading
+- And: The button has a plus (+) icon and the text "Create Input Account"
+
+**Test: Clicking Create Input Account button opens a create account modal for input type**
+- Components: CreateAccountButton
+- Given: The user is on the Accounts page
+- When: The user clicks the "+ Create Input Account" button
+- Then: A modal dialog opens with the title "Create Input Account"
+- And: The Account Type is pre-set to "Input" and cannot be changed
+- And: The modal contains form fields for Account Name and Description
+
+**Test: Submitting the create input account form adds a new input account**
+- Components: CreateAccountButton, InputAccountsList
+- Given: The create input account modal is open
+- When: The user enters "Returns" in the Account Name field
+- And: The user enters "Goods returned by customers." in the Description field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: A new row for "Returns" appears in the Input Accounts table with type "Input" and the entered description
+
+**Test: Create Output Account button is displayed next to Output Accounts heading**
+- Components: CreateAccountButton, OutputAccountsList
+- Given: The user is on the Accounts page
+- Then: A "+ Create Output Account" button is displayed to the right of the "Output Accounts" heading
+- And: The button has a plus (+) icon and the text "Create Output Account"
+
+**Test: Clicking Create Output Account button opens a create account modal for output type**
+- Components: CreateAccountButton
+- Given: The user is on the Accounts page
+- When: The user clicks the "+ Create Output Account" button
+- Then: A modal dialog opens with the title "Create Output Account"
+- And: The Account Type is pre-set to "Output" and cannot be changed
+- And: The modal contains form fields for Account Name and Description
+
+**Test: Submitting the create output account form adds a new output account**
+- Components: CreateAccountButton, OutputAccountsList
+- Given: The create output account modal is open
+- When: The user enters "Waste Disposal" in the Account Name field
+- And: The user enters "Materials discarded or written off." in the Description field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: A new row for "Waste Disposal" appears in the Output Accounts table with type "Output" and the entered description
+
+### AccountRowActions
+
+**Test: Each account row displays View, Edit, and Archive action icons**
+- Components: AccountRowActions
+- Given: An account row "Main Inventory" is displayed in the Stock Accounts table
+- Then: The Actions column shows three icon buttons: an eye icon (View), a pencil icon (Edit), and an archive/trash icon (Archive)
+
+**Test: Clicking the View action icon navigates to Account Detail page**
+- Components: AccountRowActions
+- Given: The "Raw Materials" row is displayed in the Stock Accounts table
+- When: The user clicks the eye (View) icon in the Actions column for "Raw Materials"
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Raw Materials"
+
+**Test: Clicking the Edit action icon opens an edit account modal with pre-filled data**
+- Components: AccountRowActions
+- Given: The "Vendor Credits" row is displayed in the Input Accounts table
+- When: The user clicks the pencil (Edit) icon in the Actions column for "Vendor Credits"
+- Then: A modal dialog opens with the title "Edit Account"
+- And: The Account Name field is pre-filled with "Vendor Credits"
+- And: The Description field is pre-filled with "Credits received from suppliers."
+- And: The Account Type field shows "Input" and is read-only
+- And: The modal has "Save" and "Cancel" buttons
+
+**Test: Submitting the edit account modal updates the account data**
+- Components: AccountRowActions, InputAccountsList
+- Given: The edit modal is open for "Vendor Credits"
+- When: The user changes the Account Name to "Supplier Credits"
+- And: The user changes the Description to "Credits and refunds from suppliers."
+- And: The user clicks the "Save" button
+- Then: The modal closes
+- And: The Input Accounts table row now shows "Supplier Credits" with the updated description
+- And: The change is persisted to the database
+
+**Test: Canceling the edit account modal discards changes**
+- Components: AccountRowActions
+- Given: The edit modal is open for "Vendor Credits" and the user has changed the name
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: The account row still shows the original "Vendor Credits" name and description
+
+**Test: Clicking the Archive action icon shows a confirmation dialog**
+- Components: AccountRowActions
+- Given: The "Safety Stock" row is displayed in the Stock Accounts table
+- When: The user clicks the archive icon in the Actions column for "Safety Stock"
+- Then: A confirmation dialog appears asking "Are you sure you want to archive this account?"
+- And: The dialog has "Archive" (or "Confirm") and "Cancel" buttons
+
+**Test: Confirming archive removes the account from the active list**
+- Components: AccountRowActions, StockAccountsList
+- Given: The archive confirmation dialog is shown for "Safety Stock"
+- When: The user clicks the "Archive" (or "Confirm") button
+- Then: The dialog closes
+- And: "Safety Stock" is removed from the Stock Accounts table
+- And: The archived account is persisted as archived in the database
+
+**Test: Canceling archive keeps the account in the active list**
+- Components: AccountRowActions
+- Given: The archive confirmation dialog is shown for "Safety Stock"
+- When: The user clicks the "Cancel" button
+- Then: The dialog closes
+- And: "Safety Stock" remains in the Stock Accounts table unchanged
+
+**Test: Default accounts cannot be archived**
+- Components: AccountRowActions
+- Given: The "Main Inventory" row is displayed with type "Stock (Default)"
+- Then: The archive icon for "Main Inventory" is either disabled (grayed out) or hidden
+- And: The user cannot archive the default account
+
+**Test: Action icons work identically across all three account category tables**
+- Components: AccountRowActions, StockAccountsList, InputAccountsList, OutputAccountsList
+- Given: Accounts exist in Stock, Input, and Output tables
+- Then: Each account row in all three tables has the same View, Edit, and Archive action icons
+- And: The View icon navigates to the respective AccountDetailPage for each account
+- And: The Edit icon opens the edit modal pre-filled with that account's data
+- And: The Archive icon triggers the confirmation dialog for that account
 
 ---
 
