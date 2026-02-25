@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/writeScript.md",
-      "subtasks": [
-        "Implement test script for ProductionHub"
-      ],
-      "timestamp": "2026-02-25T00:42:09.324Z"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "Unpack: Write Playwright tests for ProductionHub"
