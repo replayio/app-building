@@ -1,31 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestED-HDR-1: Write test for ED-HDR-1",
-        "WriteTestED-HDR-2: Write test for ED-HDR-2",
-        "WriteTestED-HDR-3: Write test for ED-HDR-3",
-        "WriteTestED-HDR-4: Write test for ED-HDR-4",
-        "WriteTestED-INFO-1: Write test for ED-INFO-1",
-        "WriteTestED-INFO-2: Write test for ED-INFO-2",
-        "WriteTestED-INFO-3: Write test for ED-INFO-3",
-        "WriteTestED-INFO-4: Write test for ED-INFO-4",
-        "WriteTestED-INFO-5: Write test for ED-INFO-5",
-        "WriteTestED-INFO-6: Write test for ED-INFO-6",
-        "WriteTestED-INFO-7: Write test for ED-INFO-7",
-        "WriteTestED-NOTES-1: Write test for ED-NOTES-1",
-        "WriteTestED-NOTES-2: Write test for ED-NOTES-2",
-        "WriteTestED-NOTES-3: Write test for ED-NOTES-3",
-        "WriteTestED-NOTES-4: Write test for ED-NOTES-4",
-        "WriteTestED-NOTES-5: Write test for ED-NOTES-5",
-        "WriteTestED-NOTES-6: Write test for ED-NOTES-6",
-        "WriteTestED-NOTES-7: Write test for ED-NOTES-7"
-      ],
-      "timestamp": "2026-02-25T00:49:15.347Z",
-      "app": "ProductionHub"
-    },
-    {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
         "Unpack: Get all tests passing for ProductionHub"
