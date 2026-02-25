@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageTasksListPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentTasksListHeader: Add test entries for TasksListHeader (page title Upcoming Tasks, New Task button)",
-        "PlanComponentTasksFilterAndCards: Add test entries for TasksFilter (filter dropdown with search input), TaskCardList (task cards with priority badge High/Medium/Low/Normal color-coded, title, due date, assignee avatar and name/role, actions menu ..., click navigates to /tasks/:taskId)",
-        "PlanComponentCreateTaskModal: Add test entries for CreateTaskModal (title, description, due date, priority dropdown, client dropdown, assignee user dropdown, deal dropdown optional, validation)"
-      ],
-      "timestamp": "2026-02-25T03:31:59.557Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageTaskDetailPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentTaskDetailHeader: Add test entries for TaskDetailHeader (title, priority badge, status, due date, assignee, associated client link, associated deal link)",
         "PlanComponentTaskNotesAndActions: Add test entries for TaskNotesSection (notes list, add note input, delete note button), TaskActions (Mark Complete button, Cancel button, status updates persisted)"

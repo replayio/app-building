@@ -1513,7 +1513,142 @@ Given a deal has no associated contacts/individuals, the Contacts/Individuals se
 
 ### Components: TasksListHeader, TasksFilter, TaskCardList, CreateTaskModal
 
-<!-- Tests for task cards, filtering, create task, navigation to task detail -->
+#### TasksListHeader
+
+**Page title displays "Upcoming Tasks"**
+Given the user navigates to /tasks, the page displays the heading "Upcoming Tasks" at the top left of the content area.
+
+**New Task button is visible with primary styling**
+Given the user is on /tasks, the header area displays a primary-styled (blue) "New Task" button at the top right of the content area.
+
+**New Task button opens CreateTaskModal**
+Given the user is on /tasks, when they click the "New Task" button, the CreateTaskModal dialog opens with a form to create a new task.
+
+#### TasksFilter
+
+**Filter control is visible with filter icon, chevron, and search input**
+Given the user is on /tasks, a filter control is displayed with a filter icon, a dropdown chevron, and a text input with placeholder text "Filter...".
+
+**Filter dropdown opens on chevron click**
+Given the user is on /tasks, when they click the filter dropdown chevron, a dropdown menu appears with filter category options (e.g., Priority, Status, Assignee, Client).
+
+**Filter search input filters tasks by title text**
+Given the user is on /tasks with multiple task cards displayed, when the user types text into the "Filter..." search input, the task cards filter to show only tasks whose title contains the typed text. The filtering applies with debounced input.
+
+**Filter by priority High shows only High priority tasks**
+Given the user is on /tasks, when they open the filter dropdown and select "High" priority, only task cards with the "High" priority badge are displayed.
+
+**Filter by priority Medium shows only Medium priority tasks**
+Given the user is on /tasks, when they open the filter dropdown and select "Medium" priority, only task cards with the "Medium" priority badge are displayed.
+
+**Filter by priority Low shows only Low priority tasks**
+Given the user is on /tasks, when they open the filter dropdown and select "Low" priority, only task cards with the "Low" priority badge are displayed.
+
+**Filter by priority Normal shows only Normal priority tasks**
+Given the user is on /tasks, when they open the filter dropdown and select "Normal" priority, only task cards with the "Normal" priority badge are displayed.
+
+**Filter search input within dropdown filters available options**
+Given the user is on /tasks and the filter dropdown is open with many options, when the user types in the searchable search input at the top of the dropdown, the options filter as they type, and "No matches" is shown when nothing matches.
+
+**Filter clears when search input is cleared**
+Given the user has typed a filter term and the task cards are filtered, when the user clears the search input, all task cards are displayed again (subject to any active dropdown filter).
+
+**Filter resets to show all tasks**
+Given the user has selected a filter from the dropdown, when they select "All" or clear all filter criteria, all task cards are displayed again.
+
+**Multiple filters combine together**
+Given the user is on /tasks, when they select a priority filter from the dropdown and type text in the search input, only task cards matching both the priority filter and the search text are displayed (AND logic).
+
+#### TaskCardList
+
+**Task cards display priority badge with color coding**
+Given the user is on /tasks with tasks of various priorities, each task card displays a priority badge: "High" with a red/orange background, "Medium" with a yellow background, "Low" with a green background, and "Normal" with a blue background.
+
+**Task cards display task title**
+Given the user is on /tasks, each task card displays the task's title text prominently (e.g., "Finalize Q3 Marketing Plan", "Review Client Proposal Draft").
+
+**Task cards display due date**
+Given the user is on /tasks, each task card displays the due date in the format "Due: <date>" (e.g., "Due: Today, 5:00 PM", "Due: Tomorrow, 10:00 AM", "Due: Oct 25, 2024").
+
+**Task cards display assignee avatar and name with role**
+Given the user is on /tasks, each task card displays the assignee's avatar image (or initials fallback) and their name followed by role in parentheses (e.g., "Sarah J. (PM)", "David L. (Sales)", "Emily C. (Dev)", "Mark R. (Lead)").
+
+**Task cards display actions menu button**
+Given the user is on /tasks, each task card has a three-dot actions menu button ("...") on the right side.
+
+**Actions menu opens on click with task action options**
+Given the user is on /tasks, when they click the three-dot actions menu ("...") on a task card, a dropdown menu appears with action options including Edit, Mark Complete, Cancel, and Delete.
+
+**Actions menu Mark Complete marks task as completed**
+Given the user is on /tasks, when they click the "..." menu on a task card and select "Mark Complete", the task is marked as completed via the API, and the task card is removed from the upcoming tasks list (since it is no longer upcoming).
+
+**Actions menu Cancel marks task as canceled**
+Given the user is on /tasks, when they click the "..." menu on a task card and select "Cancel", the task is marked as canceled via the API, and the task card is removed from the upcoming tasks list.
+
+**Actions menu Delete removes the task**
+Given the user is on /tasks, when they click the "..." menu on a task card and select "Delete", a confirmation prompt appears. Upon confirmation, the task is deleted from the database and the task card is removed from the list.
+
+**Clicking a task card navigates to TaskDetailPage**
+Given the user is on /tasks, when they click on a task card (anywhere except the actions menu), the app navigates to /tasks/:taskId for that task and the TaskDetailPage is displayed.
+
+**Task cards are ordered by due date (soonest first)**
+Given the user is on /tasks with multiple tasks, the task cards are ordered by due date with the soonest-due tasks appearing first.
+
+**Task list displays empty state when no tasks exist**
+Given the user is on /tasks with no upcoming tasks in the system, the page displays an empty state message (e.g., "No tasks found") encouraging the user to create a new task.
+
+**Task list displays empty state when filter matches nothing**
+Given the user is on /tasks and applies a filter that matches no tasks, the task card list displays an empty state message indicating no tasks were found matching the filter criteria.
+
+**New task appears in list after creation**
+Given the user is on /tasks and creates a new task via the CreateTaskModal, when the modal closes, the newly created task card appears in the list without requiring a page refresh.
+
+**Completed or canceled tasks are not shown in the list**
+Given the user is on /tasks, only tasks with an open/pending status are displayed. Tasks that have been marked complete or canceled do not appear in the upcoming tasks list.
+
+#### CreateTaskModal
+
+**Modal opens when New Task is clicked**
+Given the user is on /tasks, when they click "New Task", a modal dialog appears with a form title (e.g., "Create Task" or "New Task").
+
+**Modal contains title input field (required)**
+Given the CreateTaskModal is open, the form contains a "Title" text input field that is required.
+
+**Modal contains description text area**
+Given the CreateTaskModal is open, the form contains a "Description" text area field for entering task details. This field is optional.
+
+**Modal contains due date picker**
+Given the CreateTaskModal is open, the form contains a "Due Date" date picker field for selecting when the task is due.
+
+**Modal contains priority dropdown with four options**
+Given the CreateTaskModal is open, the form contains a "Priority" dropdown with options: High, Medium, Low, Normal.
+
+**Modal contains client dropdown populated from clients API**
+Given the CreateTaskModal is open, the form contains a "Client" FilterSelect dropdown populated with existing clients from the API, with searchable functionality. It is not a free-form text field.
+
+**Modal contains assignee dropdown populated from users API**
+Given the CreateTaskModal is open, the form contains an "Assignee" FilterSelect dropdown populated with team members from the users API, with searchable functionality. It is not a free-form text field.
+
+**Modal contains deal dropdown (optional, filtered by selected client)**
+Given the CreateTaskModal is open, the form contains a "Deal" FilterSelect dropdown that is optional. When a client is selected, the dropdown is populated with deals associated with that client. If no client is selected, the deal dropdown is empty or disabled.
+
+**Deal dropdown updates when client selection changes**
+Given the CreateTaskModal is open and a client is selected with associated deals populating the deal dropdown, when the user changes the client selection to a different client, the deal dropdown updates to show deals for the newly selected client and clears any previously selected deal.
+
+**Submit creates a new task**
+Given the CreateTaskModal is open and the user fills in title "Follow up on proposal", enters a description, selects priority "High", picks a due date, selects client "Acme Corp", selects an assignee from the users dropdown, and clicks submit, the task is created in the database, the modal closes, and the new task card appears in the task list.
+
+**Task creation generates a timeline entry on the associated client**
+Given the user creates a new task via CreateTaskModal associated with a client, a "Task Created" timeline entry is added to the client's TimelineSection attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created — not duplicates from re-renders.
+
+**Task creation triggers follower notifications on the client**
+Given the user creates a new task associated with a client that has followers, email notifications are sent to followers who have "task created" notifications enabled (excluding the actor who created the task).
+
+**Modal validates required fields**
+Given the CreateTaskModal is open, when the user clicks submit without filling in the required title field, a validation error message is displayed next to the title field and the form is not submitted.
+
+**Modal cancel closes without saving**
+Given the CreateTaskModal is open and the user has entered some data, when they click the cancel button or close icon, the modal closes and no new task is created. The entered data is discarded.
 
 ---
 
