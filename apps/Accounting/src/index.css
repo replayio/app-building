@@ -1342,9 +1342,17 @@
   padding: 24px;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 @media (max-width: 640px) {
   .max-sm\:p-3 {
     padding: 12px;
+  }
+
+  .max-sm\:hidden {
+    display: none;
   }
 }
 
@@ -1976,4 +1984,325 @@
   font-size: 13px;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+}
+
+/* ===== Responsive Styles ===== */
+
+/* --- max-width: 1024px (lg) --- */
+@media (max-width: 1024px) {
+  /* ReportTable: hide "Accounts Included" column (4th) */
+  .report-table-wrapper .data-table th:nth-child(4),
+  .report-table-wrapper .data-table td:nth-child(4) {
+    display: none;
+  }
+
+  /* TransactionsTable (TransactionsPage): hide "Tags" column (6th) */
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table th:nth-child(6),
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table td:nth-child(6) {
+    display: none;
+  }
+
+  /* DetailedReportTable: hide "Trend" column (6th) */
+  .detailed-report-table-wrapper .data-table th:nth-child(6),
+  .detailed-report-table-wrapper .data-table td:nth-child(6) {
+    display: none;
+  }
+}
+
+/* --- max-width: 768px (md) --- */
+@media (max-width: 768px) {
+  /* Navbar compact */
+  .navbar {
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .navbar-user-name {
+    display: none;
+  }
+
+  /* Account header stacks */
+  .account-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .account-header-actions {
+    width: 100%;
+  }
+
+  .account-header-search-input {
+    flex: 1;
+    width: auto;
+  }
+
+  /* Transaction header fields stack */
+  .transaction-header-fields {
+    flex-direction: column;
+  }
+
+  /* Create report dialog body: single column */
+  .create-report-dialog-body {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  /* Variance summary: wrap metrics */
+  .variance-summary-card {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .variance-summary-chart {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Report header row stacks */
+  .report-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .report-header-actions {
+    flex-shrink: initial;
+  }
+
+  /* Report list header actions wrap */
+  .report-list-header-actions {
+    flex-wrap: wrap;
+  }
+
+  /* ReportTable: also hide "Date Range" column (3rd) */
+  .report-table-wrapper .data-table th:nth-child(3),
+  .report-table-wrapper .data-table td:nth-child(3) {
+    display: none;
+  }
+
+  /* TransactionsTable (TransactionsPage): also hide "Account" column (3rd) */
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table th:nth-child(3),
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table td:nth-child(3) {
+    display: none;
+  }
+
+  /* TransactionsTab (AccountDetail): hide "Direction" column (4th) */
+  .account-detail-tabs .transactions-table-wrapper .data-table th:nth-child(4),
+  .account-detail-tabs .transactions-table-wrapper .data-table td:nth-child(4) {
+    display: none;
+  }
+
+  /* DetailedReportTable: also hide "Variance %" (5th) and "Actions" (7th) */
+  .detailed-report-table-wrapper .data-table th:nth-child(5),
+  .detailed-report-table-wrapper .data-table td:nth-child(5),
+  .detailed-report-table-wrapper .data-table th:nth-child(7),
+  .detailed-report-table-wrapper .data-table td:nth-child(7) {
+    display: none;
+  }
+
+  /* Line items grid: tighter columns */
+  .line-items-header,
+  .line-item-row {
+    grid-template-columns: 1fr 100px 100px 36px;
+  }
+
+  /* Reporting links wrap */
+  .reporting-links-list {
+    flex-wrap: wrap;
+  }
+
+  /* Page header wraps */
+  .page-header {
+    padding: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+/* --- max-width: 640px (sm) --- */
+@media (max-width: 640px) {
+  /* Page titles smaller */
+  .page-title,
+  .transactions-page-title,
+  .report-header-title,
+  .account-header-name {
+    font-size: 20px;
+  }
+
+  /* Section headings smaller */
+  .detailed-report-heading,
+  .variance-chart-heading {
+    font-size: 16px;
+  }
+
+  /* Report list header row stacks */
+  .report-list-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .report-list-header-actions {
+    width: 100%;
+  }
+
+  .report-list-search-input {
+    width: 100%;
+  }
+
+  /* TransactionsTab (AccountDetail): also hide "Actions" column (5th) */
+  .account-detail-tabs .transactions-table-wrapper .data-table th:nth-child(5),
+  .account-detail-tabs .transactions-table-wrapper .data-table td:nth-child(5) {
+    display: none;
+  }
+
+  /* Pagination wraps */
+  .transactions-pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .transactions-pagination-label {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Modal padding */
+  .modal-content {
+    padding: 16px;
+  }
+
+  /* Account card grid: single column */
+  [data-testid="accounts-page"] .category-section-content {
+    grid-template-columns: 1fr;
+  }
+
+  /* Variance summary stacks */
+  .variance-summary-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Filter bar items shrink */
+  .filter-dropdown {
+    min-width: 100px;
+  }
+
+  .transactions-page-filter-bar .date-range-field {
+    min-width: 100px;
+  }
+
+  /* Transactions page header wraps */
+  .transactions-page-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+/* --- max-width: 480px (card mode for tables) --- */
+@media (max-width: 480px) {
+  /* TransactionsTable (TransactionsPage) card mode */
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table thead {
+    display: none;
+  }
+
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+  }
+
+  [data-testid="transactions-page"] .transactions-table-wrapper .data-table tbody td {
+    padding: 2px 0;
+    border: none;
+    display: block !important;
+  }
+
+  /* TransactionsTab (AccountDetail) card mode */
+  .account-detail-tabs .transactions-table-wrapper .data-table thead {
+    display: none;
+  }
+
+  .account-detail-tabs .transactions-table-wrapper .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+  }
+
+  .account-detail-tabs .transactions-table-wrapper .data-table tbody td {
+    padding: 2px 0;
+    border: none;
+    display: block !important;
+  }
+
+  /* ReportTable card mode */
+  .report-table-wrapper .data-table thead {
+    display: none;
+  }
+
+  .report-table-wrapper .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+  }
+
+  .report-table-wrapper .data-table tbody td {
+    padding: 2px 0;
+    border: none;
+    display: block !important;
+  }
+
+  /* DetailedReportTable card mode */
+  .detailed-report-table-wrapper .data-table thead {
+    display: none;
+  }
+
+  .detailed-report-table-wrapper .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+  }
+
+  .detailed-report-table-wrapper .data-table tbody td {
+    padding: 2px 0;
+    border: none;
+    display: block !important;
+  }
+
+  /* Line items: stack on mobile */
+  .line-items-header {
+    display: none;
+  }
+
+  .line-item-row {
+    grid-template-columns: 1fr 36px;
+    gap: 8px;
+  }
+
+  .line-item-row > *:nth-child(1),
+  .line-item-row > *:nth-child(2),
+  .line-item-row > *:nth-child(3) {
+    grid-column: 1;
+  }
+
+  .line-item-row > *:nth-child(4) {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+
+  /* Create report dialog: reduce modal max-width */
+  .create-report-dialog .modal-content {
+    max-width: calc(100% - 24px);
+  }
 }

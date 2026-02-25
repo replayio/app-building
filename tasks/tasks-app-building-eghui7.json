@@ -1,20 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveAccountsPage: Make AccountsPage responsive",
-        "MakeResponsiveAccountDetailPage: Make AccountDetailPage responsive",
-        "MakeResponsiveNewTransactionModal: Make NewTransactionModal responsive",
-        "MakeResponsiveCreateReportDialog: Make CreateReportDialog responsive",
-        "MakeResponsiveReportDetails: Make ReportDetails responsive",
-        "MakeResponsiveReportList: Make ReportList responsive",
-        "MakeResponsiveTransactionsPage: Make TransactionsPage responsive"
-      ],
-      "timestamp": "2026-02-25T15:35:05.296Z",
-      "app": "Accounting"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"

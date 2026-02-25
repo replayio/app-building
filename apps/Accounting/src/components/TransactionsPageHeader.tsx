@@ -191,7 +191,7 @@ export function TransactionsPageHeader({
               strokeLinecap="round"
             />
           </svg>
-          New Transaction
+          <span className="max-sm:hidden">New Transaction</span>
         </button>
       </div>
 

@@ -27,7 +27,7 @@ export function AccountsOverviewHeader(): React.ReactElement {
             <path d="M6 9H10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             <path d="M6 11.5H10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-          Generate Reports
+          <span className="max-sm:hidden">Generate Reports</span>
         </button>
       </div>
 

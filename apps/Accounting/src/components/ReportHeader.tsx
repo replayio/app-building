@@ -61,7 +61,7 @@ export function ReportHeader({
         <h1 className="report-header-title" data-testid="report-header-title">
           {report.name} (ID: {report.id})
         </h1>
-        <div className="report-header-actions">
+        <div className="report-header-actions flex-wrap">
           <button
             className="btn btn--secondary"
             data-testid="export-pdf-btn"
