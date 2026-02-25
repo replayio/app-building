@@ -1,7 +1,7 @@
 /**
  * add-task: Adds a task to the queue.
  *
- * Usage: npx tsx /repo/scripts/add-task.ts --skill <path> --subtask "desc1" --subtask "desc2" [--trailing]
+ * Usage: npx tsx /repo/scripts/add-task.ts --skill <path> --subtask "desc1" --subtask "desc2" [--app "<name>"] [--trailing]
  *
  * By default, adds to the FRONT of the queue (next to be processed).
  * With --trailing, adds to the END of the queue.
@@ -20,16 +20,18 @@ interface Task {
   skill: string;
   subtasks: string[];
   timestamp: string;
+  app?: string;
 }
 
 interface TasksFile {
   tasks: Task[];
 }
 
-function parseArgs(): { skill: string; subtasks: string[]; trailing: boolean } {
+function parseArgs(): { skill: string; subtasks: string[]; trailing: boolean; app?: string } {
   const args = process.argv.slice(2);
   let skill = "";
   let trailing = false;
+  let app: string | undefined;
   const subtasks: string[] = [];
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--skill" && i + 1 < args.length) {
@@ -38,15 +40,18 @@ function parseArgs(): { skill: string; subtasks: string[]; trailing: boolean } {
     } else if (args[i] === "--subtask" && i + 1 < args.length) {
       subtasks.push(args[i + 1]);
       i++;
+    } else if (args[i] === "--app" && i + 1 < args.length) {
+      app = args[i + 1];
+      i++;
     } else if (args[i] === "--trailing") {
       trailing = true;
     }
   }
   if (!skill || subtasks.length === 0) {
-    console.error('Usage: add-task --skill "<path>" --subtask "desc1" [--subtask "desc2" ...] [--trailing]');
+    console.error('Usage: add-task --skill "<path>" --subtask "desc1" [--subtask "desc2" ...] [--app "<name>"] [--trailing]');
     process.exit(1);
   }
-  return { skill, subtasks, trailing };
+  return { skill, subtasks, trailing, app };
 }
 
 function readTasksFile(): TasksFile {
@@ -62,9 +67,9 @@ function writeTasksFile(data: TasksFile): void {
 }
 
 function main() {
-  const { skill, subtasks, trailing } = parseArgs();
+  const { skill, subtasks, trailing, app } = parseArgs();
   const data = readTasksFile();
-  const newTask: Task = { skill, subtasks, timestamp: new Date().toISOString() };
+  const newTask: Task = { skill, subtasks, timestamp: new Date().toISOString(), ...(app && { app }) };
 
   if (trailing) {
     data.tasks.push(newTask);

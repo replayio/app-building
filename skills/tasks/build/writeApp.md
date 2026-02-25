@@ -8,14 +8,14 @@ Unpack the initial write app task into subtasks using `add-task`:
 
 First, add a setup task:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" --app "<AppName>" \
   --subtask "SetupApp: Setup the app" \
   --subtask "DesignDatabase: Design the database"
 ```
 
 Then add one task per page, containing all components and the page itself:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" --app "<AppName>" \
   --subtask "WriteComponent<Component1>: Write the <Component1> component" \
   --subtask "WriteComponent<Component2>: Write the <Component2> component" \
   --subtask "WritePage<Name>: Write the page itself"

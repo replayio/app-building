@@ -8,7 +8,7 @@ Unpack the initial write tests task into subtasks using `add-task`. Add one task
 containing all test entries for that page:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" --app "<AppName>" \
   --subtask "WriteTest<TestEntry1>: Write test for <TestEntry1>" \
   --subtask "WriteTest<TestEntry2>: Write test for <TestEntry2>" \
   --subtask "WriteTest<TestEntry3>: Write test for <TestEntry3>"

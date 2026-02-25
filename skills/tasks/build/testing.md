@@ -7,7 +7,7 @@ You will run all the tests in the app and get them to pass..
 Unpack the initial testing task into a single task:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" --app "<AppName>" \
   --subtask "FixTests: Get all tests passing"
 ```
 
@@ -15,7 +15,7 @@ After running tests and there are failures, pick specific failing tests and add 
 them without regressing any tests that passed in previous runs:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" --app "<AppName>" \
   --subtask "Fix: <failing test name 1>" \
   --subtask "Fix: <failing test name 2>"
 ```

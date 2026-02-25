@@ -24,6 +24,7 @@ export interface Task {
   skill: string;
   subtasks: string[];
   timestamp: string;
+  app?: string;
 }
 
 interface TasksFile {

@@ -44,7 +44,7 @@ When you have completed ALL subtasks in your task, output `<DONE>` to signal com
 
 Work is managed through a JSON task queue at `tasks/tasks-<containerName>.json`. The file contains an object
 with a `tasks` array. Each task has a `skill`, an array of `subtasks` (description strings),
-and a `timestamp`:
+a `timestamp`, and an optional `app` name:
 
 ```json
 {
@@ -56,7 +56,8 @@ and a `timestamp`:
         "CheckComponentsAuth: Check writeApp.md directive violations in Authentication",
         "CheckTestsAuth: Check writeTests.md directive violations in Authentication"
       ],
-      "timestamp": "2026-02-20T00:00:00.000Z"
+      "timestamp": "2026-02-20T00:00:00.000Z",
+      "app": "sales-crm"
     }
   ]
 }
@@ -64,9 +65,10 @@ and a `timestamp`:
 
 The agent NEVER reads or writes task files directly. Instead, use:
 
-* **`npx tsx /repo/scripts/add-task.ts --skill "<path>" --subtask "desc1" --subtask "desc2"`**:
+* **`npx tsx /repo/scripts/add-task.ts --skill "<path>" --subtask "desc1" --subtask "desc2" [--app "<name>"] [--trailing]`**:
   Adds a task to the FRONT of the queue (next to be processed). Each `--subtask` flag
   adds one subtask to the task. Subtasks execute in the order listed.
+  Use `--app` to associate the task with a specific app (the directory name under `apps/`).
   Add `--trailing` to append to the END of the queue instead.
 
 All subtasks in a task share the same skill. Group related subtasks together — for example,
