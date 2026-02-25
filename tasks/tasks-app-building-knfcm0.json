@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testing.md",
-      "subtasks": [
-        "Unpack: Get all tests passing for SalesCRM"
-      ],
-      "timestamp": "2026-02-24T19:26:38.516Z"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production for SalesCRM"

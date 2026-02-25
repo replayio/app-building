@@ -184,7 +184,14 @@ export function NavigationSidebar() {
               <button
                 className="sidebar-signin-btn"
                 data-testid="sidebar-signin-btn"
-                onClick={() => setShowAuthForm(true)}
+                onClick={() => {
+                  setShowAuthForm(true);
+                  setAuthMode("signin");
+                  setEmail("");
+                  setPassword("");
+                  setAuthError("");
+                  setAuthMessage("");
+                }}
               >
                 Sign In
               </button>
