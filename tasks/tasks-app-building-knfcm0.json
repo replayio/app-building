@@ -1,47 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestDisplayAddNewSupplierButton: Write test for Display Add New Supplier Button",
-        "WriteTestDisplayCreatePurchaseOrderButton: Write test for Display Create Purchase Order Button",
-        "WriteTestAddNewSupplierButtonOpensCreateSupplierDialog: Write test for Add New Supplier Button Opens Create Supplier Dialog",
-        "WriteTestCreateSupplierViaDialogSavesAndUpdatesDashboard: Write test for Create Supplier via Dialog Saves and Updates Dashboard",
-        "WriteTestCreateSupplierDialogCancelDoesNotCreateSupplier: Write test for Create Supplier Dialog Cancel Does Not Create Supplier",
-        "WriteTestCreateSupplierDialogValidation: Write test for Create Supplier Dialog Validation",
-        "WriteTestCreatePurchaseOrderButtonOpensCreateOrderDialog: Write test for Create Purchase Order Button Opens Create Order Dialog",
-        "WriteTestCreateOrderViaDialogSavesAndUpdatesDashboard: Write test for Create Order via Dialog Saves and Updates Dashboard",
-        "WriteTestCreateOrderDialogCancelDoesNotCreateOrder: Write test for Create Order Dialog Cancel Does Not Create Order",
-        "WriteTestCreateOrderDialogValidation: Write test for Create Order Dialog Validation",
-        "WriteTestDisplayUpcomingOrdersHeading: Write test for Display Upcoming Orders Heading",
-        "WriteTestDisplayTableWithCorrectColumns: Write test for Display Table with Correct Columns",
-        "WriteTestDisplayOrderDataRows: Write test for Display Order Data Rows",
-        "WriteTestOrderIDLinksNavigateToOrderDetails: Write test for Order ID Links Navigate to Order Details",
-        "WriteTestOrderIDLinksAreStyledAsClickable: Write test for Order ID Links Are Styled as Clickable",
-        "WriteTestStatusBadgesWithCorrectColors: Write test for Status Badges with Correct Colors",
-        "WriteTestFilterByStatusDropdown: Write test for Filter by Status Dropdown",
-        "WriteTestFilterBySupplierDropdown: Write test for Filter by Supplier Dropdown",
-        "WriteTestBothFiltersAppliedTogether: Write test for Both Filters Applied Together",
-        "WriteTestEmptyStateWhenNoOrdersMatchFilters: Write test for Empty State When No Orders Match Filters",
-        "WriteTestEmptyStateWhenNoUpcomingOrdersExist: Write test for Empty State When No Upcoming Orders Exist",
-        "WriteTestCurrencyFormattingInTotalCostColumn: Write test for Currency Formatting in Total Cost Column",
-        "WriteTestDateFormattingInExpectedDeliveryColumn: Write test for Date Formatting in Expected Delivery Column",
-        "WriteTestDisplaySuppliersListHeading: Write test for Display Suppliers List Heading",
-        "WriteTestDisplaySupplierCardsInGridLayout: Write test for Display Supplier Cards in Grid Layout",
-        "WriteTestSupplierCardDisplaysSupplierName: Write test for Supplier Card Displays Supplier Name",
-        "WriteTestSupplierCardDisplaysStatusBadge: Write test for Supplier Card Displays Status Badge",
-        "WriteTestSupplierCardDisplaysContactName: Write test for Supplier Card Displays Contact Name",
-        "WriteTestSupplierCardDisplaysContactEmail: Write test for Supplier Card Displays Contact Email",
-        "WriteTestSupplierCardDisplaysOrdersSummary: Write test for Supplier Card Displays Orders Summary",
-        "WriteTestSupplierCardShowsAllFieldsTogether: Write test for Supplier Card Shows All Fields Together",
-        "WriteTestClickingSupplierCardNavigatesToSupplierDetails: Write test for Clicking Supplier Card Navigates to Supplier Details",
-        "WriteTestMultipleSupplierCardsDisplayed: Write test for Multiple Supplier Cards Displayed",
-        "WriteTestEmptyStateWhenNoSuppliersExist: Write test for Empty State When No Suppliers Exist"
-      ],
-      "timestamp": "2026-02-25T05:02:09.949Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
         "Unpack: Get all tests passing for SupplierTracker"
