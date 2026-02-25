@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageContactsListPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentContactsListHeader: Add test entries for ContactsListHeader (page title, Import button, Export CSV button, Add Contact button)",
-        "PlanComponentContactsTableAndPagination: Add test entries for ContactsSearch (search input with debounce filtering across name/email/title/phone/location), ContactsTable (Name, Title, Email, Phone, Location, Associated Clients columns, row click navigates to /individuals/:id), ContactsPagination (50 per page), AddContactModal (form fields), ImportDialog (CSV format: Name, Title, Email, Phone, Location, Client Name)"
-      ],
-      "timestamp": "2026-02-25T03:32:11.314Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageSettingsPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentEmailNotifications: Add test entries for EmailNotificationsSection (7 toggles: client updated, deal created, deal stage changed, task created, task completed, contact added, note added; defaults all enabled; only visible when authenticated)",
         "PlanComponentImportExportSection: Add test entries for ImportExportSection (import buttons for clients/deals/tasks/contacts, export buttons for clients/deals/tasks)",

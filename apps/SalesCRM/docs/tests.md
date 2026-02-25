@@ -1767,7 +1767,179 @@ Given the user marks a task as complete from the TaskDetailPage, when they navig
 
 ### Components: ContactsListHeader, ContactsSearch, ContactsTable, ContactsPagination, AddContactModal, ImportDialog
 
-<!-- Tests for search, table columns, pagination, add/import/export contacts, row click navigation -->
+#### ContactsListHeader
+
+**Page title displays "Contacts"**
+Given the user navigates to /contacts, the page displays the heading "Contacts" at the top left of the content area.
+
+**Import button is visible with icon and label**
+Given the user is on /contacts, the header area displays an "Import" button with a download/import icon and the text "Import".
+
+**Import button opens ImportDialog**
+Given the user is on /contacts, when they click the "Import" button, an ImportDialog modal opens for importing contacts from CSV.
+
+**Export CSV button is visible with icon and label**
+Given the user is on /contacts, the header area displays an "Export CSV" button with an export icon and the text "Export CSV".
+
+**Export CSV button triggers CSV download**
+Given the user is on /contacts, when they click the "Export CSV" button, a CSV file containing the current contacts data is downloaded. The file includes columns matching the contact data fields (Name, Title, Email, Phone, Location, Client Name).
+
+**Add Contact button is visible with plus icon**
+Given the user is on /contacts, the header area displays a primary-styled "+ Add Contact" button with a plus icon and the text "Add Contact".
+
+**Add Contact button opens AddContactModal**
+Given the user is on /contacts, when they click the "+ Add Contact" button, the AddContactModal dialog opens with a form to create a new contact.
+
+#### ContactsSearch
+
+**Search input is visible with placeholder text**
+Given the user is on /contacts, a search input is displayed with placeholder text indicating search capability (e.g., "Search contacts...") and a search icon.
+
+**Search filters contacts by name**
+Given the user is on /contacts with multiple contacts displayed, when the user types "Sarah" into the search bar, the table filters to show only contacts whose name contains "Sarah". The filtering applies with debounced input.
+
+**Search filters contacts by email**
+Given the user is on /contacts, when the user types "sarah@" into the search bar, the table filters to show only contacts whose email contains "sarah@". The filtering applies with debounced input.
+
+**Search filters contacts by title**
+Given the user is on /contacts, when the user types "CEO" into the search bar, the table filters to show only contacts whose title contains "CEO". The filtering applies with debounced input.
+
+**Search filters contacts by phone**
+Given the user is on /contacts, when the user types "555" into the search bar, the table filters to show only contacts whose phone number contains "555". The filtering applies with debounced input.
+
+**Search filters contacts by location**
+Given the user is on /contacts, when the user types "New York" into the search bar, the table filters to show only contacts whose location contains "New York". The filtering applies with debounced input.
+
+**Search uses debounced input**
+Given the user is on /contacts, when the user types rapidly into the search bar, the table does not re-filter on every keystroke. Instead, the filtering is debounced so it only triggers after a short delay once the user stops typing.
+
+**Search clears results when input is cleared**
+Given the user has typed a search term and the table is filtered, when the user clears the search input, all contacts are displayed again (unfiltered).
+
+#### ContactsTable
+
+**Table displays correct column headers**
+Given the user is on /contacts, the contacts table displays column headers in this order: Name, Title, Email, Phone, Location, Associated Clients.
+
+**Name column displays contact names**
+Given the user is on /contacts with contact data, each row shows the contact's full name in the Name column.
+
+**Title column displays contact titles**
+Given the user is on /contacts, each row shows the contact's job title in the Title column (e.g., "CEO", "CTO", "VP of Sales"). If a contact has no title, the cell is empty.
+
+**Email column displays contact emails**
+Given the user is on /contacts, each row shows the contact's email address in the Email column. If a contact has no email, the cell is empty.
+
+**Phone column displays contact phone numbers**
+Given the user is on /contacts, each row shows the contact's phone number in the Phone column. If a contact has no phone, the cell is empty.
+
+**Location column displays contact locations**
+Given the user is on /contacts, each row shows the contact's location in the Location column (e.g., "New York, NY", "San Francisco, CA"). If a contact has no location, the cell is empty.
+
+**Associated Clients column displays linked client names**
+Given the user is on /contacts, each row shows the names of clients the contact is associated with in the Associated Clients column. If a contact is associated with multiple clients, all client names are displayed. If a contact has no associated clients, the cell is empty.
+
+**Row click navigates to PersonDetailPage**
+Given the user is on /contacts, when they click on a contact row, the app navigates to /individuals/:id for that contact and the PersonDetailPage is displayed.
+
+**Table displays empty state when no contacts match search**
+Given the user is on /contacts and types a search term that matches no contacts, the table displays an empty state message indicating no contacts were found.
+
+**New contact appears in table after creation**
+Given the user is on /contacts and creates a new contact via the AddContactModal, when the modal closes, the newly created contact appears in the table without requiring a page refresh.
+
+#### ContactsPagination
+
+**Pagination shows current range and total count**
+Given the user is on /contacts with more than 50 contacts, the pagination area displays text like "Showing 1-50 of N contacts" indicating the current range and total count.
+
+**Page number buttons are displayed**
+Given the user is on /contacts with multiple pages of contacts (more than 50), numbered page buttons (1, 2, 3, ...) are displayed in the pagination area, with the current page highlighted.
+
+**Clicking a page number navigates to that page**
+Given the user is on /contacts viewing page 1, when they click page number "2", the table updates to show the next set of contacts (e.g., rows 51-100) and the page 2 button becomes highlighted.
+
+**Previous button is disabled on first page**
+Given the user is on /contacts viewing page 1, the "Previous" button is disabled or visually inactive, indicating there is no previous page.
+
+**Previous button navigates to the prior page**
+Given the user is on /contacts viewing page 2, when they click "Previous", the table updates to show page 1 data and the page 1 button becomes highlighted.
+
+**Next button navigates to the next page**
+Given the user is on /contacts viewing page 1 with multiple pages, when they click "Next", the table updates to show page 2 data and the page 2 button becomes highlighted.
+
+**Next button is disabled on last page**
+Given the user is on /contacts viewing the last page, the "Next" button is disabled or visually inactive, indicating there is no next page.
+
+**Pagination resets to page 1 when search filter changes**
+Given the user is on /contacts viewing page 2, when they type a new search term in the search bar, the pagination resets to page 1 and the table shows the first page of filtered results.
+
+**50 contacts per page**
+Given the user is on /contacts with more than 50 contacts and no search filter applied, the table displays exactly 50 contacts on page 1, and the remaining contacts on subsequent pages.
+
+#### AddContactModal
+
+**Modal opens when Add Contact is clicked**
+Given the user is on /contacts, when they click "+ Add Contact", a modal dialog appears with a form title (e.g., "Add Contact").
+
+**Modal contains name input field**
+Given the AddContactModal is open, the form contains a "Name" text input field that is required.
+
+**Modal contains title input field**
+Given the AddContactModal is open, the form contains a "Title" text input field for the contact's job title.
+
+**Modal contains email input field**
+Given the AddContactModal is open, the form contains an "Email" text input field for the contact's email address.
+
+**Modal contains phone input field**
+Given the AddContactModal is open, the form contains a "Phone" text input field for the contact's phone number.
+
+**Modal contains location input field**
+Given the AddContactModal is open, the form contains a "Location" text input field for the contact's location.
+
+**Modal contains client association field**
+Given the AddContactModal is open, the form contains a client selector or input field that allows optionally associating the new contact with an existing client by name.
+
+**Modal submit creates a new contact**
+Given the AddContactModal is open and the user fills in the required name field and optionally other fields, when they click the submit/save button, the modal closes, the new contact is created in the database, and the contact appears in the contacts table.
+
+**Modal validates required fields**
+Given the AddContactModal is open, when the user clicks the submit button without filling in the required Name field, a validation error message is displayed and the form is not submitted.
+
+**Modal cancel closes without saving**
+Given the AddContactModal is open and the user has entered some data, when they click the cancel button or close icon, the modal closes and no new contact is created.
+
+**Created contact appears in table with correct data**
+Given the user creates a new contact via AddContactModal with name "John Smith", title "VP Sales", email "john@example.com", phone "555-1234", and location "Chicago, IL", after the modal closes the contacts table includes a row for "John Smith" with the correct title, email, phone, and location.
+
+**Created contact with client association shows associated client**
+Given the user creates a new contact via AddContactModal with name "Jane Doe" and associates it with client "Acme Corp", after the modal closes the contacts table includes a row for "Jane Doe" with "Acme Corp" displayed in the Associated Clients column.
+
+#### ImportDialog
+
+**ImportDialog opens when Import button is clicked**
+Given the user is on /contacts, when they click the "Import" button, the ImportDialog modal opens.
+
+**ImportDialog displays CSV format specification table**
+Given the ImportDialog is open for contacts, it shows a table of expected CSV columns: Name (required), Title (optional), Email (optional), Phone (optional), Location (optional), Client Name (optional — associates the contact with an existing client by name). Each column shows whether it is required or optional and describes valid values.
+
+**ImportDialog has Download CSV template button**
+Given the ImportDialog is open, a "Download CSV template" button is visible. When clicked, it downloads a CSV file with the correct column headers pre-filled (Name, Title, Email, Phone, Location, Client Name) and no data rows, serving as a template for the user.
+
+**ImportDialog has file upload area**
+Given the ImportDialog is open, the dialog contains a file picker or drag-and-drop area for selecting a CSV file to upload.
+
+**ImportDialog validates uploaded CSV**
+Given the ImportDialog is open, when the user uploads a CSV file with missing required columns (e.g., no Name column), the dialog displays validation error messages indicating which required columns are missing.
+
+**ImportDialog shows per-row validation errors**
+Given the ImportDialog is open, when the user uploads a CSV file where some rows have invalid data (e.g., missing Name or a Client Name that does not match any existing client), the dialog displays per-row error messages indicating which rows failed and why, allowing the user to fix the file and re-upload.
+
+**ImportDialog successfully imports valid CSV**
+Given the ImportDialog is open and the user uploads a valid CSV file with properly formatted contact data (including optional Client Name values matching existing clients), the import processes successfully, the dialog shows a success message with the count of imported contacts, and the contacts table updates to include the newly imported contacts.
+
+**ImportDialog cancel closes without importing**
+Given the ImportDialog is open, when the user clicks the cancel button or close icon, the dialog closes and no data is imported.
 
 ---
 
