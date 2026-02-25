@@ -1,7 +1,9 @@
+import { ResetPasswordForm } from "../components/ResetPasswordForm";
+
 export function ResetPasswordPage() {
   return (
-    <div data-testid="reset-password-page">
-      <h1>Reset Password</h1>
+    <div className="auth-page" data-testid="reset-password-page">
+      <ResetPasswordForm />
     </div>
   );
 }
