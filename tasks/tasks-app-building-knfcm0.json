@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageDealsListPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentDealsSummaryAndViews: Add test entries for DealsSummaryCards (Total Active Deals, Pipeline Value, Won Q3 count+value, Lost Q3 count+value), ViewToggle (Table View/Pipeline View tabs)",
-        "PlanComponentDealsFilters: Add test entries for DealsFilters (Stage dropdown searchable, Client dropdown searchable, Status dropdown, Date Range picker, Sort by dropdown with Close Date arrow indicator, Search input)",
-        "PlanComponentDealsTableAndPipeline: Add test entries for DealsTable (Deal Name, Client, Stage, Owner, Value, Close Date sortable with arrow, Status badge On Track/Needs Attention/At Risk/Won, actions menu, pagination), PipelineView (kanban columns by stage, draggable deal cards, drop to change stage), CreateDealModal (fields: name, client dropdown, value, stage, owner user dropdown, probability, expected close date, status), ImportDialog (CSV format spec for deals)"
-      ],
-      "timestamp": "2026-02-25T03:31:43.654Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageDealDetailPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentDealHeader: Add test entries for DealHeader (deal title with name and value, Client field, Value field, Owner user dropdown, Stage dropdown, Change Stage button)",
         "PlanComponentDealStagePipeline: Add test entries for DealStagePipeline (visual stage indicator Lead/Qualification/Discovery/Proposal/Negotiation/Closed Won, current stage highlighted, progress bar)",

@@ -879,7 +879,338 @@ Given the person has no associated clients, the section displays an empty state 
 
 ### Components: DealsListHeader, DealsSummaryCards, ViewToggle, DealsFilters, DealsTable, PipelineView, DealsPagination, CreateDealModal, ImportDialog
 
-<!-- Tests for summary stats, table/pipeline views, filtering, sorting, drag-and-drop, create/import deals -->
+#### DealsListHeader
+
+**Page title displays "Deals List"**
+Given the user navigates to /deals, the page displays the heading "Deals List" at the top left of the content area.
+
+**Breadcrumb displays "/deals"**
+Given the user is on /deals, a breadcrumb path "/deals" is displayed above the page title.
+
+**Create New Deal button is visible with label**
+Given the user is on /deals, the header area displays a primary-styled (blue) "Create New Deal" button at the top right.
+
+**Create New Deal button opens CreateDealModal**
+Given the user is on /deals, when they click the "Create New Deal" button, the CreateDealModal dialog opens with a form to create a new deal.
+
+**Import button is visible with icon and label**
+Given the user is on /deals, the header area displays an "Import" button with an import icon and the text "Import".
+
+**Import button opens ImportDialog**
+Given the user is on /deals, when they click the "Import" button, an ImportDialog modal opens for importing deals from CSV.
+
+**Export button is visible with icon and label**
+Given the user is on /deals, the header area displays an "Export" button with an export icon and the text "Export".
+
+**Export button triggers CSV download**
+Given the user is on /deals, when they click the "Export" button, a CSV file containing the current deals data is downloaded. The file includes columns matching the deal data fields (Name, Client Name, Value, Stage, Owner, Probability, Expected Close Date, Status).
+
+#### DealsSummaryCards
+
+**Total Active Deals card displays count with icon**
+Given the user is on /deals, the summary cards area displays a "Total Active Deals" card with a document/clipboard icon, the label "Total Active Deals:", and a numeric count of all deals with active status (e.g., "124").
+
+**Pipeline Value card displays total monetary value with icon**
+Given the user is on /deals, the summary cards area displays a "Pipeline Value" card with a briefcase/document icon, the label "Pipeline Value:", and a formatted currency total of all active deal values (e.g., "$4.5M").
+
+**Won (Q3) card displays count and value with icon**
+Given the user is on /deals, the summary cards area displays a "Won (Q3)" card with a trophy/award icon, the label "Won (Q3):", a count of deals won in Q3 (e.g., "32"), and their total value in parentheses (e.g., "($1.2M)").
+
+**Lost (Q3) card displays count and value with icon**
+Given the user is on /deals, the summary cards area displays a "Lost (Q3)" card with a loss/X icon, the label "Lost (Q3):", a count of deals lost in Q3 (e.g., "18"), and their total value in parentheses (e.g., "($0.6M)").
+
+**Summary cards update when deals are created or modified**
+Given the user is on /deals and creates a new deal via CreateDealModal, the summary cards update to reflect the new counts and totals without requiring a page refresh.
+
+#### ViewToggle
+
+**Table View and Pipeline View tabs are displayed**
+Given the user is on /deals, the view toggle area displays two tab buttons: "Table View" and "Pipeline View".
+
+**Table View tab is selected by default**
+Given the user navigates to /deals, the "Table View" tab is selected/active by default, and the deals are displayed in a table format below.
+
+**Clicking Pipeline View tab switches to pipeline/kanban view**
+Given the user is on /deals with Table View active, when they click the "Pipeline View" tab, the view switches to a kanban/pipeline board layout with columns for each deal stage. The "Pipeline View" tab becomes active and "Table View" becomes inactive.
+
+**Clicking Table View tab switches back to table view**
+Given the user is on /deals with Pipeline View active, when they click the "Table View" tab, the view switches back to the table format. The "Table View" tab becomes active and "Pipeline View" becomes inactive.
+
+**Active tab has visually distinct styling**
+Given the user is on /deals with Table View active, the "Table View" tab has a visually distinct active state (e.g., underline, bold, or highlighted background) while "Pipeline View" appears inactive. The styling reverses when Pipeline View is selected.
+
+#### DealsFilters
+
+**Stage dropdown displays "All Stages" by default**
+Given the user is on /deals, the Stage filter dropdown displays "All Stages" as its default selected value.
+
+**Stage dropdown is searchable**
+Given the user is on /deals, when they open the Stage dropdown, a search input appears at the top of the dropdown that filters stage options as the user types. The search auto-focuses when the dropdown opens and shows "No matches" when no options match.
+
+**Stage dropdown filters by a specific stage**
+Given the user is on /deals, when they open the Stage dropdown and select a stage (e.g., "Proposal Sent"), only deals at the "Proposal Sent" stage are shown in the table/pipeline view. The dropdown label updates to reflect the selection.
+
+**Stage dropdown resets to All Stages**
+Given the user has filtered by a specific stage, when they select "All Stages" from the Stage dropdown, all deals are displayed regardless of stage.
+
+**Client dropdown displays "All Clients" by default**
+Given the user is on /deals, the Client filter dropdown displays "All Clients" as its default selected value.
+
+**Client dropdown is searchable**
+Given the user is on /deals, when they open the Client dropdown, a search input appears at the top of the dropdown that filters client options as the user types. The search auto-focuses when the dropdown opens and shows "No matches" when no options match.
+
+**Client dropdown filters by a specific client**
+Given the user is on /deals, when they open the Client dropdown and select a client (e.g., "Acme Corp."), only deals associated with "Acme Corp." are shown in the table.
+
+**Client dropdown resets to All Clients**
+Given the user has filtered by a specific client, when they select "All Clients" from the Client dropdown, all deals are displayed regardless of client.
+
+**Status dropdown displays "Active" by default**
+Given the user is on /deals, the Status filter dropdown displays "Active" as its default selected value.
+
+**Status dropdown filters by On Track**
+Given the user is on /deals, when they open the Status dropdown and select "On Track", only deals with status "On Track" are shown.
+
+**Status dropdown filters by Needs Attention**
+Given the user is on /deals, when they select "Needs Attention" from the Status dropdown, only deals with that status are shown.
+
+**Status dropdown filters by At Risk**
+Given the user is on /deals, when they select "At Risk" from the Status dropdown, only deals with that status are shown.
+
+**Status dropdown filters by Won**
+Given the user is on /deals, when they select "Won" from the Status dropdown, only deals with status "Won" are shown.
+
+**Status dropdown filters by Lost**
+Given the user is on /deals, when they select "Lost" from the Status dropdown, only deals with status "Lost" are shown.
+
+**Status dropdown resets to All**
+Given the user has filtered by a specific status, when they select "All" from the Status dropdown, all deals are displayed regardless of status.
+
+**Date Range picker is displayed with calendar icon**
+Given the user is on /deals, a "Date - Range" picker is displayed with a calendar icon, allowing the user to select a date range to filter deals by close date.
+
+**Date Range picker filters deals within selected range**
+Given the user is on /deals, when they select a start date and end date in the Date Range picker, only deals whose close date falls within the selected range are shown in the table.
+
+**Date Range picker clears filter when range is cleared**
+Given the user has applied a date range filter, when they clear the date range selection, all deals are displayed regardless of close date (subject to other active filters).
+
+**Sort by dropdown displays "Close Date (Newest)" by default**
+Given the user is on /deals, the Sort by dropdown displays "Close Date (Newest)" as its default selected value, preceded by the label "Sort by:".
+
+**Sort by dropdown changes sort order**
+Given the user is on /deals, when they open the Sort by dropdown and select a different option (e.g., "Close Date (Oldest)", "Value (High to Low)", "Value (Low to High)", "Deal Name (A-Z)"), the table reorders deals according to the selected sort criteria.
+
+**Close Date column header shows sort direction arrow**
+Given the user is on /deals with sort set to "Close Date (Newest)", the Close Date column header displays a downward arrow (ArrowDown) indicating descending sort. When sort is "Close Date (Oldest)", an upward arrow (ArrowUp) is shown. When sorting by a non-close-date field, a neutral arrow (ArrowUpDown) is shown.
+
+**Search input is displayed with magnifying glass icon**
+Given the user is on /deals, a search input is displayed with a magnifying glass icon and placeholder text "Search deals...".
+
+**Search filters deals by name**
+Given the user is on /deals with multiple deals displayed, when the user types "Alpha" into the search input, the table filters to show only deals whose name contains "Alpha" (e.g., "Project Alpha Expansion"). The filtering applies with debounced input.
+
+**Search filters deals by client name**
+Given the user is on /deals, when the user types "Acme" into the search input, the table filters to show deals associated with clients matching "Acme".
+
+**Search clears results when input is cleared**
+Given the user has typed a search term and the table is filtered, when the user clears the search input, all deals are displayed again (unfiltered, subject to other active filters).
+
+**Multiple filters combine together**
+Given the user is on /deals, when they set Stage to "Proposal Sent", Client to "Acme Corp.", Status to "On Track", and type "Alpha" in the search input, the table shows only deals that match all four criteria simultaneously (AND logic).
+
+**Filters apply to both Table View and Pipeline View**
+Given the user is on /deals with filters applied (e.g., Stage: "Discovery"), when they switch from Table View to Pipeline View, the same filter is applied and only "Discovery" deals are shown in the pipeline.
+
+#### DealsTable
+
+**Table displays correct column headers**
+Given the user is on /deals with Table View active, the deals table displays column headers in this order: Deal Name, Client, Stage, Owner, Value, Close Date, Status. An actions column (no header text) is present as the last column.
+
+**Deal Name column displays deal names**
+Given the user is on /deals with deal data, each row shows the deal's name in the Deal Name column (e.g., "Project Alpha Expansion", "Q4 Marketing Campaign").
+
+**Client column displays associated client name**
+Given the user is on /deals, each row shows the associated client's name in the Client column (e.g., "Acme Corp.", "Beta Industries").
+
+**Stage column displays current deal stage**
+Given the user is on /deals, each row shows the deal's current stage in the Stage column (e.g., "Proposal Sent", "Qualification", "Negotiation", "Discovery", "Closed Won").
+
+**Owner column displays deal owner name**
+Given the user is on /deals, each row shows the deal owner's name in the Owner column (e.g., "Sarah K.", "Mike R.", "Emily L.", "Chris B.").
+
+**Value column displays monetary value**
+Given the user is on /deals, each row shows the deal's monetary value formatted as currency in the Value column (e.g., "$250,000", "$75,000", "$450,000").
+
+**Close Date column displays date with sort arrow**
+Given the user is on /deals, each row shows the deal's expected close date in the Close Date column (e.g., "2023-11-15", "2023-12-01"). The column header displays a directional arrow icon reflecting the current sort direction.
+
+**Clicking Close Date header toggles sort direction**
+Given the user is on /deals with Close Date sorted descending (newest first, ArrowDown icon), when they click the Close Date column header, the sort direction toggles to ascending (oldest first, ArrowUp icon) and the table rows reorder accordingly. Clicking again toggles back to descending.
+
+**Close Date header has data-sort-direction attribute**
+Given the user is on /deals, the Close Date column header's sort button exposes a `data-sort-direction` attribute with value "desc" when sorted descending, "asc" when sorted ascending, and "none" when not sorted by close date.
+
+**Status column displays color-coded badges**
+Given the user is on /deals, each row shows the deal's status as a color-coded badge in the Status column: "On Track" in green, "Needs Attention" in yellow/amber, "At Risk" in red, "Won" in green (distinct from On Track).
+
+**Actions menu button visible on each row**
+Given the user is on /deals, each row has a three-dot actions menu button ("...") in the last column.
+
+**Actions menu opens on click**
+Given the user is on /deals, when they click the three-dot actions menu on a deal row, a dropdown menu appears with action options (e.g., Edit, Delete, View Details).
+
+**Actions menu Edit option opens edit deal modal**
+Given the user is on /deals and clicks the actions menu on a deal row, when they select "Edit", an edit modal opens pre-populated with the deal's current data allowing the user to modify deal fields.
+
+**Actions menu Delete option removes deal after confirmation**
+Given the user is on /deals and clicks the actions menu on a deal row, when they select "Delete", a confirmation dialog appears. When the user confirms, the deal is deleted from the database and the row is removed from the table. If the user cancels, the deal remains.
+
+**Row click navigates to DealDetailPage**
+Given the user is on /deals, when they click on a deal row (anywhere except the actions menu), the app navigates to /deals/:dealId for that deal and the DealDetailPage is displayed.
+
+**Table displays empty state when no deals match filters**
+Given the user is on /deals and applies filters that match no deals, the table displays an empty state message indicating no deals were found.
+
+**New deal appears in table after creation**
+Given the user is on /deals and creates a new deal via the CreateDealModal, when the modal closes, the newly created deal appears in the table without requiring a page refresh.
+
+**Deleted deal is removed from table**
+Given the user is on /deals and deletes a deal via the actions menu, when the deletion is confirmed, the deal row is removed from the table without requiring a page refresh.
+
+#### PipelineView
+
+**Pipeline displays columns for each deal stage**
+Given the user is on /deals with Pipeline View active, the pipeline view displays kanban-style columns for each deal stage (e.g., Discovery, Qualification, Proposal Sent, Negotiation, Closed Won, Closed Lost). Each column has a header showing the stage name.
+
+**Deal cards are displayed in their respective stage columns**
+Given deals exist at various stages, each deal card is displayed in the column corresponding to its current stage. A deal at "Proposal Sent" appears in the Proposal Sent column.
+
+**Deal cards display deal name**
+Given a deal card is displayed in the pipeline view, the card shows the deal's name (e.g., "Project Alpha Expansion").
+
+**Deal cards display client name**
+Given a deal card is displayed in the pipeline view, the card shows the associated client's name (e.g., "Acme Corp.").
+
+**Deal cards display value**
+Given a deal card is displayed in the pipeline view, the card shows the deal's monetary value (e.g., "$250,000").
+
+**Deal cards display owner**
+Given a deal card is displayed in the pipeline view, the card shows the deal owner's name.
+
+**Deal cards are draggable**
+Given a deal card is displayed in the pipeline view, the card is draggable — the user can click and hold the card to initiate a drag operation. The card visually indicates it is being dragged.
+
+**Dropping a deal card on a different stage column updates the deal stage**
+Given the user drags a deal card from the "Discovery" column and drops it on the "Qualification" column, the deal's stage is updated to "Qualification" via the API, the card moves to the Qualification column, and the change is persisted to the database.
+
+**Drag-and-drop stage change creates a timeline entry on the deal's client**
+Given the user drops a deal card to a new stage column, a "Deal Stage Changed" timeline entry is created on the associated client recording the old stage and new stage, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Drag-and-drop stage change triggers follower notifications**
+Given the user drops a deal card to a new stage on a deal whose associated client has followers, email notifications are sent to followers who have "deal stage changed" notifications enabled (excluding the actor).
+
+**Deal card click navigates to DealDetailPage**
+Given a deal card is displayed in the pipeline view, when the user clicks on the card (not during a drag), the app navigates to /deals/:dealId for that deal and the DealDetailPage is displayed.
+
+**Pipeline columns show deal count**
+Given the pipeline view is active, each stage column header displays the count of deals in that column (e.g., "Discovery (3)").
+
+**Empty columns display empty state**
+Given no deals exist at a particular stage, that stage column in the pipeline view displays an empty state (e.g., empty area or "No deals" message) but the column remains visible as a drop target.
+
+#### DealsPagination
+
+**Pagination shows current page and total pages**
+Given the user is on /deals with Table View active and more deals than fit on one page, the pagination area displays text like "Page 1 of 9" indicating the current page and total pages.
+
+**Clicking next page navigates to the next page**
+Given the user is on /deals viewing page 1 with multiple pages, when they click the next page control, the table updates to show page 2 data and the pagination text updates to "Page 2 of 9".
+
+**Clicking previous page navigates to the prior page**
+Given the user is on /deals viewing page 2, when they click the previous page control, the table updates to show page 1 data.
+
+**Previous control is disabled on first page**
+Given the user is on /deals viewing page 1, the previous page control is disabled or visually inactive, indicating there is no previous page.
+
+**Next control is disabled on last page**
+Given the user is on /deals viewing the last page, the next page control is disabled or visually inactive, indicating there is no next page.
+
+**Pagination updates when filters reduce results**
+Given the user is on /deals with pagination showing multiple pages, when they apply a filter that reduces the results to fit within one page, the pagination updates accordingly.
+
+#### CreateDealModal
+
+**Modal opens when Create New Deal is clicked**
+Given the user is on /deals, when they click "Create New Deal", a modal dialog appears with a form title (e.g., "Create New Deal").
+
+**Modal contains deal name input field (required)**
+Given the CreateDealModal is open, the form contains a "Deal Name" or "Name" text input field that is required.
+
+**Modal contains client dropdown populated from clients**
+Given the CreateDealModal is open, the form contains a "Client" FilterSelect dropdown populated with existing clients from the API, with searchable functionality. It is not a free-form text field.
+
+**Modal contains value input field**
+Given the CreateDealModal is open, the form contains a "Value" numeric input field for the deal's monetary value.
+
+**Modal contains stage selector**
+Given the CreateDealModal is open, the form contains a "Stage" selector with deal pipeline stage options (e.g., Discovery, Qualification, Proposal Sent, Negotiation, Closed Won, Closed Lost).
+
+**Modal contains owner dropdown populated from users API**
+Given the CreateDealModal is open, the form contains an "Owner" FilterSelect dropdown populated with team members from the users API, instead of a free-form text field.
+
+**Modal contains probability field**
+Given the CreateDealModal is open, the form contains a "Probability" field for the deal's win probability (e.g., percentage input).
+
+**Modal contains expected close date picker**
+Given the CreateDealModal is open, the form contains an "Expected Close Date" date picker field.
+
+**Modal contains status selector**
+Given the CreateDealModal is open, the form contains a "Status" selector with options such as On Track, Needs Attention, At Risk.
+
+**Submit creates a new deal**
+Given the CreateDealModal is open and the user fills in deal name "New Service Package", selects client "Acme Corp.", enters value "$50,000", stage "Qualification", selects an owner, and clicks submit, the deal is created in the database, the modal closes, and the new deal appears in the deals table.
+
+**Deal creation generates a timeline entry on the client**
+Given the user creates a new deal via CreateDealModal associated with a client, a "Deal Created" timeline entry is added to the client's TimelineSection attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Deal creation triggers follower notifications on the client**
+Given the user creates a new deal associated with a client that has followers, email notifications are sent to followers who have "deal created" notifications enabled (excluding the actor).
+
+**Deal creation updates summary cards**
+Given the user creates a new deal via CreateDealModal, the DealsSummaryCards (Total Active Deals, Pipeline Value) update to reflect the new totals without requiring a page refresh.
+
+**Modal validates required fields**
+Given the CreateDealModal is open, when the user clicks submit without filling in the required deal name field, a validation error message is displayed and the form is not submitted.
+
+**Modal cancel closes without saving**
+Given the CreateDealModal is open and the user has entered some data, when they click the cancel button or close icon, the modal closes and no new deal is created.
+
+#### ImportDialog
+
+**ImportDialog opens when Import button is clicked**
+Given the user is on /deals, when they click the "Import" button, the ImportDialog modal opens.
+
+**ImportDialog displays CSV format specification table**
+Given the ImportDialog is open for deals, it shows a table of expected CSV columns: Name (required), Client Name (required — must match an existing client), Value (optional — numeric), Stage (optional — valid stage name), Owner (optional — team member name), Probability (optional — numeric 0-100), Expected Close Date (optional — date format), Status (optional — On Track/Needs Attention/At Risk/Won/Lost). Each column shows whether it is required or optional and describes valid values.
+
+**ImportDialog has Download CSV template button**
+Given the ImportDialog is open, a "Download CSV template" button is visible. When clicked, it downloads a CSV file with the correct column headers pre-filled and no data rows, serving as a template for the user.
+
+**ImportDialog has file upload area**
+Given the ImportDialog is open, the dialog contains a file picker or drag-and-drop area for selecting a CSV file to upload.
+
+**ImportDialog validates uploaded CSV**
+Given the ImportDialog is open, when the user uploads a CSV file with missing required columns (e.g., no Name column), the dialog displays validation error messages indicating which required columns are missing.
+
+**ImportDialog shows per-row validation errors**
+Given the ImportDialog is open, when the user uploads a CSV file where some rows have invalid data (e.g., a Client Name that does not match any existing client, an invalid Stage value, or a missing Name), the dialog displays per-row error messages indicating which rows failed and why, allowing the user to fix the file and re-upload.
+
+**ImportDialog successfully imports valid CSV**
+Given the ImportDialog is open and the user uploads a valid CSV file with properly formatted deal data (including client names matching existing clients), the import processes successfully, the dialog shows a success message with the count of imported deals, and the deals table updates to include the newly imported deals.
+
+**ImportDialog cancel closes without importing**
+Given the ImportDialog is open, when the user clicks the cancel button or close icon, the dialog closes and no data is imported.
 
 ---
 
