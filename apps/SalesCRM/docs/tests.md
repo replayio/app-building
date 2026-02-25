@@ -2193,7 +2193,123 @@ Given the user is on /users with team members displayed, when they click on a us
 
 ### Components: UserHeader, UserStats, OwnedDealsList, AssignedTasksList, RecentActivityFeed
 
-<!-- Tests for user info, stats, deals list, tasks list, activity feed -->
+#### UserHeader
+
+**User name is displayed prominently**
+Given the user navigates to /users/:userId for a user named "Alice Johnson", the UserHeader displays the full name "Alice Johnson" as the primary heading.
+
+**User email is displayed**
+Given the user navigates to /users/:userId for a user with email "alice@example.com", the UserHeader displays the email address "alice@example.com" below or alongside the name.
+
+**User join date is displayed**
+Given the user navigates to /users/:userId for a user who joined on "2024-03-15", the UserHeader displays a formatted join date (e.g., "Joined March 15, 2024" or "Member since Mar 2024").
+
+**User avatar is displayed**
+Given the user navigates to /users/:userId for a user with an avatar, the UserHeader displays the user's avatar image. If no avatar is available, an initials fallback is shown derived from the user's name (e.g., "AJ" for "Alice Johnson").
+
+**Back navigation to team page**
+Given the user is on /users/:userId, a back link or button is visible (e.g., "← Back to Team" or a back arrow). When clicked, the app navigates to /users and the UsersListPage is displayed.
+
+#### UserStats
+
+**Active deals count is displayed**
+Given the user navigates to /users/:userId for a user who owns 3 active deals, the UserStats section displays "3" with the label "Active Deals".
+
+**Open tasks count is displayed**
+Given the user navigates to /users/:userId for a user who has 5 open (not completed or canceled) tasks assigned, the UserStats section displays "5" with the label "Open Tasks".
+
+**Total deals count is displayed**
+Given the user navigates to /users/:userId for a user who owns 7 total deals (active and closed), the UserStats section displays "7" with the label "Total Deals".
+
+**Stats show zero when user has no deals or tasks**
+Given the user navigates to /users/:userId for a user who owns no deals and has no tasks, the UserStats section displays "0" for Active Deals, "0" for Open Tasks, and "0" for Total Deals.
+
+**Stats reflect current data accurately**
+Given the user navigates to /users/:userId for a user who owns 2 active deals and 1 closed deal (3 total), with 4 open tasks, the UserStats section shows Active Deals: 2, Open Tasks: 4, Total Deals: 3.
+
+#### OwnedDealsList
+
+**Section displays "Owned Deals" heading**
+Given the user is on /users/:userId, the OwnedDealsList section displays a heading such as "Owned Deals".
+
+**Each deal entry displays the deal name**
+Given the user owns a deal named "Acme Software License", the OwnedDealsList shows an entry with the text "Acme Software License".
+
+**Each deal entry displays the deal stage**
+Given the user owns a deal in the "Proposal Sent" stage, the deal entry displays the stage "Proposal Sent" (e.g., as a badge or label).
+
+**Each deal entry displays the deal value**
+Given the user owns a deal with a value of $50,000, the deal entry displays the formatted value "$50,000".
+
+**Each deal entry displays the associated client name**
+Given the user owns a deal associated with client "Acme Corp", the deal entry displays the client name "Acme Corp".
+
+**Multiple owned deals are listed**
+Given the user owns 3 deals ("Acme Software License", "Beta Services Contract", "Gamma Upgrade"), all three are displayed as separate entries in the OwnedDealsList.
+
+**Clicking a deal navigates to deal detail page**
+Given the user is viewing a deal entry "Acme Software License" in the OwnedDealsList, when they click on that entry, the app navigates to /deals/:dealId and the DealDetailPage is displayed for that deal.
+
+**Empty state when user owns no deals**
+Given the user has no owned deals, the OwnedDealsList section displays an empty state message (e.g., "No owned deals").
+
+#### AssignedTasksList
+
+**Section displays "Assigned Tasks" heading**
+Given the user is on /users/:userId, the AssignedTasksList section displays a heading such as "Assigned Tasks".
+
+**Each task entry displays the task title**
+Given the user is assigned a task titled "Follow up on proposal", the AssignedTasksList shows an entry with the text "Follow up on proposal".
+
+**Each task entry displays the task due date**
+Given the user is assigned a task with a due date of "2025-04-10", the task entry displays the formatted due date (e.g., "Apr 10, 2025" or "Due Apr 10").
+
+**Each task entry displays the task priority**
+Given the user is assigned a task with priority "High", the task entry displays the priority "High" (e.g., as a colored badge or label).
+
+**Each task entry displays the task status**
+Given the user is assigned a task with status "In Progress", the task entry displays the status "In Progress".
+
+**Each task entry displays the associated client name**
+Given the user is assigned a task associated with client "Acme Corp", the task entry displays the client name "Acme Corp".
+
+**Multiple assigned tasks are listed**
+Given the user has 4 assigned tasks, all four are displayed as separate entries in the AssignedTasksList.
+
+**Clicking a task navigates to task detail page**
+Given the user is viewing a task entry "Follow up on proposal" in the AssignedTasksList, when they click on that entry, the app navigates to /tasks/:taskId and the TaskDetailPage is displayed for that task.
+
+**Empty state when user has no assigned tasks**
+Given the user has no assigned tasks, the AssignedTasksList section displays an empty state message (e.g., "No assigned tasks").
+
+#### RecentActivityFeed
+
+**Section displays "Recent Activity" heading**
+Given the user is on /users/:userId, the RecentActivityFeed section displays a heading such as "Recent Activity".
+
+**Activity entries are displayed in reverse chronological order**
+Given the user has multiple recent activity entries, they are displayed with the most recent entry at the top and oldest at the bottom.
+
+**Each activity entry displays a timestamp**
+Given a recent activity entry occurred on "2025-03-20 at 2:30 PM", the entry displays a formatted timestamp or relative time (e.g., "Mar 20, 2025" or "2 hours ago").
+
+**Each activity entry displays a description of the action**
+Given an activity entry for creating a deal "Acme Software License", the entry displays a description such as "Created deal 'Acme Software License'" or "Deal Created: Acme Software License".
+
+**Activity entries include deal-related actions**
+Given the user changed a deal stage from "Qualification" to "Proposal Sent" for deal "Acme Software License", an activity entry displays this action (e.g., "Changed deal 'Acme Software License' stage from 'Qualification' to 'Proposal Sent'").
+
+**Activity entries include task-related actions**
+Given the user completed a task titled "Send follow-up email", an activity entry displays this action (e.g., "Completed task 'Send follow-up email'").
+
+**Activity entries include client-related actions**
+Given the user added a note on client "Acme Corp", an activity entry displays this action (e.g., "Added note on 'Acme Corp'").
+
+**Multiple activity entries are displayed**
+Given the user has 5 recent activity entries, all five are displayed as separate items in the RecentActivityFeed.
+
+**Empty state when user has no recent activity**
+Given the user has no recent activity entries, the RecentActivityFeed section displays an empty state message (e.g., "No recent activity").
 
 ---
 

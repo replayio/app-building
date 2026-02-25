@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageUserDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentUserDetailSections: Add test entries for UserHeader (name, email, join date), UserStats (active deals, open tasks, total deals), OwnedDealsList (deal entries with links), AssignedTasksList (task entries with links), RecentActivityFeed (activity entries)"
-      ],
-      "timestamp": "2026-02-25T03:32:30.397Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageAuthPages: Decide on components, add sections to docs/tests.md",
         "PlanComponentAuthForms: Add test entries for ForgotPasswordForm (email input, submit button, success message, link sent via Resend API), ResetPasswordForm (new password input, confirm password input, submit button, password mismatch validation, success and auto-login), ConfirmEmailHandler (token verification, auto-login on success, invalid/expired token error)"
       ],
