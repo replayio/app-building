@@ -30,6 +30,7 @@ export interface Material {
   unit_of_measure: string;
   description: string;
   reorder_point: number;
+  stock?: number;
   created_at: string;
   updated_at: string;
 }
