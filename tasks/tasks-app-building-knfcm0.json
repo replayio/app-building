@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentBatchHeader: Write the BatchHeader component",
-        "WriteComponentBatchOverview: Write the BatchOverview component",
-        "WriteComponentLineageSection: Write the LineageSection component",
-        "WriteComponentUsageHistoryTable: Write the UsageHistoryTable component",
-        "WritePageBatchDetail: Write the BatchDetailPage and BatchesPage listing"
-      ],
-      "timestamp": "2026-02-24T21:00:56.557Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentTransactionsTable: Write the TransactionsTable component",
         "WritePageTransactions: Write the TransactionsPage"
       ],

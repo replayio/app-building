@@ -156,3 +156,16 @@ export interface AccountMaterial {
   total_quantity: number;
   batch_count: number;
 }
+
+/** Batch usage history entry */
+export interface BatchUsageEntry {
+  transaction_id: string;
+  reference_id: string;
+  date: string;
+  created_at: string;
+  transaction_type: string;
+  movement: "in" | "out";
+  amount: number;
+  unit: string;
+  created_batches: { batch_id: string; reference: string }[];
+}

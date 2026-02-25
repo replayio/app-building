@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { Batch, BatchLineage } from "../types";
+import type { Batch, BatchLineage, BatchUsageEntry } from "../types";
 
 interface BatchesState {
   items: Batch[];
   currentBatch: Batch | null;
   lineage: BatchLineage[];
+  usageHistory: BatchUsageEntry[];
   loading: boolean;
   error: string | null;
 }
@@ -13,6 +14,7 @@ const initialState: BatchesState = {
   items: [],
   currentBatch: null,
   lineage: [],
+  usageHistory: [],
   loading: false,
   error: null,
 };
@@ -39,6 +41,15 @@ export const fetchBatchById = createAsyncThunk(
   }
 );
 
+export const fetchBatchUsageHistory = createAsyncThunk(
+  "batches/fetchBatchUsageHistory",
+  async (batchId: string) => {
+    const res = await fetch(`/.netlify/functions/batch-usage/${batchId}`);
+    if (!res.ok) throw new Error("Failed to fetch batch usage history");
+    return (await res.json()) as BatchUsageEntry[];
+  }
+);
+
 const batchesSlice = createSlice({
   name: "batches",
   initialState,
@@ -46,6 +57,7 @@ const batchesSlice = createSlice({
     clearCurrentBatch(state) {
       state.currentBatch = null;
       state.lineage = [];
+      state.usageHistory = [];
     },
   },
   extraReducers: (builder) => {
@@ -74,6 +86,9 @@ const batchesSlice = createSlice({
       .addCase(fetchBatchById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? "Failed to fetch batch";
+      })
+      .addCase(fetchBatchUsageHistory.fulfilled, (state, action) => {
+        state.usageHistory = action.payload;
       });
   },
 });
