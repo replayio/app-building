@@ -1,0 +1,1153 @@
+{
+  "config": {
+    "configFile": "/repo/apps/ProductionHub/playwright.config.ts",
+    "rootDir": "/repo/apps/ProductionHub/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/repo/apps/ProductionHub/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/repo/apps/ProductionHub/tests",
+        "testIgnore": [
+          "**/deployment.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "/repo/apps/ProductionHub/node_modules/@replayio/playwright/dist/reporter.js",
+        {
+          "apiKey": "rwk_b6mnJ00rI4pzlwkYmggmmmV1TVQXA0AUktRHoo4vGl9",
+          "upload": false
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 2,
+    "webServer": {
+      "command": "npx netlify dev --port 8888 --functions ./netlify/functions",
+      "port": 8888,
+      "timeout": 60000,
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "calendar-grid.spec.ts",
+      "file": "calendar-grid.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "CalendarGrid",
+          "file": "calendar-grid.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CAL-GRID-1: Monthly grid displays day-of-week column headers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-9df5bead66f45a478228",
+              "file": "calendar-grid.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-2: Monthly grid displays day cells with date numbers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-3e06257bc81fcc483f29",
+              "file": "calendar-grid.spec.ts",
+              "line": 19,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-3: Production run event cards are displayed on the correct dates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-91f17a5eb98a67bc13c7",
+              "file": "calendar-grid.spec.ts",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-4: Event cards display product name, recipe, quantity, and status",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-da13dfd1d62dd3936f21",
+              "file": "calendar-grid.spec.ts",
+              "line": 86,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-5: On Track events are displayed with green background",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-e0824bc72416ec1c6d94",
+              "file": "calendar-grid.spec.ts",
+              "line": 103,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-6: Material Shortage events are displayed with red/pink background",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-11b6f207a52dde41d84c",
+              "file": "calendar-grid.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-7: Scheduled events are displayed with yellow background",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-124f95cefc639989abf6",
+              "file": "calendar-grid.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-8: In Progress events are displayed with a distinct color",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-8523357e4ca8408fe8e9",
+              "file": "calendar-grid.spec.ts",
+              "line": 205,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-9: Pending Approval events are displayed with a distinct color",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-f27c376093ac83510f23",
+              "file": "calendar-grid.spec.ts",
+              "line": 237,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-10: Multi-day events span across multiple day cells",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-f4947c3d541bd99d7716",
+              "file": "calendar-grid.spec.ts",
+              "line": 269,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-11: Clicking an event card opens the RunDetailsPopup",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-15e85181dfdbd14db0cd",
+              "file": "calendar-grid.spec.ts",
+              "line": 327,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-12: Multiple events on the same day are stacked within the cell",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-32b04bd8b83a89d4dc6b",
+              "file": "calendar-grid.spec.ts",
+              "line": 352,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-13: Empty day cells show no event cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-c61199c8a5245c29ee7c",
+              "file": "calendar-grid.spec.ts",
+              "line": 409,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-14: Drag-and-drop an event card to reschedule a run",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-cd881d61b2c57707323c",
+              "file": "calendar-grid.spec.ts",
+              "line": 432,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-15: Drag-and-drop reschedule can be cancelled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-f1ef8e1b168b20341ef0",
+              "file": "calendar-grid.spec.ts",
+              "line": 495,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-16: Weekly view displays single week with day columns",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-366a88fcac441609774e",
+              "file": "calendar-grid.spec.ts",
+              "line": 546,
+              "column": 3
+            },
+            {
+              "title": "CAL-GRID-17: Daily view displays a single day with time slots",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b5d978fa7b9667b995c0-e3ce632b7792e940c8f0",
+              "file": "calendar-grid.spec.ts",
+              "line": 570,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar-header.spec.ts",
+      "file": "calendar-header.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "CalendarHeader",
+          "file": "calendar-header.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CAL-HDR-1: Page title displays \"Production Calendar\"",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-1ee4d93721db346d867b",
+              "file": "calendar-header.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-2: Prev button is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-419d22883d9d63d9ed9e",
+              "file": "calendar-header.spec.ts",
+              "line": 11,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-3: Today button is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-9ace0b25e37d122813c3",
+              "file": "calendar-header.spec.ts",
+              "line": 18,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-4: Next button is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-a67b1b41eeee4a980b06",
+              "file": "calendar-header.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-5: Month and year display shows the current calendar period",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-d08122668eb34b7f85f3",
+              "file": "calendar-header.spec.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-6: Prev button navigates to the previous month",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-324d247f99a0c97d2ec5",
+              "file": "calendar-header.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-7: Next button navigates to the next month",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-2e9fcb4ff74cffc344ae",
+              "file": "calendar-header.spec.ts",
+              "line": 85,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-8: Today button navigates to the current month",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-cdbb9c8122e20510b97f",
+              "file": "calendar-header.spec.ts",
+              "line": 110,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-9: Daily/Weekly/Monthly view toggle is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-a1f279d65220068da490",
+              "file": "calendar-header.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-10: Monthly view is selected by default",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-88867a833ed86b379436",
+              "file": "calendar-header.spec.ts",
+              "line": 143,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-11: Clicking Daily toggle switches to daily view",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-3a4e9fbc6a879fb1a4b9",
+              "file": "calendar-header.spec.ts",
+              "line": 158,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-12: Clicking Weekly toggle switches to weekly view",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-492de60b82491e92cb60",
+              "file": "calendar-header.spec.ts",
+              "line": 184,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-13: Clicking Monthly toggle returns to monthly view",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-f8e3e9281d69eece973e",
+              "file": "calendar-header.spec.ts",
+              "line": 210,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-14: New Production Run button is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-11024ed69122cf34c1f2",
+              "file": "calendar-header.spec.ts",
+              "line": 235,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-15: New Production Run button opens a creation form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-1611595348114c2fc14b",
+              "file": "calendar-header.spec.ts",
+              "line": 244,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-16: Filter by Status dropdown is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-70418165c81fb3a23650",
+              "file": "calendar-header.spec.ts",
+              "line": 301,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-17: Filter by Status dropdown shows status options",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-2f10c9ca0769d89d46bf",
+              "file": "calendar-header.spec.ts",
+              "line": 310,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-18: Selecting a status filter hides non-matching runs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-b81c14870f788ff10ce7",
+              "file": "calendar-header.spec.ts",
+              "line": 326,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-19: Selecting \"All\" in the filter shows all runs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-946f0243806a5fab7f1e",
+              "file": "calendar-header.spec.ts",
+              "line": 379,
+              "column": 3
+            },
+            {
+              "title": "CAL-HDR-20: Legend displays color coding for statuses",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0362f87a5105d35b8684-dacb237ff6427574a277",
+              "file": "calendar-header.spec.ts",
+              "line": 437,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar-popup.spec.ts",
+      "file": "calendar-popup.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RunDetailsPopup",
+          "file": "calendar-popup.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CAL-POP-1: RunDetailsPopup displays the run title with recipe name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-1956c99fc862e26707db",
+              "file": "calendar-popup.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-2: Start date/time is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-8541a8c74f7b5158d4b4",
+              "file": "calendar-popup.spec.ts",
+              "line": 23,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-3: End date/time is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-ac0d43349ca2deed0c0d",
+              "file": "calendar-popup.spec.ts",
+              "line": 39,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-4: Quantity is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-3a38c89f7aaeb3d9aaba",
+              "file": "calendar-popup.spec.ts",
+              "line": 54,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-5: Status is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-75859db0f7de15dc6065",
+              "file": "calendar-popup.spec.ts",
+              "line": 70,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-6: Materials list with stock levels is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-8f550cd4228a4844b307",
+              "file": "calendar-popup.spec.ts",
+              "line": 85,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-7: Notes field is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-7b4dccd22f1268ae4205",
+              "file": "calendar-popup.spec.ts",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-8: Edit Run button is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-cc6ce62aa3447886235f",
+              "file": "calendar-popup.spec.ts",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-9: Edit Run button navigates to the run details page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-a3534ff0e4e97e7cfdaf",
+              "file": "calendar-popup.spec.ts",
+              "line": 129,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-10: Close button is displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-a8193a9f8f606ea3fd21",
+              "file": "calendar-popup.spec.ts",
+              "line": 151,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-11: Close button closes the popup",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-189fbe9cc1582a7c1cc6",
+              "file": "calendar-popup.spec.ts",
+              "line": 163,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-12: Popup displays empty notes when run has no notes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-874c40f9936fe2734744",
+              "file": "calendar-popup.spec.ts",
+              "line": 180,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-13: Popup materials show shortage indicators when materials are insufficient",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-c8e86518fa8de398c220",
+              "file": "calendar-popup.spec.ts",
+              "line": 220,
+              "column": 3
+            },
+            {
+              "title": "CAL-POP-14: Clicking outside the popup closes it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c32d798080eede16d76d-76ce38beb842b473dd6f",
+              "file": "calendar-popup.spec.ts",
+              "line": 262,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-02-25T01:20:35.410Z",
+    "duration": 91.60899999999992,
+    "expected": 0,
+    "skipped": 51,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
