@@ -1,0 +1,204 @@
+{
+  "tasks": [
+    {
+      "skill": "skills/tasks/maintain/fixBugReport.md",
+      "subtasks": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:01.231Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/reviewBugReport.md",
+      "subtasks": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:02.022Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-25T15:29:02.780Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/polishApp.md",
+      "subtasks": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-25T15:29:03.552Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-25T15:29:04.300Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/fixBugReport.md",
+      "subtasks": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:05.088Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/reviewBugReport.md",
+      "subtasks": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:05.865Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-25T15:29:06.662Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/polishApp.md",
+      "subtasks": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-25T15:29:07.653Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-25T15:29:09.483Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/fixBugReport.md",
+      "subtasks": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:11.332Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/reviewBugReport.md",
+      "subtasks": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:12.244Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-25T15:29:13.011Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/polishApp.md",
+      "subtasks": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-25T15:29:13.774Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-25T15:29:14.489Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/fixBugReport.md",
+      "subtasks": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:15.248Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/reviewBugReport.md",
+      "subtasks": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:15.976Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-25T15:29:16.703Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/polishApp.md",
+      "subtasks": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-25T15:29:17.469Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-25T15:29:18.209Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/fixBugReport.md",
+      "subtasks": [
+        "Unpack: Fix open bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:18.980Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/reviewBugReport.md",
+      "subtasks": [
+        "Unpack: Review fixed bug reports"
+      ],
+      "timestamp": "2026-02-25T15:29:19.700Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "Unpack: Check directive compliance"
+      ],
+      "timestamp": "2026-02-25T15:29:20.426Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/polishApp.md",
+      "subtasks": [
+        "Unpack: Polish app quality"
+      ],
+      "timestamp": "2026-02-25T15:29:21.153Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-02-25T15:29:21.868Z",
+      "app": "SupplierTracker"
+    }
+  ]
+}
