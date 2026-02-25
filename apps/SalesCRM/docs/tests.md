@@ -1656,7 +1656,110 @@ Given the CreateTaskModal is open and the user has entered some data, when they 
 
 ### Components: TaskDetailHeader, TaskNotesSection, TaskActions
 
-<!-- Tests for task info display, notes CRUD, mark complete, cancel -->
+#### TaskDetailHeader
+
+**Page heading displays task title**
+Given the user navigates to /tasks/:taskId for a task titled "Finalize Q3 Marketing Plan", the page displays the heading "Finalize Q3 Marketing Plan" at the top of the content area.
+
+**Priority badge displays with correct color coding**
+Given the user is viewing a task with priority "High", a priority badge is displayed near the title showing "High" with a red/orange background. For "Medium" priority the badge has a yellow background, for "Low" a green background, and for "Normal" a blue background — matching the color scheme used on TasksListPage task cards.
+
+**Status displays current task status**
+Given the user is viewing a task with status "Open", the header displays the current status as "Open". If the task has been marked complete, the status displays "Completed". If canceled, the status displays "Canceled".
+
+**Due date displays formatted date**
+Given the user is viewing a task with a due date of October 25, 2024 at 5:00 PM, the header displays the due date in a readable format (e.g., "Due: Oct 25, 2024, 5:00 PM"). If no due date is set, a placeholder such as "No due date" is shown.
+
+**Assignee displays user name**
+Given the user is viewing a task assigned to "Sarah J.", the header displays the assignee's name (e.g., "Assignee: Sarah J."). The assignee is shown as a FilterSelect dropdown populated from the users API, allowing the assignee to be changed.
+
+**Changing assignee persists the update**
+Given the user is viewing a task assigned to "Sarah J.", when they open the Assignee dropdown and select "David L.", the task's assignee is updated in the database and the header reflects "David L." as the new assignee.
+
+**Associated client link displays client name**
+Given the user is viewing a task associated with client "Acme Corp", the header displays a "Client:" label followed by the client name "Acme Corp" as a clickable link.
+
+**Clicking associated client link navigates to ClientDetailPage**
+Given the user is viewing a task associated with client "Acme Corp", when they click on the client name link, the app navigates to /clients/:clientId for that client and the ClientDetailPage is displayed.
+
+**Associated client displays "None" when no client is linked**
+Given the user is viewing a task that is not associated with any client, the Client field displays "None" or "—" indicating no client association.
+
+**Associated deal link displays deal name**
+Given the user is viewing a task associated with deal "Expansion Deal", the header displays a "Deal:" label followed by the deal name "Expansion Deal" as a clickable link.
+
+**Clicking associated deal link navigates to DealDetailPage**
+Given the user is viewing a task associated with deal "Expansion Deal", when they click on the deal name link, the app navigates to /deals/:dealId for that deal and the DealDetailPage is displayed.
+
+**Associated deal displays "None" when no deal is linked**
+Given the user is viewing a task that is not associated with any deal, the Deal field displays "None" or "—" indicating no deal association.
+
+**Description displays task description text**
+Given the user is viewing a task with a description "Review the proposal draft and provide feedback by end of week", the header or detail area displays the description text below the title.
+
+#### TaskNotesSection
+
+**Section displays "Notes" title**
+Given the user is on a task detail page, the Notes section displays the heading "Notes".
+
+**Notes list displays existing notes in reverse chronological order**
+Given a task has three notes added at different times, the notes are displayed in the Notes section with the most recent note at the top and the oldest at the bottom. Each note shows the note text, the author name (or "System" if unauthenticated), and the creation date/time.
+
+**Add note input is visible with placeholder text**
+Given the user is on a task detail page, the Notes section contains a text input or text area with placeholder text (e.g., "Add a note...") and a submit button (e.g., "Add Note") for adding new notes.
+
+**Adding a note appends it to the notes list**
+Given the user is on a task detail page, when they type "Follow up with client about the proposal" into the note input and click the "Add Note" button, the note is saved to the database via the POST API endpoint, the input is cleared, and the new note immediately appears at the top of the notes list showing the note text, the current user's name (or "System" if unauthenticated), and the current date/time.
+
+**Adding a note with empty text is prevented**
+Given the user is on a task detail page, when they click the "Add Note" button without entering any text, the note is not submitted and no API call is made. The input may show a validation hint or the button may be disabled when the input is empty.
+
+**Delete note button is visible on each note**
+Given a task has notes displayed in the Notes section, each note entry has a delete button (e.g., a trash icon or "Delete" text) visible to allow removal of the note.
+
+**Clicking delete note removes the note from the list**
+Given a task has a note "Follow up with client" displayed, when the user clicks the delete button on that note, the note is deleted from the database via the DELETE API endpoint and the note immediately disappears from the notes list without requiring a page refresh.
+
+**Notes section displays empty state when no notes exist**
+Given a task has no notes, the Notes section displays an empty state message (e.g., "No notes yet") below the add note input.
+
+**Adding a note creates a timeline entry on the associated client**
+Given the user adds a note to a task that is associated with a client, a "Note Added" timeline entry is created on the associated client attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created — not duplicates from re-renders.
+
+**Adding a note triggers follower notifications on the associated client**
+Given the user adds a note to a task associated with a client that has followers, email notifications are sent to followers who have "note added" notifications enabled (excluding the actor who added the note).
+
+#### TaskActions
+
+**Mark Complete button is visible with label and styling**
+Given the user is on a task detail page for a task with status "Open", a "Mark Complete" button is displayed with primary/success styling (e.g., green or blue) to indicate it is the positive action.
+
+**Clicking Mark Complete updates task status to Completed**
+Given the user is on a task detail page for a task with status "Open", when they click the "Mark Complete" button, the task's status is updated to "Completed" in the database, the status display in the TaskDetailHeader updates to "Completed", and the "Mark Complete" button is disabled or hidden since the task is already completed.
+
+**Mark Complete creates a timeline entry on the associated client**
+Given the user marks a task associated with a client as complete, a "Task Completed" timeline entry is created on the associated client attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created — not duplicates from re-renders.
+
+**Mark Complete triggers follower notifications on the associated client**
+Given the user marks a task complete on a task whose associated client has followers, email notifications are sent to followers who have "task completed" notifications enabled (excluding the actor who completed the task).
+
+**Cancel button is visible with label and styling**
+Given the user is on a task detail page for a task with status "Open", a "Cancel" button is displayed with secondary/destructive styling (e.g., outlined or red-tinted) to indicate it is the negative action.
+
+**Clicking Cancel updates task status to Canceled**
+Given the user is on a task detail page for a task with status "Open", when they click the "Cancel" button, the task's status is updated to "Canceled" in the database, the status display in the TaskDetailHeader updates to "Canceled", and both "Mark Complete" and "Cancel" buttons are disabled or hidden since the task is no longer open.
+
+**Completed task hides action buttons**
+Given the user navigates to /tasks/:taskId for a task that has already been marked "Completed", the "Mark Complete" and "Cancel" buttons are not displayed or are disabled, since the task status can no longer be changed.
+
+**Canceled task hides action buttons**
+Given the user navigates to /tasks/:taskId for a task that has already been marked "Canceled", the "Mark Complete" and "Cancel" buttons are not displayed or are disabled, since the task status can no longer be changed.
+
+**Status change persists across page navigation**
+Given the user marks a task as "Completed" and then navigates away to /tasks, when they navigate back to /tasks/:taskId for the same task, the status still shows "Completed" and the action buttons remain hidden/disabled, confirming the status change was persisted to the database.
+
+**Completing a task removes it from the TasksListPage upcoming list**
+Given the user marks a task as complete from the TaskDetailPage, when they navigate to /tasks, the completed task no longer appears in the upcoming tasks list (since TasksListPage only shows open/pending tasks).
 
 ---
 
