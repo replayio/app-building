@@ -3,9 +3,11 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "Unpack: Write the app for SupplierTracker"
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
       ],
-      "timestamp": "2026-02-24T19:26:40.944Z"
+      "timestamp": "2026-02-25T04:39:14.532Z",
+      "app": "SupplierTracker"
     },
     {
       "skill": "skills/tasks/writeScript.md",
@@ -681,6 +683,42 @@
       ],
       "timestamp": "2026-02-25T03:50:28.521Z",
       "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentQuickActions: Write the QuickActions component",
+        "WriteComponentUpcomingOrdersTable: Write the UpcomingOrdersTable component",
+        "WriteComponentSuppliersList: Write the SuppliersList component",
+        "WritePageDashboard: Write the DashboardPage itself"
+      ],
+      "timestamp": "2026-02-25T04:39:19.427Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentSupplierOverview: Write the SupplierOverview component",
+        "WriteComponentDocumentsTab: Write the DocumentsTab component",
+        "WriteComponentSupplierCommentsSection: Write the CommentsSection component for supplier",
+        "WriteComponentOrdersSection: Write the OrdersSection component",
+        "WritePageSupplierDetails: Write the SupplierDetailsPage itself"
+      ],
+      "timestamp": "2026-02-25T04:39:21.233Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentOrderSummary: Write the OrderSummary component",
+        "WriteComponentLineItemsTable: Write the LineItemsTable component",
+        "WriteComponentCostBreakdown: Write the CostBreakdown component",
+        "WriteComponentOrderDocuments: Write the OrderDocuments component",
+        "WriteComponentOrderHistory: Write the OrderHistory component",
+        "WritePageOrderDetails: Write the OrderDetailsPage itself"
+      ],
+      "timestamp": "2026-02-25T04:39:23.016Z",
+      "app": "SupplierTracker"
     }
   ]
 }
