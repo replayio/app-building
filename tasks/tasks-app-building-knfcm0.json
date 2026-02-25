@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentEmailNotificationsSection: Write the EmailNotificationsSection component",
-        "WriteComponentImportExportSection: Write the ImportExportSection component",
-        "WriteComponentWebhooksSection: Write the WebhooksSection component",
-        "WriteComponentWebhookModal: Write the WebhookModal component",
-        "WritePageSettingsPage: Write the SettingsPage page"
-      ],
-      "timestamp": "2026-02-25T03:50:19.222Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentTeamHeader: Write the TeamHeader component",
         "WriteComponentUserCardGrid: Write the UserCardGrid component",
         "WritePageUsersListPage: Write the UsersListPage page"

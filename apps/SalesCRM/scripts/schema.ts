@@ -313,6 +313,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       name VARCHAR(255) NOT NULL,
       url TEXT NOT NULL,
       events TEXT[] NOT NULL DEFAULT '{}',
+      platform VARCHAR(50) NOT NULL DEFAULT 'custom',
       enabled BOOLEAN NOT NULL DEFAULT true,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -327,6 +328,9 @@ export async function runMigrations(databaseUrl: string): Promise<void> {
   await sql`ALTER TABLE writeups ADD COLUMN IF NOT EXISTS title VARCHAR(255) NOT NULL DEFAULT ''`;
 
   // Create writeup_versions table (idempotent via CREATE TABLE IF NOT EXISTS in initSchema)
+
+  // Add platform column to webhooks (idempotent)
+  await sql`ALTER TABLE webhooks ADD COLUMN IF NOT EXISTS platform VARCHAR(50) NOT NULL DEFAULT 'custom'`;
 }
 
 async function main() {
