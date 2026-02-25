@@ -3,9 +3,11 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageSidebar: Decide on components, add sections to docs/tests.md",
+        "PlanComponentSidebarNavigation: Add test entries for SidebarNavigation (Clients, Contacts, Deals, Tasks, Team, Settings links, active state highlighting)",
+        "PlanComponentSidebarAuth: Add test entries for SidebarAuth (Sign In button, inline auth form with email/password, Sign In/Sign Up toggle, sign out, avatar/name display)"
       ],
-      "timestamp": "2026-02-25T03:28:51.093Z",
+      "timestamp": "2026-02-25T03:31:10.836Z",
       "app": "SalesCRM"
     },
     {
@@ -439,6 +441,133 @@
         "WritePageDashboard: Write the DashboardPage"
       ],
       "timestamp": "2026-02-24T21:01:11.948Z"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageClientsListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentClientsListHeader: Add test entries for ClientsListHeader (page title, Import button, Export button, Add New Client button)",
+        "PlanComponentClientsSearchAndFilters: Add test entries for ClientsSearchAndFilters (search bar, Status dropdown, Tags dropdown, Source dropdown, Sort dropdown)",
+        "PlanComponentClientsTable: Add test entries for ClientsTable (Client Name, Type, Status badge, Tags, Primary Contact, Open Deals with value, Next Task, actions menu, row click navigation)",
+        "PlanComponentClientsPaginationAndModals: Add test entries for ClientsPagination (page numbers, Previous/Next), AddClientModal (form fields, validation), ImportDialog (CSV format spec, template download, validation errors)"
+      ],
+      "timestamp": "2026-02-25T03:31:17.854Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageClientDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentClientHeader: Add test entries for ClientHeader (name, type badge Organization/Individual, status badge Active/Inactive/Prospect/Churned, tags, edit pencil icon, FollowButton toggle)",
+        "PlanComponentQuickActions: Add test entries for QuickActions (Add Task, Add Deal, Add Attachment, Add Person icon buttons)",
+        "PlanComponentSourceInfoSection: Add test entries for SourceInfoSection (Acquisition Source, Campaign, Channel, Date Acquired fields, Edit button)",
+        "PlanComponentClientSections: Add test entries for TasksSection (unresolved tasks with checkboxes, due dates, deal links), DealsSection (deal cards with name/stage/value, click to deal detail), AttachmentsSection (file icon, filename, type, created date, linked deal, download/view/delete, file upload and link URL modes), PeopleSection (avatar, name, role, click to person detail), TimelineSection (chronological events: task created, note added, deal stage changed, email sent, contact added, with user links), AddTaskModal, AddDealModal, AddAttachmentModal, AddPersonModal"
+      ],
+      "timestamp": "2026-02-25T03:31:27.220Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPagePersonDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentPersonHeader: Add test entries for PersonHeader (name, title, organization, email, phone, location, associated clients links)",
+        "PlanComponentRelationshipsSection: Add test entries for RelationshipsSection (Graph View/List View tabs, relationship entries with name, type Colleague/Decision Maker/Influencer, org, Link to person detail, Filter button, Add Entry button)",
+        "PlanComponentContactHistoryAndClients: Add test entries for ContactHistorySection (date/time, type Video Call/Email/Meeting/Note, summary, team member, edit icon, Filter button, Add Entry button), AssociatedClientsSection (client cards with name, status, industry, View Client Detail Page link)"
+      ],
+      "timestamp": "2026-02-25T03:31:34.811Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageDealsListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentDealsSummaryAndViews: Add test entries for DealsSummaryCards (Total Active Deals, Pipeline Value, Won Q3 count+value, Lost Q3 count+value), ViewToggle (Table View/Pipeline View tabs)",
+        "PlanComponentDealsFilters: Add test entries for DealsFilters (Stage dropdown searchable, Client dropdown searchable, Status dropdown, Date Range picker, Sort by dropdown with Close Date arrow indicator, Search input)",
+        "PlanComponentDealsTableAndPipeline: Add test entries for DealsTable (Deal Name, Client, Stage, Owner, Value, Close Date sortable with arrow, Status badge On Track/Needs Attention/At Risk/Won, actions menu, pagination), PipelineView (kanban columns by stage, draggable deal cards, drop to change stage), CreateDealModal (fields: name, client dropdown, value, stage, owner user dropdown, probability, expected close date, status), ImportDialog (CSV format spec for deals)"
+      ],
+      "timestamp": "2026-02-25T03:31:43.654Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageDealDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentDealHeader: Add test entries for DealHeader (deal title with name and value, Client field, Value field, Owner user dropdown, Stage dropdown, Change Stage button)",
+        "PlanComponentDealStagePipeline: Add test entries for DealStagePipeline (visual stage indicator Lead/Qualification/Discovery/Proposal/Negotiation/Closed Won, current stage highlighted, progress bar)",
+        "PlanComponentDealHistoryAndMetrics: Add test entries for DealHistorySection (stage change entries with date, old stage, new stage, user), DealMetricsSection (Probability percentage, Expected Close date)",
+        "PlanComponentDealSections: Add test entries for WriteupsSection (entries with title/date/author/content, Edit button, Version History button, New Entry button), LinkedTasksSection (tasks with checkbox, due date, Add Task button), DealAttachmentsSection (files with size, Download/Delete, upload icon), ContactsIndividualsSection (avatar, name, role, org, View Profile link)"
+      ],
+      "timestamp": "2026-02-25T03:31:52.238Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTasksListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentTasksListHeader: Add test entries for TasksListHeader (page title Upcoming Tasks, New Task button)",
+        "PlanComponentTasksFilterAndCards: Add test entries for TasksFilter (filter dropdown with search input), TaskCardList (task cards with priority badge High/Medium/Low/Normal color-coded, title, due date, assignee avatar and name/role, actions menu ..., click navigates to /tasks/:taskId)",
+        "PlanComponentCreateTaskModal: Add test entries for CreateTaskModal (title, description, due date, priority dropdown, client dropdown, assignee user dropdown, deal dropdown optional, validation)"
+      ],
+      "timestamp": "2026-02-25T03:31:59.557Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTaskDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentTaskDetailHeader: Add test entries for TaskDetailHeader (title, priority badge, status, due date, assignee, associated client link, associated deal link)",
+        "PlanComponentTaskNotesAndActions: Add test entries for TaskNotesSection (notes list, add note input, delete note button), TaskActions (Mark Complete button, Cancel button, status updates persisted)"
+      ],
+      "timestamp": "2026-02-25T03:32:05.305Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageContactsListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentContactsListHeader: Add test entries for ContactsListHeader (page title, Import button, Export CSV button, Add Contact button)",
+        "PlanComponentContactsTableAndPagination: Add test entries for ContactsSearch (search input with debounce filtering across name/email/title/phone/location), ContactsTable (Name, Title, Email, Phone, Location, Associated Clients columns, row click navigates to /individuals/:id), ContactsPagination (50 per page), AddContactModal (form fields), ImportDialog (CSV format: Name, Title, Email, Phone, Location, Client Name)"
+      ],
+      "timestamp": "2026-02-25T03:32:11.314Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageSettingsPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentEmailNotifications: Add test entries for EmailNotificationsSection (7 toggles: client updated, deal created, deal stage changed, task created, task completed, contact added, note added; defaults all enabled; only visible when authenticated)",
+        "PlanComponentImportExportSection: Add test entries for ImportExportSection (import buttons for clients/deals/tasks/contacts, export buttons for clients/deals/tasks)",
+        "PlanComponentWebhooksSection: Add test entries for WebhooksSection (webhook list with name/URL/events/enable toggle/delete, add/edit WebhookModal with name input, URL input, event checkboxes, platform selector Zapier/n8n/Custom, platform-specific setup guides with step-by-step instructions, payload format toggle, URL placeholder updates per platform, delete confirmation)"
+      ],
+      "timestamp": "2026-02-25T03:32:19.785Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageUsersListPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentUserCardGrid: Add test entries for TeamHeader (page title), UserCardGrid (user cards with avatar, name, email, active deals count, open tasks count, click navigates to /users/:userId)"
+      ],
+      "timestamp": "2026-02-25T03:32:24.706Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageUserDetailPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentUserDetailSections: Add test entries for UserHeader (name, email, join date), UserStats (active deals, open tasks, total deals), OwnedDealsList (deal entries with links), AssignedTasksList (task entries with links), RecentActivityFeed (activity entries)"
+      ],
+      "timestamp": "2026-02-25T03:32:30.397Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAuthPages: Decide on components, add sections to docs/tests.md",
+        "PlanComponentAuthForms: Add test entries for ForgotPasswordForm (email input, submit button, success message, link sent via Resend API), ResetPasswordForm (new password input, confirm password input, submit button, password mismatch validation, success and auto-login), ConfirmEmailHandler (token verification, auto-login on success, invalid/expired token error)"
+      ],
+      "timestamp": "2026-02-25T03:32:36.019Z",
+      "app": "SalesCRM"
     }
   ]
 }
