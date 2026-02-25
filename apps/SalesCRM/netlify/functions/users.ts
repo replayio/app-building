@@ -17,7 +17,7 @@ export default async function handler(req: Request): Promise<Response> {
   const segments = url.pathname.split("/").filter(Boolean);
   const subPath = segments[3] || null;
 
-  // GET /.netlify/functions/users — list all users
+  // GET /.netlify/functions/users — list all users with stats
   if (req.method === "GET" && !subPath) {
     const users = await query<{
       id: string;
@@ -25,9 +25,14 @@ export default async function handler(req: Request): Promise<Response> {
       email: string;
       avatar_url: string | null;
       created_at: string;
+      active_deals: string;
+      open_tasks: string;
     }>(
       sql,
-      "SELECT id, name, email, avatar_url, created_at FROM users ORDER BY name ASC"
+      `SELECT u.id, u.name, u.email, u.avatar_url, u.created_at,
+        COALESCE((SELECT COUNT(*) FILTER (WHERE d.status = 'open') FROM deals d WHERE d.owner_id = u.id), 0)::text AS active_deals,
+        COALESCE((SELECT COUNT(*) FROM tasks t WHERE t.assignee_id = u.id AND t.status IN ('open', 'in_progress')), 0)::text AS open_tasks
+       FROM users u ORDER BY u.name ASC`
     );
 
     return jsonResponse(
@@ -37,6 +42,8 @@ export default async function handler(req: Request): Promise<Response> {
         email: u.email,
         avatarUrl: u.avatar_url,
         createdAt: u.created_at,
+        activeDeals: parseInt(u.active_deals || "0", 10),
+        openTasks: parseInt(u.open_tasks || "0", 10),
       }))
     );
   }
