@@ -1,6 +1,6 @@
 import { ChildProcess, spawn } from "child_process";
-import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from "fs";
-import { resolve } from "path";
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from "fs";
+import { resolve, dirname, basename } from "path";
 import type { Logger } from "./log";
 import { ensureBranch } from "./git";
 
@@ -177,6 +177,49 @@ function readTasksFile(): TasksFile {
   return JSON.parse(content);
 }
 
+/**
+ * Scan tasks/ for any task files not belonging to this container,
+ * absorb their tasks into our own file, and delete the foreign files.
+ */
+function absorbForeignTaskFiles(log: Logger): void {
+  const tasksDir = dirname(TASKS_FILE);
+  if (!existsSync(tasksDir)) return;
+
+  const ownBasename = basename(TASKS_FILE);
+  const files = readdirSync(tasksDir).filter(
+    (f) => f.startsWith("tasks-") && f.endsWith(".json") && f !== ownBasename
+  );
+  if (files.length === 0) return;
+
+  const ownData = readTasksFile();
+  let absorbed = 0;
+
+  for (const file of files) {
+    const filePath = resolve(tasksDir, file);
+    try {
+      const content = readFileSync(filePath, "utf-8").trim();
+      if (!content) {
+        unlinkSync(filePath);
+        continue;
+      }
+      const foreign: TasksFile = JSON.parse(content);
+      if (foreign.tasks.length > 0) {
+        ownData.tasks.push(...foreign.tasks);
+        absorbed += foreign.tasks.length;
+      }
+      unlinkSync(filePath);
+      log(`Absorbed ${foreign.tasks.length} task(s) from ${file}`);
+    } catch (e: any) {
+      log(`Warning: failed to absorb ${file}: ${e.message}`);
+    }
+  }
+
+  if (absorbed > 0) {
+    writeTasksFile(ownData);
+    log(`Total: absorbed ${absorbed} task(s) from ${files.length} file(s)`);
+  }
+}
+
 function writeTasksFile(data: TasksFile): void {
   mkdirSync(resolve(REPO_ROOT, "tasks"), { recursive: true });
   writeFileSync(TASKS_FILE, JSON.stringify(data, null, 2) + "\n");
@@ -260,6 +303,9 @@ export async function processTasks(
   let tasksProcessed = 0;
   let totalCost = 0;
   let consecutiveRetries = 0;
+
+  // On startup, absorb any task files left by other containers.
+  absorbForeignTaskFiles(log);
 
   while (true) {
     if (shouldStop?.()) break;
