@@ -18,7 +18,14 @@ export function AccountHeader({
   const navigate = useNavigate();
   const [showNewTransaction, setShowNewTransaction] = useState(false);
 
-  const categoryLabel =
+  const categoryLabel: string =
+    ({
+      assets: "Asset",
+      liabilities: "Liability",
+      equity: "Equity",
+      revenue: "Revenue",
+      expenses: "Expense",
+    } as Record<string, string>)[account.category] ??
     account.category.charAt(0).toUpperCase() + account.category.slice(1);
 
   return (

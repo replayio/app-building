@@ -102,6 +102,7 @@ export function TransactionsTab({
       {editTransaction && (
         <NewTransactionModal
           onClose={() => setEditTransaction(null)}
+          editTransaction={editTransaction}
         />
       )}
     </>
