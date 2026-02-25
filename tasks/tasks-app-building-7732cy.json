@@ -3,13 +3,6 @@
     {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
-        "AnalyzeGroup: report-testFailures-reference-apps-1-review-20260225-123635 skills/review/reportTestFailures.md logs/worker-app-building-knfcm0-97-2026-02-25T05-27-57-687Z.log logs/worker-app-building-knfcm0-98-2026-02-25T05-31-06-328Z.log logs/worker-app-building-knfcm0-99-2026-02-25T05-35-09-077Z.log logs/worker-app-building-7732cy-1-2026-02-25T12-37-10-920Z.log"
-      ],
-      "timestamp": "2026-02-25T12:37:59.339Z"
-    },
-    {
-      "skill": "skills/review/analyzeLogs.md",
-      "subtasks": [
         "Unpack: report-shellCommands-reference-apps-1-review-20260225-123635 skills/review/reportShellCommands.md"
       ],
       "timestamp": "2026-02-25T12:36:43.664Z"
