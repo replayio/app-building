@@ -3,30 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestEQ-HDR-1: Write test for EQ-HDR-1",
-        "WriteTestEQ-HDR-2: Write test for EQ-HDR-2",
-        "WriteTestEQ-HDR-3: Write test for EQ-HDR-3",
-        "WriteTestEQ-HDR-4: Write test for EQ-HDR-4",
-        "WriteTestEQ-TBL-1: Write test for EQ-TBL-1",
-        "WriteTestEQ-TBL-2: Write test for EQ-TBL-2",
-        "WriteTestEQ-TBL-3: Write test for EQ-TBL-3",
-        "WriteTestEQ-TBL-4: Write test for EQ-TBL-4",
-        "WriteTestEQ-TBL-5: Write test for EQ-TBL-5",
-        "WriteTestEQ-TBL-6: Write test for EQ-TBL-6",
-        "WriteTestEQ-TBL-7: Write test for EQ-TBL-7",
-        "WriteTestEQ-TBL-8: Write test for EQ-TBL-8",
-        "WriteTestEQ-TBL-9: Write test for EQ-TBL-9",
-        "WriteTestEQ-TBL-10: Write test for EQ-TBL-10",
-        "WriteTestEQ-TBL-11: Write test for EQ-TBL-11",
-        "WriteTestEQ-TBL-12: Write test for EQ-TBL-12",
-        "WriteTestEQ-TBL-13: Write test for EQ-TBL-13"
-      ],
-      "timestamp": "2026-02-25T00:49:19.411Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestED-HDR-1: Write test for ED-HDR-1",
         "WriteTestED-HDR-2: Write test for ED-HDR-2",
         "WriteTestED-HDR-3: Write test for ED-HDR-3",
