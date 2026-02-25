@@ -1,6 +1,12 @@
-import React, { useState } from "react";
-import { useAppDispatch } from "../hooks";
+import React, { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { createReport } from "../slices/reportsSlice";
+import { fetchAccounts } from "../slices/accountsSlice";
+import { ReportTypeSelector } from "./ReportTypeSelector";
+import { DateRangeSelector } from "./DateRangeSelector";
+import { AccountCategoryFilter } from "./AccountCategoryFilter";
+import { buildDefaultCategoryState, getSelectedCategories } from "./categoryTree";
+import { ReportPreview } from "./ReportPreview";
 
 interface CreateReportDialogProps {
   onClose: () => void;
@@ -10,35 +16,41 @@ interface CreateReportDialogProps {
 
 export function CreateReportDialog({ onClose, defaultType, defaultAccountName }: CreateReportDialogProps): React.ReactElement {
   const dispatch = useAppDispatch();
-  const [name, setName] = useState(
-    defaultAccountName
-      ? `${defaultType === "budget_vs_actual" ? "Budget vs Actual" : "Transaction History"} - ${defaultAccountName}`
-      : ""
-  );
+  const accounts = useAppSelector((s) => s.accounts.items);
+
   const [reportType, setReportType] = useState<"summary" | "detailed" | "budget_vs_actual">(defaultType ?? "summary");
-  const [dateStart, setDateStart] = useState("");
-  const [dateEnd, setDateEnd] = useState("");
-  const [categoriesFilter, setCategoriesFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [subCategoryState, setSubCategoryState] = useState(buildDefaultCategoryState);
   const [includeZeroBalance, setIncludeZeroBalance] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const reportTypes = [
-    { value: "summary", label: "Summary" },
-    { value: "detailed", label: "Detailed" },
-    { value: "budget_vs_actual", label: "Budget vs Actual" },
-  ] as const;
+  const selectedCategories = getSelectedCategories(subCategoryState);
+
+  useEffect(() => {
+    if (accounts.length === 0) {
+      dispatch(fetchAccounts());
+    }
+  }, [dispatch, accounts.length]);
+
+  const categoriesFilterString = selectedCategories.length === 5 ? null : selectedCategories.join(",");
 
   const handleSubmit = async () => {
-    if (!name.trim() || !dateStart || !dateEnd) return;
+    if (!startDate || !endDate) return;
     setSubmitting(true);
+
+    const name = defaultAccountName
+      ? `${reportType === "budget_vs_actual" ? "Budget vs Actual" : reportType === "detailed" ? "Detailed Transactions" : "Summary Overview"} - ${defaultAccountName}`
+      : `${reportType === "budget_vs_actual" ? "Budget vs Actual" : reportType === "detailed" ? "Detailed Transactions" : "Summary Overview"} Report`;
+
     try {
       await dispatch(
         createReport({
           name,
           report_type: reportType,
-          date_range_start: dateStart,
-          date_range_end: dateEnd,
-          categories_filter: categoriesFilter || null,
+          date_range_start: startDate,
+          date_range_end: endDate,
+          categories_filter: categoriesFilterString,
           include_zero_balance: includeZeroBalance,
         })
       ).unwrap();
@@ -48,11 +60,13 @@ export function CreateReportDialog({ onClose, defaultType, defaultAccountName }:
     }
   };
 
+  const canSubmit = !!startDate && !!endDate && !submitting;
+
   return (
-    <div className="modal-overlay" data-testid="create-report-dialog" onClick={onClose}>
+    <div className="modal-overlay create-report-dialog" data-testid="create-report-dialog" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="modal-title">Generate Report</h2>
+          <h2 className="modal-title">Create New Report</h2>
           <button className="modal-close-btn" data-testid="report-dialog-close-btn" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -60,87 +74,47 @@ export function CreateReportDialog({ onClose, defaultType, defaultAccountName }:
           </button>
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Report Name</label>
-          <input
-            type="text"
-            className="form-input"
-            data-testid="report-name"
-            placeholder="Enter report name..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+        <p className="create-report-dialog-subtitle">
+          Configure parameters to generate a financial report based on accounts and transactions.
+        </p>
+
+        <div className="create-report-dialog-body">
+          <div className="create-report-dialog-left">
+            <div className="create-report-settings-title">Report Settings</div>
+
+            <ReportTypeSelector value={reportType} onChange={setReportType} />
+
+            <DateRangeSelector
+              startDate={startDate}
+              endDate={endDate}
+              onStartDateChange={setStartDate}
+              onEndDateChange={setEndDate}
+            />
+
+            <AccountCategoryFilter
+              subCategoryState={subCategoryState}
+              onSubCategoryChange={setSubCategoryState}
+              includeZeroBalance={includeZeroBalance}
+              onIncludeZeroBalanceChange={setIncludeZeroBalance}
+            />
+          </div>
+
+          <ReportPreview
+            reportType={reportType}
+            startDate={startDate}
+            endDate={endDate}
+            selectedCategories={selectedCategories}
+            includeZeroBalance={includeZeroBalance}
+            subCategoryState={subCategoryState}
           />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Report Type</label>
-          <div style={{ display: "flex", gap: "8px" }}>
-            {reportTypes.map((rt) => (
-              <button
-                key={rt.value}
-                className={`btn ${reportType === rt.value ? "btn--primary" : "btn--secondary"}`}
-                data-testid={`report-type-${rt.value}`}
-                onClick={() => setReportType(rt.value)}
-              >
-                {rt.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-          <div className="form-group">
-            <label className="form-label">Start Date</label>
-            <input
-              type="date"
-              className="form-input"
-              data-testid="report-date-start"
-              value={dateStart}
-              onChange={(e) => setDateStart(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label">End Date</label>
-            <input
-              type="date"
-              className="form-input"
-              data-testid="report-date-end"
-              value={dateEnd}
-              onChange={(e) => setDateEnd(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Categories Filter (comma-separated, leave empty for all)</label>
-          <input
-            type="text"
-            className="form-input"
-            data-testid="report-categories-filter"
-            placeholder="e.g. assets, liabilities"
-            value={categoriesFilter}
-            onChange={(e) => setCategoriesFilter(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-            <input
-              type="checkbox"
-              data-testid="report-include-zero"
-              checked={includeZeroBalance}
-              onChange={(e) => setIncludeZeroBalance(e.target.checked)}
-            />
-            <span className="form-label" style={{ marginBottom: 0 }}>Include zero-balance accounts</span>
-          </label>
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn--secondary" onClick={onClose}>Cancel</button>
+          <button className="btn btn--secondary" data-testid="report-cancel-btn" onClick={onClose}>Cancel</button>
           <button
             className="btn btn--primary"
             data-testid="submit-report-btn"
-            disabled={!name.trim() || !dateStart || !dateEnd || submitting}
+            disabled={!canSubmit}
             onClick={handleSubmit}
           >
             {submitting ? "Generating..." : "Generate Report"}
