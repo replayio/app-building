@@ -2313,15 +2313,102 @@ Given the user has no recent activity entries, the RecentActivityFeed section di
 
 ---
 
-## Auth Pages
+## ForgotPasswordPage (/auth/forgot-password)
 
-### ForgotPasswordPage (/auth/forgot-password)
 ### Components: ForgotPasswordForm
 
-### ResetPasswordPage (/auth/reset-password)
+#### ForgotPasswordForm
+
+**Page displays heading and instructions**
+Given the user navigates to /auth/forgot-password, the page displays a heading such as "Forgot Password" and instructional text explaining that a password reset link will be sent to their email address.
+
+**Email input field is displayed**
+Given the user is on /auth/forgot-password, an email input field is visible with a label such as "Email" and a placeholder like "Enter your email address".
+
+**Submit button is displayed with label**
+Given the user is on /auth/forgot-password, a submit button is visible with text such as "Send Reset Link".
+
+**Submit with valid email shows success message**
+Given the user is on /auth/forgot-password, when they enter a valid email address (e.g., "user@example.com") into the email input and click the "Send Reset Link" button, a success message is displayed (e.g., "If an account exists with that email, a password reset link has been sent.") and the email input is cleared or the form is replaced by the success message. The reset link is sent via the Resend API.
+
+**Submit with empty email shows validation error**
+Given the user is on /auth/forgot-password, when they click the "Send Reset Link" button without entering an email address, a validation error message is displayed (e.g., "Email is required") and no API request is made.
+
+**Submit with invalid email format shows validation error**
+Given the user is on /auth/forgot-password, when they enter an invalid email format (e.g., "notanemail") and click the "Send Reset Link" button, a validation error message is displayed (e.g., "Please enter a valid email address") and no API request is made.
+
+**Back to sign in link is displayed and navigates correctly**
+Given the user is on /auth/forgot-password, a link such as "Back to Sign In" or "← Back" is visible. When clicked, the app navigates back to the main app (e.g., /clients) where the user can use the sidebar sign-in form.
+
+**Submit button shows loading state during request**
+Given the user has entered a valid email and clicked "Send Reset Link", the button shows a loading state (e.g., disabled with a spinner or "Sending..." text) while the request is in progress, preventing duplicate submissions.
+
+---
+
+## ResetPasswordPage (/auth/reset-password)
+
 ### Components: ResetPasswordForm
 
-### ConfirmEmailPage (/auth/confirm-email)
+#### ResetPasswordForm
+
+**Page displays heading and instructions**
+Given the user navigates to /auth/reset-password?token=valid-token, the page displays a heading such as "Reset Password" and instructional text explaining that they should enter a new password.
+
+**New password input field is displayed**
+Given the user is on /auth/reset-password?token=valid-token, a password input field is visible with a label such as "New Password" and appropriate placeholder text.
+
+**Confirm password input field is displayed**
+Given the user is on /auth/reset-password?token=valid-token, a confirm password input field is visible with a label such as "Confirm Password" and appropriate placeholder text.
+
+**Submit button is displayed with label**
+Given the user is on /auth/reset-password?token=valid-token, a submit button is visible with text such as "Reset Password".
+
+**Submit with matching passwords succeeds and auto-logs in**
+Given the user is on /auth/reset-password?token=valid-token, when they enter a new password in both the "New Password" and "Confirm Password" fields (e.g., "NewSecure123!") and click "Reset Password", the password is updated successfully, the user is automatically logged in, and the app redirects to /clients (or the main page) with the sidebar showing the user's avatar, name, and sign-out button.
+
+**Submit with mismatched passwords shows validation error**
+Given the user is on /auth/reset-password?token=valid-token, when they enter "Password1!" in the "New Password" field and "Password2!" in the "Confirm Password" field and click "Reset Password", a validation error message is displayed (e.g., "Passwords do not match") and the form remains visible for correction.
+
+**Submit with empty password fields shows validation error**
+Given the user is on /auth/reset-password?token=valid-token, when they click "Reset Password" without entering any password, a validation error message is displayed (e.g., "Password is required") and no API request is made.
+
+**Invalid token shows error message**
+Given the user navigates to /auth/reset-password?token=invalid-or-expired-token, or the token has already been used, the page displays an error message (e.g., "This reset link is invalid or has expired.") and a link to request a new reset (navigating to /auth/forgot-password).
+
+**Missing token shows error message**
+Given the user navigates to /auth/reset-password without a token query parameter, the page displays an error message (e.g., "No reset token provided.") and a link to request a password reset (navigating to /auth/forgot-password).
+
+**Submit button shows loading state during request**
+Given the user has entered matching passwords and clicked "Reset Password", the button shows a loading state (e.g., disabled with a spinner or "Resetting..." text) while the request is in progress, preventing duplicate submissions.
+
+**Link to forgot password page is available on error**
+Given the user sees an invalid or expired token error on /auth/reset-password, a link such as "Request a new reset link" is visible. When clicked, the app navigates to /auth/forgot-password.
+
+---
+
+## ConfirmEmailPage (/auth/confirm-email)
+
 ### Components: ConfirmEmailHandler
 
-<!-- Tests for forgot password flow, reset password flow, email confirmation flow -->
+#### ConfirmEmailHandler
+
+**Valid token confirms email and auto-logs in**
+Given the user navigates to /auth/confirm-email?token=valid-confirmation-token, the page automatically verifies the token, confirms the email address, logs the user in, and redirects to /clients (or the main page) with the sidebar showing the user's avatar, name, and sign-out button. A brief success message (e.g., "Email confirmed! Redirecting...") may be shown during the process.
+
+**Loading state is displayed during token verification**
+Given the user navigates to /auth/confirm-email?token=valid-token, while the token is being verified, the page displays a loading indicator (e.g., a spinner with text such as "Confirming your email...").
+
+**Invalid token shows error message**
+Given the user navigates to /auth/confirm-email?token=invalid-token, where the token does not exist in the database, the page displays an error message (e.g., "This confirmation link is invalid.") and does not log the user in.
+
+**Expired token shows error message**
+Given the user navigates to /auth/confirm-email?token=expired-token, where the token exists but has passed its expiry time, the page displays an error message (e.g., "This confirmation link has expired.") and does not log the user in.
+
+**Already-used token shows error message**
+Given the user navigates to /auth/confirm-email?token=used-token, where the token has already been used (used_at is set), the page displays an error message (e.g., "This confirmation link has already been used.") and does not log the user in.
+
+**Missing token shows error message**
+Given the user navigates to /auth/confirm-email without a token query parameter, the page displays an error message (e.g., "No confirmation token provided.").
+
+**Error state shows link to sign in**
+Given the user sees an error on /auth/confirm-email (invalid, expired, or used token), a link such as "Go to Sign In" or "Back to app" is visible. When clicked, the app navigates to /clients (or the main page) where the user can use the sidebar sign-in form.
