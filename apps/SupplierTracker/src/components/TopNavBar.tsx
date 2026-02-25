@@ -1,0 +1,80 @@
+import { useNavigate, useLocation } from "react-router-dom";
+import "./TopNavBar.css";
+
+const navItems = [
+  { key: "dashboard", label: "Dashboard", path: "/" },
+  { key: "suppliers", label: "Suppliers", path: "/#suppliers" },
+  { key: "orders", label: "Orders", path: "/#orders" },
+  { key: "inventory", label: "Inventory", path: "/#inventory" },
+];
+
+export function TopNavBar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (item: (typeof navItems)[number]) => {
+    if (item.key === "dashboard") return location.pathname === "/";
+    if (item.key === "suppliers") return location.pathname.startsWith("/suppliers");
+    if (item.key === "orders") return location.pathname.startsWith("/orders");
+    return false;
+  };
+
+  return (
+    <header data-testid="top-nav" className="top-nav">
+      <div className="top-nav-left">
+        <a
+          data-testid="top-nav-logo"
+          className="top-nav-logo"
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+        >
+          <svg
+            className="top-nav-logo-icon"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+            <line x1="12" y1="22.08" x2="12" y2="12" />
+          </svg>
+          SupplyChain Pro
+        </a>
+
+        <nav data-testid="top-nav-links" className="top-nav-links">
+          {navItems.map((item) => (
+            <a
+              key={item.key}
+              data-testid={`top-nav-${item.key}`}
+              className={`top-nav-link${isActive(item) ? " top-nav-link--active" : ""}`}
+              href={item.path}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <div className="top-nav-right">
+        <button data-testid="top-nav-user" className="top-nav-user-btn">
+          <div className="top-nav-avatar">U</div>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+    </header>
+  );
+}

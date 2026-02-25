@@ -3,10 +3,26 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
+        "WriteBackendSuppliers: Write the suppliers Netlify function",
+        "WriteBackendSupplierComments: Write the supplier-comments Netlify function",
+        "WriteBackendSupplierDocuments: Write the supplier-documents Netlify function",
+        "WriteBackendOrders: Write the orders Netlify function",
+        "WriteBackendOrderLineItems: Write the order-line-items Netlify function",
+        "WriteBackendOrderDocuments: Write the order-documents Netlify function",
+        "WriteBackendOrderHistory: Write the order-history Netlify function"
       ],
-      "timestamp": "2026-02-25T04:39:14.532Z",
+      "timestamp": "2026-02-25T04:49:18.874Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentQuickActions: Write the QuickActions component",
+        "WriteComponentUpcomingOrdersTable: Write the UpcomingOrdersTable component",
+        "WriteComponentSuppliersList: Write the SuppliersList component",
+        "WritePageDashboard: Write the DashboardPage itself"
+      ],
+      "timestamp": "2026-02-25T04:49:03.867Z",
       "app": "SupplierTracker"
     },
     {
@@ -718,6 +734,31 @@
         "WritePageOrderDetails: Write the OrderDetailsPage itself"
       ],
       "timestamp": "2026-02-25T04:39:23.016Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentSupplierOverview: Write the SupplierOverview component",
+        "WriteComponentDocumentsTab: Write the DocumentsTab component",
+        "WriteComponentCommentsSection: Write the CommentsSection component",
+        "WriteComponentOrdersSection: Write the OrdersSection component",
+        "WritePageSupplierDetails: Write the SupplierDetailsPage itself"
+      ],
+      "timestamp": "2026-02-25T04:49:08.538Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentOrderSummary: Write the OrderSummary component",
+        "WriteComponentLineItemsTable: Write the LineItemsTable component",
+        "WriteComponentCostBreakdown: Write the CostBreakdown component",
+        "WriteComponentOrderDocuments: Write the OrderDocuments component",
+        "WriteComponentOrderHistory: Write the OrderHistory component",
+        "WritePageOrderDetails: Write the OrderDetailsPage itself"
+      ],
+      "timestamp": "2026-02-25T04:49:13.166Z",
       "app": "SupplierTracker"
     }
   ]
