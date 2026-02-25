@@ -1822,7 +1822,391 @@ Components: BatchHeader, CreateNewTransactionButton, BatchOverview, LineageDiagr
 
 Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar, TransactionsTable, Pagination
 
-<!-- Tests to be added by PlanPageTransactions -->
+### NewTransactionButton
+
+**Test: New Transaction button is displayed as primary action with correct styling**
+- Components: NewTransactionButton
+- Given: The user navigates to the Transactions page (/transactions)
+- Then: A "New Transaction" button is displayed at the top right of the page, above the filter bar
+- And: The button is styled as a primary action button (blue/filled)
+
+**Test: Clicking New Transaction button navigates to NewTransactionPage**
+- Components: NewTransactionButton
+- Given: The user is on the Transactions page
+- When: The user clicks the "New Transaction" button
+- Then: The app navigates to /transactions/new (NewTransactionPage)
+
+### DateRangeFilter
+
+**Test: Date Range filter displays with calendar icon and default date range**
+- Components: DateRangeFilter
+- Given: The user navigates to the Transactions page
+- Then: A "Date Range" labeled filter is displayed in the Filters section
+- And: The filter shows a calendar icon on the left
+- And: The filter displays a date range value (e.g., "Oct 1, 2023 - Oct 31, 2023")
+
+**Test: Clicking the date range filter opens a date range picker**
+- Components: DateRangeFilter
+- Given: The user is on the Transactions page
+- When: The user clicks the date range filter
+- Then: A date range picker dropdown/popover opens allowing the user to select a start date and end date
+
+**Test: Selecting a new date range filters the transactions table**
+- Components: DateRangeFilter, TransactionsTable
+- Given: The transactions table shows transactions across all dates
+- When: The user selects a date range of "Oct 25, 2023 - Oct 27, 2023" in the date range picker
+- Then: The TransactionsTable updates to show only transactions with dates within that range
+- And: Transactions outside the selected range are hidden
+- And: The date range filter displays "Oct 25, 2023 - Oct 27, 2023"
+- And: The pagination updates to reflect the filtered count
+
+**Test: Clearing the date range filter shows all transactions**
+- Components: DateRangeFilter, TransactionsTable
+- Given: The date range filter is set to "Oct 25, 2023 - Oct 27, 2023"
+- When: The user clears the date range filter (e.g., via Clear Filters or resetting the date picker)
+- Then: The TransactionsTable returns to showing all transactions
+- And: The pagination returns to its unfiltered state
+
+### AccountFilter
+
+**Test: Involved Account(s) filter displays with label and multi-select dropdown**
+- Components: AccountFilter
+- Given: The user navigates to the Transactions page
+- Then: An "Involved Account(s)" labeled filter is displayed in the Filters section
+- And: The filter shows a dropdown with a chevron/arrow indicator
+
+**Test: Opening the account filter dropdown lists all accounts with IDs**
+- Components: AccountFilter
+- Given: Accounts exist including "Raw Materials Inventory (1200)", "Accounts Payable (2100)", "Work in Process (1300)", "Finished Goods Inventory (1400)", "Utilities Expense (6100)", "Cash (1000)"
+- When: The user clicks the account filter dropdown
+- Then: A dropdown menu opens showing all account names with their account numbers
+
+**Test: Selecting multiple accounts from the account filter shows selected count**
+- Components: AccountFilter
+- Given: The account filter dropdown is open
+- When: The user selects "Raw Materials Inventory (1200)" and "Accounts Payable (2100)"
+- Then: The filter displays the selected account names followed by "(2 selected)"
+- And: Both selections are visually indicated (e.g., checkmarks)
+
+**Test: Selecting accounts filters the transactions table to matching transactions**
+- Components: AccountFilter, TransactionsTable
+- Given: The user selects "Raw Materials Inventory (1200)" and "Accounts Payable (2100)" from the account filter
+- Then: The TransactionsTable shows only transactions where at least one of the selected accounts is involved (debited or credited)
+- And: Transactions not involving either of these accounts are hidden
+- And: The pagination updates to reflect the filtered count
+
+**Test: Deselecting all accounts resets the account filter**
+- Components: AccountFilter, TransactionsTable
+- Given: The account filter has "Raw Materials Inventory (1200)" and "Accounts Payable (2100)" selected
+- When: The user deselects all accounts (or clicks Clear Filters)
+- Then: The TransactionsTable returns to showing all transactions
+- And: The account filter returns to its default unselected state
+
+### MaterialFilter
+
+**Test: Material filter displays with label and multi-select dropdown**
+- Components: MaterialFilter
+- Given: The user navigates to the Transactions page
+- Then: A "Material" labeled filter is displayed in the Filters section
+- And: The filter shows a dropdown with a chevron/arrow indicator
+
+**Test: Opening the material filter dropdown lists all materials with codes**
+- Components: MaterialFilter
+- Given: Materials exist including "Steel Plates (M001)", "Plastic Pellets (M002)", "Widget X Units (P101)"
+- When: The user clicks the material filter dropdown
+- Then: A dropdown menu opens showing all material names with their material codes
+
+**Test: Selecting multiple materials shows selected count**
+- Components: MaterialFilter
+- Given: The material filter dropdown is open
+- When: The user selects "Steel Plates (M001)" and "Plastic Pellets (M002)"
+- Then: The filter displays the selected material names followed by "(2 selected)"
+- And: Both selections are visually indicated (e.g., checkmarks)
+
+**Test: Selecting materials filters the transactions table to matching transactions**
+- Components: MaterialFilter, TransactionsTable
+- Given: The user selects "Steel Plates (M001)" from the material filter
+- Then: The TransactionsTable shows only transactions that involve "Steel Plates (M001)" in the Materials and amounts column
+- And: Transactions not involving that material are hidden
+- And: The pagination updates to reflect the filtered count
+
+**Test: Deselecting all materials resets the material filter**
+- Components: MaterialFilter, TransactionsTable
+- Given: The material filter has "Steel Plates (M001)" selected
+- When: The user deselects all materials (or clicks Clear Filters)
+- Then: The TransactionsTable returns to showing all transactions
+
+### TransactionTypeFilter
+
+**Test: Transaction Type filter displays with label and dropdown**
+- Components: TransactionTypeFilter
+- Given: The user navigates to the Transactions page
+- Then: A "Transaction Type" labeled filter is displayed in the Filters section
+- And: The filter shows a default value of "All Types (Purchase, Consumption, Transfer...)"
+
+**Test: Opening the transaction type filter dropdown lists all transaction types**
+- Components: TransactionTypeFilter
+- Given: Transaction types include "Purchase", "Consumption", "Transfer", and other types
+- When: The user clicks the transaction type filter dropdown
+- Then: A dropdown menu opens showing an "All Types" option and each individual transaction type
+
+**Test: Selecting a transaction type filters the transactions table**
+- Components: TransactionTypeFilter, TransactionsTable
+- Given: The transaction type filter is set to "All Types"
+- When: The user selects "Purchase" from the transaction type filter dropdown
+- Then: The TransactionsTable shows only transactions with type "Purchase" (e.g., "Purchase of Steel Plates from Supplier A", "Purchase of Plastic Pellets")
+- And: Transactions of other types (Consumption, Transfer) are hidden
+- And: The pagination updates to reflect the filtered count
+
+**Test: Selecting "All Types" resets the transaction type filter**
+- Components: TransactionTypeFilter, TransactionsTable
+- Given: The transaction type filter is set to "Purchase"
+- When: The user selects "All Types" from the transaction type filter dropdown
+- Then: The TransactionsTable returns to showing transactions of all types
+
+**Test: Clear Filters link resets all filters to defaults**
+- Components: DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter
+- Given: The user has active filters: date range "Oct 25, 2023 - Oct 27, 2023", account "Raw Materials Inventory (1200)" selected, material "Steel Plates (M001)" selected, and transaction type "Purchase"
+- When: The user clicks the "Clear Filters" link in the Filters section
+- Then: All filters reset to their default/unselected states
+- And: The TransactionsTable shows all transactions unfiltered
+- And: The pagination updates to reflect the full result count
+
+### SearchBar
+
+**Test: Search bar displays with magnifying glass icon and placeholder text**
+- Components: SearchBar
+- Given: The user navigates to the Transactions page
+- Then: A search input is displayed below the filters section
+- And: The input has a magnifying glass (search) icon on the left
+- And: The input shows placeholder text "Search by ID or description..."
+
+**Test: Typing a transaction ID in the search bar filters transactions**
+- Components: SearchBar, TransactionsTable
+- Given: The TransactionsTable shows all transactions
+- When: The user types "TXN-100245" in the search bar
+- Then: The TransactionsTable updates to show only transactions whose Transaction ID contains "TXN-100245"
+- And: The pagination updates to reflect the filtered count
+
+**Test: Typing a description keyword in the search bar filters transactions**
+- Components: SearchBar, TransactionsTable
+- Given: The TransactionsTable shows all transactions
+- When: The user types "Purchase" in the search bar
+- Then: The TransactionsTable updates to show only transactions whose description contains "Purchase" (e.g., "Purchase of Steel Plates from Supplier A", "Purchase of Plastic Pellets")
+- And: Transactions without "Purchase" in their description are hidden
+
+**Test: Search is case-insensitive**
+- Components: SearchBar, TransactionsTable
+- Given: Transactions include "Purchase of Steel Plates from Supplier A"
+- When: The user types "purchase" (lowercase) in the search bar
+- Then: "Purchase of Steel Plates from Supplier A" is shown in the results
+
+**Test: Clearing the search bar shows all transactions again**
+- Components: SearchBar, TransactionsTable
+- Given: The search bar contains "Purchase" and the table shows filtered results
+- When: The user clears the search bar (empties the text)
+- Then: The TransactionsTable returns to showing all transactions
+- And: The pagination returns to its unfiltered state
+
+**Test: Search with no matching results shows empty state**
+- Components: SearchBar, TransactionsTable
+- Given: No transaction ID or description contains "NONEXISTENT999"
+- When: The user types "NONEXISTENT999" in the search bar
+- Then: The TransactionsTable shows an empty state message (e.g., "No transactions found")
+
+**Test: Search and filters work together to narrow results**
+- Components: SearchBar, AccountFilter, TransactionsTable, Pagination
+- Given: The user has selected "Raw Materials Inventory (1200)" from the account filter
+- When: The user types "Steel" in the search bar
+- Then: The TransactionsTable shows only transactions involving "Raw Materials Inventory (1200)" that also have "Steel" in their description or ID
+
+### TransactionsTable
+
+**Test: Breadcrumb displays Home / Transactions**
+- Components: TransactionsTable
+- Given: The user navigates to the Transactions page
+- Then: A breadcrumb trail "Home / Transactions" is displayed at the top of the page
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+
+**Test: Sidebar shows Transactions link as active**
+- Components: TransactionsTable
+- Given: The user navigates to the Transactions page
+- Then: The navigation "Transactions" link is visually highlighted as the active page
+
+**Test: Sort dropdown displays with "Sort by: Date (Newest First)" as default**
+- Components: TransactionsTable
+- Given: The user navigates to the Transactions page
+- Then: A sort dropdown is displayed showing "Sort by: Date (Newest First)"
+
+**Test: Opening the sort dropdown shows available sort options**
+- Components: TransactionsTable
+- Given: The user is on the Transactions page
+- When: The user clicks the sort dropdown
+- Then: A dropdown menu opens showing sort options including "Date (Newest First)", "Date (Oldest First)", and other relevant options
+
+**Test: Selecting "Date (Oldest First)" sorts the table by date ascending**
+- Components: TransactionsTable
+- Given: The table is sorted by "Date (Newest First)"
+- When: The user selects "Date (Oldest First)" from the sort dropdown
+- Then: The TransactionsTable rows are reordered so that the oldest transactions appear first
+- And: The sort dropdown label updates to "Sort by: Date (Oldest First)"
+
+**Test: Result count displays total number of matching results**
+- Components: TransactionsTable
+- Given: There are 145 transactions matching the current filters
+- Then: A text label displays "Showing 1-10 of 145 results" indicating the current page range and total count
+
+**Test: Transactions table displays correct column headers**
+- Components: TransactionsTable
+- Given: The user navigates to the Transactions page
+- Then: The table shows columns: Date, Transaction ID, Description, Accounts affected, Materials and amounts
+- And: The "Date" column header has a sort indicator (arrow icon)
+- And: The "Transaction ID" column header has a sort indicator (arrow icon)
+
+**Test: Transactions table shows transaction rows with correct data**
+- Components: TransactionsTable
+- Given: Transactions exist in the system including:
+  - Oct 27, 2023 | TXN-100245 | "Purchase of Steel Plates from Supplier A" | Dr: Raw Materials Inventory (1200) | Cr: Accounts Payable (2100) | Steel Plates (M001): 500 kg @ $2.50/kg ($1,250.00)
+  - Oct 26, 2023 | TXN-100244 | "Consumption for Production Run #45" | Dr: Work in Process (1300) | Cr: Raw Materials Inventory (1200) | Steel Plates (M001): 120 kg; Plastic Pellets (M002): 30 kg
+  - Oct 25, 2023 | TXN-100243 | "Finished Goods Transfer to Warehouse" | Dr: Finished Goods Inventory (1400) | Cr: Work in Process (1300) | Widget X Units (P101): 50 units
+  - Oct 24, 2023 | TXN-100242 | "Payment for Utility Bill (Oct)" | Dr: Utilities Expense (6100) | Cr: Cash (1000) | N/A ($350.00)
+  - Oct 23, 2023 | TXN-100241 | "Purchase of Plastic Pellets" | Dr: Raw Materials Inventory (1200) | Cr: Accounts Payable (2100) | Plastic Pellets (M002): 200 kg @ $1.10/kg ($220.00)
+- Then: Each transaction row displays the correct Date, Transaction ID, Description, Accounts affected (with Dr/Cr notation and account numbers), and Materials and amounts (with quantities, units, and pricing where applicable)
+
+**Test: Accounts affected column displays double-entry Dr/Cr notation with account numbers**
+- Components: TransactionsTable
+- Given: Transaction TXN-100245 debits "Raw Materials Inventory (1200)" and credits "Accounts Payable (2100)"
+- Then: The Accounts affected column shows "Dr: Raw Materials Inventory (1200) | Cr: Accounts Payable (2100)"
+
+**Test: Materials and amounts column displays material codes, quantities, units, and pricing**
+- Components: TransactionsTable
+- Given: Transaction TXN-100245 involves Steel Plates (M001) at 500 kg for $2.50/kg totaling $1,250.00
+- Then: The Materials and amounts column shows "Steel Plates (M001): 500 kg @ $2.50/kg ($1,250.00)"
+
+**Test: Materials and amounts column displays multiple materials separated by semicolons**
+- Components: TransactionsTable
+- Given: Transaction TXN-100244 involves Steel Plates (M001): 120 kg and Plastic Pellets (M002): 30 kg
+- Then: The Materials and amounts column shows "Steel Plates (M001): 120 kg; Plastic Pellets (M002): 30 kg"
+
+**Test: Materials and amounts column shows N/A with amount for non-material transactions**
+- Components: TransactionsTable
+- Given: Transaction TXN-100242 "Payment for Utility Bill (Oct)" has no specific material but a dollar amount of $350.00
+- Then: The Materials and amounts column shows "N/A ($350.00)"
+
+**Test: Clicking the Date column header sorts transactions by date**
+- Components: TransactionsTable
+- Given: The transactions table is displayed with the Date column header
+- When: The user clicks the "Date" column header
+- Then: The table rows are re-sorted by date (toggling between ascending and descending order)
+- And: The sort indicator on the Date column updates to reflect the sort direction
+
+**Test: Clicking the Transaction ID column header sorts transactions by ID**
+- Components: TransactionsTable
+- Given: The transactions table is displayed with the Transaction ID column header
+- When: The user clicks the "Transaction ID" column header
+- Then: The table rows are re-sorted by transaction ID (toggling between ascending and descending order)
+- And: The sort indicator on the Transaction ID column updates to reflect the sort direction
+
+**Test: Clicking a transaction row navigates to TransactionDetailPage**
+- Components: TransactionsTable
+- Given: A transaction row for TXN-100245 is displayed
+- When: The user clicks on the row for TXN-100245
+- Then: The app navigates to /transactions/:transactionId (TransactionDetailPage) for TXN-100245
+
+**Test: Transactions table shows empty state when no transactions match filters**
+- Components: TransactionsTable
+- Given: No transactions match the current filter and search criteria
+- Then: The table shows an empty state message (e.g., "No transactions found")
+
+### Pagination
+
+**Test: Pagination displays First, Previous, page numbers, Next, Last buttons and result count**
+- Components: Pagination
+- Given: There are 145 transactions and the page size is 10
+- Then: The pagination section shows "First", "Previous", "Next", and "Last" buttons
+- And: Page numbers are displayed including 1, 2, 3, with an ellipsis (...) and the last page number (15)
+- And: The current page (1) is visually highlighted
+- And: A "Showing 1-10 of 145 results" text is displayed
+
+**Test: Rows per page dropdown displays with default value of 10**
+- Components: Pagination
+- Given: The user navigates to the Transactions page
+- Then: A "Rows per page:" dropdown is displayed on the right side of the pagination bar
+- And: The default value is "10"
+
+**Test: Changing rows per page updates the number of visible rows**
+- Components: Pagination, TransactionsTable
+- Given: The rows per page dropdown is set to 10 and 145 transactions exist
+- When: The user changes the rows per page dropdown to 25
+- Then: The TransactionsTable displays up to 25 rows per page
+- And: The pagination text updates (e.g., "Showing 1-25 of 145 results")
+- And: The total number of pages recalculates (e.g., from 15 pages to 6 pages)
+
+**Test: Clicking Next button navigates to the next page**
+- Components: Pagination, TransactionsTable
+- Given: The user is on page 1 showing transactions 1-10
+- When: The user clicks the "Next" button
+- Then: The TransactionsTable updates to show transactions 11-20
+- And: The pagination text updates to "Showing 11-20 of 145 results"
+- And: Page 2 is visually highlighted
+
+**Test: Clicking a page number navigates directly to that page**
+- Components: Pagination, TransactionsTable
+- Given: The user is on page 1
+- When: The user clicks page number "3"
+- Then: The TransactionsTable updates to show transactions 21-30
+- And: The pagination text updates to "Showing 21-30 of 145 results"
+- And: Page 3 is visually highlighted
+
+**Test: Clicking Previous button navigates to the previous page**
+- Components: Pagination, TransactionsTable
+- Given: The user is on page 2 showing transactions 11-20
+- When: The user clicks the "Previous" button
+- Then: The TransactionsTable updates to show transactions 1-10
+- And: The pagination text updates to "Showing 1-10 of 145 results"
+- And: Page 1 is visually highlighted
+
+**Test: Clicking First button navigates to the first page**
+- Components: Pagination, TransactionsTable
+- Given: The user is on page 5
+- When: The user clicks the "First" button
+- Then: The TransactionsTable updates to show transactions 1-10
+- And: Page 1 is visually highlighted
+
+**Test: Clicking Last button navigates to the last page**
+- Components: Pagination, TransactionsTable
+- Given: There are 145 transactions with 10 per page (15 pages total)
+- And: The user is on page 1
+- When: The user clicks the "Last" button
+- Then: The TransactionsTable updates to show transactions 141-145
+- And: The pagination text updates to "Showing 141-145 of 145 results"
+- And: Page 15 is visually highlighted
+
+**Test: First and Previous buttons are disabled on first page**
+- Components: Pagination
+- Given: The user is on page 1 of the transactions table
+- Then: The "First" button is disabled (grayed out or not clickable)
+- And: The "Previous" button is disabled (grayed out or not clickable)
+
+**Test: Next and Last buttons are disabled on last page**
+- Components: Pagination
+- Given: The user is on the last page of the transactions table (page 15)
+- Then: The "Next" button is disabled (grayed out or not clickable)
+- And: The "Last" button is disabled (grayed out or not clickable)
+
+**Test: Pagination updates when filters reduce the number of results**
+- Components: Pagination, TransactionTypeFilter, TransactionsTable
+- Given: The unfiltered table shows 145 transactions across 15 pages
+- When: The user selects "Transfer" from the transaction type filter which has only 8 matching transactions
+- Then: The pagination shows only 1 page
+- And: The pagination text shows "Showing 1-8 of 8 results"
+- And: The "First", "Previous", "Next", and "Last" buttons are all disabled
+
+**Test: Ellipsis is shown between non-contiguous page numbers**
+- Components: Pagination
+- Given: There are 15 pages of transactions and the user is on page 1
+- Then: The pagination shows page numbers "1, 2, 3, ..., 15"
+- And: The ellipsis (...) indicates that pages between 3 and 15 are not individually shown but accessible
 
 ---
 
