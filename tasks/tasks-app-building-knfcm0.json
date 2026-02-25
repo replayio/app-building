@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
-      ],
-      "timestamp": "2026-02-24T23:56:23.422Z"
-    },
-    {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts for ProductionHub"
