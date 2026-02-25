@@ -8,7 +8,7 @@ const REPO_ROOT = "/repo";
 const LOGS_DIR = resolve(REPO_ROOT, "logs");
 const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
 const TASKS_FILE = resolve(REPO_ROOT, `tasks/tasks-${CONTAINER_NAME}.json`);
-const MAX_TASK_RETRIES = 3;
+const MAX_TASK_RETRIES = 5;
 const DEBUG = !!process.env.DEBUG;
 const DEBUG_LOG = resolve(LOGS_DIR, "worker-debug.log");
 
@@ -314,9 +314,8 @@ export async function processTasks(
     } else {
       consecutiveRetries++;
       if (consecutiveRetries >= MAX_TASK_RETRIES) {
-        log(`Task failed ${MAX_TASK_RETRIES} times. Skipping.`);
-        completeTask(assignedTask, log);
-        consecutiveRetries = 0;
+        log(`Task failed ${MAX_TASK_RETRIES} times. Stopping.`);
+        break;
       } else {
         log(`Task did NOT signal <DONE>. Retry ${consecutiveRetries}/${MAX_TASK_RETRIES}.`);
       }
