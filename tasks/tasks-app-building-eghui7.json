@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "Unpack: Check directive compliance"
-      ],
-      "timestamp": "2026-02-25T15:29:02.780Z",
-      "app": "Accounting"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"
@@ -182,6 +174,456 @@
         "Unpack: Deploy to production"
       ],
       "timestamp": "2026-02-25T15:29:21.868Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",
+        "CheckComponentsAccountsPage: Check writeApp.md directive violations in AccountsPage components",
+        "CheckTestsAccountsPage: Check writeTests.md directive violations in AccountsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:22.318Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAccountDetailPage: Check testSpec.md directive violations in AccountDetailPage test entries",
+        "CheckComponentsAccountDetailPage: Check writeApp.md directive violations in AccountDetailPage components",
+        "CheckTestsAccountDetailPage: Check writeTests.md directive violations in AccountDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:23.476Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecNewTransactionModal: Check testSpec.md directive violations in NewTransactionModal test entries",
+        "CheckComponentsNewTransactionModal: Check writeApp.md directive violations in NewTransactionModal components",
+        "CheckTestsNewTransactionModal: Check writeTests.md directive violations in NewTransactionModal tests"
+      ],
+      "timestamp": "2026-02-25T15:32:24.884Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecCreateReportDialog: Check testSpec.md directive violations in CreateReportDialog test entries",
+        "CheckComponentsCreateReportDialog: Check writeApp.md directive violations in CreateReportDialog components",
+        "CheckTestsCreateReportDialog: Check writeTests.md directive violations in CreateReportDialog tests"
+      ],
+      "timestamp": "2026-02-25T15:32:26.341Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecReportDetails: Check testSpec.md directive violations in ReportDetails test entries",
+        "CheckComponentsReportDetails: Check writeApp.md directive violations in ReportDetails components",
+        "CheckTestsReportDetails: Check writeTests.md directive violations in ReportDetails tests"
+      ],
+      "timestamp": "2026-02-25T15:32:27.309Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecReportList: Check testSpec.md directive violations in ReportList test entries",
+        "CheckComponentsReportList: Check writeApp.md directive violations in ReportList components",
+        "CheckTestsReportList: Check writeTests.md directive violations in ReportList tests"
+      ],
+      "timestamp": "2026-02-25T15:32:28.660Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
+        "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
+        "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:29.968Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-25T15:32:31.161Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
+        "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
+        "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:40.184Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",
+        "CheckComponentsAccountsPage: Check writeApp.md directive violations in AccountsPage components",
+        "CheckTestsAccountsPage: Check writeTests.md directive violations in AccountsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:41.549Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAccountDetailPage: Check testSpec.md directive violations in AccountDetailPage test entries",
+        "CheckComponentsAccountDetailPage: Check writeApp.md directive violations in AccountDetailPage components",
+        "CheckTestsAccountDetailPage: Check writeTests.md directive violations in AccountDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:42.691Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecMaterialsPage: Check testSpec.md directive violations in MaterialsPage test entries",
+        "CheckComponentsMaterialsPage: Check writeApp.md directive violations in MaterialsPage components",
+        "CheckTestsMaterialsPage: Check writeTests.md directive violations in MaterialsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:43.995Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecMaterialDetailPage: Check testSpec.md directive violations in MaterialDetailPage test entries",
+        "CheckComponentsMaterialDetailPage: Check writeApp.md directive violations in MaterialDetailPage components",
+        "CheckTestsMaterialDetailPage: Check writeTests.md directive violations in MaterialDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:45.246Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecBatchDetailPage: Check testSpec.md directive violations in BatchDetailPage test entries",
+        "CheckComponentsBatchDetailPage: Check writeApp.md directive violations in BatchDetailPage components",
+        "CheckTestsBatchDetailPage: Check writeTests.md directive violations in BatchDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:46.414Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
+        "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
+        "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:47.842Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecTransactionDetailPage: Check testSpec.md directive violations in TransactionDetailPage test entries",
+        "CheckComponentsTransactionDetailPage: Check writeApp.md directive violations in TransactionDetailPage components",
+        "CheckTestsTransactionDetailPage: Check writeTests.md directive violations in TransactionDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:49.079Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecNewTransactionPage: Check testSpec.md directive violations in NewTransactionPage test entries",
+        "CheckComponentsNewTransactionPage: Check writeApp.md directive violations in NewTransactionPage components",
+        "CheckTestsNewTransactionPage: Check writeTests.md directive violations in NewTransactionPage tests"
+      ],
+      "timestamp": "2026-02-25T15:32:50.452Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-25T15:32:51.249Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecRecipesPage: Check testSpec.md directive violations in RecipesPage test entries",
+        "CheckComponentsRecipesPage: Check writeApp.md directive violations in RecipesPage components",
+        "CheckTestsRecipesPage: Check writeTests.md directive violations in RecipesPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:00.643Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecCalendarPage: Check testSpec.md directive violations in CalendarPage test entries",
+        "CheckComponentsCalendarPage: Check writeApp.md directive violations in CalendarPage components",
+        "CheckTestsCalendarPage: Check writeTests.md directive violations in CalendarPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:01.935Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecRunDetailsPage: Check testSpec.md directive violations in RunDetailsPage test entries",
+        "CheckComponentsRunDetailsPage: Check writeApp.md directive violations in RunDetailsPage components",
+        "CheckTestsRunDetailsPage: Check writeTests.md directive violations in RunDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:03.254Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecRecipeDetailsPage: Check testSpec.md directive violations in RecipeDetailsPage test entries",
+        "CheckComponentsRecipeDetailsPage: Check writeApp.md directive violations in RecipeDetailsPage components",
+        "CheckTestsRecipeDetailsPage: Check writeTests.md directive violations in RecipeDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:04.605Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecEquipmentPage: Check testSpec.md directive violations in EquipmentPage test entries",
+        "CheckComponentsEquipmentPage: Check writeApp.md directive violations in EquipmentPage components",
+        "CheckTestsEquipmentPage: Check writeTests.md directive violations in EquipmentPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:06.019Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecEquipmentDetailsPage: Check testSpec.md directive violations in EquipmentDetailsPage test entries",
+        "CheckComponentsEquipmentDetailsPage: Check writeApp.md directive violations in EquipmentDetailsPage components",
+        "CheckTestsEquipmentDetailsPage: Check writeTests.md directive violations in EquipmentDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:07.493Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-25T15:33:08.355Z",
+      "app": "ProductionHub"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecSidebar: Check testSpec.md directive violations in Sidebar test entries",
+        "CheckComponentsSidebar: Check writeApp.md directive violations in Sidebar components",
+        "CheckTestsSidebar: Check writeTests.md directive violations in Sidebar tests"
+      ],
+      "timestamp": "2026-02-25T15:33:18.119Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
+        "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
+        "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:19.050Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
+        "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
+        "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:20.384Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecPersonDetailPage: Check testSpec.md directive violations in PersonDetailPage test entries",
+        "CheckComponentsPersonDetailPage: Check writeApp.md directive violations in PersonDetailPage components",
+        "CheckTestsPersonDetailPage: Check writeTests.md directive violations in PersonDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:21.694Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
+        "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
+        "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:23.001Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecDealDetailPage: Check testSpec.md directive violations in DealDetailPage test entries",
+        "CheckComponentsDealDetailPage: Check writeApp.md directive violations in DealDetailPage components",
+        "CheckTestsDealDetailPage: Check writeTests.md directive violations in DealDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:24.252Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
+        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
+        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:25.606Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecTaskDetailPage: Check testSpec.md directive violations in TaskDetailPage test entries",
+        "CheckComponentsTaskDetailPage: Check writeApp.md directive violations in TaskDetailPage components",
+        "CheckTestsTaskDetailPage: Check writeTests.md directive violations in TaskDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:27.327Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecContactsListPage: Check testSpec.md directive violations in ContactsListPage test entries",
+        "CheckComponentsContactsListPage: Check writeApp.md directive violations in ContactsListPage components",
+        "CheckTestsContactsListPage: Check writeTests.md directive violations in ContactsListPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:30.728Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecSettingsPage: Check testSpec.md directive violations in SettingsPage test entries",
+        "CheckComponentsSettingsPage: Check writeApp.md directive violations in SettingsPage components",
+        "CheckTestsSettingsPage: Check writeTests.md directive violations in SettingsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:32.812Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecUsersListPage: Check testSpec.md directive violations in UsersListPage test entries",
+        "CheckComponentsUsersListPage: Check writeApp.md directive violations in UsersListPage components",
+        "CheckTestsUsersListPage: Check writeTests.md directive violations in UsersListPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:33.579Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecUserDetailPage: Check testSpec.md directive violations in UserDetailPage test entries",
+        "CheckComponentsUserDetailPage: Check writeApp.md directive violations in UserDetailPage components",
+        "CheckTestsUserDetailPage: Check writeTests.md directive violations in UserDetailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:34.320Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecForgotPasswordPage: Check testSpec.md directive violations in ForgotPasswordPage test entries",
+        "CheckComponentsForgotPasswordPage: Check writeApp.md directive violations in ForgotPasswordPage components",
+        "CheckTestsForgotPasswordPage: Check writeTests.md directive violations in ForgotPasswordPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:35.083Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecResetPasswordPage: Check testSpec.md directive violations in ResetPasswordPage test entries",
+        "CheckComponentsResetPasswordPage: Check writeApp.md directive violations in ResetPasswordPage components",
+        "CheckTestsResetPasswordPage: Check writeTests.md directive violations in ResetPasswordPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:35.822Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecConfirmEmailPage: Check testSpec.md directive violations in ConfirmEmailPage test entries",
+        "CheckComponentsConfirmEmailPage: Check writeApp.md directive violations in ConfirmEmailPage components",
+        "CheckTestsConfirmEmailPage: Check writeTests.md directive violations in ConfirmEmailPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:36.586Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-25T15:33:37.371Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecNavigation: Check testSpec.md directive violations in Navigation test entries",
+        "CheckComponentsNavigation: Check writeApp.md directive violations in Navigation components",
+        "CheckTestsNavigation: Check writeTests.md directive violations in Navigation tests"
+      ],
+      "timestamp": "2026-02-25T15:33:46.776Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
+        "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
+        "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:48.126Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecSupplierDetailsPage: Check testSpec.md directive violations in SupplierDetailsPage test entries",
+        "CheckComponentsSupplierDetailsPage: Check writeApp.md directive violations in SupplierDetailsPage components",
+        "CheckTestsSupplierDetailsPage: Check writeTests.md directive violations in SupplierDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:49.438Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecOrderDetailsPage: Check testSpec.md directive violations in OrderDetailsPage test entries",
+        "CheckComponentsOrderDetailsPage: Check writeApp.md directive violations in OrderDetailsPage components",
+        "CheckTestsOrderDetailsPage: Check writeTests.md directive violations in OrderDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T15:33:50.718Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-25T15:33:51.539Z",
       "app": "SupplierTracker"
     }
   ]
