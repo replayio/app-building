@@ -1522,7 +1522,299 @@ Components: MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionBu
 
 Components: BatchHeader, CreateNewTransactionButton, BatchOverview, LineageDiagram, UsageHistoryTable
 
-<!-- Tests to be added by PlanPageBatchDetail -->
+### BatchHeader
+
+**Test: Batch header displays batch ID as large heading with "Batch:" prefix**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345"
+- Then: The header displays "Batch: BATCH-12345" as a large heading
+
+**Test: Batch header displays material name**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345" which contains material "Organic Arabica Coffee Beans"
+- Then: The header displays "Material" as a label followed by "Organic Arabica Coffee Beans" below it
+
+**Test: Batch header displays account name**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345" which is in account "Global Imports Inc."
+- Then: The header displays "Account" as a label followed by "Global Imports Inc." below it
+
+**Test: Batch header displays status badge with green indicator for active batch**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345" which has status "Active"
+- Then: The header displays "Status" as a label followed by "Active" with a green dot/circle indicator
+
+**Test: Batch header displays status badge for depleted batch**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for a batch with status "Depleted" (quantity is 0)
+- Then: The header displays "Status" as a label followed by "Depleted" with a muted/gray or red indicator
+
+**Test: Batch header displays created date and time**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345" which was created on 2023-10-27 at 10:30 AM
+- Then: The header displays a badge/pill showing "Created: 2023-10-27 at 10:30 AM"
+
+**Test: Batch header displays originating transaction as clickable link**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345" which was created by transaction "TX-PROD-987"
+- Then: The header displays a badge/pill showing "Originating Transaction: TX-PROD-987"
+- And: "TX-PROD-987" is styled as a clickable link
+
+**Test: Clicking originating transaction link navigates to TransactionDetailPage**
+- Components: BatchHeader
+- Given: The batch header displays "Originating Transaction: TX-PROD-987"
+- When: The user clicks on "TX-PROD-987" in the originating transaction badge
+- Then: The app navigates to /transactions/:transactionId (TransactionDetailPage) for "TX-PROD-987"
+
+**Test: Clicking material name navigates to MaterialDetailPage**
+- Components: BatchHeader
+- Given: The batch header displays material "Organic Arabica Coffee Beans"
+- When: The user clicks on "Organic Arabica Coffee Beans" in the header
+- Then: The app navigates to /materials/:materialId (MaterialDetailPage) for "Organic Arabica Coffee Beans"
+
+**Test: Clicking account name navigates to AccountDetailPage**
+- Components: BatchHeader
+- Given: The batch header displays account "Global Imports Inc."
+- When: The user clicks on "Global Imports Inc." in the header
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Global Imports Inc."
+
+**Test: Sidebar shows Batches link as active on Batch Detail page**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page
+- Then: The sidebar "Batches" link is visually highlighted as the active page
+
+**Test: Breadcrumb displays navigation path to batch**
+- Components: BatchHeader
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345"
+- Then: A breadcrumb trail is displayed (e.g., "Home > Batches > BATCH-12345")
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+- And: "Batches" is a clickable link that navigates to the batches listing page
+
+### BatchOverview
+
+**Test: Batch Overview section displays with heading**
+- Components: BatchOverview
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345"
+- Then: A "Batch Overview" section heading is displayed on the left side of the page
+
+**Test: Batch Overview displays "Current Quantity & Properties" card heading**
+- Components: BatchOverview
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345"
+- Then: A card is displayed with the heading "Current Quantity & Properties"
+
+**Test: Batch Overview displays current quantity prominently**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has a current quantity of 1500.00 kg
+- Then: The "Quantity" label is displayed followed by the value "1500.00 kg" in a large/prominent font size
+
+**Test: Batch Overview displays unit of measure**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has unit of measure "Kilograms (kg)"
+- Then: The "Unit" label is displayed followed by the value "Kilograms (kg)"
+
+**Test: Batch Overview displays location property with icon**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has location "Warehouse A, Zone 4"
+- Then: A location/pin icon is displayed followed by the label "Location" and the value "Warehouse A, Zone 4"
+
+**Test: Batch Overview displays lot number property with icon**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has lot number "LOT-2023-OCB"
+- Then: A document/clipboard icon is displayed followed by the label "Lot Number" and the value "LOT-2023-OCB"
+
+**Test: Batch Overview displays expiration date property with icon**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has expiration date "2024-10-27"
+- Then: A calendar icon is displayed followed by the label "Expiration Date" and the value "2024-10-27"
+
+**Test: Batch Overview displays quality grade property with icon**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has quality grade "Premium"
+- Then: A quality/shield icon is displayed followed by the label "Quality Grade" and the value "Premium"
+
+**Test: Batch Overview displays storage condition property with icon**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has storage condition "Climate Controlled"
+- Then: A temperature/thermometer icon is displayed followed by the label "Storage Condition" and the value "Climate Controlled"
+
+**Test: Batch Overview shows all custom properties when present**
+- Components: BatchOverview
+- Given: Batch "BATCH-12345" has all custom properties set: Location "Warehouse A, Zone 4", Lot Number "LOT-2023-OCB", Expiration Date "2024-10-27", Quality Grade "Premium", Storage Condition "Climate Controlled"
+- Then: All five property fields are displayed vertically below the quantity and unit, each with its respective icon, label, and value
+
+**Test: Batch Overview omits optional properties when not set**
+- Components: BatchOverview
+- Given: A batch exists with no location, lot number, expiration date, quality grade, or storage condition set
+- Then: Only the Quantity and Unit fields are displayed
+- And: The optional property rows (Location, Lot Number, Expiration Date, Quality Grade, Storage Condition) are hidden or show a placeholder (e.g., "—" or "Not set")
+
+**Test: Batch Overview quantity updates after a transaction modifies this batch**
+- Components: BatchOverview, UsageHistoryTable
+- Given: Batch "BATCH-12345" has current quantity 1500.00 kg
+- When: A transaction is created that removes 500 kg from this batch
+- And: The user returns to or refreshes the Batch Detail page
+- Then: The Quantity field updates to show "1000.00 kg"
+- And: The new transaction appears in the Usage History table
+
+### LineageDiagram
+
+**Test: Lineage section displays with heading**
+- Components: LineageDiagram
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345" which was created by transaction "TX-PROD-987"
+- Then: A "Lineage" section heading is displayed on the right side of the page, next to the Batch Overview
+
+**Test: Lineage section displays source transaction heading with transaction ID**
+- Components: LineageDiagram
+- Given: Batch "BATCH-12345" was created by transaction "TX-PROD-987"
+- Then: The Lineage section displays "Source Transaction: TX-PROD-987" as a sub-heading
+
+**Test: Lineage section displays inputs used with batch details**
+- Components: LineageDiagram
+- Given: Transaction "TX-PROD-987" used input batches:
+  - BATCH-11001: Material "Raw Coffee Cherries", Quantity 1800.00 kg, Account "Farm Co-op"
+  - BATCH-11002: Material "Water for Washing", Quantity 5000.00 L, Account "Facility Supplies"
+- Then: An "Inputs Used:" label is displayed
+- And: BATCH-11001 is shown as a clickable blue link with details: "Material: Raw Coffee Cherries", "Quantity: 1800.00 kg", "Account: Farm Co-op"
+- And: BATCH-11002 is shown as a clickable blue link with details: "Material: Water for Washing", "Quantity: 5000.00 L", "Account: Facility Supplies"
+
+**Test: Lineage section displays visual flow diagram with arrows**
+- Components: LineageDiagram
+- Given: Transaction "TX-PROD-987" used input batches and produced output batch "BATCH-12345"
+- Then: A visual flow diagram is displayed showing:
+  - Input batches on the left
+  - Arrows flowing from inputs into a central box labeled with the transaction name and type (e.g., "Washing & Processing (TX-PROD-987)") and date "Date: 2023-10-27"
+  - An arrow flowing from the central box to the output batch on the right
+
+**Test: Lineage section displays output batch details**
+- Components: LineageDiagram
+- Given: Transaction "TX-PROD-987" produced batch "BATCH-12345" with material "Organic Arabica Coffee Beans", quantity 1500.0 kg, in account "Global Imports Inc."
+- Then: The output section shows "Output:" label followed by "BATCH-12345" as a clickable blue link
+- And: Below the batch ID: "Material: Organic Arabica Coffee Beans", "Quantity: 1500.0 kg", "Account: Global Imports Inc."
+
+**Test: Clicking an input batch ID navigates to BatchDetailPage for that batch**
+- Components: LineageDiagram
+- Given: The Lineage section shows input batch "BATCH-11001" as a clickable link
+- When: The user clicks on "BATCH-11001"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-11001"
+
+**Test: Clicking the second input batch ID navigates to BatchDetailPage for that batch**
+- Components: LineageDiagram
+- Given: The Lineage section shows input batch "BATCH-11002" as a clickable link
+- When: The user clicks on "BATCH-11002"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-11002"
+
+**Test: Clicking the output batch ID navigates to BatchDetailPage for that batch**
+- Components: LineageDiagram
+- Given: The Lineage section shows output batch "BATCH-12345" as a clickable link
+- When: The user clicks on "BATCH-12345" in the output section
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-12345" (the current batch, effectively refreshing the page)
+
+**Test: Lineage section shows empty state when batch has no originating transaction**
+- Components: LineageDiagram
+- Given: The user navigates to a Batch Detail page for a batch that was created directly (not produced by a transaction, e.g., manually entered initial stock)
+- Then: The Lineage section displays an empty state message (e.g., "This batch was created directly — no source transaction" or "No lineage information available")
+
+**Test: Lineage section handles single input batch**
+- Components: LineageDiagram
+- Given: A batch was produced by a transaction that used only one input batch
+- Then: The Lineage section shows only one input batch entry under "Inputs Used:"
+- And: The flow diagram shows one input arrow leading into the transaction box and one output arrow
+
+**Test: Lineage section handles multiple input batches**
+- Components: LineageDiagram
+- Given: A batch was produced by a transaction that used three or more input batches
+- Then: The Lineage section shows all input batch entries under "Inputs Used:"
+- And: Each input batch shows its batch ID (clickable), material, quantity with unit, and account
+
+### UsageHistoryTable
+
+**Test: Usage History section displays with heading**
+- Components: UsageHistoryTable
+- Given: The user navigates to the Batch Detail page for batch "BATCH-12345"
+- Then: A "Usage History" section heading is displayed below the Lineage section
+
+**Test: Usage History table displays correct column headers**
+- Components: UsageHistoryTable
+- Given: The user navigates to the Batch Detail page
+- Then: The Usage History table shows columns: Date & Time, Transaction ID, Type, Movement (In/Out), Amount (with unit), Created Batches
+
+**Test: Usage History table shows transaction rows with correct data**
+- Components: UsageHistoryTable
+- Given: Batch "BATCH-12345" has the following usage history:
+  - 2023-11-05, 14:20 | TX-PACK-221 | Packaging | Out | 500.00 kg | BATCH-12401, BATCH-12402
+  - 2023-11-10, 09:15 | TX-ROAST-305 | Roasting | Out | 800.00 kg | BATCH-12500
+  - 2023-11-12, 11:00 | TX-ADJ-054 | Inventory Adjustment | Out | 5.00 kg | —
+  - 2023-10-27, 10:30 | TX-PROD-987 | Production | In | 1500.00 kg | —
+- Then: A row for "TX-PACK-221" shows Date & Time "2023-11-05, 14:20", Transaction ID "TX-PACK-221", Type "Packaging", Movement "Out", Amount "500.00", Created Batches "BATCH-12401, BATCH-12402"
+- And: A row for "TX-ROAST-305" shows Date & Time "2023-11-10, 09:15", Transaction ID "TX-ROAST-305", Type "Roasting", Movement "Out", Amount "800.00", Created Batches "BATCH-12500"
+- And: A row for "TX-ADJ-054" shows Date & Time "2023-11-12, 11:00", Transaction ID "TX-ADJ-054", Type "Inventory Adjustment", Movement "Out", Amount "5.00", Created Batches "—" (or empty)
+- And: A row for "TX-PROD-987" shows Date & Time "2023-10-27, 10:30", Transaction ID "TX-PROD-987", Type "Production", Movement "In", Amount "1500.00", Created Batches "—" (or empty)
+
+**Test: Movement column displays "In" for transactions that added to this batch**
+- Components: UsageHistoryTable
+- Given: Transaction "TX-PROD-987" created/added to batch "BATCH-12345"
+- Then: The Movement column for "TX-PROD-987" shows "In"
+
+**Test: Movement column displays "Out" for transactions that removed from this batch**
+- Components: UsageHistoryTable
+- Given: Transaction "TX-PACK-221" removed quantity from batch "BATCH-12345"
+- Then: The Movement column for "TX-PACK-221" shows "Out"
+
+**Test: Clicking a Transaction ID navigates to TransactionDetailPage**
+- Components: UsageHistoryTable
+- Given: A usage history row for "TX-PACK-221" is displayed with the Transaction ID as a clickable blue link
+- When: The user clicks on "TX-PACK-221"
+- Then: The app navigates to /transactions/:transactionId (TransactionDetailPage) for "TX-PACK-221"
+
+**Test: Clicking a created batch ID navigates to BatchDetailPage for that batch**
+- Components: UsageHistoryTable
+- Given: A usage history row shows "BATCH-12401" in the Created Batches column as a clickable blue link
+- When: The user clicks on "BATCH-12401"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-12401"
+
+**Test: Multiple created batches in a row are each individually clickable**
+- Components: UsageHistoryTable
+- Given: A usage history row for "TX-PACK-221" shows Created Batches "BATCH-12401, BATCH-12402" as clickable links
+- When: The user clicks on "BATCH-12402"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-12402"
+
+**Test: Created Batches column shows dash when no batches were created**
+- Components: UsageHistoryTable
+- Given: Transaction "TX-ADJ-054" is an inventory adjustment that did not create any new batches
+- Then: The Created Batches column for "TX-ADJ-054" shows "—" or is empty
+
+**Test: Usage History table rows are displayed in reverse chronological order**
+- Components: UsageHistoryTable
+- Given: Usage history entries exist with dates 2023-10-27, 2023-11-05, 2023-11-10, 2023-11-12
+- Then: The table rows are ordered with the most recent entry first (2023-11-12 at the top, 2023-10-27 at the bottom)
+
+**Test: Usage History table shows empty state when batch has no usage history**
+- Components: UsageHistoryTable
+- Given: The user navigates to a Batch Detail page for a newly created batch with no transactions
+- Then: The Usage History table shows an empty state message (e.g., "No usage history for this batch")
+
+**Test: New transaction using this batch appears in Usage History**
+- Components: UsageHistoryTable, CreateNewTransactionButton
+- Given: The user is on the Batch Detail page for batch "BATCH-12345" with current usage history entries
+- When: The user creates a new transaction that uses this batch and returns to the Batch Detail page
+- Then: The new transaction appears as a new row in the Usage History table
+- And: The Usage History table reflects the correct movement direction and amount
+
+### CreateNewTransactionButton
+
+**Test: Create New Transaction button is displayed with plus icon and primary styling**
+- Components: CreateNewTransactionButton
+- Given: The user is on the Batch Detail page for batch "BATCH-12345"
+- Then: A "+ Create New Transaction" button is displayed in the top-right area of the header
+- And: The button has a plus (+) icon and the text "Create New Transaction"
+- And: The button is styled as a primary action button (filled blue)
+
+**Test: Clicking Create New Transaction button navigates to NewTransactionPage pre-filled with this batch**
+- Components: CreateNewTransactionButton
+- Given: The user is on the Batch Detail page for batch "BATCH-12345" (material "Organic Arabica Coffee Beans", account "Global Imports Inc.")
+- When: The user clicks the "+ Create New Transaction" button
+- Then: The app navigates to /transactions/new (NewTransactionPage)
+- And: The transaction form is pre-filled with batch "BATCH-12345" as the source batch in the quantity transfers or batch allocation section
 
 ---
 

@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageBatchDetail: Decide on components, add sections to docs/tests.md",
-        "PlanComponentBatchHeader: Add test entries for BatchHeader (ID, material, account, status, created date, originating transaction)",
-        "PlanComponentBatchOverview: Add test entries for BatchOverview (quantity, unit, location, lot number, expiration, quality grade, storage condition)",
-        "PlanComponentLineageDiagram: Add test entries for LineageDiagram (source transaction, inputs used, output)",
-        "PlanComponentUsageHistoryTable: Add test entries for UsageHistoryTable and CreateNewTransactionButton"
-      ],
-      "timestamp": "2026-02-24T20:41:58.754Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageTransactions: Decide on components, add sections to docs/tests.md",
         "PlanComponentTransactionsFilters: Add test entries for DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar",
         "PlanComponentTransactionsTableAndPagination: Add test entries for TransactionsTable (sortable columns, row click navigation), Pagination, NewTransactionButton"
