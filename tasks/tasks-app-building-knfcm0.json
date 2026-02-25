@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentCalendarHeader: Write the CalendarHeader component",
-        "WriteComponentCalendarGrid: Write the CalendarGrid component",
-        "WriteComponentRunDetailsPopup: Write the RunDetailsPopup component",
-        "WritePageCalendar: Write the CalendarPage itself"
-      ],
-      "timestamp": "2026-02-24T23:56:31.428Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentRecipesHeader: Write the RecipesHeader component",
         "WriteComponentRecipesTable: Write the RecipesTable component",
         "WriteComponentRecipeDetailsPanel: Write the RecipeDetailsPanel component",

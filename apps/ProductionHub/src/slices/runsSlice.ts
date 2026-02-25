@@ -30,6 +30,26 @@ export const fetchRunById = createAsyncThunk(
   }
 );
 
+export const createRun = createAsyncThunk(
+  "runs/createRun",
+  async (data: {
+    recipe_id: string;
+    start_date: string;
+    end_date: string;
+    planned_quantity: number;
+    unit: string;
+    notes: string;
+  }) => {
+    const res = await fetch("/.netlify/functions/runs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Failed to create run");
+    return (await res.json()) as ProductionRun;
+  }
+);
+
 export const updateRun = createAsyncThunk(
   "runs/updateRun",
   async (data: Partial<ProductionRun> & { id: string }) => {
@@ -76,6 +96,9 @@ const runsSlice = createSlice({
       .addCase(fetchRunById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? "Failed to fetch run";
+      })
+      .addCase(createRun.fulfilled, (state, action) => {
+        state.items.push(action.payload);
       })
       .addCase(updateRun.fulfilled, (state, action) => {
         const idx = state.items.findIndex((r) => r.id === action.payload.id);
