@@ -145,6 +145,18 @@ test output, just `DoLoadDriverHandle: dlopen failed` in stderr). Fix: download 
 `libssl1.1` deb, extract it, and set `LD_LIBRARY_PATH` to point at the extracted libs. See
 the deployment Playwright config for a working example.
 
+### 7. Pre-test verification
+
+Before running tests for the first time in an app, verify the Replay browser is installed:
+
+```bash
+ls ~/.replay/runtimes/chrome-linux/chrome
+```
+
+If it does not exist, run `npx replayio install` before any test execution. Running tests
+without the Replay browser means failures produce no recordings, making debugging impossible.
+Do not defer Replay installation to after failures are discovered.
+
 ## Running Tests
 
 Run tests via `npm run test <testFile>` from the app directory (see `skills/scripts/test.md`
@@ -321,3 +333,7 @@ When testing the app after deployment, use the Replay browser to record the app 
 - Before writing tests that rely on `data-testid` attributes, verify those attributes exist in
   the component source. Missing `data-testid` attributes cause test failures that are easy to
   prevent with a quick source check.
+- When seed data uses `NUMERIC` or `DECIMAL` database columns, expect formatted output in
+  assertions (e.g., `"500"` not `"500.00"`). These column types return decimal strings from
+  PostgreSQL, so the app must format them before display. If tests fail on numeric values,
+  check the column type and app formatting layer before modifying test expectations.

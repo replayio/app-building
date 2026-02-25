@@ -13,19 +13,29 @@ that matches your failure and follow the recommended tool sequence.
 - `form-and-input.md` — Form validation, input interactions, browser-native behavior
 - `seed-data.md` — Missing test data, empty collections, count mismatches
 
-## Default First-Line Sequence: PlaywrightSteps → Screenshot
+## Default First Tool: PlaywrightSteps
 
-For most test failures, start with this two-tool sequence before diving deeper:
+**Always call `PlaywrightSteps` first** when diagnosing any test failure with Replay. It
+provides step timing, identifies which step failed, and guides which tool to use next:
 
 1. **`PlaywrightSteps`** — Shows the exact sequence of Playwright actions with timestamps.
    Identifies which step stalled or failed.
-2. **`Screenshot`** — Take a screenshot at the stuck step's point. Shows whether the page
-   rendered, whether the target element is visible, and whether something is blocking it.
 
-This was the most frequently used and successful Replay combination (used in 6/9 Replay
-sessions with 100% success rate). After this sequence, use **`NetworkRequest`** as a
-standard second step when the UI renders but shows wrong data or times out waiting for
-content — it confirms whether the backend returned the expected data.
+Then choose the next tool based on what PlaywrightSteps reveals:
+
+- **API/data issues** (wrong response, missing data) → `NetworkRequest` to inspect request
+  payloads and response bodies.
+- **Missing event handlers** (interaction had no effect) → `Logpoint` on the handler to
+  check if it was called (0 hits = never fired).
+- **Visual/layout issues** (element not visible, wrong position) → `Screenshot` at the
+  failing step's point.
+- **Timeout from excessive assertions** (many steps each taking seconds) → the fix is
+  usually to batch assertions via `page.evaluate`.
+
+This was the most frequently used and successful Replay approach (used in 6/9 Replay
+sessions with 100% success rate). When the UI renders but shows wrong data or times out
+waiting for content, `NetworkRequest` as a second step confirms whether the backend
+returned the expected data.
 
 ## No-Replay Diagnostic Patterns
 

@@ -25,7 +25,8 @@ PRE_EXISTING: yes/no (yes = failure existed before the current work and is unrel
 REPLAY_USED: yes/no (yes = agent actively called mcp__replay__* tools to analyze a recording)
 REPLAY_NOT_USED_REASON: <if REPLAY_USED is no, explain why — e.g. "diagnosed from error output", "no recording available", "upload failed">
 RECORDING_AVAILABLE: yes/no (no = recording upload failed, infrastructure failure, or no recording was created)
-DEBUGGING_SUCCESSFUL: yes/no/partial
+DEBUGGING_ATTEMPTED: yes/no (no = failure was only identified/discovered, no debugging was done — e.g. initial discovery runs)
+DEBUGGING_SUCCESSFUL: yes/no/partial (only meaningful when DEBUGGING_ATTEMPTED is yes)
 ROOT_CAUSE_CLUSTER: <optional — when multiple failures share a single root cause, use a shared cluster ID (e.g. "replay-browser-timeout", "missing-env-var"). Omit if this failure has a unique root cause.>
 
 #### Replay Usage (if REPLAY_USED is yes)
@@ -49,16 +50,19 @@ Compile all analysis files into a single report with these sections:
 - Logs with test failures / logs without
 - Total distinct test failures across all logs
 - Replay usage rate (failures where Replay was used / total failures)
-- Debugging success rate (successful + partial / total failures, excluding pre-existing)
+- Replay usage rate among debugged failures (failures where Replay was used / failures where debugging was attempted)
+- Debugging success rate (successful + partial / total failures where debugging was attempted)
 - Replay-assisted success rate (successful among Replay-used failures)
 - Recording availability rate (failures where recording was available / total failures)
 - Total test re-runs across all logs (number of test re-runs needed to achieve all-pass)
 
 ### 2. Failure Table
 A markdown table with columns:
-| Log | Test | Category | Pre-existing | Replay Used | Recording Available | Strategy | Tools | Success | Changeset |
+| Log | Test | Category | Pre-existing | Replay Used | Replay Not Used Reason | Recording Available | Strategy | Tools | Success | Changeset |
 
-One row per test failure across all logs.
+One row per test failure across all logs. The "Replay Not Used Reason" column should contain
+a brief reason when Replay was not used (e.g., "diagnosed from error output", "no recording
+available", "not attempted — discovery run"). Leave blank when Replay was used.
 
 ### 3. Patterns
 - When was Replay most effective? (failure categories, tool sequences)
