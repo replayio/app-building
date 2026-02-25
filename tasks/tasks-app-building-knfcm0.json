@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageSupplierDetails: Decide on components for SupplierDetailsPage, add sections to docs/tests.md",
-        "PlanComponentSupplierOverview: Add test entries for SupplierOverview (name, address, contact, description, status badge, Back to Dashboard button, edit/delete supplier)",
-        "PlanComponentDocumentsTab: Add test entries for DocumentsTab (search, Upload Document button, document cards with type/date, view/download actions)",
-        "PlanComponentCommentsSection: Add test entries for CommentsSection (add comment input, comment list with timestamps/authors)",
-        "PlanComponentOrdersSection: Add test entries for OrdersSection (upcoming/historical tabs, search bars, filter by status, order tables with links)"
-      ],
-      "timestamp": "2026-02-25T04:19:13.256Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageDashboard: Decide on components for DashboardPage, add sections to docs/tests.md",
         "PlanComponentQuickActions: Add test entries for QuickActions (Add New Supplier button, Create Purchase Order button)",
         "PlanComponentUpcomingOrdersTable: Add test entries for UpcomingOrdersTable (columns, filters, row links, status badges)",

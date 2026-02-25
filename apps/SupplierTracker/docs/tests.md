@@ -29,21 +29,225 @@ Breadcrumb navigation appears on detail pages (SupplierDetailsPage, OrderDetails
 
 ## SupplierDetailsPage (/suppliers/:supplierId)
 
+Breadcrumb navigation shows "Home > Suppliers > \<Supplier Name\> > Supplier Details". Clicking "Home" navigates to /. Clicking "Suppliers" navigates to /.
+
+Below the SupplierOverview section, three tab links appear: "Documents", "Comments", "Orders". Clicking a tab scrolls to or reveals that section's content. All sections are visible on the page.
+
 ### SupplierOverview
 
-<!-- tests planned in PlanPage task -->
+**Display Supplier Name**
+Given a supplier "Apex Global Logistics" exists,
+When the user navigates to /suppliers/\<supplierId\>,
+Then the SupplierOverview section displays the heading "Supplier Overview" and the label "Supplier Name" with the value "Apex Global Logistics".
+
+**Display Supplier Address**
+Given the supplier has address "123 Commerce Way, Suite 400, Seattle, WA 98101",
+When the SupplierDetailsPage loads,
+Then the "Address" field displays the full multi-line address: "123 Commerce Way", "Suite 400", "Seattle, WA 98101".
+
+**Display Contact Information**
+Given the supplier has contact "John Smith" with phone "(206) 555-0123" and email "contact@apexglobal.com",
+When the SupplierDetailsPage loads,
+Then the "Contact" field displays the contact name "John Smith", the phone number "(206) 555-0123", and the email "contact@apexglobal.com".
+
+**Display Supplier Description**
+Given the supplier has a description "Leading provider of integrated logistics solutions and supply chain management. Specializing in international freight and warehousing.",
+When the SupplierDetailsPage loads,
+Then the "Description" field displays the full description text.
+
+**Display Status Badge**
+Given the supplier has status "Active",
+When the SupplierDetailsPage loads,
+Then a status badge appears in the top-right area of SupplierOverview showing a green dot indicator and the text "Status: Active".
+Statuses should be color-coded: "Active" green, "Inactive" gray, "On Hold" yellow, "Suspended" red.
+
+**Back to Dashboard Button Navigates to Dashboard**
+Given the user is viewing the SupplierDetailsPage,
+When the user clicks the "Back to Dashboard" button in the top-right of SupplierOverview,
+Then the user is navigated to the DashboardPage (/).
+
+**Edit Supplier Opens Edit Dialog**
+Given the user is viewing the SupplierDetailsPage,
+When the user clicks the "Edit" button in SupplierOverview,
+Then a modal dialog opens pre-filled with the supplier's current values (name, address, contact name, phone, email, description, status),
+And when the user changes the contact phone number and clicks "Save",
+Then the updated phone number is persisted and reflected in SupplierOverview.
+
+**Delete Supplier with Confirmation**
+Given the user is viewing the SupplierDetailsPage,
+When the user clicks the "Delete" button in SupplierOverview,
+Then a confirmation dialog appears asking "Are you sure you want to delete this supplier? This action cannot be undone.",
+And when the user confirms the deletion,
+Then the supplier is removed from the database,
+And the user is navigated to the DashboardPage (/),
+And the deleted supplier no longer appears in the SuppliersList on the Dashboard.
 
 ### DocumentsTab
 
-<!-- tests planned in PlanPage task -->
+**Display Document Cards with Details**
+Given the supplier has associated documents,
+When the SupplierDetailsPage loads and the Documents section is visible,
+Then the DocumentsTab displays document cards, each showing the file name (bold), document type label and value, upload date label and value, and action icons.
+
+**Display Multiple Document Cards**
+Given the supplier has three documents,
+When the DocumentsTab loads,
+Then all three document cards are displayed:
+- "Service Agreement 2024.pdf", Type: "Contract", Upload Date: "Oct 15, 2023"
+- "ISO 9001 Certification.pdf", Type: "Certification", Upload Date: "Sep 01, 2023"
+- "Non-Disclosure Agreement.docx", Type: "Agreement", Upload Date: "Aug 20, 2023"
+
+**Search Documents by Name**
+Given the DocumentsTab displays three documents,
+When the user types "ISO" into the "Search documents..." search field,
+Then only documents whose name contains "ISO" are shown (e.g., "ISO 9001 Certification.pdf"),
+And the other document cards are hidden.
+
+**Search Documents Clears Results**
+Given the user has filtered documents by typing "ISO" in the search field,
+When the user clears the search field,
+Then all documents reappear in the DocumentsTab.
+
+**Upload Document Button Opens Upload Dialog**
+Given the user is viewing the DocumentsTab,
+When the user clicks the "Upload Document" button,
+Then a file upload dialog opens allowing the user to select a file from their device,
+And the dialog includes a field to specify the document type (e.g., "Contract", "Certification", "Agreement"),
+And after selecting a file and entering the type, when the user confirms the upload,
+Then the document is uploaded via file upload and appears as a new card in the DocumentsTab with the correct file name, selected type, and the current date as the upload date.
+
+**View Document Action**
+Given a document "Service Agreement 2024.pdf" is displayed in the DocumentsTab,
+When the user clicks the view icon (eye icon) on that document card,
+Then the document opens in a new browser tab for viewing.
+
+**Download Document Action**
+Given a document "Service Agreement 2024.pdf" is displayed in the DocumentsTab,
+When the user clicks the download icon on that document card,
+Then the document file is downloaded to the user's device.
 
 ### CommentsSection
 
-<!-- tests planned in PlanPage task -->
+**Display Comments Header with Count**
+Given the supplier has 3 comments,
+When the SupplierDetailsPage loads,
+Then the CommentsSection displays the heading "Comments (3)" with a collapse/expand toggle icon.
+
+**Display Comment List with Timestamps and Authors**
+Given the supplier has three comments,
+When the CommentsSection loads,
+Then all three comments are displayed in reverse chronological order:
+- "10/20/2023 - Discussed Q4 shipment projections. They are confident in meeting deadlines. - Sarah L."
+- "09/05/2023 - Payment terms updated to net 60 days. - Michael B."
+- "08/15/2023 - Initial onboarding meeting completed. - David K."
+Each comment shows the date, the comment text, and the author name.
+
+**Add Comment via Input Field**
+Given the user is viewing the CommentsSection,
+When the user clicks the input area with placeholder "Add a note about this supplier...",
+And types "Reviewed annual pricing terms." and submits (presses Enter or clicks a submit button),
+Then the new comment appears at the top of the comment list with the current date, the entered text, and the current user's name as the author,
+And the Comments header count increments by one (e.g., "Comments (4)"),
+And the comment input field is cleared.
+
+**Add Comment Persists After Reload**
+Given the user has added a new comment "Reviewed annual pricing terms.",
+When the user navigates away from the SupplierDetailsPage and returns,
+Then the newly added comment is still present in the comment list with the correct date, text, and author.
+
+**Collapse and Expand Comments Section**
+Given the CommentsSection is expanded and showing comments,
+When the user clicks the collapse toggle icon on the "Comments (3)" header,
+Then the comment list and input field are hidden,
+And when the user clicks the toggle icon again,
+Then the comment list and input field are shown again.
+
+**Empty Comment Validation**
+Given the user is viewing the CommentsSection,
+When the user attempts to submit a comment with an empty input field,
+Then no comment is added and the count does not change.
 
 ### OrdersSection
 
-<!-- tests planned in PlanPage task -->
+**Display Upcoming and Historical Order Tabs**
+Given the supplier has both upcoming and historical orders,
+When the SupplierDetailsPage loads and the Orders section is visible,
+Then the OrdersSection displays a heading "Orders" with two tab links: "Upcoming Orders" (active/underlined by default) and "Historical Orders".
+
+**Display Upcoming Orders Table with Correct Columns**
+Given the supplier has upcoming orders,
+When the "Upcoming Orders" tab is active,
+Then a table is displayed with columns: Order ID, Expected Delivery, Status, Total Cost.
+
+**Display Upcoming Orders Data**
+Given the supplier has three upcoming orders,
+When the "Upcoming Orders" tab is active,
+Then all three orders are displayed:
+- [PO-78901], Nov 15, 2023, Pending, $15,500.00
+- [PO-78902], Dec 01, 2023, In Transit, $8,200.50
+- [PO-78903], Dec 20, 2023, Processing, $12,000.00
+Order IDs are displayed as clickable links.
+
+**Upcoming Order ID Links Navigate to Order Details**
+Given the upcoming orders table is displayed,
+When the user clicks the Order ID link "[PO-78901]",
+Then the user is navigated to /orders/PO-78901 (the OrderDetailsPage for that order).
+
+**Display Historical Orders Table with Correct Columns**
+Given the supplier has historical orders,
+When the user clicks the "Historical Orders" tab,
+Then a table is displayed with columns: Order ID, Delivery Date, Status, Final Cost.
+
+**Display Historical Orders Data**
+Given the supplier has three historical orders,
+When the "Historical Orders" tab is active,
+Then all three orders are displayed:
+- [PO-78801], Oct 05, 2023, Completed, $10,000.00
+- [PO-78802], Sep 15, 2023, Completed, $22,500.00
+- [PO-78803], Aug 01, 2023, Cancelled, $5,000.00
+Order IDs are displayed as clickable links.
+
+**Historical Order ID Links Navigate to Order Details**
+Given the historical orders table is displayed,
+When the user clicks the Order ID link "[PO-78801]",
+Then the user is navigated to /orders/PO-78801 (the OrderDetailsPage for that order).
+
+**Search Upcoming Orders**
+Given the "Upcoming Orders" tab is active and the table shows three orders,
+When the user types "78901" into the "Search orders..." field on the upcoming orders side,
+Then only orders whose ID contains "78901" are shown (e.g., PO-78901),
+And the other rows are hidden.
+
+**Search Historical Orders**
+Given the "Historical Orders" tab is active and the table shows three orders,
+When the user types "78802" into the "Search orders..." field on the historical orders side,
+Then only orders whose ID contains "78802" are shown (e.g., PO-78802),
+And the other rows are hidden.
+
+**Filter Upcoming Orders by Status**
+Given the "Upcoming Orders" tab is active and the table shows orders with statuses "Pending", "In Transit", and "Processing",
+When the user clicks the "Filter by Status" dropdown and selects "Pending",
+Then only orders with status "Pending" are displayed in the upcoming orders table,
+And when the user clears the filter,
+Then all upcoming orders are shown again.
+
+**Status Badges in Upcoming Orders**
+Given the upcoming orders table is displayed,
+When the table loads,
+Then each order's status is displayed as a color-coded badge: "Pending" yellow, "In Transit" blue, "Processing" orange.
+
+**Status Badges in Historical Orders**
+Given the historical orders table is displayed,
+When the table loads,
+Then each order's status is displayed as a color-coded badge: "Completed" green, "Cancelled" red.
+
+**Switch Between Tabs**
+Given the user is viewing the "Upcoming Orders" tab,
+When the user clicks the "Historical Orders" tab,
+Then the upcoming orders table is hidden and the historical orders table is shown with its own search field,
+And the "Historical Orders" tab appears active/underlined,
+And when the user clicks "Upcoming Orders" tab again,
+Then the historical orders table is hidden and the upcoming orders table is shown with its search field and filter dropdown.
 
 ---
 
