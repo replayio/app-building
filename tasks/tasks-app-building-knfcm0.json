@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageDashboard: Decide on components for DashboardPage, add sections to docs/tests.md",
-        "PlanComponentQuickActions: Add test entries for QuickActions (Add New Supplier button, Create Purchase Order button)",
-        "PlanComponentUpcomingOrdersTable: Add test entries for UpcomingOrdersTable (columns, filters, row links, status badges)",
-        "PlanComponentSuppliersList: Add test entries for SuppliersList (card grid, supplier cards with name/status/contact/orders summary)"
-      ],
-      "timestamp": "2026-02-25T04:19:07.255Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code for SupplierTracker"

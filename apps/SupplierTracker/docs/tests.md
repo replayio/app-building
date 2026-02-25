@@ -15,15 +15,211 @@ Breadcrumb navigation appears on detail pages (SupplierDetailsPage, OrderDetails
 
 ### QuickActions
 
-<!-- tests planned in PlanPage task -->
+**Display Add New Supplier Button**
+Given the user is on the DashboardPage,
+When the page loads,
+Then the QuickActions section displays a large "Add New Supplier" button with a person-plus icon on the left side.
+
+**Display Create Purchase Order Button**
+Given the user is on the DashboardPage,
+When the page loads,
+Then the QuickActions section displays a large "Create Purchase Order" button with a document icon on the right side, next to the "Add New Supplier" button.
+
+**Add New Supplier Button Opens Create Supplier Dialog**
+Given the user is on the DashboardPage,
+When the user clicks the "Add New Supplier" button,
+Then a modal dialog opens with the title "Add New Supplier" and fields for: Supplier Name, Address (multi-line), Contact Name, Phone, Email, Description, and Status (dropdown with options: Active, Inactive, On Hold, Suspended),
+And the Status field defaults to "Active".
+
+**Create Supplier via Dialog Saves and Updates Dashboard**
+Given the "Add New Supplier" dialog is open,
+When the user fills in Supplier Name "New Parts Co.", Address "456 Industrial Blvd, Chicago, IL 60601", Contact Name "Alice Johnson", Phone "(312) 555-0199", Email "alice@newparts.com", Description "Precision parts manufacturer", Status "Active", and clicks "Save",
+Then the dialog closes,
+And the new supplier "New Parts Co." appears as a card in the SuppliersList section on the DashboardPage with status "Active", contact "Alice Johnson", email "alice@newparts.com", and an orders summary.
+
+**Create Supplier Dialog Cancel Does Not Create Supplier**
+Given the "Add New Supplier" dialog is open and the user has entered some data,
+When the user clicks "Cancel" or closes the dialog,
+Then no supplier is created,
+And the SuppliersList remains unchanged.
+
+**Create Supplier Dialog Validation**
+Given the "Add New Supplier" dialog is open,
+When the user attempts to save without filling in the required Supplier Name field,
+Then a validation error is shown on the Supplier Name field and the dialog does not close.
+
+**Create Purchase Order Button Opens Create Order Dialog**
+Given the user is on the DashboardPage,
+When the user clicks the "Create Purchase Order" button,
+Then a modal dialog opens with the title "Create Purchase Order" and fields for: Supplier (dropdown of existing suppliers), Order Date (date picker, defaults to today), Expected Delivery (date picker), and an initial line item section with fields for SKU, Item Name / Description, Qty, and Unit Price.
+
+**Create Order via Dialog Saves and Updates Dashboard**
+Given the "Create Purchase Order" dialog is open,
+When the user selects supplier "Apex Logistics", sets Expected Delivery to "Dec 15, 2023", adds a line item (SKU "SKU-X100", Item Name "Widget A", Qty 10, Unit Price $25.00), and clicks "Save",
+Then the dialog closes,
+And the new order appears in the UpcomingOrdersTable with the assigned Order ID, supplier "Apex Logistics", expected delivery "Dec 15, 2023", status "Pending", and total cost "$250.00".
+
+**Create Order Dialog Cancel Does Not Create Order**
+Given the "Create Purchase Order" dialog is open and the user has entered some data,
+When the user clicks "Cancel" or closes the dialog,
+Then no order is created,
+And the UpcomingOrdersTable remains unchanged.
+
+**Create Order Dialog Validation**
+Given the "Create Purchase Order" dialog is open,
+When the user attempts to save without selecting a Supplier,
+Then a validation error is shown on the Supplier field and the dialog does not close.
 
 ### UpcomingOrdersTable
 
-<!-- tests planned in PlanPage task -->
+**Display Upcoming Orders Heading**
+Given the user is on the DashboardPage,
+When the page loads,
+Then the UpcomingOrdersTable section displays the heading "Upcoming Orders".
+
+**Display Table with Correct Columns**
+Given the user is on the DashboardPage and there are upcoming orders,
+When the page loads,
+Then the UpcomingOrdersTable displays a table with columns: Order Id, Supplier, Expected Delivery, Status, Total Cost.
+
+**Display Order Data Rows**
+Given there are five upcoming orders,
+When the DashboardPage loads,
+Then all five orders are displayed in the table:
+- #PO-2023-001, Techcom Solutions, Oct 28, 2023, In Transit, $4,500.00
+- #PO-2023-002, Techcom Solutions, Oct 28, 2023, Pending, $4,500.00
+- #PO-2023-003, Techcom Solutions, Oct 28, 2023, Fulfilled, $2,500.00
+- #PO-2023-004, Techcom Solutions, Dec 17, 2023, Fulfilled, $1,700.00
+- #PO-2023-005, Techcom Solutions, Nov 20, 2023, Fulfilled, $3,500.00
+
+**Order ID Links Navigate to Order Details**
+Given the UpcomingOrdersTable displays order rows,
+When the user clicks the Order ID link "#PO-2023-001",
+Then the user is navigated to /orders/PO-2023-001 (the OrderDetailsPage for that order).
+
+**Order ID Links Are Styled as Clickable**
+Given the UpcomingOrdersTable displays order rows,
+When the table loads,
+Then each Order ID is displayed as a blue underlined link, indicating it is clickable.
+
+**Status Badges with Correct Colors**
+Given the UpcomingOrdersTable displays orders with various statuses,
+When the table loads,
+Then each order's status is displayed as a color-coded badge:
+- "In Transit" displayed with a blue/teal badge
+- "Pending" displayed with a yellow badge
+- "Fulfilled" displayed with a green badge
+
+**Filter by Status Dropdown**
+Given the UpcomingOrdersTable displays orders with statuses "In Transit", "Pending", and "Fulfilled",
+When the user clicks the first "Filter" dropdown in the top-right of the UpcomingOrdersTable and selects "Pending",
+Then only orders with status "Pending" are displayed in the table,
+And when the user clears the filter (selects "All" or resets),
+Then all upcoming orders are shown again.
+
+**Filter by Supplier Dropdown**
+Given the UpcomingOrdersTable displays orders from multiple suppliers,
+When the user clicks the second filter dropdown in the top-right of the UpcomingOrdersTable and selects a specific supplier,
+Then only orders from that supplier are displayed in the table,
+And when the user clears the filter,
+Then all upcoming orders are shown again.
+
+**Both Filters Applied Together**
+Given the user has selected a status filter of "Pending" and a supplier filter,
+When both filters are active,
+Then only orders matching both the selected status and selected supplier are displayed,
+And when one filter is cleared, the remaining filter still applies.
+
+**Empty State When No Orders Match Filters**
+Given the user has applied filters that match no orders,
+When the filters are active,
+Then the table displays an empty state message such as "No upcoming orders match the selected filters."
+
+**Empty State When No Upcoming Orders Exist**
+Given no upcoming orders exist in the system,
+When the DashboardPage loads,
+Then the UpcomingOrdersTable section displays an empty state message such as "No upcoming orders."
+
+**Currency Formatting in Total Cost Column**
+Given orders have various total costs,
+When the UpcomingOrdersTable loads,
+Then the Total Cost column displays values with proper currency formatting (dollar sign, comma separators, two decimal places, e.g. "$4,500.00").
+
+**Date Formatting in Expected Delivery Column**
+Given orders have expected delivery dates,
+When the UpcomingOrdersTable loads,
+Then the Expected Delivery column displays dates in "MMM DD, YYYY" format (e.g. "Oct 28, 2023").
 
 ### SuppliersList
 
-<!-- tests planned in PlanPage task -->
+**Display Suppliers List Heading**
+Given the user is on the DashboardPage,
+When the page loads,
+Then the SuppliersList section displays the heading "Suppliers List".
+
+**Display Supplier Cards in Grid Layout**
+Given there are eight suppliers in the system,
+When the DashboardPage loads,
+Then the SuppliersList displays supplier cards in a grid layout with up to four cards per row.
+
+**Supplier Card Displays Supplier Name**
+Given a supplier "Apex Logistics" exists,
+When the DashboardPage loads,
+Then the supplier card for "Apex Logistics" displays the supplier name in bold text at the top-left of the card.
+
+**Supplier Card Displays Status Badge**
+Given a supplier "Apex Logistics" has status "Active",
+When the DashboardPage loads,
+Then the supplier card displays a status badge in the top-right corner showing "Active" with a green background.
+Status badges should be color-coded: "Active" green, "On Hold" yellow/amber.
+
+**Supplier Card Displays Contact Name**
+Given a supplier has primary contact "John Smith",
+When the DashboardPage loads,
+Then the supplier card displays the contact name "John Smith" below the supplier name.
+
+**Supplier Card Displays Contact Email**
+Given a supplier has contact email "jane.doe@example.com",
+When the DashboardPage loads,
+Then the supplier card displays the email "jane.doe@example.com" below the contact name.
+
+**Supplier Card Displays Orders Summary**
+Given a supplier has 3 open orders totaling $12k in value,
+When the DashboardPage loads,
+Then the supplier card displays a summary line "3 Open Orders, $12k Value" at the bottom of the card.
+
+**Supplier Card Shows All Fields Together**
+Given a supplier "Global Sourcing Inc." exists with status "On Hold", contact "John Smith", email "jane.doe@example.com", and 3 open orders worth $12k,
+When the DashboardPage loads,
+Then the card for "Global Sourcing Inc." shows:
+- "Global Sourcing Inc." (bold, top-left)
+- "On Hold" badge (yellow/amber, top-right)
+- "John Smith" (contact name)
+- "jane.doe@example.com" (email)
+- "3 Open Orders, $12k Value" (summary)
+
+**Clicking Supplier Card Navigates to Supplier Details**
+Given the SuppliersList displays supplier cards,
+When the user clicks on the card for "Apex Logistics",
+Then the user is navigated to /suppliers/<supplierId> (the SupplierDetailsPage for Apex Logistics).
+
+**Multiple Supplier Cards Displayed**
+Given there are eight suppliers in the system,
+When the DashboardPage loads,
+Then all eight supplier cards are displayed in the grid:
+- Apex Logistics (Active)
+- Global Sourcing Inc. (On Hold)
+- Binmant Inc. (On Hold)
+- Minmer Logistics (Active)
+- Charralets Inc. (On Hold)
+- Merianastillers Inc. (Active)
+- Apex Logistics (Active)
+- Peaor Logistics (Active)
+
+**Empty State When No Suppliers Exist**
+Given no suppliers exist in the system,
+When the DashboardPage loads,
+Then the SuppliersList section displays an empty state message such as "No suppliers found. Click 'Add New Supplier' to get started."
 
 ---
 
