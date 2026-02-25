@@ -3,6 +3,44 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+      ],
+      "timestamp": "2026-02-25T17:18:26.363Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecOrderDetailsPage: Check testSpec.md directive violations in OrderDetailsPage test entries",
+        "CheckComponentsOrderDetailsPage: Check writeApp.md directive violations in OrderDetailsPage components",
+        "CheckTestsOrderDetailsPage: Check writeTests.md directive violations in OrderDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T17:18:25.412Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecSupplierDetailsPage: Check testSpec.md directive violations in SupplierDetailsPage test entries",
+        "CheckComponentsSupplierDetailsPage: Check writeApp.md directive violations in SupplierDetailsPage components",
+        "CheckTestsSupplierDetailsPage: Check writeTests.md directive violations in SupplierDetailsPage tests"
+      ],
+      "timestamp": "2026-02-25T17:18:24.068Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
+        "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
+        "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"
+      ],
+      "timestamp": "2026-02-25T17:18:22.722Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
         "Unpack: Check directive compliance"
       ],
       "timestamp": "2026-02-25T15:29:20.426Z",
