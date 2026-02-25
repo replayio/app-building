@@ -9,6 +9,7 @@ import { tasksReducer } from "./tasksSlice";
 import { taskDetailReducer } from "./taskDetailSlice";
 import { contactsReducer } from "./contactsSlice";
 import { usersReducer } from "./usersSlice";
+import { userDetailReducer } from "./userDetailSlice";
 import { settingsReducer } from "./settingsSlice";
 
 export const store = createAppStore({
@@ -23,6 +24,7 @@ export const store = createAppStore({
     taskDetail: taskDetailReducer,
     contacts: contactsReducer,
     users: usersReducer,
+    userDetail: userDetailReducer,
     settings: settingsReducer,
   },
 });

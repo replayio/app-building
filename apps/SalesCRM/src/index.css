@@ -3908,3 +3908,409 @@
   white-space: nowrap;
 }
 
+/* ========= User Detail Page ========= */
+
+.user-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.user-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.1s ease;
+}
+
+.user-detail-back:hover {
+  color: var(--accent-primary);
+}
+
+.user-detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-detail-header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-detail-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.user-detail-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-detail-avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  background: var(--accent-subtle-bg);
+  border-radius: 50%;
+}
+
+.user-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-detail-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.user-detail-email {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.user-detail-joined {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* User Stats */
+
+.user-detail-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.user-detail-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 24px;
+  background: #ffffff;
+  border: 1px solid var(--bg-border-color-light);
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.user-detail-stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.user-detail-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+/* User Detail Sections */
+
+.user-detail-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .user-detail-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+.user-detail-section {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--bg-border-color-light);
+  border-radius: 8px;
+  overflow: visible;
+}
+
+.user-detail-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+.user-detail-section-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* User Detail List (shared between deals and tasks) */
+
+.user-detail-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-detail-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--bg-border-color-light);
+  gap: 12px;
+}
+
+.user-detail-list-item:last-child {
+  border-bottom: none;
+}
+
+.user-detail-list-item--clickable {
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.user-detail-list-item--clickable:hover {
+  background: rgba(50, 45, 35, 0.02);
+}
+
+.user-detail-list-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.user-detail-list-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-detail-list-item-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.user-detail-list-item-meta-row {
+  display: flex;
+  gap: 12px;
+}
+
+.user-detail-list-item-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.user-detail-list-item-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Deal Stage Badges */
+
+.user-deal-stage {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.user-deal-stage--lead {
+  color: var(--status-info);
+  background: rgba(90, 122, 138, 0.1);
+}
+
+.user-deal-stage--qualified {
+  color: var(--accent-primary);
+  background: var(--accent-subtle-bg);
+}
+
+.user-deal-stage--proposal {
+  color: var(--status-warning);
+  background: rgba(176, 138, 62, 0.1);
+}
+
+.user-deal-stage--negotiation {
+  color: #8a6d3b;
+  background: rgba(176, 138, 62, 0.08);
+}
+
+.user-deal-stage--won {
+  color: var(--status-success);
+  background: rgba(77, 124, 94, 0.1);
+}
+
+.user-deal-stage--lost {
+  color: var(--status-error);
+  background: rgba(176, 80, 80, 0.1);
+}
+
+/* Task Priority Badges */
+
+.user-task-priority {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.user-task-priority--high {
+  color: var(--priority-high);
+  background: var(--priority-high-bg);
+}
+
+.user-task-priority--medium {
+  color: var(--priority-medium);
+  background: var(--priority-medium-bg);
+}
+
+.user-task-priority--low {
+  color: var(--priority-low);
+  background: var(--priority-low-bg);
+}
+
+.user-task-priority--normal {
+  color: var(--priority-normal);
+  background: var(--priority-normal-bg);
+}
+
+/* Task Status Badges */
+
+.user-task-status {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.user-task-status--open {
+  color: var(--status-info);
+  background: rgba(90, 122, 138, 0.1);
+}
+
+.user-task-status--in-progress {
+  color: var(--status-warning);
+  background: rgba(176, 138, 62, 0.1);
+}
+
+.user-task-status--completed {
+  color: var(--status-success);
+  background: rgba(77, 124, 94, 0.1);
+}
+
+.user-task-status--canceled {
+  color: var(--status-neutral);
+  background: rgba(105, 100, 90, 0.1);
+}
+
+/* Activity Feed */
+
+.user-activity-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+.user-activity-item:last-child {
+  border-bottom: none;
+}
+
+.user-activity-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.user-activity-icon--deal {
+  color: var(--status-warning);
+  background: rgba(176, 138, 62, 0.1);
+}
+
+.user-activity-icon--task {
+  color: var(--accent-primary);
+  background: var(--accent-subtle-bg);
+}
+
+.user-activity-icon--client {
+  color: var(--status-info);
+  background: rgba(90, 122, 138, 0.1);
+}
+
+.user-activity-icon--note {
+  color: var(--text-muted);
+  background: rgba(105, 100, 90, 0.08);
+}
+
+.user-activity-icon--default {
+  color: var(--text-muted);
+  background: rgba(105, 100, 90, 0.08);
+}
+
+.user-activity-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.user-activity-description {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.user-activity-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+

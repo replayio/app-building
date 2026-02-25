@@ -3,19 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentUserHeader: Write the UserHeader component",
-        "WriteComponentUserStats: Write the UserStats component",
-        "WriteComponentOwnedDealsList: Write the OwnedDealsList component",
-        "WriteComponentAssignedTasksList: Write the AssignedTasksList component",
-        "WriteComponentRecentActivityFeed: Write the RecentActivityFeed component",
-        "WritePageUserDetailPage: Write the UserDetailPage page"
-      ],
-      "timestamp": "2026-02-25T03:50:28.521Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentQuickActions: Write the QuickActions component",
         "WriteComponentUpcomingOrdersTable: Write the UpcomingOrdersTable component",
         "WriteComponentSuppliersList: Write the SuppliersList component",
