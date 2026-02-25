@@ -3,13 +3,6 @@
     {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
-        "Implement deploy script for ProductionHub"
-      ],
-      "timestamp": "2026-02-25T00:42:12.769Z"
-    },
-    {
-      "skill": "skills/tasks/writeScript.md",
-      "subtasks": [
         "Implement test script for ProductionHub"
       ],
       "timestamp": "2026-02-25T00:42:09.324Z"
