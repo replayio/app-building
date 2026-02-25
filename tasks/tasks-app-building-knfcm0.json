@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageClientDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentClientHeader: Add test entries for ClientHeader (name, type badge Organization/Individual, status badge Active/Inactive/Prospect/Churned, tags, edit pencil icon, FollowButton toggle)",
-        "PlanComponentQuickActions: Add test entries for QuickActions (Add Task, Add Deal, Add Attachment, Add Person icon buttons)",
-        "PlanComponentSourceInfoSection: Add test entries for SourceInfoSection (Acquisition Source, Campaign, Channel, Date Acquired fields, Edit button)",
-        "PlanComponentClientSections: Add test entries for TasksSection (unresolved tasks with checkboxes, due dates, deal links), DealsSection (deal cards with name/stage/value, click to deal detail), AttachmentsSection (file icon, filename, type, created date, linked deal, download/view/delete, file upload and link URL modes), PeopleSection (avatar, name, role, click to person detail), TimelineSection (chronological events: task created, note added, deal stage changed, email sent, contact added, with user links), AddTaskModal, AddDealModal, AddAttachmentModal, AddPersonModal"
-      ],
-      "timestamp": "2026-02-25T03:31:27.220Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPagePersonDetailPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentPersonHeader: Add test entries for PersonHeader (name, title, organization, email, phone, location, associated clients links)",
         "PlanComponentRelationshipsSection: Add test entries for RelationshipsSection (Graph View/List View tabs, relationship entries with name, type Colleague/Decision Maker/Influencer, org, Link to person detail, Filter button, Add Entry button)",
