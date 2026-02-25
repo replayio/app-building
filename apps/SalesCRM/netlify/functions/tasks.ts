@@ -99,6 +99,59 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     );
   }
 
+  // GET /.netlify/functions/tasks/<id> — get single task
+  if (req.method === "GET" && subPath) {
+    const task = await queryOne<{
+      id: string;
+      title: string;
+      description: string | null;
+      due_date: string | null;
+      priority: string;
+      status: string;
+      client_id: string | null;
+      deal_id: string | null;
+      assignee_id: string | null;
+      created_at: string;
+      updated_at: string;
+      deal_name: string | null;
+      client_name: string | null;
+      assignee_name: string | null;
+      assignee_avatar: string | null;
+    }>(
+      sql,
+      `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
+              u.avatar_url AS assignee_avatar
+       FROM tasks t
+       LEFT JOIN deals d ON d.id = t.deal_id
+       LEFT JOIN clients c ON c.id = t.client_id
+       LEFT JOIN users u ON u.id = t.assignee_id
+       WHERE t.id = $1`,
+      [subPath]
+    );
+
+    if (!task) {
+      return errorResponse(404, "Task not found");
+    }
+
+    return jsonResponse({
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      dueDate: task.due_date,
+      priority: task.priority,
+      status: task.status,
+      clientId: task.client_id,
+      clientName: task.client_name,
+      dealId: task.deal_id,
+      dealName: task.deal_name,
+      assigneeId: task.assignee_id,
+      assigneeName: task.assignee_name,
+      assigneeAvatar: task.assignee_avatar,
+      createdAt: task.created_at,
+      updatedAt: task.updated_at,
+    });
+  }
+
   // POST /.netlify/functions/tasks — create task
   if (req.method === "POST" && !subPath) {
     let body: {
