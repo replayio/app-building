@@ -4,6 +4,7 @@ import { CalendarPage } from "./pages/CalendarPage";
 import { EquipmentDetailsPage } from "./pages/EquipmentDetailsPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
 import { RecipeDetailsPage } from "./pages/RecipeDetailsPage";
+import { RecipesPage } from "./pages/RecipesPage";
 import { RunDetailsPage } from "./pages/RunDetailsPage";
 
 export function App() {
@@ -13,7 +14,7 @@ export function App() {
       <main className="sidebar-main">
         <Routes>
           <Route path="/" element={<Navigate to="/recipes" replace />} />
-          <Route path="/recipes" element={<PlaceholderPage title="Recipes" />} />
+          <Route path="/recipes" element={<RecipesPage />} />
           <Route path="/recipe/:recipeId" element={<RecipeDetailsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/runs/:runId" element={<RunDetailsPage />} />
@@ -22,15 +23,6 @@ export function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-    </div>
-  );
-}
-
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <div className="page-content" style={{ padding: 24 }}>
-      <h1 className="page-title">{title}</h1>
-      <p style={{ color: "var(--text-muted)", marginTop: 8 }}>Coming soon</p>
     </div>
   );
 }

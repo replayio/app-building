@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentRecipesHeader: Write the RecipesHeader component",
-        "WriteComponentRecipesTable: Write the RecipesTable component",
-        "WriteComponentRecipeDetailsPanel: Write the RecipeDetailsPanel component",
-        "WritePageRecipes: Write the RecipesPage itself"
-      ],
-      "timestamp": "2026-02-24T23:56:27.755Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "SetupApp: Setup the app",
         "DesignDatabase: Design the database"
       ],

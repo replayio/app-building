@@ -1238,3 +1238,108 @@
   gap: 8px;
   justify-content: flex-end;
 }
+
+/* Recipes page layout */
+.recipes-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.recipes-table-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.recipes-panel-section {
+  flex: 0 0 380px;
+  max-width: 380px;
+}
+
+@media (max-width: 1024px) {
+  .recipes-layout {
+    flex-direction: column;
+  }
+
+  .recipes-panel-section {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Selected table row */
+.data-table tbody tr.selected {
+  background: rgba(77, 124, 94, 0.08);
+}
+
+.data-table tbody tr.selected:hover {
+  background: rgba(77, 124, 94, 0.12);
+}
+
+/* Recipe details side panel */
+.recipe-details-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.recipe-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+.recipe-panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.recipe-panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+.recipe-panel-tab {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+  font-family: var(--font-family);
+}
+
+.recipe-panel-tab:hover {
+  color: var(--text-primary);
+}
+
+.recipe-panel-tab--active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  font-weight: 500;
+}
+
+.recipe-panel-body {
+  padding: 16px 20px;
+}
+
+.recipe-panel-notes-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--bg-border-color-light);
+}
+
+.recipe-panel-notes-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
