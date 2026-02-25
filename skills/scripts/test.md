@@ -31,13 +31,17 @@ tests during development and debugging.
 
 6. **Run Playwright**: Run `npx playwright test <testFile>` with `--retries 0` against the
    specified test file. The Playwright config handles starting the dev server with the branch's
-   `DATABASE_URL`. Capture the exit code.
+   `DATABASE_URL`. Pipe all Playwright output to a log file (see Outputs).
 
-7. **On failure** (non-zero exit code):
+7. **Parse results**: Count passed/failed/skipped tests from the Playwright JSON reporter output
+   at `test-results/results.json`.
+
+8. **On failure** (non-zero exit code):
    a. Parse `~/.replay/recordings.log` with a built-in parser (NOT `npx replayio list --json`,
       which crashes on large suites). The log is newline-delimited JSON with `kind` field:
       `createRecording`, `addMetadata`, `writeStarted`, `writeFinished`, etc.
-   b. Log full metadata for every recording that has test metadata in a delimited block:
+   b. Append full metadata for every recording that has test metadata to the log file in a
+      delimited block:
       ```
       === REPLAY RECORDINGS METADATA ===
       {"id":"...","testResult":"failed","testTitle":"...","specFile":"..."}
@@ -47,13 +51,17 @@ tests during development and debugging.
    c. Upload exactly ONE recording: among all finished recordings where
       `metadata.test.result` is `"failed"` or `"timedOut"`, pick the one with the longest
       duration (the real recording, not zero-duration stubs). Upload with
-      `npx replayio upload <id>`. On success, log `REPLAY UPLOADED: <recordingId>`.
-      On failure, log the exit code.
+      `npx replayio upload <id>`. On success, append `REPLAY UPLOADED: <recordingId>` to the
+      log file. On failure, log the exit code.
 
-8. **Clean up**: Delete the ephemeral Neon branch. Remove local recordings with
+9. **Clean up**: Delete the ephemeral Neon branch. Remove local recordings with
    `npx replayio remove --all`.
 
-9. **Exit** with the original Playwright exit code.
+10. **Print summary** to stdout: a single line like `10 passed` or
+    `8 passed, 2 failed — see logs/test-run-3.log`. Include the uploaded recording ID
+    if one was uploaded: `8 passed, 2 failed (recording: abc123) — see logs/test-run-3.log`.
+
+11. **Exit** with the original Playwright exit code.
 
 ## Inputs
 
@@ -72,7 +80,9 @@ tests during development and debugging.
 
 ## Outputs
 
-- **stdout**: Playwright test output, recording metadata block, upload confirmations.
+- **stdout**: One-line summary only. Never verbose test output.
+- **`logs/test-run-N.log`**: Full Playwright output, recording metadata, and upload results.
+  `N` increments each run (find the highest existing number and add 1).
 - **Side effects**:
   - Creates and deletes ephemeral Neon branches.
   - Uploads failed Replay recordings.
@@ -93,6 +103,9 @@ tests during development and debugging.
 - The HTML reporter must use `open: 'never'` to suppress the interactive "Serving HTML report"
   prompt that blocks the script from exiting.
 - Run Playwright with `--retries 0` — no retries. Failures must be analyzed via Replay.
-- Use `child_process.execSync` or `execFileSync` for subprocess calls, inheriting stdio for
-  Playwright output.
+- Do NOT inherit stdio from Playwright. Pipe stdout and stderr to the log file using
+  `child_process.execSync` with `stdio: ['ignore', 'pipe', 'pipe']` or similar, then write
+  the captured output to the log file.
+- Use the JSON reporter (`test-results/results.json`) to parse pass/fail counts for the
+  summary line.
 - The `RECORD_REPLAY_API_KEY` env var is already set in the container.

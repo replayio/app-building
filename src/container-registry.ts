@@ -9,6 +9,32 @@ export interface RegistryEntry extends AgentState {
   stoppedAt?: string;
 }
 
+function readRegistry(): { lines: string[]; entries: (RegistryEntry | null)[] } {
+  if (!existsSync(REGISTRY_FILE)) return { lines: [], entries: [] };
+  const lines = readFileSync(REGISTRY_FILE, "utf-8").split("\n").filter((l) => l.trim());
+  const entries = lines.map((line) => {
+    try { return JSON.parse(line) as RegistryEntry; }
+    catch { return null; }
+  });
+  return { lines, entries };
+}
+
+function updateEntry(
+  match: (entry: RegistryEntry) => boolean,
+  update: (entry: RegistryEntry) => void,
+): void {
+  const { lines, entries } = readRegistry();
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const entry = entries[i];
+    if (entry && match(entry)) {
+      update(entry);
+      lines[i] = JSON.stringify(entry);
+      writeFileSync(REGISTRY_FILE, lines.join("\n") + "\n");
+      return;
+    }
+  }
+}
+
 export function logContainer(state: AgentState): void {
   const entry: RegistryEntry = {
     ...state,
@@ -18,52 +44,22 @@ export function logContainer(state: AgentState): void {
 }
 
 export function markStopped(containerName?: string): void {
-  if (!existsSync(REGISTRY_FILE)) return;
+  updateEntry(
+    (e) => !e.stoppedAt && (!containerName || e.containerName === containerName),
+    (e) => { e.stoppedAt = new Date().toISOString(); },
+  );
+}
 
-  const lines = readFileSync(REGISTRY_FILE, "utf-8")
-    .split("\n")
-    .filter((l) => l.trim());
-
-  // Find the last entry matching containerName (or last entry if no name given)
-  let targetIdx = -1;
-  for (let i = lines.length - 1; i >= 0; i--) {
-    try {
-      const entry: RegistryEntry = JSON.parse(lines[i]);
-      if (!entry.stoppedAt && (!containerName || entry.containerName === containerName)) {
-        targetIdx = i;
-        break;
-      }
-    } catch {
-      // Skip malformed lines
-    }
-  }
-
-  if (targetIdx === -1) return;
-
-  const entry: RegistryEntry = JSON.parse(lines[targetIdx]);
-  entry.stoppedAt = new Date().toISOString();
-  lines[targetIdx] = JSON.stringify(entry);
-
-  writeFileSync(REGISTRY_FILE, lines.join("\n") + "\n");
+export function clearStopped(containerName: string): void {
+  updateEntry(
+    (e) => e.containerName === containerName && !!e.stoppedAt,
+    (e) => { delete e.stoppedAt; },
+  );
 }
 
 export function getRecentContainers(limit = 20): RegistryEntry[] {
-  if (!existsSync(REGISTRY_FILE)) return [];
-
-  const lines = readFileSync(REGISTRY_FILE, "utf-8")
-    .split("\n")
-    .filter((l) => l.trim());
-
-  const entries: RegistryEntry[] = [];
-  for (const line of lines) {
-    try {
-      entries.push(JSON.parse(line));
-    } catch {
-      // Skip malformed lines
-    }
-  }
-
-  return entries.slice(-limit);
+  const { entries } = readRegistry();
+  return entries.filter((e): e is RegistryEntry => e !== null).slice(-limit);
 }
 
 export function findContainer(containerName: string): RegistryEntry | null {

@@ -145,12 +145,26 @@ test output, just `DoLoadDriverHandle: dlopen failed` in stderr). Fix: download 
 `libssl1.1` deb, extract it, and set `LD_LIBRARY_PATH` to point at the extracted libs. See
 the deployment Playwright config for a working example.
 
+### 7. Pre-test verification
+
+Before running tests for the first time in an app, verify the Replay browser is installed:
+
+```bash
+ls ~/.replay/runtimes/chrome-linux/chrome
+```
+
+If it does not exist, run `npx replayio install` before any test execution. Running tests
+without the Replay browser means failures produce no recordings, making debugging impossible.
+Do not defer Replay installation to after failures are discovered.
+
 ## Running Tests
 
 Run tests via `npm run test <testFile>` from the app directory (see `skills/scripts/test.md`
 for the full script specification). Do NOT manually run playwright or start dev servers.
 
-- Write the results to a logs/test-run-N.log file.
+- The script prints a one-line summary to stdout (e.g., `8 passed, 2 failed — see logs/test-run-3.log`).
+- Full test output and recording metadata are in the log file referenced by the summary.
+- Read the log file only when you need to diagnose failures.
 - Tests MUST run in parallel with multiple workers (use `fullyParallel: true` in playwright config).
 
 ## Debugging
@@ -168,13 +182,12 @@ mandatory — do NOT skip or reorder steps.
    - `skills/debugging/form-and-input.md` — Form validation, input interactions
    - `skills/debugging/seed-data.md` — Missing test data, count mismatches
    - `skills/debugging/README.md` — Quick reference table: symptom → starting tool
-3. Find the uploaded recording IDs in the `npm run test` output. The test script automatically
-   uploads failed recordings and logs full metadata for each one. Look for the
-   `=== REPLAY RECORDINGS METADATA ===` block and the `REPLAY UPLOADED: <recordingId>` lines
-   in the output. Choose the recording whose URI and duration best match the failing test. If
-   the upload did not happen (e.g., the script was misconfigured), use
-   `npx replayio list --json` to find recordings and upload them manually:
-   `npx replayio upload <id>`.
+3. Find the uploaded recording ID in the `npm run test` summary line (e.g.,
+   `8 passed, 2 failed (recording: abc123) — see logs/test-run-3.log`). If the summary
+   doesn't include a recording ID, read the log file and look for the
+   `=== REPLAY RECORDINGS METADATA ===` block and `REPLAY UPLOADED: <recordingId>` lines.
+   If the upload did not happen, use `npx replayio list --json` to find recordings and
+   upload them manually: `npx replayio upload <id>`.
 4. Announce `TEST FAILURE UPLOADED: <recordingId>` before doing anything else.
 5. Use Replay MCP tools to analyze the failure, following the tool sequence from the relevant
    debugging guide. Use as many tools as needed to understand what actually happened before
@@ -321,3 +334,7 @@ When testing the app after deployment, use the Replay browser to record the app 
 - Before writing tests that rely on `data-testid` attributes, verify those attributes exist in
   the component source. Missing `data-testid` attributes cause test failures that are easy to
   prevent with a quick source check.
+- When seed data uses `NUMERIC` or `DECIMAL` database columns, expect formatted output in
+  assertions (e.g., `"500"` not `"500.00"`). These column types return decimal strings from
+  PostgreSQL, so the app must format them before display. If tests fail on numeric values,
+  check the column type and app formatting layer before modifying test expectations.

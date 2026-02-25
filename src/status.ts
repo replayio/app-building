@@ -28,8 +28,8 @@ function formatAge(isoDate: string): string {
   return `${days}d ago`;
 }
 
-async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: HttpOptions = {}): Promise<void> {
-  const status = await httpGet(`${baseUrl}/status`, httpOpts);
+async function showHttpStatus(entry: RegistryEntry, httpOpts: HttpOptions = {}): Promise<void> {
+  const status = await httpGet(`${entry.baseUrl}/status`, httpOpts);
 
   let stateLabel: string;
   if (status.state === "processing") {
@@ -44,11 +44,11 @@ async function showHttpStatus(baseUrl: string, containerName: string, httpOpts: 
     stateLabel = `${DIM}${status.state}${RESET}`;
   }
 
-  console.log(`\n  ${stateLabel}  ${DIM}(${containerName})${RESET}`);
+  console.log(`\n  ${stateLabel}  ${DIM}(${entry.containerName})${RESET}  ${DIM}started ${formatAge(entry.startedAt)}${RESET}`);
   if (status.pushBranch) {
     console.log(`  ${DIM}Branch:${RESET}    ${status.pushBranch}`);
   }
-  console.log(`  ${DIM}Server:${RESET}    ${baseUrl}`);
+  console.log(`  ${DIM}Server:${RESET}    ${entry.baseUrl}`);
   console.log(`  ${DIM}Revision:${RESET}  ${status.revision}`);
 
   const pendingTasks = status.pendingTasks ?? status.pendingGroups ?? 0;
@@ -150,7 +150,7 @@ async function showAllContainers(alive: RegistryEntry[], contextCount?: number):
   for (const entry of alive) {
     const opts = httpOptsFor(entry);
     try {
-      await showHttpStatus(entry.baseUrl, entry.containerName, opts);
+      await showHttpStatus(entry, opts);
       await showRecentLogs(entry.baseUrl, opts, contextCount);
     } catch {
       console.log(`\n  ${RED}UNREACHABLE${RESET}  ${DIM}(${entry.containerName})${RESET}`);
@@ -228,7 +228,7 @@ async function main(): Promise<void> {
     }
     const opts = httpOptsFor(entry);
     try {
-      await showHttpStatus(entry.baseUrl, entry.containerName, opts);
+      await showHttpStatus(entry, opts);
     } catch {
       console.error(`${RED}Cannot reach container "${tailTarget}" at ${entry.baseUrl} — may be stopped.${RESET}`);
       process.exit(1);
@@ -245,7 +245,7 @@ async function main(): Promise<void> {
     // Single alive container — show status and tail logs (original behavior)
     const opts = httpOptsFor(alive[0]);
     try {
-      await showHttpStatus(alive[0].baseUrl, alive[0].containerName, opts);
+      await showHttpStatus(alive[0], opts);
     } catch {
       console.error(`${RED}Cannot reach agent at ${alive[0].baseUrl} — container may be stopped.${RESET}`);
       process.exit(1);
