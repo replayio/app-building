@@ -3,20 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteBackendSuppliers: Write the suppliers Netlify function",
-        "WriteBackendSupplierComments: Write the supplier-comments Netlify function",
-        "WriteBackendSupplierDocuments: Write the supplier-documents Netlify function",
-        "WriteBackendOrders: Write the orders Netlify function",
-        "WriteBackendOrderLineItems: Write the order-line-items Netlify function",
-        "WriteBackendOrderDocuments: Write the order-documents Netlify function",
-        "WriteBackendOrderHistory: Write the order-history Netlify function"
-      ],
-      "timestamp": "2026-02-25T04:49:18.874Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentQuickActions: Write the QuickActions component",
         "WriteComponentUpcomingOrdersTable: Write the UpcomingOrdersTable component",
         "WriteComponentSuppliersList: Write the SuppliersList component",
