@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageReportDetails: Decide on components, add sections to docs/tests.md",
-        "PlanComponentReportHeader: Add test entries for ReportHeader (report title with ID, breadcrumb navigation, Export PDF button, Export CSV button)",
-        "PlanComponentVarianceSummary: Add test entries for VarianceSummary (Total Variance with arrow, Actual Spend, Budgeted Spend, mini trend chart)",
-        "PlanComponentVarianceChart: Add test entries for VarianceChart (bar chart showing Actual vs Budgeted per account, account labels on x-axis)",
-        "PlanComponentDetailedReportTable: Add test entries for DetailedReportTable (Account/Item, Actual, Budget, Variance $, Variance %, Trend sparkline, Actions View button, expandable sub-item rows)"
-      ],
-      "timestamp": "2026-02-24T19:29:50.271Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageReportList: Decide on components, add sections to docs/tests.md",
         "PlanComponentReportListHeader: Add test entries for ReportListHeader (page title, search bar, Generate New Report button)",
         "PlanComponentReportTable: Add test entries for ReportTable (Report Name sortable column, Type, Date Range, Accounts Included, Status badge, Actions with refresh/download/View Details, pagination)"

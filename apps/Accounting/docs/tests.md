@@ -871,7 +871,228 @@
 
 ### Components: ReportHeader, VarianceSummary, VarianceChart, DetailedReportTable
 
-<!-- Tests to be added by PlanPageReportDetails -->
+#### Component: ReportHeader
+
+**Test: ReportHeader displays report title with ID**
+- **Initial state:** User navigates to the ReportDetails page for a generated report (e.g., "Q3 2024 Budget Variance Report" with ID "REP-2024-Q3-001").
+- **Action:** User observes the header area at the top of the page content.
+- **Expected:** The heading "Q3 2024 Budget Variance Report (ID: REP-2024-Q3-001)" is displayed prominently. The title includes the report name followed by the report's unique ID in parentheses.
+
+**Test: ReportHeader displays breadcrumb navigation**
+- **Initial state:** User is on the ReportDetails page for the "Q3 2024 Budget Variance Report".
+- **Action:** User observes the breadcrumb area above the report title.
+- **Expected:** A breadcrumb trail is displayed showing "Reports > Q3 2024 Budget Variance Report". The "Reports" segment is a clickable link and the current report name is the final non-clickable segment.
+
+**Test: ReportHeader breadcrumb Reports link navigates to ReportList**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User clicks the "Reports" link in the breadcrumb trail.
+- **Expected:** The app navigates to the ReportList page, showing all generated reports. The ReportDetails page is no longer displayed.
+
+**Test: ReportHeader displays Export PDF button with outline style**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the top-right area of the header, next to the report title.
+- **Expected:** An "Export PDF" button is displayed with an outline/secondary style (not filled). The button text reads "Export PDF".
+
+**Test: ReportHeader displays Export CSV button with primary style**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the top-right area of the header, next to the Export PDF button.
+- **Expected:** An "Export CSV" button is displayed with a blue/primary filled style. The button is positioned to the right of the Export PDF button.
+
+**Test: ReportHeader Export PDF button downloads a PDF file**
+- **Initial state:** User is on the ReportDetails page for the "Q3 2024 Budget Variance Report".
+- **Action:** User clicks the "Export PDF" button.
+- **Expected:** A PDF file download is initiated. The downloaded file contains the report data (title, variance summary, chart representation, and detailed table) formatted as a PDF document. The filename includes the report name or ID.
+
+**Test: ReportHeader Export CSV button downloads a CSV file**
+- **Initial state:** User is on the ReportDetails page for the "Q3 2024 Budget Variance Report".
+- **Action:** User clicks the "Export CSV" button.
+- **Expected:** A CSV file download is initiated. The downloaded file contains the detailed report table data with columns matching the on-screen table (Account/Item, Actual, Budget, Variance $, Variance %). The filename includes the report name or ID.
+
+**Test: ReportHeader title reflects the specific report from the database**
+- **Initial state:** Two reports exist: "Q3 2024 Budget Variance Report (ID: REP-2024-Q3-001)" and "Q2 2024 Summary Report (ID: REP-2024-Q2-005)".
+- **Action:** User navigates to the ReportDetails page for the Q2 report.
+- **Expected:** The heading displays "Q2 2024 Summary Report (ID: REP-2024-Q2-005)". The breadcrumb shows "Reports > Q2 2024 Summary Report". The page content reflects the Q2 report data, not the Q3 report.
+
+#### Component: VarianceSummary
+
+**Test: VarianceSummary displays Total Variance with amount and percentage**
+- **Initial state:** User is on the ReportDetails page for a report where the total variance is -$12,500 (9.4% over budget).
+- **Action:** User observes the summary card below the report header.
+- **Expected:** A "Total Variance:" label is displayed followed by "-$12,500 (9.4%)" on the next line. The variance amount and percentage are shown together.
+
+**Test: VarianceSummary negative variance shown in red with down arrow**
+- **Initial state:** User is on the ReportDetails page for a report where actual spend exceeds the budget (unfavorable variance).
+- **Action:** User observes the Total Variance value in the summary card.
+- **Expected:** The variance amount "-$12,500 (9.4%)" is displayed in red text. A downward-pointing arrow icon (↓) is shown next to the percentage, indicating an unfavorable/over-budget direction.
+
+**Test: VarianceSummary positive variance shown in green with up arrow**
+- **Initial state:** User is on the ReportDetails page for a report where actual spend is below the budget (favorable variance).
+- **Action:** User observes the Total Variance value in the summary card.
+- **Expected:** The variance amount is displayed in green text with a positive prefix (e.g., "+$5,000 (3.2%)"). An upward-pointing arrow icon (↑) is shown next to the percentage, indicating a favorable/under-budget direction.
+
+**Test: VarianceSummary displays Actual Spend with dollar amount**
+- **Initial state:** User is on the ReportDetails page for a report with actual spend of $145,000.
+- **Action:** User observes the summary card.
+- **Expected:** An "Actual Spend:" label is displayed with "$145,000" beneath it in a prominent font. The Actual Spend is positioned to the right of the Total Variance in the same horizontal row.
+
+**Test: VarianceSummary displays Budgeted Spend with dollar amount**
+- **Initial state:** User is on the ReportDetails page for a report with budgeted spend of $132,500.
+- **Action:** User observes the summary card.
+- **Expected:** A "Budgeted Spend:" label is displayed with "$132,500" beneath it in a prominent font. The Budgeted Spend is positioned to the right of the Actual Spend in the same horizontal row.
+
+**Test: VarianceSummary displays mini trend chart on the right**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the right side of the summary card.
+- **Expected:** A small line chart (sparkline/mini trend chart) is displayed on the far right side of the summary card. The chart shows the variance trend over the report period, providing a quick visual of how variance has changed.
+
+**Test: VarianceSummary card layout shows all metrics in a single row**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the overall layout of the summary card.
+- **Expected:** The summary card is a single horizontal row containing, from left to right: Total Variance (with amount, percentage, and directional arrow), Actual Spend (label and amount), Budgeted Spend (label and amount), and the mini trend chart. All elements are vertically centered within the card.
+
+#### Component: VarianceChart
+
+**Test: VarianceChart displays heading and subtitle**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the chart section below the variance summary card.
+- **Expected:** The heading "Top Account Variances" is displayed at the top of the section. Below it, the subtitle "Actual vs. Budgeted" is displayed in a smaller/muted font.
+
+**Test: VarianceChart displays bar chart with paired bars per account**
+- **Initial state:** User is on the ReportDetails page for a report that includes accounts Marketing, Operations, R&D, Sales, and G&A.
+- **Action:** User observes the bar chart.
+- **Expected:** The chart displays grouped/paired bars for each account, showing the variance between Actual and Budgeted amounts. Each account has a visual representation of its budget variance.
+
+**Test: VarianceChart displays account labels on x-axis**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the x-axis of the bar chart.
+- **Expected:** Account names are displayed as labels along the x-axis: "Marketing", "Operations", "R&D", "Sales", "G&A". The labels are centered beneath their respective bar groups.
+
+**Test: VarianceChart y-axis shows dollar amounts**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the y-axis of the bar chart.
+- **Expected:** The y-axis displays dollar amount labels (e.g., "$50", "$60", "0", "-$30", "-$10") representing the variance scale. A zero line is clearly visible as the baseline dividing over-budget (positive) and under-budget (negative) values.
+
+**Test: VarianceChart over-budget accounts displayed with red bars**
+- **Initial state:** User is on the ReportDetails page for a report where Marketing, Operations, and R&D are over budget.
+- **Action:** User observes the bars for these over-budget accounts.
+- **Expected:** The bars for Marketing, Operations, and R&D are displayed in red, extending above the zero line, visually indicating unfavorable budget variance (actual exceeds budget).
+
+**Test: VarianceChart under-budget accounts displayed with green bars**
+- **Initial state:** User is on the ReportDetails page for a report where Sales and G&A are under budget.
+- **Action:** User observes the bars for these under-budget accounts.
+- **Expected:** The bars for Sales and G&A are displayed in green, extending below the zero line, visually indicating favorable budget variance (actual is less than budget).
+
+**Test: VarianceChart displays data for all accounts in the report**
+- **Initial state:** User is on the ReportDetails page for a report that covers five accounts.
+- **Action:** User observes the full bar chart.
+- **Expected:** All five accounts (Marketing, Operations, R&D, Sales, G&A) have bars rendered in the chart. No account from the report is missing from the chart visualization.
+
+**Test: VarianceChart bar heights are proportional to variance amounts**
+- **Initial state:** User is on the ReportDetails page for a report where Marketing has a larger variance than R&D.
+- **Action:** User observes the relative heights of bars for Marketing and R&D.
+- **Expected:** The Marketing bar is taller than the R&D bar, reflecting the larger variance amount for Marketing. The bar heights are proportional to the absolute dollar variance for each account.
+
+#### Component: DetailedReportTable
+
+**Test: DetailedReportTable displays heading**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the section below the variance chart.
+- **Expected:** The heading "Detailed Report" is displayed at the top of the section.
+
+**Test: DetailedReportTable displays correct column headers**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the table header row.
+- **Expected:** The table displays seven column headers from left to right: "Account / Item", "Actual ($)", "Budget ($)", "Variance ($)", "Variance (%)", "Trend", and "Actions".
+
+**Test: DetailedReportTable displays account rows with name and label**
+- **Initial state:** User is on the ReportDetails page for a report with accounts Marketing, Operations, R&D, Sales, and G&A.
+- **Action:** User observes the table rows.
+- **Expected:** Each account is displayed as a row with the account name in bold (e.g., "Marketing") followed by "(Account)" as a label beneath or beside the name. All accounts from the report are listed.
+
+**Test: DetailedReportTable account rows display Actual, Budget, Variance, and Variance % values**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the "Marketing" account row.
+- **Expected:** The Marketing row displays: Actual ($) "$42,000", Budget ($) "$38,000", Variance ($) "-$4,000", Variance (%) "(10.5%)". The values are aligned in their respective columns.
+
+**Test: DetailedReportTable account rows have expand/collapse chevron**
+- **Initial state:** User is on the ReportDetails page for a report with account rows displayed.
+- **Action:** User observes the left side of each account row.
+- **Expected:** Each account row has a right-pointing chevron (▶) icon to the left of the account name, indicating the row can be expanded to reveal sub-item details.
+
+**Test: DetailedReportTable clicking expand chevron reveals sub-item rows**
+- **Initial state:** User is on the ReportDetails page with the "Operations" account row collapsed (chevron pointing right).
+- **Action:** User clicks the expand chevron on the "Operations" row.
+- **Expected:** The chevron rotates to point downward (▼). Sub-item rows appear below the Operations account row, indented to show they are children: "Cloud Infrastructure (Item)" with Actual $8,500, Budget $5,000, Variance -$3,500, Variance % (70%); "Office Lease (Item)" with Actual $6,000, Budget $6,000, Variance $0, Variance % (0%); "Travel (Item)" with Actual $2,500, Budget $3,500, Variance +$1,000, Variance % 28.6%.
+
+**Test: DetailedReportTable sub-item rows display item name with Item label**
+- **Initial state:** User has expanded the "Operations" account row to reveal sub-items.
+- **Action:** User observes the sub-item rows.
+- **Expected:** Each sub-item row displays the item name followed by "(Item)" as a label (e.g., "Cloud Infrastructure (Item)", "Office Lease (Item)", "Travel (Item)"). The sub-item rows are indented relative to the parent account row.
+
+**Test: DetailedReportTable clicking collapse chevron hides sub-item rows**
+- **Initial state:** User is on the ReportDetails page with the "Operations" account row expanded, showing its sub-item rows.
+- **Action:** User clicks the collapse chevron (downward-pointing) on the "Operations" row.
+- **Expected:** The sub-item rows (Cloud Infrastructure, Office Lease, Travel) are hidden. Only the Operations account summary row remains visible. The chevron rotates back to point right.
+
+**Test: DetailedReportTable negative variance amounts shown in red**
+- **Initial state:** User is on the ReportDetails page for a report with over-budget accounts.
+- **Action:** User observes the Variance ($) column for "Marketing" (which shows -$4,000).
+- **Expected:** The text "-$4,000" is displayed in red, indicating an unfavorable variance where actual spending exceeds the budget.
+
+**Test: DetailedReportTable negative variance percentages shown in red with parentheses**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the Variance (%) column for "Marketing".
+- **Expected:** The text "(10.5%)" is displayed in red with parentheses, following accounting convention for negative/unfavorable values.
+
+**Test: DetailedReportTable positive variance amounts shown in green with plus prefix**
+- **Initial state:** User has expanded the "Operations" row and the sub-item "Travel" has a favorable variance.
+- **Action:** User observes the Variance ($) column for the "Travel" sub-item.
+- **Expected:** The text "+$1,000" is displayed in green, indicating a favorable variance where actual spending is below the budget.
+
+**Test: DetailedReportTable positive variance percentages shown in green**
+- **Initial state:** User has expanded the "Operations" row.
+- **Action:** User observes the Variance (%) column for the "Travel" sub-item.
+- **Expected:** The text "28.6%" is displayed in green (without parentheses), indicating a favorable variance percentage.
+
+**Test: DetailedReportTable zero variance displayed correctly**
+- **Initial state:** User has expanded the "Operations" row and the sub-item "Office Lease" has no variance.
+- **Action:** User observes the Variance ($) and Variance (%) columns for "Office Lease".
+- **Expected:** The Variance ($) column shows "$0" and the Variance (%) column shows "(0%)". The text is displayed in a neutral color (not red or green).
+
+**Test: DetailedReportTable Trend column displays sparkline for each row**
+- **Initial state:** User is on the ReportDetails page for a report.
+- **Action:** User observes the Trend column across multiple rows.
+- **Expected:** Each account row and sub-item row displays a small sparkline (mini line chart) in the Trend column. The sparklines show the variance trend over time for that specific account or item. Unfavorable trends show declining lines and favorable trends show rising lines.
+
+**Test: DetailedReportTable Actions column displays View button for account rows**
+- **Initial state:** User is on the ReportDetails page for a report with account rows displayed.
+- **Action:** User observes the Actions column for the "Marketing" account row.
+- **Expected:** A "View" button is displayed in the Actions column for the Marketing account row. The button is styled with a border/outline.
+
+**Test: DetailedReportTable View button navigates to AccountDetailPage**
+- **Initial state:** User is on the ReportDetails page with account rows displayed.
+- **Action:** User clicks the "View" button in the Actions column for the "Marketing" row.
+- **Expected:** The app navigates to the AccountDetailPage for the Marketing account, showing all transactions and budget details for that account.
+
+**Test: DetailedReportTable sub-item rows do not display View button**
+- **Initial state:** User has expanded the "Operations" account row to show sub-item rows (Cloud Infrastructure, Office Lease, Travel).
+- **Action:** User observes the Actions column for the sub-item rows.
+- **Expected:** The sub-item rows do not have a "View" button in the Actions column. Only the parent account rows have the View button.
+
+**Test: DetailedReportTable multiple accounts are listed**
+- **Initial state:** User is on the ReportDetails page for a report covering accounts Marketing, Operations, R&D, Sales, and G&A.
+- **Action:** User scrolls through the detailed report table.
+- **Expected:** All five account rows are present in the table: Marketing (Account), Operations (Account), R&D (Account), Sales (Account), and G&A (Account). Each row has complete data in all columns.
+
+**Test: DetailedReportTable expanding one account does not affect others**
+- **Initial state:** User is on the ReportDetails page with all account rows collapsed.
+- **Action:** User clicks the expand chevron on "Operations".
+- **Expected:** Only the "Operations" row expands to show its sub-items. All other account rows (Marketing, R&D, Sales, G&A) remain collapsed with their chevrons pointing right.
+
+**Test: DetailedReportTable multiple accounts can be expanded simultaneously**
+- **Initial state:** User has expanded the "Operations" account row showing its sub-items.
+- **Action:** User clicks the expand chevron on "Marketing".
+- **Expected:** The "Marketing" row expands to show its sub-items. The "Operations" row remains expanded as well. Both sets of sub-items are visible simultaneously.
 
 ---
 
