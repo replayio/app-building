@@ -1218,7 +1218,294 @@ Given the ImportDialog is open, when the user clicks the cancel button or close 
 
 ### Components: DealHeader, DealStagePipeline, DealHistorySection, DealMetricsSection, WriteupsSection, LinkedTasksSection, DealAttachmentsSection, ContactsIndividualsSection
 
-<!-- Tests for header fields, stage changes, history, metrics, writeups, tasks, attachments, contacts -->
+#### DealHeader
+
+**Deal title displays deal name with client name and value**
+Given the user navigates to /deals/:dealId for a deal named "Expansion Deal" associated with client "Acme Corp" valued at $250k, the page displays a heading "DEAL DETAILS: Acme Corp - $250k Expansion Deal" at the top of the content area showing the client name, formatted value, and deal name.
+
+**Client field displays associated client name**
+Given the user is viewing a deal associated with client "Acme Corporation", the header displays a "Client:" label followed by the client name "Acme Corporation" in an editable text field.
+
+**Client field is clickable and navigates to client detail page**
+Given the user is viewing a deal associated with "Acme Corporation", when they click on the client name field, the app navigates to /clients/:clientId for that client and the ClientDetailPage is displayed.
+
+**Value field displays deal monetary value**
+Given the user is viewing a deal with value $250,000, the header displays a "Value:" label followed by "$250,000" in an editable text field.
+
+**Value field can be edited inline**
+Given the user is viewing a deal with value "$250,000", when they click the Value field and change it to "$300,000" and confirm, the value is updated in the database and the header reflects "$300,000". The deal title also updates to reflect the new value.
+
+**Owner field displays deal owner as user dropdown**
+Given the user is viewing a deal owned by "Sarah Lee", the header displays an "Owner:" label followed by a FilterSelect dropdown showing "Sarah Lee", populated with team members from the users API.
+
+**Owner field can be changed via dropdown**
+Given the user is viewing a deal owned by "Sarah Lee", when they open the Owner dropdown and select "Mike R.", the deal owner is updated to "Mike R." in the database and the header reflects the new owner.
+
+**Changing owner creates a timeline entry on the client**
+Given the user changes the deal owner from "Sarah Lee" to "Mike R." and saves, a timeline entry is created on the associated client recording the owner change, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Stage dropdown displays current deal stage**
+Given the user is viewing a deal at stage "Discovery", the header displays a "Stage:" label followed by a dropdown showing "Discovery" with the available stage options (Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won).
+
+**Stage dropdown allows selecting a different stage**
+Given the user is viewing a deal at stage "Discovery", when they open the Stage dropdown and select "Proposal", the dropdown updates to show "Proposal".
+
+**Change Stage button is visible with label**
+Given the user is on a deal detail page, the header displays a "Change Stage" button styled as a primary action button to the right of the Stage dropdown.
+
+**Clicking Change Stage updates the deal stage**
+Given the user has selected a new stage "Proposal" from the Stage dropdown, when they click the "Change Stage" button, the deal's stage is updated to "Proposal" in the database, the DealStagePipeline updates to reflect the new current stage, and a stage change entry is added to the DealHistorySection.
+
+**Change Stage creates a timeline entry on the client**
+Given the user changes the deal stage from "Discovery" to "Proposal" via the Change Stage button, a "Deal Stage Changed" timeline entry is created on the associated client recording the old stage "Discovery" and new stage "Proposal", attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Change Stage triggers follower notifications**
+Given the user changes the deal stage on a deal whose associated client has followers, email notifications are sent to followers who have "deal stage changed" notifications enabled (excluding the actor who changed the stage).
+
+**Editing value creates a timeline entry on the client**
+Given the user edits the deal value from "$250,000" to "$300,000" and saves, a timeline entry is created on the associated client recording the value change, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+#### DealStagePipeline
+
+**Pipeline displays all six stage labels in order**
+Given the user is on a deal detail page, the DealStagePipeline displays six stage labels in this order from left to right: Lead, Qualification, Discovery, Proposal, Negotiation, Closed Won.
+
+**Current stage is labeled with "(Current)" suffix**
+Given a deal is at stage "Discovery", the DealStagePipeline shows the label "Discovery (Current)" for that stage, distinguishing it from the other stages which show only their name.
+
+**Completed stages display filled checkmark icons**
+Given a deal is at stage "Discovery", the stages that have been passed through (Lead, Qualification) display filled/blue checkmark icons indicating they are completed stages.
+
+**Current stage displays filled checkmark icon**
+Given a deal is at stage "Discovery", the current stage (Discovery) also displays a filled/blue checkmark icon, matching the styling of completed stages.
+
+**Future stages display unfilled/gray checkmark icons**
+Given a deal is at stage "Discovery", the stages that have not yet been reached (Proposal, Negotiation, Closed Won) display unfilled/gray checkmark icons indicating they are future stages.
+
+**Progress bar shows colored segments for completed and current stages**
+Given a deal is at stage "Discovery" (the third of six stages), the progress bar below the stage labels is filled/colored for the first three segments (Lead, Qualification, Discovery) and unfilled/gray for the remaining three segments (Proposal, Negotiation, Closed Won).
+
+**Pipeline updates when stage is changed**
+Given the user changes the deal stage from "Discovery" to "Proposal" via the Change Stage button in the header, the DealStagePipeline updates: "Proposal" now shows "(Current)" with a filled checkmark, "Discovery" loses the "(Current)" label but retains its filled checkmark, and the progress bar extends to cover the Proposal segment.
+
+**Pipeline reflects Closed Won as final stage**
+Given a deal is at stage "Closed Won", all six stage labels show filled/blue checkmark icons, the progress bar is fully filled, and "Closed Won" displays the "(Current)" suffix.
+
+**Pipeline reflects Lead as initial stage**
+Given a deal is at stage "Lead", only the Lead stage shows a filled checkmark with "(Current)" suffix, the remaining five stages show unfilled/gray checkmarks, and the progress bar fills only the first segment.
+
+#### DealHistorySection
+
+**Section displays "Deal History" title**
+Given the user is on a deal detail page, the Deal History section displays the heading "Deal History".
+
+**Stage change entries display date, time, old stage, new stage, and user**
+Given a deal has a stage change history entry where on Oct 25, 2023 at 2:30 PM the stage changed from "Qualification" to "Discovery" by "Sarah Lee", the entry displays "Oct 25, 2023, 2:30 PM: Changed Stage from Qualification to Discovery (Sarah Lee)" showing the full date/time, old stage, new stage, and the user who made the change in parentheses.
+
+**Multiple history entries are displayed in reverse chronological order**
+Given a deal has two stage changes — "Qualification to Discovery on Oct 25, 2023" and "Lead to Qualification on Oct 18, 2023" — the entries are displayed with the most recent change (Oct 25) at the top and the older change (Oct 18) below it.
+
+**New stage change appears in history after Change Stage action**
+Given the user changes the deal stage from "Discovery" to "Proposal" via the Change Stage button, a new entry immediately appears at the top of the Deal History section showing the date/time, "Changed Stage from Discovery to Proposal", and the current user's name (or "System" if unauthenticated).
+
+**History entries attribute changes to the correct user**
+Given user "Sarah Lee" changes the deal stage from "Qualification" to "Discovery", the history entry shows "(Sarah Lee)" as the user who made the change. When no user is authenticated, the entry shows "(System)".
+
+**Empty state when no stage changes exist**
+Given a newly created deal with no stage change history, the Deal History section displays an empty state message (e.g., "No stage changes yet").
+
+#### DealMetricsSection
+
+**Section displays "Deal Metrics" title**
+Given the user is on a deal detail page, the Deal Metrics section displays the heading "Deal Metrics".
+
+**Probability displays as percentage**
+Given a deal has a probability of 40%, the Deal Metrics section displays "Probability: 40%" showing the win probability as a percentage value.
+
+**Expected Close displays formatted date**
+Given a deal has an expected close date of December 15, 2023, the Deal Metrics section displays "Expected Close: Dec 15, 2023" showing the expected close date in a readable format.
+
+**Probability and Expected Close are editable**
+Given the user is on a deal detail page, when they click on the Probability value or Expected Close date, they can edit the values inline. Changing the probability from "40%" to "60%" and saving persists the change to the database and updates the display.
+
+**Editing metrics creates a timeline entry on the client**
+Given the user edits the deal probability from "40%" to "60%" and saves, a timeline entry is created on the associated client recording the metrics change, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created per save action.
+
+**Probability displays "N/A" when not set**
+Given a deal has no probability set, the Deal Metrics section displays "Probability: N/A" or "Probability: —".
+
+**Expected Close displays "N/A" when not set**
+Given a deal has no expected close date set, the Deal Metrics section displays "Expected Close: N/A" or "Expected Close: —".
+
+#### WriteupsSection
+
+**Section displays "Writeups" title**
+Given the user is on a deal detail page, the Writeups section displays the heading "Writeups".
+
+**New Entry button is visible with plus icon**
+Given the user is on a deal detail page, the Writeups section displays a "+ New Entry" button with a plus icon in the top-right corner of the section header.
+
+**Writeup entries display title in bold**
+Given a writeup entry titled "Strategy Update", the entry displays "Strategy Update" in bold text as the entry heading.
+
+**Writeup entries display date and author**
+Given a writeup entry created on Oct 20 by "Sarah Lee", the entry displays "- Oct 20 (Sarah Lee)" after the title, showing the creation date and author name in parentheses.
+
+**Writeup entries display content text**
+Given a writeup entry with content "Emphasizing our cloud integration capabilities. Client seems receptive...", the entry displays the content text below the title/date/author line.
+
+**Multiple writeup entries are displayed as separate cards**
+Given a deal has two writeup entries ("Strategy Update" by Sarah Lee and "Needs Analysis" by John Doe), both are displayed as separate cards/entries in the Writeups section with their respective titles, dates, authors, and content.
+
+**Edit button is visible on each writeup entry with pencil icon**
+Given a writeup entry is displayed, an "Edit" button with a pencil icon is visible at the bottom-left of the entry card.
+
+**Clicking Edit opens edit mode for the writeup**
+Given the user clicks the "Edit" button on a writeup entry, an edit modal or inline editor opens allowing the user to modify the writeup title and content text.
+
+**Saving edited writeup persists changes**
+Given the edit mode is open for a writeup and the user changes the content from "Emphasizing our cloud integration capabilities." to "Updated strategy focuses on API integrations.", when they save, the writeup content updates to reflect the new text and the changes are persisted to the database.
+
+**Editing a writeup creates a new version in version history**
+Given the user edits a writeup and saves, a new version is created in the writeup's version history, preserving the previous content. The version history tracks the date, author, and content of each version.
+
+**Version History button is visible on each writeup entry with icon**
+Given a writeup entry is displayed, a "Version History" button with an eye/clock icon is visible at the bottom-right of the entry card, next to the Edit button.
+
+**Clicking Version History opens version history view**
+Given the user clicks the "Version History" button on a writeup entry, a modal or panel opens showing a chronological list of all versions of that writeup, each displaying the date, author, and content of that version.
+
+**New Entry button opens create writeup form**
+Given the user clicks the "+ New Entry" button, a modal or inline form opens with fields for the writeup title and content text.
+
+**Submitting new writeup creates entry associated with the deal**
+Given the create writeup form is open and the user enters title "Competitive Analysis" and content "Key differentiators include...", when they click submit, the writeup is created in the database associated with the current deal, the form closes, and the new entry appears in the Writeups section with the title, current date, current user (or "System"), and content.
+
+**Creating a writeup creates a timeline entry on the client**
+Given the user creates a new writeup entry, a "Note Added" timeline entry is created on the associated client with the writeup title, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Creating a writeup triggers follower notifications**
+Given the user creates a new writeup on a deal whose associated client has followers, email notifications are sent to followers who have "note added" notifications enabled (excluding the actor).
+
+**Writeup form validates required fields**
+Given the create writeup form is open, when the user clicks submit without filling in the title field, a validation error is displayed and the form is not submitted.
+
+**Writeup form cancel closes without saving**
+Given the create writeup form is open and the user has entered data, when they click cancel or the close icon, the form closes and no writeup is created.
+
+**Empty state when no writeups exist**
+Given a deal has no writeup entries, the Writeups section displays an empty state message (e.g., "No writeups") and the "+ New Entry" button remains available.
+
+#### LinkedTasksSection
+
+**Section displays "Linked Tasks" title**
+Given the user is on a deal detail page, the Linked Tasks section displays the heading "Linked Tasks".
+
+**Add Task button is visible with label**
+Given the user is on a deal detail page, the Linked Tasks section displays an "Add Task" button in the top-right corner of the section header.
+
+**Uncompleted tasks display unchecked checkbox with title and due date**
+Given a task "Prepare Proposal Draft" with due date Oct 30 is linked to the deal and is not completed, it displays as a row with an unchecked checkbox, the title "Prepare Proposal Draft", and the text "(Due: Oct 30)".
+
+**Completed tasks display checked checkbox with title and completion date**
+Given a task "Schedule Follow-up Meeting" completed on Oct 22 is linked to the deal, it displays as a row with a checked/crossed checkbox, the title "Schedule Follow-up Meeting", and the text "(Completed: Oct 22)".
+
+**Checking a task checkbox marks it as complete**
+Given an uncompleted linked task "Prepare Proposal Draft" with an unchecked checkbox, when the user clicks the checkbox, the task is marked as complete in the database, the checkbox changes to checked, and the due date text changes to show the completion date (e.g., "(Completed: Oct 30)").
+
+**Completing a linked task creates a timeline entry on the client**
+Given the user checks a task's checkbox to mark it complete, a "Task Completed" timeline entry is created on the associated client with the task name, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Completing a linked task triggers follower notifications**
+Given the user marks a linked task complete on a deal whose associated client has followers, email notifications are sent to followers who have "task completed" notifications enabled (excluding the actor).
+
+**Clicking a task title navigates to task detail page**
+Given a linked task "Prepare Proposal Draft" is displayed, when the user clicks on the task title (not the checkbox), the app navigates to /tasks/:taskId and the TaskDetailPage is displayed for that task.
+
+**Add Task button opens add task form**
+Given the user clicks the "Add Task" button, a modal or form opens allowing the user to create a new task linked to the current deal, with fields for title (required), due date, priority, and assignee (FilterSelect dropdown populated from users API).
+
+**Submitting add task creates task linked to the deal and client**
+Given the add task form is open and the user enters title "Send final contract", selects due date "Nov 5", and clicks submit, the task is created in the database linked to both the current deal and its associated client, the form closes, and the new task appears in the Linked Tasks section with an unchecked checkbox and due date.
+
+**Task creation creates a timeline entry on the client**
+Given the user creates a new linked task via Add Task, a "Task Created" timeline entry is created on the associated client with the task name, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Task creation triggers follower notifications**
+Given the user creates a new task on a deal whose associated client has followers, email notifications are sent to followers who have "task created" notifications enabled (excluding the actor).
+
+**Add task form validates required fields**
+Given the add task form is open, when the user clicks submit without filling in the required title field, a validation error is displayed and the form is not submitted.
+
+**Add task form cancel closes without saving**
+Given the add task form is open and the user has entered data, when they click cancel or the close icon, the form closes and no task is created.
+
+**Empty state when no linked tasks exist**
+Given a deal has no linked tasks, the Linked Tasks section displays an empty state message (e.g., "No linked tasks") and the "Add Task" button remains available.
+
+#### DealAttachmentsSection
+
+**Section displays "Attachments" title**
+Given the user is on a deal detail page, the Attachments section displays the heading "Attachments".
+
+**Upload icon is visible in section header**
+Given the user is on a deal detail page, the Attachments section displays a cloud upload icon button in the top-right corner of the section header for adding new attachments.
+
+**Clicking upload icon opens attachment upload modal**
+Given the user clicks the upload icon in the Attachments section header, a file upload modal opens with a file picker (browse button and/or drag-and-drop area) for selecting a file to upload and associate with the deal.
+
+**Attachment entries display filename**
+Given an attachment named "Acme_Requirements.pdf", the entry displays "Acme_Requirements.pdf" as the filename text.
+
+**Attachment entries display file size**
+Given an attachment "Acme_Requirements.pdf" with size 2.4 MB, the entry displays "(2.4 MB)" next to the filename, showing the file size in a human-readable format.
+
+**Multiple attachments are displayed as separate rows**
+Given a deal has two attachments ("Acme_Requirements.pdf" at 2.4 MB and "Meeting_Notes_Oct18.docx" at 50 KB), both are displayed as separate rows in the Attachments section with their respective filenames and sizes.
+
+**Download link is visible on each attachment**
+Given an attachment "Acme_Requirements.pdf" is displayed, a "Download" link/button is visible in the row. When clicked, the file is downloaded to the user's device.
+
+**Delete link is visible on each attachment**
+Given an attachment "Acme_Requirements.pdf" is displayed, a "Delete" link/button is visible in the row, separated from the Download link by a pipe character ("|").
+
+**Clicking Delete removes attachment after confirmation**
+Given the user clicks the "Delete" link on an attachment, a confirmation dialog appears. When the user confirms, the attachment is deleted from the database and removed from the list. If the user cancels, the attachment remains.
+
+**Uploading a file creates a new attachment entry**
+Given the upload modal is open and the user selects a file "Proposal_v2.pdf" (1.2 MB) and submits, the file is uploaded, the attachment is created in the database associated with the current deal, the modal closes, and the new attachment appears in the Attachments section showing "Proposal_v2.pdf (1.2 MB)" with Download and Delete links.
+
+**Uploaded attachment is also visible in the client's attachments section**
+Given the user uploads an attachment to a deal associated with "Acme Corp", the attachment also appears in the Attachments section of the Acme Corp client detail page, showing the linked deal name.
+
+**Empty state when no attachments exist**
+Given a deal has no attachments, the Attachments section displays an empty state message (e.g., "No attachments") and the upload icon button remains available.
+
+#### ContactsIndividualsSection
+
+**Section displays "Contacts/Individuals" title**
+Given the user is on a deal detail page, the Contacts/Individuals section displays the heading "Contacts/Individuals".
+
+**Contact entries display avatar**
+Given a contact "Jane Smith" is associated with the deal, the entry displays an avatar (photo or initials fallback) on the left side of the row.
+
+**Contact entries display name in bold**
+Given a contact "Jane Smith" is associated with the deal, the entry displays "Jane Smith" in bold text next to the avatar.
+
+**Contact entries display role and organization in parentheses**
+Given a contact "Jane Smith" with role "Decision Maker" at "Acme Corp", the entry displays "(Decision Maker, Acme Corp)" after the name, showing both the individual's role in the deal and their organization.
+
+**Contact entries display "View Profile" link**
+Given a contact "Jane Smith" is associated with the deal, the entry displays a "View Profile" link at the end of the row.
+
+**Clicking "View Profile" navigates to person detail page**
+Given a contact "Jane Smith" is displayed with a "View Profile" link, when the user clicks "View Profile", the app navigates to /individuals/:individualId for Jane Smith and the PersonDetailPage is displayed.
+
+**Multiple contacts are displayed as separate rows**
+Given a deal has two associated contacts ("Jane Smith - Decision Maker, Acme Corp" and "Bob Johnson - Influencer, Acme Corp"), both are displayed as separate rows with their respective avatars, names, roles, organizations, and View Profile links.
+
+**Empty state when no contacts are associated**
+Given a deal has no associated contacts/individuals, the Contacts/Individuals section displays an empty state message (e.g., "No contacts associated").
 
 ---
 
