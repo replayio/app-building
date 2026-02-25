@@ -1243,3 +1243,347 @@
 - **Initial state:** User is on the ReportList page with existing reports. User clicks "Generate New Report", configures a new report in the CreateReportDialog, and clicks "Generate Report".
 - **Action:** User observes the ReportTable after the dialog closes.
 - **Expected:** The newly generated report appears in the ReportTable with the correct Report Name, Type, Date Range, Accounts Included, and a Status badge of "Complete" (or "Pending" if still generating). The report row includes all three Actions (refresh, download, View Details).
+
+---
+
+## Page: TransactionsPage
+
+### Components: TransactionsPageHeader, DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar, TransactionsTable, Pagination, NewTransactionButton
+
+#### Component: TransactionsPageHeader
+
+**Test: TransactionsPageHeader displays page title**
+- **Initial state:** User navigates to the TransactionsPage.
+- **Action:** User observes the header area at the top of the page content.
+- **Expected:** The heading "Transactions" is displayed prominently as the page title.
+
+**Test: TransactionsPageHeader displays breadcrumb navigation**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User observes the breadcrumb area above the page title.
+- **Expected:** A breadcrumb trail is shown (e.g., "Home > Transactions") providing navigation context. Clicking the "Home" breadcrumb segment navigates back to the Dashboard page.
+
+**Test: TransactionsPageHeader NavBar Transactions link is active**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User observes the NavBar at the top of the page.
+- **Expected:** The "Transactions" link in the NavBar is visually highlighted/active, indicating the user is currently on the TransactionsPage. All other NavBar links (Dashboard, Accounts, Reports, Budgets) are not highlighted.
+
+**Test: TransactionsPageHeader displays filter bar below title**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User observes the area below the page title.
+- **Expected:** A horizontal filter bar is displayed containing the DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, and SearchBar controls arranged in a single row. The filter bar is positioned between the page header and the TransactionsTable.
+
+#### Component: DateRangeFilter
+
+**Test: DateRangeFilter displays Start Date and End Date pickers**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User observes the DateRangeFilter in the filter bar.
+- **Expected:** Two date picker fields are displayed side by side. The left field is labeled "Start Date" and the right field is labeled "End Date". Each field has a calendar icon on the left side of the input. Both fields show placeholder text (e.g., "Select date") when no date is selected.
+
+**Test: DateRangeFilter Start Date picker allows selecting a date**
+- **Initial state:** User is on the TransactionsPage with the Start Date field empty.
+- **Action:** User clicks on the Start Date field and selects "Jan 1, 2024" from the date picker calendar.
+- **Expected:** The Start Date field updates to display "Jan 1, 2024". The date picker calendar closes after selection. The TransactionsTable filters to show only transactions on or after Jan 1, 2024.
+
+**Test: DateRangeFilter End Date picker allows selecting a date**
+- **Initial state:** User is on the TransactionsPage with the End Date field empty.
+- **Action:** User clicks on the End Date field and selects "Mar 31, 2024" from the date picker calendar.
+- **Expected:** The End Date field updates to display "Mar 31, 2024". The date picker calendar closes after selection. The TransactionsTable filters to show only transactions on or before Mar 31, 2024.
+
+**Test: DateRangeFilter filters transactions by date range**
+- **Initial state:** User is on the TransactionsPage with transactions spanning multiple months. The Start Date is set to "Feb 1, 2024" and the End Date is set to "Feb 29, 2024".
+- **Action:** User observes the TransactionsTable.
+- **Expected:** Only transactions with dates between Feb 1, 2024 and Feb 29, 2024 (inclusive) are displayed. Transactions outside this range are hidden. The Pagination updates to reflect the filtered result count.
+
+**Test: DateRangeFilter clearing Start Date removes lower bound**
+- **Initial state:** User is on the TransactionsPage with Start Date set to "Jan 1, 2024" and End Date set to "Mar 31, 2024".
+- **Action:** User clears the Start Date field (e.g., by clicking a clear/X button or deleting the text).
+- **Expected:** The Start Date field returns to its empty/placeholder state. The TransactionsTable now shows all transactions up to Mar 31, 2024 with no lower date bound.
+
+**Test: DateRangeFilter clearing End Date removes upper bound**
+- **Initial state:** User is on the TransactionsPage with Start Date set to "Jan 1, 2024" and End Date set to "Mar 31, 2024".
+- **Action:** User clears the End Date field.
+- **Expected:** The End Date field returns to its empty/placeholder state. The TransactionsTable now shows all transactions from Jan 1, 2024 onward with no upper date bound.
+
+**Test: DateRangeFilter clearing both dates shows all transactions**
+- **Initial state:** User is on the TransactionsPage with both Start Date and End Date set, filtering the table.
+- **Action:** User clears both the Start Date and End Date fields.
+- **Expected:** All transactions are displayed in the TransactionsTable without any date filtering. The Pagination updates to reflect the full transaction count.
+
+#### Component: AccountFilter
+
+**Test: AccountFilter displays dropdown with placeholder**
+- **Initial state:** User is on the TransactionsPage with no account filter applied.
+- **Action:** User observes the AccountFilter dropdown in the filter bar.
+- **Expected:** A dropdown select is displayed with the placeholder text "All Accounts" and a downward chevron icon indicating it is a dropdown. The dropdown is positioned in the filter bar after the DateRangeFilter.
+
+**Test: AccountFilter dropdown shows all accounts**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User clicks the AccountFilter dropdown.
+- **Expected:** A dropdown menu opens listing all accounts, including "All Accounts" at the top as the default option, followed by individual accounts grouped by category (e.g., Assets: "Checking Account (Chase Bank)", "Savings Account (Ally)", "Investment Portfolio (Vanguard)"; Liabilities: "Credit Card (Visa)", "Mortgage Loan (Wells Fargo)", "Car Loan (Toyota Financial)"). Each account name is displayed with its parent institution in parentheses.
+
+**Test: AccountFilter selecting an account filters transactions**
+- **Initial state:** User is on the TransactionsPage with "All Accounts" selected (showing all transactions).
+- **Action:** User clicks the AccountFilter dropdown and selects "Checking Account (Chase Bank)".
+- **Expected:** The dropdown updates to display "Checking Account (Chase Bank)". The TransactionsTable filters to show only transactions that affect the Checking Account. Transactions involving other accounts are hidden. The Pagination updates to reflect the filtered result count.
+
+**Test: AccountFilter selecting All Accounts removes filter**
+- **Initial state:** User is on the TransactionsPage with "Checking Account (Chase Bank)" selected in the AccountFilter, showing filtered transactions.
+- **Action:** User clicks the AccountFilter dropdown and selects "All Accounts".
+- **Expected:** The dropdown updates to display "All Accounts". The TransactionsTable shows all transactions across all accounts without any account filtering.
+
+**Test: AccountFilter combines with other filters**
+- **Initial state:** User is on the TransactionsPage with DateRangeFilter set to "Jan 1, 2024" – "Mar 31, 2024".
+- **Action:** User selects "Savings Account (Ally)" in the AccountFilter dropdown.
+- **Expected:** The TransactionsTable shows only transactions that both affect the Savings Account AND fall within Jan 1–Mar 31, 2024. Both filters are applied simultaneously.
+
+#### Component: MaterialFilter
+
+**Test: MaterialFilter displays dropdown with placeholder**
+- **Initial state:** User is on the TransactionsPage with no material filter applied.
+- **Action:** User observes the MaterialFilter dropdown in the filter bar.
+- **Expected:** A dropdown select is displayed with the placeholder text "All Materials" and a downward chevron icon indicating it is a dropdown. The dropdown is positioned in the filter bar after the AccountFilter.
+
+**Test: MaterialFilter dropdown shows all materials**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User clicks the MaterialFilter dropdown.
+- **Expected:** A dropdown menu opens listing "All Materials" at the top as the default option, followed by all available material/category tags that have been applied to transactions (e.g., "Housing", "Recurring", "Utilities", "Groceries", "Salary", "Rent"). The list is sorted alphabetically.
+
+**Test: MaterialFilter selecting a material filters transactions**
+- **Initial state:** User is on the TransactionsPage with "All Materials" selected (showing all transactions).
+- **Action:** User clicks the MaterialFilter dropdown and selects "Housing".
+- **Expected:** The dropdown updates to display "Housing". The TransactionsTable filters to show only transactions that have the "Housing" tag/category. Transactions without the "Housing" tag are hidden. The Pagination updates to reflect the filtered result count.
+
+**Test: MaterialFilter selecting All Materials removes filter**
+- **Initial state:** User is on the TransactionsPage with "Housing" selected in the MaterialFilter, showing filtered transactions.
+- **Action:** User clicks the MaterialFilter dropdown and selects "All Materials".
+- **Expected:** The dropdown updates to display "All Materials". The TransactionsTable shows all transactions without any material/category filtering.
+
+**Test: MaterialFilter combines with other filters**
+- **Initial state:** User is on the TransactionsPage with AccountFilter set to "Checking Account (Chase Bank)".
+- **Action:** User selects "Recurring" in the MaterialFilter dropdown.
+- **Expected:** The TransactionsTable shows only transactions that both affect the Checking Account AND have the "Recurring" tag. Both filters are applied simultaneously.
+
+#### Component: TransactionTypeFilter
+
+**Test: TransactionTypeFilter displays dropdown with placeholder**
+- **Initial state:** User is on the TransactionsPage with no type filter applied.
+- **Action:** User observes the TransactionTypeFilter dropdown in the filter bar.
+- **Expected:** A dropdown select is displayed with the placeholder text "All Types" and a downward chevron icon indicating it is a dropdown. The dropdown is positioned in the filter bar after the MaterialFilter.
+
+**Test: TransactionTypeFilter dropdown shows type options**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User clicks the TransactionTypeFilter dropdown.
+- **Expected:** A dropdown menu opens listing three options: "All Types" (default), "Debit", and "Credit".
+
+**Test: TransactionTypeFilter selecting Debit filters transactions**
+- **Initial state:** User is on the TransactionsPage with "All Types" selected (showing all transactions).
+- **Action:** User clicks the TransactionTypeFilter dropdown and selects "Debit".
+- **Expected:** The dropdown updates to display "Debit". The TransactionsTable filters to show only transactions with a Debit direction. Credit transactions are hidden. The Pagination updates to reflect the filtered result count.
+
+**Test: TransactionTypeFilter selecting Credit filters transactions**
+- **Initial state:** User is on the TransactionsPage with "All Types" selected (showing all transactions).
+- **Action:** User clicks the TransactionTypeFilter dropdown and selects "Credit".
+- **Expected:** The dropdown updates to display "Credit". The TransactionsTable filters to show only transactions with a Credit direction. Debit transactions are hidden. The Pagination updates to reflect the filtered result count.
+
+**Test: TransactionTypeFilter selecting All Types removes filter**
+- **Initial state:** User is on the TransactionsPage with "Debit" selected in the TransactionTypeFilter, showing filtered transactions.
+- **Action:** User clicks the TransactionTypeFilter dropdown and selects "All Types".
+- **Expected:** The dropdown updates to display "All Types". The TransactionsTable shows all transactions regardless of type (both debits and credits).
+
+**Test: TransactionTypeFilter combines with other filters**
+- **Initial state:** User is on the TransactionsPage with DateRangeFilter set to "Jan 1, 2024" – "Jan 31, 2024" and AccountFilter set to "Checking Account (Chase Bank)".
+- **Action:** User selects "Credit" in the TransactionTypeFilter dropdown.
+- **Expected:** The TransactionsTable shows only transactions that are Credits AND affect the Checking Account AND fall within January 2024. All three filters are applied simultaneously.
+
+#### Component: SearchBar
+
+**Test: SearchBar displays input with search icon and placeholder**
+- **Initial state:** User is on the TransactionsPage with no search text entered.
+- **Action:** User observes the SearchBar in the filter bar.
+- **Expected:** A text input field is displayed with a magnifying glass search icon on the left side and placeholder text "Search transactions..." in a muted/gray color. The SearchBar is positioned at the right end of the filter bar, after the TransactionTypeFilter.
+
+**Test: SearchBar filters transactions by description**
+- **Initial state:** User is on the TransactionsPage with multiple transactions visible (e.g., "Grocery Store", "Salary Deposit", "Electric Bill", "Rent Payment").
+- **Action:** User types "Grocery" into the SearchBar.
+- **Expected:** The TransactionsTable filters to show only transactions whose description contains "Grocery" (e.g., "Grocery Store"). Non-matching transactions are hidden. The filtering occurs in real time as the user types. The Pagination updates to reflect the filtered result count.
+
+**Test: SearchBar search is case-insensitive**
+- **Initial state:** User is on the TransactionsPage with a transaction described as "Salary Deposit".
+- **Action:** User types "salary" (lowercase) into the SearchBar.
+- **Expected:** The "Salary Deposit" transaction is displayed in the TransactionsTable. The search matches regardless of case.
+
+**Test: SearchBar clearing text restores all transactions**
+- **Initial state:** User has typed "Grocery" into the SearchBar and the table is filtered.
+- **Action:** User clears the SearchBar text (e.g., by selecting all and deleting, or clicking a clear button).
+- **Expected:** All transactions are displayed again in the TransactionsTable without any search filtering. The Pagination updates to reflect the full result count.
+
+**Test: SearchBar combines with other filters**
+- **Initial state:** User is on the TransactionsPage with AccountFilter set to "Checking Account (Chase Bank)" and TransactionTypeFilter set to "Debit".
+- **Action:** User types "Rent" into the SearchBar.
+- **Expected:** The TransactionsTable shows only transactions that match all three criteria: description contains "Rent", affect the Checking Account, and are Debit type. All filters and the search are applied simultaneously.
+
+**Test: SearchBar no results displays empty state**
+- **Initial state:** User is on the TransactionsPage with transactions visible.
+- **Action:** User types "xyznonexistent" into the SearchBar (a term that matches no transactions).
+- **Expected:** The TransactionsTable displays an empty state message (e.g., "No transactions found") indicating no transactions match the search criteria. The Pagination shows zero results.
+
+#### Component: TransactionsTable
+
+**Test: TransactionsTable displays correct column headers**
+- **Initial state:** User is on the TransactionsPage with transactions available.
+- **Action:** User observes the table header row.
+- **Expected:** The table displays six column headers from left to right: "Date", "Description", "Account", "Type", "Amount", and "Tags". Each column header text is clearly visible.
+
+**Test: TransactionsTable displays transaction rows with correct data**
+- **Initial state:** User is on the TransactionsPage with seeded transactions.
+- **Action:** User observes the transaction rows in the table.
+- **Expected:** Transaction rows are displayed with correct data in all columns. For example: row 1 shows Date "Oct 25, 2023", Description "Grocery Store", Account "Checking Account", Type "Debit", Amount "$125.50", Tags "Groceries". Row 2 shows Date "Oct 24, 2023", Description "Salary Deposit", Account "Checking Account", Type "Credit", Amount "$3,200.00", Tags "Salary". Transactions are ordered by date descending (most recent first) by default.
+
+**Test: TransactionsTable Date column is sortable ascending**
+- **Initial state:** User is on the TransactionsPage with transactions sorted by date descending (default).
+- **Action:** User clicks the "Date" column header.
+- **Expected:** The transactions are re-sorted by date in ascending order (oldest first). An upward arrow (↑) icon appears next to the "Date" column header indicating ascending sort. The previously displayed sort indicator (if any) is removed from other columns.
+
+**Test: TransactionsTable Date column is sortable descending**
+- **Initial state:** User is on the TransactionsPage with transactions sorted by date ascending (↑).
+- **Action:** User clicks the "Date" column header again.
+- **Expected:** The transactions are re-sorted by date in descending order (most recent first). A downward arrow (↓) icon appears next to the "Date" column header indicating descending sort.
+
+**Test: TransactionsTable Description column is sortable**
+- **Initial state:** User is on the TransactionsPage with transactions sorted by date.
+- **Action:** User clicks the "Description" column header.
+- **Expected:** The transactions are re-sorted alphabetically by description in ascending order (A–Z). An upward arrow (↑) icon appears next to the "Description" column header. Clicking again toggles to descending (Z–A) with a downward arrow (↓).
+
+**Test: TransactionsTable Account column is sortable**
+- **Initial state:** User is on the TransactionsPage with transactions sorted by date.
+- **Action:** User clicks the "Account" column header.
+- **Expected:** The transactions are re-sorted alphabetically by account name in ascending order (A–Z). An upward arrow (↑) icon appears next to the "Account" column header. Clicking again toggles to descending (Z–A) with a downward arrow (↓).
+
+**Test: TransactionsTable Type column is sortable**
+- **Initial state:** User is on the TransactionsPage with transactions sorted by date.
+- **Action:** User clicks the "Type" column header.
+- **Expected:** The transactions are re-sorted by type, grouping all "Credit" transactions before "Debit" (ascending) or vice versa (descending). A sort direction arrow appears next to the "Type" column header.
+
+**Test: TransactionsTable Amount column is sortable**
+- **Initial state:** User is on the TransactionsPage with transactions sorted by date.
+- **Action:** User clicks the "Amount" column header.
+- **Expected:** The transactions are re-sorted by amount in ascending order (smallest first). An upward arrow (↑) icon appears next to the "Amount" column header. Clicking again toggles to descending (largest first) with a downward arrow (↓).
+
+**Test: TransactionsTable only one column sorted at a time**
+- **Initial state:** User is on the TransactionsPage with the "Date" column sorted descending (↓).
+- **Action:** User clicks the "Amount" column header.
+- **Expected:** The "Amount" column becomes the active sort column with an ascending arrow (↑). The "Date" column loses its sort indicator arrow. Only one column displays a sort direction arrow at a time.
+
+**Test: TransactionsTable row click navigates to transaction detail**
+- **Initial state:** User is on the TransactionsPage with transaction rows visible.
+- **Action:** User clicks on the "Grocery Store" transaction row.
+- **Expected:** The NewTransactionModal opens in edit mode, pre-populated with the Grocery Store transaction details (date: Oct 25, 2023; description: Grocery Store; all line items with accounts, types, and amounts; tags). The user can view or edit the transaction.
+
+**Test: TransactionsTable row click for credit transaction navigates to detail**
+- **Initial state:** User is on the TransactionsPage with transaction rows visible.
+- **Action:** User clicks on the "Salary Deposit" transaction row (a Credit transaction).
+- **Expected:** The NewTransactionModal opens in edit mode, pre-populated with the Salary Deposit transaction details (date: Oct 24, 2023; description: Salary Deposit; amount: $3,200.00; type: Credit; affected accounts with debit/credit allocations).
+
+**Test: TransactionsTable Debit type displays with distinct styling**
+- **Initial state:** User is on the TransactionsPage with both Debit and Credit transactions visible.
+- **Action:** User observes the Type column for a Debit transaction (e.g., "Grocery Store").
+- **Expected:** The Type column displays the text "Debit" for the transaction. The text or its background may use a distinct color (e.g., red tint or a badge) to differentiate it from Credit entries.
+
+**Test: TransactionsTable Credit type displays with distinct styling**
+- **Initial state:** User is on the TransactionsPage with both Debit and Credit transactions visible.
+- **Action:** User observes the Type column for a Credit transaction (e.g., "Salary Deposit").
+- **Expected:** The Type column displays the text "Credit" for the transaction. The text or its background may use a distinct color (e.g., green tint or a badge) to differentiate it from Debit entries.
+
+**Test: TransactionsTable Tags column displays tag chips**
+- **Initial state:** User is on the TransactionsPage with transactions that have tags.
+- **Action:** User observes the Tags column for a transaction with tags (e.g., "Rent Payment" with tags "Housing" and "Recurring").
+- **Expected:** The Tags column displays the tags as small chips/badges (e.g., "Housing", "Recurring"). Each tag chip has a colored background to visually distinguish it.
+
+**Test: TransactionsTable Tags column empty for untagged transactions**
+- **Initial state:** User is on the TransactionsPage with transactions that have no tags.
+- **Action:** User observes the Tags column for a transaction without tags.
+- **Expected:** The Tags column is empty or displays a dash/placeholder for transactions that have no tags/categories assigned.
+
+**Test: TransactionsTable empty state when no transactions exist**
+- **Initial state:** User navigates to the TransactionsPage and no transactions have been recorded yet.
+- **Action:** User observes the table area.
+- **Expected:** An empty state message is displayed (e.g., "No transactions found") indicating that no transactions have been recorded. The NewTransactionButton is still accessible to create the first transaction.
+
+**Test: TransactionsTable empty state when filters produce no results**
+- **Initial state:** User is on the TransactionsPage with filters applied that match no transactions (e.g., AccountFilter set to a newly created account with no transactions).
+- **Action:** User observes the table area.
+- **Expected:** An empty state message is displayed (e.g., "No transactions found matching your filters") indicating no transactions match the current filter criteria. The filter controls remain accessible so the user can adjust or clear them.
+
+**Test: TransactionsTable updates after saving a new transaction**
+- **Initial state:** User is on the TransactionsPage with existing transactions listed.
+- **Action:** User clicks the NewTransactionButton, fills in the NewTransactionModal with a new transaction (date: "Nov 1, 2023", description: "Office Supplies", account: Checking Account, type: Debit, amount: $75.00), and clicks "Save Transaction".
+- **Expected:** After the modal closes, the TransactionsTable updates to include the new "Office Supplies" transaction. The new row appears in the correct position based on the current sort order (e.g., at the top if sorted by date descending). The Pagination total updates to reflect the additional transaction.
+
+**Test: TransactionsTable updates after editing a transaction**
+- **Initial state:** User is on the TransactionsPage. User clicks on the "Grocery Store" row to open it in the NewTransactionModal, changes the description to "Grocery Store - Weekly", and clicks "Save Transaction".
+- **Action:** User observes the TransactionsTable after the modal closes.
+- **Expected:** The "Grocery Store" row now displays the updated description "Grocery Store - Weekly". No duplicate row is created. All other columns remain unchanged.
+
+#### Component: Pagination
+
+**Test: Pagination displays below the TransactionsTable**
+- **Initial state:** User is on the TransactionsPage with more transactions than fit on a single page (e.g., more than 10 or 20 transactions depending on page size).
+- **Action:** User observes the area below the TransactionsTable.
+- **Expected:** Pagination controls are displayed below the table, showing the current page number, total pages, and navigation buttons. The controls include: a previous page button (left arrow), page number indicators, and a next page button (right arrow). A label such as "Page 1 of 5" or "Showing 1–20 of 95 transactions" is displayed.
+
+**Test: Pagination navigates to the next page**
+- **Initial state:** User is on the TransactionsPage viewing page 1 of transactions with pagination controls visible.
+- **Action:** User clicks the next page button (right arrow).
+- **Expected:** The TransactionsTable updates to display the next set of transaction rows (page 2). The pagination label updates to reflect the current page (e.g., "Page 2 of 5"). The previous page button becomes enabled. The page scrolls to the top of the table.
+
+**Test: Pagination navigates to the previous page**
+- **Initial state:** User is on page 2 of the TransactionsPage table.
+- **Action:** User clicks the previous page button (left arrow).
+- **Expected:** The TransactionsTable updates to display the first set of transaction rows (page 1). The pagination label updates to reflect page 1. The previous page button becomes disabled since the user is on the first page.
+
+**Test: Pagination previous button disabled on first page**
+- **Initial state:** User is on the TransactionsPage viewing page 1.
+- **Action:** User observes the previous page button.
+- **Expected:** The previous page button (left arrow) is disabled/grayed out, indicating there is no previous page to navigate to.
+
+**Test: Pagination next button disabled on last page**
+- **Initial state:** User is on the TransactionsPage viewing the last page of transactions (e.g., page 5 of 5).
+- **Action:** User observes the next page button.
+- **Expected:** The next page button (right arrow) is disabled/grayed out, indicating there is no next page to navigate to.
+
+**Test: Pagination clicking a specific page number navigates to that page**
+- **Initial state:** User is on the TransactionsPage viewing page 1 with page number indicators visible (e.g., 1, 2, 3, 4, 5).
+- **Action:** User clicks the page number "3".
+- **Expected:** The TransactionsTable updates to display the transactions for page 3. The page number "3" is highlighted/active. The pagination label updates to reflect page 3.
+
+**Test: Pagination updates when filters change result count**
+- **Initial state:** User is on the TransactionsPage viewing page 3 of 5 pages of transactions.
+- **Action:** User applies a filter (e.g., selects "Checking Account (Chase Bank)" in the AccountFilter) that reduces the total results to a single page.
+- **Expected:** The Pagination resets to page 1. The page number indicators update to show fewer pages (e.g., "Page 1 of 1"). The previous and next buttons are both disabled since all filtered results fit on one page.
+
+**Test: Pagination hidden when all transactions fit on one page**
+- **Initial state:** User is on the TransactionsPage with very few transactions (e.g., 5 transactions when page size is 20).
+- **Action:** User observes the area below the TransactionsTable.
+- **Expected:** Pagination controls are either hidden or displayed in a minimal state (e.g., "Page 1 of 1") since all transactions fit on a single page. The previous and next buttons are both disabled.
+
+#### Component: NewTransactionButton
+
+**Test: NewTransactionButton displays with plus icon and text**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User observes the top-right area of the page header, to the right of the filter bar.
+- **Expected:** A "New Transaction" button is displayed with a blue/primary filled style. The button shows a plus icon (+) followed by the text "New Transaction". The button is prominently positioned for easy access.
+
+**Test: NewTransactionButton opens NewTransactionModal**
+- **Initial state:** User is on the TransactionsPage.
+- **Action:** User clicks the "New Transaction" button.
+- **Expected:** The NewTransactionModal dialog opens, overlaying the TransactionsPage. The modal is in new transaction mode with empty fields (date defaulting to today, empty description, default currency USD, two empty line item rows). The user can fill in the transaction details and save.
+
+**Test: NewTransactionButton saving transaction updates table**
+- **Initial state:** User is on the TransactionsPage and clicks the "New Transaction" button. The NewTransactionModal opens. User fills in: date "Nov 5, 2023", description "Monthly Subscription", selects "Checking Account" with Debit type and amount $15.99, selects "Expenses" with Credit type and amount $15.99, adds tag "Recurring".
+- **Action:** User clicks "Save Transaction" in the modal.
+- **Expected:** The modal closes. The TransactionsPage returns to view. The new "Monthly Subscription" transaction appears in the TransactionsTable with the correct date, description, account, type, amount, and "Recurring" tag. The Pagination total updates to include the new transaction.
+
+**Test: NewTransactionButton cancelling does not affect table**
+- **Initial state:** User is on the TransactionsPage with a known set of transactions. User clicks the "New Transaction" button and begins filling in fields.
+- **Action:** User clicks "Cancel" in the NewTransactionModal.
+- **Expected:** The modal closes. The TransactionsTable remains unchanged with the same transactions as before the modal was opened. No new transaction is created.

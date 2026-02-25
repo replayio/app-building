@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageTransactions: Decide on components, add sections to docs/tests.md",
-        "PlanComponentTransactionsFilters: Add test entries for DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar",
-        "PlanComponentTransactionsTableAndPagination: Add test entries for TransactionsTable (sortable columns, row click navigation), Pagination, NewTransactionButton"
-      ],
-      "timestamp": "2026-02-24T20:42:00.492Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageTransactionDetail: Decide on components, add sections to docs/tests.md",
         "PlanComponentTransactionHeader: Add test entries for TransactionHeader (ID, status badge, date/time, creator, description)",
         "PlanComponentBasicInfoSection: Add test entries for BasicInfoSection (date, reference ID, description, transaction type)",
