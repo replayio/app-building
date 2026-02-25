@@ -525,7 +525,173 @@ Components: SidebarNavigation, StockAccountsList, InputAccountsList, OutputAccou
 
 Components: AccountHeader, EditAccountButton, NewTransactionButton, TrackedMaterialsTable
 
-<!-- Tests to be added by PlanPageAccountDetail -->
+### AccountHeader
+
+**Test: Account header displays account name with "Account:" prefix**
+- Components: AccountHeader
+- Given: The user navigates to the Account Detail page for "Finished Goods Warehouse 2"
+- Then: The header displays "Account: Finished Goods Warehouse 2" as a large heading
+
+**Test: Account header displays account type**
+- Components: AccountHeader
+- Given: The user navigates to the Account Detail page for "Finished Goods Warehouse 2" which has type "Inventory Account"
+- Then: The header displays "Type: Inventory Account" below the account name
+
+**Test: Account header displays status badge for active account**
+- Components: AccountHeader
+- Given: The user navigates to the Account Detail page for "Finished Goods Warehouse 2" which has status "Active"
+- Then: The header displays "Status:" followed by an "Active" badge styled in green
+
+**Test: Account header displays status badge for archived account**
+- Components: AccountHeader
+- Given: The user navigates to the Account Detail page for an archived account
+- Then: The header displays "Status:" followed by an "Archived" badge styled in a muted/gray color
+
+**Test: Account header shows correct type for each account category**
+- Components: AccountHeader
+- Given: A stock account "Main Inventory" exists with type "Stock"
+- And: An input account "Purchases" exists with type "Input"
+- And: An output account "Sales Revenue" exists with type "Output"
+- When: The user navigates to each account's detail page
+- Then: The Type field shows the respective account type for each account
+
+**Test: Breadcrumb displays Home / Accounts / Account Name**
+- Components: AccountHeader
+- Given: The user navigates to the Account Detail page for "Finished Goods Warehouse 2"
+- Then: A breadcrumb trail "Home / Accounts / Finished Goods Warehouse 2" is displayed
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+- And: "Accounts" is a clickable link that navigates to /accounts (AccountsPage)
+
+**Test: Sidebar shows Accounts link as active on Account Detail page**
+- Components: AccountHeader
+- Given: The user navigates to the Account Detail page
+- Then: The sidebar "Accounts" link is visually highlighted as the active page
+
+### EditAccountButton
+
+**Test: Edit Account button is displayed with pencil icon**
+- Components: EditAccountButton
+- Given: The user is on the Account Detail page for "Finished Goods Warehouse 2"
+- Then: An "Edit Account" button is displayed in the top-right area of the header
+- And: The button has a pencil/edit icon and the text "Edit Account"
+- And: The button is styled as a secondary/outlined button
+
+**Test: Clicking Edit Account button opens edit modal with pre-filled data**
+- Components: EditAccountButton
+- Given: The user is on the Account Detail page for "Finished Goods Warehouse 2" with description "Secondary warehouse for finished products"
+- When: The user clicks the "Edit Account" button
+- Then: A modal dialog opens with the title "Edit Account"
+- And: The Account Name field is pre-filled with "Finished Goods Warehouse 2"
+- And: The Description field is pre-filled with the account's current description
+- And: The Account Type field shows "Inventory Account" and is read-only
+- And: The modal has "Save" and "Cancel" buttons
+
+**Test: Submitting edit account modal updates account header immediately**
+- Components: EditAccountButton, AccountHeader
+- Given: The edit account modal is open for "Finished Goods Warehouse 2"
+- When: The user changes the Account Name to "Finished Goods Warehouse 3"
+- And: The user clicks the "Save" button
+- Then: The modal closes
+- And: The account header updates to show "Account: Finished Goods Warehouse 3"
+- And: The change is persisted to the database
+
+**Test: Canceling edit account modal discards changes**
+- Components: EditAccountButton
+- Given: The edit account modal is open for "Finished Goods Warehouse 2"
+- And: The user has changed the Account Name to "Something Else"
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: The account header still shows "Account: Finished Goods Warehouse 2"
+
+**Test: Edit account modal validates that Account Name is required**
+- Components: EditAccountButton
+- Given: The edit account modal is open
+- When: The user clears the Account Name field
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Account Name is required
+- And: The modal remains open and changes are not saved
+
+### NewTransactionButton
+
+**Test: New Transaction button is displayed with plus icon**
+- Components: NewTransactionButton
+- Given: The user is on the Account Detail page for "Finished Goods Warehouse 2"
+- Then: A "+ New Transaction" button is displayed in the top-right area of the header, next to the Edit Account button
+- And: The button has a plus (+) icon and the text "New Transaction"
+- And: The button is styled as a primary action button (filled blue)
+
+**Test: Clicking New Transaction button navigates to NewTransactionPage pre-filled with this account**
+- Components: NewTransactionButton
+- Given: The user is on the Account Detail page for "Finished Goods Warehouse 2"
+- When: The user clicks the "+ New Transaction" button
+- Then: The app navigates to /transactions/new (NewTransactionPage)
+- And: The transaction form is pre-filled with "Finished Goods Warehouse 2" as one of the accounts in the quantity transfers section
+
+### TrackedMaterialsTable
+
+**Test: Tracked Materials section displays with heading**
+- Components: TrackedMaterialsTable
+- Given: The user navigates to the Account Detail page for an account that tracks materials
+- Then: A "Tracked Materials" heading is displayed below the account header
+
+**Test: Tracked Materials table displays correct column headers**
+- Components: TrackedMaterialsTable
+- Given: The user navigates to the Account Detail page
+- Then: The Tracked Materials table shows columns: Material Name, Category, Unit of Measure, Total Quantity, Number of Batches, Actions
+
+**Test: Tracked Materials table shows material rows with correct data**
+- Components: TrackedMaterialsTable
+- Given: The account "Finished Goods Warehouse 2" tracks "Steel Sheets (3mm)" in category "Raw Materials" with unit "Sheets", total quantity 1,250.0 across 12 batches
+- And: The account tracks "Aluminum Extrusion A" in category "Components" with unit "Meters", total quantity 4,500.0 across 8 batches
+- Then: A row for "Steel Sheets (3mm)" shows Material Name "Steel Sheets (3mm)", Category "Raw Materials", Unit of Measure "Sheets", Total Quantity "1,250.0 Sheets" with a sum indicator "(Σ Batches)", and Number of Batches "12 Batches"
+- And: A row for "Aluminum Extrusion A" shows Material Name "Aluminum Extrusion A", Category "Components", Unit of Measure "Meters", Total Quantity "4,500.0 Meters" with "(Σ Batches)", and Number of Batches "8 Batches"
+
+**Test: Total Quantity column shows sum across all batches with Σ indicator**
+- Components: TrackedMaterialsTable
+- Given: The account tracks "Polymer Granules (Blue)" with 3 batches: 250.5 kg, 200.0 kg, and 300.0 kg
+- Then: The Total Quantity column shows "750.5 kg" with a "(Σ Batches)" notation indicating the value is summed across batches
+
+**Test: View Material in this Account action button navigates to material detail filtered for this account**
+- Components: TrackedMaterialsTable
+- Given: A row for "Steel Sheets (3mm)" is displayed in the Tracked Materials table for account "Finished Goods Warehouse 2"
+- When: The user clicks the "View Material in this Account" button (with external link icon) for "Steel Sheets (3mm)"
+- Then: The app navigates to the MaterialDetailPage for "Steel Sheets (3mm)" (/materials/:materialId) with context indicating the current account
+
+**Test: Tracked Materials table shows multiple materials with different categories and units**
+- Components: TrackedMaterialsTable
+- Given: The account tracks materials across different categories:
+  - "Steel Sheets (3mm)" — Raw Materials — Sheets — 1,250.0 — 12 Batches
+  - "Aluminum Extrusion A" — Components — Meters — 4,500.0 — 8 Batches
+  - "Polymer Granules (Blue)" — Raw Materials — Kilograms — 750.5 — 15 Batches
+  - "Copper Wiring (Rolls)" — Components — Meters — 2,100.0 — 5 Batches
+  - "Circuit Boards (Model X)" — Sub-Assemblies — Units — 350 — 20 Batches
+- Then: All five material rows are displayed in the table with the correct data for each column
+
+**Test: Tracked Materials table shows empty state when account has no tracked materials**
+- Components: TrackedMaterialsTable
+- Given: The user navigates to an account that has no materials tracked
+- Then: The Tracked Materials table shows an empty state message (e.g., "No materials tracked in this account")
+
+**Test: Clicking a material name in the table navigates to the material detail page**
+- Components: TrackedMaterialsTable
+- Given: A row for "Copper Wiring (Rolls)" is displayed
+- When: The user clicks on the material name "Copper Wiring (Rolls)"
+- Then: The app navigates to /materials/:materialId (MaterialDetailPage) for "Copper Wiring (Rolls)"
+
+**Test: Account Detail page loads correctly when navigated from Accounts page row click**
+- Components: AccountHeader, TrackedMaterialsTable
+- Given: The user is on the Accounts page (/accounts)
+- When: The user clicks on the "Main Inventory" row in the Stock Accounts table
+- Then: The app navigates to /accounts/:accountId for "Main Inventory"
+- And: The AccountHeader shows "Account: Main Inventory" with the correct type and status
+- And: The TrackedMaterialsTable shows all materials tracked in the "Main Inventory" account
+
+**Test: Account Detail page loads correctly when navigated from account row View action**
+- Components: AccountHeader, TrackedMaterialsTable
+- Given: The user is on the Accounts page (/accounts)
+- When: The user clicks the View (eye) icon for "Raw Materials" in the Stock Accounts table
+- Then: The app navigates to /accounts/:accountId for "Raw Materials"
+- And: The AccountHeader shows "Account: Raw Materials" with the correct type and status
 
 ---
 

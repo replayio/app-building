@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageAccountDetail: Decide on components, add sections to docs/tests.md",
-        "PlanComponentAccountHeader: Add test entries for AccountHeader (name, type, status)",
-        "PlanComponentTrackedMaterialsTable: Add test entries for TrackedMaterialsTable",
-        "PlanComponentAccountDetailActions: Add test entries for EditAccountButton, NewTransactionButton"
-      ],
-      "timestamp": "2026-02-24T20:41:52.605Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageMaterials: Decide on components, add sections to docs/tests.md",
         "PlanComponentMaterialsTableAndActions: Add test entries for MaterialsTable, NewMaterialButton, NewCategoryButton",
         "PlanComponentMaterialsFiltersAndSearch: Add test entries for SearchBar, CategoryFilter, AccountFilter, SortDropdown, Pagination"
