@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentAccountsList: Write the AccountsList component",
-        "WriteComponentAccountRowActions: Write the AccountRowActions component",
-        "WritePageAccounts: Write the AccountsPage"
-      ],
-      "timestamp": "2026-02-24T21:00:40.536Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentAccountHeader: Write the AccountHeader component",
         "WriteComponentTrackedMaterialsTable: Write the TrackedMaterialsTable component",
         "WritePageAccountDetail: Write the AccountDetailPage"
