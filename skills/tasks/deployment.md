@@ -7,7 +7,7 @@ During this stage you will deploy the app to production and test it to make sure
 Unpack the initial deployment task into a single task:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/deployment.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/deployment.md" --app "<AppName>" \
   --subtask "DoDeploy: Deploy the app to production" \
   --subtask "TestDeploy: Test the deployed app"
 ```

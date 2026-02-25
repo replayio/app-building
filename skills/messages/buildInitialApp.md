@@ -22,13 +22,13 @@ You will build the app in the following stages, with task skill files in `skills
 Add tasks to the queue for each stage:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" --subtask "Unpack: Write test specification" --trailing
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeShared.md" --subtask "Unpack: Write app shared code" --trailing
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" --subtask "Unpack: Write the app" --trailing
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/writeScript.md" --subtask "Unpack: Implement package scripts" --trailing
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" --subtask "Unpack: Write Playwright tests" --trailing
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" --subtask "Unpack: Get all tests passing" --trailing
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/deployment.md" --subtask "Unpack: Deploy to production" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" --app "<AppName>" --subtask "Unpack: Write test specification" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeShared.md" --app "<AppName>" --subtask "Unpack: Write app shared code" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeApp.md" --app "<AppName>" --subtask "Unpack: Write the app" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/writeScript.md" --app "<AppName>" --subtask "Unpack: Implement package scripts" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/writeTests.md" --app "<AppName>" --subtask "Unpack: Write Playwright tests" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testing.md" --app "<AppName>" --subtask "Unpack: Get all tests passing" --trailing
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/deployment.md" --app "<AppName>" --subtask "Unpack: Deploy to production" --trailing
 ```
 
 The worker will pick up and process each task in order.
