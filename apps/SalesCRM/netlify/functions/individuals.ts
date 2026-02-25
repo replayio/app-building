@@ -20,12 +20,44 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
   const segments = url.pathname.split("/").filter(Boolean);
   const subPath = segments[3] || null;
 
-  // GET /.netlify/functions/individuals?clientId=<id> — people for a client
-  if (req.method === "GET" && !subPath) {
-    const clientId = url.searchParams.get("clientId");
-    if (!clientId) {
-      return errorResponse(400, "clientId query param required");
+  // GET /.netlify/functions/individuals?mode=clients&individualId=<id> — associated clients for an individual
+  if (req.method === "GET" && !subPath && url.searchParams.get("mode") === "clients") {
+    const individualId = url.searchParams.get("individualId");
+    if (!individualId) {
+      return errorResponse(400, "individualId query param required");
     }
+
+    const clients = await query<{
+      id: string;
+      name: string;
+      type: string;
+      status: string;
+      tags: string[];
+      source_type: string | null;
+    }>(
+      sql,
+      `SELECT c.id, c.name, c.type, c.status, c.tags, c.source_type
+       FROM clients c
+       JOIN client_individuals ci ON ci.client_id = c.id
+       WHERE ci.individual_id = $1
+       ORDER BY c.name ASC`,
+      [individualId]
+    );
+
+    return jsonResponse(
+      clients.map((c) => ({
+        id: c.id,
+        name: c.name,
+        type: c.type,
+        status: c.status,
+        industry: c.source_type || null,
+      }))
+    );
+  }
+
+  // GET /.netlify/functions/individuals?clientId=<id> — people for a client
+  if (req.method === "GET" && !subPath && url.searchParams.get("clientId")) {
+    const clientId = url.searchParams.get("clientId")!;
 
     const people = await query<{
       id: string;
@@ -58,6 +90,26 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         role: p.role,
         isPrimary: p.is_primary,
         createdAt: p.created_at,
+      }))
+    );
+  }
+
+  // GET /.netlify/functions/individuals — all individuals (no params)
+  if (req.method === "GET" && !subPath) {
+    const people = await query<{
+      id: string;
+      name: string;
+      title: string | null;
+    }>(
+      sql,
+      `SELECT id, name, title FROM individuals ORDER BY name ASC`
+    );
+
+    return jsonResponse(
+      people.map((p) => ({
+        id: p.id,
+        name: p.name,
+        title: p.title,
       }))
     );
   }

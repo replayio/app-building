@@ -1143,3 +1143,418 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ========= Person Detail Page ========= */
+
+.person-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Person Header */
+.person-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.person-header-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.person-header-title {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.person-header-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.person-header-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.person-header-contact-row svg {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.person-header-clients {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.person-header-clients-label {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.person-header-client-link {
+  background: none;
+  border: none;
+  color: var(--accent-primary);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--font-family);
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+.person-header-client-link:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+.person-header-client-separator {
+  color: var(--text-muted);
+}
+
+/* Detail section layout helpers */
+.detail-section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-section-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.detail-section-filter {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+/* Button size variant */
+.btn--sm {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* View tabs */
+.view-tabs {
+  display: flex;
+  border: 1px solid var(--bg-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.view-tab {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-family: var(--font-family);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.view-tab--active {
+  background: var(--accent-subtle-bg);
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+
+.view-tab:hover:not(.view-tab--active) {
+  background: rgba(50, 45, 35, 0.04);
+}
+
+/* Relationships List */
+.relationships-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.relationship-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+.relationship-item:last-child {
+  border-bottom: none;
+}
+
+.relationship-info {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.relationship-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.relationship-type {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.relationship-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.relationship-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.relationship-link {
+  font-size: 12px;
+  color: var(--accent-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  padding: 2px 4px;
+  transition: color 0.1s ease;
+}
+
+.relationship-link:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+.relationship-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.relationship-delete-btn:hover {
+  background: rgba(176, 80, 80, 0.08);
+  color: var(--status-error);
+}
+
+/* Relationships Graph */
+.relationships-graph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.relationships-graph-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.relationships-graph-svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Contact History */
+.contact-history-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-history-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bg-border-color-light);
+  gap: 12px;
+}
+
+.contact-history-item:last-child {
+  border-bottom: none;
+}
+
+.contact-history-item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contact-history-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-history-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.contact-history-type-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 10px;
+  background: #e3ecf0;
+  color: var(--status-info);
+}
+
+.contact-history-summary {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.contact-history-performer {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.contact-history-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.contact-history-edit-btn:hover {
+  background: rgba(50, 45, 35, 0.06);
+  color: var(--text-primary);
+}
+
+/* Contact History Edit Inline */
+.contact-history-edit {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bg-border-color-light);
+}
+
+.contact-history-edit:last-child {
+  border-bottom: none;
+}
+
+.contact-history-edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+/* Textarea */
+.form-textarea {
+  height: auto;
+  padding: 8px 10px;
+  resize: vertical;
+  font-family: var(--font-family);
+}
+
+/* Associated Clients */
+.associated-clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.associated-client-card {
+  border: 1px solid var(--bg-border-color-light);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg-base-color);
+  transition: border-color 0.1s ease;
+}
+
+.associated-client-card:hover {
+  border-color: var(--normal-border-hover);
+}
+
+.associated-client-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.associated-client-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.associated-client-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.associated-client-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.associated-client-field {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.associated-client-field-label {
+  font-weight: 500;
+}
+
+.associated-client-field-value {
+  color: var(--text-secondary);
+}
+
+.associated-client-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  font-size: 12px;
+}

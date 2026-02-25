@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentPersonHeader: Write the PersonHeader component",
-        "WriteComponentRelationshipsSection: Write the RelationshipsSection component",
-        "WriteComponentContactHistorySection: Write the ContactHistorySection component",
-        "WriteComponentAssociatedClientsSection: Write the AssociatedClientsSection component",
-        "WritePagePersonDetailPage: Write the PersonDetailPage page"
-      ],
-      "timestamp": "2026-02-25T03:49:48.662Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentDealsListHeader: Write the DealsListHeader component",
         "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
         "WriteComponentViewToggle: Write the ViewToggle component",
