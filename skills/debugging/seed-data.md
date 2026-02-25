@@ -66,6 +66,21 @@ have the new column.
 *Example*: Tests failed with "column owner_id does not exist". The ephemeral branch was
 created from a parent that lacked the new column.
 
+### Numeric column type returns decimal strings
+PostgreSQL `NUMERIC(15,2)` and `DECIMAL` columns return string values like `"500.00"` instead
+of integer `500`. Tests that assert on formatted numeric values (e.g., `"500 Units"`) fail
+when the raw value is `"500.00"` and the UI displays `"500.00 Units"`.
+
+**Diagnosis with Replay**: NetworkRequest or Logpoint shows the API returning string values
+with decimal places (e.g., `"500.00"`) instead of integers.
+
+**Fix**: Add a formatting utility to parse and format numeric strings before display. The fix
+is in the app's formatting layer, not in the test assertions.
+
+*Example*: Three related failures (`RUN-ACT-2`, `CAL-GRID-4`, `RUN-HDR-10`) all stemmed from
+`NUMERIC(15,2)` columns returning `"500.00"` instead of `500`. A single formatting utility
+fix resolved all three.
+
 ## General Guidance
 
 When many detail-page tests fail with `expected count > 0, received 0`, resist the urge to

@@ -45,6 +45,20 @@ This is especially useful for seed data mismatches where tests expect specific v
 fictional assignee names. SearchSources → Logpoint → NetworkRequest traced the mismatch
 from API response through to component rendering.
 
+## Network Request Comparison for Repeated Actions
+
+When a test fails on a repeated action (e.g., sign-in after sign-out, second form submission),
+use `NetworkRequest` to compare the request payloads of the first (successful) and second
+(failed) attempts. State mutation bugs often manifest as incorrect payloads in subsequent
+requests — for example, a mode toggle not resetting causes the second request to send the
+wrong action type.
+
+**Tool sequence**: `PlaywrightSteps` → `NetworkRequest` (inspect both requests)
+
+*Example*: Sign In form test failed after sign-out. `NetworkRequest` comparison revealed the
+second auth call sent `action: "signup"` instead of `action: "signin"` — a state reset bug
+where `isSignUp` wasn't cleared on mode switch.
+
 ## Common Root Causes (from observed failures)
 
 ### Auth request payload mismatch

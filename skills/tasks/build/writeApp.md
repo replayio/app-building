@@ -49,6 +49,10 @@ contexts (testing, deployment).
 
 ## Directives
 
+- Always run `npm run check` from the **app directory** (`cd /repo/apps/AppName && npm run check`),
+  not standalone `npx tsc --noEmit` at the repo root. The app directory has the correct `tsconfig.json`
+  and ESLint config. See `skills/scripts/check.md`.
+
 - When working on a component, identify the test entries in the spec relevant to that component, and make sure that the entry requirements are satisfied by the app code.
 
 - Match the visual appearance of elements to the mockup: button variants, icon presence, badge/tag styling, section layouts (horizontal vs vertical), and field sets. Do not simplify the visual design.
@@ -136,6 +140,13 @@ contexts (testing, deployment).
 - Components should be layout-agnostic: do NOT include outer padding (`px-*`) or margin in component
   root elements. Let the parent page/layout control spacing. When components embed their own padding,
   composing them in flex rows causes double-padding conflicts that require rework.
+
+- Prefer using the Glob and Grep tools over shell `find`, `ls`, and `grep` commands for file
+  exploration and content searching. The dedicated tools provide better structured output and
+  avoid unnecessary shell command overhead.
+
+- When downloading mockup images for visual reference, use `curl -L -o /tmp/<filename> <url>`.
+  This pattern works well for fetching mockups from UploadThing or other image hosts.
 
 - Do not use `overflow: hidden` on containers that have children with absolutely-positioned elements
   (e.g., dropdown menus, popovers, tooltips). The overflow clipping will cut off content that extends
