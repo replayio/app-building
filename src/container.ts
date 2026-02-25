@@ -287,12 +287,23 @@ export async function startRemoteContainer(
   }
   console.log(`Machine created: ${machineId}`);
 
+  // Register immediately so the container is tracked even if startup times out
+  const baseUrl = `https://${flyApp}.fly.dev`;
+  const agentState: AgentState = {
+    type: "remote",
+    containerName: machineName,
+    port: 443,
+    baseUrl,
+    flyApp,
+    flyMachineId: machineId,
+  };
+  registerContainer(agentState);
+
   console.log("Waiting for machine to start...");
   await waitForMachine(flyApp, flyToken, machineId);
   console.log("Machine started.");
 
   // Poll the public URL until the HTTP server is ready, targeting this specific machine
-  const baseUrl = `https://${flyApp}.fly.dev`;
   const maxWait = 180000;
   const interval = 2000;
   const start = Date.now();
@@ -319,16 +330,6 @@ export async function startRemoteContainer(
     await destroyMachine(flyApp, flyToken, machineId).catch(() => {});
     throw new Error("Remote container did not become ready within timeout");
   }
-
-  const agentState: AgentState = {
-    type: "remote",
-    containerName: machineName,
-    port: 443,
-    baseUrl,
-    flyApp,
-    flyMachineId: machineId,
-  };
-  registerContainer(agentState);
 
   return agentState;
 }

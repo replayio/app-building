@@ -35,9 +35,12 @@ resources.
 
 ### Build and deploy (every run)
 
-5. Build the app (`vite build`).
-6. Deploy to Netlify (`netlify deploy --prod`).
+5. Build the app (`vite build`). Pipe build output to the log file.
+6. Deploy to Netlify (`netlify deploy --prod`). Pipe deploy output to the log file.
 7. Write the deployed URL, `site_id`, `neon_project_id`, and `database_url` to `deployment.txt`.
+8. Print a one-line summary to stdout:
+   - Success: `Deployed to <url>`
+   - Failure: `Deploy failed (build|netlify) — see logs/deploy.log`
 
 ## Populating `.env` for Redeployments
 
@@ -72,6 +75,8 @@ a new URL and an empty database. Always check `deployment.txt` first.
 
 ## Outputs
 
+- **stdout**: One-line summary only.
+- **`logs/deploy.log`**: Full build and deploy output. Overwritten each run.
 - **`.env`**: Updated with `NEON_PROJECT_ID`, `DATABASE_URL`, `NETLIFY_SITE_ID` if created.
 - **`deployment.txt`**: Updated with the current deployed URL, `site_id`, `neon_project_id`,
   and `database_url`.
@@ -82,7 +87,7 @@ a new URL and an empty database. Always check `deployment.txt` first.
   - Deploys built app to Netlify (every run).
 - **Exit codes**:
   - 0: Deployment succeeded.
-  - Non-zero: A step failed (error printed to stderr).
+  - Non-zero: A step failed.
 
 ## Implementation Tips
 
@@ -92,6 +97,7 @@ a new URL and an empty database. Always check `deployment.txt` first.
   project creation.
 - Use `netlify sites:create --account-slug $NETLIFY_ACCOUNT_SLUG` for site creation.
 - Use `netlify deploy --prod --dir dist --functions ./netlify/functions` for deployment.
+- Do NOT inherit stdio from subprocesses. Pipe all subprocess output to `logs/deploy.log`.
 - Read/write `.env` using `fs` — parse as key=value lines, append new entries, don't
   clobber existing values.
 - Production builds must use `sourcemap: true`, `minify: false`, and the React development

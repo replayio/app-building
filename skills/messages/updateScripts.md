@@ -87,3 +87,16 @@ Concrete guidance for the implementing agent:
 - Scripts MUST be written in TypeScript and run via `tsx`. Do not write shell scripts (`.sh`).
   All logic — including process management, file I/O, and CLI invocations — must be in TypeScript
   using Node.js APIs (e.g., `child_process.execSync`, `fs`, `path`).
+
+### Output contract
+
+Scripts must produce **short, structured stdout** that can be read directly without grepping
+or parsing. Verbose output (build logs, test runner output, command traces) goes to log files
+in `logs/`, never to stdout. The agent reads the summary line, and only reads the log file
+if it needs to diagnose a failure.
+
+- **Success**: print a one-line summary (e.g., `10 tests passed`) and exit 0.
+- **Failure**: print a one-line summary with counts and a path to the detailed log
+  (e.g., `8 passed, 2 failed — see logs/test-run-3.log`) and exit non-zero.
+- **Never** inherit stdio from subprocesses to stdout. Pipe subprocess output to a log file
+  and summarize results on stdout.

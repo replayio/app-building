@@ -227,11 +227,22 @@ export async function waitForMachine(
   app: string,
   token: string,
   machineId: string,
+  timeoutMs: number = 180000,
 ): Promise<void> {
-  await flyFetch(
-    `/apps/${app}/machines/${machineId}/wait?state=started&timeout=60`,
-    token,
-  );
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    try {
+      await flyFetch(
+        `/apps/${app}/machines/${machineId}/wait?state=started&timeout=60`,
+        token,
+      );
+      return;
+    } catch (e) {
+      const elapsed = Math.round((Date.now() - start) / 1000);
+      console.log(`Still waiting for machine to start (${elapsed}s elapsed): ${e instanceof Error ? e.message : e}`);
+    }
+  }
+  throw new Error(`Machine ${machineId} did not reach started state within ${timeoutMs / 1000}s`);
 }
 
 /**
