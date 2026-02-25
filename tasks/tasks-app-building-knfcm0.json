@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentEquipmentDetailHeader: Write the EquipmentDetailHeader component",
-        "WriteComponentEquipmentInfo: Write the EquipmentInfo component",
-        "WriteComponentMaintenanceNotes: Write the MaintenanceNotes component",
-        "WritePageEquipmentDetails: Write the EquipmentDetailsPage itself"
-      ],
-      "timestamp": "2026-02-24T23:56:46.552Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentEquipmentHeader: Write the EquipmentHeader component",
         "WriteComponentEquipmentTable: Write the EquipmentTable component",
         "WritePageEquipment: Write the EquipmentPage itself"
