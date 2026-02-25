@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-25T04:12:40.567Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
         "Unpack: Write test specification for SupplierTracker"
