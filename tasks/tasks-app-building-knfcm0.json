@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteComponentQuickActions: Write the QuickActions component",
-        "WriteComponentUpcomingOrdersTable: Write the UpcomingOrdersTable component",
-        "WriteComponentSuppliersList: Write the SuppliersList component",
-        "WritePageDashboard: Write the DashboardPage itself"
-      ],
-      "timestamp": "2026-02-25T04:49:03.867Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts for SupplierTracker"
