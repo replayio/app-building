@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentTransactionsTable: Write the TransactionsTable component",
-        "WritePageTransactions: Write the TransactionsPage"
-      ],
-      "timestamp": "2026-02-24T21:01:00.076Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentTransactionHeader: Write the TransactionHeader component",
         "WriteComponentQuantityTransfersTable: Write the QuantityTransfersTable component",
         "WriteComponentBatchesCreatedTable: Write the BatchesCreatedTable component",

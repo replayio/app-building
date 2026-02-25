@@ -7,6 +7,7 @@ import { Breadcrumb } from "../../../shared/components/Breadcrumb";
 const NAV_LINKS = [
   { label: "Dashboard", path: "/dashboard" },
   { label: "Accounts", path: "/accounts" },
+  { label: "Transactions", path: "/transactions" },
   { label: "Reports", path: "/reports" },
   { label: "Budgets", path: "/budgets" },
 ];
@@ -91,6 +92,7 @@ function AccountingBreadcrumb(): React.ReactElement {
   const labels: Record<string, string> = {
     accounts: "Accounts",
     dashboard: "Dashboard",
+    transactions: "Transactions",
     reports: "Reports",
     budgets: "Budgets",
   };
