@@ -20,11 +20,33 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
   const segments = url.pathname.split("/").filter(Boolean);
   const subPath = segments[3] || null;
 
-  // GET /.netlify/functions/tasks?clientId=<id> — tasks for a client
+  // GET /.netlify/functions/tasks?clientId=<id> or ?dealId=<id> — tasks for a client or deal
   if (req.method === "GET" && !subPath) {
     const clientId = url.searchParams.get("clientId");
-    if (!clientId) {
-      return errorResponse(400, "clientId query param required");
+    const dealId = url.searchParams.get("dealId");
+    if (!clientId && !dealId) {
+      return errorResponse(400, "clientId or dealId query param required");
+    }
+
+    let queryText: string;
+    let params: unknown[];
+
+    if (dealId) {
+      queryText = `SELECT t.*, d.name AS deal_name, u.name AS assignee_name
+         FROM tasks t
+         LEFT JOIN deals d ON d.id = t.deal_id
+         LEFT JOIN users u ON u.id = t.assignee_id
+         WHERE t.deal_id = $1
+         ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`;
+      params = [dealId];
+    } else {
+      queryText = `SELECT t.*, d.name AS deal_name, u.name AS assignee_name
+         FROM tasks t
+         LEFT JOIN deals d ON d.id = t.deal_id
+         LEFT JOIN users u ON u.id = t.assignee_id
+         WHERE t.client_id = $1
+         ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`;
+      params = [clientId!];
     }
 
     const tasks = await query<{
@@ -41,16 +63,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       updated_at: string;
       deal_name: string | null;
       assignee_name: string | null;
-    }>(
-      sql,
-      `SELECT t.*, d.name AS deal_name, u.name AS assignee_name
-       FROM tasks t
-       LEFT JOIN deals d ON d.id = t.deal_id
-       LEFT JOIN users u ON u.id = t.assignee_id
-       WHERE t.client_id = $1
-       ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`,
-      [clientId]
-    );
+    }>(sql, queryText, params);
 
     return jsonResponse(
       tasks.map((t) => ({

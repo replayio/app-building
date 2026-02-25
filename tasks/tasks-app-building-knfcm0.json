@@ -3,22 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentDealHeader: Write the DealHeader component",
-        "WriteComponentDealStagePipeline: Write the DealStagePipeline component",
-        "WriteComponentDealHistorySection: Write the DealHistorySection component",
-        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
-        "WriteComponentWriteupsSection: Write the WriteupsSection component",
-        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
-        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
-        "WriteComponentContactsIndividualsSection: Write the ContactsIndividualsSection component",
-        "WritePageDealDetailPage: Write the DealDetailPage page"
-      ],
-      "timestamp": "2026-02-25T03:50:00.260Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentTasksListHeader: Write the TasksListHeader component",
         "WriteComponentTasksFilter: Write the TasksFilter component",
         "WriteComponentTaskCardList: Write the TaskCardList component",

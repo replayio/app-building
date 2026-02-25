@@ -226,6 +226,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
     CREATE TABLE IF NOT EXISTS writeups (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       deal_id UUID NOT NULL REFERENCES deals(id) ON DELETE CASCADE,
+      title VARCHAR(255) NOT NULL DEFAULT '',
       content TEXT NOT NULL,
       author VARCHAR(255) NOT NULL DEFAULT 'System',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -234,6 +235,21 @@ export async function initSchema(databaseUrl: string): Promise<void> {
   `;
 
   await sql`CREATE INDEX IF NOT EXISTS idx_writeups_deal ON writeups (deal_id)`;
+
+  // --- Writeup Versions (version history for writeups) ---
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS writeup_versions (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      writeup_id UUID NOT NULL REFERENCES writeups(id) ON DELETE CASCADE,
+      title VARCHAR(255) NOT NULL,
+      content TEXT NOT NULL,
+      author VARCHAR(255) NOT NULL DEFAULT 'System',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+
+  await sql`CREATE INDEX IF NOT EXISTS idx_writeup_versions_writeup ON writeup_versions (writeup_id)`;
 
   // --- Timeline Events (consolidated activity feed) ---
 
@@ -305,8 +321,12 @@ export async function initSchema(databaseUrl: string): Promise<void> {
 }
 
 export async function runMigrations(databaseUrl: string): Promise<void> {
-  // No migrations needed yet beyond initial schema
-  void databaseUrl;
+  const sql = neon(databaseUrl);
+
+  // Add title column to writeups (idempotent)
+  await sql`ALTER TABLE writeups ADD COLUMN IF NOT EXISTS title VARCHAR(255) NOT NULL DEFAULT ''`;
+
+  // Create writeup_versions table (idempotent via CREATE TABLE IF NOT EXISTS in initSchema)
 }
 
 async function main() {

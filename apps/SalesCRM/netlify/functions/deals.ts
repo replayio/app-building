@@ -1,4 +1,4 @@
-import { getDb, query, jsonResponse, errorResponse } from "@shared/backend/db";
+import { getDb, query, queryOne, jsonResponse, errorResponse } from "@shared/backend/db";
 import { withAuth } from "@shared/backend/auth-middleware";
 
 interface DealRow {
@@ -53,6 +53,24 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
   const url = new URL(req.url);
   const segments = url.pathname.split("/").filter(Boolean);
   const subPath = segments[3] || null;
+
+  // GET /.netlify/functions/deals/<dealId> — single deal by ID
+  if (req.method === "GET" && subPath) {
+    const dealId = subPath;
+    const rows = await query<DealRow>(
+      sql,
+      `SELECT d.*, c.name AS client_name, u.name AS owner_name
+       FROM deals d
+       LEFT JOIN clients c ON c.id = d.client_id
+       LEFT JOIN users u ON u.id = d.owner_id
+       WHERE d.id = $1`,
+      [dealId]
+    );
+    if (rows.length === 0) {
+      return errorResponse(404, "Deal not found");
+    }
+    return jsonResponse(mapDealRow(rows[0]));
+  }
 
   // GET /.netlify/functions/deals — list all deals, or filter by clientId
   if (req.method === "GET" && !subPath) {
@@ -291,9 +309,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       return errorResponse(400, "Invalid JSON body");
     }
 
-    const existing = await query<{ stage: string; client_id: string; name: string }>(
+    const existing = await query<{ stage: string; client_id: string; name: string; value: string | null; owner_id: string | null; probability: number | null; expected_close_date: string | null }>(
       sql,
-      "SELECT stage, client_id, name FROM deals WHERE id = $1",
+      "SELECT stage, client_id, name, value, owner_id, probability, expected_close_date FROM deals WHERE id = $1",
       [dealId]
     );
     if (existing.length === 0) {
@@ -301,6 +319,10 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     }
 
     const oldStage = existing[0].stage;
+    const oldValue = existing[0].value;
+    const oldOwnerId = existing[0].owner_id;
+    const oldProbability = existing[0].probability;
+    const oldExpectedCloseDate = existing[0].expected_close_date;
     const clientId = existing[0].client_id;
     const actor = user ? user.name : "System";
 
@@ -373,9 +395,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
       await query(
         sql,
-        `INSERT INTO deal_history (deal_id, new_stage, changed_by)
-         VALUES ($1, $2, $3)`,
-        [dealId, body.stage, actor]
+        `INSERT INTO deal_history (deal_id, old_stage, new_stage, changed_by)
+         VALUES ($1, $2, $3, $4)`,
+        [dealId, oldStage, body.stage, actor]
       );
 
       // Send follower notifications for stage change
@@ -404,6 +426,55 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       } catch {
         // Notification failure shouldn't block the update
       }
+    }
+
+    // Timeline entry for value change
+    if (body.value !== undefined) {
+      const oldVal = oldValue ? `$${parseFloat(oldValue).toLocaleString()}` : "N/A";
+      const newVal = body.value != null ? `$${body.value.toLocaleString()}` : "N/A";
+      if (oldVal !== newVal) {
+        await query(
+          sql,
+          `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [clientId, "Deal Updated", `Deal Value Changed: '${existing[0].name}' from ${oldVal} to ${newVal}`, "deal", dealId, actor]
+        );
+      }
+    }
+
+    // Timeline entry for owner change
+    if (body.ownerId !== undefined && body.ownerId !== oldOwnerId) {
+      const oldOwnerName = oldOwnerId
+        ? (await queryOne<{ name: string }>(sql, "SELECT name FROM users WHERE id = $1", [oldOwnerId]))?.name || "Unknown"
+        : "Unassigned";
+      const newOwnerName = body.ownerId
+        ? (await queryOne<{ name: string }>(sql, "SELECT name FROM users WHERE id = $1", [body.ownerId]))?.name || "Unknown"
+        : "Unassigned";
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [clientId, "Deal Updated", `Deal Owner Changed: '${existing[0].name}' from '${oldOwnerName}' to '${newOwnerName}'`, "deal", dealId, actor]
+      );
+    }
+
+    // Timeline entry for metrics change (probability or expected close date)
+    if (body.probability !== undefined && body.probability !== oldProbability) {
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [clientId, "Deal Updated", `Deal Metrics Updated: '${existing[0].name}' probability changed to ${body.probability}%`, "deal", dealId, actor]
+      );
+    }
+
+    if (body.expectedCloseDate !== undefined && body.expectedCloseDate !== oldExpectedCloseDate) {
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [clientId, "Deal Updated", `Deal Metrics Updated: '${existing[0].name}' expected close date changed`, "deal", dealId, actor]
+      );
     }
 
     return jsonResponse(mapDealRow(updated[0]));

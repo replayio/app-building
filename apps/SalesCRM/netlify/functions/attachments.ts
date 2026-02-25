@@ -18,11 +18,31 @@ export default async function handler(req: Request): Promise<Response> {
   const segments = url.pathname.split("/").filter(Boolean);
   const subPath = segments[3] || null;
 
-  // GET /.netlify/functions/attachments?clientId=<id>
+  // GET /.netlify/functions/attachments?clientId=<id> or ?dealId=<id>
   if (req.method === "GET" && !subPath) {
     const clientId = url.searchParams.get("clientId");
-    if (!clientId) {
-      return errorResponse(400, "clientId query param required");
+    const dealId = url.searchParams.get("dealId");
+    if (!clientId && !dealId) {
+      return errorResponse(400, "clientId or dealId query param required");
+    }
+
+    let queryText: string;
+    let params: unknown[];
+
+    if (dealId) {
+      queryText = `SELECT a.*, d.name AS deal_name
+         FROM attachments a
+         LEFT JOIN deals d ON d.id = a.deal_id
+         WHERE a.deal_id = $1
+         ORDER BY a.created_at DESC`;
+      params = [dealId];
+    } else {
+      queryText = `SELECT a.*, d.name AS deal_name
+         FROM attachments a
+         LEFT JOIN deals d ON d.id = a.deal_id
+         WHERE a.client_id = $1
+         ORDER BY a.created_at DESC`;
+      params = [clientId!];
     }
 
     const attachments = await query<{
@@ -35,15 +55,7 @@ export default async function handler(req: Request): Promise<Response> {
       deal_id: string | null;
       created_at: string;
       deal_name: string | null;
-    }>(
-      sql,
-      `SELECT a.*, d.name AS deal_name
-       FROM attachments a
-       LEFT JOIN deals d ON d.id = a.deal_id
-       WHERE a.client_id = $1
-       ORDER BY a.created_at DESC`,
-      [clientId]
-    );
+    }>(sql, queryText, params);
 
     return jsonResponse(
       attachments.map((a) => ({
