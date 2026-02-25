@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentReportTypeSelector: Write the ReportTypeSelector component",
-        "WriteComponentDateRangeSelector: Write the DateRangeSelector component",
-        "WriteComponentAccountCategoryFilter: Write the AccountCategoryFilter component",
-        "WriteComponentReportPreview: Write the ReportPreview component",
-        "WritePageCreateReportDialog: Write the CreateReportDialog page itself"
-      ],
-      "timestamp": "2026-02-24T19:52:37.272Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentReportHeader: Write the ReportHeader component",
         "WriteComponentVarianceSummary: Write the VarianceSummary component",
         "WriteComponentVarianceChart: Write the VarianceChart component",
