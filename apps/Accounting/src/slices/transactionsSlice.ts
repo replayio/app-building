@@ -44,6 +44,27 @@ export const createTransaction = createAsyncThunk(
   }
 );
 
+export const updateTransaction = createAsyncThunk(
+  "transactions/updateTransaction",
+  async (data: {
+    id: string;
+    date: string;
+    description: string;
+    currency: string;
+    entries: Array<{ account_id: string; entry_type: string; amount: number }>;
+    tags: string[];
+  }) => {
+    const { id, ...body } = data;
+    const res = await fetch(`/.netlify/functions/transactions/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error("Failed to update transaction");
+    return (await res.json()) as Transaction;
+  }
+);
+
 export const deleteTransaction = createAsyncThunk(
   "transactions/deleteTransaction",
   async (id: string) => {
@@ -79,6 +100,10 @@ const transactionsSlice = createSlice({
       })
       .addCase(createTransaction.fulfilled, (state, action) => {
         state.items.unshift(action.payload);
+      })
+      .addCase(updateTransaction.fulfilled, (state, action) => {
+        const idx = state.items.findIndex((t) => t.id === action.payload.id);
+        if (idx >= 0) state.items[idx] = action.payload;
       })
       .addCase(deleteTransaction.fulfilled, (state, action) => {
         state.items = state.items.filter((t) => t.id !== action.payload);

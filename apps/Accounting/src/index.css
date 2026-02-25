@@ -814,6 +814,36 @@
   color: var(--text-disabled);
 }
 
+/* Transaction header fields row layout */
+.transaction-header-fields {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.transaction-header-fields .form-group {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.transaction-header-fields .transaction-header-fields-description {
+  flex: 2;
+}
+
+/* Section heading for line items */
+.line-items-section-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+/* Optional indicator in form labels */
+.form-label-optional {
+  font-weight: 400;
+  color: var(--text-disabled);
+}
+
 /* Accounting-specific line items grid columns */
 .line-items-header,
 .line-item-row {
