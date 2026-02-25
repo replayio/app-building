@@ -239,7 +239,7 @@ test.describe("RunHeader", () => {
     const qtyField = page.getByTestId("run-info-quantity");
     await expect(qtyField).toBeVisible();
     await expect(qtyField).toHaveText(
-      `${scheduledRunDetail.planned_quantity} ${scheduledRunDetail.unit}`
+      `${parseFloat(String(scheduledRunDetail.planned_quantity))} ${scheduledRunDetail.unit}`
     );
   });
 

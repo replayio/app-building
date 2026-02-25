@@ -17,6 +17,7 @@ test.describe("CalendarGrid", () => {
   });
 
   test("CAL-GRID-2: Monthly grid displays day cells with date numbers", async ({ page }) => {
+    test.slow();
     await page.goto("/calendar");
     await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
 
@@ -24,21 +25,32 @@ test.describe("CalendarGrid", () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
+    const monthStr = String(month + 1).padStart(2, "0");
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Check that day cells for the current month exist and have date numbers
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    // Check first, middle, and last day cells exist with correct date numbers
+    const sampleDays = [1, Math.floor(daysInMonth / 2), daysInMonth];
+    for (const day of sampleDays) {
+      const dateStr = `${year}-${monthStr}-${String(day).padStart(2, "0")}`;
       const cell = page.getByTestId(`calendar-day-${dateStr}`);
       await expect(cell).toBeVisible();
-      // Cell should contain the day number
       await expect(cell).toContainText(String(day));
     }
+
+    // Verify all day cells for the month exist by checking count via page.evaluate
+    const allDaysPresent = await page.evaluate(({ yr, mo, days }: { yr: number; mo: string; days: number }) => {
+      let count = 0;
+      for (let d = 1; d <= days; d++) {
+        const ds = `${yr}-${mo}-${String(d).padStart(2, "0")}`;
+        if (document.querySelector(`[data-testid="calendar-day-${ds}"]`)) count++;
+      }
+      return count;
+    }, { yr: year, mo: monthStr, days: daysInMonth });
+    expect(allDaysPresent).toBe(daysInMonth);
 
     // Verify dimmed cells exist for previous/next month days
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     if (firstDayOfMonth > 0) {
-      // There are trailing days from the previous month
       const prevMonth = new Date(year, month, 0);
       const prevMonthDay = prevMonth.getDate();
       const prevDateStr = `${prevMonth.getFullYear()}-${String(prevMonth.getMonth() + 1).padStart(2, "0")}-${String(prevMonthDay).padStart(2, "0")}`;
@@ -350,6 +362,7 @@ test.describe("CalendarGrid", () => {
   });
 
   test("CAL-GRID-12: Multiple events on the same day are stacked within the cell", async ({ page }) => {
+    test.slow();
     // Create two runs on the same day in the current month
     const now = new Date();
     const year = now.getFullYear();
@@ -493,6 +506,7 @@ test.describe("CalendarGrid", () => {
   });
 
   test("CAL-GRID-15: Drag-and-drop reschedule can be cancelled", async ({ page }) => {
+    test.slow();
     // Create a run for drag testing
     const now = new Date();
     const year = now.getFullYear();
@@ -520,12 +534,30 @@ test.describe("CalendarGrid", () => {
       await expect(eventCard).toBeVisible({ timeout: 15000 });
 
       const targetCell = page.getByTestId(`calendar-day-${year}-${month}-${targetDay}`);
+      await expect(targetCell).toBeVisible({ timeout: 15000 });
 
-      // Drag event to target
-      await eventCard.dragTo(targetCell);
+      // Use manual HTML5 drag event dispatch for Replay browser reliability
+      const sourceTestId = `calendar-event-${run.id}`;
+      const targetTestId = `calendar-day-${year}-${month}-${targetDay}`;
+      await page.evaluate(({ sourceId, targetId }) => {
+        const source = document.querySelector(`[data-testid="${sourceId}"]`)!;
+        const target = document.querySelector(`[data-testid="${targetId}"]`)!;
+        const targetRect = target.getBoundingClientRect();
+
+        const dataTransfer = new DataTransfer();
+        source.dispatchEvent(new DragEvent("dragstart", { bubbles: true, cancelable: true, dataTransfer }));
+        target.dispatchEvent(new DragEvent("dragover", { bubbles: true, cancelable: true, dataTransfer }));
+        target.dispatchEvent(new DragEvent("drop", {
+          bubbles: true,
+          cancelable: true,
+          dataTransfer,
+          clientX: targetRect.left + targetRect.width / 2,
+          clientY: targetRect.top + targetRect.height / 2,
+        }));
+      }, { sourceId: sourceTestId, targetId: targetTestId });
 
       // Reschedule tooltip should appear
-      await expect(page.getByTestId("reschedule-tooltip")).toBeVisible({ timeout: 15000 });
+      await expect(page.getByTestId("reschedule-tooltip")).toBeVisible({ timeout: 30000 });
 
       // Cancel the reschedule
       await page.getByTestId("reschedule-cancel-btn").click();

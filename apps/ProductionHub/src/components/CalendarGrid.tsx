@@ -60,7 +60,7 @@ function getStatusIcon(status: RunStatus): React.ReactNode {
 function formatEventLabel(run: ProductionRun): string {
   const product = run.product_name || "Unknown";
   const recipe = run.recipe_name || "No Recipe";
-  return `${product} (${recipe}) | ${run.planned_quantity} ${run.unit} | Status: ${run.status}`;
+  return `${product} (${recipe}) | ${parseFloat(String(run.planned_quantity))} ${run.unit} | Status: ${run.status}`;
 }
 
 function isSameDay(d1: Date, d2: Date): boolean {
@@ -469,11 +469,14 @@ interface RescheduleTooltipProps {
 }
 
 function RescheduleTooltip({ targetDate, x, y, onConfirm, onCancel }: RescheduleTooltipProps) {
+  // Clamp position so tooltip stays within the viewport
+  const clampedX = Math.min(Math.max(x, 10), window.innerWidth - 220);
+  const clampedY = Math.min(Math.max(y, 10), window.innerHeight - 80);
   return (
     <div
       className="reschedule-tooltip"
       data-testid="reschedule-tooltip"
-      style={{ left: x, top: y }}
+      style={{ left: clampedX, top: clampedY }}
     >
       <div className="reschedule-tooltip-text" data-testid="reschedule-tooltip-text">
         Reschedule to {targetDate}?

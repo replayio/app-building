@@ -114,7 +114,7 @@ export function RunHeader({ run }: RunHeaderProps) {
                   className="detail-field-value"
                   data-testid="run-info-quantity"
                 >
-                  {run.planned_quantity} {run.unit}
+                  {parseFloat(String(run.planned_quantity))} {run.unit}
                 </span>
               </div>
               <div className="detail-field">

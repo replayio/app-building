@@ -93,7 +93,7 @@ export function RunDetailsPopup({ run, onClose }: RunDetailsPopupProps) {
         <div className="run-popup-field" data-testid="run-popup-quantity">
           <span className="run-popup-label">Quantity:</span>
           <span className="run-popup-value">
-            {run.planned_quantity} {run.unit}
+            {parseFloat(String(run.planned_quantity))} {run.unit}
           </span>
         </div>
 
