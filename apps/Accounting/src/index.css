@@ -1329,3 +1329,244 @@
 .report-preview-variance--negative {
   color: var(--status-error);
 }
+
+/* ===== ReportDetailsPage ===== */
+
+.report-details-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.p-6 {
+  padding: 24px;
+}
+
+@media (max-width: 640px) {
+  .max-sm\:p-3 {
+    padding: 12px;
+  }
+}
+
+/* ReportHeader */
+.report-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.report-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.report-header-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.report-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* VarianceSummary */
+.variance-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 20px 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.variance-summary-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.variance-summary-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.variance-summary-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.variance-summary-value--negative {
+  color: var(--status-error);
+}
+
+.variance-summary-value--positive {
+  color: var(--status-success);
+}
+
+.variance-arrow {
+  font-size: 14px;
+}
+
+.variance-summary-amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.variance-summary-chart {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* VarianceChart */
+.variance-chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.variance-chart-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.variance-chart-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.variance-chart-container {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.variance-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.variance-chart-empty {
+  text-align: center;
+  padding: 32px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* DetailedReportTable */
+.detailed-report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detailed-report-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.detailed-report-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.detailed-report-data-table th {
+  white-space: nowrap;
+}
+
+.detailed-report-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detailed-report-expand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  padding: 0;
+  transition: background-color 0.1s ease;
+}
+
+.detailed-report-expand-btn:hover {
+  background: rgba(50, 45, 35, 0.08);
+}
+
+.detailed-report-expand-btn--hidden {
+  visibility: hidden;
+}
+
+.detailed-report-chevron--expanded {
+  transform: rotate(90deg);
+  transition: transform 0.15s ease;
+}
+
+.detailed-report-item-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.detailed-report-item-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.detailed-report-subitem-row td:first-child {
+  padding-left: 48px;
+}
+
+.detailed-report-subitem-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detailed-report-view-btn {
+  height: 28px;
+  font-size: 12px;
+  padding: 0 10px;
+}
+
+/* Variance color helpers */
+.report-variance--negative {
+  color: var(--status-error);
+}
+
+.report-variance--positive {
+  color: var(--status-success);
+}
+
+.report-error {
+  color: var(--status-error);
+  font-size: 14px;
+}

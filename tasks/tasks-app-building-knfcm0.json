@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentReportHeader: Write the ReportHeader component",
-        "WriteComponentVarianceSummary: Write the VarianceSummary component",
-        "WriteComponentVarianceChart: Write the VarianceChart component",
-        "WriteComponentDetailedReportTable: Write the DetailedReportTable component",
-        "WritePageReportDetails: Write the ReportDetails page itself"
-      ],
-      "timestamp": "2026-02-24T19:42:24.655Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentReportListHeader: Write the ReportListHeader component",
         "WriteComponentReportTable: Write the ReportTable component",
         "WritePageReportList: Write the ReportList page itself"
