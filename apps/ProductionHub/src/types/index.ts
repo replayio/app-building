@@ -95,3 +95,31 @@ export interface ProductionRun {
   created_at: string;
   updated_at: string;
 }
+
+/** Forecast data for a material in a production run */
+export interface RunForecast {
+  id: string;
+  run_id: string;
+  material_name: string;
+  required_amount: number;
+  forecast_available: number;
+  unit: string;
+  pending_delivery: string;
+}
+
+/** Equipment assigned to a production run */
+export interface RunEquipmentItem {
+  id: string;
+  run_id: string;
+  equipment_id: string;
+  equipment_name: string;
+  status: string;
+  notes: string;
+}
+
+/** Full production run detail with related data */
+export interface RunDetail extends ProductionRun {
+  materials: RecipeMaterial[];
+  forecasts: RunForecast[];
+  equipment: RunEquipmentItem[];
+}

@@ -3,6 +3,7 @@ import { NavigationSidebar } from "./components/NavigationSidebar";
 import { EquipmentDetailsPage } from "./pages/EquipmentDetailsPage";
 import { EquipmentPage } from "./pages/EquipmentPage";
 import { RecipeDetailsPage } from "./pages/RecipeDetailsPage";
+import { RunDetailsPage } from "./pages/RunDetailsPage";
 
 export function App() {
   return (
@@ -14,7 +15,7 @@ export function App() {
           <Route path="/recipes" element={<PlaceholderPage title="Recipes" />} />
           <Route path="/recipe/:recipeId" element={<RecipeDetailsPage />} />
           <Route path="/calendar" element={<PlaceholderPage title="Calendar" />} />
-          <Route path="/runs/:runId" element={<PlaceholderPage title="Run Details" />} />
+          <Route path="/runs/:runId" element={<RunDetailsPage />} />
           <Route path="/equipment" element={<EquipmentPage />} />
           <Route path="/equipment/:id" element={<EquipmentDetailsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

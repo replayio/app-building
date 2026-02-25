@@ -3,19 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentRunHeader: Write the RunHeader component",
-        "WriteComponentRunActions: Write the RunActions component",
-        "WriteComponentRawMaterialsTable: Write the RawMaterialsTable component",
-        "WriteComponentForecastTable: Write the ForecastTable component",
-        "WriteComponentRunEquipmentTable: Write the RunEquipmentTable component",
-        "WriteComponentExternalAppLinks: Write the ExternalAppLinks component",
-        "WritePageRunDetails: Write the RunDetailsPage itself"
-      ],
-      "timestamp": "2026-02-24T23:56:35.540Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentCalendarHeader: Write the CalendarHeader component",
         "WriteComponentCalendarGrid: Write the CalendarGrid component",
         "WriteComponentRunDetailsPopup: Write the RunDetailsPopup component",

@@ -603,3 +603,98 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Run details page layout */
+.run-details-top-section {
+  display: flex;
+  align-items: flex-start;
+}
+
+.run-details-top-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.run-details-top-actions {
+  flex-shrink: 0;
+  padding: 80px 24px 0 0;
+}
+
+@media (max-width: 768px) {
+  .run-details-top-section {
+    flex-direction: column;
+  }
+
+  .run-details-top-actions {
+    padding: 0 24px;
+  }
+}
+
+/* Run info grid */
+.run-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Run actions */
+.run-actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Additional run status badges */
+.badge--on-track {
+  background: var(--status-on-track-bg);
+  color: var(--status-on-track-text);
+}
+
+.badge--material-shortage {
+  background: var(--status-material-shortage-bg);
+  color: var(--status-material-shortage-text);
+}
+
+.badge--in-progress {
+  background: var(--status-in-progress-bg);
+  color: var(--status-in-progress-text);
+}
+
+.badge--pending-approval {
+  background: var(--status-pending-approval-bg);
+  color: var(--status-pending-approval-text);
+}
+
+/* Forecast indicators */
+.forecast-surplus {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--status-confirmed-bg);
+  color: var(--status-success);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.forecast-shortage {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--status-cancelled-bg);
+  color: var(--status-error);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* External app links */
+.external-links-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.external-links-divider {
+  color: var(--bg-border-color);
+  font-size: 14px;
+}
