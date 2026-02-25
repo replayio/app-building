@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentTransactionHeaderFields: Write the TransactionHeaderFields component",
-        "WriteComponentLineItemsTable: Write the LineItemsTable component",
-        "WriteComponentBalanceIndicator: Write the BalanceIndicator component",
-        "WriteComponentTagsInput: Write the TagsInput component",
-        "WritePageNewTransactionModal: Write the NewTransactionModal page itself"
-      ],
-      "timestamp": "2026-02-24T19:52:32.493Z"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentReportTypeSelector: Write the ReportTypeSelector component",
         "WriteComponentDateRangeSelector: Write the DateRangeSelector component",
         "WriteComponentAccountCategoryFilter: Write the AccountCategoryFilter component",
