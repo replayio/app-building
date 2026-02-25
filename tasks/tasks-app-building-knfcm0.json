@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageCreateReportDialog: Decide on components, add sections to docs/tests.md",
-        "PlanComponentReportTypeSelector: Add test entries for ReportTypeSelector (Summary Overview, Detailed Transactions, Budget vs Actual tabs)",
-        "PlanComponentDateRangeSelector: Add test entries for DateRangeSelector (start/end date pickers, This Month/Last Quarter/YTD preset buttons)",
-        "PlanComponentAccountCategoryFilter: Add test entries for AccountCategoryFilter (tree checkboxes for Assets/Liabilities/Equity/Revenue/Expenses with sub-categories, Include Zero Balance toggle)",
-        "PlanComponentReportPreview: Add test entries for ReportPreview (preview table with Category/Account/Budget/Actual/Variance/Variance%, Refresh Preview button, expandable account rows, Cancel and Generate Report buttons)"
-      ],
-      "timestamp": "2026-02-24T19:29:43.396Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageReportDetails: Decide on components, add sections to docs/tests.md",
         "PlanComponentReportHeader: Add test entries for ReportHeader (report title with ID, breadcrumb navigation, Export PDF button, Export CSV button)",
         "PlanComponentVarianceSummary: Add test entries for VarianceSummary (Total Variance with arrow, Actual Spend, Budgeted Spend, mini trend chart)",

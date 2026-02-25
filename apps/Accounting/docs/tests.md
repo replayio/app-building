@@ -545,7 +545,325 @@
 
 ### Components: ReportTypeSelector, DateRangeSelector, AccountCategoryFilter, ReportPreview
 
-<!-- Tests to be added by PlanPageCreateReportDialog -->
+#### Dialog-level tests
+
+**Test: CreateReportDialog displays title and subtitle**
+- **Initial state:** User clicks the "Generate Reports" button from the AccountsPage or a reporting link from the AccountDetailPage.
+- **Action:** User observes the dialog that opens.
+- **Expected:** A modal dialog overlays the page with the title "Create New Report" at the top. Below the title, a subtitle reads "Configure parameters to generate a financial report based on accounts and transactions." An "X" close button is displayed in the top-right corner of the dialog.
+
+**Test: CreateReportDialog two-panel layout**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the dialog layout.
+- **Expected:** The dialog is divided into two panels side by side. The left panel is titled "Report Settings" and contains the Report Type selector, Date Range pickers, and Filter Accounts & Categories tree. The right panel displays the "Report Preview" with a table showing report data based on the current settings.
+
+**Test: CreateReportDialog X button closes dialog**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User clicks the "X" close button in the top-right corner.
+- **Expected:** The dialog closes and the user returns to the underlying page. No report is generated.
+
+**Test: CreateReportDialog Cancel button closes dialog without generating**
+- **Initial state:** The CreateReportDialog is open with some settings configured (e.g., report type selected, dates set).
+- **Action:** User clicks the "Cancel" button at the bottom-right of the dialog.
+- **Expected:** The dialog closes without generating a report. No new report appears in the ReportList. The underlying page is unchanged.
+
+**Test: CreateReportDialog Generate Report button creates report and closes dialog**
+- **Initial state:** The CreateReportDialog is open with valid settings: report type "Budget vs. Actual (Comparison)", date range Oct 1–31, 2023, all categories selected.
+- **Action:** User clicks the "Generate Report" button (blue primary button) at the bottom-right of the dialog.
+- **Expected:** The report is generated and saved. The dialog closes. The new report appears in the ReportList page with the correct report type, date range, and category filters. The user can navigate to the ReportDetails page to view the full report.
+
+**Test: CreateReportDialog Generate Report button disabled when dates are missing**
+- **Initial state:** The CreateReportDialog is open with a report type selected but no start date or end date entered.
+- **Action:** User observes the "Generate Report" button.
+- **Expected:** The "Generate Report" button is disabled (grayed out or unclickable) because required date fields are not filled.
+
+**Test: CreateReportDialog Cancel and Generate Report button positions**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the bottom of the dialog.
+- **Expected:** Two buttons are displayed at the bottom-right: "Cancel" (secondary/outline style) on the left and "Generate Report" (primary blue style) on the right.
+
+**Test: CreateReportDialog opened from AccountDetailPage reporting link pre-selects report type**
+- **Initial state:** User is on the AccountDetailPage for "Main Checking" and clicks the "Actual vs Budget Report" link in the Reporting section.
+- **Action:** User observes the CreateReportDialog that opens.
+- **Expected:** The dialog opens with the "Budget vs. Actual (Comparison)" report type pre-selected. The account category filter may be pre-configured to include the relevant category for the Main Checking account.
+
+#### Component: ReportTypeSelector
+
+**Test: ReportTypeSelector displays three report type tabs**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the "Report Type" section in the left panel under "Report Settings".
+- **Expected:** Three tab-style buttons are displayed in a horizontal row: "Summary Overview", "Detailed Transactions", and "Budget vs. Actual (Comparison)". Each tab has a distinct icon above its label. The tabs are clearly labeled and visually distinct from each other.
+
+**Test: ReportTypeSelector Summary Overview tab has document icon**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the "Summary Overview" tab.
+- **Expected:** The "Summary Overview" tab displays a document/page icon above the text "Summary Overview". The tab is rendered as a clickable button with a border.
+
+**Test: ReportTypeSelector Detailed Transactions tab has list icon**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the "Detailed Transactions" tab.
+- **Expected:** The "Detailed Transactions" tab displays a list/detail icon above the text "Detailed Transactions". The tab is rendered as a clickable button with a border.
+
+**Test: ReportTypeSelector Budget vs Actual tab has comparison icon**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the "Budget vs. Actual (Comparison)" tab.
+- **Expected:** The "Budget vs. Actual (Comparison)" tab displays a comparison/chart icon above the text "Budget vs. Actual (Comparison)". The tab is rendered as a clickable button with a border.
+
+**Test: ReportTypeSelector default selection**
+- **Initial state:** The CreateReportDialog is freshly opened (not pre-configured from a reporting link).
+- **Action:** User observes which report type tab is selected.
+- **Expected:** The "Summary Overview" tab is selected by default, indicated by a highlighted/active visual style (e.g., blue border and background tint) distinguishing it from the unselected tabs.
+
+**Test: ReportTypeSelector clicking Budget vs Actual selects it**
+- **Initial state:** The CreateReportDialog is open with "Summary Overview" selected (default).
+- **Action:** User clicks the "Budget vs. Actual (Comparison)" tab.
+- **Expected:** The "Budget vs. Actual (Comparison)" tab becomes highlighted/active (blue border and background tint). The "Summary Overview" tab loses its active styling. Only one tab is selected at a time.
+
+**Test: ReportTypeSelector clicking Detailed Transactions selects it**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected.
+- **Action:** User clicks the "Detailed Transactions" tab.
+- **Expected:** The "Detailed Transactions" tab becomes highlighted/active. The "Budget vs. Actual (Comparison)" tab loses its active styling. Only one tab is selected at a time.
+
+**Test: ReportTypeSelector clicking Summary Overview selects it**
+- **Initial state:** The CreateReportDialog is open with "Detailed Transactions" selected.
+- **Action:** User clicks the "Summary Overview" tab.
+- **Expected:** The "Summary Overview" tab becomes highlighted/active. The "Detailed Transactions" tab loses its active styling. Only one tab is selected at a time.
+
+**Test: ReportTypeSelector selection updates preview title**
+- **Initial state:** The CreateReportDialog is open with "Summary Overview" selected and a date range of Oct 2023.
+- **Action:** User clicks the "Budget vs. Actual (Comparison)" tab.
+- **Expected:** The Report Preview panel title updates from "Report Preview (Summary Overview - Oct 2023)" to "Report Preview (Budget vs. Actual - Oct 2023)" to reflect the newly selected report type. The preview table content also updates to show budget vs. actual comparison columns.
+
+**Test: ReportTypeSelector selection persists until changed**
+- **Initial state:** The CreateReportDialog is open with "Detailed Transactions" selected.
+- **Action:** User changes the date range and category filters without clicking a different report type tab.
+- **Expected:** The "Detailed Transactions" tab remains selected/active throughout. The report type selection is independent of other settings changes.
+
+#### Component: DateRangeSelector
+
+**Test: DateRangeSelector displays Date Range heading**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the date range section below the Report Type selector in the left panel.
+- **Expected:** The heading "Date Range" is displayed at the top of the section.
+
+**Test: DateRangeSelector displays Start Date and End Date pickers side by side**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the date range inputs.
+- **Expected:** Two date picker fields are displayed side by side in a single row. The left field is labeled "Start Date" and the right field is labeled "End Date". Each field has a calendar icon on the left side of the input.
+
+**Test: DateRangeSelector Start Date picker allows selecting a date**
+- **Initial state:** The CreateReportDialog is open with the Start Date field empty or showing a default.
+- **Action:** User clicks on the Start Date field and selects "Oct 1, 2023" from the date picker calendar.
+- **Expected:** The Start Date field updates to display "Oct 1, 2023". The date picker calendar closes after selection.
+
+**Test: DateRangeSelector End Date picker allows selecting a date**
+- **Initial state:** The CreateReportDialog is open with the End Date field empty or showing a default.
+- **Action:** User clicks on the End Date field and selects "Oct 31, 2023" from the date picker calendar.
+- **Expected:** The End Date field updates to display "Oct 31, 2023". The date picker calendar closes after selection.
+
+**Test: DateRangeSelector displays three preset buttons**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the area below the Start Date and End Date pickers.
+- **Expected:** Three preset buttons are displayed in a horizontal row: "This Month", "Last Quarter", and "YTD". The buttons are evenly spaced and styled as secondary/outline buttons.
+
+**Test: DateRangeSelector This Month button sets dates to current month**
+- **Initial state:** The CreateReportDialog is open with empty or different date values. The current date is in October 2023.
+- **Action:** User clicks the "This Month" preset button.
+- **Expected:** The Start Date field updates to the first day of the current month (e.g., "Oct 1, 2023") and the End Date field updates to the last day of the current month (e.g., "Oct 31, 2023"). Both date fields reflect the change immediately.
+
+**Test: DateRangeSelector Last Quarter button sets dates to previous quarter**
+- **Initial state:** The CreateReportDialog is open with empty or different date values. The current date is in October 2023 (Q4).
+- **Action:** User clicks the "Last Quarter" preset button.
+- **Expected:** The Start Date field updates to the first day of the previous quarter (e.g., "Jul 1, 2023") and the End Date field updates to the last day of the previous quarter (e.g., "Sep 30, 2023"). Both date fields reflect the change immediately.
+
+**Test: DateRangeSelector YTD button sets dates to year-to-date**
+- **Initial state:** The CreateReportDialog is open with empty or different date values. The current date is Oct 15, 2023.
+- **Action:** User clicks the "YTD" preset button.
+- **Expected:** The Start Date field updates to "Jan 1, 2023" (first day of the current year) and the End Date field updates to the current date (e.g., "Oct 15, 2023"). Both date fields reflect the change immediately.
+
+**Test: DateRangeSelector manual date entry overrides preset**
+- **Initial state:** The CreateReportDialog is open. User has clicked "This Month" and dates show Oct 1–31, 2023.
+- **Action:** User manually changes the Start Date to "Sep 15, 2023" by clicking the Start Date picker and selecting Sep 15.
+- **Expected:** The Start Date field updates to "Sep 15, 2023". The End Date remains "Oct 31, 2023". The preset buttons do not remain visually highlighted since the dates no longer match any preset.
+
+**Test: DateRangeSelector date changes update preview title**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected and dates set to Oct 1–31, 2023. The preview title shows "Report Preview (Budget vs. Actual - Oct 2023)".
+- **Action:** User clicks the "Last Quarter" preset button, changing dates to Jul 1 – Sep 30, 2023.
+- **Expected:** The Report Preview panel title updates to reflect the new date range (e.g., "Report Preview (Budget vs. Actual - Jul–Sep 2023)"). The preview table data refreshes to show data for the new date range.
+
+**Test: DateRangeSelector calendar icon is displayed in date fields**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the Start Date and End Date input fields.
+- **Expected:** Both date input fields display a calendar icon on the left side of the input, visually indicating they are date picker fields.
+
+#### Component: AccountCategoryFilter
+
+**Test: AccountCategoryFilter displays section heading**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the filter section below the Date Range in the left panel.
+- **Expected:** The heading "Filter Accounts & Categories" is displayed at the top of the section.
+
+**Test: AccountCategoryFilter displays five top-level category checkboxes**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the category tree within the filter section.
+- **Expected:** Five top-level categories are listed vertically, each with a checkbox and an expand/collapse arrow: "Assets (All)", "Liabilities (All)", "Equity (All)", "Revenue (All)", and "Expenses (All)". All five checkboxes are checked by default.
+
+**Test: AccountCategoryFilter all categories checked by default**
+- **Initial state:** The CreateReportDialog is freshly opened.
+- **Action:** User observes the checkboxes next to each category.
+- **Expected:** All five category checkboxes (Assets, Liabilities, Equity, Revenue, Expenses) are checked/filled, indicating all categories are included in the report by default.
+
+**Test: AccountCategoryFilter expand category reveals sub-categories**
+- **Initial state:** The CreateReportDialog is open with the "Expenses" category collapsed (showing only "Expenses (All)").
+- **Action:** User clicks the expand arrow next to "Expenses (All)".
+- **Expected:** The Expenses category expands to reveal its sub-categories as indented items with individual checkboxes: "Operating Expenses", "Cost of Goods Sold", and "Non-Operating Expenses". The expand arrow rotates to indicate the expanded state.
+
+**Test: AccountCategoryFilter collapse category hides sub-categories**
+- **Initial state:** The CreateReportDialog is open with the "Expenses" category expanded, showing its sub-categories.
+- **Action:** User clicks the collapse arrow next to "Expenses (All)".
+- **Expected:** The sub-categories (Operating Expenses, Cost of Goods Sold, Non-Operating Expenses) are hidden. Only the "Expenses (All)" top-level item remains visible. The arrow rotates to indicate the collapsed state.
+
+**Test: AccountCategoryFilter sub-category checkboxes are independently selectable**
+- **Initial state:** The CreateReportDialog is open with "Expenses" expanded. All sub-categories are checked: "Operating Expenses" (checked), "Cost of Goods Sold" (checked), "Non-Operating Expenses" (checked).
+- **Action:** User unchecks the "Non-Operating Expenses" checkbox.
+- **Expected:** The "Non-Operating Expenses" checkbox becomes unchecked. "Operating Expenses" and "Cost of Goods Sold" remain checked. The parent "Expenses (All)" checkbox changes to an indeterminate/partial state (e.g., a dash or partial fill) indicating that not all sub-categories are selected.
+
+**Test: AccountCategoryFilter unchecking parent unchecks all sub-categories**
+- **Initial state:** The CreateReportDialog is open with "Expenses" expanded. Some or all sub-categories are checked.
+- **Action:** User unchecks the "Expenses (All)" parent checkbox.
+- **Expected:** All sub-categories under Expenses (Operating Expenses, Cost of Goods Sold, Non-Operating Expenses) become unchecked. The entire Expenses category is excluded from the report filter.
+
+**Test: AccountCategoryFilter checking parent checks all sub-categories**
+- **Initial state:** The CreateReportDialog is open with "Expenses" expanded. The "Expenses (All)" parent checkbox is unchecked and all sub-categories are unchecked.
+- **Action:** User checks the "Expenses (All)" parent checkbox.
+- **Expected:** All sub-categories under Expenses (Operating Expenses, Cost of Goods Sold, Non-Operating Expenses) become checked. The Expenses category with all sub-categories is included in the report filter.
+
+**Test: AccountCategoryFilter checking all sub-categories fills parent checkbox**
+- **Initial state:** The CreateReportDialog is open with "Expenses" expanded. "Operating Expenses" and "Cost of Goods Sold" are checked, but "Non-Operating Expenses" is unchecked. The parent shows an indeterminate state.
+- **Action:** User checks the "Non-Operating Expenses" checkbox.
+- **Expected:** The parent "Expenses (All)" checkbox transitions from the indeterminate state to a fully checked state, since all sub-categories are now selected.
+
+**Test: AccountCategoryFilter unchecking a top-level category removes it from report**
+- **Initial state:** The CreateReportDialog is open with all categories checked. The preview shows data for all categories.
+- **Action:** User unchecks the "Liabilities (All)" checkbox.
+- **Expected:** The "Liabilities (All)" checkbox becomes unchecked. The report preview updates to exclude Liabilities data. All other categories remain checked and their data remains in the preview.
+
+**Test: AccountCategoryFilter Assets category is expandable with sub-categories**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User clicks the expand arrow next to "Assets (All)".
+- **Expected:** The Assets category expands to reveal its sub-categories (e.g., Current Assets, Fixed Assets, or specific asset accounts) as indented items with individual checkboxes.
+
+**Test: AccountCategoryFilter Include Zero Balance toggle is displayed**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the area below the category tree.
+- **Expected:** A toggle switch is displayed with the label "Include Zero Balance Accounts" to its right. The toggle is in the off/disabled position by default.
+
+**Test: AccountCategoryFilter Include Zero Balance toggle is off by default**
+- **Initial state:** The CreateReportDialog is freshly opened.
+- **Action:** User observes the "Include Zero Balance Accounts" toggle.
+- **Expected:** The toggle switch is in the off position (e.g., gray/uncolored), meaning accounts with zero balance are excluded from the report by default.
+
+**Test: AccountCategoryFilter Include Zero Balance toggle can be turned on**
+- **Initial state:** The CreateReportDialog is open with the "Include Zero Balance Accounts" toggle off.
+- **Action:** User clicks the "Include Zero Balance Accounts" toggle.
+- **Expected:** The toggle switches to the on position (e.g., colored/active). Accounts with zero balance will now be included in the generated report. The preview may update to show additional rows for zero-balance accounts.
+
+**Test: AccountCategoryFilter Include Zero Balance toggle can be turned off again**
+- **Initial state:** The CreateReportDialog is open with the "Include Zero Balance Accounts" toggle on.
+- **Action:** User clicks the "Include Zero Balance Accounts" toggle again.
+- **Expected:** The toggle switches back to the off position. Zero-balance accounts are excluded from the report again.
+
+**Test: AccountCategoryFilter category selection updates preview data**
+- **Initial state:** The CreateReportDialog is open with all categories checked and the preview showing data for all categories.
+- **Action:** User unchecks "Revenue (All)" and "Expenses (All)".
+- **Expected:** The report preview table updates to exclude Revenue and Expenses data. Only rows related to Assets, Liabilities, and Equity remain visible in the preview.
+
+#### Component: ReportPreview
+
+**Test: ReportPreview displays dynamic title based on settings**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" report type selected and date range Oct 1–31, 2023.
+- **Action:** User observes the right panel of the dialog.
+- **Expected:** The preview panel title reads "Report Preview (Budget vs. Actual - Oct 2023)", dynamically reflecting the selected report type and date range.
+
+**Test: ReportPreview displays Refresh Preview button**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the top-right area of the preview panel.
+- **Expected:** A "Refresh Preview" button is displayed with a refresh/reload icon to its left and the text "Refresh Preview". The button is positioned to the right of the preview title.
+
+**Test: ReportPreview Refresh Preview button refreshes data**
+- **Initial state:** The CreateReportDialog is open with preview data showing. The user has changed settings (e.g., unchecked a category or changed dates) but the preview has not yet updated.
+- **Action:** User clicks the "Refresh Preview" button.
+- **Expected:** The preview table data refreshes to reflect the current settings. The table content updates with data matching the selected report type, date range, and category filters. A brief loading indicator may appear during the refresh.
+
+**Test: ReportPreview table displays correct column headers for Budget vs Actual**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" report type selected.
+- **Action:** User observes the preview table header row.
+- **Expected:** The table displays five column headers: "Category / Account", "Budget", "Actual", "Variance", and "Variance %". The columns are arranged left to right in that order.
+
+**Test: ReportPreview table displays summary rows**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected, date range Oct 2023, and all categories included.
+- **Action:** User observes the preview table body.
+- **Expected:** Three summary rows are displayed at the top of the table: "Total Revenue" (e.g., Budget $50,000, Actual $52,500, Variance $+2,500, Variance % +5.0%), "Total Expenses" (e.g., Budget $35,000, Actual $36,200, Variance $-1,200, Variance % -3.4%), and "Net Income" (e.g., Budget $15,000, Actual $16,300, Variance $+1,300, Variance % +8.7%). Summary rows are visually distinct (e.g., bold text).
+
+**Test: ReportPreview table displays expandable account rows**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected and preview data loaded.
+- **Action:** User observes the rows below the summary rows in the preview table.
+- **Expected:** Individual account rows are displayed below the summary rows, such as "Sales Revenue" and "Rent Expense". Each expandable row has a collapse/expand chevron icon to the left of the account name. The account names are displayed as clickable links (blue/underlined text).
+
+**Test: ReportPreview expand account row reveals sub-accounts**
+- **Initial state:** The CreateReportDialog is open with the preview showing "Sales Revenue" as a collapsed row with a right-pointing chevron.
+- **Action:** User clicks the expand chevron next to "Sales Revenue".
+- **Expected:** The "Sales Revenue" row expands to reveal its sub-account or line-item rows indented below it. The chevron rotates to point downward, indicating the expanded state. Each sub-row shows its own Budget, Actual, Variance, and Variance % values.
+
+**Test: ReportPreview collapse account row hides sub-accounts**
+- **Initial state:** The CreateReportDialog preview shows "Sales Revenue" in an expanded state with sub-account rows visible.
+- **Action:** User clicks the collapse chevron next to "Sales Revenue".
+- **Expected:** The sub-account rows under "Sales Revenue" are hidden. Only the "Sales Revenue" summary row remains visible. The chevron rotates back to point right.
+
+**Test: ReportPreview account name links navigate to AccountDetailPage**
+- **Initial state:** The CreateReportDialog preview shows "Sales Revenue" as a clickable link.
+- **Action:** User clicks the "Sales Revenue" link text.
+- **Expected:** The dialog closes (or a new tab/window opens) and the user is navigated to the AccountDetailPage for the Sales Revenue account, where they can see all transactions and budget details for that account.
+
+**Test: ReportPreview Rent Expense row displays correct data**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected and preview data loaded.
+- **Action:** User observes the "Rent Expense" row in the preview table.
+- **Expected:** The "Rent Expense" row shows Budget $45,000, Actual $47,000, Variance -$1,200, and Variance % -3.4%. The row has an expand chevron and the name is a clickable link.
+
+**Test: ReportPreview positive variance displayed with plus sign**
+- **Initial state:** The CreateReportDialog preview is showing data with positive variances.
+- **Action:** User observes the Variance and Variance % columns for "Total Revenue".
+- **Expected:** Positive variances are displayed with a "+" prefix (e.g., "$+2,500" and "+5.0%"), indicating favorable performance where actual exceeds budget.
+
+**Test: ReportPreview negative variance displayed with minus sign**
+- **Initial state:** The CreateReportDialog preview is showing data with negative variances.
+- **Action:** User observes the Variance and Variance % columns for "Total Expenses".
+- **Expected:** Negative variances are displayed with a "-" prefix (e.g., "$-1,200" and "-3.4%"), indicating unfavorable performance where actual exceeds budget for expense categories.
+
+**Test: ReportPreview Cancel button at dialog bottom**
+- **Initial state:** The CreateReportDialog is open.
+- **Action:** User observes the bottom-right of the dialog, below the preview panel.
+- **Expected:** A "Cancel" button (secondary/outline style) is displayed on the left side of the button group. Clicking it closes the dialog without generating a report.
+
+**Test: ReportPreview Generate Report button at dialog bottom**
+- **Initial state:** The CreateReportDialog is open with valid settings configured.
+- **Action:** User observes the bottom-right of the dialog, below the preview panel.
+- **Expected:** A "Generate Report" button (primary blue style) is displayed on the right side of the button group. Clicking it generates the report based on the current settings and closes the dialog.
+
+**Test: ReportPreview empty state when no data matches filters**
+- **Initial state:** The CreateReportDialog is open with all categories unchecked or a date range with no transactions.
+- **Action:** User observes the preview table.
+- **Expected:** The preview table shows an empty state message (e.g., "No data available for the selected filters") or displays the column headers with no data rows, indicating no matching data was found for the current filter configuration.
+
+**Test: ReportPreview updates when report type changes**
+- **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected, showing columns Budget, Actual, Variance, Variance %.
+- **Action:** User clicks the "Summary Overview" report type tab.
+- **Expected:** The preview panel title updates to reflect "Summary Overview". The table columns and data update to match the summary report format, which may show different columns or aggregation levels than the budget vs. actual view.
+
+**Test: ReportPreview updates when date range changes**
+- **Initial state:** The CreateReportDialog is open with dates set to Oct 1–31, 2023 and preview showing Oct 2023 data.
+- **Action:** User clicks the "YTD" preset button, changing dates to Jan 1 – Oct 15, 2023.
+- **Expected:** The preview title updates to reflect the new date range. The table data refreshes to show year-to-date figures instead of just October. Budget and actual amounts reflect the cumulative YTD values.
 
 ---
 
