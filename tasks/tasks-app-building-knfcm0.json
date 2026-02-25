@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageReportList: Decide on components, add sections to docs/tests.md",
-        "PlanComponentReportListHeader: Add test entries for ReportListHeader (page title, search bar, Generate New Report button)",
-        "PlanComponentReportTable: Add test entries for ReportTable (Report Name sortable column, Type, Date Range, Accounts Included, Status badge, Actions with refresh/download/View Details, pagination)"
-      ],
-      "timestamp": "2026-02-24T19:29:55.925Z"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "WriteComponentNavBar: Write the NavBar component",

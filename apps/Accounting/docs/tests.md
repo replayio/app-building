@@ -1100,4 +1100,146 @@
 
 ### Components: ReportListHeader, ReportTable
 
-<!-- Tests to be added by PlanPageReportList -->
+#### Component: ReportListHeader
+
+**Test: ReportListHeader displays page title**
+- **Initial state:** User navigates to the ReportList page.
+- **Action:** User observes the header area at the top of the page content.
+- **Expected:** The heading "ReportList" is displayed prominently as the page title.
+
+**Test: ReportListHeader displays breadcrumb navigation**
+- **Initial state:** User is on the ReportList page.
+- **Action:** User observes the breadcrumb area above the page title.
+- **Expected:** A breadcrumb trail is shown (e.g., "Page / reports") providing navigation context. Clicking the "Page" breadcrumb segment navigates back to the home/dashboard page.
+
+**Test: ReportListHeader displays search bar with search icon**
+- **Initial state:** User is on the ReportList page.
+- **Action:** User observes the header area to the right of the page title.
+- **Expected:** A search input field is displayed with a magnifying glass search icon on the left side and placeholder text "Search..." in a muted/gray color. The search bar is positioned between the page title and the Generate New Report button.
+
+**Test: ReportListHeader search bar filters reports by name**
+- **Initial state:** User is on the ReportList page with multiple reports listed (e.g., "Q3 2023 Financial Summary", "September Expense Detail", "Budget vs. Actual - Marketing", "YTD Asset Overview").
+- **Action:** User types "Budget" into the search bar.
+- **Expected:** The ReportTable filters to show only reports whose name contains "Budget" (e.g., "Budget vs. Actual - Marketing" rows). Non-matching reports are hidden from the table.
+
+**Test: ReportListHeader search bar clears and restores all reports**
+- **Initial state:** User has typed "Budget" into the search bar and the table is filtered.
+- **Action:** User clears the search bar text.
+- **Expected:** All reports are displayed again in the ReportTable without any filtering applied.
+
+**Test: ReportListHeader displays Generate New Report button**
+- **Initial state:** User is on the ReportList page.
+- **Action:** User observes the right side of the header area.
+- **Expected:** A "Generate New Report" button is displayed with a blue/primary filled style. The button text reads "Generate New Report".
+
+**Test: ReportListHeader Generate New Report button opens CreateReportDialog**
+- **Initial state:** User is on the ReportList page.
+- **Action:** User clicks the "Generate New Report" button.
+- **Expected:** The CreateReportDialog opens, allowing the user to configure report type, date range, account/category filters, and preview the report before generating it.
+
+#### Component: ReportTable
+
+**Test: ReportTable displays correct column headers**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the table header row.
+- **Expected:** The table displays six column headers from left to right: "Report Name", "Type", "Date Range", "Accounts Included", "Status", and "Actions".
+
+**Test: ReportTable Report Name column is sortable with ascending indicator by default**
+- **Initial state:** User navigates to the ReportList page.
+- **Action:** User observes the "Report Name" column header.
+- **Expected:** The "Report Name" column header displays an upward arrow (↑) icon indicating the column is sorted in ascending alphabetical order by default. The arrow icon distinguishes this column as sortable.
+
+**Test: ReportTable clicking Report Name header toggles sort to descending**
+- **Initial state:** User is on the ReportList page with the Report Name column sorted ascending (↑).
+- **Action:** User clicks the "Report Name" column header.
+- **Expected:** The sort direction toggles to descending (Z–A). The arrow icon changes to a downward arrow (↓). Report rows are reordered so that names starting with later letters appear first (e.g., "YTD Asset Overview" before "Budget vs. Actual - Marketing").
+
+**Test: ReportTable clicking Report Name header again toggles sort back to ascending**
+- **Initial state:** User is on the ReportList page with the Report Name column sorted descending (↓).
+- **Action:** User clicks the "Report Name" column header again.
+- **Expected:** The sort direction toggles back to ascending (A–Z). The arrow icon changes to an upward arrow (↑). Report rows are reordered so that names starting with earlier letters appear first.
+
+**Test: ReportTable displays report rows with correct data**
+- **Initial state:** User is on the ReportList page with seeded report data.
+- **Action:** User observes the table rows.
+- **Expected:** Report rows are displayed with correct data. For example: "Q3 2023 Financial Summary" has Type "Financial Report", Date Range "01/1/23 - 01/1/23", Accounts Included "Accounts", Status "Complete". "September Expense Detail" has Type "Expense Detail". Each row contains data in all six columns.
+
+**Test: ReportTable Type column displays report type**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the Type column for various report rows.
+- **Expected:** The Type column displays the type of each report, such as "Financial Report" or "Expense Detail", matching the report type selected when the report was generated.
+
+**Test: ReportTable Date Range column displays formatted date range**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the Date Range column for various report rows.
+- **Expected:** The Date Range column displays the start and end dates for each report in a formatted range (e.g., "01/1/23 - 01/1/23", "01/1/23 - 02/23", "01/1/23 - 05/23"). The dates reflect the date range selected when the report was generated.
+
+**Test: ReportTable Accounts Included column displays included accounts**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the Accounts Included column for various report rows.
+- **Expected:** The Accounts Included column displays a summary of the accounts or categories that were included in the report (e.g., "Accounts"). This reflects the account/category filter settings used when generating the report.
+
+**Test: ReportTable Status column displays Complete badge**
+- **Initial state:** User is on the ReportList page with reports that have finished generating.
+- **Action:** User observes the Status column for a completed report row.
+- **Expected:** The Status column displays a "Complete" badge with a distinct visual style (e.g., colored chip/tag) indicating the report has been successfully generated and is ready for viewing.
+
+**Test: ReportTable Status column displays Pending badge for in-progress report**
+- **Initial state:** User is on the ReportList page and a report is currently being generated.
+- **Action:** User observes the Status column for the in-progress report.
+- **Expected:** The Status column displays a "Pending" or "Generating" badge with a distinct visual style (e.g., different color from the Complete badge) indicating the report is still being processed.
+
+**Test: ReportTable Actions column displays refresh icon button**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the Actions column for a report row.
+- **Expected:** A refresh/reload icon button (↻) is displayed in the Actions column. The icon is clickable and styled as a small icon button.
+
+**Test: ReportTable Actions refresh button regenerates the report**
+- **Initial state:** User is on the ReportList page with a completed report "Q3 2023 Financial Summary".
+- **Action:** User clicks the refresh icon button (↻) in the Actions column for that report.
+- **Expected:** The report is regenerated using its original settings (report type, date range, account filters). The Status badge may temporarily change to "Pending" or "Generating" while the report regenerates, then return to "Complete" when done. The report data is updated to reflect the latest account and transaction data.
+
+**Test: ReportTable Actions column displays download icon button**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the Actions column for a report row.
+- **Expected:** A download icon button (↓) is displayed in the Actions column, positioned to the right of the refresh icon. The icon is clickable and styled as a small icon button.
+
+**Test: ReportTable Actions download button downloads the report**
+- **Initial state:** User is on the ReportList page with a completed report.
+- **Action:** User clicks the download icon button (↓) in the Actions column for that report.
+- **Expected:** A file download is initiated. The downloaded file contains the report data (e.g., CSV or PDF format). The filename includes the report name or ID.
+
+**Test: ReportTable Actions column displays View Details link**
+- **Initial state:** User is on the ReportList page with reports available.
+- **Action:** User observes the Actions column for a report row.
+- **Expected:** A "View Details" text link is displayed in the Actions column, positioned to the right of the download icon. The link text is styled as a clickable blue/link color text.
+
+**Test: ReportTable Actions View Details link navigates to ReportDetails page**
+- **Initial state:** User is on the ReportList page with the "Q3 2023 Financial Summary" report listed.
+- **Action:** User clicks the "View Details" link in the Actions column for that report row.
+- **Expected:** The app navigates to the ReportDetails page for the "Q3 2023 Financial Summary" report, displaying the full report with variance summary, chart, and detailed table.
+
+**Test: ReportTable pagination is displayed below the table**
+- **Initial state:** User is on the ReportList page with more reports than fit on a single page.
+- **Action:** User observes the area below the report table.
+- **Expected:** Pagination controls are displayed below the table, showing the current page number, total pages, and navigation buttons (e.g., previous/next page arrows). The controls allow the user to navigate between pages of reports.
+
+**Test: ReportTable pagination navigates to the next page**
+- **Initial state:** User is on the ReportList page viewing page 1 of reports with pagination controls visible.
+- **Action:** User clicks the next page button in the pagination controls.
+- **Expected:** The table updates to display the next set of report rows (page 2). The pagination controls update to reflect the current page number. The previous page button becomes enabled.
+
+**Test: ReportTable pagination navigates to the previous page**
+- **Initial state:** User is on page 2 of the ReportList table.
+- **Action:** User clicks the previous page button in the pagination controls.
+- **Expected:** The table updates to display the first set of report rows (page 1). The pagination controls update to reflect page 1. The previous page button becomes disabled (since the user is on the first page).
+
+**Test: ReportTable empty state when no reports exist**
+- **Initial state:** User navigates to the ReportList page and no reports have been generated yet.
+- **Action:** User observes the table area.
+- **Expected:** An empty state message is displayed (e.g., "No reports found") indicating that no reports have been generated yet. The "Generate New Report" button is still accessible in the header to create the first report.
+
+**Test: ReportTable newly generated report appears in the list**
+- **Initial state:** User is on the ReportList page with existing reports. User clicks "Generate New Report", configures a new report in the CreateReportDialog, and clicks "Generate Report".
+- **Action:** User observes the ReportTable after the dialog closes.
+- **Expected:** The newly generated report appears in the ReportTable with the correct Report Name, Type, Date Range, Accounts Included, and a Status badge of "Complete" (or "Pending" if still generating). The report row includes all three Actions (refresh, download, View Details).
