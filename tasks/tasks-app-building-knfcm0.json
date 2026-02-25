@@ -1,33 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestSidebarNavLinks: Write test for Sidebar displays all navigation links with icons",
-        "WriteTestClientsLink: Write test for Clients link navigates to /clients",
-        "WriteTestContactsLink: Write test for Contacts link navigates to /contacts",
-        "WriteTestDealsLink: Write test for Deals link navigates to /deals",
-        "WriteTestTasksLink: Write test for Tasks link navigates to /tasks",
-        "WriteTestTeamLink: Write test for Team link navigates to /users",
-        "WriteTestSettingsLink: Write test for Settings link navigates to /settings",
-        "WriteTestActiveHighlight: Write test for Active link is visually highlighted for current page",
-        "WriteTestActiveStateUpdate: Write test for Active state updates on navigation",
-        "WriteTestSidebarPersists: Write test for Sidebar persists across page navigation",
-        "WriteTestSignInButton: Write test for Sign In button displays when not authenticated",
-        "WriteTestInlineAuthForm: Write test for Clicking Sign In reveals inline auth form",
-        "WriteTestSignInValid: Write test for Sign In form submission with valid credentials",
-        "WriteTestSignInInvalid: Write test for Sign In form shows error for invalid credentials",
-        "WriteTestSignInSignUpToggle: Write test for Sign In / Sign Up toggle switches form mode",
-        "WriteTestSignUp: Write test for Sign Up form submission creates account (test mode)",
-        "WriteTestForgotPasswordLink: Write test for Forgot password link navigates to /auth/forgot-password",
-        "WriteTestAvatarName: Write test for Avatar and name display when authenticated",
-        "WriteTestSignOut: Write test for Sign Out returns to unauthenticated state",
-        "WriteTestAuthPersists: Write test for Auth state persists across page navigation"
-      ],
-      "timestamp": "2026-02-25T03:57:30.125Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
         "Unpack: Get all tests passing for SalesCRM"
