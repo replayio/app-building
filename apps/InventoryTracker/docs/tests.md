@@ -2078,4 +2078,363 @@ Components: TransactionHeader, BasicInfoSection, QuantityTransfersTable, Batches
 
 Components: BasicInfoForm, QuantityTransfersSection, BatchAllocationSection, PostButton, CancelButton
 
-<!-- Tests to be added by PlanPageNewTransaction -->
+### BasicInfoForm
+
+**Test: Basic Info section displays with numbered heading "1. Basic Info"**
+- Components: BasicInfoForm
+- Given: The user navigates to /transactions/new (NewTransactionPage)
+- Then: A section heading "1. Basic Info" is displayed at the top of the form
+
+**Test: Date field displays a date picker defaulting to today's date**
+- Components: BasicInfoForm
+- Given: The user navigates to /transactions/new
+- Then: A "Date" label is displayed with a date picker input below it
+- And: The date picker shows a calendar icon on the left side
+- And: The date field defaults to today's date in YYYY-MM-DD format (e.g., "2024-05-23")
+
+**Test: User can change the date using the date picker**
+- Components: BasicInfoForm
+- Given: The user is on the NewTransactionPage with the date set to "2024-05-23"
+- When: The user clicks the date field and selects a different date (e.g., "2024-06-15")
+- Then: The date field updates to show "2024-06-15"
+
+**Test: Reference ID field displays a text input**
+- Components: BasicInfoForm
+- Given: The user navigates to /transactions/new
+- Then: A "Reference ID" label is displayed with a text input below it
+- And: The input shows placeholder text (e.g., "TRX-20240523-001")
+
+**Test: User can type a reference ID**
+- Components: BasicInfoForm
+- Given: The user is on the NewTransactionPage
+- When: The user types "TRX-20240601-005" into the Reference ID input
+- Then: The input displays "TRX-20240601-005"
+
+**Test: Description field displays a multi-line textarea**
+- Components: BasicInfoForm
+- Given: The user navigates to /transactions/new
+- Then: A "Description" label is displayed with a textarea input below it
+- And: The textarea is larger than the other fields to accommodate multi-line text
+
+**Test: User can type a multi-line description**
+- Components: BasicInfoForm
+- Given: The user is on the NewTransactionPage
+- When: The user types "Q2 Inventory Adjustment for raw materials and finished goods." into the Description textarea
+- Then: The textarea displays the full text without truncation
+
+**Test: Transaction Type field displays a dropdown selector**
+- Components: BasicInfoForm
+- Given: The user navigates to /transactions/new
+- Then: A "Transaction Type" label is displayed with a dropdown/select input below it
+- And: The dropdown shows a chevron/arrow indicating it can be opened
+
+**Test: Transaction Type dropdown shows available transaction types**
+- Components: BasicInfoForm
+- Given: The user is on the NewTransactionPage
+- When: The user clicks the Transaction Type dropdown
+- Then: A list of transaction types is displayed (e.g., "Transfer", "Purchase", "Consumption", "Adjustment", "Production")
+
+**Test: User can select a transaction type from the dropdown**
+- Components: BasicInfoForm
+- Given: The user is on the NewTransactionPage and the Transaction Type dropdown is open
+- When: The user selects "Transfer"
+- Then: The dropdown closes and displays "Transfer" as the selected value
+
+**Test: Basic Info fields are laid out in a horizontal row**
+- Components: BasicInfoForm
+- Given: The user navigates to /transactions/new
+- Then: The Date, Reference ID, Description, and Transaction Type fields are displayed side by side in a horizontal row (responsive grid layout)
+- And: The Description field is wider than the other fields to accommodate text
+
+### QuantityTransfersSection
+
+**Test: Quantity Transfers section displays with numbered heading "2. Quantity Transfers"**
+- Components: QuantityTransfersSection
+- Given: The user navigates to /transactions/new
+- Then: A section heading "2. Quantity Transfers" is displayed below the Basic Info section
+
+**Test: Quantity Transfers table displays correct column headers**
+- Components: QuantityTransfersSection
+- Given: The user navigates to /transactions/new
+- Then: The Quantity Transfers table shows columns: Source Account, Destination Account, Amount, Source Batch ID (Optional)
+- And: A delete/remove icon column is shown on the far right
+
+**Test: Quantity Transfers table is initially empty**
+- Components: QuantityTransfersSection
+- Given: The user navigates to /transactions/new without any pre-filled data
+- Then: The Quantity Transfers table has no data rows
+- And: The "+ Add Quantity Transfer" button and inline input row are visible below the table
+
+**Test: Add Quantity Transfer row shows inline input controls**
+- Components: QuantityTransfersSection
+- Given: The user is on the NewTransactionPage
+- Then: Below the table rows, an inline row displays:
+  - A "Source Account" dropdown selector
+  - A "Destination Account" dropdown selector
+  - An "Amount" numeric input field
+  - A unit dropdown/label next to the Amount field (e.g., "unit")
+  - A "Source Batch ID" text input field
+
+**Test: Clicking "+ Add Quantity Transfer" button adds a new transfer row**
+- Components: QuantityTransfersSection
+- Given: The user has filled in the inline input row with:
+  - Source Account: "Raw Materials - Warehouse A (1010)"
+  - Destination Account: "WIP - Production Line 1 (1020)"
+  - Amount: "500"
+  - Unit: "kg"
+  - Source Batch ID: "BATCH-RM-A-001"
+- When: The user clicks the "+ Add Quantity Transfer" button
+- Then: A new row appears in the Quantity Transfers table with:
+  - Source Account: "Raw Materials - Warehouse A (1010)"
+  - Destination Account: "WIP - Production Line 1 (1020)"
+  - Amount: "500 kg"
+  - Source Batch ID: "BATCH-RM-A-001"
+- And: The inline input fields are cleared for the next entry
+
+**Test: Source Account dropdown shows available accounts**
+- Components: QuantityTransfersSection
+- Given: The user is on the NewTransactionPage
+- When: The user clicks the "Source Account" dropdown in the add-transfer row
+- Then: A list of available accounts is displayed with account name and number (e.g., "Raw Materials - Warehouse A (1010)")
+
+**Test: Destination Account dropdown shows available accounts**
+- Components: QuantityTransfersSection
+- Given: The user is on the NewTransactionPage
+- When: The user clicks the "Destination Account" dropdown in the add-transfer row
+- Then: A list of available accounts is displayed with account name and number (e.g., "WIP - Production Line 1 (1020)")
+
+**Test: Amount field accepts numeric values only**
+- Components: QuantityTransfersSection
+- Given: The user is on the NewTransactionPage
+- When: The user types "500" into the Amount field in the add-transfer row
+- Then: The field displays "500"
+- And: The field does not accept non-numeric characters
+
+**Test: Source Batch ID field is optional and accepts free text**
+- Components: QuantityTransfersSection
+- Given: The user is on the NewTransactionPage
+- When: The user leaves the Source Batch ID field empty and adds a transfer
+- Then: The transfer row is added successfully with the Source Batch ID column showing empty or "N/A"
+
+**Test: Adding multiple transfer rows**
+- Components: QuantityTransfersSection
+- Given: The user has added one transfer row from "Raw Materials - Warehouse A (1010)" to "WIP - Production Line 1 (1020)" for "500 kg"
+- When: The user fills in a second transfer with Source Account "Finished Goods - Warehouse B (1030)", Destination Account "Cost of Goods Sold (5010)", Amount "200 Units"
+- And: The user clicks "+ Add Quantity Transfer"
+- Then: Two rows are displayed in the Quantity Transfers table:
+  - Row 1: "Raw Materials - Warehouse A (1010)" → "WIP - Production Line 1 (1020)", 500 kg, BATCH-RM-A-001
+  - Row 2: "Finished Goods - Warehouse B (1030)" → "Cost of Goods Sold (5010)", 200 Units
+
+**Test: Delete button removes a transfer row**
+- Components: QuantityTransfersSection
+- Given: The Quantity Transfers table has two transfer rows
+- When: The user clicks the delete/trash icon on the first transfer row
+- Then: The first transfer row is removed from the table
+- And: Only the second transfer row remains
+
+**Test: Delete icon is displayed on each transfer row**
+- Components: QuantityTransfersSection
+- Given: The Quantity Transfers table has one or more transfer rows
+- Then: Each row displays a delete/trash icon on the far right side
+
+**Test: Unit selector allows choosing the unit of measure**
+- Components: QuantityTransfersSection
+- Given: The user is on the NewTransactionPage
+- When: The user clicks the unit dropdown next to the Amount field
+- Then: Available units are displayed (e.g., "unit", "kg", "m", "L")
+- And: The user can select a unit for the transfer amount
+
+**Test: Pre-filled transfer data from navigation**
+- Components: QuantityTransfersSection
+- Given: The user navigated to /transactions/new from an account or material page with pre-filled data
+- Then: The Quantity Transfers section shows the pre-filled transfer row(s) with the correct source/destination accounts and material information
+
+### BatchAllocationSection
+
+**Test: Batch Allocation section displays with numbered heading "3. Batch Allocation"**
+- Components: BatchAllocationSection
+- Given: The user navigates to /transactions/new
+- Then: A section heading "3. Batch Allocation" is displayed below the Quantity Transfers section
+
+**Test: Batch Allocation table displays correct column headers**
+- Components: BatchAllocationSection
+- Given: The user navigates to /transactions/new
+- Then: The Batch Allocation table shows columns: Material, Amount
+- And: A delete/remove icon column is shown on the far right
+
+**Test: Batch Allocation table is initially empty**
+- Components: BatchAllocationSection
+- Given: The user navigates to /transactions/new without any pre-filled data
+- Then: The Batch Allocation table has no data rows
+- And: The "+ Create New Batch" button and inline input row are visible below the table
+
+**Test: Add batch inline row shows Material dropdown and Amount input**
+- Components: BatchAllocationSection
+- Given: The user is on the NewTransactionPage
+- Then: Below the table rows, an inline row displays:
+  - A "Material" dropdown selector
+  - An "Amount" numeric input field with a spinner/increment control
+
+**Test: Clicking "+ Create New Batch" button adds a new batch row**
+- Components: BatchAllocationSection
+- Given: The user has filled in the inline input row with:
+  - Material: "FG-Product-X"
+  - Amount: "200"
+- When: The user clicks the "+ Create New Batch" button
+- Then: A new row appears in the Batch Allocation table with:
+  - Material: "FG-Product-X"
+  - Amount: "200 Units"
+- And: The inline input fields are cleared for the next entry
+
+**Test: Material dropdown shows available materials**
+- Components: BatchAllocationSection
+- Given: The user is on the NewTransactionPage
+- When: The user clicks the "Material" dropdown in the add-batch row
+- Then: A list of available materials is displayed (e.g., "FG-Product-X", "FG-Product-Y", "Raw Material A")
+
+**Test: Amount field in batch allocation accepts numeric values**
+- Components: BatchAllocationSection
+- Given: The user is on the NewTransactionPage
+- When: The user types "150" into the Amount field in the add-batch row
+- Then: The field displays "150"
+
+**Test: Adding multiple batch rows**
+- Components: BatchAllocationSection
+- Given: The user has added one batch row for "FG-Product-X" with amount "200 Units"
+- When: The user fills in Material "FG-Product-Y" and Amount "150" and clicks "+ Create New Batch"
+- Then: Two rows are displayed in the Batch Allocation table:
+  - Row 1: FG-Product-X, 200 Units
+  - Row 2: FG-Product-Y, 150 Units
+
+**Test: Delete button removes a batch row**
+- Components: BatchAllocationSection
+- Given: The Batch Allocation table has two batch rows
+- When: The user clicks the delete/trash icon on the first batch row
+- Then: The first batch row is removed from the table
+- And: Only the second batch row remains
+
+**Test: Delete icon is displayed on each batch row**
+- Components: BatchAllocationSection
+- Given: The Batch Allocation table has one or more batch rows
+- Then: Each row displays a delete/trash icon on the far right side
+
+**Test: Batch amount field shows unit from the selected material**
+- Components: BatchAllocationSection
+- Given: The user selects "FG-Product-X" which uses "Units" as its unit of measure
+- Then: The Amount column for that batch row displays the value with "Units" (e.g., "200 Units")
+
+### PostButton
+
+**Test: Post button is displayed in the page header with primary styling**
+- Components: PostButton
+- Given: The user navigates to /transactions/new
+- Then: A "Post" button is displayed in the top-right corner of the page header
+- And: The button has primary/prominent styling (e.g., filled blue/green background, white text)
+
+**Test: Clicking Post button with valid data creates the transaction and navigates to detail page**
+- Components: PostButton, BasicInfoForm, QuantityTransfersSection, BatchAllocationSection
+- Given: The user has filled in:
+  - Date: "2024-05-23"
+  - Reference ID: "TRX-20240523-001"
+  - Description: "Q2 Inventory Adjustment for raw materials and finished goods."
+  - Transaction Type: "Transfer"
+  - One quantity transfer: Raw Materials - Warehouse A (1010) → WIP - Production Line 1 (1020), 500 kg, BATCH-RM-A-001
+  - One batch: FG-Product-X, 200 Units
+- When: The user clicks the "Post" button
+- Then: The transaction is created and persisted in the database
+- And: The app navigates to the TransactionDetailPage (/transactions/:transactionId) for the newly created transaction
+
+**Test: Posted transaction appears in TransactionsPage listing**
+- Components: PostButton
+- Given: The user has created a new transaction with Reference ID "TRX-20240523-001"
+- When: The user navigates to /transactions (TransactionsPage)
+- Then: The newly created transaction appears in the transactions table with the correct date, reference ID, description, and accounts affected
+
+**Test: Posted transaction updates account balances**
+- Components: PostButton
+- Given: The user has created a transaction transferring 500 kg from "Raw Materials - Warehouse A" to "WIP - Production Line 1"
+- When: The user navigates to the AccountDetailPage for "Raw Materials - Warehouse A"
+- Then: The material quantities reflect the deduction of 500 kg
+- When: The user navigates to the AccountDetailPage for "WIP - Production Line 1"
+- Then: The material quantities reflect the addition of 500 kg
+
+**Test: Posted transaction with batch allocation creates new batches**
+- Components: PostButton, BatchAllocationSection
+- Given: The user has created a transaction with a batch allocation for "FG-Product-X", 200 Units
+- When: The user navigates to the MaterialDetailPage for "FG-Product-X"
+- Then: A new batch appears in the batches list with 200 Units
+- And: The batch's lineage references the creating transaction
+
+**Test: Post button validates that required fields are filled**
+- Components: PostButton, BasicInfoForm
+- Given: The user is on the NewTransactionPage with the Date field empty or the Transaction Type not selected
+- When: The user clicks the "Post" button
+- Then: Validation errors are displayed on the missing required fields (e.g., "Date is required", "Transaction Type is required")
+- And: The transaction is not created
+
+**Test: Post button validates that at least one quantity transfer exists**
+- Components: PostButton, QuantityTransfersSection
+- Given: The user has filled in Basic Info fields but has not added any quantity transfers
+- When: The user clicks the "Post" button
+- Then: A validation error is displayed (e.g., "At least one quantity transfer is required")
+- And: The transaction is not created
+
+**Test: Post button validates double-entry balance (debits equal credits)**
+- Components: PostButton, QuantityTransfersSection
+- Given: The user has added transfers that do not balance (e.g., source amounts do not equal destination amounts across transfers)
+- When: The user clicks the "Post" button
+- Then: A validation error is displayed (e.g., "Transaction is unbalanced: debits must equal credits")
+- And: The transaction is not created
+
+**Test: Post button is disabled or shows loading state while submitting**
+- Components: PostButton
+- Given: The user has filled in valid data and clicks "Post"
+- Then: The "Post" button shows a loading/spinner state or becomes disabled to prevent double submission
+- And: The button returns to normal state if submission fails
+
+### CancelButton
+
+**Test: Cancel button is displayed in the page header with secondary styling**
+- Components: CancelButton
+- Given: The user navigates to /transactions/new
+- Then: A "Cancel" button is displayed in the top-right corner of the page header, to the left of the "Post" button
+- And: The button has secondary/outline styling (e.g., outlined, less prominent than the Post button)
+
+**Test: Clicking Cancel button navigates back to TransactionsPage**
+- Components: CancelButton
+- Given: The user is on the NewTransactionPage
+- When: The user clicks the "Cancel" button
+- Then: The app navigates to /transactions (TransactionsPage)
+- And: No transaction is created
+
+**Test: Clicking Cancel button with unsaved data shows confirmation dialog**
+- Components: CancelButton
+- Given: The user has entered data in the form (e.g., typed a description or added a transfer row)
+- When: The user clicks the "Cancel" button
+- Then: A confirmation dialog appears asking "Are you sure you want to cancel? Unsaved changes will be lost."
+- And: The dialog shows "Confirm" and "Stay" buttons
+
+**Test: Confirming cancel discards changes and navigates away**
+- Components: CancelButton
+- Given: The cancel confirmation dialog is showing
+- When: The user clicks "Confirm" in the dialog
+- Then: The app navigates to /transactions (TransactionsPage)
+- And: All entered data is discarded
+
+**Test: Clicking Stay in cancel dialog returns to the form**
+- Components: CancelButton
+- Given: The cancel confirmation dialog is showing
+- When: The user clicks "Stay" in the dialog
+- Then: The dialog closes
+- And: The user remains on the NewTransactionPage with all entered data preserved
+
+**Test: Page header displays "New Transaction" title**
+- Components: PostButton, CancelButton
+- Given: The user navigates to /transactions/new
+- Then: The page header displays "New Transaction" as a large heading on the left
+- And: The Cancel and Post buttons are on the right side of the header
+
+**Test: Sidebar shows Transactions link as active on New Transaction page**
+- Components: PostButton, CancelButton
+- Given: The user navigates to /transactions/new
+- Then: The sidebar "Transactions" link is visually highlighted as the active page
