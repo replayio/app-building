@@ -2159,7 +2159,33 @@ Given the WebhookModal is open and a platform is selected, the setup guide displ
 
 ### Components: TeamHeader, UserCardGrid
 
-<!-- Tests for user cards display, navigation to user detail -->
+#### TeamHeader
+
+**Page title displays "Team"**
+Given the user navigates to /users, the page displays the heading "Team" at the top of the content area.
+
+#### UserCardGrid
+
+**User cards are displayed in a grid layout**
+Given the user navigates to /users with seeded team members in the database, a grid of user cards is displayed showing all team members. The grid contains one card per user (9 seeded team members).
+
+**Each user card displays avatar**
+Given the user is on /users with team members, each user card displays the user's avatar image. If no avatar is available, an initials fallback is shown derived from the user's name.
+
+**Each user card displays name**
+Given the user is on /users with team members, each user card displays the user's full name prominently.
+
+**Each user card displays email**
+Given the user is on /users with team members, each user card displays the user's email address below their name.
+
+**Each user card displays active deals count**
+Given the user is on /users with team members who own deals, each user card displays the count of active deals owned by that user (e.g., "3 Active Deals"). The count reflects only deals that are currently active/open.
+
+**Each user card displays open tasks count**
+Given the user is on /users with team members who have assigned tasks, each user card displays the count of open tasks assigned to that user (e.g., "5 Open Tasks"). The count reflects only tasks that are not yet completed or canceled.
+
+**Clicking a user card navigates to /users/:userId**
+Given the user is on /users with team members displayed, when they click on a user card, the app navigates to /users/:userId where :userId is the ID of the clicked user, and the UserDetailPage is displayed for that user.
 
 ---
 
