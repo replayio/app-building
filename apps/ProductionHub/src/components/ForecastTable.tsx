@@ -9,7 +9,7 @@ export function ForecastTable({ forecasts }: ForecastTableProps) {
     <div data-testid="forecast-section">
       <div className="section-card">
         <div className="section-card-header">
-          <span className="section-card-title">Forecast/Availability</span>
+          <span className="section-card-title" data-testid="forecast-heading">Forecast/Availability</span>
         </div>
         <div className="section-card-body" style={{ padding: 0 }}>
           {forecasts.length === 0 ? (

@@ -71,7 +71,7 @@ export function RunHeader({ run }: RunHeaderProps) {
       <div className="page-content" style={{ paddingBottom: 0 }}>
         <div className="section-card">
           <div className="section-card-header">
-            <span className="section-card-title">High-Level Information</span>
+            <span className="section-card-title" data-testid="run-info-heading">High-Level Information</span>
           </div>
           <div className="section-card-body" data-testid="run-info-card">
             <div className="run-info-grid">

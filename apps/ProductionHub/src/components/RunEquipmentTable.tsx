@@ -9,7 +9,7 @@ export function RunEquipmentTable({ equipment }: RunEquipmentTableProps) {
     <div data-testid="run-equipment-section">
       <div className="section-card">
         <div className="section-card-header">
-          <span className="section-card-title">Equipment and Availability</span>
+          <span className="section-card-title" data-testid="run-equipment-heading">Equipment and Availability</span>
         </div>
         <div className="section-card-body" style={{ padding: 0 }}>
           {equipment.length === 0 ? (

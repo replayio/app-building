@@ -13,7 +13,7 @@ export function RawMaterialsTable({
     <div data-testid="raw-materials-section">
       <div className="section-card">
         <div className="section-card-header">
-          <span className="section-card-title">Recipe and Raw Materials</span>
+          <span className="section-card-title" data-testid="raw-materials-heading">Recipe and Raw Materials</span>
         </div>
         <div className="section-card-body" style={{ padding: 0 }}>
           {materials.length === 0 ? (
