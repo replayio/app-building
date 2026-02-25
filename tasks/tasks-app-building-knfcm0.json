@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageAccountDetailPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentAccountHeader: Add test entries for AccountHeader (account name, category label, New Transaction button, search bar)",
-        "PlanComponentBudgetOverview: Add test entries for BudgetOverview (progress bar, actual vs budgeted amounts, percentage used)",
-        "PlanComponentTransactionsTab: Add test entries for TransactionsTab (table with Date/Description/Amount/Direction/Actions columns, View/Edit links, tab switching)",
-        "PlanComponentBudgetDetailsTab: Add test entries for BudgetDetailsTab (budget line items with actual/budgeted, progress bars per item)",
-        "PlanComponentReportingLinks: Add test entries for ReportingLinks (Actual vs Budget Report link, Transaction History Report link)"
-      ],
-      "timestamp": "2026-02-24T19:29:25.540Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageNewTransactionModal: Decide on components, add sections to docs/tests.md",
         "PlanComponentTransactionHeaderFields: Add test entries for TransactionHeaderFields (date picker, description input, currency dropdown)",
         "PlanComponentLineItemsTable: Add test entries for LineItemsTable (account dropdown, type Credit/Debit dropdown, amount input, delete row button, Add Line Item button)",
