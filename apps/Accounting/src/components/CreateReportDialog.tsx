@@ -4,12 +4,18 @@ import { createReport } from "../slices/reportsSlice";
 
 interface CreateReportDialogProps {
   onClose: () => void;
+  defaultType?: "summary" | "detailed" | "budget_vs_actual";
+  defaultAccountName?: string;
 }
 
-export function CreateReportDialog({ onClose }: CreateReportDialogProps): React.ReactElement {
+export function CreateReportDialog({ onClose, defaultType, defaultAccountName }: CreateReportDialogProps): React.ReactElement {
   const dispatch = useAppDispatch();
-  const [name, setName] = useState("");
-  const [reportType, setReportType] = useState<"summary" | "detailed" | "budget_vs_actual">("summary");
+  const [name, setName] = useState(
+    defaultAccountName
+      ? `${defaultType === "budget_vs_actual" ? "Budget vs Actual" : "Transaction History"} - ${defaultAccountName}`
+      : ""
+  );
+  const [reportType, setReportType] = useState<"summary" | "detailed" | "budget_vs_actual">(defaultType ?? "summary");
   const [dateStart, setDateStart] = useState("");
   const [dateEnd, setDateEnd] = useState("");
   const [categoriesFilter, setCategoriesFilter] = useState("");

@@ -355,6 +355,311 @@
   margin-top: 4px;
 }
 
+/* Account Detail Page — Header */
+.account-detail-breadcrumb {
+  margin-bottom: 8px;
+}
+
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.account-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.account-header-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.account-header-category {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.account-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.account-header-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.account-header-search-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.account-header-search-input {
+  height: 36px;
+  width: 240px;
+  padding: 0 32px 0 30px;
+  font-size: 13px;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: var(--bg-base-color);
+  border: 1px solid var(--normal-border);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.account-header-search-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(77, 124, 94, 0.15);
+}
+
+.account-header-search-input::placeholder {
+  color: var(--text-disabled);
+}
+
+.account-header-search-clear {
+  position: absolute;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-radius: 4px;
+  transition: background-color 0.1s ease;
+}
+
+.account-header-search-clear:hover {
+  background: rgba(50, 45, 35, 0.08);
+}
+
+/* Account Detail Page — Budget Overview */
+.budget-overview {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.budget-overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.budget-overview-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.budget-overview-pct {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.budget-overview-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--budget-bar-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.budget-overview-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--budget-bar-fill);
+  transition: width 0.3s ease;
+}
+
+.budget-overview-bar-fill--warning {
+  background: var(--budget-bar-fill-warning);
+}
+
+.budget-overview-bar-fill--over {
+  background: var(--budget-bar-fill-over);
+}
+
+.budget-overview-amounts {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Account Detail Page — Tabs section */
+.account-detail-tabs {
+  margin-bottom: 24px;
+}
+
+/* Transaction table */
+.transactions-table-wrapper {
+  overflow-x: auto;
+}
+
+.transactions-empty {
+  padding: 32px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.transaction-direction {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 11px;
+}
+
+.transaction-direction--debit {
+  background: #f5e3e3;
+  color: var(--status-error);
+}
+
+.transaction-direction--credit {
+  background: #e6ede8;
+  color: var(--status-success);
+}
+
+.transaction-action-link {
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--accent-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.1s ease;
+}
+
+.transaction-action-link:hover {
+  color: var(--accent-dark);
+}
+
+/* Budget Details Tab */
+.budget-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.budget-details-empty {
+  padding: 32px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.budget-detail-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.budget-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.budget-detail-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.budget-detail-amounts {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.budget-detail-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--budget-bar-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.budget-detail-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--budget-bar-fill);
+  transition: width 0.3s ease;
+}
+
+.budget-detail-bar-fill--warning {
+  background: var(--budget-bar-fill-warning);
+}
+
+.budget-detail-bar-fill--over {
+  background: var(--budget-bar-fill-over);
+}
+
+/* Reporting Links */
+.reporting-links {
+  margin-top: 8px;
+}
+
+.reporting-links-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.reporting-links-list {
+  display: flex;
+  gap: 12px;
+}
+
+.reporting-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--accent-primary);
+  background: var(--bg-base-color);
+  border: 1px solid var(--bg-border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+}
+
+.reporting-link:hover {
+  background: var(--accent-subtle-bg);
+  border-color: var(--accent-primary);
+  color: var(--accent-dark);
+}
+
 /* Modal overlay */
 .modal-overlay {
   position: fixed;
