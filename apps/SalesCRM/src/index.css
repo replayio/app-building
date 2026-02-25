@@ -1,5 +1,6 @@
 @import "@shared/styles/tokens.css";
 @import "@shared/styles/layout.css";
+@import "@shared/styles/common.css";
 
 /* App layout */
 .sidebar-layout {
