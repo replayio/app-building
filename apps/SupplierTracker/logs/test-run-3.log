@@ -1,0 +1,54 @@
+
+> supplier-tracker@1.0.0 test
+> tsx scripts/test.ts tests/dashboard-quick-actions.spec.ts
+
+
+--- Killing stale processes ---
+
+--- Cleaning up stale test branches ---
+
+--- Creating ephemeral branch: test-worker-1771996656827-t8jtcg ---
+Branch created: br-floral-term-ajns7m58
+
+--- Initializing schema on test branch ---
+Schema initialized.
+
+--- Seeding test data ---
+Seed data inserted successfully.
+  - 10 suppliers
+  - 3 supplier documents
+  - 3 supplier comments
+  - 9 orders (5 dashboard + 3 upcoming + 3 historical + 1 detail)
+  - 3 line items
+  - 3 order documents
+  - 4 order history entries
+
+--- Removing stale recordings ---
+
+--- Running Playwright: tests/dashboard-quick-actions.spec.ts ---
+[2m[WebServer] [22m[33m⠋[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠙[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠹[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[32m√[39m Vite dev server ready on port 5173
+
+Running 10 tests using 2 workers
+
+[2m[WebServer] [22m(node:25533) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+[2m[WebServer] [22m(Use `node --trace-deprecation ...` to show where the warning was created)
+  ✓   2 tests/dashboard-quick-actions.spec.ts:17:3 › DashboardPage - QuickActions › Display Create Purchase Order Button (10.6s)
+  ✓   1 tests/dashboard-quick-actions.spec.ts:9:3 › DashboardPage - QuickActions › Display Add New Supplier Button (10.8s)
+  ✓   3 tests/dashboard-quick-actions.spec.ts:25:3 › DashboardPage - QuickActions › Add New Supplier Button Opens Create Supplier Dialog (3.2s)
+  ✓   4 tests/dashboard-quick-actions.spec.ts:56:3 › DashboardPage - QuickActions › Create Supplier via Dialog Saves and Updates Dashboard (4.5s)
+  ✓   5 tests/dashboard-quick-actions.spec.ts:87:3 › DashboardPage - QuickActions › Create Supplier Dialog Cancel Does Not Create Supplier (2.9s)
+  ✓   6 tests/dashboard-quick-actions.spec.ts:113:3 › DashboardPage - QuickActions › Create Supplier Dialog Validation (2.3s)
+  ✓   7 tests/dashboard-quick-actions.spec.ts:128:3 › DashboardPage - QuickActions › Create Purchase Order Button Opens Create Order Dialog (2.5s)
+  ✓   9 tests/dashboard-quick-actions.spec.ts:195:3 › DashboardPage - QuickActions › Create Order Dialog Cancel Does Not Create Order (2.6s)
+  ✓   8 tests/dashboard-quick-actions.spec.ts:154:3 › DashboardPage - QuickActions › Create Order via Dialog Saves and Updates Dashboard (5.7s)
+  ✓  10 tests/dashboard-quick-actions.spec.ts:219:3 › DashboardPage - QuickActions › Create Order Dialog Validation (2.5s)
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+  10 passed (32.0s)
+
+--- Cleaning up ---
+Deleting ephemeral branch: test-worker-1771996656827-t8jtcg

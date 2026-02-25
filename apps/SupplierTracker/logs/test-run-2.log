@@ -1,0 +1,58 @@
+
+> supplier-tracker@1.0.0 test
+> tsx scripts/test.ts tests/dashboard-upcoming-orders.spec.ts
+
+
+--- Killing stale processes ---
+
+--- Cleaning up stale test branches ---
+
+--- Creating ephemeral branch: test-worker-1771996593661-dranau ---
+Branch created: br-damp-wildflower-ajs55pra
+
+--- Initializing schema on test branch ---
+Schema initialized.
+
+--- Seeding test data ---
+Seed data inserted successfully.
+  - 10 suppliers
+  - 3 supplier documents
+  - 3 supplier comments
+  - 9 orders (5 dashboard + 3 upcoming + 3 historical + 1 detail)
+  - 3 line items
+  - 3 order documents
+  - 4 order history entries
+
+--- Removing stale recordings ---
+
+--- Running Playwright: tests/dashboard-upcoming-orders.spec.ts ---
+[2m[WebServer] [22m[33m⠋[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠙[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠹[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[33m⠸[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[32m√[39m Vite dev server ready on port 5173
+
+Running 13 tests using 2 workers
+
+[2m[WebServer] [22m(node:24942) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+[2m[WebServer] [22m(Use `node --trace-deprecation ...` to show where the warning was created)
+  ✓   1 tests/dashboard-upcoming-orders.spec.ts:10:3 › DashboardPage - UpcomingOrdersTable › Display Upcoming Orders Heading (10.5s)
+  ✓   2 tests/dashboard-upcoming-orders.spec.ts:16:3 › DashboardPage - UpcomingOrdersTable › Display Table with Correct Columns (10.6s)
+  ✓   4 tests/dashboard-upcoming-orders.spec.ts:73:3 › DashboardPage - UpcomingOrdersTable › Order ID Links Navigate to Order Details (2.5s)
+  ✓   3 tests/dashboard-upcoming-orders.spec.ts:28:3 › DashboardPage - UpcomingOrdersTable › Display Order Data Rows (4.3s)
+  ✓   5 tests/dashboard-upcoming-orders.spec.ts:84:3 › DashboardPage - UpcomingOrdersTable › Order ID Links Are Styled as Clickable (2.7s)
+  ✓   6 tests/dashboard-upcoming-orders.spec.ts:106:3 › DashboardPage - UpcomingOrdersTable › Status Badges with Correct Colors (2.5s)
+  ✓   7 tests/dashboard-upcoming-orders.spec.ts:129:3 › DashboardPage - UpcomingOrdersTable › Filter by Status Dropdown (3.2s)
+  ✓   8 tests/dashboard-upcoming-orders.spec.ts:155:3 › DashboardPage - UpcomingOrdersTable › Filter by Supplier Dropdown (3.2s)
+  ✓   9 tests/dashboard-upcoming-orders.spec.ts:183:3 › DashboardPage - UpcomingOrdersTable › Both Filters Applied Together (3.4s)
+  ✓  10 tests/dashboard-upcoming-orders.spec.ts:210:3 › DashboardPage - UpcomingOrdersTable › Empty State When No Orders Match Filters (2.9s)
+  ✓  12 tests/dashboard-upcoming-orders.spec.ts:251:3 › DashboardPage - UpcomingOrdersTable › Currency Formatting in Total Cost Column (2.5s)
+  ✓  11 tests/dashboard-upcoming-orders.spec.ts:229:3 › DashboardPage - UpcomingOrdersTable › Empty State When No Upcoming Orders Exist (4.5s)
+  ✓  13 tests/dashboard-upcoming-orders.spec.ts:262:3 › DashboardPage - UpcomingOrdersTable › Date Formatting in Expected Delivery Column (9.0s)
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+  13 passed (42.8s)
+
+--- Cleaning up ---
+Deleting ephemeral branch: test-worker-1771996593661-dranau

@@ -1,0 +1,56 @@
+
+> supplier-tracker@1.0.0 test
+> tsx scripts/test.ts tests/dashboard-suppliers-list.spec.ts
+
+
+--- Killing stale processes ---
+
+--- Cleaning up stale test branches ---
+
+--- Creating ephemeral branch: test-worker-1771996542383-stw3vs ---
+Branch created: br-shiny-waterfall-aj21jd6u
+
+--- Initializing schema on test branch ---
+Schema initialized.
+
+--- Seeding test data ---
+Seed data inserted successfully.
+  - 10 suppliers
+  - 3 supplier documents
+  - 3 supplier comments
+  - 9 orders (5 dashboard + 3 upcoming + 3 historical + 1 detail)
+  - 3 line items
+  - 3 order documents
+  - 4 order history entries
+
+--- Removing stale recordings ---
+
+--- Running Playwright: tests/dashboard-suppliers-list.spec.ts ---
+[2m[WebServer] [22m[33m⠋[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠙[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[2m[WebServer] [22m[33m⠹[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[1G[33m⠸[39m Waiting for Vite dev server to be ready on port 5173
+[2m[WebServer] [22m[32m√[39m Vite dev server ready on port 5173
+
+Running 11 tests using 2 workers
+
+[2m[WebServer] [22m(node:24390) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+[2m[WebServer] [22m(Use `node --trace-deprecation ...` to show where the warning was created)
+  ✓   1 tests/dashboard-suppliers-list.spec.ts:16:3 › DashboardPage - SuppliersList › Display Supplier Cards in Grid Layout (11.0s)
+  ✓   2 tests/dashboard-suppliers-list.spec.ts:10:3 › DashboardPage - SuppliersList › Display Suppliers List Heading (11.0s)
+  ✓   4 tests/dashboard-suppliers-list.spec.ts:46:3 › DashboardPage - SuppliersList › Supplier Card Displays Status Badge (2.4s)
+  ✓   3 tests/dashboard-suppliers-list.spec.ts:31:3 › DashboardPage - SuppliersList › Supplier Card Displays Supplier Name (2.4s)
+  ✓   5 tests/dashboard-suppliers-list.spec.ts:74:3 › DashboardPage - SuppliersList › Supplier Card Displays Contact Email (2.4s)
+  ✓   6 tests/dashboard-suppliers-list.spec.ts:61:3 › DashboardPage - SuppliersList › Supplier Card Displays Contact Name (2.5s)
+  ✓   7 tests/dashboard-suppliers-list.spec.ts:87:3 › DashboardPage - SuppliersList › Supplier Card Displays Orders Summary (2.5s)
+  ✓   8 tests/dashboard-suppliers-list.spec.ts:102:3 › DashboardPage - SuppliersList › Supplier Card Shows All Fields Together (2.6s)
+  ✓   9 tests/dashboard-suppliers-list.spec.ts:133:3 › DashboardPage - SuppliersList › Clicking Supplier Card Navigates to Supplier Details (2.7s)
+  ✓  10 tests/dashboard-suppliers-list.spec.ts:153:3 › DashboardPage - SuppliersList › Multiple Supplier Cards Displayed (2.6s)
+  ✓  11 tests/dashboard-suppliers-list.spec.ts:192:3 › DashboardPage - SuppliersList › Empty State When No Suppliers Exist (3.7s)
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+  11 passed (31.6s)
+
+--- Cleaning up ---
+Deleting ephemeral branch: test-worker-1771996542383-stw3vs
