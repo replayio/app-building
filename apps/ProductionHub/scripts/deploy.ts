@@ -171,10 +171,47 @@ async function main() {
 
   // --- Set DATABASE_URL on Netlify site so functions can access the database ---
   console.log("\n--- Setting DATABASE_URL on Netlify ---");
-  execSync(
-    `npx netlify env:set DATABASE_URL "${databaseUrl}" --scope functions --site ${netlifySiteId}`,
-    { cwd: appDir, stdio: "inherit" }
+  const netlifyToken = env("NETLIFY_AUTH_TOKEN");
+  const envRes = await fetch(
+    `https://api.netlify.com/api/v1/accounts/${netlifyAccountSlug}/env?site_id=${netlifySiteId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${netlifyToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([
+        {
+          key: "DATABASE_URL",
+          scopes: ["functions"],
+          values: [{ value: databaseUrl, context: "all" }],
+        },
+      ]),
+    }
   );
+  if (!envRes.ok) {
+    // If it already exists, try updating via PUT
+    const putRes = await fetch(
+      `https://api.netlify.com/api/v1/accounts/${netlifyAccountSlug}/env/DATABASE_URL?site_id=${netlifySiteId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${netlifyToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: "DATABASE_URL",
+          scopes: ["functions"],
+          values: [{ value: databaseUrl, context: "all" }],
+        }),
+      }
+    );
+    if (!putRes.ok) {
+      console.error("Failed to set DATABASE_URL on Netlify:", await putRes.text());
+      process.exit(1);
+    }
+  }
+  console.log("DATABASE_URL set on Netlify.");
 
   // --- Build ---
   run("npx vite build", "Building app");
