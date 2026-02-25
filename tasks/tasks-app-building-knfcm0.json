@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageNewTransactionModal: Decide on components, add sections to docs/tests.md",
-        "PlanComponentTransactionHeaderFields: Add test entries for TransactionHeaderFields (date picker, description input, currency dropdown)",
-        "PlanComponentLineItemsTable: Add test entries for LineItemsTable (account dropdown, type Credit/Debit dropdown, amount input, delete row button, Add Line Item button)",
-        "PlanComponentBalanceIndicator: Add test entries for BalanceIndicator (total debits/credits display, Transaction is Balanced/Unbalanced indicator, validation prevents saving unbalanced)",
-        "PlanComponentTagsInput: Add test entries for TagsInput (add tags, remove tags with X, optional field)"
-      ],
-      "timestamp": "2026-02-24T19:29:33.217Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageCreateReportDialog: Decide on components, add sections to docs/tests.md",
         "PlanComponentReportTypeSelector: Add test entries for ReportTypeSelector (Summary Overview, Detailed Transactions, Budget vs Actual tabs)",
         "PlanComponentDateRangeSelector: Add test entries for DateRangeSelector (start/end date pickers, This Month/Last Quarter/YTD preset buttons)",
