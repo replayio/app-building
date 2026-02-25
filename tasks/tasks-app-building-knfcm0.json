@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageSidebar: Decide on components, add sections to docs/tests.md",
-        "PlanComponentSidebarNavigation: Add test entries for SidebarNavigation (Clients, Contacts, Deals, Tasks, Team, Settings links, active state highlighting)",
-        "PlanComponentSidebarAuth: Add test entries for SidebarAuth (Sign In button, inline auth form with email/password, Sign In/Sign Up toggle, sign out, avatar/name display)"
-      ],
-      "timestamp": "2026-02-25T03:31:10.836Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code for SalesCRM"
