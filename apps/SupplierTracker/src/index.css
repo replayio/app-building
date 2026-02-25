@@ -552,3 +552,28 @@
   border-bottom-color: var(--accent-primary);
   font-weight: 500;
 }
+
+/* Tab link style for detail page sections */
+.tab-nav-item--active-link {
+  color: var(--accent-primary);
+  font-weight: 500;
+}
+
+/* Detail page tab links container */
+.supplier-detail-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--bg-border-color-light);
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+
+.p-6 {
+  padding: 24px;
+}
+
+@media (max-width: 640px) {
+  .max-sm\:p-3 {
+    padding: 12px;
+  }
+}
