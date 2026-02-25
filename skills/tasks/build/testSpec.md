@@ -10,13 +10,13 @@ Unpack the initial test specification task into subtasks using `add-task`:
 
 First, add a task for planning pages:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" --app "<AppName>" \
   --subtask "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
 ```
 
 Then during PlanPages, add one task per page containing the page plan and all its component plans:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/build/testSpec.md" --app "<AppName>" \
   --subtask "PlanPage<Name>: Decide on components, add sections to docs/tests.md" \
   --subtask "PlanComponent<Component1>: Add test entries for <Component1>" \
   --subtask "PlanComponent<Component2>: Add test entries for <Component2>"

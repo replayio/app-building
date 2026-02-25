@@ -18,7 +18,7 @@ the oldest ones, which will be listed last.
 
 Example:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/fixBugReport.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/fixBugReport.md" --app "<AppName>" \
   --subtask "AnalyzeBug: Analyze <BugName>" \
   --subtask "FixBug: Fix <BugName>" \
   --subtask "UpdateTests: Update tests for <BugName>" \

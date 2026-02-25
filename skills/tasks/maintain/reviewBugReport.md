@@ -14,7 +14,7 @@ using `add-task`:
 
 Example:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/reviewBugReport.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/reviewBugReport.md" --app "<AppName>" \
   --subtask "ClassifyBug: Classify <BugName>" \
   --subtask "UpdateDirectives: Update directives for <BugName>" \
   --subtask "FinishBug: Mark <BugName> as reviewed"

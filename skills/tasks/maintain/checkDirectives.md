@@ -10,7 +10,7 @@ Read `docs/tests.md` to understand the existing application structure. Add one t
 page using `add-task`, with all checks for that page in the same task:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives.md" --app "<AppName>" \
   --subtask "CheckTestSpec<PageName>: Check testSpec.md directive violations in <PageName> test entries" \
   --subtask "CheckComponents<PageName>: Check writeApp.md directive violations in <PageName> components" \
   --subtask "CheckTests<PageName>: Check writeTests.md directive violations in <PageName> tests"
@@ -19,7 +19,7 @@ npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives
 Also add a separate task for non-page specific checks:
 
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives.md" --app "<AppName>" \
   --subtask "CheckBackend: Check writeApp.md directive violations in all backend functions"
 ```
 
@@ -33,7 +33,7 @@ For any violations you find, add a fix task using `add-task`. Do not fix them im
 
 Example:
 ```
-npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives.md" \
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/checkDirectives.md" --app "<AppName>" \
   --subtask "FixViolation: Fix <violation description>" \
   --subtask "RunTests: Verify tests pass after fix" \
   --subtask "DocumentFix: Document the fix"
