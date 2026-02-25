@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { NavigationSidebar } from "./components/NavigationSidebar";
 import { EquipmentDetailsPage } from "./pages/EquipmentDetailsPage";
+import { EquipmentPage } from "./pages/EquipmentPage";
 
 export function App() {
   return (
@@ -13,7 +14,7 @@ export function App() {
           <Route path="/recipe/:recipeId" element={<PlaceholderPage title="Recipe Details" />} />
           <Route path="/calendar" element={<PlaceholderPage title="Calendar" />} />
           <Route path="/runs/:runId" element={<PlaceholderPage title="Run Details" />} />
-          <Route path="/equipment" element={<PlaceholderPage title="Equipment" />} />
+          <Route path="/equipment" element={<EquipmentPage />} />
           <Route path="/equipment/:id" element={<EquipmentDetailsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
