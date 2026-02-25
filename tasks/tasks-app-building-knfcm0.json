@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageMaterials: Decide on components, add sections to docs/tests.md",
-        "PlanComponentMaterialsTableAndActions: Add test entries for MaterialsTable, NewMaterialButton, NewCategoryButton",
-        "PlanComponentMaterialsFiltersAndSearch: Add test entries for SearchBar, CategoryFilter, AccountFilter, SortDropdown, Pagination"
-      ],
-      "timestamp": "2026-02-24T20:41:54.477Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageMaterialDetail: Decide on components, add sections to docs/tests.md",
         "PlanComponentMaterialDetailHeader: Add test entries for MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionButton",
         "PlanComponentAccountsDistribution: Add test entries for AccountsDistributionTable with nested batches",

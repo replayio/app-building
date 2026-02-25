@@ -699,7 +699,402 @@ Components: AccountHeader, EditAccountButton, NewTransactionButton, TrackedMater
 
 Components: NewMaterialButton, NewCategoryButton, SearchBar, CategoryFilter, AccountFilter, SortDropdown, MaterialsTable, Pagination
 
-<!-- Tests to be added by PlanPageMaterials -->
+### NewMaterialButton
+
+**Test: New Material button is displayed with plus icon as primary action**
+- Components: NewMaterialButton
+- Given: The user navigates to the Materials page (/materials)
+- Then: A "+ New Material" button is displayed at the top of the page, above the filter bar
+- And: The button has a plus (+) icon and the text "New Material"
+- And: The button is styled as a primary action button (blue/filled)
+
+**Test: Clicking New Material button opens a create material modal**
+- Components: NewMaterialButton
+- Given: The user is on the Materials page
+- When: The user clicks the "+ New Material" button
+- Then: A modal dialog opens with the title "Create Material" (or "New Material")
+- And: The modal contains form fields for: Material Name (text input), Category (dropdown selecting from existing categories), Unit of Measure (text input), Description (text area)
+- And: The modal has "Create" (or "Save") and "Cancel" buttons
+
+**Test: Submitting the create material form adds a new material to the table**
+- Components: NewMaterialButton, MaterialsTable
+- Given: The create material modal is open
+- When: The user enters "Titanium Rod 5mm" in the Material Name field
+- And: The user selects "Raw Materials" from the Category dropdown
+- And: The user enters "Rod" in the Unit of Measure field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: The new material "Titanium Rod 5mm" appears in the MaterialsTable with Category "Raw Materials", Unit of Measure "Rod", and Stock "0"
+- And: The new material is persisted to the database
+
+**Test: Create material modal validates that Material Name is required**
+- Components: NewMaterialButton
+- Given: The create material modal is open
+- And: The Material Name field is empty
+- When: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Material Name is required
+- And: The modal remains open and the material is not created
+
+**Test: Create material modal validates that Category is required**
+- Components: NewMaterialButton
+- Given: The create material modal is open
+- When: The user fills in Material Name and Unit of Measure but leaves Category unselected
+- And: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Category is required
+- And: The modal remains open and the material is not created
+
+**Test: Create material modal validates that Unit of Measure is required**
+- Components: NewMaterialButton
+- Given: The create material modal is open
+- When: The user fills in Material Name and Category but leaves Unit of Measure empty
+- And: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Unit of Measure is required
+- And: The modal remains open and the material is not created
+
+**Test: Cancel button in create material modal closes the modal without creating a material**
+- Components: NewMaterialButton
+- Given: The create material modal is open and the user has entered some data
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: No new material is created in the MaterialsTable
+
+### NewCategoryButton
+
+**Test: New Category button is displayed with plus icon as secondary action**
+- Components: NewCategoryButton
+- Given: The user navigates to the Materials page
+- Then: A "+ New Category" button is displayed next to the "+ New Material" button
+- And: The button has a plus (+) icon and the text "New Category"
+- And: The button is styled as a secondary/outlined button
+
+**Test: Clicking New Category button opens a create category modal**
+- Components: NewCategoryButton
+- Given: The user is on the Materials page
+- When: The user clicks the "+ New Category" button
+- Then: A modal dialog opens with the title "Create Category" (or "New Category")
+- And: The modal contains a form field for: Category Name (text input)
+- And: The modal has "Create" (or "Save") and "Cancel" buttons
+
+**Test: Submitting the create category form adds a new category**
+- Components: NewCategoryButton, CategoryFilter
+- Given: The create category modal is open
+- When: The user enters "Adhesives" in the Category Name field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: The new category "Adhesives" is available in the CategoryFilter dropdown
+- And: The new category appears as an option in the Category dropdown when creating or editing a material
+- And: The new category is persisted to the database
+
+**Test: Create category modal validates that Category Name is required**
+- Components: NewCategoryButton
+- Given: The create category modal is open
+- And: The Category Name field is empty
+- When: The user clicks the "Create" button
+- Then: A validation error is displayed indicating that Category Name is required
+- And: The modal remains open and the category is not created
+
+**Test: Cancel button in create category modal closes the modal without creating a category**
+- Components: NewCategoryButton
+- Given: The create category modal is open and the user has entered a name
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: No new category is created
+
+**Test: Newly created category appears in the Category dropdown when creating a material**
+- Components: NewCategoryButton, NewMaterialButton
+- Given: The user creates a new category "Adhesives" via the New Category modal
+- When: The user opens the New Material modal
+- And: The user clicks the Category dropdown
+- Then: "Adhesives" is listed as an option in the Category dropdown alongside existing categories
+
+### MaterialsTable
+
+**Test: Breadcrumb displays Home > Materials**
+- Components: MaterialsTable
+- Given: The user navigates to the Materials page
+- Then: A breadcrumb trail "Home > Materials" is displayed below the page heading
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+
+**Test: Sidebar shows Materials link as active**
+- Components: MaterialsTable
+- Given: The user navigates to the Materials page
+- Then: The sidebar "Materials" link is visually highlighted as the active page
+
+**Test: Materials table displays correct column headers**
+- Components: MaterialsTable
+- Given: The user navigates to the Materials page
+- Then: The table shows columns: Material Name, Category, Unit of Measure, Stock, Actions
+
+**Test: Materials table shows material rows with correct data**
+- Components: MaterialsTable
+- Given: Materials exist in the system including:
+  - "Steel Sheet 10Ga" (Raw Materials, Sheet, 1,250)
+  - "Aluminum Extrusion X-Profile" (Components, Meter, 850)
+  - "Cardboard Box (Small)" (Packaging, Box, 5,000)
+  - "Polycarbonate Pellets" (Raw Materials, kg, 2,400)
+  - "M6 Bolt & Nut Set" (Components, Set, 10,500)
+  - "Shrink Wrap Roll (Clear)" (Packaging, Roll, 120)
+  - "Circuit Board v2.1" (Components, Piece, 450)
+  - "Copper Wire 16AWG" (Raw Materials, Spool, 30)
+- Then: Each material row displays the correct Material Name, Category, Unit of Measure, and Stock value
+
+**Test: Actions column shows View Detail link, Edit link, eye icon, and pencil icon for each row**
+- Components: MaterialsTable
+- Given: A material row is displayed in the table
+- Then: The Actions column shows a "[View Detail]" text link, an "[Edit]" text link, an eye icon button, and a pencil/edit icon button
+
+**Test: Clicking View Detail link navigates to MaterialDetailPage**
+- Components: MaterialsTable
+- Given: A material row for "Steel Sheet 10Ga" is displayed
+- When: The user clicks the "[View Detail]" link in the Actions column
+- Then: The app navigates to /materials/:materialId (MaterialDetailPage) for "Steel Sheet 10Ga"
+
+**Test: Clicking the eye icon navigates to MaterialDetailPage**
+- Components: MaterialsTable
+- Given: A material row for "Aluminum Extrusion X-Profile" is displayed
+- When: The user clicks the eye icon in the Actions column
+- Then: The app navigates to /materials/:materialId (MaterialDetailPage) for "Aluminum Extrusion X-Profile"
+
+**Test: Clicking Edit link opens an edit material modal with pre-filled data**
+- Components: MaterialsTable
+- Given: A material row for "Polycarbonate Pellets" with Category "Raw Materials" and Unit "kg" is displayed
+- When: The user clicks the "[Edit]" link in the Actions column for "Polycarbonate Pellets"
+- Then: A modal dialog opens with the title "Edit Material"
+- And: The Material Name field is pre-filled with "Polycarbonate Pellets"
+- And: The Category dropdown is pre-set to "Raw Materials"
+- And: The Unit of Measure field is pre-filled with "kg"
+- And: The modal has "Save" and "Cancel" buttons
+
+**Test: Clicking the pencil icon opens an edit material modal**
+- Components: MaterialsTable
+- Given: A material row for "Circuit Board v2.1" is displayed
+- When: The user clicks the pencil icon in the Actions column
+- Then: A modal dialog opens with the title "Edit Material" pre-filled with "Circuit Board v2.1" data
+
+**Test: Submitting the edit material modal updates the material in the table**
+- Components: MaterialsTable
+- Given: The edit modal is open for "Polycarbonate Pellets"
+- When: The user changes the Material Name to "Polycarbonate Pellets (Blue)"
+- And: The user clicks the "Save" button
+- Then: The modal closes
+- And: The MaterialsTable row updates to show "Polycarbonate Pellets (Blue)"
+- And: The change is persisted to the database
+
+**Test: Canceling the edit material modal discards changes**
+- Components: MaterialsTable
+- Given: The edit modal is open for "Polycarbonate Pellets" and the user has changed the name
+- When: The user clicks the "Cancel" button
+- Then: The modal closes
+- And: The MaterialsTable row still shows "Polycarbonate Pellets" with original data
+
+**Test: Edit material modal validates that Material Name is required**
+- Components: MaterialsTable
+- Given: The edit material modal is open
+- When: The user clears the Material Name field
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Material Name is required
+- And: The modal remains open and changes are not saved
+
+**Test: Clicking a material name in the table navigates to MaterialDetailPage**
+- Components: MaterialsTable
+- Given: A material row for "Steel Sheet 10Ga" is displayed
+- When: The user clicks on the material name "Steel Sheet 10Ga" in the row
+- Then: The app navigates to /materials/:materialId (MaterialDetailPage) for "Steel Sheet 10Ga"
+
+**Test: Materials table shows empty state when no materials exist**
+- Components: MaterialsTable
+- Given: No materials exist in the system (or no materials match current filters)
+- Then: The table shows an empty state message (e.g., "No materials found")
+
+### SearchBar
+
+**Test: Search bar is displayed with magnifying glass icon and placeholder text**
+- Components: SearchBar
+- Given: The user navigates to the Materials page
+- Then: A search input is displayed in the filter/sort bar area
+- And: The input has a magnifying glass (search) icon on the left
+- And: The input shows placeholder text "Search materials by name..."
+
+**Test: Typing in the search bar filters the materials table by name**
+- Components: SearchBar, MaterialsTable
+- Given: The MaterialsTable shows all materials (e.g., 45 items)
+- When: The user types "Steel" in the search bar
+- Then: The MaterialsTable updates to show only materials whose name contains "Steel" (e.g., "Steel Sheet 10Ga")
+- And: Materials that don't match are hidden from the table
+- And: The pagination updates to reflect the filtered result count
+
+**Test: Search is case-insensitive**
+- Components: SearchBar, MaterialsTable
+- Given: Materials include "Steel Sheet 10Ga" and "Copper Wire 16AWG"
+- When: The user types "steel" (lowercase) in the search bar
+- Then: "Steel Sheet 10Ga" is shown in the results
+
+**Test: Clearing the search bar shows all materials again**
+- Components: SearchBar, MaterialsTable
+- Given: The search bar contains "Steel" and the table shows filtered results
+- When: The user clears the search bar (empties the text)
+- Then: The MaterialsTable returns to showing all materials
+- And: The pagination returns to its unfiltered state
+
+**Test: Search with no matching results shows empty state**
+- Components: SearchBar, MaterialsTable
+- Given: No material name contains "XYZ123"
+- When: The user types "XYZ123" in the search bar
+- Then: The MaterialsTable shows an empty state message (e.g., "No materials found")
+
+### CategoryFilter
+
+**Test: Category filter dropdown displays with "Filter by Category" label**
+- Components: CategoryFilter
+- Given: The user navigates to the Materials page
+- Then: A "Filter by Category" dropdown is displayed in the filter/sort bar
+- And: The dropdown shows a default selection (e.g., "All Categories" or the label "Filter by Category")
+
+**Test: Opening the category filter dropdown lists all material categories**
+- Components: CategoryFilter
+- Given: Material categories "Raw Materials", "Components", and "Packaging" exist
+- When: The user clicks the category filter dropdown
+- Then: A dropdown menu opens showing each existing category name: "Raw Materials", "Components", "Packaging"
+
+**Test: Selecting a category filters the materials table to that category**
+- Components: CategoryFilter, MaterialsTable
+- Given: The materials table shows materials across all categories
+- When: The user selects "Raw Materials" from the category filter dropdown
+- Then: The MaterialsTable shows only materials in the "Raw Materials" category (e.g., "Steel Sheet 10Ga", "Polycarbonate Pellets", "Copper Wire 16AWG")
+- And: Materials in other categories are hidden
+- And: The pagination updates to reflect the filtered count
+
+**Test: Selecting a different category updates the filter**
+- Components: CategoryFilter, MaterialsTable
+- Given: The category filter is set to "Raw Materials"
+- When: The user selects "Components" from the category filter dropdown
+- Then: The MaterialsTable updates to show only "Components" materials (e.g., "Aluminum Extrusion X-Profile", "M6 Bolt & Nut Set", "Circuit Board v2.1")
+
+**Test: Resetting the category filter shows all materials**
+- Components: CategoryFilter, MaterialsTable
+- Given: The category filter is set to "Raw Materials"
+- When: The user selects the default/all option to clear the category filter
+- Then: The MaterialsTable returns to showing all materials across all categories
+
+### AccountFilter
+
+**Test: Account filter dropdown displays with "Filter by Account" label and "All Accounts" default**
+- Components: AccountFilter
+- Given: The user navigates to the Materials page
+- Then: A "Filter by Account" dropdown is displayed in the filter/sort bar
+- And: The dropdown shows "All Accounts" as the default selection
+
+**Test: Opening the account filter dropdown lists all accounts**
+- Components: AccountFilter
+- Given: Accounts "Account A" and "Account B" exist in the system
+- When: The user clicks the account filter dropdown
+- Then: A dropdown menu opens showing "All Accounts" and each account name (e.g., "Account A", "Account B")
+
+**Test: Selecting an account filters the materials table to materials in that account**
+- Components: AccountFilter, MaterialsTable
+- Given: "Account A" contains materials "Steel Sheet 10Ga" and "Copper Wire 16AWG"
+- When: The user selects "Account A" from the account filter dropdown
+- Then: The MaterialsTable shows only materials tracked in "Account A"
+- And: Materials not in "Account A" are hidden
+- And: The pagination updates to reflect the filtered count
+
+**Test: Selecting "All Accounts" resets the account filter**
+- Components: AccountFilter, MaterialsTable
+- Given: The account filter is set to "Account A"
+- When: The user selects "All Accounts" from the account filter dropdown
+- Then: The MaterialsTable returns to showing all materials across all accounts
+
+### SortDropdown
+
+**Test: Sort dropdown displays with "Sort by: Name (A-Z)" as default**
+- Components: SortDropdown
+- Given: The user navigates to the Materials page
+- Then: A sort dropdown is displayed in the filter/sort bar with the text "Sort by: Name (A-Z)"
+
+**Test: Opening the sort dropdown shows available sort options**
+- Components: SortDropdown
+- Given: The user is on the Materials page
+- When: The user clicks the sort dropdown
+- Then: A dropdown menu opens showing sort options: "Name (A-Z)", "Name (Z-A)", "Stock (Low to High)", "Stock (High to Low)", "Category (A-Z)"
+
+**Test: Selecting "Name (Z-A)" sorts the table in reverse alphabetical order**
+- Components: SortDropdown, MaterialsTable
+- Given: The table is sorted by "Name (A-Z)"
+- When: The user selects "Name (Z-A)" from the sort dropdown
+- Then: The MaterialsTable rows are reordered so that material names appear in reverse alphabetical order (Z to A)
+- And: The sort dropdown label updates to "Sort by: Name (Z-A)"
+
+**Test: Selecting "Stock (Low to High)" sorts the table by stock ascending**
+- Components: SortDropdown, MaterialsTable
+- Given: The table is sorted by name
+- When: The user selects "Stock (Low to High)" from the sort dropdown
+- Then: The MaterialsTable rows are reordered so that materials with the lowest stock appear first (e.g., "Copper Wire 16AWG" with 30 at the top)
+
+**Test: Selecting "Stock (High to Low)" sorts the table by stock descending**
+- Components: SortDropdown, MaterialsTable
+- Given: The table is sorted by name
+- When: The user selects "Stock (High to Low)" from the sort dropdown
+- Then: The MaterialsTable rows are reordered so that materials with the highest stock appear first (e.g., "M6 Bolt & Nut Set" with 10,500 at the top)
+
+### Pagination
+
+**Test: Pagination displays page numbers, navigation buttons, and item count**
+- Components: Pagination
+- Given: There are 45 materials and the page size is 8
+- Then: The pagination section shows "Previous" and "Next" buttons
+- And: Page numbers 1, 2, 3 (and possibly more) are displayed
+- And: The current page (1) is visually highlighted
+- And: A "Showing 1-8 of 45 items" text is displayed
+
+**Test: Clicking Next button navigates to the next page**
+- Components: Pagination, MaterialsTable
+- Given: The user is on page 1 of the materials table showing items 1-8
+- When: The user clicks the "Next" button
+- Then: The MaterialsTable updates to show items 9-16
+- And: The pagination text updates to "Showing 9-16 of 45 items"
+- And: Page 2 is visually highlighted
+
+**Test: Clicking a page number navigates directly to that page**
+- Components: Pagination, MaterialsTable
+- Given: The user is on page 1
+- When: The user clicks page number "3"
+- Then: The MaterialsTable updates to show items 17-24
+- And: The pagination text updates to "Showing 17-24 of 45 items"
+- And: Page 3 is visually highlighted
+
+**Test: Clicking Previous button navigates to the previous page**
+- Components: Pagination, MaterialsTable
+- Given: The user is on page 2 showing items 9-16
+- When: The user clicks the "Previous" button
+- Then: The MaterialsTable updates to show items 1-8
+- And: The pagination text updates to "Showing 1-8 of 45 items"
+- And: Page 1 is visually highlighted
+
+**Test: Previous button is disabled on first page**
+- Components: Pagination
+- Given: The user is on page 1 of the materials table
+- Then: The "Previous" button is disabled (grayed out or not clickable)
+
+**Test: Next button is disabled on last page**
+- Components: Pagination
+- Given: The user is on the last page of the materials table (e.g., page 6 showing items 41-45)
+- Then: The "Next" button is disabled (grayed out or not clickable)
+- And: The pagination text shows "Showing 41-45 of 45 items"
+
+**Test: Pagination updates when filters reduce the number of results**
+- Components: Pagination, CategoryFilter, MaterialsTable
+- Given: The unfiltered table shows 45 materials across 6 pages
+- When: The user selects "Packaging" from the category filter which has only 5 materials
+- Then: The pagination shows only 1 page
+- And: The pagination text shows "Showing 1-5 of 5 items"
+- And: The "Previous" and "Next" buttons are both disabled
+
+**Test: Filters and search work together to narrow results**
+- Components: SearchBar, CategoryFilter, AccountFilter, MaterialsTable, Pagination
+- Given: The user has selected "Raw Materials" from the category filter
+- When: The user types "Steel" in the search bar
+- Then: The MaterialsTable shows only raw materials with "Steel" in the name (e.g., "Steel Sheet 10Ga")
+- And: The pagination updates to reflect the combined filter results
 
 ---
 
