@@ -5,6 +5,7 @@ import { clientDetailReducer } from "./clientDetailSlice";
 import { personDetailReducer } from "./personDetailSlice";
 import { dealsReducer } from "./dealsSlice";
 import { dealDetailReducer } from "./dealDetailSlice";
+import { tasksReducer } from "./tasksSlice";
 
 export const store = createAppStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = createAppStore({
     personDetail: personDetailReducer,
     deals: dealsReducer,
     dealDetail: dealDetailReducer,
+    tasks: tasksReducer,
   },
 });
 

@@ -9,7 +9,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       status: 204,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
       },
     });
@@ -20,33 +20,44 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
   const segments = url.pathname.split("/").filter(Boolean);
   const subPath = segments[3] || null;
 
-  // GET /.netlify/functions/tasks?clientId=<id> or ?dealId=<id> — tasks for a client or deal
+  // GET /.netlify/functions/tasks — list all tasks or filter by clientId/dealId
   if (req.method === "GET" && !subPath) {
     const clientId = url.searchParams.get("clientId");
     const dealId = url.searchParams.get("dealId");
-    if (!clientId && !dealId) {
-      return errorResponse(400, "clientId or dealId query param required");
-    }
 
     let queryText: string;
     let params: unknown[];
 
     if (dealId) {
-      queryText = `SELECT t.*, d.name AS deal_name, u.name AS assignee_name
+      queryText = `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
+                          u.avatar_url AS assignee_avatar
          FROM tasks t
          LEFT JOIN deals d ON d.id = t.deal_id
+         LEFT JOIN clients c ON c.id = t.client_id
          LEFT JOIN users u ON u.id = t.assignee_id
          WHERE t.deal_id = $1
          ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`;
       params = [dealId];
-    } else {
-      queryText = `SELECT t.*, d.name AS deal_name, u.name AS assignee_name
+    } else if (clientId) {
+      queryText = `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
+                          u.avatar_url AS assignee_avatar
          FROM tasks t
          LEFT JOIN deals d ON d.id = t.deal_id
+         LEFT JOIN clients c ON c.id = t.client_id
          LEFT JOIN users u ON u.id = t.assignee_id
          WHERE t.client_id = $1
          ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`;
-      params = [clientId!];
+      params = [clientId];
+    } else {
+      // Return all tasks
+      queryText = `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
+                          u.avatar_url AS assignee_avatar
+         FROM tasks t
+         LEFT JOIN deals d ON d.id = t.deal_id
+         LEFT JOIN clients c ON c.id = t.client_id
+         LEFT JOIN users u ON u.id = t.assignee_id
+         ORDER BY t.due_date ASC NULLS LAST, t.created_at DESC`;
+      params = [];
     }
 
     const tasks = await query<{
@@ -62,7 +73,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       created_at: string;
       updated_at: string;
       deal_name: string | null;
+      client_name: string | null;
       assignee_name: string | null;
+      assignee_avatar: string | null;
     }>(sql, queryText, params);
 
     return jsonResponse(
@@ -74,10 +87,12 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         priority: t.priority,
         status: t.status,
         clientId: t.client_id,
+        clientName: t.client_name,
         dealId: t.deal_id,
         dealName: t.deal_name,
         assigneeId: t.assignee_id,
         assigneeName: t.assignee_name,
+        assigneeAvatar: t.assignee_avatar,
         createdAt: t.created_at,
         updatedAt: t.updated_at,
       }))
@@ -146,17 +161,25 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       );
     }
 
-    // Look up deal name if deal_id is set
+    // Look up related names
     let dealName: string | null = null;
     if (t.deal_id) {
       const deal = await queryOne<{ name: string }>(sql, "SELECT name FROM deals WHERE id = $1", [t.deal_id]);
       dealName = deal?.name || null;
     }
 
+    let clientName: string | null = null;
+    if (t.client_id) {
+      const client = await queryOne<{ name: string }>(sql, "SELECT name FROM clients WHERE id = $1", [t.client_id]);
+      clientName = client?.name || null;
+    }
+
     let assigneeName: string | null = null;
+    let assigneeAvatar: string | null = null;
     if (t.assignee_id) {
-      const assignee = await queryOne<{ name: string }>(sql, "SELECT name FROM users WHERE id = $1", [t.assignee_id]);
+      const assignee = await queryOne<{ name: string; avatar_url: string | null }>(sql, "SELECT name, avatar_url FROM users WHERE id = $1", [t.assignee_id]);
       assigneeName = assignee?.name || null;
+      assigneeAvatar = assignee?.avatar_url || null;
     }
 
     return jsonResponse(
@@ -168,10 +191,12 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         priority: t.priority,
         status: t.status,
         clientId: t.client_id,
+        clientName,
         dealId: t.deal_id,
         dealName,
         assigneeId: t.assignee_id,
         assigneeName,
+        assigneeAvatar,
         createdAt: t.created_at,
         updatedAt: t.updated_at,
       },
@@ -181,7 +206,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
   // PUT /.netlify/functions/tasks/<id> — update task (e.g., mark complete)
   if (req.method === "PUT" && subPath) {
-    let body: { status?: string };
+    let body: { status?: string; assigneeId?: string };
     try {
       body = await req.json();
     } catch {
@@ -199,8 +224,8 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
     await query(
       sql,
-      "UPDATE tasks SET status = COALESCE($2, status), updated_at = NOW() WHERE id = $1",
-      [subPath, body.status || null]
+      "UPDATE tasks SET status = COALESCE($2, status), assignee_id = COALESCE($3, assignee_id), updated_at = NOW() WHERE id = $1",
+      [subPath, body.status || null, body.assigneeId !== undefined ? (body.assigneeId || null) : null]
     );
 
     const actor = user ? user.name : "System";
@@ -214,6 +239,24 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         [existing.client_id, "Task Completed", `Task Completed: '${existing.title}'`, "task", existing.id, actor]
       );
     }
+
+    return jsonResponse({ success: true });
+  }
+
+  // DELETE /.netlify/functions/tasks/<id> — delete a task
+  if (req.method === "DELETE" && subPath) {
+    const existing = await queryOne<{ id: string }>(
+      sql,
+      "SELECT id FROM tasks WHERE id = $1",
+      [subPath]
+    );
+    if (!existing) {
+      return errorResponse(404, "Task not found");
+    }
+
+    // Delete associated task notes first
+    await query(sql, "DELETE FROM task_notes WHERE task_id = $1", [subPath]);
+    await query(sql, "DELETE FROM tasks WHERE id = $1", [subPath]);
 
     return jsonResponse({ success: true });
   }

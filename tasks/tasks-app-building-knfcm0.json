@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentTasksListHeader: Write the TasksListHeader component",
-        "WriteComponentTasksFilter: Write the TasksFilter component",
-        "WriteComponentTaskCardList: Write the TaskCardList component",
-        "WriteComponentCreateTaskModal: Write the CreateTaskModal component",
-        "WritePageTasksListPage: Write the TasksListPage page"
-      ],
-      "timestamp": "2026-02-25T03:50:04.580Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentTaskDetailHeader: Write the TaskDetailHeader component",
         "WriteComponentTaskNotesSection: Write the TaskNotesSection component",
         "WriteComponentTaskActions: Write the TaskActions component",
