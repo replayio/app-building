@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "Unpack: Write the app for SalesCRM"
-      ],
-      "timestamp": "2026-02-24T19:26:36.751Z"
-    },
-    {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts for SalesCRM"
@@ -550,6 +543,185 @@
         "PlanComponentAuthForms: Add test entries for ForgotPasswordForm (email input, submit button, success message, link sent via Resend API), ResetPasswordForm (new password input, confirm password input, submit button, password mismatch validation, success and auto-login), ConfirmEmailHandler (token verification, auto-login on success, invalid/expired token error)"
       ],
       "timestamp": "2026-02-25T03:32:36.019Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
+      ],
+      "timestamp": "2026-02-25T03:49:18.337Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentSidebarNavigation: Write the SidebarNavigation component",
+        "WriteComponentSidebarAuth: Write the SidebarAuth component",
+        "WriteLayoutSidebar: Write the Sidebar layout and app shell"
+      ],
+      "timestamp": "2026-02-25T03:49:26.927Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentForgotPasswordForm: Write the ForgotPasswordForm component",
+        "WriteComponentResetPasswordForm: Write the ResetPasswordForm component",
+        "WriteComponentConfirmEmailHandler: Write the ConfirmEmailHandler component",
+        "WritePagesAuth: Write the ForgotPasswordPage, ResetPasswordPage, and ConfirmEmailPage"
+      ],
+      "timestamp": "2026-02-25T03:49:31.774Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentClientsListHeader: Write the ClientsListHeader component",
+        "WriteComponentClientsSearchAndFilters: Write the ClientsSearchAndFilters component",
+        "WriteComponentClientsTable: Write the ClientsTable component",
+        "WriteComponentClientsPagination: Write the ClientsPagination component",
+        "WriteComponentAddClientModal: Write the AddClientModal component",
+        "WritePageClientsListPage: Write the ClientsListPage page"
+      ],
+      "timestamp": "2026-02-25T03:49:37.441Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentClientHeader: Write the ClientHeader component",
+        "WriteComponentQuickActions: Write the QuickActions component",
+        "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
+        "WriteComponentTasksSection: Write the TasksSection component",
+        "WriteComponentDealsSection: Write the DealsSection component",
+        "WriteComponentAttachmentsSection: Write the AttachmentsSection component",
+        "WriteComponentPeopleSection: Write the PeopleSection component",
+        "WriteComponentTimelineSection: Write the TimelineSection component",
+        "WriteComponentFollowButton: Write the FollowButton component",
+        "WriteComponentAddTaskModal: Write the AddTaskModal component",
+        "WriteComponentAddDealModal: Write the AddDealModal component",
+        "WriteComponentAddAttachmentModal: Write the AddAttachmentModal component",
+        "WriteComponentAddPersonModal: Write the AddPersonModal component",
+        "WritePageClientDetailPage: Write the ClientDetailPage page"
+      ],
+      "timestamp": "2026-02-25T03:49:43.797Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentPersonHeader: Write the PersonHeader component",
+        "WriteComponentRelationshipsSection: Write the RelationshipsSection component",
+        "WriteComponentContactHistorySection: Write the ContactHistorySection component",
+        "WriteComponentAssociatedClientsSection: Write the AssociatedClientsSection component",
+        "WritePagePersonDetailPage: Write the PersonDetailPage page"
+      ],
+      "timestamp": "2026-02-25T03:49:48.662Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentDealsListHeader: Write the DealsListHeader component",
+        "WriteComponentDealsSummaryCards: Write the DealsSummaryCards component",
+        "WriteComponentViewToggle: Write the ViewToggle component",
+        "WriteComponentDealsFilters: Write the DealsFilters component",
+        "WriteComponentDealsTable: Write the DealsTable component",
+        "WriteComponentPipelineView: Write the PipelineView component",
+        "WriteComponentDealsPagination: Write the DealsPagination component",
+        "WriteComponentCreateDealModal: Write the CreateDealModal component",
+        "WritePageDealsListPage: Write the DealsListPage page"
+      ],
+      "timestamp": "2026-02-25T03:49:54.350Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentDealHeader: Write the DealHeader component",
+        "WriteComponentDealStagePipeline: Write the DealStagePipeline component",
+        "WriteComponentDealHistorySection: Write the DealHistorySection component",
+        "WriteComponentDealMetricsSection: Write the DealMetricsSection component",
+        "WriteComponentWriteupsSection: Write the WriteupsSection component",
+        "WriteComponentLinkedTasksSection: Write the LinkedTasksSection component",
+        "WriteComponentDealAttachmentsSection: Write the DealAttachmentsSection component",
+        "WriteComponentContactsIndividualsSection: Write the ContactsIndividualsSection component",
+        "WritePageDealDetailPage: Write the DealDetailPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:00.260Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTasksListHeader: Write the TasksListHeader component",
+        "WriteComponentTasksFilter: Write the TasksFilter component",
+        "WriteComponentTaskCardList: Write the TaskCardList component",
+        "WriteComponentCreateTaskModal: Write the CreateTaskModal component",
+        "WritePageTasksListPage: Write the TasksListPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:04.580Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTaskDetailHeader: Write the TaskDetailHeader component",
+        "WriteComponentTaskNotesSection: Write the TaskNotesSection component",
+        "WriteComponentTaskActions: Write the TaskActions component",
+        "WritePageTaskDetailPage: Write the TaskDetailPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:08.763Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentContactsListHeader: Write the ContactsListHeader component",
+        "WriteComponentContactsSearch: Write the ContactsSearch component",
+        "WriteComponentContactsTable: Write the ContactsTable component",
+        "WriteComponentContactsPagination: Write the ContactsPagination component",
+        "WriteComponentAddContactModal: Write the AddContactModal component",
+        "WritePageContactsListPage: Write the ContactsListPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:13.919Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentEmailNotificationsSection: Write the EmailNotificationsSection component",
+        "WriteComponentImportExportSection: Write the ImportExportSection component",
+        "WriteComponentWebhooksSection: Write the WebhooksSection component",
+        "WriteComponentWebhookModal: Write the WebhookModal component",
+        "WritePageSettingsPage: Write the SettingsPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:19.222Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentTeamHeader: Write the TeamHeader component",
+        "WriteComponentUserCardGrid: Write the UserCardGrid component",
+        "WritePageUsersListPage: Write the UsersListPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:23.392Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteComponentUserHeader: Write the UserHeader component",
+        "WriteComponentUserStats: Write the UserStats component",
+        "WriteComponentOwnedDealsList: Write the OwnedDealsList component",
+        "WriteComponentAssignedTasksList: Write the AssignedTasksList component",
+        "WriteComponentRecentActivityFeed: Write the RecentActivityFeed component",
+        "WritePageUserDetailPage: Write the UserDetailPage page"
+      ],
+      "timestamp": "2026-02-25T03:50:28.521Z",
       "app": "SalesCRM"
     }
   ]
