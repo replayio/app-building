@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentSupplierOverview: Write the SupplierOverview component",
-        "WriteComponentDocumentsTab: Write the DocumentsTab component",
-        "WriteComponentCommentsSection: Write the CommentsSection component",
-        "WriteComponentOrdersSection: Write the OrdersSection component",
-        "WritePageSupplierDetails: Write the SupplierDetailsPage itself"
-      ],
-      "timestamp": "2026-02-25T04:49:08.538Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentOrderSummary: Write the OrderSummary component",
         "WriteComponentLineItemsTable: Write the LineItemsTable component",
         "WriteComponentCostBreakdown: Write the CostBreakdown component",
