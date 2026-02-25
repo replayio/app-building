@@ -1830,7 +1830,247 @@ Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter
 
 Components: TransactionHeader, BasicInfoSection, QuantityTransfersTable, BatchesCreatedTable
 
-<!-- Tests to be added by PlanPageTransactionDetail -->
+### TransactionHeader
+
+**Test: Transaction header displays Transaction ID as large heading**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456"
+- Then: The header displays "Transaction ID: TXN-123456" as a large heading
+
+**Test: Transaction header displays status badge with green styling for completed transaction**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456" which has status "Completed"
+- Then: A green badge/pill labeled "Completed" is displayed next to the Transaction ID heading
+
+**Test: Transaction header displays status badge for pending transaction**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for a transaction with status "Pending"
+- Then: A yellow/amber badge/pill labeled "Pending" is displayed next to the Transaction ID heading
+
+**Test: Transaction header displays status badge for voided transaction**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for a transaction with status "Voided"
+- Then: A red/muted badge/pill labeled "Voided" is displayed next to the Transaction ID heading
+
+**Test: Transaction header displays date and time with timezone**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456" created on Oct 26, 2023 at 10:30 AM PST
+- Then: The header displays "Date/Time:" followed by "Oct 26, 2023, 10:30 AM PST"
+
+**Test: Transaction header displays creator name**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456" created by "Jane Doe"
+- Then: The header displays "Creator:" followed by "Jane Doe"
+
+**Test: Transaction header displays description text**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456" with description "Q4 Inventory Adjustment for Raw Materials"
+- Then: The header displays "Description:" followed by "Q4 Inventory Adjustment for Raw Materials"
+
+**Test: Breadcrumb displays navigation path to transaction**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456"
+- Then: A breadcrumb trail is displayed (e.g., "Home > Transactions > TXN-123456")
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+- And: "Transactions" is a clickable link that navigates to /transactions (TransactionsPage)
+
+**Test: Clicking Home breadcrumb navigates to Dashboard**
+- Components: TransactionHeader
+- Given: The breadcrumb shows "Home > Transactions > TXN-123456"
+- When: The user clicks "Home" in the breadcrumb
+- Then: The app navigates to / (DashboardPage)
+
+**Test: Clicking Transactions breadcrumb navigates to TransactionsPage**
+- Components: TransactionHeader
+- Given: The breadcrumb shows "Home > Transactions > TXN-123456"
+- When: The user clicks "Transactions" in the breadcrumb
+- Then: The app navigates to /transactions (TransactionsPage)
+
+**Test: Sidebar shows Transactions link as active on Transaction Detail page**
+- Components: TransactionHeader
+- Given: The user navigates to the Transaction Detail page
+- Then: The sidebar "Transactions" link is visually highlighted as the active page
+
+### BasicInfoSection
+
+**Test: Basic Info section displays with heading**
+- Components: BasicInfoSection
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456"
+- Then: A "Basic Info" section heading is displayed
+
+**Test: Basic Info section displays date field**
+- Components: BasicInfoSection
+- Given: Transaction "TXN-123456" has a date of 10/26/2023
+- Then: The Basic Info section shows a "Date" label followed by the value "10/26/2023" in a read-only field
+
+**Test: Basic Info section displays reference ID field**
+- Components: BasicInfoSection
+- Given: Transaction "TXN-123456" has a reference ID "REF-Q4-ADJ-001"
+- Then: The Basic Info section shows a "Reference Id" label followed by the value "REF-Q4-ADJ-001" in a read-only field
+
+**Test: Basic Info section displays description field**
+- Components: BasicInfoSection
+- Given: Transaction "TXN-123456" has description "Adjustment for end-of-quarter physical count discrepancy in Warehouse A."
+- Then: The Basic Info section shows a "Description" label followed by the full description text in a read-only field
+- And: The description field is large enough to display multi-line text without truncation
+
+**Test: Basic Info section displays transaction type field**
+- Components: BasicInfoSection
+- Given: Transaction "TXN-123456" has transaction type "Inventory Adjustment"
+- Then: The Basic Info section shows a "Transaction Type" label followed by the value "Inventory Adjustment" in a read-only field
+
+**Test: Basic Info section fields are laid out in a horizontal row**
+- Components: BasicInfoSection
+- Given: The user navigates to the Transaction Detail page
+- Then: The Date, Reference Id, Description, and Transaction Type fields are displayed side by side in a horizontal row (responsive grid layout)
+
+### QuantityTransfersTable
+
+**Test: Quantity Transfers section displays with heading indicating double-entry view**
+- Components: QuantityTransfersTable
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456"
+- Then: A section heading "Quantity Transfers (Double-Entry View)" is displayed
+
+**Test: Quantity Transfers section displays balanced indicator with green checkmark when balanced**
+- Components: QuantityTransfersTable
+- Given: Transaction "TXN-123456" has total debits equal to total credits (515.00 each)
+- Then: A green checkmark icon with "Balanced" text is displayed in the top-right corner of the Quantity Transfers section
+
+**Test: Quantity Transfers section displays unbalanced indicator when debits and credits do not match**
+- Components: QuantityTransfersTable
+- Given: A transaction has total debits of 500.00 and total credits of 515.00
+- Then: An indicator (e.g., red X or warning icon with "Unbalanced") is displayed instead of the green "Balanced" indicator
+
+**Test: Quantity Transfers table displays correct column headers**
+- Components: QuantityTransfersTable
+- Given: The user navigates to the Transaction Detail page
+- Then: The Quantity Transfers table shows columns: Source Account, Source Amount, Source Batch ID (Optional), Destination Account, Destination Amount, Net Transfer
+
+**Test: Quantity Transfers table displays transfer rows with source and destination details**
+- Components: QuantityTransfersTable
+- Given: Transaction "TXN-123456" has a transfer from "Warehouse A - Raw Materials (Asset)" of -500.00 Units with source batch "BATCH-RM-2023-A" to "Production Line B - WIP (Asset)" of +500.00 Units with net transfer 500.00
+- Then: A row displays:
+  - Source Account: "Warehouse A - Raw Materials (Asset)" with a down-arrow (↓) icon
+  - Source Amount: "-500.00 Units"
+  - Source Batch ID: "BATCH-RM-2023-A"
+  - Destination Account: "Production Line B - WIP (Asset)" with an up-arrow (↑) icon
+  - Destination Amount: "+500.00 Units"
+  - Net Transfer: "500.00"
+
+**Test: Quantity Transfers table displays second transfer row with N/A batch ID**
+- Components: QuantityTransfersTable
+- Given: Transaction "TXN-123456" has a second transfer from "Inventory Shrinkage Expense (Expense)" of +15.00 Units with no source batch to "Warehouse A - Raw Materials (Asset)" of -15.00 Units with net transfer 15.00
+- Then: A second row displays:
+  - Source Account: "Inventory Shrinkage Expense (Expense)" with an up-arrow (↑) icon
+  - Source Amount: "+15.00 Units"
+  - Source Batch ID: "N/A"
+  - Destination Account: "Warehouse A - Raw Materials (Asset)" with a down-arrow (↓) icon
+  - Destination Amount: "-15.00 Units"
+  - Net Transfer: "15.00"
+
+**Test: Quantity Transfers table shows direction arrows indicating debit/credit on accounts**
+- Components: QuantityTransfersTable
+- Given: A transfer row debits "Warehouse A - Raw Materials (Asset)" and credits "Production Line B - WIP (Asset)"
+- Then: The debited account shows a down-arrow (↓) icon in a distinctive color (e.g., red/orange)
+- And: The credited account shows an up-arrow (↑) icon in a distinctive color (e.g., green/blue)
+
+**Test: Quantity Transfers table footer shows Total Debits and Total Credits**
+- Components: QuantityTransfersTable
+- Given: Transaction "TXN-123456" has total debits of 515.00 and total credits of 515.00
+- Then: The table footer displays "Total Debits: 515.00 | Total Credits: 515.00"
+
+**Test: Clicking a Source Batch ID link navigates to BatchDetailPage**
+- Components: QuantityTransfersTable
+- Given: A transfer row shows Source Batch ID "BATCH-RM-2023-A" as a clickable link
+- When: The user clicks on "BATCH-RM-2023-A"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-RM-2023-A"
+
+**Test: Source Batch ID column shows N/A as plain text when no batch is referenced**
+- Components: QuantityTransfersTable
+- Given: A transfer row has no source batch (batch ID is N/A)
+- Then: The Source Batch ID column shows "N/A" as plain non-clickable text
+
+**Test: Clicking a Source Account name navigates to AccountDetailPage**
+- Components: QuantityTransfersTable
+- Given: A transfer row shows Source Account "Warehouse A - Raw Materials (Asset)"
+- When: The user clicks on the source account name
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Warehouse A - Raw Materials"
+
+**Test: Clicking a Destination Account name navigates to AccountDetailPage**
+- Components: QuantityTransfersTable
+- Given: A transfer row shows Destination Account "Production Line B - WIP (Asset)"
+- When: The user clicks on the destination account name
+- Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Production Line B - WIP"
+
+**Test: Quantity Transfers table shows empty state when transaction has no transfers**
+- Components: QuantityTransfersTable
+- Given: A transaction has no quantity transfers recorded
+- Then: The Quantity Transfers table shows an empty state message (e.g., "No quantity transfers for this transaction")
+
+**Test: Quantity Transfers table handles multiple transfer rows**
+- Components: QuantityTransfersTable
+- Given: A transaction has three or more transfer rows
+- Then: All transfer rows are displayed in the table with correct source/destination accounts, amounts, batch IDs, and net transfer values
+
+### BatchesCreatedTable
+
+**Test: Batches Created section displays with heading**
+- Components: BatchesCreatedTable
+- Given: The user navigates to the Transaction Detail page for transaction "TXN-123456"
+- Then: A "Batches Created" section heading is displayed below the Quantity Transfers section
+
+**Test: Batches Created table displays correct column headers**
+- Components: BatchesCreatedTable
+- Given: The user navigates to the Transaction Detail page
+- Then: The Batches Created table shows columns: Batch ID, Material, Quantity
+
+**Test: Batches Created table displays batch rows with correct data**
+- Components: BatchesCreatedTable
+- Given: Transaction "TXN-123456" created batches:
+  - BATCH-WIP-2023-Q4-001: Material "Widget Assembly Component X", Quantity 500.00
+  - BATCH-SCRAP-2023-Q4-005: Material "Scrap Material - Metal", Quantity 15.00
+- Then: A row for "BATCH-WIP-2023-Q4-001" shows Batch ID "BATCH-WIP-2023-Q4-001", Material "Widget Assembly Component X", Quantity "500.00"
+- And: A row for "BATCH-SCRAP-2023-Q4-005" shows Batch ID "BATCH-SCRAP-2023-Q4-005", Material "Scrap Material - Metal", Quantity "15.00"
+
+**Test: Clicking a Batch ID in Batches Created table navigates to BatchDetailPage**
+- Components: BatchesCreatedTable
+- Given: The Batches Created table shows "BATCH-WIP-2023-Q4-001" as a clickable link
+- When: The user clicks on "BATCH-WIP-2023-Q4-001"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-WIP-2023-Q4-001"
+
+**Test: Clicking second Batch ID in Batches Created table navigates to its BatchDetailPage**
+- Components: BatchesCreatedTable
+- Given: The Batches Created table shows "BATCH-SCRAP-2023-Q4-005" as a clickable link
+- When: The user clicks on "BATCH-SCRAP-2023-Q4-005"
+- Then: The app navigates to /batches/:batchId (BatchDetailPage) for batch "BATCH-SCRAP-2023-Q4-005"
+
+**Test: Clicking a Material name in Batches Created table navigates to MaterialDetailPage**
+- Components: BatchesCreatedTable
+- Given: The Batches Created table shows "Widget Assembly Component X" in the Material column
+- When: The user clicks on "Widget Assembly Component X"
+- Then: The app navigates to /materials/:materialId (MaterialDetailPage) for "Widget Assembly Component X"
+
+**Test: Batches Created table shows empty state when no batches were created**
+- Components: BatchesCreatedTable
+- Given: A transaction did not create any new batches
+- Then: The Batches Created table shows an empty state message (e.g., "No batches were created in this transaction")
+
+**Test: Batches Created table handles single batch row**
+- Components: BatchesCreatedTable
+- Given: A transaction created exactly one batch
+- Then: The Batches Created table shows one row with the batch ID, material, and quantity
+
+**Test: Batches Created table handles many batch rows**
+- Components: BatchesCreatedTable
+- Given: A transaction created five or more batches
+- Then: All batch rows are displayed in the table with correct Batch ID, Material, and Quantity values
+
+**Test: New transaction creating batches updates related pages**
+- Components: BatchesCreatedTable, QuantityTransfersTable
+- Given: The user views the Transaction Detail page for a transaction that created batches
+- When: The user navigates to the MaterialDetailPage for one of the created batch's materials
+- Then: The material's batch list includes the newly created batch
+- And: The material's transaction history includes this transaction
 
 ---
 

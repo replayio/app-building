@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageTransactionDetail: Decide on components, add sections to docs/tests.md",
-        "PlanComponentTransactionHeader: Add test entries for TransactionHeader (ID, status badge, date/time, creator, description)",
-        "PlanComponentBasicInfoSection: Add test entries for BasicInfoSection (date, reference ID, description, transaction type)",
-        "PlanComponentQuantityTransfersTable: Add test entries for QuantityTransfersTable (double-entry view, balanced indicator)",
-        "PlanComponentBatchesCreatedTable: Add test entries for BatchesCreatedTable"
-      ],
-      "timestamp": "2026-02-24T20:42:02.598Z"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageNewTransaction: Decide on components, add sections to docs/tests.md",
         "PlanComponentBasicInfoForm: Add test entries for BasicInfoForm (Date, Reference ID, Description, Transaction Type dropdown)",
         "PlanComponentQuantityTransfersSection: Add test entries for QuantityTransfersSection (add/remove transfers, source/destination accounts, amounts, source batch ID)",
