@@ -3,19 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentContactsListHeader: Write the ContactsListHeader component",
-        "WriteComponentContactsSearch: Write the ContactsSearch component",
-        "WriteComponentContactsTable: Write the ContactsTable component",
-        "WriteComponentContactsPagination: Write the ContactsPagination component",
-        "WriteComponentAddContactModal: Write the AddContactModal component",
-        "WritePageContactsListPage: Write the ContactsListPage page"
-      ],
-      "timestamp": "2026-02-25T03:50:13.919Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentEmailNotificationsSection: Write the EmailNotificationsSection component",
         "WriteComponentImportExportSection: Write the ImportExportSection component",
         "WriteComponentWebhooksSection: Write the WebhooksSection component",

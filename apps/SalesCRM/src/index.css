@@ -401,6 +401,40 @@
   color: var(--text-muted);
 }
 
+/* Contacts page */
+.contacts-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.contacts-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contacts-search {
+  padding: 0 24px 16px;
+}
+
+.contacts-name-cell {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.contacts-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+}
+
+.contacts-pagination-info {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 /* Inactive badge (not already in common.css) */
 .badge--neutral {
   background: #eae8e4;

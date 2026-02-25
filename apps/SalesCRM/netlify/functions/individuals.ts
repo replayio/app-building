@@ -94,6 +94,56 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     );
   }
 
+  // GET /.netlify/functions/individuals?mode=all — enriched list for contacts page
+  if (req.method === "GET" && !subPath && url.searchParams.get("mode") === "all") {
+    const people = await query<{
+      id: string;
+      name: string;
+      title: string | null;
+      email: string | null;
+      phone: string | null;
+      location: string | null;
+      created_at: string;
+    }>(
+      sql,
+      `SELECT id, name, title, email, phone, location, created_at FROM individuals ORDER BY name ASC`
+    );
+
+    // Fetch all client associations in one query
+    const associations = await query<{
+      individual_id: string;
+      client_id: string;
+      client_name: string;
+    }>(
+      sql,
+      `SELECT ci.individual_id, c.id AS client_id, c.name AS client_name
+       FROM client_individuals ci
+       JOIN clients c ON c.id = ci.client_id
+       ORDER BY c.name ASC`
+    );
+
+    // Build a map of individual_id -> associated clients
+    const clientMap = new Map<string, { id: string; name: string }[]>();
+    for (const a of associations) {
+      const list = clientMap.get(a.individual_id) || [];
+      list.push({ id: a.client_id, name: a.client_name });
+      clientMap.set(a.individual_id, list);
+    }
+
+    return jsonResponse(
+      people.map((p) => ({
+        id: p.id,
+        name: p.name,
+        title: p.title,
+        email: p.email,
+        phone: p.phone,
+        location: p.location,
+        createdAt: p.created_at,
+        associatedClients: clientMap.get(p.id) || [],
+      }))
+    );
+  }
+
   // GET /.netlify/functions/individuals — all individuals (no params)
   if (req.method === "GET" && !subPath) {
     const people = await query<{
@@ -139,6 +189,77 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       location: person.location,
       createdAt: person.created_at,
     });
+  }
+
+  // POST /.netlify/functions/individuals/import — bulk import contacts
+  if (req.method === "POST" && subPath === "import") {
+    let body: { rows?: Record<string, string>[] };
+    try {
+      body = await req.json();
+    } catch {
+      return errorResponse(400, "Invalid JSON body");
+    }
+
+    if (!body.rows || !Array.isArray(body.rows)) {
+      return errorResponse(400, "rows array required");
+    }
+
+    const errors: { row: number; errors: string[] }[] = [];
+    let imported = 0;
+
+    for (let i = 0; i < body.rows.length; i++) {
+      const row = body.rows[i];
+      const rowErrors: string[] = [];
+      const name = (row["Name"] || "").trim();
+
+      if (!name) {
+        rowErrors.push("Name is required");
+      }
+
+      if (rowErrors.length > 0) {
+        errors.push({ row: i + 1, errors: rowErrors });
+        continue;
+      }
+
+      const title = (row["Title"] || "").trim() || null;
+      const email = (row["Email"] || "").trim() || null;
+      const phone = (row["Phone"] || "").trim() || null;
+      const location = (row["Location"] || "").trim() || null;
+      const clientName = (row["Client Name"] || "").trim();
+
+      const created = await query<{ id: string }>(
+        sql,
+        `INSERT INTO individuals (name, title, email, phone, location)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING id`,
+        [name, title, email, phone, location]
+      );
+
+      const individualId = created[0].id;
+
+      // Associate with client by name if provided
+      if (clientName) {
+        const client = await queryOne<{ id: string }>(
+          sql,
+          `SELECT id FROM clients WHERE LOWER(name) = LOWER($1)`,
+          [clientName]
+        );
+        if (client) {
+          await query(
+            sql,
+            `INSERT INTO client_individuals (client_id, individual_id, role, is_primary)
+             VALUES ($1, $2, NULL, false)`,
+            [client.id, individualId]
+          );
+        } else {
+          errors.push({ row: i + 1, errors: [`Client "${clientName}" not found`] });
+        }
+      }
+
+      imported++;
+    }
+
+    return jsonResponse({ imported, errors });
   }
 
   // POST /.netlify/functions/individuals — create individual and associate with client
@@ -187,6 +308,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     const p = created[0];
 
     // Associate with client if clientId provided
+    const associatedClients: { id: string; name: string }[] = [];
     if (body.clientId) {
       await query(
         sql,
@@ -194,6 +316,15 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
          VALUES ($1, $2, $3, false)`,
         [body.clientId, p.id, body.role || null]
       );
+
+      const clientRow = await queryOne<{ id: string; name: string }>(
+        sql,
+        `SELECT id, name FROM clients WHERE id = $1`,
+        [body.clientId]
+      );
+      if (clientRow) {
+        associatedClients.push({ id: clientRow.id, name: clientRow.name });
+      }
 
       const actor = user ? user.name : "System";
       await query(
@@ -215,6 +346,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         role: body.role || null,
         isPrimary: false,
         createdAt: p.created_at,
+        associatedClients,
       },
       201
     );
