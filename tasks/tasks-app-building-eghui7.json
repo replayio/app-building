@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+        "FixViolation: Fix UUID column empty string fallback in transactions.ts line 236 - account_id uses || \"\" instead of || null",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-25T15:48:53.642Z",
+      "timestamp": "2026-02-25T15:51:17.898Z",
       "app": "InventoryTracker"
     },
     {
