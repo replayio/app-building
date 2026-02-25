@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/writeScript.md",
-      "subtasks": [
-        "Unpack: Implement package scripts for SupplierTracker"
-      ],
-      "timestamp": "2026-02-24T19:26:41.561Z"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "Unpack: Write Playwright tests for SupplierTracker"
