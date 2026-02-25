@@ -3,19 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentClientsListHeader: Write the ClientsListHeader component",
-        "WriteComponentClientsSearchAndFilters: Write the ClientsSearchAndFilters component",
-        "WriteComponentClientsTable: Write the ClientsTable component",
-        "WriteComponentClientsPagination: Write the ClientsPagination component",
-        "WriteComponentAddClientModal: Write the AddClientModal component",
-        "WritePageClientsListPage: Write the ClientsListPage page"
-      ],
-      "timestamp": "2026-02-25T03:49:37.441Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentClientHeader: Write the ClientHeader component",
         "WriteComponentQuickActions: Write the QuickActions component",
         "WriteComponentSourceInfoSection: Write the SourceInfoSection component",
