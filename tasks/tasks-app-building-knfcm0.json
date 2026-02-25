@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageClientsListPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentClientsListHeader: Add test entries for ClientsListHeader (page title, Import button, Export button, Add New Client button)",
-        "PlanComponentClientsSearchAndFilters: Add test entries for ClientsSearchAndFilters (search bar, Status dropdown, Tags dropdown, Source dropdown, Sort dropdown)",
-        "PlanComponentClientsTable: Add test entries for ClientsTable (Client Name, Type, Status badge, Tags, Primary Contact, Open Deals with value, Next Task, actions menu, row click navigation)",
-        "PlanComponentClientsPaginationAndModals: Add test entries for ClientsPagination (page numbers, Previous/Next), AddClientModal (form fields, validation), ImportDialog (CSV format spec, template download, validation errors)"
-      ],
-      "timestamp": "2026-02-25T03:31:17.854Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageClientDetailPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentClientHeader: Add test entries for ClientHeader (name, type badge Organization/Individual, status badge Active/Inactive/Prospect/Churned, tags, edit pencil icon, FollowButton toggle)",
         "PlanComponentQuickActions: Add test entries for QuickActions (Add Task, Add Deal, Add Attachment, Add Person icon buttons)",
