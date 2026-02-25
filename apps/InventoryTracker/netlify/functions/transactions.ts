@@ -233,7 +233,7 @@ export default async function handler(req: Request, _context: Context) {
           // Create the actual batch first
           const batchRows = await sql`
             INSERT INTO batches (material_id, account_id, quantity, unit, originating_transaction_id)
-            VALUES (${bc.material_id}, ${transfers?.[0]?.destination_account_id || ""}, ${bc.quantity}, ${bc.unit}, ${txnId})
+            VALUES (${bc.material_id}, ${transfers?.[0]?.destination_account_id || null}, ${bc.quantity}, ${bc.unit}, ${txnId})
             RETURNING *
           `;
           const batch = batchRows[0];
