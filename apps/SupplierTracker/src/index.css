@@ -6,6 +6,7 @@
 @import "@shared/components/ConfirmDialog.css";
 @import "@shared/components/DocumentsSection.css";
 @import "@shared/components/FilterSelect.css";
+@import "@shared/components/TimelineSection.css";
 
 /* App-specific variables */
 :root {

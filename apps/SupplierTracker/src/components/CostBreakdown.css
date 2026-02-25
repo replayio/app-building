@@ -1,0 +1,51 @@
+.cost-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cost-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--bg-border-color-light);
+  font-size: 13px;
+}
+
+.cost-breakdown-row:last-child {
+  border-bottom: none;
+}
+
+.cost-breakdown-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cost-breakdown-value {
+  color: var(--text-primary);
+  font-weight: 450;
+}
+
+.cost-breakdown-value--discount {
+  color: var(--status-success);
+}
+
+.cost-breakdown-row--total {
+  border-top: 2px solid var(--bg-border-color);
+  border-bottom: none;
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.cost-breakdown-row--total .cost-breakdown-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cost-breakdown-row--total .cost-breakdown-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
