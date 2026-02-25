@@ -3,9 +3,37 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageOrderDetails: Decide on components for OrderDetailsPage, add sections to docs/tests.md",
+        "PlanComponentOrderSummary: Add test entries for OrderSummary (supplier link, dates, status badge, overall cost, Edit button, Print button)",
+        "PlanComponentLineItemsTable: Add test entries for LineItemsTable (SKU, description, qty, unit price, line total columns; add/edit/delete line items)",
+        "PlanComponentCostBreakdown: Add test entries for CostBreakdown (subtotal, tax, discount, total cost with currency)",
+        "PlanComponentOrderDocuments: Add test entries for OrderDocuments (document list with name/type/date, View and Download buttons, upload document)",
+        "PlanComponentOrderHistory: Add test entries for OrderHistory (timeline of status changes with timestamps and actors)"
       ],
-      "timestamp": "2026-02-25T04:17:37.265Z",
+      "timestamp": "2026-02-25T04:19:20.182Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageSupplierDetails: Decide on components for SupplierDetailsPage, add sections to docs/tests.md",
+        "PlanComponentSupplierOverview: Add test entries for SupplierOverview (name, address, contact, description, status badge, Back to Dashboard button, edit/delete supplier)",
+        "PlanComponentDocumentsTab: Add test entries for DocumentsTab (search, Upload Document button, document cards with type/date, view/download actions)",
+        "PlanComponentCommentsSection: Add test entries for CommentsSection (add comment input, comment list with timestamps/authors)",
+        "PlanComponentOrdersSection: Add test entries for OrdersSection (upcoming/historical tabs, search bars, filter by status, order tables with links)"
+      ],
+      "timestamp": "2026-02-25T04:19:13.256Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageDashboard: Decide on components for DashboardPage, add sections to docs/tests.md",
+        "PlanComponentQuickActions: Add test entries for QuickActions (Add New Supplier button, Create Purchase Order button)",
+        "PlanComponentUpcomingOrdersTable: Add test entries for UpcomingOrdersTable (columns, filters, row links, status badges)",
+        "PlanComponentSuppliersList: Add test entries for SuppliersList (card grid, supplier cards with name/status/contact/orders summary)"
+      ],
+      "timestamp": "2026-02-25T04:19:07.255Z",
       "app": "SupplierTracker"
     },
     {
