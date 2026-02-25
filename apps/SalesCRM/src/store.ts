@@ -1,11 +1,13 @@
 import { createAppStore } from "@shared/store/store";
 import { authReducer } from "@shared/auth/authSlice";
 import { clientsReducer } from "./clientsSlice";
+import { clientDetailReducer } from "./clientDetailSlice";
 
 export const store = createAppStore({
   reducer: {
     auth: authReducer,
     clients: clientsReducer,
+    clientDetail: clientDetailReducer,
   },
 });
 

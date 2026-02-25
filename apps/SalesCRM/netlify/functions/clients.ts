@@ -290,6 +290,89 @@ export default async function handler(req: Request): Promise<Response> {
     );
   }
 
+  // PUT /.netlify/functions/clients/<id> — update client
+  if (req.method === "PUT" && subPath) {
+    let body: {
+      name?: string;
+      type?: string;
+      status?: string;
+      tags?: string[];
+      sourceType?: string;
+      sourceDetail?: string;
+      campaign?: string;
+      channel?: string;
+      dateAcquired?: string;
+    };
+    try {
+      body = await req.json();
+    } catch {
+      return errorResponse(400, "Invalid JSON body");
+    }
+
+    const existing = await queryOne<{ id: string }>(sql, "SELECT id FROM clients WHERE id = $1", [subPath]);
+    if (!existing) {
+      return errorResponse(404, "Client not found");
+    }
+
+    const updated = await query<{
+      id: string;
+      name: string;
+      type: string;
+      status: string;
+      tags: string[];
+      source_type: string | null;
+      source_detail: string | null;
+      campaign: string | null;
+      channel: string | null;
+      date_acquired: string | null;
+      created_at: string;
+      updated_at: string;
+    }>(
+      sql,
+      `UPDATE clients SET
+        name = COALESCE($2, name),
+        type = COALESCE($3, type),
+        status = COALESCE($4, status),
+        tags = COALESCE($5, tags),
+        source_type = $6,
+        source_detail = $7,
+        campaign = $8,
+        channel = $9,
+        date_acquired = $10,
+        updated_at = NOW()
+      WHERE id = $1
+      RETURNING *`,
+      [
+        subPath,
+        body.name || null,
+        body.type || null,
+        body.status || null,
+        body.tags || null,
+        body.sourceType !== undefined ? (body.sourceType || null) : undefined,
+        body.sourceDetail !== undefined ? (body.sourceDetail || null) : undefined,
+        body.campaign !== undefined ? (body.campaign || null) : undefined,
+        body.channel !== undefined ? (body.channel || null) : undefined,
+        body.dateAcquired !== undefined ? (body.dateAcquired || null) : undefined,
+      ]
+    );
+
+    const c = updated[0];
+    return jsonResponse({
+      id: c.id,
+      name: c.name,
+      type: c.type,
+      status: c.status,
+      tags: c.tags,
+      sourceType: c.source_type,
+      sourceDetail: c.source_detail,
+      campaign: c.campaign,
+      channel: c.channel,
+      dateAcquired: c.date_acquired,
+      createdAt: c.created_at,
+      updatedAt: c.updated_at,
+    });
+  }
+
   // DELETE /.netlify/functions/clients/<id>
   if (req.method === "DELETE" && subPath) {
     const existing = await queryOne<{ id: string }>(sql, "SELECT id FROM clients WHERE id = $1", [subPath]);
