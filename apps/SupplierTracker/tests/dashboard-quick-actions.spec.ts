@@ -196,6 +196,17 @@ test.describe("DashboardPage - QuickActions", () => {
     await expect(newOrderRow).toBeVisible({ timeout: 30000 });
     await expect(newOrderRow).toContainText("Pending");
     await expect(newOrderRow).toContainText("Dec 15, 2023");
+
+    // Navigate to the new order's OrderDetailsPage via its Order ID link
+    const orderLink = newOrderRow.locator("[data-testid^='order-link-']");
+    const orderIdText = await orderLink.innerText();
+    await orderLink.click();
+    await expect(page.getByTestId("order-details-page")).toBeVisible({ timeout: 30000 });
+
+    // Verify OrderHistory has a creation entry appearing exactly once
+    await expect(page.getByTestId("order-history")).toBeVisible({ timeout: 30000 });
+    const creationEntries = page.getByTestId("timeline-event-description").filter({ hasText: `Order ${orderIdText.replace("#", "")} created` });
+    await expect(creationEntries).toHaveCount(1);
   });
 
   test("Create Order Dialog Cancel Does Not Create Order", async ({ page }) => {

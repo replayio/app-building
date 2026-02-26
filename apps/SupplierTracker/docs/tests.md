@@ -166,7 +166,8 @@ Then a modal dialog opens with the title "Create Purchase Order" and fields for:
 Given the "Create Purchase Order" dialog is open,
 When the user selects supplier "Apex Logistics", sets Expected Delivery to "Dec 15, 2023", adds a line item (SKU "SKU-X100", Item Name "Widget A", Qty 10, Unit Price $25.00), and clicks "Save",
 Then the dialog closes,
-And the new order appears in the UpcomingOrdersTable with the assigned Order ID, supplier "Apex Logistics", expected delivery "Dec 15, 2023", status "Pending", and total cost "$250.00".
+And the new order appears in the UpcomingOrdersTable with the assigned Order ID, supplier "Apex Logistics", expected delivery "Dec 15, 2023", status "Pending", and total cost "$250.00",
+And navigating to the new order's OrderDetailsPage shows an OrderHistory entry "Order <orderId> created" appearing exactly once.
 
 **Create Order Dialog Cancel Does Not Create Order**
 Given the "Create Purchase Order" dialog is open and the user has entered some data,
