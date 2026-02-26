@@ -144,7 +144,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       const stage = row["Stage"]?.trim() || "Lead";
       const probability = row["Probability"] ? parseInt(row["Probability"], 10) : null;
       const expectedCloseDate = row["Expected Close Date"]?.trim() || null;
-      const status = row["Status"]?.trim() || "active";
+      const status = row["Status"]?.trim() || "open";
 
       // Look up owner by name
       let ownerId: string | null = null;
@@ -243,7 +243,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         body.ownerId || null,
         body.probability ?? null,
         body.expectedCloseDate || null,
-        body.status || "active",
+        body.status || "open",
       ]
     );
 

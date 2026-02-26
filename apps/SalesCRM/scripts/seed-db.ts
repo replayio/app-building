@@ -39,47 +39,47 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
   // --- Seed Individuals (People/Contacts) ---
   await sql`
     INSERT INTO individuals (id, name, title, email, phone, location) VALUES
-      ('i1000000-0000-0000-0000-000000000001', 'Sarah Jenkins', 'CEO', 'sarah.jenkins@acme.com', '+1-555-0101', 'New York, NY'),
-      ('i1000000-0000-0000-0000-000000000002', 'Michael Chen', 'CTO', 'michael.chen@acme.com', '+1-555-0102', 'San Francisco, CA'),
-      ('i1000000-0000-0000-0000-000000000003', 'Emily Park', 'VP of Sales', 'emily.park@acme.com', '+1-555-0103', 'Chicago, IL'),
-      ('i1000000-0000-0000-0000-000000000004', 'Tom Harris', 'Founder', 'tom@techstart.com', '+1-555-0201', 'Austin, TX'),
-      ('i1000000-0000-0000-0000-000000000005', 'Lisa Wong', 'Head of Procurement', 'lisa.wong@globalsolutions.com', '+1-555-0301', 'London, UK'),
-      ('i1000000-0000-0000-0000-000000000006', 'Jane Doe', 'Independent Consultant', 'jane.doe@email.com', '+1-555-0401', 'Portland, OR'),
-      ('i1000000-0000-0000-0000-000000000007', 'Robert Taylor', 'Operations Director', 'robert.taylor@summit.com', '+1-555-0501', 'Detroit, MI'),
-      ('i1000000-0000-0000-0000-000000000008', 'Anna Schmidt', 'CFO', 'anna.schmidt@brightfuture.com', '+1-555-0601', 'Miami, FL'),
-      ('i1000000-0000-0000-0000-000000000009', 'James Wilson', 'Product Manager', 'james.wilson@nextgen.com', '+1-555-0701', 'Seattle, WA'),
-      ('i1000000-0000-0000-0000-000000000010', 'Maria Garcia', 'CEO', 'maria.garcia@pacific.com', '+1-555-0801', 'Los Angeles, CA'),
-      ('i1000000-0000-0000-0000-000000000011', 'Michael Rivera', 'Strategy Consultant', 'michael.rivera@email.com', '+1-555-0901', 'Denver, CO'),
-      ('i1000000-0000-0000-0000-000000000012', 'Diana Foster', 'VP Engineering', 'diana.foster@orion.com', '+1-555-1001', 'Houston, TX')
+      ('b1000000-0000-0000-0000-000000000001', 'Sarah Jenkins', 'CEO', 'sarah.jenkins@acme.com', '+1-555-0101', 'New York, NY'),
+      ('b1000000-0000-0000-0000-000000000002', 'Michael Chen', 'CTO', 'michael.chen@acme.com', '+1-555-0102', 'San Francisco, CA'),
+      ('b1000000-0000-0000-0000-000000000003', 'Emily Park', 'VP of Sales', 'emily.park@acme.com', '+1-555-0103', 'Chicago, IL'),
+      ('b1000000-0000-0000-0000-000000000004', 'Tom Harris', 'Founder', 'tom@techstart.com', '+1-555-0201', 'Austin, TX'),
+      ('b1000000-0000-0000-0000-000000000005', 'Lisa Wong', 'Head of Procurement', 'lisa.wong@globalsolutions.com', '+1-555-0301', 'London, UK'),
+      ('b1000000-0000-0000-0000-000000000006', 'Jane Doe', 'Independent Consultant', 'jane.doe@email.com', '+1-555-0401', 'Portland, OR'),
+      ('b1000000-0000-0000-0000-000000000007', 'Robert Taylor', 'Operations Director', 'robert.taylor@summit.com', '+1-555-0501', 'Detroit, MI'),
+      ('b1000000-0000-0000-0000-000000000008', 'Anna Schmidt', 'CFO', 'anna.schmidt@brightfuture.com', '+1-555-0601', 'Miami, FL'),
+      ('b1000000-0000-0000-0000-000000000009', 'James Wilson', 'Product Manager', 'james.wilson@nextgen.com', '+1-555-0701', 'Seattle, WA'),
+      ('b1000000-0000-0000-0000-000000000010', 'Maria Garcia', 'CEO', 'maria.garcia@pacific.com', '+1-555-0801', 'Los Angeles, CA'),
+      ('b1000000-0000-0000-0000-000000000011', 'Michael Rivera', 'Strategy Consultant', 'michael.rivera@email.com', '+1-555-0901', 'Denver, CO'),
+      ('b1000000-0000-0000-0000-000000000012', 'Diana Foster', 'VP Engineering', 'diana.foster@orion.com', '+1-555-1001', 'Houston, TX')
     ON CONFLICT DO NOTHING
   `;
 
   // --- Seed Client-Individual Associations ---
   await sql`
     INSERT INTO client_individuals (client_id, individual_id, role, is_primary) VALUES
-      ('c1000000-0000-0000-0000-000000000001', 'i1000000-0000-0000-0000-000000000001', 'CEO', true),
-      ('c1000000-0000-0000-0000-000000000001', 'i1000000-0000-0000-0000-000000000002', 'CTO', false),
-      ('c1000000-0000-0000-0000-000000000001', 'i1000000-0000-0000-0000-000000000003', 'VP of Sales', false),
-      ('c1000000-0000-0000-0000-000000000002', 'i1000000-0000-0000-0000-000000000004', 'Founder', true),
-      ('c1000000-0000-0000-0000-000000000003', 'i1000000-0000-0000-0000-000000000005', 'Head of Procurement', true),
-      ('c1000000-0000-0000-0000-000000000004', 'i1000000-0000-0000-0000-000000000006', 'Self', true),
-      ('c1000000-0000-0000-0000-000000000005', 'i1000000-0000-0000-0000-000000000007', 'Operations Director', true),
-      ('c1000000-0000-0000-0000-000000000006', 'i1000000-0000-0000-0000-000000000008', 'CFO', true),
-      ('c1000000-0000-0000-0000-000000000007', 'i1000000-0000-0000-0000-000000000009', 'Product Manager', true),
-      ('c1000000-0000-0000-0000-000000000008', 'i1000000-0000-0000-0000-000000000010', 'CEO', true),
-      ('c1000000-0000-0000-0000-000000000009', 'i1000000-0000-0000-0000-000000000011', 'Self', true),
-      ('c1000000-0000-0000-0000-000000000010', 'i1000000-0000-0000-0000-000000000012', 'VP Engineering', true)
+      ('c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000001', 'CEO', true),
+      ('c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000002', 'CTO', false),
+      ('c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000003', 'VP of Sales', false),
+      ('c1000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000004', 'Founder', true),
+      ('c1000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000005', 'Head of Procurement', true),
+      ('c1000000-0000-0000-0000-000000000004', 'b1000000-0000-0000-0000-000000000006', 'Self', true),
+      ('c1000000-0000-0000-0000-000000000005', 'b1000000-0000-0000-0000-000000000007', 'Operations Director', true),
+      ('c1000000-0000-0000-0000-000000000006', 'b1000000-0000-0000-0000-000000000008', 'CFO', true),
+      ('c1000000-0000-0000-0000-000000000007', 'b1000000-0000-0000-0000-000000000009', 'Product Manager', true),
+      ('c1000000-0000-0000-0000-000000000008', 'b1000000-0000-0000-0000-000000000010', 'CEO', true),
+      ('c1000000-0000-0000-0000-000000000009', 'b1000000-0000-0000-0000-000000000011', 'Self', true),
+      ('c1000000-0000-0000-0000-000000000010', 'b1000000-0000-0000-0000-000000000012', 'VP Engineering', true)
     ON CONFLICT DO NOTHING
   `;
 
   // --- Seed Relationships (between individuals) ---
   await sql`
     INSERT INTO relationships (individual_id, related_individual_id, relationship_type) VALUES
-      ('i1000000-0000-0000-0000-000000000001', 'i1000000-0000-0000-0000-000000000002', 'Colleague'),
-      ('i1000000-0000-0000-0000-000000000001', 'i1000000-0000-0000-0000-000000000003', 'Colleague'),
-      ('i1000000-0000-0000-0000-000000000002', 'i1000000-0000-0000-0000-000000000003', 'Colleague'),
-      ('i1000000-0000-0000-0000-000000000004', 'i1000000-0000-0000-0000-000000000009', 'Industry Contact'),
-      ('i1000000-0000-0000-0000-000000000005', 'i1000000-0000-0000-0000-000000000010', 'Business Partner')
+      ('b1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000002', 'Colleague'),
+      ('b1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000003', 'Colleague'),
+      ('b1000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000003', 'Colleague'),
+      ('b1000000-0000-0000-0000-000000000004', 'b1000000-0000-0000-0000-000000000009', 'Industry Contact'),
+      ('b1000000-0000-0000-0000-000000000005', 'b1000000-0000-0000-0000-000000000010', 'Business Partner')
     ON CONFLICT DO NOTHING
   `;
 
@@ -102,36 +102,36 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
   // --- Seed Tasks ---
   await sql`
     INSERT INTO tasks (id, title, description, due_date, priority, status, client_id, deal_id, assignee_id) VALUES
-      ('t1000000-0000-0000-0000-000000000001', 'Follow-up call with Sarah', 'Discuss enterprise license terms and timeline', '2025-03-01', 'high', 'open', 'c1000000-0000-0000-0000-000000000001', 'd1000000-0000-0000-0000-000000000001', 'a1000000-0000-0000-0000-000000000001'),
-      ('t1000000-0000-0000-0000-000000000002', 'Send proposal to Acme', 'Prepare and send support contract proposal', '2025-02-28', 'high', 'open', 'c1000000-0000-0000-0000-000000000001', 'd1000000-0000-0000-0000-000000000002', 'a1000000-0000-0000-0000-000000000002'),
-      ('t1000000-0000-0000-0000-000000000003', 'Demo for TechStart', 'Product demonstration for pilot evaluation', '2025-03-10', 'medium', 'open', 'c1000000-0000-0000-0000-000000000002', 'd1000000-0000-0000-0000-000000000004', 'a1000000-0000-0000-0000-000000000003'),
-      ('t1000000-0000-0000-0000-000000000004', 'Quarterly review with Global Solutions', 'Review ongoing consulting engagement', '2025-03-15', 'medium', 'open', 'c1000000-0000-0000-0000-000000000003', NULL, 'a1000000-0000-0000-0000-000000000001'),
-      ('t1000000-0000-0000-0000-000000000005', 'Pacific Trading contract review', 'Legal review of integration contract', '2025-03-05', 'high', 'in_progress', 'c1000000-0000-0000-0000-000000000008', 'd1000000-0000-0000-0000-000000000006', 'a1000000-0000-0000-0000-000000000004'),
-      ('t1000000-0000-0000-0000-000000000006', 'Prepare Orion presentation', 'Executive presentation for platform deal', '2025-03-20', 'urgent', 'open', 'c1000000-0000-0000-0000-000000000010', 'd1000000-0000-0000-0000-000000000007', 'a1000000-0000-0000-0000-000000000005'),
-      ('t1000000-0000-0000-0000-000000000007', 'Update CRM records for Summit', 'Clean up inactive client data', '2025-02-25', 'low', 'completed', 'c1000000-0000-0000-0000-000000000005', NULL, 'a1000000-0000-0000-0000-000000000006'),
-      ('t1000000-0000-0000-0000-000000000008', 'Send welcome package to Jane', 'Onboarding materials for new freelancer client', '2025-03-02', 'medium', 'open', 'c1000000-0000-0000-0000-000000000004', NULL, 'a1000000-0000-0000-0000-000000000007'),
-      ('t1000000-0000-0000-0000-000000000009', 'Follow up with NextGen', 'Check interest level after initial outreach', '2025-03-08', 'low', 'open', 'c1000000-0000-0000-0000-000000000007', 'd1000000-0000-0000-0000-000000000010', 'a1000000-0000-0000-0000-000000000003'),
-      ('t1000000-0000-0000-0000-000000000010', 'Review Michael Rivera proposal', 'Evaluate consulting engagement proposal', '2025-03-12', 'medium', 'open', 'c1000000-0000-0000-0000-000000000009', NULL, 'a1000000-0000-0000-0000-000000000008')
+      ('e1000000-0000-0000-0000-000000000001', 'Follow-up call with Sarah', 'Discuss enterprise license terms and timeline', '2025-03-01', 'high', 'open', 'c1000000-0000-0000-0000-000000000001', 'd1000000-0000-0000-0000-000000000001', 'a1000000-0000-0000-0000-000000000001'),
+      ('e1000000-0000-0000-0000-000000000002', 'Send proposal to Acme', 'Prepare and send support contract proposal', '2025-02-28', 'high', 'open', 'c1000000-0000-0000-0000-000000000001', 'd1000000-0000-0000-0000-000000000002', 'a1000000-0000-0000-0000-000000000002'),
+      ('e1000000-0000-0000-0000-000000000003', 'Demo for TechStart', 'Product demonstration for pilot evaluation', '2025-03-10', 'medium', 'open', 'c1000000-0000-0000-0000-000000000002', 'd1000000-0000-0000-0000-000000000004', 'a1000000-0000-0000-0000-000000000003'),
+      ('e1000000-0000-0000-0000-000000000004', 'Quarterly review with Global Solutions', 'Review ongoing consulting engagement', '2025-03-15', 'medium', 'open', 'c1000000-0000-0000-0000-000000000003', NULL, 'a1000000-0000-0000-0000-000000000001'),
+      ('e1000000-0000-0000-0000-000000000005', 'Pacific Trading contract review', 'Legal review of integration contract', '2025-03-05', 'high', 'in_progress', 'c1000000-0000-0000-0000-000000000008', 'd1000000-0000-0000-0000-000000000006', 'a1000000-0000-0000-0000-000000000004'),
+      ('e1000000-0000-0000-0000-000000000006', 'Prepare Orion presentation', 'Executive presentation for platform deal', '2025-03-20', 'urgent', 'open', 'c1000000-0000-0000-0000-000000000010', 'd1000000-0000-0000-0000-000000000007', 'a1000000-0000-0000-0000-000000000005'),
+      ('e1000000-0000-0000-0000-000000000007', 'Update CRM records for Summit', 'Clean up inactive client data', '2025-02-25', 'low', 'completed', 'c1000000-0000-0000-0000-000000000005', NULL, 'a1000000-0000-0000-0000-000000000006'),
+      ('e1000000-0000-0000-0000-000000000008', 'Send welcome package to Jane', 'Onboarding materials for new freelancer client', '2025-03-02', 'medium', 'open', 'c1000000-0000-0000-0000-000000000004', NULL, 'a1000000-0000-0000-0000-000000000007'),
+      ('e1000000-0000-0000-0000-000000000009', 'Follow up with NextGen', 'Check interest level after initial outreach', '2025-03-08', 'low', 'open', 'c1000000-0000-0000-0000-000000000007', 'd1000000-0000-0000-0000-000000000010', 'a1000000-0000-0000-0000-000000000003'),
+      ('e1000000-0000-0000-0000-000000000010', 'Review Michael Rivera proposal', 'Evaluate consulting engagement proposal', '2025-03-12', 'medium', 'open', 'c1000000-0000-0000-0000-000000000009', NULL, 'a1000000-0000-0000-0000-000000000008')
     ON CONFLICT DO NOTHING
   `;
 
   // --- Seed Task Notes ---
   await sql`
     INSERT INTO task_notes (task_id, content, created_by) VALUES
-      ('t1000000-0000-0000-0000-000000000001', 'Sarah prefers calls on Tuesday mornings.', 'Alice Johnson'),
-      ('t1000000-0000-0000-0000-000000000001', 'Updated: she mentioned budget approval is pending from board.', 'Alice Johnson'),
-      ('t1000000-0000-0000-0000-000000000005', 'Legal team requested additional clauses for data handling.', 'David Kim')
+      ('e1000000-0000-0000-0000-000000000001', 'Sarah prefers calls on Tuesday mornings.', 'Alice Johnson'),
+      ('e1000000-0000-0000-0000-000000000001', 'Updated: she mentioned budget approval is pending from board.', 'Alice Johnson'),
+      ('e1000000-0000-0000-0000-000000000005', 'Legal team requested additional clauses for data handling.', 'David Kim')
     ON CONFLICT DO NOTHING
   `;
 
   // --- Seed Attachments ---
   await sql`
     INSERT INTO attachments (id, filename, file_type, url, size, client_id, deal_id) VALUES
-      ('at100000-0000-0000-0000-000000000001', 'acme-contract-draft.pdf', 'application/pdf', 'https://example.com/files/acme-contract.pdf', 245000, 'c1000000-0000-0000-0000-000000000001', 'd1000000-0000-0000-0000-000000000001'),
-      ('at100000-0000-0000-0000-000000000002', 'acme-logo.png', 'image/png', 'https://example.com/files/acme-logo.png', 52000, 'c1000000-0000-0000-0000-000000000001', NULL),
-      ('at100000-0000-0000-0000-000000000003', 'techstart-requirements.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'https://example.com/files/techstart-reqs.docx', 180000, 'c1000000-0000-0000-0000-000000000002', 'd1000000-0000-0000-0000-000000000004'),
-      ('at100000-0000-0000-0000-000000000004', 'global-solutions-invoice.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'https://example.com/files/gs-invoice.xlsx', 95000, 'c1000000-0000-0000-0000-000000000003', 'd1000000-0000-0000-0000-000000000005'),
-      ('at100000-0000-0000-0000-000000000005', 'orion-presentation.pdf', 'application/pdf', 'https://example.com/files/orion-deck.pdf', 1200000, 'c1000000-0000-0000-0000-000000000010', 'd1000000-0000-0000-0000-000000000007')
+      ('af100000-0000-0000-0000-000000000001', 'acme-contract-draft.pdf', 'application/pdf', 'https://example.com/files/acme-contract.pdf', 245000, 'c1000000-0000-0000-0000-000000000001', 'd1000000-0000-0000-0000-000000000001'),
+      ('af100000-0000-0000-0000-000000000002', 'acme-logo.png', 'image/png', 'https://example.com/files/acme-logo.png', 52000, 'c1000000-0000-0000-0000-000000000001', NULL),
+      ('af100000-0000-0000-0000-000000000003', 'techstart-requirements.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'https://example.com/files/techstart-reqs.docx', 180000, 'c1000000-0000-0000-0000-000000000002', 'd1000000-0000-0000-0000-000000000004'),
+      ('af100000-0000-0000-0000-000000000004', 'global-solutions-invoice.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'https://example.com/files/gs-invoice.xlsx', 95000, 'c1000000-0000-0000-0000-000000000003', 'd1000000-0000-0000-0000-000000000005'),
+      ('af100000-0000-0000-0000-000000000005', 'orion-presentation.pdf', 'application/pdf', 'https://example.com/files/orion-deck.pdf', 1200000, 'c1000000-0000-0000-0000-000000000010', 'd1000000-0000-0000-0000-000000000007')
     ON CONFLICT DO NOTHING
   `;
 
@@ -156,25 +156,25 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
 
   // --- Seed Writeups ---
   await sql`
-    INSERT INTO writeups (deal_id, content, author) VALUES
-      ('d1000000-0000-0000-0000-000000000001', 'Acme is looking for an enterprise-wide deployment. Key decision makers are Sarah (CEO) and Michael (CTO). Budget approved for Q1 2025. Main competitor is Salesforce.', 'Alice Johnson'),
-      ('d1000000-0000-0000-0000-000000000001', 'Follow-up from negotiation meeting: They want volume pricing for 500+ seats. Need to prepare custom pricing tier.', 'Alice Johnson'),
-      ('d1000000-0000-0000-0000-000000000005', 'Global Solutions engagement successful. They signed a 2-year consulting contract. Reference customer for future enterprise deals.', 'Alice Johnson'),
-      ('d1000000-0000-0000-0000-000000000007', 'Orion is evaluating multiple vendors. Their timeline is aggressive — decision by end of Q2. Need executive sponsorship from our side.', 'Emma Wilson')
+    INSERT INTO writeups (deal_id, title, content, author) VALUES
+      ('d1000000-0000-0000-0000-000000000001', 'Enterprise Deployment Strategy', 'Acme is looking for an enterprise-wide deployment. Key decision makers are Sarah (CEO) and Michael (CTO). Budget approved for Q1 2025. Main competitor is Salesforce.', 'Alice Johnson'),
+      ('d1000000-0000-0000-0000-000000000001', 'Negotiation Follow-up', 'Follow-up from negotiation meeting: They want volume pricing for 500+ seats. Need to prepare custom pricing tier.', 'Alice Johnson'),
+      ('d1000000-0000-0000-0000-000000000005', 'Engagement Summary', 'Global Solutions engagement successful. They signed a 2-year consulting contract. Reference customer for future enterprise deals.', 'Alice Johnson'),
+      ('d1000000-0000-0000-0000-000000000007', 'Vendor Evaluation Notes', 'Orion is evaluating multiple vendors. Their timeline is aggressive — decision by end of Q2. Need executive sponsorship from our side.', 'Emma Wilson')
     ON CONFLICT DO NOTHING
   `;
 
   // --- Seed Contact History ---
   await sql`
     INSERT INTO contact_history (individual_id, type, summary, contact_date, performed_by) VALUES
-      ('i1000000-0000-0000-0000-000000000001', 'call', 'Introductory call to discuss enterprise needs', '2024-11-05T10:00:00Z', 'Alice Johnson'),
-      ('i1000000-0000-0000-0000-000000000001', 'meeting', 'On-site meeting at Acme HQ to review platform capabilities', '2024-12-10T14:00:00Z', 'Alice Johnson'),
-      ('i1000000-0000-0000-0000-000000000001', 'email', 'Sent proposal document and pricing sheet', '2025-01-15T09:00:00Z', 'Alice Johnson'),
-      ('i1000000-0000-0000-0000-000000000002', 'call', 'Technical deep dive on integration requirements', '2024-12-15T11:00:00Z', 'Bob Martinez'),
-      ('i1000000-0000-0000-0000-000000000004', 'email', 'Initial outreach about pilot program', '2024-06-25T08:00:00Z', 'Carol Lee'),
-      ('i1000000-0000-0000-0000-000000000005', 'meeting', 'Quarterly business review at Global Solutions office', '2025-01-20T10:00:00Z', 'Alice Johnson'),
-      ('i1000000-0000-0000-0000-000000000010', 'call', 'Discussed integration timeline and technical requirements', '2025-02-01T15:00:00Z', 'David Kim'),
-      ('i1000000-0000-0000-0000-000000000012', 'email', 'Sent platform overview and case studies', '2024-05-01T09:00:00Z', 'Emma Wilson')
+      ('b1000000-0000-0000-0000-000000000001', 'call', 'Introductory call to discuss enterprise needs', '2024-11-05T10:00:00Z', 'Alice Johnson'),
+      ('b1000000-0000-0000-0000-000000000001', 'meeting', 'On-site meeting at Acme HQ to review platform capabilities', '2024-12-10T14:00:00Z', 'Alice Johnson'),
+      ('b1000000-0000-0000-0000-000000000001', 'email', 'Sent proposal document and pricing sheet', '2025-01-15T09:00:00Z', 'Alice Johnson'),
+      ('b1000000-0000-0000-0000-000000000002', 'call', 'Technical deep dive on integration requirements', '2024-12-15T11:00:00Z', 'Bob Martinez'),
+      ('b1000000-0000-0000-0000-000000000004', 'email', 'Initial outreach about pilot program', '2024-06-25T08:00:00Z', 'Carol Lee'),
+      ('b1000000-0000-0000-0000-000000000005', 'meeting', 'Quarterly business review at Global Solutions office', '2025-01-20T10:00:00Z', 'Alice Johnson'),
+      ('b1000000-0000-0000-0000-000000000010', 'call', 'Discussed integration timeline and technical requirements', '2025-02-01T15:00:00Z', 'David Kim'),
+      ('b1000000-0000-0000-0000-000000000012', 'email', 'Sent platform overview and case studies', '2024-05-01T09:00:00Z', 'Emma Wilson')
     ON CONFLICT DO NOTHING
   `;
 
@@ -186,8 +186,8 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
       ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Lead to Qualified', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
       ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Qualified to Proposal', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
       ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Proposal to Negotiation', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'task_created', 'Task "Follow-up call with Sarah" was created', 'task', 't1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'contact_added', 'Contact Sarah Jenkins was associated', 'individual', 'i1000000-0000-0000-0000-000000000001', 'System'),
+      ('c1000000-0000-0000-0000-000000000001', 'task_created', 'Task "Follow-up call with Sarah" was created', 'task', 'e1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
+      ('c1000000-0000-0000-0000-000000000001', 'contact_added', 'Contact Sarah Jenkins was associated', 'individual', 'b1000000-0000-0000-0000-000000000001', 'System'),
       ('c1000000-0000-0000-0000-000000000002', 'client_created', 'Client TechStart Inc was created', NULL, NULL, 'System'),
       ('c1000000-0000-0000-0000-000000000002', 'deal_created', 'Deal "TechStart Pilot" was created', 'deal', 'd1000000-0000-0000-0000-000000000004', 'Carol Lee'),
       ('c1000000-0000-0000-0000-000000000003', 'client_created', 'Client Global Solutions Ltd was created', NULL, NULL, 'System'),

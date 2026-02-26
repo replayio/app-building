@@ -12,6 +12,7 @@ const PREFERENCE_TOGGLES: { key: keyof NotificationPreferences; label: string }[
   { key: "dealStageChanged", label: "Deal Stage Changed" },
   { key: "taskCreated", label: "Task Created" },
   { key: "taskCompleted", label: "Task Completed" },
+  { key: "taskCanceled", label: "Task Canceled" },
   { key: "contactAdded", label: "Contact Added" },
   { key: "noteAdded", label: "Note Added" },
 ];

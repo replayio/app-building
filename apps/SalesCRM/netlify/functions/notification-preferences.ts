@@ -7,6 +7,7 @@ interface NotificationPreferences {
   deal_stage_changed: boolean;
   task_created: boolean;
   task_completed: boolean;
+  task_canceled: boolean;
   contact_added: boolean;
   note_added: boolean;
 }
@@ -18,6 +19,7 @@ function mapPreferences(row: NotificationPreferences) {
     dealStageChanged: row.deal_stage_changed,
     taskCreated: row.task_created,
     taskCompleted: row.task_completed,
+    taskCanceled: row.task_canceled,
     contactAdded: row.contact_added,
     noteAdded: row.note_added,
   };
@@ -47,7 +49,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
   if (req.method === "GET") {
     const row = await queryOne<NotificationPreferences>(
       sql,
-      "SELECT client_updated, deal_created, deal_stage_changed, task_created, task_completed, contact_added, note_added FROM notification_preferences WHERE user_id = $1",
+      "SELECT client_updated, deal_created, deal_stage_changed, task_created, task_completed, task_canceled, contact_added, note_added FROM notification_preferences WHERE user_id = $1",
       [user.id]
     );
 
@@ -59,6 +61,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         dealStageChanged: true,
         taskCreated: true,
         taskCompleted: true,
+        taskCanceled: true,
         contactAdded: true,
         noteAdded: true,
       });
@@ -76,6 +79,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     const dealStageChanged = body.dealStageChanged ?? true;
     const taskCreated = body.taskCreated ?? true;
     const taskCompleted = body.taskCompleted ?? true;
+    const taskCanceled = body.taskCanceled ?? true;
     const contactAdded = body.contactAdded ?? true;
     const noteAdded = body.noteAdded ?? true;
 
@@ -91,17 +95,17 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         sql,
         `UPDATE notification_preferences SET
           client_updated = $1, deal_created = $2, deal_stage_changed = $3,
-          task_created = $4, task_completed = $5, contact_added = $6, note_added = $7,
+          task_created = $4, task_completed = $5, task_canceled = $6, contact_added = $7, note_added = $8,
           updated_at = NOW()
-        WHERE user_id = $8`,
-        [clientUpdated, dealCreated, dealStageChanged, taskCreated, taskCompleted, contactAdded, noteAdded, user.id]
+        WHERE user_id = $9`,
+        [clientUpdated, dealCreated, dealStageChanged, taskCreated, taskCompleted, taskCanceled, contactAdded, noteAdded, user.id]
       );
     } else {
       await query(
         sql,
-        `INSERT INTO notification_preferences (user_id, client_updated, deal_created, deal_stage_changed, task_created, task_completed, contact_added, note_added)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [user.id, clientUpdated, dealCreated, dealStageChanged, taskCreated, taskCompleted, contactAdded, noteAdded]
+        `INSERT INTO notification_preferences (user_id, client_updated, deal_created, deal_stage_changed, task_created, task_completed, task_canceled, contact_added, note_added)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+        [user.id, clientUpdated, dealCreated, dealStageChanged, taskCreated, taskCompleted, taskCanceled, contactAdded, noteAdded]
       );
     }
 
@@ -111,6 +115,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       dealStageChanged,
       taskCreated,
       taskCompleted,
+      taskCanceled,
       contactAdded,
       noteAdded,
     });

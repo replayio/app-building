@@ -6,6 +6,7 @@ export interface NotificationPreferences {
   dealStageChanged: boolean;
   taskCreated: boolean;
   taskCompleted: boolean;
+  taskCanceled: boolean;
   contactAdded: boolean;
   noteAdded: boolean;
 }
@@ -34,6 +35,7 @@ const defaultPreferences: NotificationPreferences = {
   dealStageChanged: true,
   taskCreated: true,
   taskCompleted: true,
+  taskCanceled: true,
   contactAdded: true,
   noteAdded: true,
 };
