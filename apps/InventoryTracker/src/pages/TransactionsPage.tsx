@@ -1,10 +1,9 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchTransactions } from "../slices/transactionsSlice";
 import { fetchAccounts } from "../slices/accountsSlice";
 import { fetchMaterials } from "../slices/materialsSlice";
-import { Breadcrumb } from "@shared/components/Breadcrumb";
+import { TransactionsPageHeader } from "../components/TransactionsPageHeader";
 import { DateRangeFilter } from "../components/DateRangeFilter";
 import { AccountFilter } from "../components/AccountFilter";
 import { MaterialFilter } from "../components/MaterialFilter";
@@ -19,7 +18,6 @@ const DEFAULT_ROWS_PER_PAGE = 10;
 
 export function TransactionsPage() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const { items: transactions, loading } = useAppSelector((state) => state.transactions);
   const { items: accounts } = useAppSelector((state) => state.accounts);
@@ -163,38 +161,7 @@ export function TransactionsPage() {
 
   return (
     <div data-testid="transactions-page" className="page-content p-6 max-sm:p-3">
-      <Breadcrumb
-        items={[
-          { label: "Home", onClick: () => navigate("/") },
-          { label: "Transactions" },
-        ]}
-      />
-
-      {/* Page header */}
-      <div className="page-header" style={{ marginTop: 16 }}>
-        <h1 className="page-title" data-testid="transactions-page-title">Transactions</h1>
-        <div className="page-header-actions">
-          <button
-            data-testid="new-transaction-btn"
-            className="btn-primary"
-            onClick={() => navigate("/transactions/new")}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ width: 16, height: 16 }}
-            >
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            New Transaction
-          </button>
-        </div>
-      </div>
+      <TransactionsPageHeader />
 
       {/* Filters section */}
       <div data-testid="transactions-filters" style={{ marginBottom: 16 }}>
