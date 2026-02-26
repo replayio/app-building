@@ -271,6 +271,7 @@ export function DocumentsTab({ documents, onUpload, onDelete }: DocumentsTabProp
             </div>
 
             <div className="modal-footer">
+              {/* Tests: Upload Document Dialog Cancel Does Not Upload */}
               <button className="btn-secondary" data-testid="upload-document-cancel" onClick={handleUploadCancel}>
                 Cancel
               </button>

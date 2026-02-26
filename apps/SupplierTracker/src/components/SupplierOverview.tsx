@@ -300,9 +300,11 @@ function EditSupplierModal({
         </div>
 
         <div className="modal-footer">
+          {/* Tests: Edit Supplier Dialog Cancel Does Not Modify Supplier */}
           <button className="btn-secondary" data-testid="edit-supplier-cancel" onClick={onClose}>
             Cancel
           </button>
+          {/* Tests: Edit Supplier Dialog Validation */}
           <button className="btn-primary" data-testid="edit-supplier-save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </button>

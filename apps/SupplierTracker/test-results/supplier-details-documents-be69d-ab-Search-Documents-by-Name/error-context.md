@@ -21,5 +21,5 @@
       - generic [ref=e17]: U
       - img [ref=e18]
   - main [ref=e20]:
-    - generic [ref=e22]: Supplier not found.
+    - generic [ref=e22]: Loading dashboard...
 ```

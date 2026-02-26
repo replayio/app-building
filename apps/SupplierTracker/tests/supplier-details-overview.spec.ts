@@ -134,6 +134,63 @@ test.describe("SupplierDetailsPage - SupplierOverview", () => {
     await expect(contactField).toContainText("(555) 999-0000", { timeout: 30000 });
   });
 
+  test("Edit Supplier Dialog Cancel Does Not Modify Supplier", async ({ page }) => {
+    await navigateToFirstSupplier(page);
+
+    // Read current phone value from contact field
+    const contactField = page.getByTestId("supplier-field-contact");
+    await expect(contactField).toBeVisible();
+    const originalContact = await contactField.locator(".detail-field-value").textContent();
+
+    // Click Edit button
+    const editBtn = page.getByTestId("supplier-edit-btn");
+    await editBtn.click();
+
+    // Edit modal should appear
+    const modal = page.getByTestId("edit-supplier-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Change the phone number
+    const phoneInput = page.getByTestId("edit-supplier-form-phone");
+    await phoneInput.clear();
+    await phoneInput.fill("(999) 000-0000");
+
+    // Click Cancel
+    await page.getByTestId("edit-supplier-cancel").click();
+
+    // Modal should close
+    await expect(modal).toBeHidden({ timeout: 5000 });
+
+    // Contact field should remain unchanged
+    await expect(contactField.locator(".detail-field-value")).toHaveText(originalContact!);
+  });
+
+  test("Edit Supplier Dialog Validation", async ({ page }) => {
+    await navigateToFirstSupplier(page);
+
+    // Click Edit button
+    const editBtn = page.getByTestId("supplier-edit-btn");
+    await editBtn.click();
+
+    // Edit modal should appear
+    const modal = page.getByTestId("edit-supplier-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Clear the required Supplier Name field
+    const nameInput = page.getByTestId("edit-supplier-form-name");
+    await nameInput.clear();
+
+    // Click Save
+    await page.getByTestId("edit-supplier-save").click();
+
+    // Validation error should appear
+    await expect(page.getByTestId("edit-supplier-form-name-error")).toBeVisible();
+    await expect(page.getByTestId("edit-supplier-form-name-error")).toContainText("Supplier name is required");
+
+    // Dialog should still be open
+    await expect(modal).toBeVisible();
+  });
+
   test("Delete Supplier with Confirmation", async ({ page }) => {
     test.slow();
 

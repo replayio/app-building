@@ -168,6 +168,41 @@ test.describe("SupplierDetailsPage - DocumentsTab", () => {
     ).toBeVisible({ timeout: 30000 });
   });
 
+  test("Upload Document Dialog Cancel Does Not Upload", async ({ page }) => {
+    await navigateToFirstSupplier(page);
+
+    await expect(page.getByTestId("documents-tab")).toBeVisible({ timeout: 30000 });
+
+    // Count initial documents
+    const initialCount = await page.getByTestId("document-card").count();
+
+    // Set file via hidden file input to trigger the upload dialog
+    const fileInput = page.getByTestId("documents-file-input");
+    await fileInput.setInputFiles({
+      name: "test-cancel-upload.pdf",
+      mimeType: "application/pdf",
+      buffer: Buffer.from("test file content for cancel"),
+    });
+
+    // Upload dialog should appear
+    const modal = page.getByTestId("upload-document-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Click Cancel
+    await page.getByTestId("upload-document-cancel").click();
+
+    // Modal should close
+    await expect(modal).toBeHidden({ timeout: 5000 });
+
+    // Document count should remain the same
+    await expect(page.getByTestId("document-card")).toHaveCount(initialCount);
+
+    // The cancelled file should not appear in the list
+    await expect(
+      page.getByTestId("document-card").filter({ hasText: "test-cancel-upload.pdf" })
+    ).toHaveCount(0);
+  });
+
   test("View Document Action", async ({ page }) => {
     await navigateToFirstSupplier(page);
 

@@ -401,6 +401,17 @@ Then a modal dialog opens pre-filled with the supplier's current values (name, a
 And when the user changes the contact phone number and clicks "Save",
 Then the updated phone number is persisted and reflected in SupplierOverview.
 
+**Edit Supplier Dialog Cancel Does Not Modify Supplier**
+Given the "Edit Supplier" dialog is open and the user has changed the contact phone number,
+When the user clicks "Cancel" or closes the dialog,
+Then the dialog closes,
+And the supplier's phone number and other fields remain unchanged in SupplierOverview.
+
+**Edit Supplier Dialog Validation**
+Given the "Edit Supplier" dialog is open,
+When the user clears the Supplier Name field and clicks "Save",
+Then a validation error is shown on the Supplier Name field and the dialog does not close.
+
 **Delete Supplier with Confirmation**
 Given the user is viewing the SupplierDetailsPage,
 When the user clicks the "Delete" button in SupplierOverview,
@@ -443,6 +454,13 @@ Then a file upload dialog opens allowing the user to select a file from their de
 And the dialog includes a field to specify the document type (e.g., "Contract", "Certification", "Agreement"),
 And after selecting a file and entering the type, when the user confirms the upload,
 Then the document is uploaded via file upload and appears as a new card in the DocumentsTab with the correct file name, selected type, and the current date as the upload date.
+
+**Upload Document Dialog Cancel Does Not Upload**
+Given the upload document dialog is open after selecting a file,
+When the user clicks "Cancel" or closes the dialog,
+Then the dialog closes,
+And no document is added to the DocumentsTab,
+And the document count remains unchanged.
 
 **View Document Action**
 Given a document "Service Agreement 2024.pdf" is displayed in the DocumentsTab,

@@ -1,13 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationSupplierDetailsModalTests: Add missing test entries for Edit Supplier modal Cancel and Validation, and Upload Document dialog Cancel - per testSpec.md directive to completely test modal dialogs. Other modals in the app (Add New Supplier, Create Purchase Order) have these entries but the SupplierDetailsPage modals do not",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T11:29:37.828Z",
-      "app": "SupplierTracker"
-    }
-  ]
+  "tasks": []
 }
