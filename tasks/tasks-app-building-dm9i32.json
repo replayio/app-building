@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMaterialsPageAbstraction: Fix writeApp.md - Extract inline Create Material Modal, Create Category Modal, Search Bar, Sort Dropdown, and Pagination from MaterialsPage.tsx into separate component files",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T06:52:44.177Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationSortTest: Fix testSpec.md - Add missing 'Category (A-Z)' sort test entry in MaterialsPage SortDropdown section",
         "FixViolationEditModalTests: Fix testSpec.md - Add Description pre-fill check and Category/Unit validation tests to MaterialsTable edit modal test entries",
         "RunTests: Verify tests pass after fix"

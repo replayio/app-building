@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchMaterials, createMaterial } from "../slices/materialsSlice";
@@ -7,24 +7,15 @@ import { fetchAccounts } from "../slices/accountsSlice";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { FilterSelect } from "@shared/components/FilterSelect";
 import { MaterialsTable } from "../components/MaterialsTable";
+import { CreateMaterialModal } from "../components/CreateMaterialModal";
+import { CreateCategoryModal } from "../components/CreateCategoryModal";
+import { MaterialsSearchBar } from "../components/MaterialsSearchBar";
+import { MaterialsSortDropdown } from "../components/MaterialsSortDropdown";
+import { MaterialsPagination } from "../components/MaterialsPagination";
+import type { SortOption } from "../components/MaterialsSortDropdown";
 import type { MaterialCategory, Account } from "../types";
 
 const PAGE_SIZE = 8;
-
-type SortOption =
-  | "name-asc"
-  | "name-desc"
-  | "stock-asc"
-  | "stock-desc"
-  | "category-asc";
-
-const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: "name-asc", label: "Name (A-Z)" },
-  { value: "name-desc", label: "Name (Z-A)" },
-  { value: "stock-asc", label: "Stock (Low to High)" },
-  { value: "stock-desc", label: "Stock (High to Low)" },
-  { value: "category-asc", label: "Category (A-Z)" },
-];
 
 export function MaterialsPage() {
   const dispatch = useAppDispatch();
@@ -42,22 +33,8 @@ export function MaterialsPage() {
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Create material modal state
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [createName, setCreateName] = useState("");
-  const [createCategoryId, setCreateCategoryId] = useState("");
-  const [createUnit, setCreateUnit] = useState("");
-  const [createDescription, setCreateDescription] = useState("");
-  const [createErrors, setCreateErrors] = useState<Record<string, string>>({});
-
-  // Create category modal state
   const [createCategoryModalOpen, setCreateCategoryModalOpen] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [categoryError, setCategoryError] = useState("");
-
-  // Sort dropdown state
-  const [sortOpen, setSortOpen] = useState(false);
-  const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -76,18 +53,6 @@ export function MaterialsPage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [search, categoryFilter, accountFilter, sortBy]);
-
-  // Close sort dropdown on outside click
-  useEffect(() => {
-    if (!sortOpen) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
-        setSortOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [sortOpen]);
 
   const filteredAndSorted = useMemo(() => {
     let filtered = [...materials];
@@ -154,62 +119,27 @@ export function MaterialsPage() {
     [categories]
   );
 
-  const handleOpenCreateMaterial = () => {
-    setCreateName("");
-    setCreateCategoryId("");
-    setCreateUnit("");
-    setCreateDescription("");
-    setCreateErrors({});
-    setCreateModalOpen(true);
-  };
-
-  const handleCreateMaterial = async () => {
-    const errors: Record<string, string> = {};
-    if (!createName.trim()) errors.name = "Material Name is required";
-    if (!createCategoryId) errors.category = "Category is required";
-    if (!createUnit.trim()) errors.unit = "Unit of Measure is required";
-
-    if (Object.keys(errors).length > 0) {
-      setCreateErrors(errors);
-      return;
-    }
-
-    await dispatch(
-      createMaterial({
-        name: createName.trim(),
-        category_id: createCategoryId,
-        unit_of_measure: createUnit.trim(),
-        description: createDescription.trim(),
-      })
-    );
+  const handleCreateMaterial = async (data: {
+    name: string;
+    category_id: string;
+    unit_of_measure: string;
+    description: string;
+  }) => {
+    await dispatch(createMaterial(data));
     setCreateModalOpen(false);
   };
 
-  const handleOpenCreateCategory = () => {
-    setNewCategoryName("");
-    setCategoryError("");
-    setCreateCategoryModalOpen(true);
-  };
-
-  const handleCreateCategory = async () => {
-    if (!newCategoryName.trim()) {
-      setCategoryError("Category Name is required");
-      return;
-    }
-    await dispatch(
-      createCategory({
-        name: newCategoryName.trim(),
-        description: "",
-      })
-    );
+  const handleCreateCategory = async (data: {
+    name: string;
+    description: string;
+  }) => {
+    await dispatch(createCategory(data));
     setCreateCategoryModalOpen(false);
   };
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
   }, []);
-
-  const sortLabel = SORT_OPTIONS.find((o) => o.value === sortBy)?.label || "";
 
   if (loading) {
     return (
@@ -234,7 +164,7 @@ export function MaterialsPage() {
           <button
             data-testid="new-material-btn"
             className="btn-primary"
-            onClick={handleOpenCreateMaterial}
+            onClick={() => setCreateModalOpen(true)}
           >
             <svg
               viewBox="0 0 24 24"
@@ -253,7 +183,7 @@ export function MaterialsPage() {
           <button
             data-testid="new-category-btn"
             className="btn-secondary"
-            onClick={handleOpenCreateCategory}
+            onClick={() => setCreateCategoryModalOpen(true)}
           >
             <svg
               viewBox="0 0 24 24"
@@ -274,31 +204,7 @@ export function MaterialsPage() {
 
       {/* Filter bar */}
       <div className="filter-bar" data-testid="materials-filter-bar">
-        <div
-          className="search-input-wrapper"
-          style={{ flex: 1, maxWidth: 300 }}
-        >
-          <svg
-            className="search-input-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input
-            className="search-input"
-            data-testid="materials-search"
-            type="text"
-            placeholder="Search materials by name..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+        <MaterialsSearchBar value={search} onChange={setSearch} />
 
         <FilterSelect
           options={categoryOptions}
@@ -316,52 +222,7 @@ export function MaterialsPage() {
           testId="account-filter"
         />
 
-        <div
-          ref={sortRef}
-          data-testid="sort-dropdown"
-          className={`custom-dropdown ${sortOpen ? "custom-dropdown--open" : ""}`}
-        >
-          <button
-            className="custom-dropdown-trigger"
-            data-testid="sort-dropdown-trigger"
-            type="button"
-            onClick={() => setSortOpen(!sortOpen)}
-          >
-            Sort by: {sortLabel}
-            <svg
-              className="custom-dropdown-chevron"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </button>
-          {sortOpen && (
-            <div
-              className="custom-dropdown-menu"
-              data-testid="sort-dropdown-menu"
-            >
-              {SORT_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  className={`custom-dropdown-item ${opt.value === sortBy ? "custom-dropdown-item--selected" : ""}`}
-                  data-testid={`sort-option-${opt.value}`}
-                  type="button"
-                  onClick={() => {
-                    setSortBy(opt.value);
-                    setSortOpen(false);
-                  }}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <MaterialsSortDropdown value={sortBy} onChange={setSortBy} />
       </div>
 
       {/* Materials Table */}
@@ -371,272 +232,30 @@ export function MaterialsPage() {
       />
 
       {/* Pagination */}
-      {totalItems > 0 && (
-        <div
-          className="pagination"
-          data-testid="materials-pagination"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 4,
-            paddingTop: 16,
-          }}
-        >
-          <button
-            className="pagination-btn"
-            data-testid="pagination-previous"
-            disabled={safePage <= 1}
-            onClick={() => handlePageChange(safePage - 1)}
-          >
-            Previous
-          </button>
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              className={`pagination-btn ${page === safePage ? "pagination-btn--active" : ""}`}
-              data-testid={`pagination-page-${page}`}
-              onClick={() => handlePageChange(page)}
-            >
-              {page}
-            </button>
-          ))}
-
-          <button
-            className="pagination-btn"
-            data-testid="pagination-next"
-            disabled={safePage >= totalPages}
-            onClick={() => handlePageChange(safePage + 1)}
-          >
-            Next
-          </button>
-
-          <span
-            className="pagination-info"
-            data-testid="pagination-showing"
-          >
-            Showing {totalItems === 0 ? 0 : startIdx + 1}-{endIdx} of{" "}
-            {totalItems} items
-          </span>
-        </div>
-      )}
+      <MaterialsPagination
+        currentPage={safePage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        startIndex={startIdx}
+        endIndex={endIdx}
+        onPageChange={handlePageChange}
+      />
 
       {/* Create Material Modal */}
       {createModalOpen && (
-        <div
-          className="modal-overlay"
-          data-testid="create-material-modal-overlay"
-          onClick={() => setCreateModalOpen(false)}
-        >
-          <div
-            className="modal-content"
-            data-testid="create-material-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <h2 className="modal-title">Create Material</h2>
-              <button
-                className="modal-close-btn"
-                data-testid="create-material-modal-close"
-                onClick={() => setCreateModalOpen(false)}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ width: 18, height: 18 }}
-                >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Material Name</label>
-              <input
-                className="form-input"
-                data-testid="create-material-name"
-                value={createName}
-                onChange={(e) => {
-                  setCreateName(e.target.value);
-                  setCreateErrors((prev) => ({ ...prev, name: "" }));
-                }}
-                placeholder="Enter material name"
-              />
-              {createErrors.name && (
-                <p
-                  data-testid="create-material-name-error"
-                  style={{
-                    color: "var(--status-error)",
-                    fontSize: 12,
-                    marginTop: 4,
-                  }}
-                >
-                  {createErrors.name}
-                </p>
-              )}
-            </div>
-            <div className="form-group">
-              <label className="form-label">Category</label>
-              <FilterSelect
-                options={categoryOptionsForModal}
-                value={createCategoryId}
-                onChange={(v) => {
-                  setCreateCategoryId(v);
-                  setCreateErrors((prev) => ({ ...prev, category: "" }));
-                }}
-                placeholder="Select category"
-                testId="create-material-category"
-              />
-              {createErrors.category && (
-                <p
-                  data-testid="create-material-category-error"
-                  style={{
-                    color: "var(--status-error)",
-                    fontSize: 12,
-                    marginTop: 4,
-                  }}
-                >
-                  {createErrors.category}
-                </p>
-              )}
-            </div>
-            <div className="form-group">
-              <label className="form-label">Unit of Measure</label>
-              <input
-                className="form-input"
-                data-testid="create-material-unit"
-                value={createUnit}
-                onChange={(e) => {
-                  setCreateUnit(e.target.value);
-                  setCreateErrors((prev) => ({ ...prev, unit: "" }));
-                }}
-                placeholder="Enter unit of measure"
-              />
-              {createErrors.unit && (
-                <p
-                  data-testid="create-material-unit-error"
-                  style={{
-                    color: "var(--status-error)",
-                    fontSize: 12,
-                    marginTop: 4,
-                  }}
-                >
-                  {createErrors.unit}
-                </p>
-              )}
-            </div>
-            <div className="form-group">
-              <label className="form-label">Description</label>
-              <textarea
-                className="form-textarea"
-                data-testid="create-material-description"
-                value={createDescription}
-                onChange={(e) => setCreateDescription(e.target.value)}
-                placeholder="Enter description"
-              />
-            </div>
-            <div className="modal-footer">
-              <button
-                className="btn-secondary"
-                data-testid="create-material-cancel-btn"
-                onClick={() => setCreateModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn-primary"
-                data-testid="create-material-submit-btn"
-                onClick={handleCreateMaterial}
-              >
-                Create
-              </button>
-            </div>
-          </div>
-        </div>
+        <CreateMaterialModal
+          categoryOptions={categoryOptionsForModal}
+          onClose={() => setCreateModalOpen(false)}
+          onSubmit={handleCreateMaterial}
+        />
       )}
 
       {/* Create Category Modal */}
       {createCategoryModalOpen && (
-        <div
-          className="modal-overlay"
-          data-testid="create-category-modal-overlay"
-          onClick={() => setCreateCategoryModalOpen(false)}
-        >
-          <div
-            className="modal-content"
-            data-testid="create-category-modal"
-            onClick={(e) => e.stopPropagation()}
-            style={{ maxWidth: 480 }}
-          >
-            <div className="modal-header">
-              <h2 className="modal-title">Create Category</h2>
-              <button
-                className="modal-close-btn"
-                data-testid="create-category-modal-close"
-                onClick={() => setCreateCategoryModalOpen(false)}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ width: 18, height: 18 }}
-                >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Category Name</label>
-              <input
-                className="form-input"
-                data-testid="create-category-name"
-                value={newCategoryName}
-                onChange={(e) => {
-                  setNewCategoryName(e.target.value);
-                  setCategoryError("");
-                }}
-                placeholder="Enter category name"
-              />
-              {categoryError && (
-                <p
-                  data-testid="create-category-error"
-                  style={{
-                    color: "var(--status-error)",
-                    fontSize: 12,
-                    marginTop: 4,
-                  }}
-                >
-                  {categoryError}
-                </p>
-              )}
-            </div>
-            <div className="modal-footer">
-              <button
-                className="btn-secondary"
-                data-testid="create-category-cancel-btn"
-                onClick={() => setCreateCategoryModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn-primary"
-                data-testid="create-category-submit-btn"
-                onClick={handleCreateCategory}
-              >
-                Create
-              </button>
-            </div>
-          </div>
-        </div>
+        <CreateCategoryModal
+          onClose={() => setCreateCategoryModalOpen(false)}
+          onSubmit={handleCreateCategory}
+        />
       )}
     </div>
   );
