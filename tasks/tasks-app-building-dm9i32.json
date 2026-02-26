@@ -3,11 +3,19 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecBatchDetailPage: Check testSpec.md directive violations in BatchDetailPage test entries",
-        "CheckComponentsBatchDetailPage: Check writeApp.md directive violations in BatchDetailPage components",
-        "CheckTestsBatchDetailPage: Check writeTests.md directive violations in BatchDetailPage tests"
+        "FixViolationBatchOverviewHeading: Fix writeApp.md - BatchOverview component is missing 'Batch Overview' section heading; code only has 'Current Quantity & Properties' card heading but test spec expects both a section heading and a card heading"
       ],
-      "timestamp": "2026-02-25T15:32:46.414Z",
+      "timestamp": "2026-02-26T07:18:09.756Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationLineageDiagramName: Fix testSpec.md - Rename LineageDiagram to LineageSection in docs/tests.md BatchDetailPage section (component list and section header) to match actual component name",
+        "FixViolationMissingLineageNavTest: Fix testSpec.md - Add test entry for clicking source transaction link in Lineage section navigates to TransactionDetailPage",
+        "FixViolationCreateNewTransactionButtonComponent: Fix testSpec.md - CreateNewTransactionButton is listed as standalone component but is part of BatchHeader; update component references accordingly"
+      ],
+      "timestamp": "2026-02-26T07:17:13.254Z",
       "app": "InventoryTracker"
     },
     {
