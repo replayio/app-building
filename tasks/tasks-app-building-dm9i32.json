@@ -3,9 +3,12 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+        "FixViolationEmailTokensSchema: Fix email_tokens schema to support notification inserts — add email column, update type CHECK constraint to include 'notification', make expires_at and user_id nullable or add defaults for notification rows. Affects deals.ts, tasks.ts, writeups.ts",
+        "FixViolationTaskCanceledPref: Fix missing task_canceled column in notification_preferences schema and add it to initSchema and migrations",
+        "FixViolationDealImportStatus: Fix deals.ts import handler to use valid status default ('open' instead of 'active') to match schema CHECK constraint",
+        "RunTests: Verify tests pass after fixes"
       ],
-      "timestamp": "2026-02-25T15:33:37.371Z",
+      "timestamp": "2026-02-26T10:51:06.720Z",
       "app": "SalesCRM"
     },
     {
