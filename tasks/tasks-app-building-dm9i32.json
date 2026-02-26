@@ -3,11 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecEquipmentPage: Check testSpec.md directive violations in EquipmentPage test entries",
-        "CheckComponentsEquipmentPage: Check writeApp.md directive violations in EquipmentPage components",
-        "CheckTestsEquipmentPage: Check writeTests.md directive violations in EquipmentPage tests"
+        "FixViolationMissingModalCancelEquipment: Fix missing test entries for cancelling Add Equipment modal and Edit Equipment modal in EquipmentPage section of docs/tests.md",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-25T15:33:06.019Z",
+      "timestamp": "2026-02-26T08:50:07.271Z",
       "app": "ProductionHub"
     },
     {
