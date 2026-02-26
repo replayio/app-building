@@ -2,6 +2,19 @@ import { useState, useEffect } from "react";
 import { useAppDispatch } from "../hooks";
 import { updateClient, fetchTimeline, type ClientDetail } from "../clientDetailSlice";
 import { useAuth } from "@shared/auth/useAuth";
+import { FilterSelect } from "@shared/components/FilterSelect";
+
+const TYPE_OPTIONS = [
+  { value: "organization", label: "Organization" },
+  { value: "individual", label: "Individual" },
+];
+
+const STATUS_OPTIONS = [
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
+  { value: "prospect", label: "Prospect" },
+  { value: "churned", label: "Churned" },
+];
 
 interface ClientHeaderProps {
   client: ClientDetail;
@@ -166,46 +179,21 @@ export function ClientHeader({ client }: ClientHeaderProps) {
               <div className="form-row">
                 <div className="form-group form-group--half">
                   <label className="form-label">Type</label>
-                  <div className="filter-select" style={{ position: "relative" }}>
-                    <button
-                      className="filter-select-trigger"
-                      data-testid="edit-client-type"
-                      type="button"
-                      onClick={(e) => {
-                        const dropdown = e.currentTarget.nextElementSibling;
-                        if (dropdown) {
-                          dropdown.classList.toggle("filter-select-dropdown--visible");
-                        }
-                      }}
-                    >
-                      <span className="filter-select-value">{capitalize(editType)}</span>
-                    </button>
-                  </div>
-                  <select
-                    className="form-input"
-                    style={{ marginTop: 4, height: 36 }}
+                  <FilterSelect
+                    options={TYPE_OPTIONS}
                     value={editType}
-                    onChange={(e) => setEditType(e.target.value)}
-                    data-testid="edit-client-type-select"
-                  >
-                    <option value="organization">Organization</option>
-                    <option value="individual">Individual</option>
-                  </select>
+                    onChange={setEditType}
+                    testId="edit-client-type"
+                  />
                 </div>
                 <div className="form-group form-group--half">
                   <label className="form-label">Status</label>
-                  <select
-                    className="form-input"
-                    style={{ height: 36 }}
+                  <FilterSelect
+                    options={STATUS_OPTIONS}
                     value={editStatus}
-                    onChange={(e) => setEditStatus(e.target.value)}
-                    data-testid="edit-client-status-select"
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="prospect">Prospect</option>
-                    <option value="churned">Churned</option>
-                  </select>
+                    onChange={setEditStatus}
+                    testId="edit-client-status"
+                  />
                 </div>
               </div>
               <div className="form-group">

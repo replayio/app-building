@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNativeSelectClientHeader: Replace native <select> elements in ClientHeader edit modal (Type and Status) with FilterSelect components"
-      ],
-      "timestamp": "2026-02-26T09:28:16.520Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationTimelineUserLinks: Fix timeline user links to navigate to /users/:userId instead of '#' - requires adding createdByUserId to timeline data model and updating TimelineSectionClient component"
       ],
       "timestamp": "2026-02-26T09:28:22.072Z",
