@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestLineItemsTypeDropdown: Write test for LineItemsTable Type dropdown has Credit and Debit options",
-        "WriteTestLineItemsTypeDefault: Write test for LineItemsTable Type dropdown defaults to Debit for new rows",
-        "WriteTestLineItemsAmountInput: Write test for LineItemsTable Amount input accepts numeric values",
-        "WriteTestLineItemsDeleteRow: Write test for LineItemsTable delete row button removes line item"
-      ],
-      "timestamp": "2026-02-26T05:32:10.128Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestLineItemsAddBtn: Write test for LineItemsTable Add Line Item button adds new row",
         "WriteTestLineItemsMultiple: Write test for LineItemsTable supports multiple line items for multi-account transactions",
         "WriteTestLineItemsInitial: Write test for LineItemsTable initial state for new transaction has two empty rows"
