@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
+        "FixViolationNullishCoalescingRuns: Fix runs.ts PUT handler using ?? null instead of || null for start_date (DATE), end_date (DATE), and recipe_id (UUID) columns",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-25T15:33:08.355Z",
+      "timestamp": "2026-02-26T09:07:24.137Z",
       "app": "ProductionHub"
     },
     {
