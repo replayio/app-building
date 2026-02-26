@@ -59,9 +59,7 @@ export function RunHeader({ run }: RunHeaderProps) {
       />
       <div
         data-testid="run-detail-title-row"
-        style={{
-          padding: "20px 24px 0",
-        }}
+        className="detail-title-row"
       >
         <h1 data-testid="run-detail-title" className="page-title">
           Run Details: {run.id}

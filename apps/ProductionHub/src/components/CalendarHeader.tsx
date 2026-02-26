@@ -113,7 +113,7 @@ export function CalendarHeader({
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            New Production Run
+            <span className="btn-text">New Production Run</span>
           </button>
         </div>
       </div>
@@ -128,7 +128,7 @@ export function CalendarHeader({
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
-            Prev
+            <span className="btn-text">Prev</span>
           </button>
           <button
             className="btn-secondary calendar-nav-btn"
@@ -142,7 +142,7 @@ export function CalendarHeader({
             data-testid="calendar-next-btn"
             onClick={onNext}
           >
-            Next
+            <span className="btn-text">Next</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 6 15 12 9 18" />
             </svg>

@@ -1343,3 +1343,365 @@
   color: var(--text-primary);
   margin-bottom: 8px;
 }
+
+/* ===== Responsive Styles ===== */
+
+/* Page title scaling */
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 20px;
+  }
+
+  .section-card-title {
+    font-size: 14px;
+  }
+
+  .modal-title {
+    font-size: 16px;
+  }
+}
+
+/* Section card padding */
+@media (max-width: 640px) {
+  .section-card-header {
+    padding: 12px;
+  }
+
+  .section-card-body {
+    padding: 12px;
+  }
+}
+
+/* Modal responsive */
+@media (max-width: 640px) {
+  .modal-content {
+    max-width: calc(100% - 24px);
+    padding: 16px;
+  }
+
+  .run-popup-content {
+    max-width: calc(100% - 24px);
+    padding: 16px;
+  }
+}
+
+/* Form row responsive */
+@media (max-width: 640px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* Page header responsive */
+@media (max-width: 640px) {
+  .page-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
+
+/* Detail page title rows */
+.detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px 0;
+}
+
+@media (max-width: 640px) {
+  .detail-title-row {
+    flex-wrap: wrap;
+    padding: 12px 12px 0;
+    gap: 8px;
+  }
+}
+
+/* Button text hidden at narrow viewports (keep icon only) */
+@media (max-width: 640px) {
+  .btn-text {
+    display: none;
+  }
+}
+
+/* ===== RecipesPage Responsive ===== */
+
+/* Controls row */
+.recipes-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.recipes-search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+@media (max-width: 640px) {
+  .recipes-search-wrapper {
+    flex: 1 0 100%;
+    max-width: none;
+  }
+}
+
+/* RecipesTable: hide Version (3rd col) at <=768px */
+@media (max-width: 768px) {
+  [data-testid="recipes-table"] th:nth-child(3),
+  [data-testid="recipes-table"] td:nth-child(3) {
+    display: none;
+  }
+}
+
+/* RecipesTable: card mode at <=480px */
+@media (max-width: 480px) {
+  [data-testid="recipes-table"] thead {
+    display: none;
+  }
+
+  [data-testid="recipes-table"] tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px;
+    align-items: center;
+  }
+
+  [data-testid="recipes-table"] td {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  [data-testid="recipes-table"] td:nth-child(1) {
+    flex: 1 0 60%;
+    font-weight: 500;
+  }
+
+  [data-testid="recipes-table"] td:nth-child(2) {
+    display: none;
+  }
+
+  [data-testid="recipes-table"] td:nth-child(4) {
+    flex: 0 0 auto;
+  }
+
+  [data-testid="recipes-table"] td:nth-child(5) {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
+/* Recipe details panel responsive */
+@media (max-width: 640px) {
+  .recipe-panel-header {
+    padding: 12px;
+  }
+
+  .recipe-panel-body {
+    padding: 12px;
+  }
+
+  .recipe-panel-tabs {
+    overflow-x: auto;
+  }
+}
+
+/* ===== CalendarPage Responsive ===== */
+
+/* Calendar header top */
+@media (max-width: 768px) {
+  .calendar-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .calendar-header-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+/* Calendar legend hide at <=768px */
+@media (max-width: 768px) {
+  .calendar-legend {
+    display: none;
+  }
+}
+
+/* Calendar header controls stacking */
+@media (max-width: 640px) {
+  .calendar-header-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .calendar-nav-group {
+    flex-wrap: wrap;
+  }
+}
+
+/* Calendar day cells reduced height on narrow viewports */
+@media (max-width: 640px) {
+  .calendar-day-cell {
+    min-height: 60px;
+  }
+
+  .calendar-event-card {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+}
+
+/* Calendar view button text on narrow viewports */
+@media (max-width: 480px) {
+  .calendar-view-btn {
+    padding: 0 8px;
+    font-size: 11px;
+  }
+}
+
+/* ===== RunDetailsPage Responsive ===== */
+
+/* Run actions: horizontal wrapping */
+@media (max-width: 640px) {
+  .run-actions-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .run-details-top-actions {
+    padding: 0 12px 12px;
+  }
+}
+
+/* ForecastTable: hide Pending Deliveries (5th col) at <=1024px */
+@media (max-width: 1024px) {
+  [data-testid="forecast-table"] th:nth-child(5),
+  [data-testid="forecast-table"] td:nth-child(5) {
+    display: none;
+  }
+}
+
+/* ForecastTable: hide Forecast Available (3rd col) at <=768px */
+@media (max-width: 768px) {
+  [data-testid="forecast-table"] th:nth-child(3),
+  [data-testid="forecast-table"] td:nth-child(3) {
+    display: none;
+  }
+}
+
+/* RunDetailsPage tables: card mode at <=480px */
+@media (max-width: 480px) {
+  [data-testid="forecast-table"] thead,
+  [data-testid="raw-materials-table"] thead,
+  [data-testid="run-equipment-table"] thead {
+    display: none;
+  }
+
+  [data-testid="forecast-table"] tbody tr,
+  [data-testid="raw-materials-table"] tbody tr,
+  [data-testid="run-equipment-table"] tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px;
+  }
+
+  [data-testid="forecast-table"] td,
+  [data-testid="raw-materials-table"] td,
+  [data-testid="run-equipment-table"] td {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  [data-testid="forecast-table"] td:first-child,
+  [data-testid="raw-materials-table"] td:first-child,
+  [data-testid="run-equipment-table"] td:first-child {
+    flex: 1 0 100%;
+    font-weight: 500;
+  }
+}
+
+/* External links responsive */
+@media (max-width: 640px) {
+  .external-links-container {
+    flex-wrap: wrap;
+  }
+}
+
+/* ===== EquipmentPage Responsive ===== */
+
+/* EquipmentTable: hide Description (2nd col) at <=768px */
+@media (max-width: 768px) {
+  [data-testid="equipment-table"] th:nth-child(2),
+  [data-testid="equipment-table"] td:nth-child(2) {
+    display: none;
+  }
+}
+
+/* EquipmentTable: card mode at <=480px */
+@media (max-width: 480px) {
+  [data-testid="equipment-table"] thead {
+    display: none;
+  }
+
+  [data-testid="equipment-table"] tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px;
+    align-items: center;
+  }
+
+  [data-testid="equipment-table"] td {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  [data-testid="equipment-table"] td:nth-child(1) {
+    flex: 1 0 60%;
+    font-weight: 500;
+  }
+
+  [data-testid="equipment-table"] td:nth-child(3) {
+    flex: 0 0 auto;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  [data-testid="equipment-table"] td:nth-child(4) {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
+/* ===== EquipmentDetailsPage Responsive ===== */
+
+/* Detail field responsive */
+@media (max-width: 480px) {
+  .detail-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .detail-field-value {
+    text-align: left;
+  }
+}
+
+/* Run popup actions responsive */
+@media (max-width: 640px) {
+  .run-popup-actions {
+    flex-wrap: wrap;
+  }
+}

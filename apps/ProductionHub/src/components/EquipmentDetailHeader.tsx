@@ -26,12 +26,7 @@ export function EquipmentDetailHeader({ equipment }: EquipmentDetailHeaderProps)
       />
       <div
         data-testid="equipment-detail-title-row"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          padding: "20px 24px 0",
-        }}
+        className="detail-title-row"
       >
         <h1 data-testid="equipment-detail-title" className="page-title">
           {equipment.name} {equipment.id}

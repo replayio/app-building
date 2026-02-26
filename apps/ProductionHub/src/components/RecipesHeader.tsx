@@ -64,15 +64,10 @@ export function RecipesHeader({
       </div>
 
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 20,
-        }}
+        className="recipes-controls"
         data-testid="recipes-controls"
       >
-        <div style={{ position: "relative", flex: 1, maxWidth: 400 }}>
+        <div className="recipes-search-wrapper">
           <svg
             width="16"
             height="16"
@@ -167,7 +162,7 @@ export function RecipesHeader({
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
-          Add Recipe
+          <span className="btn-text">Add Recipe</span>
         </button>
       </div>
 

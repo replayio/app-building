@@ -37,12 +37,7 @@ export function RecipeDetailHeader({ recipe }: RecipeDetailHeaderProps) {
       />
       <div
         data-testid="recipe-detail-title-row"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-          padding: "20px 24px 0",
-        }}
+        className="detail-title-row"
       >
         <h1 data-testid="recipe-detail-title" className="page-title">
           {displayTitle}

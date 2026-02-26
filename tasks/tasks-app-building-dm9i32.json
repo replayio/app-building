@@ -1,19 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveRecipesPage: Make RecipesPage responsive",
-        "MakeResponsiveCalendarPage: Make CalendarPage responsive",
-        "MakeResponsiveRunDetailsPage: Make RunDetailsPage responsive",
-        "MakeResponsiveRecipeDetailsPage: Make RecipeDetailsPage responsive",
-        "MakeResponsiveEquipmentPage: Make EquipmentPage responsive",
-        "MakeResponsiveEquipmentDetailsPage: Make EquipmentDetailsPage responsive"
-      ],
-      "timestamp": "2026-02-26T04:17:10.433Z",
-      "app": "ProductionHub"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"
