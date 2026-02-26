@@ -133,10 +133,10 @@ export function WriteupsSection({ writeups, dealId }: WriteupsSectionProps) {
                       placeholder="Content"
                     />
                     <div className="writeup-edit-actions">
-                      <button className="btn btn--secondary btn--sm" onClick={() => setEditingId(null)} type="button">
+                      <button className="btn btn--secondary btn--sm" data-testid="writeup-edit-cancel" onClick={() => setEditingId(null)} type="button">
                         Cancel
                       </button>
-                      <button className="btn btn--primary btn--sm" onClick={handleEditSave} disabled={saving} type="button">
+                      <button className="btn btn--primary btn--sm" data-testid="writeup-edit-save" onClick={handleEditSave} disabled={saving} type="button">
                         {saving ? "Saving..." : "Save"}
                       </button>
                     </div>

@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationWriteupsEditTestIds: Fix missing data-testid on WriteupsSection edit save and cancel buttons (lines 136, 139)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T09:51:35.562Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
         "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
         "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
