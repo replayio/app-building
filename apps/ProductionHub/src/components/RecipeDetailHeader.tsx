@@ -91,7 +91,7 @@ function EditRecipeModal({ recipe, onClose, onSave }: EditRecipeModalProps) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Edit Recipe</h2>
-          <button className="modal-close-btn" onClick={onClose}>
+          <button className="modal-close-btn" data-testid="edit-recipe-modal-close" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
@@ -144,7 +144,7 @@ function EditRecipeModal({ recipe, onClose, onSave }: EditRecipeModalProps) {
             </div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn-secondary" onClick={onClose}>
+            <button type="button" className="btn-secondary" data-testid="edit-recipe-detail-cancel-btn" onClick={onClose}>
               Cancel
             </button>
             <button

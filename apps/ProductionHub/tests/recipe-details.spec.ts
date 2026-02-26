@@ -202,6 +202,36 @@ test.describe("RecipeDetailHeader", () => {
       timeout: 30000,
     });
   });
+  test("RD-HDR-6: Cancelling Edit Recipe modal does not save changes", async ({
+    page,
+  }) => {
+    await page.goto(`/recipe/${editRecipeId}`);
+    await expect(page.getByTestId("recipe-detail-header")).toBeVisible({
+      timeout: 30000,
+    });
+
+    // Store the original title
+    const originalTitle = await page.getByTestId("recipe-detail-title").textContent();
+
+    // Click Edit Recipe button
+    await page.getByTestId("edit-recipe-btn").click();
+
+    // Modal appears
+    await expect(page.getByTestId("edit-recipe-modal")).toBeVisible();
+
+    // Change the recipe name
+    await page.getByTestId("edit-recipe-name").clear();
+    await page.getByTestId("edit-recipe-name").fill("Changed Name");
+
+    // Click Cancel button
+    await page.getByTestId("edit-recipe-detail-cancel-btn").click();
+
+    // Modal closes
+    await expect(page.getByTestId("edit-recipe-modal")).toBeHidden();
+
+    // Page title still displays the original recipe name
+    await expect(page.getByTestId("recipe-detail-title")).toHaveText(originalTitle!);
+  });
 });
 
 test.describe("DescriptionCard", () => {

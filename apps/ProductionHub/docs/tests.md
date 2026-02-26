@@ -967,6 +967,14 @@ Components: RecipeDetailHeader, DescriptionCard, ProductsOutputTable, RawMateria
 - **And** the breadcrumb updates to show the new recipe name
 - **And** the change persists after navigating away and returning to /recipe/HPP-B1
 
+#### RD-HDR-6: Cancelling Edit Recipe modal does not save changes
+- **Components:** RecipeDetailHeader
+- **Given** the user is on /recipe/HPP-B1 for recipe "High-Performance Polymer Blend"
+- **When** the user clicks the "Edit Recipe" button
+- **Then** a modal is displayed pre-filled with the recipe's current data
+- **When** the user changes the recipe name to "Changed Name" and clicks the "Cancel" button on the modal
+- **Then** the modal closes and the page title still displays the original recipe name "High-Performance Polymer Blend (HPP-B1)"
+
 ### DescriptionCard
 
 #### RD-DESC-1: Description card heading is displayed

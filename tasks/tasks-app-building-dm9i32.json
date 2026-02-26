@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMissingModalCancelRecipeDetails: Fix testSpec.md - Add test entry for cancelling/dismissing the Edit Recipe modal on RecipeDetailsPage, then update app code and playwright tests to match",
-        "RunTestsRecipeDetails: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T08:34:47.616Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecEquipmentPage: Check testSpec.md directive violations in EquipmentPage test entries",
         "CheckComponentsEquipmentPage: Check writeApp.md directive violations in EquipmentPage components",
         "CheckTestsEquipmentPage: Check writeTests.md directive violations in EquipmentPage tests"
