@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationNetlifyTomlBase: Add missing base = \"apps/SupplierTracker\" to netlify.toml [build] section per writeApp.md directive for monorepo apps"
-      ],
-      "timestamp": "2026-02-26T12:24:39.714Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "WriteTestAccountHeaderDisplaysName: Write test for AccountHeader displays account name",
