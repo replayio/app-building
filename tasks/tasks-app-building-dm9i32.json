@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-26T04:59:01.974Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",

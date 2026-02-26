@@ -219,7 +219,7 @@ async function main() {
   // --- Deploy ---
   console.log("\n--- Deploying to Netlify ---");
   const deployOutput = execSync(
-    `npx netlify deploy --prod --dir dist --functions ./netlify/functions --site ${netlifySiteId} --json`,
+    `npx netlify deploy --no-build --prod --dir dist --functions ./netlify/functions --site ${netlifySiteId} --json`,
     { cwd: appDir, encoding: "utf-8" }
   );
   const deployData = JSON.parse(deployOutput);
