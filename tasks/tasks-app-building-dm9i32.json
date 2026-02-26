@@ -3,11 +3,9 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecNavigation: Check testSpec.md directive violations in Navigation test entries",
-        "CheckComponentsNavigation: Check writeApp.md directive violations in Navigation components",
-        "CheckTestsNavigation: Check writeTests.md directive violations in Navigation tests"
+        "FixViolationNavigationTestEntries: Add BDD-format test entries to the Navigation section of docs/tests.md. The section currently only has a prose description but needs individual titled Given/When/Then entries for: app logo display and click navigation to /, each nav link (Dashboard, Suppliers, Orders, Inventory) with exact navigation targets, user profile icon/dropdown appearance and click behavior, breadcrumb display on SupplierDetailsPage (Home > Suppliers > Name > Supplier Details) with navigation targets, breadcrumb display on OrderDetailsPage (Dashboard > Orders > Order #id) with navigation targets, and nav bar consistency across all pages."
       ],
-      "timestamp": "2026-02-25T15:33:46.776Z",
+      "timestamp": "2026-02-26T11:11:12.542Z",
       "app": "SupplierTracker"
     },
     {
@@ -296,6 +294,15 @@
       ],
       "timestamp": "2026-02-26T09:59:41.105Z",
       "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationNavDuplicateLinks: Fix TopNavBar.tsx where all 4 nav link onClick handlers call navigate('/'), making them duplicate links to the same URL. The directive says 'Navigation sidebars and menus must not contain duplicate links pointing to the same URL.' The nav items have different href paths (/, /#suppliers, /#orders, /#inventory) but the onClick ignores these. Fix the onClick handlers to use hash-based scrolling so Suppliers scrolls to the suppliers section, Orders scrolls to orders section, etc. on the dashboard page.",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T11:11:18.506Z",
+      "app": "SupplierTracker"
     }
   ]
 }
