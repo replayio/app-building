@@ -115,6 +115,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
     const errors: { row: number; errors: string[] }[] = [];
     const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
 
     for (let i = 0; i < body.rows.length; i++) {
       const row = body.rows[i];
@@ -175,9 +176,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       const d = created[0];
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [clientId, "Deal Created", `Deal Created: '${row["Name"].trim()}'`, "deal", d.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [clientId, "Deal Created", `Deal Created: '${row["Name"].trim()}'`, "deal", d.id, actor, actorId]
       );
       await query(
         sql,
@@ -249,12 +250,13 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
     const d = created[0];
     const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
 
     await query(
       sql,
-      `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [body.clientId, "Deal Created", `Deal Created: '${body.name.trim()}'`, "deal", d.id, actor]
+      `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [body.clientId, "Deal Created", `Deal Created: '${body.name.trim()}'`, "deal", d.id, actor, actorId]
     );
 
     await query(
@@ -325,6 +327,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     const oldExpectedCloseDate = existing[0].expected_close_date;
     const clientId = existing[0].client_id;
     const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
 
     const sets: string[] = [];
     const params: unknown[] = [];
@@ -381,8 +384,8 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     if (body.stage && body.stage !== oldStage) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [
           clientId,
           "Deal Stage Changed",
@@ -390,6 +393,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
           "deal",
           dealId,
           actor,
+          actorId,
         ]
       );
 
@@ -435,9 +439,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       if (oldVal !== newVal) {
         await query(
           sql,
-          `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-           VALUES ($1, $2, $3, $4, $5, $6)`,
-          [clientId, "Deal Updated", `Deal Value Changed: '${existing[0].name}' from ${oldVal} to ${newVal}`, "deal", dealId, actor]
+          `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [clientId, "Deal Updated", `Deal Value Changed: '${existing[0].name}' from ${oldVal} to ${newVal}`, "deal", dealId, actor, actorId]
         );
       }
     }
@@ -452,9 +456,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         : "Unassigned";
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [clientId, "Deal Updated", `Deal Owner Changed: '${existing[0].name}' from '${oldOwnerName}' to '${newOwnerName}'`, "deal", dealId, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [clientId, "Deal Updated", `Deal Owner Changed: '${existing[0].name}' from '${oldOwnerName}' to '${newOwnerName}'`, "deal", dealId, actor, actorId]
       );
     }
 
@@ -462,18 +466,18 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     if (body.probability !== undefined && body.probability !== oldProbability) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [clientId, "Deal Updated", `Deal Metrics Updated: '${existing[0].name}' probability changed to ${body.probability}%`, "deal", dealId, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [clientId, "Deal Updated", `Deal Metrics Updated: '${existing[0].name}' probability changed to ${body.probability}%`, "deal", dealId, actor, actorId]
       );
     }
 
     if (body.expectedCloseDate !== undefined && body.expectedCloseDate !== oldExpectedCloseDate) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [clientId, "Deal Updated", `Deal Metrics Updated: '${existing[0].name}' expected close date changed`, "deal", dealId, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [clientId, "Deal Updated", `Deal Metrics Updated: '${existing[0].name}' expected close date changed`, "deal", dealId, actor, actorId]
       );
     }
 

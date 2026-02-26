@@ -222,6 +222,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       related_entity_type VARCHAR(50),
       related_entity_id UUID,
       created_by VARCHAR(255) NOT NULL DEFAULT 'System',
+      created_by_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;

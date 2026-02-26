@@ -80,6 +80,7 @@ export interface TimelineEvent {
   relatedEntityType: string | null;
   relatedEntityId: string | null;
   createdBy: string;
+  createdByUserId: string | null;
   createdAt: string;
 }
 

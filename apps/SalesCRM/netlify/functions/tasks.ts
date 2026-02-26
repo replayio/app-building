@@ -203,14 +203,15 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
     const t = created[0];
     const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
 
     // Create timeline event
     if (body.clientId) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [body.clientId, "Task Created", `Task Created: '${body.title.trim()}'`, "task", t.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [body.clientId, "Task Created", `Task Created: '${body.title.trim()}'`, "task", t.id, actor, actorId]
       );
     }
 
@@ -282,14 +283,15 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     );
 
     const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
 
     // Create timeline event for completion
     if (body.status === "completed" && existing.client_id) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [existing.client_id, "Task Completed", `Task Completed: '${existing.title}'`, "task", existing.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [existing.client_id, "Task Completed", `Task Completed: '${existing.title}'`, "task", existing.id, actor, actorId]
       );
 
       // Send follower notifications
@@ -324,9 +326,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     if (body.status === "canceled" && existing.client_id) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [existing.client_id, "Task Canceled", `Task Canceled: '${existing.title}'`, "task", existing.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [existing.client_id, "Task Canceled", `Task Canceled: '${existing.title}'`, "task", existing.id, actor, actorId]
       );
 
       // Send follower notifications

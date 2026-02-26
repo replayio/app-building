@@ -32,6 +32,7 @@ export default async function handler(req: Request): Promise<Response> {
       related_entity_type: string | null;
       related_entity_id: string | null;
       created_by: string;
+      created_by_user_id: string | null;
       created_at: string;
     }>(
       sql,
@@ -50,6 +51,7 @@ export default async function handler(req: Request): Promise<Response> {
         relatedEntityType: e.related_entity_type,
         relatedEntityId: e.related_entity_id,
         createdBy: e.created_by,
+        createdByUserId: e.created_by_user_id,
         createdAt: e.created_at,
       }))
     );
@@ -64,6 +66,7 @@ export default async function handler(req: Request): Promise<Response> {
       relatedEntityType?: string;
       relatedEntityId?: string;
       createdBy?: string;
+      createdByUserId?: string;
     };
     try {
       body = await req.json();
@@ -83,11 +86,12 @@ export default async function handler(req: Request): Promise<Response> {
       related_entity_type: string | null;
       related_entity_id: string | null;
       created_by: string;
+      created_by_user_id: string | null;
       created_at: string;
     }>(
       sql,
-      `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
       [
         body.clientId || null,
@@ -96,6 +100,7 @@ export default async function handler(req: Request): Promise<Response> {
         body.relatedEntityType || null,
         body.relatedEntityId || null,
         body.createdBy || "System",
+        body.createdByUserId || null,
       ]
     );
 
@@ -109,6 +114,7 @@ export default async function handler(req: Request): Promise<Response> {
         relatedEntityType: e.related_entity_type,
         relatedEntityId: e.related_entity_id,
         createdBy: e.created_by,
+        createdByUserId: e.created_by_user_id,
         createdAt: e.created_at,
       },
       201

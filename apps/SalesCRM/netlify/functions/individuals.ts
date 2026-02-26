@@ -327,11 +327,12 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       }
 
       const actor = user ? user.name : "System";
+      const actorId = user ? user.id : null;
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [body.clientId, "Contact Added", `Contact Added: '${body.name.trim()}'`, "individual", p.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [body.clientId, "Contact Added", `Contact Added: '${body.name.trim()}'`, "individual", p.id, actor, actorId]
       );
     }
 

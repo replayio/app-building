@@ -124,12 +124,13 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
       const a = created[0];
       const actor = user ? user.name : "System";
+      const actorId = user ? user.id : null;
 
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [clientId, "Attachment Added", `Attachment Added: '${filename}'`, "attachment", a.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [clientId, "Attachment Added", `Attachment Added: '${filename}'`, "attachment", a.id, actor, actorId]
       );
 
       // Send follower notifications for attachment added
@@ -215,12 +216,13 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
       const a = created[0];
       const actor = user ? user.name : "System";
+      const actorId = user ? user.id : null;
 
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [body.clientId, "Attachment Added", `Attachment Added: '${filename}'`, "attachment", a.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [body.clientId, "Attachment Added", `Attachment Added: '${filename}'`, "attachment", a.id, actor, actorId]
       );
 
       // Send follower notifications for attachment added
@@ -283,11 +285,12 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     // Create timeline entry for deletion
     if (existing.client_id) {
       const actor = user ? user.name : "System";
+      const actorId = user ? user.id : null;
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [existing.client_id, "Attachment Deleted", `Attachment Deleted: '${existing.filename}'`, "attachment", subPath, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [existing.client_id, "Attachment Deleted", `Attachment Deleted: '${existing.filename}'`, "attachment", subPath, actor, actorId]
       );
 
       // Send follower notifications for attachment deleted

@@ -180,21 +180,21 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
 
   // --- Seed Timeline Events ---
   await sql`
-    INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by) VALUES
-      ('c1000000-0000-0000-0000-000000000001', 'client_created', 'Client Acme Corp was created', NULL, NULL, 'System'),
-      ('c1000000-0000-0000-0000-000000000001', 'deal_created', 'Deal "Acme Enterprise License" was created', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Lead to Qualified', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Qualified to Proposal', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Proposal to Negotiation', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'task_created', 'Task "Follow-up call with Sarah" was created', 'task', 'e1000000-0000-0000-0000-000000000001', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000001', 'contact_added', 'Contact Sarah Jenkins was associated', 'individual', 'b1000000-0000-0000-0000-000000000001', 'System'),
-      ('c1000000-0000-0000-0000-000000000002', 'client_created', 'Client TechStart Inc was created', NULL, NULL, 'System'),
-      ('c1000000-0000-0000-0000-000000000002', 'deal_created', 'Deal "TechStart Pilot" was created', 'deal', 'd1000000-0000-0000-0000-000000000004', 'Carol Lee'),
-      ('c1000000-0000-0000-0000-000000000003', 'client_created', 'Client Global Solutions Ltd was created', NULL, NULL, 'System'),
-      ('c1000000-0000-0000-0000-000000000003', 'deal_created', 'Deal "Global Solutions Consulting" was created', 'deal', 'd1000000-0000-0000-0000-000000000005', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000003', 'deal_stage_changed', 'Deal "Global Solutions Consulting" moved to Closed Won', 'deal', 'd1000000-0000-0000-0000-000000000005', 'Alice Johnson'),
-      ('c1000000-0000-0000-0000-000000000010', 'client_created', 'Client Orion Dynamics was created', NULL, NULL, 'System'),
-      ('c1000000-0000-0000-0000-000000000010', 'deal_created', 'Deal "Orion Platform Deal" was created', 'deal', 'd1000000-0000-0000-0000-000000000007', 'Emma Wilson')
+    INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id) VALUES
+      ('c1000000-0000-0000-0000-000000000001', 'client_created', 'Client Acme Corp was created', NULL, NULL, 'System', NULL),
+      ('c1000000-0000-0000-0000-000000000001', 'deal_created', 'Deal "Acme Enterprise License" was created', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Lead to Qualified', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Qualified to Proposal', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000001', 'deal_stage_changed', 'Deal "Acme Enterprise License" moved from Proposal to Negotiation', 'deal', 'd1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000001', 'task_created', 'Task "Follow-up call with Sarah" was created', 'task', 'e1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000001', 'contact_added', 'Contact Sarah Jenkins was associated', 'individual', 'b1000000-0000-0000-0000-000000000001', 'System', NULL),
+      ('c1000000-0000-0000-0000-000000000002', 'client_created', 'Client TechStart Inc was created', NULL, NULL, 'System', NULL),
+      ('c1000000-0000-0000-0000-000000000002', 'deal_created', 'Deal "TechStart Pilot" was created', 'deal', 'd1000000-0000-0000-0000-000000000004', 'Carol Lee', 'a1000000-0000-0000-0000-000000000003'),
+      ('c1000000-0000-0000-0000-000000000003', 'client_created', 'Client Global Solutions Ltd was created', NULL, NULL, 'System', NULL),
+      ('c1000000-0000-0000-0000-000000000003', 'deal_created', 'Deal "Global Solutions Consulting" was created', 'deal', 'd1000000-0000-0000-0000-000000000005', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000003', 'deal_stage_changed', 'Deal "Global Solutions Consulting" moved to Closed Won', 'deal', 'd1000000-0000-0000-0000-000000000005', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
+      ('c1000000-0000-0000-0000-000000000010', 'client_created', 'Client Orion Dynamics was created', NULL, NULL, 'System', NULL),
+      ('c1000000-0000-0000-0000-000000000010', 'deal_created', 'Deal "Orion Platform Deal" was created', 'deal', 'd1000000-0000-0000-0000-000000000007', 'Emma Wilson', 'a1000000-0000-0000-0000-000000000005')
     ON CONFLICT DO NOTHING
   `;
 

@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationTimelineUserLinks: Fix timeline user links to navigate to /users/:userId instead of '#' - requires adding createdByUserId to timeline data model and updating TimelineSectionClient component"
-      ],
-      "timestamp": "2026-02-26T09:28:22.072Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationTasksListImportExportTestEntries: Add missing test entries in docs/tests.md for Import button, Export button, and ImportDialog format specification in TasksListHeader. The Import/Export buttons exist in code but have no test entries. The ImportDialog defines columns (Title, Description, Due Date, Priority, Client Name, Assignee) but no test entry verifies format docs are visible.",
         "RunTests: Verify tests pass after fix"
       ],

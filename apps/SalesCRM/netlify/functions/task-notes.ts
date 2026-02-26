@@ -77,6 +77,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     }
 
     const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
 
     const created = await query<{
       id: string;
@@ -98,9 +99,9 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     if (task.client_id) {
       await query(
         sql,
-        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [task.client_id, "Note Added", `Note added to task`, "task", task.id, actor]
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [task.client_id, "Note Added", `Note added to task`, "task", task.id, actor, actorId]
       );
 
       // Send follower notifications

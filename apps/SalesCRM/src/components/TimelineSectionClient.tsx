@@ -182,11 +182,11 @@ export function TimelineSectionClient({ events }: TimelineSectionClientProps) {
                         </span>
                         <span data-testid="timeline-event-actor">
                           by{" "}
-                          {event.createdBy === "System" ? (
-                            "System"
+                          {event.createdBy === "System" || !event.createdByUserId ? (
+                            event.createdBy
                           ) : (
                             <Link
-                              to="#"
+                              to={`/users/${event.createdByUserId}`}
                               style={{ color: "var(--accent-primary)", textDecoration: "none" }}
                             >
                               {event.createdBy}
