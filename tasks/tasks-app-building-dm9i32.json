@@ -1,13 +1,20 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "CheckTestSpecResetPasswordPage: Check testSpec.md directive violations in ResetPasswordPage test entries",
-        "CheckComponentsResetPasswordPage: Check writeApp.md directive violations in ResetPasswordPage components",
-        "CheckTestsResetPasswordPage: Check writeTests.md directive violations in ResetPasswordPage tests"
+        "WriteTestResetPasswordPageHeading: Write test for ResetPasswordForm Page displays heading and instructions",
+        "WriteTestResetPasswordPageInputs: Write test for ResetPasswordForm password and confirm password input fields are displayed",
+        "WriteTestResetPasswordPageSubmitButton: Write test for ResetPasswordForm Submit button is displayed with label",
+        "WriteTestResetPasswordPageSuccessFlow: Write test for ResetPasswordForm Submit with matching passwords succeeds and auto-logs in (real token flow without IS_TEST bypass)",
+        "WriteTestResetPasswordPageMismatch: Write test for ResetPasswordForm Submit with mismatched passwords shows validation error",
+        "WriteTestResetPasswordPageEmpty: Write test for ResetPasswordForm Submit with empty password fields shows validation error",
+        "WriteTestResetPasswordPageInvalidToken: Write test for ResetPasswordForm Invalid token shows error message",
+        "WriteTestResetPasswordPageMissingToken: Write test for ResetPasswordForm Missing token shows error message",
+        "WriteTestResetPasswordPageLoading: Write test for ResetPasswordForm Submit button shows loading state during request",
+        "WriteTestResetPasswordPageForgotLink: Write test for ResetPasswordForm Link to forgot password page is available on error"
       ],
-      "timestamp": "2026-02-25T15:33:35.822Z",
+      "timestamp": "2026-02-26T10:39:22.342Z",
       "app": "SalesCRM"
     },
     {
