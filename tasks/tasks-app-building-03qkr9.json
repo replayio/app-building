@@ -3,11 +3,11 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecReportList: Check testSpec.md directive violations in ReportList test entries",
-        "CheckComponentsReportList: Check writeApp.md directive violations in ReportList components",
-        "CheckTestsReportList: Check writeTests.md directive violations in ReportList tests"
+        "FixViolation: Fix ReportList page title and breadcrumb - page title should be 'Reports' (not camelCase 'ReportList') and breadcrumb should use 'Home > Reports' format (not 'Page / reports') for consistency with other pages",
+        "RunTests: Verify tests pass after fix",
+        "DocumentFix: Document the fix"
       ],
-      "timestamp": "2026-02-26T16:16:50.740Z",
+      "timestamp": "2026-02-26T16:34:52.253Z",
       "app": "Accounting"
     },
     {
