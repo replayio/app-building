@@ -2127,7 +2127,7 @@ Given the WebhookModal is open, the form contains a "Name" text input field for 
 Given the WebhookModal is open, the form contains a "URL" text input field for the webhook endpoint URL.
 
 **Modal contains event checkboxes**
-Given the WebhookModal is open, the form contains a set of event checkboxes that the user can select to subscribe the webhook to. Events include: new client created, deal stage changed, task completed, and other relevant CRM events. Each event has a labeled checkbox.
+Given the WebhookModal is open, the form contains a set of 8 event checkboxes that the user can select to subscribe the webhook to: "Client Created", "Client Updated", "Deal Created", "Deal Stage Changed", "Task Created", "Task Completed", "Contact Added", and "Note Added". Each event has a labeled checkbox.
 
 **Modal contains platform selector**
 Given the WebhookModal is open, the form contains a platform selector with options: Zapier, n8n, and Custom. The selector allows the user to choose which platform the webhook is for.
