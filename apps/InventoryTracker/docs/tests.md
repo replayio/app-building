@@ -1824,6 +1824,17 @@ Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter
 
 ### NewTransactionButton
 
+**Test: Page heading displays "Transactions" as a prominent title**
+- Components: NewTransactionButton
+- Given: The user navigates to the Transactions page (/transactions)
+- Then: A large heading "Transactions" is displayed below the breadcrumb and above the filter bar
+
+**Test: Filters section displays "Filters" label with "Clear Filters" link**
+- Components: NewTransactionButton
+- Given: The user navigates to the Transactions page
+- Then: A "Filters" label is displayed above the filter controls
+- And: A "Clear Filters" link is displayed to the right of the "Filters" label
+
 **Test: New Transaction button is displayed as primary action with correct styling**
 - Components: NewTransactionButton
 - Given: The user navigates to the Transactions page (/transactions)
@@ -2020,6 +2031,14 @@ Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter
 - When: The user types "Steel" in the search bar
 - Then: The TransactionsTable shows only transactions involving "Raw Materials Inventory (1200)" that also have "Steel" in their description or ID
 
+**Test: Multiple filters combine: date range, material, and transaction type**
+- Components: DateRangeFilter, MaterialFilter, TransactionTypeFilter, TransactionsTable, Pagination
+- Given: The user selects date range "Oct 25, 2023 - Oct 27, 2023"
+- And: The user selects "Steel Plates (M001)" from the material filter
+- And: The user selects "Purchase" from the transaction type filter
+- Then: The TransactionsTable shows only transactions within that date range that involve Steel Plates and are of type Purchase
+- And: The pagination updates to reflect the filtered count
+
 ### TransactionsTable
 
 **Test: Breadcrumb displays Home / Transactions**
@@ -2207,6 +2226,22 @@ Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter
 - Given: There are 15 pages of transactions and the user is on page 1
 - Then: The pagination shows page numbers "1, 2, 3, ..., 15"
 - And: The ellipsis (...) indicates that pages between 3 and 15 are not individually shown but accessible
+
+**Test: Applying a filter resets pagination to page 1**
+- Components: Pagination, AccountFilter, TransactionsTable
+- Given: The user is on page 3 of the transactions table
+- When: The user selects "Raw Materials Inventory (1200)" from the account filter
+- Then: The pagination resets to page 1
+- And: The TransactionsTable shows the first page of filtered results
+- And: The result count updates to reflect the filtered total
+
+**Test: Sort selection persists across page navigation**
+- Components: Pagination, TransactionsTable
+- Given: The user selects "Date (Oldest First)" from the sort dropdown
+- And: The table is sorted by oldest date first
+- When: The user clicks the "Next" button to go to page 2
+- Then: The transactions on page 2 continue to be sorted by oldest date first
+- And: The sort dropdown still shows "Sort by: Date (Oldest First)"
 
 ---
 
