@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNavBarTransactionsLink: Fix missing Transactions nav link in test spec — update NavBar test entry to mention 5 links including Transactions, and add a new test entry 'NavBar Transactions link navigates to TransactionsPage' with exact navigation target",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T05:07:09.270Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecAccountDetailPage: Check testSpec.md directive violations in AccountDetailPage test entries",
         "CheckComponentsAccountDetailPage: Check writeApp.md directive violations in AccountDetailPage components",
         "CheckTestsAccountDetailPage: Check writeTests.md directive violations in AccountDetailPage tests"

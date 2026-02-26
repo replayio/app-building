@@ -9,7 +9,7 @@
 **Test: NavBar displays logo and navigation links**
 - **Initial state:** User is on the AccountsPage.
 - **Action:** User observes the top navigation bar.
-- **Expected:** The NavBar displays the "FINANCEWEB" logo on the left. Four navigation links are visible: "Dashboard", "Accounts", "Reports", and "Budgets". The "Accounts" link is visually highlighted/active since the user is on the AccountsPage. A breadcrumb trail shows "Home > Accounts" below the NavBar.
+- **Expected:** The NavBar displays the "FINANCEWEB" logo on the left. Five navigation links are visible: "Dashboard", "Accounts", "Transactions", "Reports", and "Budgets". The "Accounts" link is visually highlighted/active since the user is on the AccountsPage. A breadcrumb trail shows "Home > Accounts" below the NavBar.
 
 **Test: NavBar Accounts link navigates to AccountsPage**
 - **Initial state:** User is on a different page (e.g., Dashboard).
@@ -30,6 +30,11 @@
 - **Initial state:** User is on the AccountsPage.
 - **Action:** User clicks the "Budgets" link in the NavBar.
 - **Expected:** The app navigates to the Budgets page. The "Budgets" link becomes highlighted/active.
+
+**Test: NavBar Transactions link navigates to TransactionsPage**
+- **Initial state:** User is on the AccountsPage.
+- **Action:** User clicks the "Transactions" link in the NavBar.
+- **Expected:** The app navigates to the TransactionsPage. The "Transactions" link becomes highlighted/active.
 
 **Test: NavBar New Transaction button opens NewTransactionModal**
 - **Initial state:** User is on the AccountsPage.

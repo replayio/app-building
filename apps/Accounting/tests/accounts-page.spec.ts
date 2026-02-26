@@ -11,6 +11,7 @@ test.describe("NavBar", () => {
     // Navigation links
     await expect(page.getByTestId("navbar-link-dashboard")).toBeVisible();
     await expect(page.getByTestId("navbar-link-accounts")).toBeVisible();
+    await expect(page.getByTestId("navbar-link-transactions")).toBeVisible();
     await expect(page.getByTestId("navbar-link-reports")).toBeVisible();
     await expect(page.getByTestId("navbar-link-budgets")).toBeVisible();
 
@@ -74,6 +75,19 @@ test.describe("NavBar", () => {
     await expect(page).toHaveURL(/\/budgets/);
     await expect(page.getByTestId("budgets-page")).toBeVisible({ timeout: 30000 });
     await expect(page.getByTestId("navbar-link-budgets")).toHaveClass(/navbar-link--active/);
+  });
+
+  test("NavBar Transactions link navigates to TransactionsPage", async ({ page }) => {
+    await page.goto("/accounts");
+    await expect(page.getByTestId("navbar")).toBeVisible({ timeout: 30000 });
+
+    // Click Transactions link
+    await page.getByTestId("navbar-link-transactions").click();
+
+    // Verify navigation to TransactionsPage
+    await expect(page).toHaveURL(/\/transactions/);
+    await expect(page.getByTestId("transactions-page")).toBeVisible({ timeout: 30000 });
+    await expect(page.getByTestId("navbar-link-transactions")).toHaveClass(/navbar-link--active/);
   });
 
   test("NavBar New Transaction button opens NewTransactionModal", async ({ page }) => {
