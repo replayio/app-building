@@ -43,7 +43,7 @@ export function AccountsList({
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
-          Create {title.replace(" Accounts", "")} Account
+          <span className="max-sm:hidden">Create {title.replace(" Accounts", "")} Account</span>
         </button>
       </div>
       <div className="section-card">
@@ -52,8 +52,8 @@ export function AccountsList({
             <thead>
               <tr>
                 <th>Account Name</th>
-                <th>Account Type</th>
-                <th>Description</th>
+                <th className="max-lg:hidden">Account Type</th>
+                <th className="max-md:hidden">Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -84,13 +84,13 @@ export function AccountsList({
                         {account.name}
                       </span>
                     </td>
-                    <td>
+                    <td className="max-lg:hidden">
                       <span data-testid={`account-type-${account.id}`}>
                         {capitalize(account.account_type)}
                         {account.is_default && " (Default)"}
                       </span>
                     </td>
-                    <td>
+                    <td className="max-md:hidden">
                       <span data-testid={`account-description-${account.id}`}>
                         {account.description}
                       </span>

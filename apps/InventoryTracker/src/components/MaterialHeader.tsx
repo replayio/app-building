@@ -74,7 +74,7 @@ export function MaterialHeader({
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
             </svg>
-            Edit Material
+            <span className="max-sm:hidden">Edit Material</span>
           </button>
           <button
             data-testid="new-batch-btn"
@@ -93,7 +93,7 @@ export function MaterialHeader({
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            New Batch
+            <span className="max-sm:hidden">New Batch</span>
           </button>
           <button
             data-testid="new-transaction-btn"
@@ -116,7 +116,7 @@ export function MaterialHeader({
               <polyline points="7 23 3 19 7 15" />
               <path d="M21 13v2a4 4 0 0 1-4 4H3" />
             </svg>
-            New Transaction
+            <span className="max-sm:hidden">New Transaction</span>
           </button>
         </div>
       </div>

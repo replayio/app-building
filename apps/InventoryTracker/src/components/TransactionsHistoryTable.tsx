@@ -203,8 +203,8 @@ export function TransactionsHistoryTable({
                   <tr>
                     <th>Date</th>
                     <th>Transaction ID</th>
-                    <th>Accounts Involved</th>
-                    <th>Batch References</th>
+                    <th className="max-lg:hidden">Accounts Involved</th>
+                    <th className="max-md:hidden">Batch References</th>
                     <th>Quantity Moved ({unitOfMeasure})</th>
                   </tr>
                 </thead>
@@ -234,12 +234,12 @@ export function TransactionsHistoryTable({
                             {txn.reference_id || txn.id.substring(0, 13)}
                           </a>
                         </td>
-                        <td>
+                        <td className="max-lg:hidden">
                           <span data-testid={`txn-accounts-${txn.id}`}>
                             {getAccountsInvolved(txn)}
                           </span>
                         </td>
-                        <td>
+                        <td className="max-md:hidden">
                           <span data-testid={`txn-batches-${txn.id}`}>
                             {batchRefs.length === 0
                               ? "—"

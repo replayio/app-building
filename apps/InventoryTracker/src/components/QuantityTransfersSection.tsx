@@ -130,7 +130,7 @@ export function QuantityTransfersSection({
                 <th>Source Account</th>
                 <th>Destination Account</th>
                 <th>Amount</th>
-                <th>Source Batch ID (Optional)</th>
+                <th className="max-md:hidden">Source Batch ID (Optional)</th>
                 <th style={{ width: 48 }} />
               </tr>
             </thead>
@@ -142,7 +142,7 @@ export function QuantityTransfersSection({
                   <td>
                     {row.amount} {row.unit}
                   </td>
-                  <td>
+                  <td className="max-md:hidden">
                     {row.sourceBatchId ? (
                       row.sourceBatchId
                     ) : (
@@ -168,10 +168,8 @@ export function QuantityTransfersSection({
           {/* Inline add row */}
           <div
             data-testid="add-transfer-row"
+            className="grid grid-cols-[1fr_1fr_auto_1fr_auto] max-md:grid-cols-2 max-sm:grid-cols-1 gap-2"
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr auto 1fr auto",
-              gap: 8,
               padding: "12px 12px",
               borderTop:
                 transfers.length > 0

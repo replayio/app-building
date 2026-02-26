@@ -54,12 +54,12 @@ export function UsageHistoryTable({ entries, unit }: UsageHistoryTableProps) {
             <table className="data-table" data-testid="usage-history-data-table">
               <thead>
                 <tr>
-                  <th>Date &amp; Time</th>
+                  <th className="max-md:hidden">Date &amp; Time</th>
                   <th>Transaction ID</th>
-                  <th>Type</th>
+                  <th className="max-lg:hidden">Type</th>
                   <th>Movement</th>
                   <th>Amount ({unit})</th>
-                  <th>Created Batches</th>
+                  <th className="max-md:hidden">Created Batches</th>
                 </tr>
               </thead>
               <tbody>
@@ -68,7 +68,7 @@ export function UsageHistoryTable({ entries, unit }: UsageHistoryTableProps) {
                     key={`${entry.transaction_id}-${entry.movement}`}
                     data-testid={`usage-row-${entry.reference_id || entry.transaction_id}`}
                   >
-                    <td>{formatDateTime(entry.created_at)}</td>
+                    <td className="max-md:hidden">{formatDateTime(entry.created_at)}</td>
                     <td>
                       <a
                         className="link"
@@ -82,7 +82,7 @@ export function UsageHistoryTable({ entries, unit }: UsageHistoryTableProps) {
                         {entry.reference_id || entry.transaction_id.substring(0, 13)}
                       </a>
                     </td>
-                    <td>{typeLabel(entry.transaction_type)}</td>
+                    <td className="max-lg:hidden">{typeLabel(entry.transaction_type)}</td>
                     <td>
                       <span
                         data-testid={`usage-movement-${entry.reference_id || entry.transaction_id}`}
@@ -132,7 +132,7 @@ export function UsageHistoryTable({ entries, unit }: UsageHistoryTableProps) {
                         maximumFractionDigits: 2,
                       })}
                     </td>
-                    <td>
+                    <td className="max-md:hidden">
                       {entry.created_batches.length === 0 ? (
                         <span style={{ color: "var(--text-muted)" }}>—</span>
                       ) : (

@@ -110,10 +110,10 @@ export function AccountsDistributionTable({
                 <tr>
                   <th style={{ width: 40 }}></th>
                   <th>Account Name</th>
-                  <th>Account Type</th>
+                  <th className="max-lg:hidden">Account Type</th>
                   <th>Quantity ({unitOfMeasure})</th>
-                  <th>Number of Batches</th>
-                  <th>Link</th>
+                  <th className="max-md:hidden">Number of Batches</th>
+                  <th className="max-md:hidden">Link</th>
                 </tr>
               </thead>
               <tbody>
@@ -164,7 +164,7 @@ export function AccountsDistributionTable({
                             {acc.account_name}
                           </span>
                         </td>
-                        <td>
+                        <td className="max-lg:hidden">
                           <span
                             data-testid={`account-type-${acc.account_id}`}
                           >
@@ -178,14 +178,14 @@ export function AccountsDistributionTable({
                             {formatQuantity(acc.total_quantity)}
                           </span>
                         </td>
-                        <td>
+                        <td className="max-md:hidden">
                           <span
                             data-testid={`account-batches-${acc.account_id}`}
                           >
                             {acc.batch_count}
                           </span>
                         </td>
-                        <td>
+                        <td className="max-md:hidden">
                           <a
                             data-testid={`view-account-link-${acc.account_id}`}
                             className="link"

@@ -1,22 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveDashboardPage: Make DashboardPage responsive",
-        "MakeResponsiveAccountsPage: Make AccountsPage responsive",
-        "MakeResponsiveAccountDetailPage: Make AccountDetailPage responsive",
-        "MakeResponsiveMaterialsPage: Make MaterialsPage responsive",
-        "MakeResponsiveMaterialDetailPage: Make MaterialDetailPage responsive",
-        "MakeResponsiveBatchDetailPage: Make BatchDetailPage responsive",
-        "MakeResponsiveTransactionsPage: Make TransactionsPage responsive",
-        "MakeResponsiveTransactionDetailPage: Make TransactionDetailPage responsive",
-        "MakeResponsiveNewTransactionPage: Make NewTransactionPage responsive"
-      ],
-      "timestamp": "2026-02-26T03:55:37.831Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"

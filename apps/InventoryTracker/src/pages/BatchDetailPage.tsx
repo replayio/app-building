@@ -52,14 +52,7 @@ export function BatchDetailPage() {
     <div data-testid="batch-detail-page" className="page-content p-6 max-sm:p-3">
       <BatchHeader batch={batch} />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 24,
-          marginTop: 24,
-        }}
-      >
+      <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6 mt-6">
         <BatchOverview batch={batch} />
         <LineageSection batch={batch} lineage={lineage} />
       </div>

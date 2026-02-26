@@ -76,8 +76,8 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
             <thead>
               <tr>
                 <th>Material Name</th>
-                <th>Category</th>
-                <th>Unit of Measure</th>
+                <th className="max-lg:hidden">Category</th>
+                <th className="max-md:hidden">Unit of Measure</th>
                 <th>Stock</th>
                 <th>Actions</th>
               </tr>
@@ -101,12 +101,12 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
                       {material.name}
                     </a>
                   </td>
-                  <td>
+                  <td className="max-lg:hidden">
                     <span data-testid={`material-category-${material.id}`}>
                       {material.category_name}
                     </span>
                   </td>
-                  <td>
+                  <td className="max-md:hidden">
                     <span data-testid={`material-unit-${material.id}`}>
                       {material.unit_of_measure}
                     </span>
@@ -126,7 +126,7 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
                     >
                       <a
                         data-testid={`view-detail-link-${material.id}`}
-                        className="link"
+                        className="link max-sm:hidden"
                         onClick={(e) => {
                           e.preventDefault();
                           navigate(`/materials/${material.id}`);
@@ -137,7 +137,7 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
                       </a>
                       <a
                         data-testid={`edit-link-${material.id}`}
-                        className="link"
+                        className="link max-sm:hidden"
                         onClick={(e) => {
                           e.preventDefault();
                           handleOpenEdit(material);

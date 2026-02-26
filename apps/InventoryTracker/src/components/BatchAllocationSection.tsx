@@ -124,10 +124,8 @@ export function BatchAllocationSection({
           {/* Inline add row */}
           <div
             data-testid="add-batch-row"
+            className="grid grid-cols-[1fr_auto_auto] max-sm:grid-cols-1 gap-2"
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr auto auto",
-              gap: 8,
               padding: "12px 12px",
               borderTop:
                 batches.length > 0

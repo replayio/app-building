@@ -45,10 +45,10 @@ export function TrackedMaterialsTable({
               <thead>
                 <tr>
                   <th>Material Name</th>
-                  <th>Category</th>
-                  <th>Unit of Measure</th>
+                  <th className="max-lg:hidden">Category</th>
+                  <th className="max-md:hidden">Unit of Measure</th>
                   <th>Total Quantity</th>
-                  <th>Number of Batches</th>
+                  <th className="max-md:hidden">Number of Batches</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -71,12 +71,12 @@ export function TrackedMaterialsTable({
                         {mat.material_name}
                       </a>
                     </td>
-                    <td>
+                    <td className="max-lg:hidden">
                       <span data-testid={`material-category-${mat.material_id}`}>
                         {mat.category_name}
                       </span>
                     </td>
-                    <td>
+                    <td className="max-md:hidden">
                       <span data-testid={`material-unit-${mat.material_id}`}>
                         {mat.unit_of_measure}
                       </span>
@@ -96,7 +96,7 @@ export function TrackedMaterialsTable({
                         (&Sigma; Batches)
                       </span>
                     </td>
-                    <td>
+                    <td className="max-md:hidden">
                       <span data-testid={`material-batches-${mat.material_id}`}>
                         {mat.batch_count} Batches
                       </span>
@@ -125,7 +125,7 @@ export function TrackedMaterialsTable({
                           <polyline points="15 3 21 3 21 9" />
                           <line x1="10" y1="14" x2="21" y2="3" />
                         </svg>
-                        View Material in this Account
+                        <span className="max-sm:hidden">View Material in this Account</span>
                       </button>
                     </td>
                   </tr>

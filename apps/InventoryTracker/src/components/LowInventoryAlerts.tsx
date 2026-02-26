@@ -40,10 +40,10 @@ export function LowInventoryAlerts({ alerts, onDismiss }: LowInventoryAlertsProp
           <table className="data-table">
             <thead>
               <tr>
-                <th>Severity</th>
+                <th className="max-lg:hidden">Severity</th>
                 <th>Material</th>
                 <th>Current Qty</th>
-                <th>Reorder Point</th>
+                <th className="max-md:hidden">Reorder Point</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -53,7 +53,7 @@ export function LowInventoryAlerts({ alerts, onDismiss }: LowInventoryAlertsProp
                   key={alert.material_id}
                   data-testid={`low-inventory-alert-row-${alert.material_id}`}
                 >
-                  <td>
+                  <td className="max-lg:hidden">
                     <span
                       data-testid={`low-inventory-alert-severity-${alert.material_id}`}
                       className={`badge badge--${alert.severity}`}
@@ -87,7 +87,7 @@ export function LowInventoryAlerts({ alerts, onDismiss }: LowInventoryAlertsProp
                       {alert.current_quantity.toLocaleString()} {alert.unit}
                     </span>
                   </td>
-                  <td>
+                  <td className="max-md:hidden">
                     <span data-testid={`low-inventory-alert-reorder-point-${alert.material_id}`}>
                       {alert.reorder_point.toLocaleString()} {alert.unit}
                     </span>

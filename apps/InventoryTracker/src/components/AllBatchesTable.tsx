@@ -140,9 +140,9 @@ export function AllBatchesTable({
                 <thead>
                   <tr>
                     <th>Batch ID</th>
-                    <th>Location</th>
+                    <th className="max-lg:hidden">Location</th>
                     <th>Quantity ({unitOfMeasure})</th>
-                    <th>Created Date</th>
+                    <th className="max-md:hidden">Created Date</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -165,7 +165,7 @@ export function AllBatchesTable({
                           {batch.id.substring(0, 13)}
                         </a>
                       </td>
-                      <td>
+                      <td className="max-lg:hidden">
                         <span data-testid={`batch-location-${batch.id}`}>
                           {batch.account_name || batch.location || "—"}
                         </span>
@@ -175,7 +175,7 @@ export function AllBatchesTable({
                           {formatQuantity(batch.quantity)}
                         </span>
                       </td>
-                      <td>
+                      <td className="max-md:hidden">
                         <span data-testid={`batch-date-${batch.id}`}>
                           {formatDate(batch.created_at)}
                         </span>

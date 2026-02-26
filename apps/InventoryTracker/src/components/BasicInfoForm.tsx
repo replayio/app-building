@@ -61,11 +61,7 @@ export function BasicInfoForm({ data, onChange, errors }: BasicInfoFormProps) {
         <div className="section-card-body">
           <div
             data-testid="basic-info-fields"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 2fr 1fr",
-              gap: 16,
-            }}
+            className="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4"
           >
         {/* Date field */}
         <div className="form-group" style={{ marginBottom: 0 }}>

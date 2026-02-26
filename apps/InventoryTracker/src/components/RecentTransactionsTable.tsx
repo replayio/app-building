@@ -43,8 +43,8 @@ export function RecentTransactionsTable({ transactions }: RecentTransactionsTabl
               <tr>
                 <th>Date</th>
                 <th>Reference</th>
-                <th>Accounts Affected</th>
-                <th>Materials &amp; Amounts</th>
+                <th className="max-lg:hidden">Accounts Affected</th>
+                <th className="max-md:hidden">Materials &amp; Amounts</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -67,10 +67,10 @@ export function RecentTransactionsTable({ transactions }: RecentTransactionsTabl
                     <td data-testid={`recent-transaction-reference-${txn.id}`}>
                       {txn.reference_id}
                     </td>
-                    <td data-testid={`recent-transaction-accounts-${txn.id}`}>
+                    <td data-testid={`recent-transaction-accounts-${txn.id}`} className="max-lg:hidden">
                       {uniqueAccounts}
                     </td>
-                    <td data-testid={`recent-transaction-materials-${txn.id}`}>
+                    <td data-testid={`recent-transaction-materials-${txn.id}`} className="max-md:hidden">
                       {materialAmounts}
                     </td>
                     <td>

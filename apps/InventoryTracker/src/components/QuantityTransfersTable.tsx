@@ -144,10 +144,10 @@ export function QuantityTransfersTable({ transfers }: QuantityTransfersTableProp
                 <thead>
                   <tr>
                     <th>Source Account</th>
-                    <th>Source Amount</th>
-                    <th>Source Batch ID (Optional)</th>
+                    <th className="max-md:hidden">Source Amount</th>
+                    <th className="max-lg:hidden">Source Batch ID (Optional)</th>
                     <th>Destination Account</th>
-                    <th>Destination Amount</th>
+                    <th className="max-md:hidden">Destination Amount</th>
                     <th>Net Transfer</th>
                   </tr>
                 </thead>
@@ -179,12 +179,12 @@ export function QuantityTransfersTable({ transfers }: QuantityTransfersTableProp
                             </a>
                           </div>
                         </td>
-                        <td>
+                        <td className="max-md:hidden">
                           <span data-testid={`source-amount-${transfer.id}`}>
                             {formatAmount(srcAmt)} {transfer.unit}
                           </span>
                         </td>
-                        <td>
+                        <td className="max-lg:hidden">
                           {transfer.source_batch_id ? (
                             <a
                               className="link"
@@ -222,7 +222,7 @@ export function QuantityTransfersTable({ transfers }: QuantityTransfersTableProp
                             </a>
                           </div>
                         </td>
-                        <td>
+                        <td className="max-md:hidden">
                           <span data-testid={`dest-amount-${transfer.id}`}>
                             {formatAmount(destAmt)} {transfer.unit}
                           </span>
