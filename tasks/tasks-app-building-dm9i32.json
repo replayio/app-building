@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNewTransactionModalTestSpec: Fix testSpec violations in NewTransactionModal: (1) Fix Rent Expense amount mismatch $1500 vs $1350 in 'saved transaction appears' test line 357, (2) Make 'prevents saving unbalanced' test specify exact behavior instead of ambiguous 'either disabled or shows error' on line 503, (3) Make 'shows zero totals' test specify exact behavior instead of ambiguous 'or a neutral state' on line 508, (4) Add missing test for clicking modal overlay/backdrop to close the NewTransactionModal"
-      ],
-      "timestamp": "2026-02-26T05:27:26.169Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecCreateReportDialog: Check testSpec.md directive violations in CreateReportDialog test entries",
         "CheckComponentsCreateReportDialog: Check writeApp.md directive violations in CreateReportDialog components",
         "CheckTestsCreateReportDialog: Check writeTests.md directive violations in CreateReportDialog tests"

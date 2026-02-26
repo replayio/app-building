@@ -346,6 +346,11 @@
 - **Action:** User clicks the "Cancel" button at the bottom of the modal.
 - **Expected:** The modal closes without saving any data. No new transaction is created. The underlying page is unchanged.
 
+**Test: NewTransactionModal clicking overlay backdrop closes modal without saving**
+- **Initial state:** The NewTransactionModal is open with some fields filled in (date, description, line items).
+- **Action:** User clicks on the dark overlay/backdrop area outside the modal content.
+- **Expected:** The modal closes without saving any data. No new transaction is created. Clicking inside the modal content area does not close the modal (only the backdrop area outside).
+
 **Test: NewTransactionModal Save Transaction button saves transaction**
 - **Initial state:** The NewTransactionModal is open with valid data: date "Oct 26, 2023", description "October Rent & Utilities Payment", currency "USD ($)", two line items (Checking Account Credit $1,500.00 and Rent Expense Debit $1,500.00), and the transaction is balanced.
 - **Action:** User clicks the "Save Transaction" button.
@@ -354,7 +359,7 @@
 **Test: NewTransactionModal saved transaction appears in affected account transaction lists**
 - **Initial state:** User has just saved a transaction with line items affecting "Checking Account" (Credit $1,500.00) and "Rent Expense" (Debit $1,500.00).
 - **Action:** User navigates to the AccountDetailPage for "Checking Account" and observes the Transactions tab.
-- **Expected:** The newly saved transaction appears in the transactions list with the correct date, description "October Rent & Utilities Payment", amount "$1,500.00", and direction "Credit". Navigating to "Rent Expense" AccountDetailPage also shows the transaction with direction "Debit" and amount "$1,350.00".
+- **Expected:** The newly saved transaction appears in the transactions list with the correct date, description "October Rent & Utilities Payment", amount "$1,500.00", and direction "Credit". Navigating to "Rent Expense" AccountDetailPage also shows the transaction with direction "Debit" and amount "$1,500.00".
 
 **Test: NewTransactionModal opens in edit mode with pre-populated fields**
 - **Initial state:** User is on the AccountDetailPage with the Transactions tab active and clicks "View/Edit" on an existing transaction.
@@ -500,12 +505,12 @@
 **Test: BalanceIndicator validation prevents saving unbalanced transaction**
 - **Initial state:** The NewTransactionModal is open with Total Debits = $1,350.00 and Total Credits = $1,500.00 (unbalanced).
 - **Action:** User clicks the "Save Transaction" button.
-- **Expected:** The transaction is NOT saved. The "Save Transaction" button is either disabled while the transaction is unbalanced, or clicking it shows a validation error message indicating that the transaction must be balanced before saving. The modal remains open.
+- **Expected:** The transaction is NOT saved. The "Save Transaction" button is disabled while the transaction is unbalanced. The modal remains open.
 
 **Test: BalanceIndicator shows zero totals for empty line items**
 - **Initial state:** The NewTransactionModal is open with empty line item rows (no amounts entered).
 - **Action:** User observes the balance area.
-- **Expected:** Total Debits shows "$0.00" and Total Credits shows "$0.00". The indicator shows "Transaction is Balanced" (since $0.00 = $0.00) or a neutral state prompting the user to add line items.
+- **Expected:** Total Debits shows "$0.00" and Total Credits shows "$0.00". The indicator shows "Transaction is Balanced" (since $0.00 = $0.00) with a green checkmark.
 
 **Test: BalanceIndicator updates when a line item row is deleted**
 - **Initial state:** The NewTransactionModal has three line items: Checking Account (Credit $1,500.00), Rent Expense (Debit $1,350.00), Utilities (Debit $150.00). Total Debits = $1,500.00, Total Credits = $1,500.00, showing "Transaction is Balanced".
