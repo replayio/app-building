@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationViewAccountIcon: Fix View Account link test entry in AccountsDistributionTable to specify link icon (matching View Lineage pattern), and add test entry for Create Batch optional properties (Location, Lot Number, Expiration Date) to exercise filling and persisting them",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T20:39:52.012Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecMaterials: Check testSpec.md directive violations in MaterialsPage test entries",
         "CheckComponentsMaterials: Check writeApp.md directive violations in MaterialsPage components",
         "CheckTestsMaterials: Check writeTests.md directive violations in MaterialsPage tests"

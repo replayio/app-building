@@ -1243,6 +1243,19 @@ Components: MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionBu
 - And: The Accounts Distribution table updates to reflect the new batch count and quantity for "Warehouse A - Main Storage"
 - And: The new batch is persisted to the database
 
+**Test: Submitting the create batch form with optional properties persists them**
+- Components: NewBatchButton, AllBatchesTable
+- Given: The create batch modal is open with material "Carbon Fiber Sheets"
+- When: The user selects "Warehouse A - Main Storage" from the Account dropdown
+- And: The user enters "150" in the Quantity field
+- And: The user enters "Bay 7" in the Location field
+- And: The user enters "LOT-2024-042" in the Lot Number field
+- And: The user enters "2025-12-31" in the Expiration Date field
+- And: The user clicks the "Create" button
+- Then: The modal closes
+- And: A new batch appears in the All Batches table with Location "Bay 7"
+- And: Navigating to the new batch's detail page shows Location "Bay 7", Lot Number "LOT-2024-042", and Expiration Date "Dec 31, 2025"
+
 **Test: Create batch modal validates that Account is required**
 - Components: NewBatchButton
 - Given: The create batch modal is open
@@ -1296,12 +1309,12 @@ Components: MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionBu
 **Test: Accounts Distribution table shows account rows with correct data**
 - Components: AccountsDistributionTable
 - Given: "Carbon Fiber Sheets" exists in "Warehouse A - Main Storage" (Storage, 1,200 sq m, 3 batches) and "Production Line B" (Manufacturing, 450 sq m, 1 batch)
-- Then: A row for "Warehouse A - Main Storage" shows Account Name "Warehouse A - Main Storage", Account Type "Storage", Quantity "1,200", Number of Batches "3", and a "View Account" link
-- And: A row for "Production Line B" shows Account Name "Production Line B", Account Type "Manufacturing", Quantity "450", Number of Batches "1", and a "View Account" link
+- Then: A row for "Warehouse A - Main Storage" shows Account Name "Warehouse A - Main Storage", Account Type "Storage", Quantity "1,200", Number of Batches "3", and a "View Account" link with a chain link icon
+- And: A row for "Production Line B" shows Account Name "Production Line B", Account Type "Manufacturing", Quantity "450", Number of Batches "1", and a "View Account" link with a chain link icon
 
 **Test: View Account link navigates to the AccountDetailPage for that account**
 - Components: AccountsDistributionTable
-- Given: The row for "Warehouse A - Main Storage" is displayed with a "View Account" link
+- Given: The row for "Warehouse A - Main Storage" is displayed with a "View Account" link with a chain link icon
 - When: The user clicks the "View Account" link on the "Warehouse A - Main Storage" row
 - Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Warehouse A - Main Storage"
 
