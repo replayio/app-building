@@ -3,11 +3,11 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecRunDetailsPage: Check testSpec.md directive violations in RunDetailsPage test entries",
-        "CheckComponentsRunDetailsPage: Check writeApp.md directive violations in RunDetailsPage components",
-        "CheckTestsRunDetailsPage: Check writeTests.md directive violations in RunDetailsPage tests"
+        "FixViolationMissingModalCancelRunDetails: Fix testSpec.md - Add test entry for AdjustQuantityModal cancel/dismiss, add data-testid to modal Cancel and X buttons in RunActions.tsx, and write test for modal dismiss",
+        "FixViolationMissingCalendarVerification: Fix writeTests.md - RUN-ACT-4 and RUN-ACT-6 tests must verify the CalendarPage shows the updated run status (Confirmed/Cancelled), not just use it as a navigation waypoint",
+        "RunTests: Verify tests pass after fixes"
       ],
-      "timestamp": "2026-02-25T15:33:03.254Z",
+      "timestamp": "2026-02-26T08:22:29.712Z",
       "app": "ProductionHub"
     },
     {
