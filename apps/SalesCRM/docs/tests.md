@@ -191,6 +191,9 @@ Given the user is on /clients, each row has a three-dot actions menu button ("..
 **Actions menu opens on click**
 Given the user is on /clients, when they click the three-dot actions menu on a client row, a dropdown menu appears with action options (e.g., Edit, Delete).
 
+**Actions menu Edit option navigates to client detail page**
+Given the user is on /clients and clicks the actions menu on a client row, when they select "Edit", the app navigates to /clients/:clientId for that client and the ClientDetailPage is displayed.
+
 **Row click navigates to ClientDetailPage**
 Given the user is on /clients, when they click on a client row (anywhere except the actions menu), the app navigates to /clients/:clientId for that client and the ClientDetailPage is displayed.
 

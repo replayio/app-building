@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMissingEditActionTestEntry: Add test entry for Edit action in actions menu specifying navigation to /clients/:clientId"
-      ],
-      "timestamp": "2026-02-26T09:24:19.549Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationAttachmentTimelineAndNotifications: Add missing timeline entry and follower notification test entries for AddAttachmentModal and attachment deletion in ClientDetailPage tests.md"
       ],
       "timestamp": "2026-02-26T09:26:44.467Z",
