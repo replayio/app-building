@@ -3,9 +3,14 @@
     {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
-        "Unpack: Polish app quality"
+        "MakeResponsiveRecipesPage: Make RecipesPage responsive",
+        "MakeResponsiveCalendarPage: Make CalendarPage responsive",
+        "MakeResponsiveRunDetailsPage: Make RunDetailsPage responsive",
+        "MakeResponsiveRecipeDetailsPage: Make RecipeDetailsPage responsive",
+        "MakeResponsiveEquipmentPage: Make EquipmentPage responsive",
+        "MakeResponsiveEquipmentDetailsPage: Make EquipmentDetailsPage responsive"
       ],
-      "timestamp": "2026-02-25T20:00:03.000Z",
+      "timestamp": "2026-02-26T04:17:10.433Z",
       "app": "ProductionHub"
     },
     {
