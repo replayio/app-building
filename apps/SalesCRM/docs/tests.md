@@ -1529,12 +1529,24 @@ Given a deal has no associated contacts/individuals, the Contacts/Individuals se
 
 ## TasksListPage (/tasks)
 
-### Components: TasksListHeader, TasksFilter, TaskCardList, CreateTaskModal
+### Components: TasksListHeader, TasksFilter, TaskCardList, CreateTaskModal, ImportDialog
 
 #### TasksListHeader
 
 **Page title displays "Upcoming Tasks"**
 Given the user navigates to /tasks, the page displays the heading "Upcoming Tasks" at the top left of the content area.
+
+**Import button is visible with icon and label**
+Given the user is on /tasks, the header area displays an "Import" button with a download/import icon and the text "Import".
+
+**Import button opens ImportDialog**
+Given the user is on /tasks, when they click the "Import" button, an ImportDialog modal opens for importing tasks from CSV.
+
+**Export button is visible with icon and label**
+Given the user is on /tasks, the header area displays an "Export" button with an export icon and the text "Export".
+
+**Export button triggers CSV download**
+Given the user is on /tasks, when they click the "Export" button, a CSV file containing the current tasks data is downloaded. The file includes columns matching the task data fields (Title, Description, Due Date, Priority, Status, Client, Assignee).
 
 **New Task button is visible with primary styling**
 Given the user is on /tasks, the header area displays a primary-styled (blue) "New Task" button at the top right of the content area.
@@ -1667,6 +1679,32 @@ Given the CreateTaskModal is open, when the user clicks submit without filling i
 
 **Modal cancel closes without saving**
 Given the CreateTaskModal is open and the user has entered some data, when they click the cancel button or close icon, the modal closes and no new task is created. The entered data is discarded.
+
+#### ImportDialog
+
+**ImportDialog opens when Import button is clicked**
+Given the user is on /tasks, when they click the "Import" button, the ImportDialog modal opens.
+
+**ImportDialog displays CSV format specification table**
+Given the ImportDialog is open for tasks, it shows a table of expected CSV columns: Title (required), Description (optional), Due Date (optional — date format YYYY-MM-DD), Priority (optional — High, Medium, Low, or Normal), Client Name (optional — must match an existing client), Assignee (optional — team member name). Each column shows whether it is required or optional and describes valid values.
+
+**ImportDialog has Download CSV template button**
+Given the ImportDialog is open, a "Download CSV template" button is visible. When clicked, it downloads a CSV file with the correct column headers pre-filled and no data rows, serving as a template for the user.
+
+**ImportDialog has file upload area**
+Given the ImportDialog is open, the dialog contains a file picker or drag-and-drop area for selecting a CSV file to upload.
+
+**ImportDialog validates uploaded CSV**
+Given the ImportDialog is open, when the user uploads a CSV file with missing required columns (e.g., no Title column), the dialog displays validation error messages indicating which required columns are missing.
+
+**ImportDialog shows per-row validation errors**
+Given the ImportDialog is open, when the user uploads a CSV file where some rows have invalid data (e.g., missing Title or an unrecognized Priority value), the dialog displays per-row error messages indicating which rows failed and why, allowing the user to fix the file and re-upload.
+
+**ImportDialog successfully imports valid CSV**
+Given the ImportDialog is open and the user uploads a valid CSV file with properly formatted task data, the import processes successfully, the dialog shows a success message with the count of imported tasks, and the task list updates to include the newly imported tasks.
+
+**ImportDialog cancel closes without importing**
+Given the ImportDialog is open, when the user clicks the cancel button or close icon, the dialog closes and no data is imported.
 
 ---
 

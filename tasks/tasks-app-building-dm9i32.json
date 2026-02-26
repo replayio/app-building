@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationTasksListImportExportTestEntries: Add missing test entries in docs/tests.md for Import button, Export button, and ImportDialog format specification in TasksListHeader. The Import/Export buttons exist in code but have no test entries. The ImportDialog defines columns (Title, Description, Due Date, Priority, Client Name, Assignee) but no test entry verifies format docs are visible.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T09:59:23.157Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationTasksListMarkCompleteTimeline: Add missing test entry in docs/tests.md for the Mark Complete action's timeline side effect. The backend (netlify/functions/tasks.ts:287-293) creates a 'Task Completed' timeline event on the associated client when Mark Complete is used, but the test entry only mentions removal from the list. The testSpec directive requires side effects to be tested.",
         "RunTests: Verify tests pass after fix"
       ],
