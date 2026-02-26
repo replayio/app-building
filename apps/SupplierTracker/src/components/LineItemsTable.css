@@ -8,9 +8,46 @@
   max-width: 560px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1024px) {
   .data-table.line-items-table th:nth-child(1),
   .data-table.line-items-table td:nth-child(1) {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .data-table.line-items-table th:nth-child(4),
+  .data-table.line-items-table td:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .data-table.line-items-table thead {
+    display: none;
+  }
+
+  .data-table.line-items-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+    align-items: center;
+  }
+
+  .data-table.line-items-table td {
+    border-bottom: none;
+    padding: 2px 0;
+  }
+
+  .data-table.line-items-table td:nth-child(1),
+  .data-table.line-items-table td:nth-child(4) {
+    display: none;
+  }
+
+  .data-table.line-items-table td:nth-child(2) {
+    font-weight: 600;
+    flex: 1;
   }
 }

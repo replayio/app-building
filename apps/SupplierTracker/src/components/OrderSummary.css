@@ -90,3 +90,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .order-summary-subtitle {
+    font-size: 12px;
+  }
+
+  .order-summary-field-value--large {
+    font-size: 16px;
+  }
+}

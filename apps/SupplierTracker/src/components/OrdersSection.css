@@ -21,6 +21,13 @@
   max-width: 280px;
 }
 
+@media (max-width: 768px) {
+  .orders-section .data-table th:nth-child(4),
+  .orders-section .data-table td:nth-child(4) {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .orders-section-controls {
     flex-direction: column;
@@ -29,5 +36,33 @@
 
   .orders-search {
     max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-section .data-table thead {
+    display: none;
+  }
+
+  .orders-section .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+  }
+
+  .orders-section .data-table td {
+    border-bottom: none;
+    padding: 2px 0;
+  }
+
+  .orders-section .data-table td:nth-child(1) {
+    font-weight: 600;
+    width: 100%;
+  }
+
+  .orders-section .data-table td:nth-child(4) {
+    display: block;
   }
 }

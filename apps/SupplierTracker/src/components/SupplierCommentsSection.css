@@ -68,3 +68,13 @@
   color: var(--text-primary);
   line-height: 1.5;
 }
+
+@media (max-width: 640px) {
+  .supplier-comments-input-row {
+    flex-direction: column;
+  }
+
+  .supplier-comments-title {
+    font-size: 14px;
+  }
+}

@@ -168,3 +168,17 @@
 .searchable-select-option:hover {
   background: rgba(50, 45, 35, 0.05);
 }
+
+@media (max-width: 640px) {
+  .quick-actions-buttons {
+    flex-direction: column;
+  }
+
+  .quick-actions-title {
+    font-size: 16px;
+  }
+
+  .line-item-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

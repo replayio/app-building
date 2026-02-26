@@ -29,7 +29,7 @@ export function LineItemsTable({ lineItems, onAdd, onEdit, onDelete }: LineItems
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
-          Add Item
+          <span className="btn-label">Add Item</span>
         </button>
       </div>
       <div className="section-card-body" style={{ padding: 0 }}>

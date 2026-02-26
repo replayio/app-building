@@ -1,6 +1,6 @@
 ## Polish
 
-### Responsive UI
-- [ ] DashboardPage
-- [ ] SupplierDetailsPage
-- [ ] OrderDetailsPage
+### Responsive UI ✓
+- [x] DashboardPage
+- [x] SupplierDetailsPage
+- [x] OrderDetailsPage

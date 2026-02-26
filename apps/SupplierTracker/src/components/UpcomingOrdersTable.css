@@ -41,3 +41,46 @@
 .order-id-link:hover {
   color: var(--accent-dark);
 }
+
+@media (max-width: 1024px) {
+  .upcoming-orders .data-table th:nth-child(3),
+  .upcoming-orders .data-table td:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .upcoming-orders .data-table th:nth-child(5),
+  .upcoming-orders .data-table td:nth-child(5) {
+    display: none;
+  }
+
+  .upcoming-orders-filters {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .upcoming-orders .data-table thead {
+    display: none;
+  }
+
+  .upcoming-orders .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+    gap: 4px 12px;
+  }
+
+  .upcoming-orders .data-table td {
+    border-bottom: none;
+    padding: 2px 0;
+    font-size: 13px;
+  }
+
+  .upcoming-orders .data-table td:nth-child(1) {
+    font-weight: 600;
+    width: 100%;
+  }
+}

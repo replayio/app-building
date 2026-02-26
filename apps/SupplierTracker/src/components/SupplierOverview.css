@@ -53,3 +53,10 @@
     gap: 6px;
   }
 }
+
+@media (max-width: 640px) {
+  .supplier-status-indicator {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+}

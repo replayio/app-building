@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveDashboardPage: Make DashboardPage responsive",
-        "MakeResponsiveSupplierDetailsPage: Make SupplierDetailsPage responsive",
-        "MakeResponsiveOrderDetailsPage: Make OrderDetailsPage responsive"
-      ],
-      "timestamp": "2026-02-26T04:49:18.207Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"
