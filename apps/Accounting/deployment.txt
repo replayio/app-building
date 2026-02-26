@@ -1,4 +1,17 @@
-url=https://699f1869ae585d9db1d3a63a--accounting-1771965127796.netlify.app
+url=https://69a08f0d898da147b0e850ee--accounting-1771965127796.netlify.app
 site_id=807cbf1f-8855-4465-b15e-20f45905c93b
 neon_project_id=plain-paper-53653927
 database_url=postgresql://neondb_owner:npg_qrlAGy29bSMV@ep-snowy-bonus-ak5zq0uu.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require
+
+--- Deployment 2026-02-26 ---
+Changes:
+- Fixed NavBar missing Transactions link
+- Fixed BudgetDetailsTab empty state test entry
+- Fixed NewTransactionModal component and test spec violations
+- Fixed CreateReportDialog ambiguous navigation test spec
+- Fixed ReportTable report type labels mismatch
+- Fixed ReportList page title, breadcrumb, and test spec violations
+- Added comprehensive tests for AccountHeader, NewTransactionModal, TransactionHeaderFields, LineItemsTable, BalanceIndicator, TagsInput components
+- Fixed AccountDetailPage View/Edit test spec violations
+- Added test entries for AccountCard three-dot menu
+Replay recording: 92fedbd0-856b-43ee-b070-fc5f59ff5834
