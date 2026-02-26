@@ -90,7 +90,7 @@ export function ClientDetailPage() {
         <div className="client-detail-sections">
           <TasksSection tasks={tasks} clientId={client.id} />
           <DealsSection deals={deals} />
-          <AttachmentsSection attachments={attachments} />
+          <AttachmentsSection attachments={attachments} clientId={client.id} />
           <PeopleSection people={people} />
         </div>
 

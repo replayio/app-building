@@ -9,6 +9,8 @@ export interface NotificationPreferences {
   taskCanceled: boolean;
   contactAdded: boolean;
   noteAdded: boolean;
+  attachmentAdded: boolean;
+  attachmentDeleted: boolean;
 }
 
 export interface Webhook {
@@ -38,6 +40,8 @@ const defaultPreferences: NotificationPreferences = {
   taskCanceled: true,
   contactAdded: true,
   noteAdded: true,
+  attachmentAdded: true,
+  attachmentDeleted: true,
 };
 
 const initialState: SettingsState = {

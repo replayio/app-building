@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
-import { deleteAttachment, type AttachmentItem } from "../clientDetailSlice";
+import { deleteAttachment, fetchTimeline, type AttachmentItem } from "../clientDetailSlice";
 import { ConfirmDialog } from "@shared/components/ConfirmDialog";
 
 interface AttachmentsSectionProps {
   attachments: AttachmentItem[];
+  clientId: string;
 }
 
 function getFileIcon(fileType: string | null): React.ReactElement {
@@ -73,13 +74,14 @@ function isImageFile(fileType: string | null): boolean {
   return fileType === "image";
 }
 
-export function AttachmentsSection({ attachments }: AttachmentsSectionProps) {
+export function AttachmentsSection({ attachments, clientId }: AttachmentsSectionProps) {
   const dispatch = useAppDispatch();
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
     await dispatch(deleteAttachment(deleteTarget)).unwrap();
+    dispatch(fetchTimeline(clientId));
     setDeleteTarget(null);
   };
 

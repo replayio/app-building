@@ -1,7 +1,10 @@
 import { getDb, query, queryOne, jsonResponse, errorResponse } from "@shared/backend/db";
+import { withAuth } from "@shared/backend/auth-middleware";
 import { UTApi } from "uploadthing/server";
 
-export default async function handler(req: Request): Promise<Response> {
+async function handler(authReq: { req: Request; user: { id: string; name: string; email: string } | null }): Promise<Response> {
+  const { req, user } = authReq;
+
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -120,6 +123,42 @@ export default async function handler(req: Request): Promise<Response> {
       );
 
       const a = created[0];
+      const actor = user ? user.name : "System";
+
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [clientId, "Attachment Added", `Attachment Added: '${filename}'`, "attachment", a.id, actor]
+      );
+
+      // Send follower notifications for attachment added
+      try {
+        const followers = await query<{ user_id: string; email: string; name: string }>(
+          sql,
+          `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+           JOIN users u ON u.id = cf.user_id
+           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+           WHERE cf.client_id = $1 AND (np.attachment_added IS NULL OR np.attachment_added = true)`,
+          [clientId]
+        );
+
+        const actorId = user ? user.id : null;
+        for (const f of followers) {
+          if (f.user_id !== actorId) {
+            await query(
+              sql,
+              `INSERT INTO email_tokens (email, token, type)
+               VALUES ($1, $2, 'notification')
+               ON CONFLICT DO NOTHING`,
+              [f.email, `attachment-added-${a.id}-${Date.now()}-${f.user_id}`]
+            );
+          }
+        }
+      } catch {
+        // Notification failure shouldn't block the upload
+      }
+
       return jsonResponse(
         {
           id: a.id,
@@ -175,6 +214,42 @@ export default async function handler(req: Request): Promise<Response> {
       );
 
       const a = created[0];
+      const actor = user ? user.name : "System";
+
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [body.clientId, "Attachment Added", `Attachment Added: '${filename}'`, "attachment", a.id, actor]
+      );
+
+      // Send follower notifications for attachment added
+      try {
+        const followers = await query<{ user_id: string; email: string; name: string }>(
+          sql,
+          `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+           JOIN users u ON u.id = cf.user_id
+           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+           WHERE cf.client_id = $1 AND (np.attachment_added IS NULL OR np.attachment_added = true)`,
+          [body.clientId]
+        );
+
+        const actorId = user ? user.id : null;
+        for (const f of followers) {
+          if (f.user_id !== actorId) {
+            await query(
+              sql,
+              `INSERT INTO email_tokens (email, token, type)
+               VALUES ($1, $2, 'notification')
+               ON CONFLICT DO NOTHING`,
+              [f.email, `attachment-added-${a.id}-${Date.now()}-${f.user_id}`]
+            );
+          }
+        }
+      } catch {
+        // Notification failure shouldn't block the creation
+      }
+
       return jsonResponse(
         {
           id: a.id,
@@ -194,9 +269,9 @@ export default async function handler(req: Request): Promise<Response> {
 
   // DELETE /.netlify/functions/attachments/<id>
   if (req.method === "DELETE" && subPath) {
-    const existing = await queryOne<{ id: string }>(
+    const existing = await queryOne<{ id: string; filename: string; client_id: string | null }>(
       sql,
-      "SELECT id FROM attachments WHERE id = $1",
+      "SELECT id, filename, client_id FROM attachments WHERE id = $1",
       [subPath]
     );
     if (!existing) {
@@ -204,6 +279,45 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     await query(sql, "DELETE FROM attachments WHERE id = $1", [subPath]);
+
+    // Create timeline entry for deletion
+    if (existing.client_id) {
+      const actor = user ? user.name : "System";
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [existing.client_id, "Attachment Deleted", `Attachment Deleted: '${existing.filename}'`, "attachment", subPath, actor]
+      );
+
+      // Send follower notifications for attachment deleted
+      try {
+        const followers = await query<{ user_id: string; email: string; name: string }>(
+          sql,
+          `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+           JOIN users u ON u.id = cf.user_id
+           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+           WHERE cf.client_id = $1 AND (np.attachment_deleted IS NULL OR np.attachment_deleted = true)`,
+          [existing.client_id]
+        );
+
+        const actorId = user ? user.id : null;
+        for (const f of followers) {
+          if (f.user_id !== actorId) {
+            await query(
+              sql,
+              `INSERT INTO email_tokens (email, token, type)
+               VALUES ($1, $2, 'notification')
+               ON CONFLICT DO NOTHING`,
+              [f.email, `attachment-deleted-${subPath}-${Date.now()}-${f.user_id}`]
+            );
+          }
+        }
+      } catch {
+        // Notification failure shouldn't block the deletion
+      }
+    }
+
     return jsonResponse({ success: true });
   }
 
@@ -221,3 +335,5 @@ function getFileCategory(filename: string): string {
   if (["mp3", "wav", "ogg", "flac"].includes(ext)) return "audio";
   return "document";
 }
+
+export default withAuth(handler);

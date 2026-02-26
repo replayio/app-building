@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useAppDispatch } from "../hooks";
-import { createAttachmentLink, uploadAttachmentFile, type DealItem } from "../clientDetailSlice";
+import { createAttachmentLink, uploadAttachmentFile, fetchTimeline, type DealItem } from "../clientDetailSlice";
 import { FilterSelect } from "@shared/components/FilterSelect";
 
 interface AddAttachmentModalProps {
@@ -41,6 +41,7 @@ export function AddAttachmentModal({ open, onClose, clientId, deals }: AddAttach
             dealId: dealId || undefined,
           })
         ).unwrap();
+        dispatch(fetchTimeline(clientId));
         resetAndClose();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to upload file");
@@ -63,6 +64,7 @@ export function AddAttachmentModal({ open, onClose, clientId, deals }: AddAttach
             dealId: dealId || undefined,
           })
         ).unwrap();
+        dispatch(fetchTimeline(clientId));
         resetAndClose();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to create link");

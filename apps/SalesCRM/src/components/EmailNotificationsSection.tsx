@@ -15,6 +15,8 @@ const PREFERENCE_TOGGLES: { key: keyof NotificationPreferences; label: string }[
   { key: "taskCanceled", label: "Task Canceled" },
   { key: "contactAdded", label: "Contact Added" },
   { key: "noteAdded", label: "Note Added" },
+  { key: "attachmentAdded", label: "Attachment Added" },
+  { key: "attachmentDeleted", label: "Attachment Deleted" },
 ];
 
 export function EmailNotificationsSection() {

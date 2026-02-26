@@ -252,6 +252,8 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       task_canceled BOOLEAN NOT NULL DEFAULT true,
       contact_added BOOLEAN NOT NULL DEFAULT true,
       note_added BOOLEAN NOT NULL DEFAULT true,
+      attachment_added BOOLEAN NOT NULL DEFAULT true,
+      attachment_deleted BOOLEAN NOT NULL DEFAULT true,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
@@ -367,6 +369,8 @@ export async function initSchema(databaseUrl: string): Promise<void> {
 
   // Notification Preferences
   await sql`ALTER TABLE notification_preferences ADD COLUMN IF NOT EXISTS task_canceled BOOLEAN NOT NULL DEFAULT true`;
+  await sql`ALTER TABLE notification_preferences ADD COLUMN IF NOT EXISTS attachment_added BOOLEAN NOT NULL DEFAULT true`;
+  await sql`ALTER TABLE notification_preferences ADD COLUMN IF NOT EXISTS attachment_deleted BOOLEAN NOT NULL DEFAULT true`;
 
   // Webhooks
   await sql`ALTER TABLE webhooks ADD COLUMN IF NOT EXISTS platform VARCHAR(50) NOT NULL DEFAULT 'custom'`;

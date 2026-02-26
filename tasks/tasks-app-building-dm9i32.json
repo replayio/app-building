@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationAttachmentTimelineAndNotifications: Add missing timeline entry and follower notification test entries for AddAttachmentModal and attachment deletion in ClientDetailPage tests.md"
-      ],
-      "timestamp": "2026-02-26T09:26:44.467Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationNativeSelectClientHeader: Replace native <select> elements in ClientHeader edit modal (Type and Status) with FilterSelect components"
       ],
       "timestamp": "2026-02-26T09:28:16.520Z",

@@ -505,6 +505,12 @@ Given any attachment is displayed, a trash/delete icon button is visible in the 
 **Clicking delete removes the attachment after confirmation**
 Given the user clicks the delete button on an attachment, a confirmation dialog appears. When the user confirms, the attachment is deleted from the database and removed from the list. If the user cancels, the attachment remains.
 
+**Deleting an attachment creates a timeline entry**
+Given the user deletes an attachment via the delete button and confirms, an "Attachment Deleted" timeline entry is created recording the attachment name, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Deleting an attachment triggers follower notifications**
+Given the user deletes an attachment on a client that has followers, email notifications are sent to followers who have "attachment deleted" notifications enabled (excluding the actor).
+
 **Empty state when no attachments exist**
 Given the client has no attachments, the Attachments section displays an empty state message (e.g., "No attachments").
 
@@ -673,6 +679,12 @@ Given the AddAttachmentModal is in link URL mode, when the user clicks submit wi
 
 **Modal cancel closes without saving**
 Given the AddAttachmentModal is open and the user has entered data or selected a file, when they click cancel or the close icon, the modal closes and no attachment is created.
+
+**Attachment creation generates a timeline entry**
+Given the user creates a new attachment via AddAttachmentModal (either file upload or link URL mode), an "Attachment Added" timeline entry is added to the TimelineSection with the attachment name, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Attachment creation triggers follower notifications**
+Given the user creates a new attachment on a client that has followers, email notifications are sent to followers who have "attachment added" notifications enabled (excluding the actor).
 
 #### AddPersonModal
 
