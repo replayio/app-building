@@ -175,4 +175,140 @@ test.describe("LineItemsTable", () => {
     await expect(page.getByTestId("total-debits")).toContainText("$1,350.00");
     await expect(page.getByTestId("total-credits")).toContainText("$1,500.00");
   });
+
+  test("LineItemsTable Add Line Item button adds new row", async ({ page }) => {
+    await openNewTransactionModal(page);
+
+    // Verify the modal starts with two line item rows
+    await expect(page.locator("[data-testid^='line-item-row-']")).toHaveCount(2);
+
+    // Click the "+ Add Line Item" button
+    const addBtn = page.getByTestId("add-line-item-btn");
+    await expect(addBtn).toBeVisible();
+    await addBtn.click();
+
+    // Verify a new third row is appended
+    await expect(page.locator("[data-testid^='line-item-row-']")).toHaveCount(3);
+    const newRow = page.getByTestId("line-item-row-2");
+    await expect(newRow).toBeVisible();
+
+    // Verify the new row has an empty Account dropdown with "Select Account" placeholder
+    const accountInput = page.getByTestId("line-item-account-2");
+    await expect(accountInput).toBeVisible();
+    await expect(accountInput).toHaveValue("");
+    await expect(accountInput).toHaveAttribute("placeholder", "Select Account");
+
+    // Verify the new row has Type dropdown defaulted to "Debit"
+    const typeInput = page.getByTestId("line-item-type-2");
+    await expect(typeInput).toBeVisible();
+    await expect(typeInput).toHaveValue("Debit");
+
+    // Verify the new row has an empty Amount field
+    const amountInput = page.getByTestId("line-item-amount-2");
+    await expect(amountInput).toBeVisible();
+    await expect(amountInput).toHaveValue("");
+
+    // Verify the new row has a trash icon delete button
+    const deleteBtn = page.getByTestId("line-item-delete-2");
+    await expect(deleteBtn).toBeVisible();
+
+    // Verify the "+ Add Line Item" button displays a plus icon (svg) followed by the text "Add Line Item"
+    await expect(addBtn).toContainText("Add Line Item");
+    const plusIcon = addBtn.locator("svg");
+    await expect(plusIcon).toBeVisible();
+  });
+
+  test("LineItemsTable supports multiple line items for multi-account transactions", async ({ page }) => {
+    await openNewTransactionModal(page);
+
+    // Modal starts with 2 empty rows; add a third row
+    await expect(page.locator("[data-testid^='line-item-row-']")).toHaveCount(2);
+    await page.getByTestId("add-line-item-btn").click();
+    await expect(page.locator("[data-testid^='line-item-row-']")).toHaveCount(3);
+
+    // Row 0: Checking Account / Credit / 1500.00
+    const accountInput0 = page.getByTestId("line-item-account-0");
+    await accountInput0.click();
+    await accountInput0.fill("Checking");
+    await page.locator(".searchable-select-option").filter({ hasText: "Checking Account" }).first().click();
+
+    // Default row 0 type is "Debit" — change to "Credit"
+    const typeInput0 = page.getByTestId("line-item-type-0");
+    await typeInput0.click();
+    await page.getByTestId("line-item-row-0").locator(".searchable-select-option").filter({ hasText: "Credit" }).click();
+
+    await page.getByTestId("line-item-amount-0").fill("1500");
+
+    // Row 1: Operating Expenses / Debit / 1350.00
+    const accountInput1 = page.getByTestId("line-item-account-1");
+    await accountInput1.click();
+    await accountInput1.fill("Operating");
+    await page.locator(".searchable-select-option").filter({ hasText: "Operating Expenses" }).first().click();
+
+    // Default row 1 type is "Credit" — change to "Debit"
+    const typeInput1 = page.getByTestId("line-item-type-1");
+    await typeInput1.click();
+    await page.getByTestId("line-item-row-1").locator(".searchable-select-option").filter({ hasText: "Debit" }).click();
+
+    await page.getByTestId("line-item-amount-1").fill("1350");
+
+    // Row 2: Payroll Expenses / Debit / 150.00
+    const accountInput2 = page.getByTestId("line-item-account-2");
+    await accountInput2.click();
+    await accountInput2.fill("Payroll");
+    await page.locator(".searchable-select-option").filter({ hasText: "Payroll Expenses" }).first().click();
+
+    // Row 2 defaults to "Debit" — already correct
+    await page.getByTestId("line-item-amount-2").fill("150");
+
+    // Verify all three rows are displayed with correct values
+    await expect(page.getByTestId("line-item-account-0")).toHaveValue(/Checking Account/);
+    await expect(page.getByTestId("line-item-type-0")).toHaveValue("Credit");
+    await expect(page.getByTestId("line-item-amount-0")).toHaveValue("1500");
+
+    await expect(page.getByTestId("line-item-account-1")).toHaveValue(/Operating Expenses/);
+    await expect(page.getByTestId("line-item-type-1")).toHaveValue("Debit");
+    await expect(page.getByTestId("line-item-amount-1")).toHaveValue("1350");
+
+    await expect(page.getByTestId("line-item-account-2")).toHaveValue(/Payroll Expenses/);
+    await expect(page.getByTestId("line-item-type-2")).toHaveValue("Debit");
+    await expect(page.getByTestId("line-item-amount-2")).toHaveValue("150");
+
+    // Verify the BalanceIndicator shows correct totals (Debits: 1350+150=1500, Credits: 1500)
+    await expect(page.getByTestId("total-debits")).toContainText("$1,500.00");
+    await expect(page.getByTestId("total-credits")).toContainText("$1,500.00");
+  });
+
+  test("LineItemsTable initial state for new transaction has two empty rows", async ({ page }) => {
+    await openNewTransactionModal(page);
+
+    // Verify the table starts with exactly two line item rows
+    await expect(page.locator("[data-testid^='line-item-row-']")).toHaveCount(2);
+
+    // Verify row 0 is empty
+    const accountInput0 = page.getByTestId("line-item-account-0");
+    await expect(accountInput0).toBeVisible();
+    await expect(accountInput0).toHaveValue("");
+    await expect(accountInput0).toHaveAttribute("placeholder", "Select Account");
+
+    const typeInput0 = page.getByTestId("line-item-type-0");
+    await expect(typeInput0).toBeVisible();
+
+    const amountInput0 = page.getByTestId("line-item-amount-0");
+    await expect(amountInput0).toBeVisible();
+    await expect(amountInput0).toHaveValue("");
+
+    // Verify row 1 is empty
+    const accountInput1 = page.getByTestId("line-item-account-1");
+    await expect(accountInput1).toBeVisible();
+    await expect(accountInput1).toHaveValue("");
+    await expect(accountInput1).toHaveAttribute("placeholder", "Select Account");
+
+    const typeInput1 = page.getByTestId("line-item-type-1");
+    await expect(typeInput1).toBeVisible();
+
+    const amountInput1 = page.getByTestId("line-item-amount-1");
+    await expect(amountInput1).toBeVisible();
+    await expect(amountInput1).toHaveValue("");
+  });
 });

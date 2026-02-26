@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestLineItemsAddBtn: Write test for LineItemsTable Add Line Item button adds new row",
-        "WriteTestLineItemsMultiple: Write test for LineItemsTable supports multiple line items for multi-account transactions",
-        "WriteTestLineItemsInitial: Write test for LineItemsTable initial state for new transaction has two empty rows"
-      ],
-      "timestamp": "2026-02-26T05:32:14.905Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestBalanceDebits: Write test for BalanceIndicator displays Total Debits sum",
         "WriteTestBalanceCredits: Write test for BalanceIndicator displays Total Credits sum",
         "WriteTestBalanceBalanced: Write test for BalanceIndicator shows balanced state when debits equal credits",
