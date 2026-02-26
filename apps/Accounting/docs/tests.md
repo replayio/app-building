@@ -1130,12 +1130,12 @@
 **Test: ReportListHeader displays page title**
 - **Initial state:** User navigates to the ReportList page.
 - **Action:** User observes the header area at the top of the page content.
-- **Expected:** The heading "ReportList" is displayed prominently as the page title.
+- **Expected:** The heading "Reports" is displayed prominently as the page title.
 
 **Test: ReportListHeader displays breadcrumb navigation**
 - **Initial state:** User is on the ReportList page.
 - **Action:** User observes the breadcrumb area above the page title.
-- **Expected:** A breadcrumb trail is shown (e.g., "Page / reports") providing navigation context. Clicking the "Page" breadcrumb segment navigates back to the home/dashboard page.
+- **Expected:** A breadcrumb trail is shown (e.g., "Home > Reports") providing navigation context. Clicking the "Home" breadcrumb segment navigates back to the home/dashboard page.
 
 **Test: ReportListHeader displays search bar with search icon**
 - **Initial state:** User is on the ReportList page.

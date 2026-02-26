@@ -20,13 +20,13 @@ export function ReportListHeader({
       <div className="report-list-header" data-testid="report-list-header">
         <Breadcrumb
           items={[
-            { label: "Page", onClick: () => navigate("/") },
-            { label: "reports" },
+            { label: "Home", onClick: () => navigate("/") },
+            { label: "Reports" },
           ]}
         />
         <div className="report-list-header-row">
           <h1 className="page-title" data-testid="report-list-title">
-            ReportList
+            Reports
           </h1>
           <div className="report-list-header-actions">
             <div className="report-list-search" data-testid="report-list-search">
