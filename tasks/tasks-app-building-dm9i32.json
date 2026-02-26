@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationModalAbstraction: Extract inline Edit Account modal JSX from AccountDetailPage.tsx (lines 113-209) into a separate EditAccountModal component file, per writeApp.md guideline that all JSX rendered on a page must be abstracted into React components with their own files",
-        "RunTests: Verify tests pass after modal abstraction"
-      ],
-      "timestamp": "2026-02-26T06:33:25.572Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationTypeLabels: Fix account type labels to match mockup - typeLabel returns Stock/Input/Output but mockup shows Inventory Account for stock accounts. Update typeLabel in AccountHeader.tsx and AccountDetailPage.tsx to match AppSpec types (inventory/consumer/producer/custom), fix inconsistent test entries in tests.md (line 537 says Inventory Account but line 550 says Stock), and deduplicate the typeLabel function into a shared utility",
         "RunTests: Verify tests pass after type label fix"
       ],
