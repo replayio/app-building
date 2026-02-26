@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecUserDetailPage: Check testSpec.md directive violations in UserDetailPage test entries",
-        "CheckComponentsUserDetailPage: Check writeApp.md directive violations in UserDetailPage components",
-        "CheckTestsUserDetailPage: Check writeTests.md directive violations in UserDetailPage tests"
-      ],
-      "timestamp": "2026-02-25T15:33:34.320Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecForgotPasswordPage: Check testSpec.md directive violations in ForgotPasswordPage test entries",
         "CheckComponentsForgotPasswordPage: Check writeApp.md directive violations in ForgotPasswordPage components",
         "CheckTestsForgotPasswordPage: Check writeTests.md directive violations in ForgotPasswordPage tests"
