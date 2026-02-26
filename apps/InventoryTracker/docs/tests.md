@@ -255,7 +255,7 @@ Components: NavigationHeader, StockAccountsList, InputAccountsList, OutputAccoun
 **Test: NavigationHeader displays navigation links with Accounts link active**
 - Components: NavigationHeader
 - Given: The user navigates to the Accounts page (/accounts)
-- Then: The navigation header displays navigation links: Dashboard, Inventory (expandable), Orders, Accounts, Reports, Settings
+- Then: The navigation header displays navigation links: Accounts, Materials, Batches, Transactions, Settings
 - And: The "Accounts" link is visually highlighted as active
 
 **Test: Breadcrumb displays Home / Accounts**
