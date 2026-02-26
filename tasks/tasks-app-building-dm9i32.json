@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationComponentMisattribution: Fix testSpec.md - Correct component attributions for page-level test entries on TransactionsPage (page heading and filters label attributed to NewTransactionButton instead of page-level component; breadcrumb and sidebar active attributed to TransactionsTable instead of NavigationHeader/Breadcrumb)",
-        "FixViolationSidebarNaming: Fix testSpec.md - Rename 'Sidebar shows Transactions link as active' to use consistent NavigationHeader terminology across all page test entries that reference sidebar"
-      ],
-      "timestamp": "2026-02-26T07:33:18.240Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTransactionDetailPage: Check testSpec.md directive violations in TransactionDetailPage test entries",
         "CheckComponentsTransactionDetailPage: Check writeApp.md directive violations in TransactionDetailPage components",
         "CheckTestsTransactionDetailPage: Check writeTests.md directive violations in TransactionDetailPage tests"

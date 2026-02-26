@@ -248,18 +248,18 @@ Components: NavigationHeader, DateRangeFilter, CategoryFilter, LowInventoryAlert
 
 ## AccountsPage (/accounts)
 
-Components: SidebarNavigation, StockAccountsList, InputAccountsList, OutputAccountsList, CreateAccountButton, AccountRowActions
+Components: NavigationHeader, StockAccountsList, InputAccountsList, OutputAccountsList, CreateAccountButton, AccountRowActions
 
-### SidebarNavigation
+### NavigationHeader
 
-**Test: Sidebar displays navigation links with Accounts link active**
-- Components: SidebarNavigation
+**Test: NavigationHeader displays navigation links with Accounts link active**
+- Components: NavigationHeader
 - Given: The user navigates to the Accounts page (/accounts)
-- Then: The sidebar displays navigation links: Dashboard, Inventory (expandable), Orders, Accounts, Reports, Settings
+- Then: The navigation header displays navigation links: Dashboard, Inventory (expandable), Orders, Accounts, Reports, Settings
 - And: The "Accounts" link is visually highlighted as active
 
 **Test: Breadcrumb displays Home / Accounts**
-- Components: SidebarNavigation
+- Components: NavigationHeader
 - Given: The user is on the Accounts page
 - Then: A breadcrumb trail "Home / Accounts" is displayed below the page header
 - And: "Home" is a clickable link that navigates to the Dashboard (/)
@@ -562,10 +562,10 @@ Components: AccountHeader, EditAccountButton, NewTransactionButton, TrackedMater
 - And: "Home" is a clickable link that navigates to the Dashboard (/)
 - And: "Accounts" is a clickable link that navigates to /accounts (AccountsPage)
 
-**Test: Sidebar shows Accounts link as active on Account Detail page**
+**Test: NavigationHeader shows Accounts link as active on Account Detail page**
 - Components: AccountHeader
 - Given: The user navigates to the Account Detail page
-- Then: The sidebar "Accounts" link is visually highlighted as the active page
+- Then: The NavigationHeader "Accounts" link is visually highlighted as the active page
 
 ### EditAccountButton
 
@@ -815,10 +815,10 @@ Components: NewMaterialButton, NewCategoryButton, SearchBar, CategoryFilter, Acc
 - Then: A breadcrumb trail "Home > Materials" is displayed below the page heading
 - And: "Home" is a clickable link that navigates to the Dashboard (/)
 
-**Test: Sidebar shows Materials link as active**
+**Test: NavigationHeader shows Materials link as active**
 - Components: MaterialsTable
 - Given: The user navigates to the Materials page
-- Then: The sidebar "Materials" link is visually highlighted as the active page
+- Then: The NavigationHeader "Materials" link is visually highlighted as the active page
 
 **Test: Materials table displays correct column headers**
 - Components: MaterialsTable
@@ -1150,10 +1150,10 @@ Components: MaterialHeader, EditMaterialButton, NewBatchButton, NewTransactionBu
 - And: "Home" is a clickable link that navigates to the Dashboard (/)
 - And: "Materials" is a clickable link that navigates to /materials (MaterialsPage)
 
-**Test: Sidebar shows Materials link as active on Material Detail page**
+**Test: NavigationHeader shows Materials link as active on Material Detail page**
 - Components: MaterialHeader
 - Given: The user navigates to the Material Detail page
-- Then: The sidebar "Materials" link is visually highlighted as the active page
+- Then: The NavigationHeader "Materials" link is visually highlighted as the active page
 
 ### EditMaterialButton
 
@@ -1602,10 +1602,10 @@ Components: BatchHeader, BatchOverview, LineageSection, UsageHistoryTable
 - When: The user clicks on "Global Imports Inc." in the header
 - Then: The app navigates to /accounts/:accountId (AccountDetailPage) for "Global Imports Inc."
 
-**Test: Sidebar shows Batches link as active on Batch Detail page**
+**Test: NavigationHeader shows Batches link as active on Batch Detail page**
 - Components: BatchHeader
 - Given: The user navigates to the Batch Detail page
-- Then: The sidebar "Batches" link is visually highlighted as the active page
+- Then: The NavigationHeader "Batches" link is visually highlighted as the active page
 
 **Test: Breadcrumb displays navigation path to batch**
 - Components: BatchHeader
@@ -1848,20 +1848,35 @@ Components: BatchHeader, BatchOverview, LineageSection, UsageHistoryTable
 
 ## TransactionsPage (/transactions)
 
-Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar, TransactionsTable, Pagination
+Components: NavigationHeader, TransactionsPageHeader, NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar, TransactionsTable, Pagination
 
-### NewTransactionButton
+### NavigationHeader
+
+**Test: Breadcrumb displays Home / Transactions**
+- Components: NavigationHeader
+- Given: The user navigates to the Transactions page
+- Then: A breadcrumb trail "Home / Transactions" is displayed at the top of the page
+- And: "Home" is a clickable link that navigates to the Dashboard (/)
+
+**Test: NavigationHeader shows Transactions link as active**
+- Components: NavigationHeader
+- Given: The user navigates to the Transactions page
+- Then: The navigation "Transactions" link is visually highlighted as the active page
+
+### TransactionsPageHeader
 
 **Test: Page heading displays "Transactions" as a prominent title**
-- Components: NewTransactionButton
+- Components: TransactionsPageHeader
 - Given: The user navigates to the Transactions page (/transactions)
 - Then: A large heading "Transactions" is displayed below the breadcrumb and above the filter bar
 
 **Test: Filters section displays "Filters" label with "Clear Filters" link**
-- Components: NewTransactionButton
+- Components: TransactionsPageHeader
 - Given: The user navigates to the Transactions page
 - Then: A "Filters" label is displayed above the filter controls
 - And: A "Clear Filters" link is displayed to the right of the "Filters" label
+
+### NewTransactionButton
 
 **Test: New Transaction button is displayed as primary action with correct styling**
 - Components: NewTransactionButton
@@ -2068,17 +2083,6 @@ Components: NewTransactionButton, DateRangeFilter, AccountFilter, MaterialFilter
 - And: The pagination updates to reflect the filtered count
 
 ### TransactionsTable
-
-**Test: Breadcrumb displays Home / Transactions**
-- Components: TransactionsTable
-- Given: The user navigates to the Transactions page
-- Then: A breadcrumb trail "Home / Transactions" is displayed at the top of the page
-- And: "Home" is a clickable link that navigates to the Dashboard (/)
-
-**Test: Sidebar shows Transactions link as active**
-- Components: TransactionsTable
-- Given: The user navigates to the Transactions page
-- Then: The navigation "Transactions" link is visually highlighted as the active page
 
 **Test: Sort dropdown displays with "Sort by: Date (Newest First)" as default**
 - Components: TransactionsTable
@@ -2333,10 +2337,10 @@ Components: TransactionHeader, BasicInfoSection, QuantityTransfersTable, Batches
 - When: The user clicks "Transactions" in the breadcrumb
 - Then: The app navigates to /transactions (TransactionsPage)
 
-**Test: Sidebar shows Transactions link as active on Transaction Detail page**
+**Test: NavigationHeader shows Transactions link as active on Transaction Detail page**
 - Components: TransactionHeader
 - Given: The user navigates to the Transaction Detail page
-- Then: The sidebar "Transactions" link is visually highlighted as the active page
+- Then: The NavigationHeader "Transactions" link is visually highlighted as the active page
 
 ### BasicInfoSection
 
@@ -2881,7 +2885,7 @@ Components: BasicInfoForm, QuantityTransfersSection, BatchAllocationSection, Pos
 - Then: The page header displays "New Transaction" as a large heading on the left
 - And: The Cancel and Post buttons are on the right side of the header
 
-**Test: Sidebar shows Transactions link as active on New Transaction page**
+**Test: NavigationHeader shows Transactions link as active on New Transaction page**
 - Components: PostButton, CancelButton
 - Given: The user navigates to /transactions/new
-- Then: The sidebar "Transactions" link is visually highlighted as the active page
+- Then: The NavigationHeader "Transactions" link is visually highlighted as the active page
