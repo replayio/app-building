@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestBalanceDynamic: Write test for BalanceIndicator updates dynamically when line items change",
-        "WriteTestBalanceValidation: Write test for BalanceIndicator validation prevents saving unbalanced transaction",
-        "WriteTestBalanceZero: Write test for BalanceIndicator shows zero totals for empty line items",
-        "WriteTestBalanceDelete: Write test for BalanceIndicator updates when a line item row is deleted"
-      ],
-      "timestamp": "2026-02-26T05:32:25.138Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestTagsLabel: Write test for TagsInput displays label with optional indicator",
         "WriteTestTagsChips: Write test for TagsInput displays existing tags as removable chips",
         "WriteTestTagsAdd: Write test for TagsInput add a new tag by typing",
