@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/reviewBugReport.md",
-      "subtasks": [
-        "Unpack: Review fixed bug reports"
-      ],
-      "timestamp": "2026-02-26T16:13:35.233Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "Unpack: Check directive compliance"
