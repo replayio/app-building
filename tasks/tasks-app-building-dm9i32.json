@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationCreateReportDialogTestSpec: Fix ambiguous navigation in 'ReportPreview account name links navigate to AccountDetailPage' test entry (line 838-841) - must specify exact behavior instead of 'dialog closes (or a new tab/window opens)'; also add missing test entry for overlay/backdrop click to close dialog"
-      ],
-      "timestamp": "2026-02-26T05:41:30.303Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecReportDetails: Check testSpec.md directive violations in ReportDetails test entries",
         "CheckComponentsReportDetails: Check writeApp.md directive violations in ReportDetails components",
         "CheckTestsReportDetails: Check writeTests.md directive violations in ReportDetails tests"

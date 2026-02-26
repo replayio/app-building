@@ -577,6 +577,11 @@
 - **Action:** User clicks the "X" close button in the top-right corner.
 - **Expected:** The dialog closes and the user returns to the underlying page. No report is generated.
 
+**Test: CreateReportDialog clicking overlay backdrop closes dialog without generating**
+- **Initial state:** The CreateReportDialog is open with some settings configured (e.g., report type selected, dates set).
+- **Action:** User clicks on the dark overlay/backdrop area outside the dialog content.
+- **Expected:** The dialog closes without generating a report. No new report is created. Clicking inside the dialog content area does not close the dialog (only the backdrop area outside).
+
 **Test: CreateReportDialog Cancel button closes dialog without generating**
 - **Initial state:** The CreateReportDialog is open with some settings configured (e.g., report type selected, dates set).
 - **Action:** User clicks the "Cancel" button at the bottom-right of the dialog.
@@ -838,7 +843,7 @@
 **Test: ReportPreview account name links navigate to AccountDetailPage**
 - **Initial state:** The CreateReportDialog preview shows "Sales Revenue" as a clickable link.
 - **Action:** User clicks the "Sales Revenue" link text.
-- **Expected:** The dialog closes (or a new tab/window opens) and the user is navigated to the AccountDetailPage for the Sales Revenue account, where they can see all transactions and budget details for that account.
+- **Expected:** The application navigates via client-side routing to the AccountDetailPage for the Sales Revenue account (URL path `/accounts/{accountId}`). The dialog is no longer visible because the page has changed. The user can see all transactions and budget details for that account on the AccountDetailPage.
 
 **Test: ReportPreview Rent Expense row displays correct data**
 - **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected and preview data loaded.
