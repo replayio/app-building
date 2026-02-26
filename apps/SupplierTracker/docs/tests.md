@@ -607,6 +607,17 @@ Given the user is viewing the OrderDetailsPage,
 When the user clicks the "Print" button (printer icon + "Print" text) in the top-right of OrderSummary,
 Then the browser print dialog opens with a print-friendly view of the order details.
 
+**Edit Order Dialog Cancel Does Not Modify Order**
+Given the "Edit Order" dialog is open and the user has changed the status,
+When the user clicks "Cancel" or closes the dialog,
+Then the dialog closes,
+And the order status and expected delivery date remain unchanged in the OrderSummary.
+
+**Edit Order Dialog Validation**
+Given the "Edit Order" dialog is open,
+When the user clears the expected delivery date field and clicks "Save",
+Then a validation error is shown on the expected delivery field and the dialog does not close.
+
 ### LineItemsTable
 
 **Display Line Items Table with Correct Columns**
@@ -653,6 +664,30 @@ And when the user confirms,
 Then the line item is removed from the table,
 And the CostBreakdown section updates to reflect the new subtotal,
 And a new entry is added to OrderHistory recording the deletion.
+
+**Add Line Item Dialog Cancel Does Not Add Item**
+Given the "Add Line Item" dialog is open and the user has entered some data,
+When the user clicks "Cancel" or closes the dialog,
+Then no line item is added,
+And the LineItemsTable row count remains unchanged.
+
+**Add Line Item Dialog Validation**
+Given the "Add Line Item" dialog is open,
+When the user attempts to save without filling in the required Item Name / Description field,
+Then a validation error is shown on the Item Name / Description field and the dialog does not close.
+
+**Edit Line Item Dialog Cancel Does Not Modify Item**
+Given the "Edit Line Item" dialog is open for an existing line item and the user has changed the quantity,
+When the user clicks "Cancel" or closes the dialog,
+Then the dialog closes,
+And the line item's quantity and other fields remain unchanged in the LineItemsTable.
+
+**Delete Line Item Confirmation Dismiss Does Not Delete Item**
+Given the delete confirmation dialog is open for a line item,
+When the user clicks "Cancel" to dismiss the confirmation,
+Then the confirmation dialog closes,
+And the line item remains in the LineItemsTable,
+And the row count is unchanged.
 
 ### CostBreakdown
 
@@ -721,6 +756,13 @@ And after selecting a file, the user can enter document type (e.g. "Invoice", "P
 And when the user confirms the upload,
 Then the document is uploaded and appears in the document list with the correct name, type, and current date,
 And a new entry is added to OrderHistory recording that a document was uploaded.
+
+**Upload Document Dialog Cancel Does Not Upload**
+Given the upload document dialog is open after selecting a file,
+When the user clicks "Cancel" or closes the dialog,
+Then the dialog closes,
+And no document is added to the document list,
+And the document count remains unchanged.
 
 ### OrderHistory
 

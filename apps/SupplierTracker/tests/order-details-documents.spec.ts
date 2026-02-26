@@ -177,4 +177,41 @@ test.describe("OrderDetailsPage - OrderDocuments", () => {
     // Clean up
     fs.unlinkSync(testFilePath);
   });
+
+  test("Upload Document Dialog Cancel Does Not Upload", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    // Count initial documents
+    const initialCount = await page.getByTestId("order-document-item").count();
+
+    // Create a temporary test file
+    const testFileName = `test-cancel-${Date.now()}.pdf`;
+    const testFilePath = path.join("/tmp", testFileName);
+    fs.writeFileSync(testFilePath, "test file content for cancel");
+
+    // Set the file via the hidden file input to trigger the upload dialog
+    const fileInput = page.getByTestId("order-documents-file-input");
+    await fileInput.setInputFiles(testFilePath);
+
+    // Upload dialog should appear
+    const uploadModal = page.getByTestId("upload-order-document-modal");
+    await expect(uploadModal).toBeVisible({ timeout: 5000 });
+
+    // Click Cancel
+    await page.getByTestId("upload-order-document-cancel").click();
+
+    // Modal should close
+    await expect(uploadModal).toBeHidden({ timeout: 5000 });
+
+    // Document count should remain the same
+    await expect(page.getByTestId("order-document-item")).toHaveCount(initialCount);
+
+    // The cancelled file should not appear in the list
+    await expect(
+      page.getByTestId("order-document-item").filter({ hasText: testFileName })
+    ).toHaveCount(0);
+
+    // Clean up
+    fs.unlinkSync(testFilePath);
+  });
 });

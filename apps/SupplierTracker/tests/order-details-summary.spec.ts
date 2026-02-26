@@ -174,6 +174,66 @@ test.describe("OrderDetailsPage - OrderSummary", () => {
     ).toBeVisible({ timeout: 30000 });
   });
 
+  test("Edit Order Dialog Cancel Does Not Modify Order", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    // Read current status and expected delivery before opening dialog
+    const badge = page.getByTestId("order-status-badge");
+    const originalStatus = await badge.textContent();
+    const deliveryField = page.getByTestId("order-field-expected-delivery");
+    const originalDelivery = await deliveryField.locator(".order-summary-field-value").textContent();
+
+    // Click Edit button
+    const editBtn = page.getByTestId("order-edit-btn");
+    await editBtn.click();
+
+    // Edit modal should appear
+    const modal = page.getByTestId("edit-order-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Change the status to a different value
+    await page.getByTestId("edit-order-form-status").click();
+    await expect(page.getByTestId("edit-order-form-status-dropdown")).toBeVisible();
+    await page.getByTestId("edit-order-status-option-cancelled").click();
+
+    // Click Cancel
+    await page.getByTestId("edit-order-cancel").click();
+
+    // Modal should close
+    await expect(modal).toBeHidden({ timeout: 5000 });
+
+    // Status should remain unchanged
+    await expect(badge).toHaveText(originalStatus!, { timeout: 5000 });
+
+    // Expected delivery should remain unchanged
+    await expect(deliveryField.locator(".order-summary-field-value")).toHaveText(originalDelivery!);
+  });
+
+  test("Edit Order Dialog Validation", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    // Click Edit button
+    const editBtn = page.getByTestId("order-edit-btn");
+    await editBtn.click();
+
+    // Edit modal should appear
+    const modal = page.getByTestId("edit-order-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Clear the expected delivery date
+    const deliveryInput = page.getByTestId("edit-order-form-expected-delivery");
+    await deliveryInput.clear();
+
+    // Click Save
+    await page.getByTestId("edit-order-save").click();
+
+    // Validation error should appear
+    await expect(page.getByTestId("edit-order-expected-delivery-error")).toBeVisible();
+
+    // Dialog should still be open
+    await expect(modal).toBeVisible();
+  });
+
   test("Print Button Triggers Print", async ({ page }) => {
     await navigateToFirstOrder(page);
 

@@ -180,10 +180,17 @@ function EditOrderModal({
     status: order.status,
     expected_delivery: order.expected_delivery ? order.expected_delivery.slice(0, 10) : "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
 
   const handleSave = async () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.expected_delivery.trim()) newErrors.expected_delivery = "Expected delivery date is required";
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     setSaving(true);
     try {
       await onSave(form);
@@ -248,14 +255,20 @@ function EditOrderModal({
             data-testid="edit-order-form-expected-delivery"
             type="date"
             value={form.expected_delivery}
-            onChange={(e) => setForm((f) => ({ ...f, expected_delivery: e.target.value }))}
+            onChange={(e) => {
+              setForm((f) => ({ ...f, expected_delivery: e.target.value }));
+              if (errors.expected_delivery) setErrors((prev) => ({ ...prev, expected_delivery: "" }));
+            }}
           />
+          {errors.expected_delivery && <div className="form-error" data-testid="edit-order-expected-delivery-error">{errors.expected_delivery}</div>}
         </div>
 
         <div className="modal-footer">
+          {/* Tests: Edit Order Dialog Cancel Does Not Modify Order */}
           <button className="btn-secondary" data-testid="edit-order-cancel" onClick={onClose}>
             Cancel
           </button>
+          {/* Tests: Edit Button Opens Edit Dialog, Edit Order Dialog Validation */}
           <button className="btn-primary" data-testid="edit-order-save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </button>

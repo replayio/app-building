@@ -240,9 +240,11 @@ export function OrderDocuments({ documents, onUpload }: OrderDocumentsProps) {
             </div>
 
             <div className="modal-footer">
+              {/* Tests: Upload Document Dialog Cancel Does Not Upload */}
               <button className="btn-secondary" data-testid="upload-order-document-cancel" onClick={handleUploadCancel}>
                 Cancel
               </button>
+              {/* Tests: Upload Document */}
               <button className="btn-primary" data-testid="upload-order-document-confirm" onClick={handleUploadConfirm} disabled={uploading}>
                 {uploading ? "Uploading..." : "Upload"}
               </button>

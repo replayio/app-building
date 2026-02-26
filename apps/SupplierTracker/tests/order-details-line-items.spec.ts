@@ -248,4 +248,130 @@ test.describe("OrderDetailsPage - LineItemsTable", () => {
       page.getByTestId("timeline-event-description").filter({ hasText: /Line item removed/ }).first()
     ).toBeVisible({ timeout: 30000 });
   });
+
+  test("Add Line Item Dialog Cancel Does Not Add Item", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    // Count existing rows
+    const initialCount = await page.getByTestId("line-item-row").count();
+
+    // Click "Add Item" button
+    const addBtn = page.getByTestId("add-line-item-btn");
+    await addBtn.click();
+
+    // Modal should appear
+    const modal = page.getByTestId("line-item-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Enter some data
+    await page.getByTestId("line-item-form-sku").fill("SKU-CANCEL-001");
+    await page.getByTestId("line-item-form-name").fill("Cancelled Item");
+
+    // Click Cancel
+    await page.getByTestId("line-item-cancel").click();
+
+    // Modal should close
+    await expect(modal).toBeHidden({ timeout: 5000 });
+
+    // Row count should remain the same
+    await expect(page.getByTestId("line-item-row")).toHaveCount(initialCount);
+
+    // The cancelled item should not appear
+    await expect(
+      page.getByTestId("line-item-row").filter({ hasText: "Cancelled Item" })
+    ).toHaveCount(0);
+  });
+
+  test("Add Line Item Dialog Validation", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    // Click "Add Item" button
+    const addBtn = page.getByTestId("add-line-item-btn");
+    await addBtn.click();
+
+    // Modal should appear
+    const modal = page.getByTestId("line-item-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Try to save without filling in the required Item Name / Description field
+    await page.getByTestId("line-item-save").click();
+
+    // Validation error should appear
+    await expect(page.getByTestId("line-item-form-name-error")).toBeVisible();
+    await expect(page.getByTestId("line-item-form-name-error")).toContainText("Item name is required");
+
+    // Dialog should still be open
+    await expect(modal).toBeVisible();
+  });
+
+  test("Edit Line Item Dialog Cancel Does Not Modify Item", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    const table = page.getByTestId("line-items-table");
+    await expect(table).toBeVisible();
+
+    // Read the first row's current quantity
+    const firstRow = page.getByTestId("line-item-row").first();
+    await expect(firstRow).toBeVisible();
+    const originalQty = await firstRow.getByTestId("line-item-qty").textContent();
+    const originalSku = await firstRow.getByTestId("line-item-sku").textContent();
+
+    // Click edit on the first row
+    await firstRow.getByTestId("line-item-edit-btn").click();
+
+    // Modal should appear
+    const modal = page.getByTestId("line-item-modal");
+    await expect(modal).toBeVisible({ timeout: 5000 });
+
+    // Change the quantity
+    const qtyInput = page.getByTestId("line-item-form-qty");
+    await qtyInput.clear();
+    await qtyInput.fill("9999");
+
+    // Click Cancel
+    await page.getByTestId("line-item-cancel").click();
+
+    // Modal should close
+    await expect(modal).toBeHidden({ timeout: 5000 });
+
+    // The first row should still have the original quantity
+    await expect(firstRow.getByTestId("line-item-qty")).toHaveText(originalQty!);
+    await expect(firstRow.getByTestId("line-item-sku")).toHaveText(originalSku!);
+  });
+
+  test("Delete Line Item Confirmation Dismiss Does Not Delete Item", async ({ page }) => {
+    await navigateToFirstOrder(page);
+
+    const table = page.getByTestId("line-items-table");
+    await expect(table).toBeVisible();
+
+    // Count existing rows
+    const initialCount = await page.getByTestId("line-item-row").count();
+    expect(initialCount).toBeGreaterThan(0);
+
+    // Click delete on the first row
+    const firstRow = page.getByTestId("line-item-row").first();
+    const itemName = await firstRow.getByTestId("line-item-name").textContent();
+    await firstRow.getByTestId("line-item-delete-btn").click();
+
+    // Confirmation dialog should appear
+    const confirmDialog = page.getByTestId("confirm-dialog");
+    await expect(confirmDialog).toBeVisible({ timeout: 5000 });
+
+    // Click Cancel to dismiss the confirmation
+    await page.getByTestId("confirm-dialog-cancel").click();
+
+    // Confirmation dialog should close
+    await expect(confirmDialog).toBeHidden({ timeout: 5000 });
+
+    // Row count should remain the same
+    await expect(page.getByTestId("line-item-row")).toHaveCount(initialCount);
+
+    // The item should still be present
+    if (itemName) {
+      await expect(
+        page.getByTestId("line-item-row").filter({ hasText: itemName }).first()
+      ).toBeVisible();
+    }
+  });
 });

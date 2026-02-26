@@ -113,6 +113,7 @@ export function LineItemsTable({ lineItems, onAdd, onEdit, onDelete }: LineItems
         />
       )}
 
+      {/* Tests: Delete Line Item, Delete Line Item Confirmation Dismiss Does Not Delete Item */}
       <ConfirmDialog
         open={!!deletingItem}
         title="Delete Line Item"
@@ -241,9 +242,11 @@ function LineItemModal({
         </div>
 
         <div className="modal-footer">
+          {/* Tests: Add Line Item Dialog Cancel Does Not Add Item, Edit Line Item Dialog Cancel Does Not Modify Item */}
           <button className="btn-secondary" data-testid="line-item-cancel" onClick={onClose}>
             Cancel
           </button>
+          {/* Tests: Add Line Item, Edit Line Item, Add Line Item Dialog Validation */}
           <button className="btn-primary" data-testid="line-item-save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </button>
