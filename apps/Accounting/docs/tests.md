@@ -73,7 +73,7 @@
 **Test: CategorySection shows correct category totals**
 - **Initial state:** User is on the AccountsPage with seeded account data.
 - **Action:** User observes the category headers.
-- **Expected:** Each category header displays the sum of all account balances in that category. For example, Assets shows "$152,450.00", Liabilities shows "-$85,200.00", Equity shows "$67,250.00", Revenue shows "$110,000.00", and Expenses shows "$55,500.00". Negative totals (like Liabilities) are displayed with a minus sign.
+- **Expected:** Each category header displays the sum of all account balances in that category. For example, Assets shows "$150,950.00", Liabilities shows "-$85,200.00", Equity shows "$67,250.00", Revenue shows "$110,000.00", and Expenses shows "$77,100.00". Negative totals (like Liabilities) are displayed with a minus sign.
 
 **Test: CategorySection expand reveals account cards**
 - **Initial state:** User is on the AccountsPage with the "Equity" category collapsed (showing only the header and total).
@@ -121,6 +121,21 @@
 - **Initial state:** User is on the AccountsPage with the Assets category expanded.
 - **Action:** User clicks the three-dot menu icon (⋮) in the top-right corner of the "Checking Account (Chase Bank)" card.
 - **Expected:** A dropdown menu appears with actions for the account (e.g., Edit Account, Delete Account, View Transactions).
+
+**Test: AccountCard Edit Account menu action navigates to AccountDetailPage**
+- **Initial state:** User is on the AccountsPage with the Assets category expanded and the three-dot menu open on the "Checking Account (Chase Bank)" card.
+- **Action:** User clicks the "Edit Account" menu item.
+- **Expected:** The app navigates to the AccountDetailPage for the Checking Account. The URL matches /accounts/<id>.
+
+**Test: AccountCard View Transactions menu action navigates to AccountDetailPage**
+- **Initial state:** User is on the AccountsPage with the Assets category expanded and the three-dot menu open on the "Checking Account (Chase Bank)" card.
+- **Action:** User clicks the "View Transactions" menu item.
+- **Expected:** The app navigates to the AccountDetailPage for the Checking Account. The URL matches /accounts/<id>.
+
+**Test: AccountCard Delete Account menu action removes account**
+- **Initial state:** User is on the AccountsPage with the Assets category expanded. A test-specific account "Delete Test Account" has been created in the Assets category via the API.
+- **Action:** User opens the three-dot menu on the "Delete Test Account" card and clicks the "Delete Account" menu item.
+- **Expected:** The "Delete Test Account" card is removed from the Assets category. The deletion persists: after reloading the page, the account no longer appears.
 
 **Test: AccountCard click navigates to AccountDetailPage**
 - **Initial state:** User is on the AccountsPage with the Assets category expanded.

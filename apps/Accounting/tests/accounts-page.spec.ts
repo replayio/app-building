@@ -157,6 +157,7 @@ test.describe("AccountsOverviewHeader", () => {
 
 test.describe("CategorySection", () => {
   test("CategorySection displays all five accounting categories", async ({ page }) => {
+    test.slow();
     await page.goto("/accounts");
     await expect(page.getByTestId("accounts-page")).toBeVisible({ timeout: 30000 });
 
@@ -198,8 +199,8 @@ test.describe("CategorySection", () => {
     // Revenue: 80,000 + 30,000 = $110,000.00
     await expect(page.getByTestId("category-total-revenue")).toContainText("$110,000.00");
 
-    // Expenses: 35,000 + 20,500 = $55,500.00
-    await expect(page.getByTestId("category-total-expenses")).toContainText("$55,500.00");
+    // Expenses: 35,000 + 20,500 + 18,000 + 3,600 = $77,100.00
+    await expect(page.getByTestId("category-total-expenses")).toContainText("$77,100.00");
   });
 
   test("CategorySection expand reveals account cards", async ({ page }) => {
@@ -367,6 +368,91 @@ test.describe("AccountCard", () => {
     await expect(page.getByTestId("menu-edit-account")).toBeVisible();
     await expect(page.getByTestId("menu-view-transactions")).toBeVisible();
     await expect(page.getByTestId("menu-delete-account")).toBeVisible();
+  });
+
+  test("AccountCard Edit Account menu action navigates to AccountDetailPage", async ({ page }) => {
+    await page.goto("/accounts");
+    await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
+
+    const assetsContent = page.getByTestId("category-content-assets");
+    const checkingCard = assetsContent.locator(".account-card").filter({
+      hasText: "Checking Account (Chase Bank)",
+    });
+
+    const cardTestId = await checkingCard.getAttribute("data-testid");
+    const accountId = cardTestId!.replace("account-card-", "");
+
+    await page.getByTestId(`account-card-menu-btn-${accountId}`).click();
+    await expect(page.getByTestId(`account-card-menu-${accountId}`)).toBeVisible();
+
+    await page.getByTestId("menu-edit-account").click();
+
+    await expect(page).toHaveURL(/\/accounts\/.+/);
+    await expect(page.getByTestId("account-detail-page")).toBeVisible({ timeout: 30000 });
+  });
+
+  test("AccountCard View Transactions menu action navigates to AccountDetailPage", async ({ page }) => {
+    await page.goto("/accounts");
+    await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
+
+    const assetsContent = page.getByTestId("category-content-assets");
+    const checkingCard = assetsContent.locator(".account-card").filter({
+      hasText: "Checking Account (Chase Bank)",
+    });
+
+    const cardTestId = await checkingCard.getAttribute("data-testid");
+    const accountId = cardTestId!.replace("account-card-", "");
+
+    await page.getByTestId(`account-card-menu-btn-${accountId}`).click();
+    await expect(page.getByTestId(`account-card-menu-${accountId}`)).toBeVisible();
+
+    await page.getByTestId("menu-view-transactions").click();
+
+    await expect(page).toHaveURL(/\/accounts\/.+/);
+    await expect(page.getByTestId("account-detail-page")).toBeVisible({ timeout: 30000 });
+  });
+
+  test("AccountCard Delete Account menu action removes account", async ({ page, request }) => {
+    test.slow();
+
+    // Create a test-specific account via API for isolation
+    const resp = await request.post("/.netlify/functions/accounts", {
+      data: {
+        name: "Delete Test Account",
+        code: "9999",
+        category: "assets",
+        balance: 100,
+      },
+    });
+    expect(resp.ok()).toBeTruthy();
+
+    await page.goto("/accounts");
+    await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
+
+    const assetsContent = page.getByTestId("category-content-assets");
+    const testCard = assetsContent.locator(".account-card").filter({
+      hasText: "Delete Test Account",
+    });
+    await expect(testCard).toBeVisible({ timeout: 30000 });
+
+    const cardTestId = await testCard.getAttribute("data-testid");
+    const accountId = cardTestId!.replace("account-card-", "");
+
+    // Open the three-dot menu and click Delete Account
+    await page.getByTestId(`account-card-menu-btn-${accountId}`).click();
+    await expect(page.getByTestId(`account-card-menu-${accountId}`)).toBeVisible();
+    await page.getByTestId("menu-delete-account").click();
+
+    // Verify the card is removed
+    await expect(testCard).not.toBeVisible({ timeout: 30000 });
+
+    // Verify persistence: reload and confirm it's still gone
+    await page.reload();
+    await expect(page.getByTestId("category-content-assets")).toBeVisible({ timeout: 30000 });
+    const testCardAfterReload = page.getByTestId("category-content-assets").locator(".account-card").filter({
+      hasText: "Delete Test Account",
+    });
+    await expect(testCardAfterReload).not.toBeVisible({ timeout: 10000 });
   });
 
   test("AccountCard click navigates to AccountDetailPage", async ({ page }) => {

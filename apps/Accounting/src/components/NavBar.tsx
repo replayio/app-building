@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../hooks";
+import { useAuth } from "@shared/auth/useAuth";
 import { NewTransactionModal } from "./NewTransactionModal";
 import { Breadcrumb } from "../../../shared/components/Breadcrumb";
 
@@ -16,6 +17,7 @@ export function NavBar(): React.ReactElement {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector((s) => s.auth.user);
+  const { logout } = useAuth();
   const [showNewTransaction, setShowNewTransaction] = useState(false);
 
   const activePath = "/" + location.pathname.split("/")[1];
@@ -68,7 +70,10 @@ export function NavBar(): React.ReactElement {
           <button
             className="navbar-logout-btn"
             data-testid="navbar-logout-btn"
-            onClick={() => navigate("/login")}
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
           >
             Log Out
           </button>
