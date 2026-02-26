@@ -181,7 +181,7 @@ function readTasksFile(): TasksFile {
  * Scan tasks/ for any task files not belonging to this container,
  * absorb their tasks into our own file, and delete the foreign files.
  */
-function absorbForeignTaskFiles(log: Logger): void {
+export function absorbForeignTaskFiles(log: Logger): void {
   const tasksDir = dirname(TASKS_FILE);
   if (!existsSync(tasksDir)) return;
 
@@ -303,9 +303,6 @@ export async function processTasks(
   let tasksProcessed = 0;
   let totalCost = 0;
   let consecutiveRetries = 0;
-
-  // On startup, absorb any task files left by other containers.
-  absorbForeignTaskFiles(log);
 
   while (true) {
     if (shouldStop?.()) break;

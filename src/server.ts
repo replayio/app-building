@@ -6,6 +6,7 @@ import {
   processTasks,
   currentClaudeProcess,
   getPendingTaskCount,
+  absorbForeignTaskFiles,
   type ClaudeResult,
   type EventCallback,
 } from "./worker";
@@ -387,22 +388,32 @@ const server = createServer(async (req, res) => {
 
 // --- Startup ---
 
+/** Log to both console and the HTTP log buffer (if available). */
+function startupLog(msg: string): void {
+  const line = `[${new Date().toISOString()}] ${msg}`;
+  console.log(line);
+  logBuffer.append(line);
+}
+
 async function main(): Promise<void> {
-  console.log("=== Container starting ===");
+  startupLog(`=== Container starting ===`);
+  startupLog(`Container: ${CONTAINER_NAME}`);
+  startupLog(`Clone branch: ${CLONE_BRANCH}, Push branch: ${PUSH_BRANCH}`);
+  startupLog(`Repo URL: ${REPO_URL || "(not set)"}`);
 
   // Clone repo
   if (!REPO_URL) {
-    console.error("REPO_URL environment variable is required");
+    startupLog("Fatal: REPO_URL environment variable is required");
     process.exit(1);
   }
 
   const cloneUrl = toTokenUrl(REPO_URL, process.env.GITHUB_TOKEN);
-  console.log(`Cloning ${REPO_URL} (branch: ${CLONE_BRANCH})...`);
+  startupLog(`Cloning repo...`);
   try {
     cloneRepo(cloneUrl, CLONE_BRANCH, REPO_DIR);
-    console.log("Clone complete.");
+    startupLog("Clone complete.");
   } catch (e: any) {
-    console.error(`Fatal: clone failed: ${e.message}`);
+    startupLog(`Fatal: clone failed: ${e.message}`);
     process.exit(1);
   }
 
@@ -413,11 +424,17 @@ async function main(): Promise<void> {
 
   // Checkout target branch if different from clone branch
   if (PUSH_BRANCH !== CLONE_BRANCH) {
+    log(`Checking out target branch ${PUSH_BRANCH}...`);
     checkoutTargetBranch(PUSH_BRANCH, log, REPO_DIR);
   }
 
   log(`Revision: ${getRevision(REPO_DIR)}`);
   log(`Push branch: ${PUSH_BRANCH}`);
+
+  // Absorb task files from other containers before checking task count
+  absorbForeignTaskFiles(log);
+
+  log(`Pending tasks: ${getPendingTaskCount()}`);
 
   // Change working directory to repo
   process.chdir(REPO_DIR);
@@ -425,7 +442,6 @@ async function main(): Promise<void> {
   // Start HTTP server
   server.listen(PORT, () => {
     log(`HTTP server listening on port ${PORT}`);
-    console.log(`Server listening on port ${PORT}`);
     state = "idle";
   });
 
