@@ -4,6 +4,8 @@ interface DateRangeFilterProps {
   dateFrom: string;
   dateTo: string;
   onChange: (dateFrom: string, dateTo: string) => void;
+  label?: string;
+  className?: string;
 }
 
 function formatDisplayDate(dateStr: string): string {
@@ -13,7 +15,7 @@ function formatDisplayDate(dateStr: string): string {
   return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 
-export function DateRangeFilter({ dateFrom, dateTo, onChange }: DateRangeFilterProps) {
+export function DateRangeFilter({ dateFrom, dateTo, onChange, label = "Filter by Date:", className = "filter-bar" }: DateRangeFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [tempFrom, setTempFrom] = useState(dateFrom);
   const [tempTo, setTempTo] = useState(dateTo);
@@ -37,8 +39,8 @@ export function DateRangeFilter({ dateFrom, dateTo, onChange }: DateRangeFilterP
   };
 
   return (
-    <div data-testid="date-range-filter" className="filter-bar" ref={popoverRef} style={{ position: "relative" }}>
-      <span data-testid="date-range-filter-label" className="filter-label">Filter by Date:</span>
+    <div data-testid="date-range-filter" className={className} ref={popoverRef} style={{ position: "relative" }}>
+      <span data-testid="date-range-filter-label" className="filter-label">{label}</span>
       <button
         data-testid="date-range-picker"
         className="custom-dropdown-trigger"
@@ -49,7 +51,6 @@ export function DateRangeFilter({ dateFrom, dateTo, onChange }: DateRangeFilterP
         }}
         type="button"
       >
-        <span>{formatDisplayDate(dateFrom)} - {formatDisplayDate(dateTo)}</span>
         <svg
           data-testid="date-range-calendar-icon"
           viewBox="0 0 24 24"
@@ -65,6 +66,7 @@ export function DateRangeFilter({ dateFrom, dateTo, onChange }: DateRangeFilterP
           <line x1="8" y1="2" x2="8" y2="6" />
           <line x1="3" y1="10" x2="21" y2="10" />
         </svg>
+        <span>{dateFrom || dateTo ? `${formatDisplayDate(dateFrom)} - ${formatDisplayDate(dateTo)}` : "Select date range"}</span>
       </button>
       {isOpen && (
         <div

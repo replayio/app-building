@@ -1,20 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteComponentDateRangeFilter: Write the DateRangeFilter component for TransactionsPage",
-        "WriteComponentAccountFilter: Write the AccountFilter component for TransactionsPage",
-        "WriteComponentMaterialFilter: Write the MaterialFilter component for TransactionsPage",
-        "WriteComponentTransactionTypeFilter: Write the TransactionTypeFilter component for TransactionsPage",
-        "WriteComponentSearchBar: Write the SearchBar component for TransactionsPage",
-        "WriteComponentTransactionsTable: Write the TransactionsTable component for TransactionsPage",
-        "WritePageTransactionsPage: Write the full TransactionsPage with all components"
-      ],
-      "timestamp": "2026-02-26T07:33:23.858Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "WriteTestTransactionsPageFilters: Write Playwright tests for TransactionsPage filter components (DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar)",
