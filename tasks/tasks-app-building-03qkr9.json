@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
-      ],
-      "timestamp": "2026-02-26T16:16:53.015Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
         "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
         "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"
