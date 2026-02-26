@@ -23,6 +23,21 @@ Then run `npm run deploy` from the app directory. See `skills/scripts/deploy.md`
 full script specification. The script handles database creation/sync, Netlify site
 creation/update, and writes the deployed URL to `deployment.txt`.
 
+After a successful deployment, you MUST append a deployment history entry to the end of
+`deployment.txt`. The entry must include the date and a summary of what changed:
+
+```
+--- Deployment 2026-02-26 ---
+Changes:
+- Added user authentication flow
+- Fixed pagination bug on accounts page
+- Updated dashboard layout to match mockup
+```
+
+Use `git log` to determine what changed since the last deployment. If `deployment.txt`
+already has history entries, compare against the most recent one. If this is the first
+deployment, summarize the initial feature set.
+
 ## Testing
 
 After deploying, you MUST perform a functional test to verify the app actually works in production.

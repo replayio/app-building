@@ -66,6 +66,7 @@ let nextMessageId = 1;
 let totalCost = 0;
 let iteration = 0;
 let tasksProcessed = 0;
+let lastActivityAt = new Date().toISOString();
 
 // --- Container state ---
 
@@ -205,6 +206,8 @@ async function processLoop(): Promise<void> {
         log(`Error: ${e.message}`);
       }
 
+      lastActivityAt = new Date().toISOString();
+
       // Final commit and push after message
       if (!stopRequested) {
         const summary = entry.prompt.length > 72 ? entry.prompt.slice(0, 69) + "..." : entry.prompt;
@@ -230,6 +233,7 @@ async function processLoop(): Promise<void> {
         (label) => {
           if (!stopRequested) {
             iteration++;
+            lastActivityAt = new Date().toISOString();
             archiveCurrentLog(LOGS_DIR, CONTAINER_NAME, iteration);
             commitAndPushTarget(label, PUSH_BRANCH, log, () => stopRequested, REPO_DIR);
           }
@@ -376,6 +380,7 @@ const server = createServer(async (req, res) => {
         iteration,
         detachRequested,
         revision: getRevision(REPO_DIR),
+        lastActivityAt,
       });
       return;
     }

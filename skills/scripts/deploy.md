@@ -37,7 +37,8 @@ resources.
 
 5. Build the app (`vite build`). Pipe build output to the log file.
 6. Deploy to Netlify (`netlify deploy --prod`). Pipe deploy output to the log file.
-7. Write the deployed URL, `site_id`, `neon_project_id`, and `database_url` to `deployment.txt`.
+7. Write the deployed URL, `site_id`, `neon_project_id`, and `database_url` to the top of `deployment.txt`
+   (overwriting the previous resource block but preserving any deployment history entries below).
 8. Print a one-line summary to stdout:
    - Success: `Deployed to <url>`
    - Failure: `Deploy failed (build|netlify) — see logs/deploy.log`
@@ -69,17 +70,19 @@ a new URL and an empty database. Always check `deployment.txt` first.
 - **Files**:
   - `.env`: Read for existing project info (`NEON_PROJECT_ID`, `DATABASE_URL`,
     `NETLIFY_SITE_ID`). Written to on first run.
-  - `deployment.txt`: Contains `site_id`, `neon_project_id`, and `database_url` from the
-    last deployment (committed to git). Use this to populate `.env` when deploying in a
-    fresh environment.
+  - `deployment.txt`: Resource block at the top contains `site_id`, `neon_project_id`, and
+    `database_url` from the last deployment (committed to git). Use this to populate `.env`
+    when deploying in a fresh environment. Deployment history entries follow below.
 
 ## Outputs
 
 - **stdout**: One-line summary only.
 - **`logs/deploy.log`**: Full build and deploy output. Overwritten each run.
 - **`.env`**: Updated with `NEON_PROJECT_ID`, `DATABASE_URL`, `NETLIFY_SITE_ID` if created.
-- **`deployment.txt`**: Updated with the current deployed URL, `site_id`, `neon_project_id`,
-  and `database_url`.
+- **`deployment.txt`**: Resource block at the top is updated with the current deployed URL,
+  `site_id`, `neon_project_id`, and `database_url`. Deployment history entries below the
+  resource block are preserved. The deployment skill appends a new history entry after
+  each successful deploy.
 - **Side effects**:
   - Creates Neon project (first run only).
   - Syncs production database schema (every run).

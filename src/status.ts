@@ -44,7 +44,8 @@ async function showHttpStatus(entry: RegistryEntry, httpOpts: HttpOptions = {}):
     stateLabel = `${DIM}${status.state}${RESET}`;
   }
 
-  console.log(`\n  ${stateLabel}  ${DIM}(${entry.containerName})${RESET}  ${DIM}started ${formatAge(entry.startedAt)}${RESET}`);
+  const lastActivity = status.lastActivityAt ? `  ${DIM}last activity ${formatAge(status.lastActivityAt)}${RESET}` : "";
+  console.log(`\n  ${stateLabel}  ${DIM}(${entry.containerName})${RESET}  ${DIM}started ${formatAge(entry.startedAt)}${RESET}${lastActivity}`);
   if (status.pushBranch) {
     console.log(`  ${DIM}Branch:${RESET}    ${status.pushBranch}`);
   }
