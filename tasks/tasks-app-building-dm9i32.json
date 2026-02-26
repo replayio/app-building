@@ -3,11 +3,9 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecAccountDetailPage: Check testSpec.md directive violations in AccountDetailPage test entries",
-        "CheckComponentsAccountDetailPage: Check writeApp.md directive violations in AccountDetailPage components",
-        "CheckTestsAccountDetailPage: Check writeTests.md directive violations in AccountDetailPage tests"
+        "FixViolationBudgetDetailsTabEmptyState: Add missing test entry for BudgetDetailsTab empty state in tests.md and write corresponding test"
       ],
-      "timestamp": "2026-02-25T15:32:23.476Z",
+      "timestamp": "2026-02-26T05:16:18.350Z",
       "app": "Accounting"
     },
     {
@@ -439,6 +437,45 @@
       ],
       "timestamp": "2026-02-25T15:33:51.539Z",
       "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestAccountHeaderDisplaysName: Write test for AccountHeader displays account name",
+        "WriteTestAccountHeaderDisplaysCategory: Write test for AccountHeader displays category label",
+        "WriteTestAccountHeaderBreadcrumb: Write test for AccountHeader displays breadcrumb navigation",
+        "WriteTestAccountHeaderNewTransaction: Write test for AccountHeader New Transaction button opens NewTransactionModal",
+        "WriteTestAccountHeaderSearchFilter: Write test for AccountHeader search bar filters transactions",
+        "WriteTestAccountHeaderSearchClear: Write test for AccountHeader search bar clears and restores all transactions",
+        "WriteTestBudgetOverviewHeading: Write test for BudgetOverview displays section heading",
+        "WriteTestBudgetOverviewAmounts: Write test for BudgetOverview displays actual and budgeted amounts",
+        "WriteTestBudgetOverviewPercentage: Write test for BudgetOverview displays percentage used",
+        "WriteTestBudgetOverviewProgressBar: Write test for BudgetOverview displays progress bar",
+        "WriteTestBudgetOverviewWarning: Write test for BudgetOverview progress bar color changes when budget is nearly exceeded",
+        "WriteTestBudgetOverviewUnderBudget: Write test for BudgetOverview progress bar for under-budget account",
+        "WriteTestTransactionsTabDefault: Write test for TransactionsTab is active by default",
+        "WriteTestTransactionsTabHeaders: Write test for TransactionsTab displays table with correct column headers",
+        "WriteTestTransactionsTabRows: Write test for TransactionsTab displays transaction rows with correct data",
+        "WriteTestTransactionsTabViewEdit: Write test for TransactionsTab View/Edit link opens transaction details",
+        "WriteTestTransactionsTabViewEditCredit: Write test for TransactionsTab View/Edit link for credit transaction",
+        "WriteTestTransactionsTabSwitchToBudget: Write test for TransactionsTab switching to Budget Details tab",
+        "WriteTestTransactionsTabSwitchBack: Write test for TransactionsTab switching back from Budget Details",
+        "WriteTestTransactionsTabDebitStyling: Write test for TransactionsTab displays debit direction styling",
+        "WriteTestTransactionsTabCreditStyling: Write test for TransactionsTab displays credit direction styling",
+        "WriteTestTransactionsTabEmptyState: Write test for TransactionsTab empty state when no transactions exist",
+        "WriteTestBudgetDetailsTabLineItems: Write test for BudgetDetailsTab displays budget line items",
+        "WriteTestBudgetDetailsTabProgressBars: Write test for BudgetDetailsTab displays progress bar for each line item",
+        "WriteTestBudgetDetailsTabOverBudget: Write test for BudgetDetailsTab progress bar indicates over-budget items",
+        "WriteTestBudgetDetailsTabAllCategories: Write test for BudgetDetailsTab shows all budget categories for account",
+        "WriteTestBudgetDetailsTabAmountsReflect: Write test for BudgetDetailsTab item amounts reflect transaction data",
+        "WriteTestReportingLinksHeading: Write test for ReportingLinks displays section heading",
+        "WriteTestReportingLinksActualVsBudget: Write test for ReportingLinks displays Actual vs Budget Report link",
+        "WriteTestReportingLinksActualVsBudgetNav: Write test for ReportingLinks Actual vs Budget Report link navigates to report",
+        "WriteTestReportingLinksHistory: Write test for ReportingLinks displays Transaction History Report link",
+        "WriteTestReportingLinksHistoryNav: Write test for ReportingLinks Transaction History Report link navigates to report"
+      ],
+      "timestamp": "2026-02-26T05:18:26.390Z",
+      "app": "Accounting"
     }
   ]
 }
