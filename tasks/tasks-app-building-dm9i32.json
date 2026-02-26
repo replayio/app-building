@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecReportDetails: Check testSpec.md directive violations in ReportDetails test entries",
-        "CheckComponentsReportDetails: Check writeApp.md directive violations in ReportDetails components",
-        "CheckTestsReportDetails: Check writeTests.md directive violations in ReportDetails tests"
-      ],
-      "timestamp": "2026-02-25T15:32:27.309Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecReportList: Check testSpec.md directive violations in ReportList test entries",
         "CheckComponentsReportList: Check writeApp.md directive violations in ReportList components",
         "CheckTestsReportList: Check writeTests.md directive violations in ReportList tests"
