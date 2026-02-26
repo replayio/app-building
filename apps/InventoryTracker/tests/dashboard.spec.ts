@@ -192,6 +192,7 @@ test.describe("LowInventoryAlerts", () => {
   });
 
   test("Low inventory alert Dismiss button removes the alert", async ({ page }) => {
+    test.slow();
     await page.goto("/");
     await expect(page.getByTestId("low-inventory-alerts")).toBeVisible({ timeout: 30000 });
 
@@ -222,6 +223,17 @@ test.describe("LowInventoryAlerts", () => {
     const afterCount = await alertsAfter.count();
     expect(afterCount).toBeGreaterThan(0);
     expect(afterCount).toBeLessThan(alertsBefore);
+
+    // Reload the page to verify persistence
+    await page.reload();
+    await expect(page.getByTestId("low-inventory-alerts")).toBeVisible({ timeout: 30000 });
+
+    // Copper Wire alert should not reappear after reload
+    await expect(
+      page.locator("[data-testid^='low-inventory-alert-row-']").filter({
+        has: page.locator("[data-testid^='low-inventory-alert-material-name-']", { hasText: "Copper Wire" }),
+      })
+    ).toHaveCount(0, { timeout: 15000 });
   });
 
   test("Low inventory alert Reorder button opens new transaction pre-filled for reorder", async ({ page }) => {

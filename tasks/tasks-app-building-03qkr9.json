@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationDashboardDismissPersistence: Fix dismiss alert test to verify persistence on page reload. The test for 'Low inventory alert Dismiss button removes the alert' in tests/dashboard.spec.ts (line 194) should reload the page after dismissing and verify the Copper Wire alert does not reappear, as the test spec entry requires.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T22:38:54.131Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationDashboardAmbiguousNav: Fix ambiguous 'or opens a new transaction modal' navigation targets in DashboardPage test entries (lines 89 and 245 of docs/tests.md). Should consistently say 'navigates to /transactions/new (NewTransactionPage)' matching other pages."
       ],
       "timestamp": "2026-02-26T22:35:07.642Z",
