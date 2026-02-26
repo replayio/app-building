@@ -3,9 +3,11 @@
     {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
-        "Unpack: Polish app quality"
+        "MakeResponsiveDashboardPage: Make DashboardPage responsive",
+        "MakeResponsiveSupplierDetailsPage: Make SupplierDetailsPage responsive",
+        "MakeResponsiveOrderDetailsPage: Make OrderDetailsPage responsive"
       ],
-      "timestamp": "2026-02-25T15:29:21.153Z",
+      "timestamp": "2026-02-26T04:49:18.207Z",
       "app": "SupplierTracker"
     },
     {
