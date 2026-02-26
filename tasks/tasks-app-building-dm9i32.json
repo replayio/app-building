@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationTasksListMarkCompleteTimeline: Add missing test entry in docs/tests.md for the Mark Complete action's timeline side effect. The backend (netlify/functions/tasks.ts:287-293) creates a 'Task Completed' timeline event on the associated client when Mark Complete is used, but the test entry only mentions removal from the list. The testSpec directive requires side effects to be tested.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T09:59:29.249Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationTasksListAssigneeRole: Fix missing assignee role display in TaskCardList. Test entry says 'name with role (e.g., Sarah J. (PM))' but component only shows assigneeName. Need to: (1) add role column to users table in schema.ts, (2) update backend tasks.ts query to JOIN and return assignee role, (3) add assigneeRole to Task interface in tasksSlice.ts, (4) update TaskCardList.tsx to display role in parentheses. Also update docs/tests.md if needed.",
         "RunTests: Verify tests pass after fix"
       ],

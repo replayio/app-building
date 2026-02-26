@@ -1610,7 +1610,7 @@ Given the user is on /tasks, each task card has a three-dot actions menu button 
 Given the user is on /tasks, when they click the three-dot actions menu ("...") on a task card, a dropdown menu appears with action options including Edit, Mark Complete, Cancel, and Delete.
 
 **Actions menu Mark Complete marks task as completed**
-Given the user is on /tasks, when they click the "..." menu on a task card and select "Mark Complete", the task is marked as completed via the API, and the task card is removed from the upcoming tasks list (since it is no longer upcoming).
+Given the user is on /tasks, when they click the "..." menu on a task card and select "Mark Complete", the task is marked as completed via the API, the task card is removed from the upcoming tasks list (since it is no longer upcoming), and a "Task Completed" timeline entry is created on the associated client attributed to the current user. Exactly one timeline entry is created — not duplicates from re-renders.
 
 **Actions menu Cancel marks task as canceled**
 Given the user is on /tasks, when they click the "..." menu on a task card and select "Cancel", the task is marked as canceled via the API, and the task card is removed from the upcoming tasks list.
