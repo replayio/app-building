@@ -3,11 +3,12 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",
-        "CheckComponentsAccountsPage: Check writeApp.md directive violations in AccountsPage components",
-        "CheckTestsAccountsPage: Check writeTests.md directive violations in AccountsPage tests"
+        "FixViolation: Add test entries for AccountCard three-dot menu individual actions (Edit Account, View Transactions, Delete Account) including Delete Account mutation persistence test",
+        "FixViolation: Fix incorrect Assets category total in tests.md CategorySection test entry ($152,450.00 should be $150,950.00 based on account balances)",
+        "FixViolation: Fix NavBar Log Out to properly terminate session (clear auth state/dispatch logout action) instead of just navigating to /login",
+        "RunTests: Verify tests pass after fixes"
       ],
-      "timestamp": "2026-02-26T16:16:44.611Z",
+      "timestamp": "2026-02-26T17:32:50.329Z",
       "app": "Accounting"
     },
     {
