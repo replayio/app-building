@@ -172,8 +172,8 @@ async function main() {
   // --- Set DATABASE_URL on Netlify site so functions can access the database ---
   console.log("\n--- Setting DATABASE_URL on Netlify ---");
   execSync(
-    `npx netlify env:set DATABASE_URL "${databaseUrl}" --scope functions --site ${netlifySiteId}`,
-    { cwd: appDir, stdio: "inherit" }
+    `npx netlify env:set DATABASE_URL "${databaseUrl}" --scope functions --force`,
+    { cwd: appDir, stdio: "inherit", env: { ...process.env, NETLIFY_SITE_ID: netlifySiteId } }
   );
 
   // --- Build ---
@@ -182,11 +182,11 @@ async function main() {
   // --- Deploy ---
   console.log("\n--- Deploying to Netlify ---");
   const deployOutput = execSync(
-    `npx netlify deploy --prod --dir dist --functions ./netlify/functions --site ${netlifySiteId} --json`,
+    `npx netlify deploy --prod --dir dist --functions ./netlify/functions --site ${netlifySiteId} --no-build --json`,
     { cwd: appDir, encoding: "utf-8" }
   );
   const deployData = JSON.parse(deployOutput);
-  const deployedUrl = deployData.deploy_url || deployData.url;
+  const deployedUrl = deployData.url || deployData.deploy_url;
   console.log(`Deployed to: ${deployedUrl}`);
 
   // --- Write deployment.txt ---
