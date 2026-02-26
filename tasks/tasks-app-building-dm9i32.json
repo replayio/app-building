@@ -3,9 +3,10 @@
     {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
-        "Unpack: Deploy to production"
+        "DoDeploy: Deploy the app to production",
+        "TestDeploy: Test the deployed app"
       ],
-      "timestamp": "2026-02-25T15:29:21.868Z",
+      "timestamp": "2026-02-26T04:59:01.974Z",
       "app": "SupplierTracker"
     },
     {
