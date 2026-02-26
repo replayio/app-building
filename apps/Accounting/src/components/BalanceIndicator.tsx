@@ -16,13 +16,13 @@ export function BalanceIndicator({
     <div className="balance-indicator" data-testid="balance-indicator">
       <div className="balance-totals">
         <div className="balance-total-item">
-          <span className="balance-total-label">Total Debits</span>
+          <span className="balance-total-label">Total Debits:</span>
           <span className="balance-total-value" data-testid="total-debits">
             {formatCurrency(totalDebits)}
           </span>
         </div>
         <div className="balance-total-item">
-          <span className="balance-total-label">Total Credits</span>
+          <span className="balance-total-label">Total Credits:</span>
           <span className="balance-total-value" data-testid="total-credits">
             {formatCurrency(totalCredits)}
           </span>

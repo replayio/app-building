@@ -132,10 +132,11 @@ function LineItemRow({
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path
-            d="M3 3L11 11M11 3L3 11"
+            d="M2 3.5H12M5.5 1.5H8.5M3.5 3.5L4 11.5C4 12.05 4.45 12.5 5 12.5H9C9.55 12.5 10 12.05 10 11.5L10.5 3.5M5.5 5.5V10.5M8.5 5.5V10.5"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       </button>
