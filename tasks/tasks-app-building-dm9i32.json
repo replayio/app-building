@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationLineageDiagramName: Fix testSpec.md - Rename LineageDiagram to LineageSection in docs/tests.md BatchDetailPage section (component list and section header) to match actual component name",
-        "FixViolationMissingLineageNavTest: Fix testSpec.md - Add test entry for clicking source transaction link in Lineage section navigates to TransactionDetailPage",
-        "FixViolationCreateNewTransactionButtonComponent: Fix testSpec.md - CreateNewTransactionButton is listed as standalone component but is part of BatchHeader; update component references accordingly"
-      ],
-      "timestamp": "2026-02-26T07:17:13.254Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
         "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
         "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"
