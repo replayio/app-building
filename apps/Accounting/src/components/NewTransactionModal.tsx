@@ -22,7 +22,7 @@ export function NewTransactionModal({
   const accounts = useAppSelector((s) => s.accounts.items);
 
   const [date, setDate] = useState(
-    editTransaction ? editTransaction.date : new Date().toISOString().split("T")[0]
+    editTransaction ? editTransaction.date.split("T")[0] : new Date().toISOString().split("T")[0]
   );
   const [description, setDescription] = useState(editTransaction?.description ?? "");
   const [currency, setCurrency] = useState(editTransaction?.currency ?? "USD");

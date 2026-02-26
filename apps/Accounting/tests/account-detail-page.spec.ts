@@ -201,6 +201,15 @@ test.describe("TransactionsTab", () => {
     await expect(page.getByTestId("new-transaction-modal")).toBeVisible({ timeout: 10000 });
     await expect(page.getByTestId("transaction-description")).toHaveValue("Grocery Store");
     await expect(page.getByTestId("transaction-date")).toHaveValue("2023-10-25");
+
+    // Verify line items are pre-populated with correct accounts, types, and amounts
+    await expect(page.getByTestId("line-item-account-0")).toHaveValue("Checking Account (1001)");
+    await expect(page.getByTestId("line-item-type-0")).toHaveValue("Debit");
+    await expect(page.getByTestId("line-item-amount-0")).toHaveValue("125.5");
+
+    await expect(page.getByTestId("line-item-account-1")).toHaveValue("Operating Expenses (5001)");
+    await expect(page.getByTestId("line-item-type-1")).toHaveValue("Credit");
+    await expect(page.getByTestId("line-item-amount-1")).toHaveValue("125.5");
   });
 
   test("TransactionsTab View/Edit link for credit transaction", async ({ page }) => {
@@ -216,6 +225,15 @@ test.describe("TransactionsTab", () => {
     await expect(page.getByTestId("new-transaction-modal")).toBeVisible({ timeout: 10000 });
     await expect(page.getByTestId("transaction-description")).toHaveValue("Salary Deposit");
     await expect(page.getByTestId("transaction-date")).toHaveValue("2023-10-24");
+
+    // Verify line items are pre-populated with correct accounts, types, and amounts
+    await expect(page.getByTestId("line-item-account-0")).toHaveValue("Checking Account (1001)");
+    await expect(page.getByTestId("line-item-type-0")).toHaveValue("Credit");
+    await expect(page.getByTestId("line-item-amount-0")).toHaveValue("3200");
+
+    await expect(page.getByTestId("line-item-account-1")).toHaveValue("Service Revenue (4001)");
+    await expect(page.getByTestId("line-item-type-1")).toHaveValue("Debit");
+    await expect(page.getByTestId("line-item-amount-1")).toHaveValue("3200");
   });
 
   test("TransactionsTab switching to Budget Details tab", async ({ page }) => {

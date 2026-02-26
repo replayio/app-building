@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolation: Fix AccountDetailPage View/Edit tests to verify all pre-populated fields (amount and account entries) as specified in the test spec",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T17:09:35.196Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",
         "CheckComponentsAccountsPage: Check writeApp.md directive violations in AccountsPage components",
         "CheckTestsAccountsPage: Check writeTests.md directive violations in AccountsPage tests"
