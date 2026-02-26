@@ -3,11 +3,9 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecCreateReportDialog: Check testSpec.md directive violations in CreateReportDialog test entries",
-        "CheckComponentsCreateReportDialog: Check writeApp.md directive violations in CreateReportDialog components",
-        "CheckTestsCreateReportDialog: Check writeTests.md directive violations in CreateReportDialog tests"
+        "FixViolation: Fix CreateReportDialog test spec ambiguous language - replace 'may' with exact behavior in pre-selection test (line 608) and report type change test (line 879), add missing Detailed Transactions pre-selection test"
       ],
-      "timestamp": "2026-02-26T16:16:48.299Z",
+      "timestamp": "2026-02-26T16:48:40.129Z",
       "app": "Accounting"
     },
     {
