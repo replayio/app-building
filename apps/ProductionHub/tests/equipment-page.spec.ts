@@ -78,6 +78,34 @@ test.describe("EquipmentHeader", () => {
       page.locator('[data-testid^="equipment-row-"]').filter({ hasText: uniqueName })
     ).toBeVisible({ timeout: 15000 });
   });
+  test("EQ-HDR-5: Cancelling Add Equipment modal does not create equipment", async ({ page }) => {
+    await page.goto("/equipment");
+    await expect(page.getByTestId("equipment-table")).toBeVisible({ timeout: 30000 });
+
+    // Count current rows on page 1
+    const initialCount = await page.locator('[data-testid^="equipment-row-"]').count();
+
+    // Open Add Equipment modal
+    await page.getByTestId("add-equipment-btn").click();
+    await expect(page.getByTestId("add-equipment-modal")).toBeVisible();
+
+    // Fill in some data
+    await page.getByTestId("add-equipment-title-input").fill("CancelledEquipment");
+
+    // Click Cancel
+    await page.getByTestId("add-equipment-cancel-btn").click();
+
+    // Modal closes
+    await expect(page.getByTestId("add-equipment-modal")).toBeHidden();
+
+    // Row count remains the same
+    await expect(page.locator('[data-testid^="equipment-row-"]')).toHaveCount(initialCount);
+
+    // The cancelled equipment does not appear
+    await expect(
+      page.locator('[data-testid^="equipment-row-"]').filter({ hasText: "CancelledEquipment" })
+    ).toHaveCount(0);
+  });
 });
 
 test.describe("EquipmentTable", () => {
@@ -158,6 +186,37 @@ test.describe("EquipmentTable", () => {
 
     const updatedRow = page.locator('[data-testid^="equipment-row-"]').filter({ hasText: "Industrial Mixer" });
     await expect(updatedRow.locator('[data-testid^="equipment-units-"]')).toHaveText("4", { timeout: 15000 });
+  });
+
+  test("EQ-TBL-4a: Cancelling Edit Equipment modal does not save changes", async ({ page }) => {
+    await page.goto("/equipment");
+    await expect(page.getByTestId("equipment-table")).toBeVisible({ timeout: 30000 });
+
+    // Use "Conveyor Belt" (page 1, seed data)
+    const row = page.locator('[data-testid^="equipment-row-"]').filter({ hasText: "Conveyor Belt" });
+    await expect(row).toBeVisible();
+
+    // Remember original units
+    const originalUnits = await row.locator('[data-testid^="equipment-units-"]').textContent();
+
+    // Click edit button
+    await row.locator('[data-testid^="equipment-edit-btn-"]').click();
+
+    // Edit modal appears with pre-filled data
+    await expect(page.getByTestId("edit-equipment-modal")).toBeVisible();
+
+    // Change Available Units
+    await page.getByTestId("edit-equipment-units-input").clear();
+    await page.getByTestId("edit-equipment-units-input").fill("999");
+
+    // Click Cancel
+    await page.getByTestId("edit-equipment-cancel-btn").click();
+
+    // Modal closes
+    await expect(page.getByTestId("edit-equipment-modal")).toBeHidden();
+
+    // Units remain unchanged
+    await expect(row.locator('[data-testid^="equipment-units-"]')).toHaveText(originalUnits!);
   });
 
   test("EQ-TBL-5: Delete trash icon is displayed in the Actions column", async ({ page }) => {

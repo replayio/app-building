@@ -1103,6 +1103,14 @@ Components: EquipmentHeader, EquipmentTable
 - **Then** the new equipment appears in the equipment table with the entered values
 - **And** the data persists after navigating away and returning to /equipment
 
+#### EQ-HDR-5: Cancelling Add Equipment modal does not create equipment
+- **Components:** EquipmentHeader
+- **Given** the user is on /equipment
+- **When** the user clicks the "+ Add Equipment" button
+- **Then** a modal is displayed with fields for Title, Description, and Available Units
+- **When** the user fills in Title "CancelledEquipment" and clicks the "Cancel" button on the modal
+- **Then** the modal closes and no new equipment "CancelledEquipment" is added to the EquipmentTable
+
 ### EquipmentTable
 
 #### EQ-TBL-1: Table displays Title, Description, Available Units, and Actions column headers
@@ -1128,6 +1136,14 @@ Components: EquipmentHeader, EquipmentTable
 - **When** the user changes the Available Units from "3" to "4" and saves
 - **Then** the table row updates to show Available Units as "4"
 - **And** the change persists after navigating away and returning to /equipment
+
+#### EQ-TBL-4a: Cancelling Edit Equipment modal does not save changes
+- **Components:** EquipmentTable
+- **Given** the user is on /equipment and a row shows equipment "Conveyor Belt"
+- **When** the user clicks the pencil icon in that row's Actions column
+- **Then** a modal is displayed pre-filled with the equipment's current data
+- **When** the user changes the Available Units and clicks the "Cancel" button on the modal
+- **Then** the modal closes and the equipment row "Conveyor Belt" remains unchanged
 
 #### EQ-TBL-5: Delete trash icon is displayed in the Actions column
 - **Components:** EquipmentTable
