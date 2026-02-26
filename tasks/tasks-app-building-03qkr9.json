@@ -3,11 +3,19 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecAccounts: Check testSpec.md directive violations in AccountsPage test entries",
-        "CheckComponentsAccounts: Check writeApp.md directive violations in AccountsPage components",
-        "CheckTestsAccounts: Check writeTests.md directive violations in AccountsPage tests"
+        "FixViolationAccountsNavTestSpec: Fix AccountsPage NavigationHeader test entry - navigation links listed as 'Dashboard, Inventory (expandable), Orders, Accounts, Reports, Settings' but should match actual implementation and DashboardPage test entry: 'Accounts, Materials, Batches, Transactions, Settings'",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-26T18:26:35.515Z",
+      "timestamp": "2026-02-26T21:35:15.695Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationAccountsTestSpec: Fix testSpec.md violations in AccountsPage: (1) Add persistence assertions to Input/Output account creation test entries, (2) Add styling assertions to Create Input/Output Account button test entries matching Create Stock Account pattern, (3) Add edit modal validation test entry verifying Account Name is required",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T21:32:20.883Z",
       "app": "InventoryTracker"
     },
     {
