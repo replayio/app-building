@@ -1,0 +1,335 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]: FINANCEWEB
+    - generic [ref=e6]:
+      - button "Dashboard" [ref=e7] [cursor=pointer]
+      - button "Accounts" [ref=e8] [cursor=pointer]
+      - button "Transactions" [ref=e9] [cursor=pointer]
+      - button "Reports" [ref=e10] [cursor=pointer]
+      - button "Budgets" [ref=e11] [cursor=pointer]
+    - generic [ref=e12]:
+      - button "New Transaction" [ref=e13] [cursor=pointer]:
+        - img [ref=e14]
+        - text: New Transaction
+      - generic [ref=e16]:
+        - generic [ref=e17]: U
+        - generic [ref=e18]: John Doe
+      - button "Log Out" [ref=e19] [cursor=pointer]
+  - generic [ref=e20]:
+    - link "Home" [ref=e21] [cursor=pointer]:
+      - /url: "#"
+    - generic [ref=e22]: ">"
+    - generic [ref=e23]: Accounts
+  - generic [ref=e24]:
+    - generic [ref=e26]:
+      - link "Page" [ref=e27] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e28]: ">"
+      - generic [ref=e29]: AccountDetailPage
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - 'heading "Account: Checking Account" [level=1] [ref=e32]'
+        - generic [ref=e33]: "Category: Asset"
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - img
+          - textbox "Search transactions..." [ref=e36]
+        - button "New Transaction" [ref=e37] [cursor=pointer]
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - heading "Budget Overview" [level=2] [ref=e40]
+        - generic [ref=e41]: 80% used
+      - generic [ref=e44]: "Actual: $10,000.00 / Budgeted: $12,500.00"
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - button "Transactions" [ref=e47] [cursor=pointer]
+        - button "Budget Details" [ref=e48] [cursor=pointer]
+      - table [ref=e51]:
+        - rowgroup [ref=e52]:
+          - row "Date Description Amount Direction Actions" [ref=e53]:
+            - columnheader "Date" [ref=e54]
+            - columnheader "Description" [ref=e55]
+            - columnheader "Amount" [ref=e56]
+            - columnheader "Direction" [ref=e57]
+            - columnheader "Actions" [ref=e58]
+        - rowgroup [ref=e59]:
+          - row "Invalid Date Grocery Store $125.50 Debit View/Edit" [ref=e60]:
+            - cell "Invalid Date" [ref=e61]
+            - cell "Grocery Store" [ref=e62]
+            - cell "$125.50" [ref=e63]
+            - cell "Debit" [ref=e64]:
+              - generic [ref=e65]: Debit
+            - cell "View/Edit" [ref=e66]:
+              - button "View/Edit" [ref=e67] [cursor=pointer]
+          - row "Invalid Date Salary Deposit $3,200.00 Credit View/Edit" [ref=e68]:
+            - cell "Invalid Date" [ref=e69]
+            - cell "Salary Deposit" [ref=e70]
+            - cell "$3,200.00" [ref=e71]
+            - cell "Credit" [ref=e72]:
+              - generic [ref=e73]: Credit
+            - cell "View/Edit" [ref=e74]:
+              - button "View/Edit" [ref=e75] [cursor=pointer]
+          - row "Invalid Date Electric Bill $85.00 Debit View/Edit" [ref=e76]:
+            - cell "Invalid Date" [ref=e77]
+            - cell "Electric Bill" [ref=e78]
+            - cell "$85.00" [ref=e79]
+            - cell "Debit" [ref=e80]:
+              - generic [ref=e81]: Debit
+            - cell "View/Edit" [ref=e82]:
+              - button "View/Edit" [ref=e83] [cursor=pointer]
+    - generic [ref=e84]:
+      - heading "Reporting" [level=2] [ref=e85]
+      - generic [ref=e86]:
+        - button "Actual vs Budget Report" [active] [ref=e87] [cursor=pointer]:
+          - img [ref=e88]
+          - text: Actual vs Budget Report
+        - button "Transaction History Report" [ref=e91] [cursor=pointer]:
+          - img [ref=e92]
+          - text: Transaction History Report
+    - generic [ref=e96]:
+      - generic [ref=e97]:
+        - heading "Create New Report" [level=2] [ref=e98]
+        - button [ref=e99] [cursor=pointer]:
+          - img [ref=e100]
+      - paragraph [ref=e102]: Configure parameters to generate a financial report based on accounts and transactions.
+      - generic [ref=e103]: Budget vs Actual - Checking Account
+      - generic [ref=e104]:
+        - generic [ref=e105]:
+          - generic [ref=e106]: Report Settings
+          - generic [ref=e107]:
+            - generic [ref=e108]: Report Type
+            - generic [ref=e109]:
+              - button "Summary Overview" [ref=e110] [cursor=pointer]:
+                - img [ref=e111]
+                - generic [ref=e114]: Summary Overview
+              - button "Detailed Transactions" [ref=e115] [cursor=pointer]:
+                - img [ref=e116]
+                - generic [ref=e117]: Detailed Transactions
+              - button "Budget vs. Actual (Comparison)" [ref=e118] [cursor=pointer]:
+                - img [ref=e119]
+                - generic [ref=e120]: Budget vs. Actual (Comparison)
+          - generic [ref=e121]:
+            - generic [ref=e122]: Date Range
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: Start Date
+                - generic [ref=e126]:
+                  - generic:
+                    - img
+                  - textbox [ref=e127]
+              - generic [ref=e128]:
+                - generic [ref=e129]: End Date
+                - generic [ref=e130]:
+                  - generic:
+                    - img
+                  - textbox [ref=e131]
+            - generic [ref=e132]:
+              - button "This Month" [ref=e133] [cursor=pointer]
+              - button "Last Quarter" [ref=e134] [cursor=pointer]
+              - button "YTD" [ref=e135] [cursor=pointer]
+          - generic [ref=e136]:
+            - generic [ref=e137]: Filter Accounts & Categories
+            - generic [ref=e138]:
+              - generic [ref=e140] [cursor=pointer]:
+                - button "Expand Assets" [ref=e141]:
+                  - img [ref=e142]
+                - button "Assets (All)" [ref=e144]:
+                  - img [ref=e145]
+                - generic [ref=e147]: Assets (All)
+              - generic [ref=e149] [cursor=pointer]:
+                - button "Expand Liabilities" [ref=e150]:
+                  - img [ref=e151]
+                - button "Liabilities (All)" [ref=e153]:
+                  - img [ref=e154]
+                - generic [ref=e156]: Liabilities (All)
+              - generic [ref=e158] [cursor=pointer]:
+                - button "Expand Equity" [ref=e159]:
+                  - img [ref=e160]
+                - button "Equity (All)" [ref=e162]:
+                  - img [ref=e163]
+                - generic [ref=e165]: Equity (All)
+              - generic [ref=e167] [cursor=pointer]:
+                - button "Expand Revenue" [ref=e168]:
+                  - img [ref=e169]
+                - button "Revenue (All)" [ref=e171]:
+                  - img [ref=e172]
+                - generic [ref=e174]: Revenue (All)
+              - generic [ref=e176] [cursor=pointer]:
+                - button "Expand Expenses" [ref=e177]:
+                  - img [ref=e178]
+                - button "Expenses (All)" [ref=e180]:
+                  - img [ref=e181]
+                - generic [ref=e183]: Expenses (All)
+            - generic [ref=e184]:
+              - generic [ref=e185]:
+                - checkbox
+              - generic [ref=e187] [cursor=pointer]: Include Zero Balance Accounts
+        - generic [ref=e188]:
+          - generic [ref=e189]:
+            - generic [ref=e190]: Report Preview (Budget vs. Actual)
+            - button "Refresh Preview" [ref=e191] [cursor=pointer]:
+              - img [ref=e192]
+              - text: Refresh Preview
+          - table [ref=e198]:
+            - rowgroup [ref=e199]:
+              - row "Category / Account Budget Actual Variance Variance %" [ref=e200]:
+                - columnheader "Category / Account" [ref=e201]
+                - columnheader "Budget" [ref=e202]
+                - columnheader "Actual" [ref=e203]
+                - columnheader "Variance" [ref=e204]
+                - columnheader "Variance %" [ref=e205]
+            - rowgroup [ref=e206]:
+              - row "Total Revenue $0.00 $0.00 $+0.00 +0.0%" [ref=e207]:
+                - cell "Total Revenue" [ref=e208]:
+                  - generic [ref=e210]: Total Revenue
+                - cell "$0.00" [ref=e211]
+                - cell "$0.00" [ref=e212]
+                - cell "$+0.00" [ref=e213]
+                - cell "+0.0%" [ref=e214]
+              - row "Total Expenses $0.00 $0.00 $+0.00 +0.0%" [ref=e215]:
+                - cell "Total Expenses" [ref=e216]:
+                  - generic [ref=e218]: Total Expenses
+                - cell "$0.00" [ref=e219]
+                - cell "$0.00" [ref=e220]
+                - cell "$+0.00" [ref=e221]
+                - cell "+0.0%" [ref=e222]
+              - row "Net Income $0.00 $0.00 $+0.00 +0.0%" [ref=e223]:
+                - cell "Net Income" [ref=e224]:
+                  - generic [ref=e226]: Net Income
+                - cell "$0.00" [ref=e227]
+                - cell "$0.00" [ref=e228]
+                - cell "$+0.00" [ref=e229]
+                - cell "+0.0%" [ref=e230]
+              - row "Checking Account $12,500.00 $10,000.00 $-2,500.00 -20.0%" [ref=e231] [cursor=pointer]:
+                - cell "Checking Account" [ref=e232]:
+                  - generic [ref=e233]:
+                    - img [ref=e235]
+                    - generic [ref=e237]: Checking Account
+                - cell "$12,500.00" [ref=e238]
+                - cell "$10,000.00" [ref=e239]
+                - cell "$-2,500.00" [ref=e240]
+                - cell "-20.0%" [ref=e241]
+              - row "Investment Portfolio $0.00 $0.00 $+0.00 +0.0%" [ref=e242] [cursor=pointer]:
+                - cell "Investment Portfolio" [ref=e243]:
+                  - generic [ref=e244]:
+                    - img [ref=e246]
+                    - generic [ref=e248]: Investment Portfolio
+                - cell "$0.00" [ref=e249]
+                - cell "$0.00" [ref=e250]
+                - cell "$+0.00" [ref=e251]
+                - cell "+0.0%" [ref=e252]
+              - row "Savings Account $0.00 $0.00 $+0.00 +0.0%" [ref=e253] [cursor=pointer]:
+                - cell "Savings Account" [ref=e254]:
+                  - generic [ref=e255]:
+                    - img [ref=e257]
+                    - generic [ref=e259]: Savings Account
+                - cell "$0.00" [ref=e260]
+                - cell "$0.00" [ref=e261]
+                - cell "$+0.00" [ref=e262]
+                - cell "+0.0%" [ref=e263]
+              - row "Car Loan $0.00 $0.00 $+0.00 +0.0%" [ref=e264] [cursor=pointer]:
+                - cell "Car Loan" [ref=e265]:
+                  - generic [ref=e266]:
+                    - img [ref=e268]
+                    - generic [ref=e270]: Car Loan
+                - cell "$0.00" [ref=e271]
+                - cell "$0.00" [ref=e272]
+                - cell "$+0.00" [ref=e273]
+                - cell "+0.0%" [ref=e274]
+              - row "Credit Card $5,000.00 $3,500.00 $-1,500.00 -30.0%" [ref=e275] [cursor=pointer]:
+                - cell "Credit Card" [ref=e276]:
+                  - generic [ref=e277]:
+                    - img [ref=e279]
+                    - generic [ref=e281]: Credit Card
+                - cell "$5,000.00" [ref=e282]
+                - cell "$3,500.00" [ref=e283]
+                - cell "$-1,500.00" [ref=e284]
+                - cell "-30.0%" [ref=e285]
+              - row "Mortgage Loan $0.00 $0.00 $+0.00 +0.0%" [ref=e286] [cursor=pointer]:
+                - cell "Mortgage Loan" [ref=e287]:
+                  - generic [ref=e288]:
+                    - img [ref=e290]
+                    - generic [ref=e292]: Mortgage Loan
+                - cell "$0.00" [ref=e293]
+                - cell "$0.00" [ref=e294]
+                - cell "$+0.00" [ref=e295]
+                - cell "+0.0%" [ref=e296]
+              - row "Owner's Equity $0.00 $0.00 $+0.00 +0.0%" [ref=e297] [cursor=pointer]:
+                - cell "Owner's Equity" [ref=e298]:
+                  - generic [ref=e299]:
+                    - img [ref=e301]
+                    - generic [ref=e303]: Owner's Equity
+                - cell "$0.00" [ref=e304]
+                - cell "$0.00" [ref=e305]
+                - cell "$+0.00" [ref=e306]
+                - cell "+0.0%" [ref=e307]
+              - row "Retained Earnings $0.00 $0.00 $+0.00 +0.0%" [ref=e308] [cursor=pointer]:
+                - cell "Retained Earnings" [ref=e309]:
+                  - generic [ref=e310]:
+                    - img [ref=e312]
+                    - generic [ref=e314]: Retained Earnings
+                - cell "$0.00" [ref=e315]
+                - cell "$0.00" [ref=e316]
+                - cell "$+0.00" [ref=e317]
+                - cell "+0.0%" [ref=e318]
+              - row "Product Revenue $0.00 $0.00 $+0.00 +0.0%" [ref=e319] [cursor=pointer]:
+                - cell "Product Revenue" [ref=e320]:
+                  - generic [ref=e321]:
+                    - img [ref=e323]
+                    - generic [ref=e325]: Product Revenue
+                - cell "$0.00" [ref=e326]
+                - cell "$0.00" [ref=e327]
+                - cell "$+0.00" [ref=e328]
+                - cell "+0.0%" [ref=e329]
+              - row "Service Revenue $0.00 $0.00 $+0.00 +0.0%" [ref=e330] [cursor=pointer]:
+                - cell "Service Revenue" [ref=e331]:
+                  - generic [ref=e332]:
+                    - img [ref=e334]
+                    - generic [ref=e336]: Service Revenue
+                - cell "$0.00" [ref=e337]
+                - cell "$0.00" [ref=e338]
+                - cell "$+0.00" [ref=e339]
+                - cell "+0.0%" [ref=e340]
+              - row "Operating Expenses $0.00 $0.00 $+0.00 +0.0%" [ref=e341] [cursor=pointer]:
+                - cell "Operating Expenses" [ref=e342]:
+                  - generic [ref=e343]:
+                    - img [ref=e345]
+                    - generic [ref=e347]: Operating Expenses
+                - cell "$0.00" [ref=e348]
+                - cell "$0.00" [ref=e349]
+                - cell "$+0.00" [ref=e350]
+                - cell "+0.0%" [ref=e351]
+              - row "Payroll Expenses $0.00 $0.00 $+0.00 +0.0%" [ref=e352] [cursor=pointer]:
+                - cell "Payroll Expenses" [ref=e353]:
+                  - generic [ref=e354]:
+                    - img [ref=e356]
+                    - generic [ref=e358]: Payroll Expenses
+                - cell "$0.00" [ref=e359]
+                - cell "$0.00" [ref=e360]
+                - cell "$+0.00" [ref=e361]
+                - cell "+0.0%" [ref=e362]
+              - row "Rent Expense $0.00 $0.00 $+0.00 +0.0%" [ref=e363] [cursor=pointer]:
+                - cell "Rent Expense" [ref=e364]:
+                  - generic [ref=e365]:
+                    - img [ref=e367]
+                    - generic [ref=e369]: Rent Expense
+                - cell "$0.00" [ref=e370]
+                - cell "$0.00" [ref=e371]
+                - cell "$+0.00" [ref=e372]
+                - cell "+0.0%" [ref=e373]
+              - row "Utilities Expense $0.00 $0.00 $+0.00 +0.0%" [ref=e374] [cursor=pointer]:
+                - cell "Utilities Expense" [ref=e375]:
+                  - generic [ref=e376]:
+                    - img [ref=e378]
+                    - generic [ref=e380]: Utilities Expense
+                - cell "$0.00" [ref=e381]
+                - cell "$0.00" [ref=e382]
+                - cell "$+0.00" [ref=e383]
+                - cell "+0.0%" [ref=e384]
+      - generic [ref=e385]:
+        - button "Cancel" [ref=e386] [cursor=pointer]
+        - button "Generate Report" [disabled] [ref=e387]
+```

@@ -27,6 +27,10 @@ export function CreateReportDialog({ onClose, defaultType, defaultAccountName }:
 
   const selectedCategories = getSelectedCategories(subCategoryState);
 
+  const reportName = defaultAccountName
+    ? `${reportType === "budget_vs_actual" ? "Budget vs Actual" : reportType === "detailed" ? "Detailed Transactions" : "Summary Overview"} - ${defaultAccountName}`
+    : `${reportType === "budget_vs_actual" ? "Budget vs Actual" : reportType === "detailed" ? "Detailed Transactions" : "Summary Overview"} Report`;
+
   useEffect(() => {
     if (accounts.length === 0) {
       dispatch(fetchAccounts());
@@ -39,14 +43,10 @@ export function CreateReportDialog({ onClose, defaultType, defaultAccountName }:
     if (!startDate || !endDate) return;
     setSubmitting(true);
 
-    const name = defaultAccountName
-      ? `${reportType === "budget_vs_actual" ? "Budget vs Actual" : reportType === "detailed" ? "Detailed Transactions" : "Summary Overview"} - ${defaultAccountName}`
-      : `${reportType === "budget_vs_actual" ? "Budget vs Actual" : reportType === "detailed" ? "Detailed Transactions" : "Summary Overview"} Report`;
-
     try {
       await dispatch(
         createReport({
-          name,
+          name: reportName,
           report_type: reportType,
           date_range_start: startDate,
           date_range_end: endDate,
@@ -77,6 +77,10 @@ export function CreateReportDialog({ onClose, defaultType, defaultAccountName }:
         <p className="create-report-dialog-subtitle">
           Configure parameters to generate a financial report based on accounts and transactions.
         </p>
+
+        <div className="create-report-dialog-report-name" data-testid="report-name-preview">
+          {reportName}
+        </div>
 
         <div className="create-report-dialog-body">
           <div className="create-report-dialog-left">

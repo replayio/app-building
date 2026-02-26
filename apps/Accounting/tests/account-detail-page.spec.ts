@@ -473,6 +473,9 @@ test.describe("ReportingLinks", () => {
     // Verify CreateReportDialog opens with Budget vs Actual type pre-selected
     await expect(page.getByTestId("create-report-dialog")).toBeVisible({ timeout: 10000 });
     await expect(page.getByTestId("report-type-budget_vs_actual")).toHaveClass(/report-type-tab--active/);
+
+    // Verify account name is pre-selected in the report name
+    await expect(page.getByTestId("report-name-preview")).toContainText("Checking Account");
   });
 
   test("ReportingLinks displays Transaction History Report link", async ({ page }) => {
@@ -488,5 +491,8 @@ test.describe("ReportingLinks", () => {
     // Verify CreateReportDialog opens with Detailed Transactions type pre-selected
     await expect(page.getByTestId("create-report-dialog")).toBeVisible({ timeout: 10000 });
     await expect(page.getByTestId("report-type-detailed")).toHaveClass(/report-type-tab--active/);
+
+    // Verify account name is pre-selected in the report name
+    await expect(page.getByTestId("report-name-preview")).toContainText("Checking Account");
   });
 });

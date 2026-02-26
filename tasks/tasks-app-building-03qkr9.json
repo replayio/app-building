@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationReportingLinksAccountPreselect: Fix ReportingLinks tests to verify account name pre-selection in CreateReportDialog as specified in test entries",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T21:12:27.335Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecAccounts: Check testSpec.md directive violations in AccountsPage test entries",
         "CheckComponentsAccounts: Check writeApp.md directive violations in AccountsPage components",
         "CheckTestsAccounts: Check writeTests.md directive violations in AccountsPage tests"

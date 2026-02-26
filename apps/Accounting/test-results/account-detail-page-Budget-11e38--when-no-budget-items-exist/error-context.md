@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]: FINANCEWEB
+    - generic [ref=e6]:
+      - button "Dashboard" [ref=e7] [cursor=pointer]
+      - button "Accounts" [ref=e8] [cursor=pointer]
+      - button "Transactions" [ref=e9] [cursor=pointer]
+      - button "Reports" [ref=e10] [cursor=pointer]
+      - button "Budgets" [ref=e11] [cursor=pointer]
+    - generic [ref=e12]:
+      - button "New Transaction" [ref=e13] [cursor=pointer]:
+        - img [ref=e14]
+        - text: New Transaction
+      - generic [ref=e16]:
+        - generic [ref=e17]: U
+        - generic [ref=e18]: John Doe
+      - button "Log Out" [ref=e19] [cursor=pointer]
+  - generic [ref=e20]:
+    - link "Home" [ref=e21] [cursor=pointer]:
+      - /url: "#"
+    - generic [ref=e22]: ">"
+    - generic [ref=e23]: Accounts
+  - generic [ref=e24]:
+    - generic [ref=e26]:
+      - link "Page" [ref=e27] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e28]: ">"
+      - generic [ref=e29]: AccountDetailPage
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - 'heading "Account: Savings Account" [level=1] [ref=e32]'
+        - generic [ref=e33]: "Category: Asset"
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - img
+          - textbox "Search transactions..." [ref=e36]
+        - button "New Transaction" [ref=e37] [cursor=pointer]
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - heading "Budget Overview" [level=2] [ref=e40]
+        - generic [ref=e41]: 0% used
+      - generic [ref=e43]: "Actual: $0.00 / Budgeted: $0.00"
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - button "Transactions" [ref=e46] [cursor=pointer]
+        - button "Budget Details" [ref=e47] [cursor=pointer]
+      - generic [ref=e49]: No transactions found
+    - generic [ref=e50]:
+      - heading "Reporting" [level=2] [ref=e51]
+      - generic [ref=e52]:
+        - button "Actual vs Budget Report" [ref=e53] [cursor=pointer]:
+          - img [ref=e54]
+          - text: Actual vs Budget Report
+        - button "Transaction History Report" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+          - text: Transaction History Report
+```
