@@ -3,12 +3,11 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
-        "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
-        "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"
+        "FixViolation: Fix TransactionsPage inline JSX - use existing NewTransactionButton component and extract TransactionsPageHeader component",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-26T16:16:51.948Z",
-      "app": "Accounting"
+      "timestamp": "2026-02-26T16:26:07.267Z",
+      "app": "InventoryTracker"
     },
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
