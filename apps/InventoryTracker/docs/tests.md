@@ -402,6 +402,7 @@ Components: NavigationHeader, StockAccountsList, InputAccountsList, OutputAccoun
 - Given: The user is on the Accounts page
 - Then: A "+ Create Input Account" button is displayed to the right of the "Input Accounts" heading
 - And: The button has a plus (+) icon and the text "Create Input Account"
+- And: The button is styled as a primary action button (blue/filled)
 
 **Test: Clicking Create Input Account button opens a create account modal for input type**
 - Components: CreateAccountButton
@@ -419,12 +420,14 @@ Components: NavigationHeader, StockAccountsList, InputAccountsList, OutputAccoun
 - And: The user clicks the "Create" button
 - Then: The modal closes
 - And: A new row for "Returns" appears in the Input Accounts table with type "Input" and the entered description
+- And: The new account is persisted to the database
 
 **Test: Create Output Account button is displayed next to Output Accounts heading**
 - Components: CreateAccountButton, OutputAccountsList
 - Given: The user is on the Accounts page
 - Then: A "+ Create Output Account" button is displayed to the right of the "Output Accounts" heading
 - And: The button has a plus (+) icon and the text "Create Output Account"
+- And: The button is styled as a primary action button (blue/filled)
 
 **Test: Clicking Create Output Account button opens a create account modal for output type**
 - Components: CreateAccountButton
@@ -442,6 +445,7 @@ Components: NavigationHeader, StockAccountsList, InputAccountsList, OutputAccoun
 - And: The user clicks the "Create" button
 - Then: The modal closes
 - And: A new row for "Waste Disposal" appears in the Output Accounts table with type "Output" and the entered description
+- And: The new account is persisted to the database
 
 ### AccountRowActions
 
@@ -482,6 +486,14 @@ Components: NavigationHeader, StockAccountsList, InputAccountsList, OutputAccoun
 - When: The user clicks the "Cancel" button
 - Then: The modal closes
 - And: The account row still shows the original "Vendor Credits" name and description
+
+**Test: Edit account modal validates that Account Name is required**
+- Components: AccountRowActions
+- Given: The edit modal is open for "Vendor Credits"
+- When: The user clears the Account Name field so it is empty
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Account Name is required
+- And: The modal remains open and the account is not updated
 
 **Test: Clicking the Archive action icon shows a confirmation dialog**
 - Components: AccountRowActions
