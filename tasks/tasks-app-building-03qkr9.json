@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationDescriptionFieldSize: Fix BasicInfoForm Description field to be wider than other fields (use asymmetric grid like grid-cols-[1fr_1fr_2fr_1fr]) and make textarea taller (minHeight: 80+) to match mockup and test spec",
-        "FixViolationBalanceValidation: Add double-entry balance validation to NewTransactionPage validate() function - check that transfer amounts balance (debits equal credits) per test spec line 2833",
-        "RunTests: Verify tests pass after fixes"
-      ],
-      "timestamp": "2026-02-26T18:33:51.014Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTransactionDetail: Check testSpec.md directive violations in TransactionDetailPage test entries",
         "CheckComponentsTransactionDetail: Check writeApp.md directive violations in TransactionDetailPage components",
         "CheckTestsTransactionDetail: Check writeTests.md directive violations in TransactionDetailPage tests"

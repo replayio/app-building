@@ -1,0 +1,117 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "InventoryFlow" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - text: InventoryFlow
+    - navigation [ref=e9]:
+      - link "Accounts" [ref=e10] [cursor=pointer]:
+        - /url: /accounts
+      - link "Materials" [ref=e11] [cursor=pointer]:
+        - /url: /materials
+      - link "Batches" [ref=e12] [cursor=pointer]:
+        - /url: /batches
+      - link "Transactions" [ref=e13] [cursor=pointer]:
+        - /url: /transactions
+      - link "Settings" [ref=e14] [cursor=pointer]:
+        - /url: /settings
+    - generic [ref=e16]:
+      - generic [ref=e17]: A
+      - generic [ref=e18]: Admin
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - link "Home" [ref=e21] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e22]: ">"
+      - generic [ref=e23]: Transactions
+    - generic [ref=e24]:
+      - heading "Transactions" [level=1] [ref=e25]
+      - button "New Transaction" [ref=e27] [cursor=pointer]:
+        - img [ref=e28]
+        - text: New Transaction
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Filters
+        - button "Clear Filters" [ref=e32] [cursor=pointer]
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - text: Date Range
+          - button "Select date range" [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+            - generic [ref=e38]: Select date range
+        - generic [ref=e39]:
+          - text: Involved Account(s)
+          - button "All Accounts" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]: All Accounts
+            - img [ref=e42]
+        - generic [ref=e44]:
+          - text: Material
+          - button "All Materials" [active] [ref=e45] [cursor=pointer]:
+            - generic [ref=e46]: All Materials
+            - img [ref=e47]
+          - generic [ref=e49]:
+            - button "Aluminum Rod" [ref=e50] [cursor=pointer]:
+              - img [ref=e51]
+              - generic [ref=e53]: Aluminum Rod
+            - button "Aluminum Sheets" [ref=e54] [cursor=pointer]:
+              - img [ref=e55]
+              - generic [ref=e57]: Aluminum Sheets
+            - button "Cardboard Box (Large)" [ref=e58] [cursor=pointer]:
+              - img [ref=e59]
+              - generic [ref=e61]: Cardboard Box (Large)
+            - button "Cardboard Box (Small)" [ref=e62] [cursor=pointer]:
+              - img [ref=e63]
+              - generic [ref=e65]: Cardboard Box (Small)
+            - button "Circuit Board" [ref=e66] [cursor=pointer]:
+              - img [ref=e67]
+              - generic [ref=e69]: Circuit Board
+            - button "Copper Wire" [ref=e70] [cursor=pointer]:
+              - img [ref=e71]
+              - generic [ref=e73]: Copper Wire
+            - button "Motor Assembly" [ref=e74] [cursor=pointer]:
+              - img [ref=e75]
+              - generic [ref=e77]: Motor Assembly
+            - button "Steel Bolts M6" [ref=e78] [cursor=pointer]:
+              - img [ref=e79]
+              - generic [ref=e81]: Steel Bolts M6
+            - button "Steel Sheet" [ref=e82] [cursor=pointer]:
+              - img [ref=e83]
+              - generic [ref=e85]: Steel Sheet
+            - button "Widget A" [ref=e86] [cursor=pointer]:
+              - img [ref=e87]
+              - generic [ref=e89]: Widget A
+            - button "Widget B" [ref=e90] [cursor=pointer]:
+              - img [ref=e91]
+              - generic [ref=e93]: Widget B
+        - generic [ref=e94]:
+          - text: Transaction Type
+          - button "All Types (Purchase, Consumption, Transfer...)" [ref=e95] [cursor=pointer]:
+            - generic [ref=e96]: All Types (Purchase, Consumption, Transfer...)
+            - img [ref=e97]
+    - generic [ref=e100]:
+      - img
+      - textbox "Search by ID or description..." [ref=e101]
+    - generic [ref=e102]:
+      - generic [ref=e103]:
+        - 'button "Sort by: Date (Newest First)" [ref=e105] [cursor=pointer]':
+          - generic [ref=e106]: "Sort by: Date (Newest First)"
+          - img [ref=e107]
+        - generic [ref=e109]: Showing 0-0 of 0 results
+      - table [ref=e110]:
+        - rowgroup [ref=e111]:
+          - row "Date ↓ Transaction ID Description Accounts affected Materials and amounts" [ref=e112]:
+            - columnheader "Date ↓" [ref=e113]:
+              - button "Date ↓" [ref=e114] [cursor=pointer]
+            - columnheader "Transaction ID" [ref=e115]:
+              - button "Transaction ID" [ref=e116] [cursor=pointer]
+            - columnheader "Description" [ref=e117]
+            - columnheader "Accounts affected" [ref=e118]
+            - columnheader "Materials and amounts" [ref=e119]
+        - rowgroup [ref=e120]:
+          - row "No transactions found" [ref=e121]:
+            - cell "No transactions found" [ref=e122]:
+              - generic [ref=e124]: No transactions found
+```

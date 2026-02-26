@@ -61,7 +61,7 @@ export function BasicInfoForm({ data, onChange, errors }: BasicInfoFormProps) {
         <div className="section-card-body">
           <div
             data-testid="basic-info-fields"
-            className="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4"
+            className="grid grid-cols-[1fr_1fr_2fr_1fr] max-md:grid-cols-2 max-sm:grid-cols-1 gap-4"
           >
         {/* Date field */}
         <div className="form-group" style={{ marginBottom: 0 }}>
@@ -139,7 +139,7 @@ export function BasicInfoForm({ data, onChange, errors }: BasicInfoFormProps) {
             id="txn-description"
             data-testid="basic-info-description-input"
             className="form-textarea"
-            style={{ minHeight: 36, height: 36, resize: "vertical" }}
+            style={{ minHeight: 80, resize: "vertical" }}
             value={data.description}
             onChange={(e) =>
               onChange({ ...data, description: e.target.value })

@@ -1,0 +1,83 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "InventoryFlow" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - text: InventoryFlow
+    - navigation [ref=e9]:
+      - link "Accounts" [ref=e10] [cursor=pointer]:
+        - /url: /accounts
+      - link "Materials" [ref=e11] [cursor=pointer]:
+        - /url: /materials
+      - link "Batches" [ref=e12] [cursor=pointer]:
+        - /url: /batches
+      - link "Transactions" [ref=e13] [cursor=pointer]:
+        - /url: /transactions
+      - link "Settings" [ref=e14] [cursor=pointer]:
+        - /url: /settings
+    - generic [ref=e16]:
+      - generic [ref=e17]: A
+      - generic [ref=e18]: Admin
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - link "Home" [ref=e21] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e22]: ">"
+      - generic [ref=e23]: Transactions
+    - generic [ref=e24]:
+      - heading "Transactions" [level=1] [ref=e25]
+      - button "New Transaction" [ref=e27] [cursor=pointer]:
+        - img [ref=e28]
+        - text: New Transaction
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Filters
+        - button "Clear Filters" [ref=e32] [cursor=pointer]
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - text: Date Range
+          - button "Select date range" [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+            - generic [ref=e38]: Select date range
+        - generic [ref=e39]:
+          - text: Involved Account(s)
+          - button "All Accounts" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]: All Accounts
+            - img [ref=e42]
+        - generic [ref=e44]:
+          - text: Material
+          - button "All Materials" [ref=e45] [cursor=pointer]:
+            - generic [ref=e46]: All Materials
+            - img [ref=e47]
+        - generic [ref=e49]:
+          - text: Transaction Type
+          - button "All Types (Purchase, Consumption, Transfer...)" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: All Types (Purchase, Consumption, Transfer...)
+            - img [ref=e52]
+    - generic [ref=e55]:
+      - img
+      - textbox "Search by ID or description..." [ref=e56]
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - 'button "Sort by: Date (Newest First)" [ref=e60] [cursor=pointer]':
+          - generic [ref=e61]: "Sort by: Date (Newest First)"
+          - img [ref=e62]
+        - generic [ref=e64]: Showing 0-0 of 0 results
+      - table [ref=e65]:
+        - rowgroup [ref=e66]:
+          - row "Date ↓ Transaction ID Description Accounts affected Materials and amounts" [ref=e67]:
+            - columnheader "Date ↓" [ref=e68]:
+              - button "Date ↓" [ref=e69] [cursor=pointer]
+            - columnheader "Transaction ID" [ref=e70]:
+              - button "Transaction ID" [ref=e71] [cursor=pointer]
+            - columnheader "Description" [ref=e72]
+            - columnheader "Accounts affected" [ref=e73]
+            - columnheader "Materials and amounts" [ref=e74]
+        - rowgroup [ref=e75]:
+          - row "No transactions found" [ref=e76]:
+            - cell "No transactions found" [ref=e77]:
+              - generic [ref=e79]: No transactions found
+```

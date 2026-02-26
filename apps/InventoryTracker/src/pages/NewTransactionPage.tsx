@@ -133,6 +133,21 @@ export function NewTransactionPage() {
     }
     if (transfers.length === 0) {
       newErrors.transfers = "At least one quantity transfer is required";
+    } else {
+      // Double-entry balance validation: debits (source) must equal credits (destination)
+      let totalDebits = 0;
+      let totalCredits = 0;
+      for (const t of transfers) {
+        if (t.sourceAccountId && t.amount > 0) {
+          totalDebits += t.amount;
+        }
+        if (t.destinationAccountId && t.amount > 0) {
+          totalCredits += t.amount;
+        }
+      }
+      if (Math.abs(totalDebits - totalCredits) > 0.005) {
+        newErrors.transfers = "Transaction is unbalanced: debits must equal credits";
+      }
     }
 
     setErrors(newErrors);
