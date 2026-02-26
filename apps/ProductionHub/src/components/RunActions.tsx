@@ -115,7 +115,7 @@ function AdjustQuantityModal({ run, onClose }: AdjustQuantityModalProps) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Adjust Planned Quantity</h2>
-          <button className="modal-close-btn" onClick={onClose}>
+          <button className="modal-close-btn" data-testid="adjust-quantity-close" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M4 4L12 12M12 4L4 12"
@@ -143,7 +143,7 @@ function AdjustQuantityModal({ run, onClose }: AdjustQuantityModalProps) {
             />
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn-secondary" onClick={onClose}>
+            <button type="button" className="btn-secondary" data-testid="adjust-quantity-cancel" onClick={onClose}>
               Cancel
             </button>
             <button

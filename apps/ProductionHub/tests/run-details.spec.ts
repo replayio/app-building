@@ -386,12 +386,15 @@ test.describe("RunActions", () => {
   }) => {
     test.slow();
 
-    // Create a dedicated Scheduled run
+    // Create a dedicated Scheduled run with today's date so it appears on the CalendarPage
+    const today = new Date();
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8).toISOString();
+    const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 17).toISOString();
     const createRes = await request.post("/.netlify/functions/runs", {
       data: {
         recipe_id: recipeId,
-        start_date: "2024-09-02T08:00:00Z",
-        end_date: "2024-09-02T17:00:00Z",
+        start_date: todayStart,
+        end_date: todayEnd,
         planned_quantity: 300,
         unit: "Units",
       },
@@ -412,9 +415,15 @@ test.describe("RunActions", () => {
     await expect(badge).toHaveText("Confirmed", { timeout: 30000 });
     await expect(badge).toHaveClass(/badge--confirmed/);
 
-    // Verify persistence
+    // Verify persistence — navigate to CalendarPage and verify the run shows as Confirmed
     await page.goto("/calendar");
     await expect(page).toHaveURL(/\/calendar/, { timeout: 30000 });
+    await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
+    await expect(
+      page.getByTestId(`calendar-event-${testRun.id}`)
+    ).toContainText("Status: Confirmed", { timeout: 15000 });
+
+    // Navigate back and verify persistence on the detail page
     await goToRun(page, testRun.id);
     await expect(
       page.getByTestId("run-info-status").locator(".badge")
@@ -434,12 +443,15 @@ test.describe("RunActions", () => {
   }) => {
     test.slow();
 
-    // Create a dedicated Scheduled run
+    // Create a dedicated Scheduled run with today's date so it appears on the CalendarPage
+    const today = new Date();
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8).toISOString();
+    const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 17).toISOString();
     const createRes = await request.post("/.netlify/functions/runs", {
       data: {
         recipe_id: recipeId,
-        start_date: "2024-09-03T08:00:00Z",
-        end_date: "2024-09-03T17:00:00Z",
+        start_date: todayStart,
+        end_date: todayEnd,
         planned_quantity: 250,
         unit: "Units",
       },
@@ -465,9 +477,15 @@ test.describe("RunActions", () => {
     await expect(badge).toHaveText("Cancelled", { timeout: 30000 });
     await expect(badge).toHaveClass(/badge--cancelled/);
 
-    // Verify persistence
+    // Verify persistence — navigate to CalendarPage and verify the run shows as Cancelled
     await page.goto("/calendar");
     await expect(page).toHaveURL(/\/calendar/, { timeout: 30000 });
+    await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
+    await expect(
+      page.getByTestId(`calendar-event-${testRun.id}`)
+    ).toContainText("Status: Cancelled", { timeout: 15000 });
+
+    // Navigate back and verify persistence on the detail page
     await goToRun(page, testRun.id);
     await expect(
       page.getByTestId("run-info-status").locator(".badge")
@@ -527,6 +545,37 @@ test.describe("RunActions", () => {
 
     // Cancel Run should remain visible
     await expect(page.getByTestId("cancel-run-btn")).toBeVisible();
+  });
+
+  test("RUN-ACT-10: Adjust Quantities modal can be dismissed without saving", async ({
+    page,
+  }) => {
+    await goToRun(page, scheduledRunId);
+
+    // Note the current quantity
+    const qtyText = await page.getByTestId("run-info-quantity").textContent();
+
+    // Open the modal
+    await page.getByTestId("adjust-quantities-btn").click();
+    await expect(page.getByTestId("adjust-quantity-modal")).toBeVisible();
+
+    // Dismiss via Cancel button
+    await page.getByTestId("adjust-quantity-cancel").click();
+    await expect(page.getByTestId("adjust-quantity-modal")).toBeHidden();
+
+    // Quantity unchanged
+    await expect(page.getByTestId("run-info-quantity")).toHaveText(qtyText!);
+
+    // Open the modal again
+    await page.getByTestId("adjust-quantities-btn").click();
+    await expect(page.getByTestId("adjust-quantity-modal")).toBeVisible();
+
+    // Dismiss via X close button
+    await page.getByTestId("adjust-quantity-close").click();
+    await expect(page.getByTestId("adjust-quantity-modal")).toBeHidden();
+
+    // Quantity still unchanged
+    await expect(page.getByTestId("run-info-quantity")).toHaveText(qtyText!);
   });
 });
 

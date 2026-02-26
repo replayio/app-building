@@ -778,6 +778,15 @@ Components: RunHeader, RunActions, RawMaterialsTable, ForecastTable, RunEquipmen
 - **And** the "Confirm Run" button is hidden or disabled
 - **And** the "Cancel Run" button remains visible and enabled to allow cancelling a confirmed run
 
+#### RUN-ACT-10: Adjust Quantities modal can be dismissed without saving
+- **Components:** RunActions
+- **Given** the user is on /runs/RUN-12345 for a run with status "Scheduled" and Planned Quantity "500 Units"
+- **When** the user clicks the "Adjust Quantities" button
+- **Then** the Adjust Planned Quantity modal is displayed
+- **When** the user clicks the "Cancel" button or the X close button on the modal
+- **Then** the modal closes
+- **And** the Planned Quantity field remains unchanged at "500 Units"
+
 ### RawMaterialsTable
 
 #### RUN-MAT-1: Recipe and Raw Materials section heading is displayed
