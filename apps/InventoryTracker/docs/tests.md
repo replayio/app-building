@@ -863,6 +863,7 @@ Components: NewMaterialButton, NewCategoryButton, SearchBar, CategoryFilter, Acc
 - And: The Material Name field is pre-filled with "Polycarbonate Pellets"
 - And: The Category dropdown is pre-set to "Raw Materials"
 - And: The Unit of Measure field is pre-filled with "kg"
+- And: The Description field is pre-filled with the current description
 - And: The modal has "Save" and "Cancel" buttons
 
 **Test: Clicking the pencil icon opens an edit material modal**
@@ -893,6 +894,22 @@ Components: NewMaterialButton, NewCategoryButton, SearchBar, CategoryFilter, Acc
 - When: The user clears the Material Name field
 - And: The user clicks the "Save" button
 - Then: A validation error is displayed indicating that Material Name is required
+- And: The modal remains open and changes are not saved
+
+**Test: Edit material modal validates that Category is required**
+- Components: MaterialsTable
+- Given: The edit material modal is open
+- When: The user clears the Category selection
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Category is required
+- And: The modal remains open and changes are not saved
+
+**Test: Edit material modal validates that Unit of Measure is required**
+- Components: MaterialsTable
+- Given: The edit material modal is open
+- When: The user clears the Unit of Measure field
+- And: The user clicks the "Save" button
+- Then: A validation error is displayed indicating that Unit of Measure is required
 - And: The modal remains open and changes are not saved
 
 **Test: Clicking a material name in the table navigates to MaterialDetailPage**
@@ -1035,6 +1052,13 @@ Components: NewMaterialButton, NewCategoryButton, SearchBar, CategoryFilter, Acc
 - Given: The table is sorted by name
 - When: The user selects "Stock (High to Low)" from the sort dropdown
 - Then: The MaterialsTable rows are reordered so that materials with the highest stock appear first (e.g., "M6 Bolt & Nut Set" with 10,500 at the top)
+
+**Test: Selecting "Category (A-Z)" sorts the table by category alphabetically**
+- Components: SortDropdown, MaterialsTable
+- Given: The table is sorted by name
+- When: The user selects "Category (A-Z)" from the sort dropdown
+- Then: The MaterialsTable rows are reordered so that materials are grouped by category in alphabetical order (A to Z)
+- And: The sort dropdown label updates to "Sort by: Category (A-Z)"
 
 ### Pagination
 
