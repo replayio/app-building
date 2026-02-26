@@ -6,6 +6,12 @@ test.describe("DashboardPage - QuickActions", () => {
     await expect(page.getByTestId("dashboard-page")).toBeVisible({ timeout: 30000 });
   });
 
+  test("Display Quick Actions Heading", async ({ page }) => {
+    const heading = page.getByTestId("quick-actions-heading");
+    await expect(heading).toBeVisible();
+    await expect(heading).toHaveText("Quick Actions");
+  });
+
   test("Display Add New Supplier Button", async ({ page }) => {
     const btn = page.getByTestId("quick-action-add-supplier");
     await expect(btn).toBeVisible();

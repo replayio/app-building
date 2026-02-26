@@ -15,6 +15,11 @@ Breadcrumb navigation appears on detail pages (SupplierDetailsPage, OrderDetails
 
 ### QuickActions
 
+**Display Quick Actions Heading**
+Given the user is on the DashboardPage,
+When the page loads,
+Then the QuickActions section displays the heading "Quick Actions".
+
 **Display Add New Supplier Button**
 Given the user is on the DashboardPage,
 When the page loads,

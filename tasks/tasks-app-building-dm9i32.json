@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationQuickActionsHeading: Add missing 'Quick Actions' section heading to test spec (docs/tests.md), QuickActions component, and Playwright test - the mockup shows this heading but it was missed in both spec and code",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T04:43:06.905Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "Unpack: Check directive compliance"
       ],
       "timestamp": "2026-02-25T15:29:20.426Z",

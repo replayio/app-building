@@ -1,7 +1,17 @@
 .quick-actions {
+  margin-bottom: 24px;
+}
+
+.quick-actions-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.quick-actions-buttons {
   display: flex;
   gap: 16px;
-  margin-bottom: 24px;
 }
 
 .quick-action-btn {
