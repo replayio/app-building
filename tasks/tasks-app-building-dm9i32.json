@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestHeaderFieldsDate: Write test for TransactionHeaderFields displays Date field with calendar icon",
-        "WriteTestHeaderFieldsDatePicker: Write test for TransactionHeaderFields Date picker allows selecting a date",
-        "WriteTestHeaderFieldsDescription: Write test for TransactionHeaderFields displays Description input with placeholder",
-        "WriteTestHeaderFieldsDescriptionInput: Write test for TransactionHeaderFields Description input accepts text"
-      ],
-      "timestamp": "2026-02-26T05:31:54.794Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestHeaderFieldsCurrency: Write test for TransactionHeaderFields displays Currency dropdown with default value",
         "WriteTestHeaderFieldsCurrencySelect: Write test for TransactionHeaderFields Currency dropdown allows selecting other currencies",
         "WriteTestHeaderFieldsLayout: Write test for TransactionHeaderFields layout shows Date Description Currency in a single row"
