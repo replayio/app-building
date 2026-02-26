@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationReportListTestSpec: Fix testSpec violations - add missing NavBar active state test and search-no-results test for ReportList",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T05:55:12.219Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
         "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
         "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"

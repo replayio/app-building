@@ -1122,6 +1122,11 @@
 
 #### Component: ReportListHeader
 
+**Test: ReportListHeader NavBar Reports link is active**
+- **Initial state:** User is on the ReportList page.
+- **Action:** User observes the NavBar at the top of the page.
+- **Expected:** The "Reports" link in the NavBar is visually highlighted/active, indicating the user is currently on the ReportList page. All other NavBar links (Dashboard, Accounts, Transactions, Budgets) are not highlighted.
+
 **Test: ReportListHeader displays page title**
 - **Initial state:** User navigates to the ReportList page.
 - **Action:** User observes the header area at the top of the page content.
@@ -1146,6 +1151,11 @@
 - **Initial state:** User has typed "Budget" into the search bar and the table is filtered.
 - **Action:** User clears the search bar text.
 - **Expected:** All reports are displayed again in the ReportTable without any filtering applied.
+
+**Test: ReportListHeader search bar no results displays empty state**
+- **Initial state:** User is on the ReportList page with reports visible.
+- **Action:** User types "xyznonexistent" into the search bar (a term that matches no report names).
+- **Expected:** The ReportTable displays an empty state message (e.g., "No reports found") indicating no reports match the search criteria.
 
 **Test: ReportListHeader displays Generate New Report button**
 - **Initial state:** User is on the ReportList page.
