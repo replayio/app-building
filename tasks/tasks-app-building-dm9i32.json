@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestLineItemsHeading: Write test for LineItemsTable displays section heading",
-        "WriteTestLineItemsHeaders: Write test for LineItemsTable displays column headers",
-        "WriteTestLineItemsAccountDropdown: Write test for LineItemsTable Account dropdown shows accounts with codes",
-        "WriteTestLineItemsAccountPlaceholder: Write test for LineItemsTable Account dropdown placeholder for empty row"
-      ],
-      "timestamp": "2026-02-26T05:32:05.166Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestLineItemsTypeDropdown: Write test for LineItemsTable Type dropdown has Credit and Debit options",
         "WriteTestLineItemsTypeDefault: Write test for LineItemsTable Type dropdown defaults to Debit for new rows",
         "WriteTestLineItemsAmountInput: Write test for LineItemsTable Amount input accepts numeric values",

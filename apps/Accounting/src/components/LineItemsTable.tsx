@@ -30,11 +30,11 @@ export function LineItemsTable({
 }: LineItemsTableProps): React.ReactElement {
   return (
     <div className="form-group" data-testid="line-items-section">
-      <label className="form-label line-items-section-heading">
+      <label className="form-label line-items-section-heading" data-testid="line-items-heading">
         Transaction Details (Line Items)
       </label>
       <div className="line-items-table">
-        <div className="line-items-header">
+        <div className="line-items-header" data-testid="line-items-header">
           <span>Account</span>
           <span>Type</span>
           <span>Amount</span>
