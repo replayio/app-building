@@ -134,6 +134,17 @@ export function BatchOverview({ batch }: BatchOverviewProps) {
 
   return (
     <div data-testid="batch-overview">
+      <h2
+        data-testid="batch-overview-heading"
+        style={{
+          fontSize: 16,
+          fontWeight: 600,
+          color: "var(--text-primary)",
+          marginBottom: 16,
+        }}
+      >
+        Batch Overview
+      </h2>
       <div className="section-card">
         <div className="section-card-header">
           <h2 className="section-card-title">
