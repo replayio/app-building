@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestNewTransactionModalDisplay: Write test for NewTransactionModal displays title and close button",
-        "WriteTestNewTransactionModalXClose: Write test for NewTransactionModal X button closes modal",
-        "WriteTestNewTransactionModalCancelClose: Write test for NewTransactionModal Cancel button closes modal without saving",
-        "WriteTestNewTransactionModalSave: Write test for NewTransactionModal Save Transaction button saves transaction"
-      ],
-      "timestamp": "2026-02-26T05:31:44.591Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestNewTransactionModalSavedAppears: Write test for NewTransactionModal saved transaction appears in affected account transaction lists",
         "WriteTestNewTransactionModalEditMode: Write test for NewTransactionModal opens in edit mode with pre-populated fields",
         "WriteTestNewTransactionModalEditSave: Write test for NewTransactionModal editing a transaction updates existing record",
