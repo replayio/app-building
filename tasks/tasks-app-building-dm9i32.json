@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
-      ],
-      "timestamp": "2026-02-25T15:33:25.606Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTaskDetailPage: Check testSpec.md directive violations in TaskDetailPage test entries",
         "CheckComponentsTaskDetailPage: Check writeApp.md directive violations in TaskDetailPage components",
         "CheckTestsTaskDetailPage: Check writeTests.md directive violations in TaskDetailPage tests"
@@ -357,6 +347,42 @@
         "FixViolationTimelineUserLinks: Fix timeline user links to navigate to /users/:userId instead of '#' - requires adding createdByUserId to timeline data model and updating TimelineSectionClient component"
       ],
       "timestamp": "2026-02-26T09:28:22.072Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationTasksListImportExportTestEntries: Add missing test entries in docs/tests.md for Import button, Export button, and ImportDialog format specification in TasksListHeader. The Import/Export buttons exist in code but have no test entries. The ImportDialog defines columns (Title, Description, Due Date, Priority, Client Name, Assignee) but no test entry verifies format docs are visible.",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T09:59:23.157Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationTasksListMarkCompleteTimeline: Add missing test entry in docs/tests.md for the Mark Complete action's timeline side effect. The backend (netlify/functions/tasks.ts:287-293) creates a 'Task Completed' timeline event on the associated client when Mark Complete is used, but the test entry only mentions removal from the list. The testSpec directive requires side effects to be tested.",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T09:59:29.249Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationTasksListAssigneeRole: Fix missing assignee role display in TaskCardList. Test entry says 'name with role (e.g., Sarah J. (PM))' but component only shows assigneeName. Need to: (1) add role column to users table in schema.ts, (2) update backend tasks.ts query to JOIN and return assignee role, (3) add assigneeRole to Task interface in tasksSlice.ts, (4) update TaskCardList.tsx to display role in parentheses. Also update docs/tests.md if needed.",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T09:59:35.400Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationTasksListFollowerNotifications: Fix missing follower notifications on task creation. Test entry says 'Task creation triggers follower notifications on the client' but backend tasks.ts POST handler only creates a timeline event - no follower notification is sent. Other functions (writeups.ts, deals.ts, task-notes.ts) implement the pattern: query client_followers JOIN notification_preferences, check task_created preference, create notification records. Add the same pattern to tasks.ts POST handler after the timeline event creation.",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T09:59:41.105Z",
       "app": "SalesCRM"
     }
   ]
