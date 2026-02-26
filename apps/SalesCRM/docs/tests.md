@@ -764,6 +764,9 @@ Given the user is on a person detail page, the Relationships section displays a 
 **Add Entry button opens add relationship modal**
 Given the user is on a person detail page, when they click the "+ Add Entry" button in the Relationships section, a modal or form opens allowing the user to add a new relationship with fields for the related person (searchable dropdown), relationship type (Colleague, Decision Maker, Influencer), and optionally organization.
 
+**Submitting add relationship form creates a new relationship entry**
+Given the add relationship modal is open and the user selects a related person from the searchable dropdown and selects relationship type "Decision Maker", when they click "Add Relationship", the modal closes and the new relationship entry appears in the relationships list with the correct person name and relationship type.
+
 **Relationship entries display person name in bold**
 Given a person has a relationship with "David Chen", the relationship entry displays "David Chen" in bold text.
 
