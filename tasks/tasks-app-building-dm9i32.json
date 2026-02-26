@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestHeaderFieldsCurrency: Write test for TransactionHeaderFields displays Currency dropdown with default value",
-        "WriteTestHeaderFieldsCurrencySelect: Write test for TransactionHeaderFields Currency dropdown allows selecting other currencies",
-        "WriteTestHeaderFieldsLayout: Write test for TransactionHeaderFields layout shows Date Description Currency in a single row"
-      ],
-      "timestamp": "2026-02-26T05:32:00.571Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestLineItemsHeading: Write test for LineItemsTable displays section heading",
         "WriteTestLineItemsHeaders: Write test for LineItemsTable displays column headers",
         "WriteTestLineItemsAccountDropdown: Write test for LineItemsTable Account dropdown shows accounts with codes",

@@ -18,6 +18,23 @@ export interface SearchableSelectProps {
   testId?: string;
 }
 
+function ChevronDownIcon() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
 /**
  * A searchable dropdown select component.
  * Used by Accounting (account selection in transactions) and InventoryTracker
@@ -55,6 +72,12 @@ export function SearchableSelect({
         }}
         onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
       />
+      <span
+        className="searchable-select-chevron"
+        data-testid={testId ? `${testId}-chevron` : undefined}
+      >
+        <ChevronDownIcon />
+      </span>
       {showDropdown && filtered.length > 0 && (
         <div className="searchable-select-dropdown">
           {filtered.map((o) => (

@@ -198,7 +198,7 @@
 .searchable-select-input {
   width: 100%;
   height: 32px;
-  padding: 0 8px;
+  padding: 0 26px 0 8px;
   font-size: 13px;
   font-family: var(--font-family);
   color: var(--text-primary);
@@ -242,6 +242,17 @@
 
 .searchable-select-option:hover {
   background: rgba(50, 45, 35, 0.06);
+}
+
+.searchable-select-chevron {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
 }
 
 /* Action menu dropdown */
