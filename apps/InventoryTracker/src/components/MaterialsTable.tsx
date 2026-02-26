@@ -20,7 +20,7 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
   const [editCategoryId, setEditCategoryId] = useState("");
   const [editUnit, setEditUnit] = useState("");
   const [editDescription, setEditDescription] = useState("");
-  const [editError, setEditError] = useState("");
+  const [editErrors, setEditErrors] = useState<Record<string, string>>({});
 
   const handleOpenEdit = (material: Material) => {
     setEditMaterial(material);
@@ -28,13 +28,18 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
     setEditCategoryId(material.category_id);
     setEditUnit(material.unit_of_measure);
     setEditDescription(material.description);
-    setEditError("");
+    setEditErrors({});
     setEditModalOpen(true);
   };
 
   const handleSaveEdit = async () => {
-    if (!editName.trim()) {
-      setEditError("Material Name is required");
+    const errors: Record<string, string> = {};
+    if (!editName.trim()) errors.name = "Material Name is required";
+    if (!editCategoryId) errors.category = "Category is required";
+    if (!editUnit.trim()) errors.unit = "Unit of Measure is required";
+
+    if (Object.keys(errors).length > 0) {
+      setEditErrors(errors);
       return;
     }
     if (!editMaterial) return;
@@ -236,20 +241,20 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
                 value={editName}
                 onChange={(e) => {
                   setEditName(e.target.value);
-                  setEditError("");
+                  setEditErrors((prev) => ({ ...prev, name: "" }));
                 }}
                 placeholder="Enter material name"
               />
-              {editError && (
+              {editErrors.name && (
                 <p
-                  data-testid="edit-material-error"
+                  data-testid="edit-material-name-error"
                   style={{
                     color: "var(--status-error)",
                     fontSize: 12,
                     marginTop: 4,
                   }}
                 >
-                  {editError}
+                  {editErrors.name}
                 </p>
               )}
             </div>
@@ -258,10 +263,25 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
               <FilterSelect
                 options={categoryOptions}
                 value={editCategoryId}
-                onChange={setEditCategoryId}
+                onChange={(v) => {
+                  setEditCategoryId(v);
+                  setEditErrors((prev) => ({ ...prev, category: "" }));
+                }}
                 placeholder="Select category"
                 testId="edit-material-category"
               />
+              {editErrors.category && (
+                <p
+                  data-testid="edit-material-category-error"
+                  style={{
+                    color: "var(--status-error)",
+                    fontSize: 12,
+                    marginTop: 4,
+                  }}
+                >
+                  {editErrors.category}
+                </p>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label">Unit of Measure</label>
@@ -269,9 +289,24 @@ export function MaterialsTable({ materials, categories }: MaterialsTableProps) {
                 className="form-input"
                 data-testid="edit-material-unit"
                 value={editUnit}
-                onChange={(e) => setEditUnit(e.target.value)}
+                onChange={(e) => {
+                  setEditUnit(e.target.value);
+                  setEditErrors((prev) => ({ ...prev, unit: "" }));
+                }}
                 placeholder="Enter unit of measure"
               />
+              {editErrors.unit && (
+                <p
+                  data-testid="edit-material-unit-error"
+                  style={{
+                    color: "var(--status-error)",
+                    fontSize: 12,
+                    marginTop: 4,
+                  }}
+                >
+                  {editErrors.unit}
+                </p>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label">Description</label>

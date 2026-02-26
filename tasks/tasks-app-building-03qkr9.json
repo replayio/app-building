@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationEditMaterialValidation: Fix edit material modal to validate Category and Unit of Measure fields in MaterialsTable.tsx (handleSaveEdit only validates name, but test entries require all 3 fields)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T20:57:56.707Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecAccountDetail: Check testSpec.md directive violations in AccountDetailPage test entries",
         "CheckComponentsAccountDetail: Check writeApp.md directive violations in AccountDetailPage components",
         "CheckTestsAccountDetail: Check writeTests.md directive violations in AccountDetailPage tests"
