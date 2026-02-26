@@ -93,7 +93,7 @@ export function LowInventoryAlerts({ alerts, onDismiss }: LowInventoryAlertsProp
                     </span>
                   </td>
                   <td>
-                    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                       <a
                         data-testid={`low-inventory-alert-view-details-${alert.material_id}`}
                         className="link"

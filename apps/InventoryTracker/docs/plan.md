@@ -1,7 +1,7 @@
 ## Polish
 
 ### Responsive UI
-- [ ] DashboardPage
+- [x] DashboardPage
 - [ ] AccountsPage
 - [ ] AccountDetailPage
 - [ ] MaterialsPage
