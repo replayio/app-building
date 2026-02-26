@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationDashboardAmbiguousNav: Fix ambiguous 'or opens a new transaction modal' navigation targets in DashboardPage test entries (lines 89 and 245 of docs/tests.md). Should consistently say 'navigates to /transactions/new (NewTransactionPage)' matching other pages."
-      ],
-      "timestamp": "2026-02-26T22:35:07.642Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"

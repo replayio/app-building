@@ -86,7 +86,7 @@ Components: NavigationHeader, DateRangeFilter, CategoryFilter, LowInventoryAlert
 - Components: LowInventoryAlerts
 - Given: A low inventory alert is displayed for "Steel Bolts M6"
 - When: The user clicks the "Reorder" button on the "Steel Bolts M6" alert
-- Then: The app navigates to the NewTransactionPage (/transactions/new) or opens a new transaction modal
+- Then: The app navigates to /transactions/new (NewTransactionPage)
 - And: The transaction form is pre-filled with "Steel Bolts M6" as the material to reorder
 
 **Test: Low inventory alerts section shows empty state when no materials are below reorder point**
@@ -242,7 +242,7 @@ Components: NavigationHeader, DateRangeFilter, CategoryFilter, LowInventoryAlert
 - Components: NewTransactionButton
 - Given: The user is on the Dashboard page
 - When: The user clicks the "+ New Transaction" button
-- Then: The app navigates to /transactions/new (NewTransactionPage) or opens a new transaction modal
+- Then: The app navigates to /transactions/new (NewTransactionPage)
 
 ---
 
