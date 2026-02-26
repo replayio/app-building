@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "Unpack: Polish app quality"
-      ],
-      "timestamp": "2026-02-26T16:13:29.483Z",
-      "app": "Accounting"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"
