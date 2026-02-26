@@ -291,6 +291,11 @@
 - **Action:** User navigates to the AccountDetailPage and clicks the "Budget Details" tab.
 - **Expected:** The "Utilities" line item actual amount has increased by $50 (e.g., from $200 to $250), and its progress bar updates to reflect the new ratio. The Budget Overview section also updates accordingly.
 
+**Test: BudgetDetailsTab empty state when no budget items exist**
+- **Initial state:** User navigates to the AccountDetailPage for an account that has no budget items assigned.
+- **Action:** User clicks the "Budget Details" tab.
+- **Expected:** An empty state message "No budget items found for this account." is displayed, indicating that no budget line items have been configured for this account yet.
+
 #### Component: ReportingLinks
 
 **Test: ReportingLinks displays section heading**

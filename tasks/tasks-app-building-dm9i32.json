@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationBudgetDetailsTabEmptyState: Add missing test entry for BudgetDetailsTab empty state in tests.md and write corresponding test"
-      ],
-      "timestamp": "2026-02-26T05:16:18.350Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecNewTransactionModal: Check testSpec.md directive violations in NewTransactionModal test entries",
         "CheckComponentsNewTransactionModal: Check writeApp.md directive violations in NewTransactionModal components",
         "CheckTestsNewTransactionModal: Check writeTests.md directive violations in NewTransactionModal tests"
