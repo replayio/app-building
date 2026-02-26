@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestBalanceDebits: Write test for BalanceIndicator displays Total Debits sum",
-        "WriteTestBalanceCredits: Write test for BalanceIndicator displays Total Credits sum",
-        "WriteTestBalanceBalanced: Write test for BalanceIndicator shows balanced state when debits equal credits",
-        "WriteTestBalanceUnbalanced: Write test for BalanceIndicator shows unbalanced state when debits do not equal credits"
-      ],
-      "timestamp": "2026-02-26T05:32:19.764Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestBalanceDynamic: Write test for BalanceIndicator updates dynamically when line items change",
         "WriteTestBalanceValidation: Write test for BalanceIndicator validation prevents saving unbalanced transaction",
         "WriteTestBalanceZero: Write test for BalanceIndicator shows zero totals for empty line items",

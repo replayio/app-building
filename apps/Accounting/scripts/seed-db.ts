@@ -68,6 +68,12 @@ async function seed() {
        NULL, NULL, NULL, NULL, NULL, NULL, NULL),
       ('Payroll Expenses', '5002', 'expenses', 20500.00, NULL, 'Employee payroll',
        0, 0, 0, 0,
+       NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+      ('Rent Expense', '5003', 'expenses', 18000.00, NULL, 'Monthly rent payments',
+       0, 0, 0, 0,
+       NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+      ('Utilities Expense', '5004', 'expenses', 3600.00, NULL, 'Monthly utility bills',
+       0, 0, 0, 0,
        NULL, NULL, NULL, NULL, NULL, NULL, NULL)
   `;
 
