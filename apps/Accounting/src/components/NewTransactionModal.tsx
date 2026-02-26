@@ -156,7 +156,7 @@ export function NewTransactionModal({
           onRemoveTag={(tag) => setTags((prev) => prev.filter((t) => t !== tag))}
         />
 
-        <div className="modal-footer">
+        <div className="modal-footer" data-testid="modal-footer">
           <button
             className="btn btn--secondary"
             data-testid="cancel-transaction-btn"

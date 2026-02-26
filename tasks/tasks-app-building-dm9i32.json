@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestNewTransactionModalSavedAppears: Write test for NewTransactionModal saved transaction appears in affected account transaction lists",
-        "WriteTestNewTransactionModalEditMode: Write test for NewTransactionModal opens in edit mode with pre-populated fields",
-        "WriteTestNewTransactionModalEditSave: Write test for NewTransactionModal editing a transaction updates existing record",
-        "WriteTestNewTransactionModalButtonLayout: Write test for NewTransactionModal Cancel and Save buttons positioned at bottom right"
-      ],
-      "timestamp": "2026-02-26T05:31:49.862Z",
-      "app": "Accounting"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestHeaderFieldsDate: Write test for TransactionHeaderFields displays Date field with calendar icon",
         "WriteTestHeaderFieldsDatePicker: Write test for TransactionHeaderFields Date picker allows selecting a date",
         "WriteTestHeaderFieldsDescription: Write test for TransactionHeaderFields displays Description input with placeholder",
