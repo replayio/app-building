@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestTransactionsPageFilters: Write Playwright tests for TransactionsPage filter components (DateRangeFilter, AccountFilter, MaterialFilter, TransactionTypeFilter, SearchBar)",
-        "WriteTestTransactionsPageTable: Write Playwright tests for TransactionsPage table and sorting (TransactionsTable)",
-        "WriteTestTransactionsPagePagination: Write Playwright tests for TransactionsPage pagination (Pagination)"
-      ],
-      "timestamp": "2026-02-26T07:33:29.907Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "FixViolationMissingEditActionTestEntry: Add test entry for Edit action in actions menu specifying navigation to /clients/:clientId"
