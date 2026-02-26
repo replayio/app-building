@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecSupplierDetailsPage: Check testSpec.md directive violations in SupplierDetailsPage test entries",
-        "CheckComponentsSupplierDetailsPage: Check writeApp.md directive violations in SupplierDetailsPage components",
-        "CheckTestsSupplierDetailsPage: Check writeTests.md directive violations in SupplierDetailsPage tests"
-      ],
-      "timestamp": "2026-02-25T15:33:49.438Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecOrderDetailsPage: Check testSpec.md directive violations in OrderDetailsPage test entries",
         "CheckComponentsOrderDetailsPage: Check writeApp.md directive violations in OrderDetailsPage components",
         "CheckTestsOrderDetailsPage: Check writeTests.md directive violations in OrderDetailsPage tests"
@@ -284,6 +274,24 @@
         "RunTests: Verify tests pass after fix"
       ],
       "timestamp": "2026-02-26T11:11:18.506Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationSupplierDetailsTabLinks: Add missing test entries for the three SupplierDetailsPage section-level tab links (Documents, Comments, Orders) that scroll to sections when clicked - these interactive elements lack dedicated test entries per testSpec.md directive to inventory every visible element",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T11:29:31.758Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationSupplierDetailsModalTests: Add missing test entries for Edit Supplier modal Cancel and Validation, and Upload Document dialog Cancel - per testSpec.md directive to completely test modal dialogs. Other modals in the app (Add New Supplier, Create Purchase Order) have these entries but the SupplierDetailsPage modals do not",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T11:29:37.828Z",
       "app": "SupplierTracker"
     }
   ]
