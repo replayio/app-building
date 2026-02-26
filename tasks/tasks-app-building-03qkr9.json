@@ -3,9 +3,79 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "Unpack: Check directive compliance"
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
-      "timestamp": "2026-02-26T16:13:28.680Z",
+      "timestamp": "2026-02-26T16:16:53.015Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecTransactionsPage: Check testSpec.md directive violations in TransactionsPage test entries",
+        "CheckComponentsTransactionsPage: Check writeApp.md directive violations in TransactionsPage components",
+        "CheckTestsTransactionsPage: Check writeTests.md directive violations in TransactionsPage tests"
+      ],
+      "timestamp": "2026-02-26T16:16:51.948Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecReportList: Check testSpec.md directive violations in ReportList test entries",
+        "CheckComponentsReportList: Check writeApp.md directive violations in ReportList components",
+        "CheckTestsReportList: Check writeTests.md directive violations in ReportList tests"
+      ],
+      "timestamp": "2026-02-26T16:16:50.740Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecReportDetails: Check testSpec.md directive violations in ReportDetails test entries",
+        "CheckComponentsReportDetails: Check writeApp.md directive violations in ReportDetails components",
+        "CheckTestsReportDetails: Check writeTests.md directive violations in ReportDetails tests"
+      ],
+      "timestamp": "2026-02-26T16:16:49.472Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecCreateReportDialog: Check testSpec.md directive violations in CreateReportDialog test entries",
+        "CheckComponentsCreateReportDialog: Check writeApp.md directive violations in CreateReportDialog components",
+        "CheckTestsCreateReportDialog: Check writeTests.md directive violations in CreateReportDialog tests"
+      ],
+      "timestamp": "2026-02-26T16:16:48.299Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecNewTransactionModal: Check testSpec.md directive violations in NewTransactionModal test entries",
+        "CheckComponentsNewTransactionModal: Check writeApp.md directive violations in NewTransactionModal components",
+        "CheckTestsNewTransactionModal: Check writeTests.md directive violations in NewTransactionModal tests"
+      ],
+      "timestamp": "2026-02-26T16:16:46.997Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAccountDetailPage: Check testSpec.md directive violations in AccountDetailPage test entries",
+        "CheckComponentsAccountDetailPage: Check writeApp.md directive violations in AccountDetailPage components",
+        "CheckTestsAccountDetailPage: Check writeTests.md directive violations in AccountDetailPage tests"
+      ],
+      "timestamp": "2026-02-26T16:16:45.798Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",
+        "CheckComponentsAccountsPage: Check writeApp.md directive violations in AccountsPage components",
+        "CheckTestsAccountsPage: Check writeTests.md directive violations in AccountsPage tests"
+      ],
+      "timestamp": "2026-02-26T16:16:44.611Z",
       "app": "Accounting"
     },
     {
