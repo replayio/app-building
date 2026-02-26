@@ -3,12 +3,11 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecAccountDetail: Check testSpec.md directive violations in AccountDetailPage test entries",
-        "CheckComponentsAccountDetail: Check writeApp.md directive violations in AccountDetailPage components",
-        "CheckTestsAccountDetail: Check writeTests.md directive violations in AccountDetailPage tests"
+        "FixViolationReportingLinksAccountPreselect: Fix ReportingLinks tests to verify account name pre-selection in CreateReportDialog as specified in test entries",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-26T18:26:36.779Z",
-      "app": "InventoryTracker"
+      "timestamp": "2026-02-26T21:12:27.335Z",
+      "app": "Accounting"
     },
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
