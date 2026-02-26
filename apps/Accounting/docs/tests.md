@@ -605,7 +605,12 @@
 **Test: CreateReportDialog opened from AccountDetailPage reporting link pre-selects report type**
 - **Initial state:** User is on the AccountDetailPage for "Main Checking" and clicks the "Actual vs Budget Report" link in the Reporting section.
 - **Action:** User observes the CreateReportDialog that opens.
-- **Expected:** The dialog opens with the "Budget vs. Actual (Comparison)" report type pre-selected. The account category filter may be pre-configured to include the relevant category for the Main Checking account.
+- **Expected:** The dialog opens with the "Budget vs. Actual (Comparison)" report type pre-selected. All account categories remain checked (default state). The generated report name includes the account name (e.g., "Budget vs Actual - Main Checking").
+
+**Test: CreateReportDialog opened from AccountDetailPage Transaction History link pre-selects Detailed Transactions**
+- **Initial state:** User is on the AccountDetailPage for "Main Checking" and clicks the "Transaction History Report" link in the Reporting section.
+- **Action:** User observes the CreateReportDialog that opens.
+- **Expected:** The dialog opens with the "Detailed Transactions" report type pre-selected. All account categories remain checked (default state). The generated report name includes the account name (e.g., "Detailed Transactions - Main Checking").
 
 #### Component: ReportTypeSelector
 
@@ -878,7 +883,7 @@
 **Test: ReportPreview updates when report type changes**
 - **Initial state:** The CreateReportDialog is open with "Budget vs. Actual (Comparison)" selected, showing columns Budget, Actual, Variance, Variance %.
 - **Action:** User clicks the "Summary Overview" report type tab.
-- **Expected:** The preview panel title updates to reflect "Summary Overview". The table columns and data update to match the summary report format, which may show different columns or aggregation levels than the budget vs. actual view.
+- **Expected:** The preview panel title updates to reflect "Summary Overview". The table columns update to show Category / Account, Budget, Actual, and Variance (the Variance % column from the budget vs. actual view is removed).
 
 **Test: ReportPreview updates when date range changes**
 - **Initial state:** The CreateReportDialog is open with dates set to Oct 1–31, 2023 and preview showing Oct 2023 data.
