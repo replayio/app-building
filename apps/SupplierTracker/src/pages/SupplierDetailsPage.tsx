@@ -93,7 +93,9 @@ export function SupplierDetailsPage() {
         }}
       />
 
+      {/* Tests: Display Section Tab Links */}
       <div className="supplier-detail-tabs" data-testid="supplier-detail-tabs">
+        {/* Tests: Click Documents Tab Scrolls to Documents Section */}
         <button
           className="tab-nav-item tab-nav-item--active-link"
           data-testid="tab-documents"
@@ -101,6 +103,7 @@ export function SupplierDetailsPage() {
         >
           Documents
         </button>
+        {/* Tests: Click Comments Tab Scrolls to Comments Section */}
         <button
           className="tab-nav-item tab-nav-item--active-link"
           data-testid="tab-comments"
@@ -108,6 +111,7 @@ export function SupplierDetailsPage() {
         >
           Comments
         </button>
+        {/* Tests: Click Orders Tab Scrolls to Orders Section */}
         <button
           className="tab-nav-item tab-nav-item--active-link"
           data-testid="tab-orders"

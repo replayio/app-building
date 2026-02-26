@@ -339,6 +339,28 @@ Breadcrumb navigation shows "Home > Suppliers > \<Supplier Name\> > Supplier Det
 
 Below the SupplierOverview section, three tab links appear: "Documents", "Comments", "Orders". Clicking a tab scrolls to or reveals that section's content. All sections are visible on the page.
 
+### SectionTabLinks
+
+**Display Section Tab Links**
+Given the user is on the SupplierDetailsPage,
+When the page loads,
+Then three tab link buttons appear below the SupplierOverview section: "Documents", "Comments", and "Orders".
+
+**Click Documents Tab Scrolls to Documents Section**
+Given the user is on the SupplierDetailsPage,
+When the user clicks the "Documents" tab link,
+Then the page scrolls to the Documents section.
+
+**Click Comments Tab Scrolls to Comments Section**
+Given the user is on the SupplierDetailsPage,
+When the user clicks the "Comments" tab link,
+Then the page scrolls to the Comments section.
+
+**Click Orders Tab Scrolls to Orders Section**
+Given the user is on the SupplierDetailsPage,
+When the user clicks the "Orders" tab link,
+Then the page scrolls to the Orders section.
+
 ### SupplierOverview
 
 **Display Supplier Name**
