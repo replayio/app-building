@@ -10,9 +10,9 @@ import type { Report } from "../types";
 const ITEMS_PER_PAGE = 10;
 
 const REPORT_TYPE_LABELS: Record<string, string> = {
-  summary: "Summary",
-  detailed: "Detailed",
-  budget_vs_actual: "Budget vs Actual",
+  summary: "Financial Report",
+  detailed: "Expense Detail",
+  budget_vs_actual: "Financial Report",
 };
 
 interface ReportTableProps {
