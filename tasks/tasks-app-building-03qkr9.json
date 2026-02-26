@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecBatchDetail: Check testSpec.md directive violations in BatchDetailPage test entries",
-        "CheckComponentsBatchDetail: Check writeApp.md directive violations in BatchDetailPage components",
-        "CheckTestsBatchDetail: Check writeTests.md directive violations in BatchDetailPage tests"
-      ],
-      "timestamp": "2026-02-26T18:26:40.498Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecMaterialDetail: Check testSpec.md directive violations in MaterialDetailPage test entries",
         "CheckComponentsMaterialDetail: Check writeApp.md directive violations in MaterialDetailPage components",
         "CheckTestsMaterialDetail: Check writeTests.md directive violations in MaterialDetailPage tests"
@@ -206,6 +196,15 @@
       ],
       "timestamp": "2026-02-26T16:45:12.018Z",
       "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationLineageProcessBox: Fix LineageSection flow diagram to show transaction name/type (e.g. 'Washing & Processing (TX-PROD-987)') instead of just the transaction ID. Requires backend to return originating transaction description/type, and LineageSection to display it in the process box. Also add a separate 'Lineage' h2 heading above the card (matching BatchOverview pattern) instead of using 'Lineage' as the card title inside section-card-header.",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T20:34:04.871Z",
+      "app": "InventoryTracker"
     }
   ]
 }
