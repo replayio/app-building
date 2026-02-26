@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "Unpack: Check directive compliance"
-      ],
-      "timestamp": "2026-02-25T15:29:20.426Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"
