@@ -247,6 +247,7 @@ export function TransactionsHistoryTable({
                                   <span key={ref.id}>
                                     {i > 0 && ", "}
                                     <a
+                                      data-testid={`batch-ref-link-${ref.id}`}
                                       className="link"
                                       href={`/batches/${ref.id}`}
                                       onClick={(e) => {
