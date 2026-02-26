@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationTypeLabels: Fix account type labels to match mockup - typeLabel returns Stock/Input/Output but mockup shows Inventory Account for stock accounts. Update typeLabel in AccountHeader.tsx and AccountDetailPage.tsx to match AppSpec types (inventory/consumer/producer/custom), fix inconsistent test entries in tests.md (line 537 says Inventory Account but line 550 says Stock), and deduplicate the typeLabel function into a shared utility",
-        "RunTests: Verify tests pass after type label fix"
-      ],
-      "timestamp": "2026-02-26T06:33:20.920Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecMaterialsPage: Check testSpec.md directive violations in MaterialsPage test entries",
         "CheckComponentsMaterialsPage: Check writeApp.md directive violations in MaterialsPage components",
         "CheckTestsMaterialsPage: Check writeTests.md directive violations in MaterialsPage tests"

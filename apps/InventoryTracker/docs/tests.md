@@ -549,9 +549,9 @@ Components: AccountHeader, EditAccountButton, NewTransactionButton, TrackedMater
 
 **Test: Account header shows correct type for each account category**
 - Components: AccountHeader
-- Given: A stock account "Main Inventory" exists with type "Stock"
-- And: An input account "Purchases" exists with type "Input"
-- And: An output account "Sales Revenue" exists with type "Output"
+- Given: A stock account "Main Inventory" exists with type "Inventory Account"
+- And: An input account "Purchases" exists with type "Consumer Account"
+- And: An output account "Sales Revenue" exists with type "Producer Account"
 - When: The user navigates to each account's detail page
 - Then: The Type field shows the respective account type for each account
 

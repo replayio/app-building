@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { accountTypeLabel } from "../utils/accountTypeLabel";
 
 interface AccountBatch {
   id: string;
@@ -35,19 +36,6 @@ function formatDate(dateStr: string): string {
 function formatQuantity(value: number): string {
   const num = Number(value);
   return num.toLocaleString("en-US");
-}
-
-function typeLabel(accountType: string): string {
-  switch (accountType) {
-    case "stock":
-      return "Stock";
-    case "input":
-      return "Input";
-    case "output":
-      return "Output";
-    default:
-      return accountType.charAt(0).toUpperCase() + accountType.slice(1);
-  }
 }
 
 export function AccountsDistributionTable({
@@ -168,7 +156,7 @@ export function AccountsDistributionTable({
                           <span
                             data-testid={`account-type-${acc.account_id}`}
                           >
-                            {typeLabel(acc.account_type)}
+                            {accountTypeLabel(acc.account_type)}
                           </span>
                         </td>
                         <td>

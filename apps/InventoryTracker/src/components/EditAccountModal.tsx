@@ -1,18 +1,6 @@
 import { useState } from "react";
 import type { Account } from "../types";
-
-function typeLabel(accountType: string): string {
-  switch (accountType) {
-    case "stock":
-      return "Stock";
-    case "input":
-      return "Input";
-    case "output":
-      return "Output";
-    default:
-      return accountType.charAt(0).toUpperCase() + accountType.slice(1);
-  }
-}
+import { accountTypeLabel } from "../utils/accountTypeLabel";
 
 interface EditAccountModalProps {
   account: Account;
@@ -74,7 +62,7 @@ export function EditAccountModal({
           <input
             className="form-input"
             data-testid="edit-account-type"
-            value={typeLabel(account.account_type)}
+            value={accountTypeLabel(account.account_type)}
             readOnly
             disabled
           />

@@ -1,23 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import type { Account } from "../types";
+import { accountTypeLabel } from "../utils/accountTypeLabel";
 
 interface AccountHeaderProps {
   account: Account;
   onEditAccount: () => void;
-}
-
-function typeLabel(accountType: string): string {
-  switch (accountType) {
-    case "stock":
-      return "Stock";
-    case "input":
-      return "Input";
-    case "output":
-      return "Output";
-    default:
-      return accountType.charAt(0).toUpperCase() + accountType.slice(1);
-  }
 }
 
 export function AccountHeader({ account, onEditAccount }: AccountHeaderProps) {
@@ -50,7 +38,7 @@ export function AccountHeader({ account, onEditAccount }: AccountHeaderProps) {
               data-testid="account-type"
               style={{ fontSize: 13, color: "var(--text-muted)" }}
             >
-              Type: {typeLabel(account.account_type)}
+              Type: {accountTypeLabel(account.account_type)}
             </span>
             <span
               style={{
