@@ -184,9 +184,9 @@ export default async function handler(req: Request, _context: Context) {
           unit = COALESCE(${unit ?? null}, unit),
           status = COALESCE(${status ?? null}, status),
           notes = COALESCE(${notes ?? null}, notes),
-          start_date = COALESCE(${start_date ?? null}, start_date),
-          end_date = COALESCE(${end_date ?? null}, end_date),
-          recipe_id = COALESCE(${recipe_id ?? null}, recipe_id),
+          start_date = COALESCE(${start_date || null}, start_date),
+          end_date = COALESCE(${end_date || null}, end_date),
+          recipe_id = COALESCE(${recipe_id || null}, recipe_id),
           updated_at = NOW()
         WHERE id = ${runId}::uuid
         RETURNING *

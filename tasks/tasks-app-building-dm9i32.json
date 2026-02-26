@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNullishCoalescingRuns: Fix runs.ts PUT handler using ?? null instead of || null for start_date (DATE), end_date (DATE), and recipe_id (UUID) columns",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T09:07:24.137Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecSidebar: Check testSpec.md directive violations in Sidebar test entries",
         "CheckComponentsSidebar: Check writeApp.md directive violations in Sidebar components",
         "CheckTestsSidebar: Check writeTests.md directive violations in Sidebar tests"
