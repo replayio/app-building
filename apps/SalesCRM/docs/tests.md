@@ -1752,6 +1752,12 @@ Given the user is on a task detail page for a task with status "Open", a "Cancel
 **Clicking Cancel updates task status to Canceled**
 Given the user is on a task detail page for a task with status "Open", when they click the "Cancel" button, the task's status is updated to "Canceled" in the database, the status display in the TaskDetailHeader updates to "Canceled", and both "Mark Complete" and "Cancel" buttons are disabled or hidden since the task is no longer open.
 
+**Cancel creates a timeline entry on the associated client**
+Given the user cancels a task associated with a client, a "Task Canceled" timeline entry is created on the associated client attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created — not duplicates from re-renders.
+
+**Cancel triggers follower notifications on the associated client**
+Given the user cancels a task associated with a client that has followers, email notifications are sent to followers who have "task canceled" notifications enabled (excluding the actor who canceled the task).
+
 **Completed task hides action buttons**
 Given the user navigates to /tasks/:taskId for a task that has already been marked "Completed", the "Mark Complete" and "Cancel" buttons are not displayed or are disabled, since the task status can no longer be changed.
 
@@ -1763,6 +1769,9 @@ Given the user marks a task as "Completed" and then navigates away to /tasks, wh
 
 **Completing a task removes it from the TasksListPage upcoming list**
 Given the user marks a task as complete from the TaskDetailPage, when they navigate to /tasks, the completed task no longer appears in the upcoming tasks list (since TasksListPage only shows open/pending tasks).
+
+**Canceling a task removes it from the TasksListPage upcoming list**
+Given the user cancels a task from the TaskDetailPage, when they navigate to /tasks, the canceled task no longer appears in the upcoming tasks list (since TasksListPage only shows open/pending tasks).
 
 ---
 

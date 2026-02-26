@@ -320,6 +320,43 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       }
     }
 
+    // Create timeline event for cancellation
+    if (body.status === "canceled" && existing.client_id) {
+      await query(
+        sql,
+        `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by)
+         VALUES ($1, $2, $3, $4, $5, $6)`,
+        [existing.client_id, "Task Canceled", `Task Canceled: '${existing.title}'`, "task", existing.id, actor]
+      );
+
+      // Send follower notifications
+      try {
+        const followers = await query<{ user_id: string; email: string; name: string }>(
+          sql,
+          `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+           JOIN users u ON u.id = cf.user_id
+           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+           WHERE cf.client_id = $1 AND (np.task_canceled IS NULL OR np.task_canceled = true)`,
+          [existing.client_id]
+        );
+
+        const actorId = user ? user.id : null;
+        for (const f of followers) {
+          if (f.user_id !== actorId) {
+            await query(
+              sql,
+              `INSERT INTO email_tokens (email, token, type)
+               VALUES ($1, $2, 'notification')
+               ON CONFLICT DO NOTHING`,
+              [f.email, `task-canceled-${existing.id}-${Date.now()}-${f.user_id}`]
+            );
+          }
+        }
+      } catch {
+        // Notification failure shouldn't block the update
+      }
+    }
+
     return jsonResponse({ success: true });
   }
 
