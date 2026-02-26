@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNavLinkTargets: Fix testSpec.md - Navigation link test entries for Batches and Settings must specify exact URL targets (/batches and /settings) instead of ambiguous descriptions"
-      ],
-      "timestamp": "2026-02-26T06:18:23.586Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecAccountsPage: Check testSpec.md directive violations in AccountsPage test entries",
         "CheckComponentsAccountsPage: Check writeApp.md directive violations in AccountsPage components",
         "CheckTestsAccountsPage: Check writeTests.md directive violations in AccountsPage tests"

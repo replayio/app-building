@@ -25,11 +25,11 @@ Components: NavigationHeader, DateRangeFilter, CategoryFilter, LowInventoryAlert
 - When: The user clicks the "Materials" navigation link
 - Then: The app navigates to /materials (MaterialsPage)
 
-**Test: Navigation link for Batches navigates to batch listing**
+**Test: Navigation link for Batches navigates to BatchesPage**
 - Components: NavigationHeader
 - Given: The user is on the Dashboard page
 - When: The user clicks the "Batches" navigation link
-- Then: The app navigates to a batches listing page
+- Then: The app navigates to /batches (BatchesPage)
 
 **Test: Navigation link for Transactions navigates to TransactionsPage**
 - Components: NavigationHeader
@@ -37,11 +37,11 @@ Components: NavigationHeader, DateRangeFilter, CategoryFilter, LowInventoryAlert
 - When: The user clicks the "Transactions" navigation link
 - Then: The app navigates to /transactions (TransactionsPage)
 
-**Test: Navigation link for Settings navigates to Settings page**
+**Test: Navigation link for Settings navigates to SettingsPage**
 - Components: NavigationHeader
 - Given: The user is on the Dashboard page
 - When: The user clicks the "Settings" navigation link
-- Then: The app navigates to a settings page
+- Then: The app navigates to /settings (SettingsPage)
 
 **Test: Active navigation link is visually highlighted for the current page**
 - Components: NavigationHeader

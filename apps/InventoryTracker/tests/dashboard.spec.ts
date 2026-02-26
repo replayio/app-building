@@ -50,7 +50,7 @@ test.describe("NavigationHeader", () => {
     await expect(page.getByTestId("materials-page")).toBeVisible({ timeout: 30000 });
   });
 
-  test("Navigation link for Batches navigates to batch listing", async ({ page }) => {
+  test("Navigation link for Batches navigates to BatchesPage", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("navbar")).toBeVisible({ timeout: 30000 });
 
@@ -70,7 +70,7 @@ test.describe("NavigationHeader", () => {
     await expect(page.getByTestId("transactions-page")).toBeVisible({ timeout: 30000 });
   });
 
-  test("Navigation link for Settings navigates to Settings page", async ({ page }) => {
+  test("Navigation link for Settings navigates to SettingsPage", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("navbar")).toBeVisible({ timeout: 30000 });
 
