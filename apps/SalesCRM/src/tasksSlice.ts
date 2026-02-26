@@ -14,6 +14,7 @@ export interface Task {
   assigneeId: string | null;
   assigneeName: string | null;
   assigneeAvatar: string | null;
+  assigneeRole: string | null;
   createdAt: string;
   updatedAt: string;
 }

@@ -14,6 +14,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
       email VARCHAR(255) NOT NULL UNIQUE,
       password_hash TEXT NOT NULL,
       avatar_url TEXT,
+      role VARCHAR(100),
       email_confirmed BOOLEAN NOT NULL DEFAULT false,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -279,6 +280,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
 
   // Users
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(100)`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_confirmed BOOLEAN NOT NULL DEFAULT false`;
 
   // Email tokens
@@ -367,6 +369,7 @@ export async function initSchema(databaseUrl: string): Promise<void> {
   await sql`ALTER TABLE timeline_events ADD COLUMN IF NOT EXISTS related_entity_type VARCHAR(50)`;
   await sql`ALTER TABLE timeline_events ADD COLUMN IF NOT EXISTS related_entity_id UUID`;
   await sql`ALTER TABLE timeline_events ADD COLUMN IF NOT EXISTS created_by VARCHAR(255) NOT NULL DEFAULT 'System'`;
+  await sql`ALTER TABLE timeline_events ADD COLUMN IF NOT EXISTS created_by_user_id UUID REFERENCES users(id) ON DELETE SET NULL`;
 
   // Notification Preferences
   await sql`ALTER TABLE notification_preferences ADD COLUMN IF NOT EXISTS task_canceled BOOLEAN NOT NULL DEFAULT true`;

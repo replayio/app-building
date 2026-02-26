@@ -5,16 +5,16 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
 
   // --- Seed Users (team members) ---
   const userRows = await sql`
-    INSERT INTO users (id, name, email, password_hash, email_confirmed, avatar_url) VALUES
-      ('a1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'alice@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000002', 'Bob Martinez', 'bob@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000003', 'Carol Lee', 'carol@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000004', 'David Kim', 'david@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000005', 'Emma Wilson', 'emma@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000006', 'Frank Chen', 'frank@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000007', 'Grace Patel', 'grace@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000008', 'Henry Lopez', 'henry@example.com', 'seeded', true, NULL),
-      ('a1000000-0000-0000-0000-000000000009', 'Irene Davis', 'irene@example.com', 'seeded', true, NULL)
+    INSERT INTO users (id, name, email, password_hash, email_confirmed, avatar_url, role) VALUES
+      ('a1000000-0000-0000-0000-000000000001', 'Alice Johnson', 'alice@example.com', 'seeded', true, NULL, 'PM'),
+      ('a1000000-0000-0000-0000-000000000002', 'Bob Martinez', 'bob@example.com', 'seeded', true, NULL, 'Sales'),
+      ('a1000000-0000-0000-0000-000000000003', 'Carol Lee', 'carol@example.com', 'seeded', true, NULL, 'Sales'),
+      ('a1000000-0000-0000-0000-000000000004', 'David Kim', 'david@example.com', 'seeded', true, NULL, 'Dev'),
+      ('a1000000-0000-0000-0000-000000000005', 'Emma Wilson', 'emma@example.com', 'seeded', true, NULL, 'Lead'),
+      ('a1000000-0000-0000-0000-000000000006', 'Frank Chen', 'frank@example.com', 'seeded', true, NULL, 'Ops'),
+      ('a1000000-0000-0000-0000-000000000007', 'Grace Patel', 'grace@example.com', 'seeded', true, NULL, 'Support'),
+      ('a1000000-0000-0000-0000-000000000008', 'Henry Lopez', 'henry@example.com', 'seeded', true, NULL, 'Analyst'),
+      ('a1000000-0000-0000-0000-000000000009', 'Irene Davis', 'irene@example.com', 'seeded', true, NULL, 'Admin')
     ON CONFLICT (email) DO NOTHING
     RETURNING id
   `;

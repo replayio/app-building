@@ -30,7 +30,8 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
     if (dealId) {
       queryText = `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
-                          u.avatar_url AS assignee_avatar
+                          u.avatar_url AS assignee_avatar,
+                          u.role AS assignee_role
          FROM tasks t
          LEFT JOIN deals d ON d.id = t.deal_id
          LEFT JOIN clients c ON c.id = t.client_id
@@ -40,7 +41,8 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       params = [dealId];
     } else if (clientId) {
       queryText = `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
-                          u.avatar_url AS assignee_avatar
+                          u.avatar_url AS assignee_avatar,
+                          u.role AS assignee_role
          FROM tasks t
          LEFT JOIN deals d ON d.id = t.deal_id
          LEFT JOIN clients c ON c.id = t.client_id
@@ -51,7 +53,8 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
     } else {
       // Return all tasks
       queryText = `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
-                          u.avatar_url AS assignee_avatar
+                          u.avatar_url AS assignee_avatar,
+                          u.role AS assignee_role
          FROM tasks t
          LEFT JOIN deals d ON d.id = t.deal_id
          LEFT JOIN clients c ON c.id = t.client_id
@@ -76,6 +79,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       client_name: string | null;
       assignee_name: string | null;
       assignee_avatar: string | null;
+      assignee_role: string | null;
     }>(sql, queryText, params);
 
     return jsonResponse(
@@ -93,6 +97,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         assigneeId: t.assignee_id,
         assigneeName: t.assignee_name,
         assigneeAvatar: t.assignee_avatar,
+        assigneeRole: t.assignee_role,
         createdAt: t.created_at,
         updatedAt: t.updated_at,
       }))
@@ -117,10 +122,12 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       client_name: string | null;
       assignee_name: string | null;
       assignee_avatar: string | null;
+      assignee_role: string | null;
     }>(
       sql,
       `SELECT t.*, d.name AS deal_name, c.name AS client_name, u.name AS assignee_name,
-              u.avatar_url AS assignee_avatar
+              u.avatar_url AS assignee_avatar,
+                          u.role AS assignee_role
        FROM tasks t
        LEFT JOIN deals d ON d.id = t.deal_id
        LEFT JOIN clients c ON c.id = t.client_id
@@ -147,6 +154,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
       assigneeId: task.assignee_id,
       assigneeName: task.assignee_name,
       assigneeAvatar: task.assignee_avatar,
+      assigneeRole: task.assignee_role,
       createdAt: task.created_at,
       updatedAt: task.updated_at,
     });
@@ -230,10 +238,12 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
 
     let assigneeName: string | null = null;
     let assigneeAvatar: string | null = null;
+    let assigneeRole: string | null = null;
     if (t.assignee_id) {
-      const assignee = await queryOne<{ name: string; avatar_url: string | null }>(sql, "SELECT name, avatar_url FROM users WHERE id = $1", [t.assignee_id]);
+      const assignee = await queryOne<{ name: string; avatar_url: string | null; role: string | null }>(sql, "SELECT name, avatar_url, role FROM users WHERE id = $1", [t.assignee_id]);
       assigneeName = assignee?.name || null;
       assigneeAvatar = assignee?.avatar_url || null;
+      assigneeRole = assignee?.role || null;
     }
 
     return jsonResponse(
@@ -251,6 +261,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
         assigneeId: t.assignee_id,
         assigneeName,
         assigneeAvatar,
+        assigneeRole,
         createdAt: t.created_at,
         updatedAt: t.updated_at,
       },
