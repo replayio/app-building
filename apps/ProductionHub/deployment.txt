@@ -1,4 +1,4 @@
-url=https://699e6b56c0da6516401294b3--production-hub-1771989781506.netlify.app
+url=https://production-hub-1771989781506.netlify.app
 site_id=8ea4c442-61eb-496e-8a14-3d7a0b681c12
 neon_project_id=icy-haze-77449695
 database_url=postgresql://neondb_owner:npg_A1I4bGeciBTa@ep-spring-king-aeeuyv0l.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require

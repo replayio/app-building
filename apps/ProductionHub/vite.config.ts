@@ -7,6 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@shared": path.resolve(__dirname, "../shared"),
+      "@reduxjs/toolkit": path.resolve(__dirname, "node_modules/@reduxjs/toolkit"),
+      "@neondatabase/serverless": path.resolve(__dirname, "node_modules/@neondatabase/serverless"),
     },
   },
   build: {
