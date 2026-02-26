@@ -58,7 +58,16 @@ export function TopNavBar() {
               href={item.path}
               onClick={(e) => {
                 e.preventDefault();
+                const hashIndex = item.path.indexOf("#");
+                const hash = hashIndex >= 0 ? item.path.substring(hashIndex + 1) : "";
                 navigate("/");
+                if (hash) {
+                  requestAnimationFrame(() => {
+                    document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+                  });
+                } else {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
               }}
             >
               {item.label}

@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNavDuplicateLinks: Fix TopNavBar.tsx where all 4 nav link onClick handlers call navigate('/'), making them duplicate links to the same URL. The directive says 'Navigation sidebars and menus must not contain duplicate links pointing to the same URL.' The nav items have different href paths (/, /#suppliers, /#orders, /#inventory) but the onClick ignores these. Fix the onClick handlers to use hash-based scrolling so Suppliers scrolls to the suppliers section, Orders scrolls to orders section, etc. on the dashboard page.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T11:11:18.506Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationSupplierDetailsTabLinks: Add missing test entries for the three SupplierDetailsPage section-level tab links (Documents, Comments, Orders) that scroll to sections when clicked - these interactive elements lack dedicated test entries per testSpec.md directive to inventory every visible element",
         "RunTests: Verify tests pass after fix"
       ],

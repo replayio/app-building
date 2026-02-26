@@ -29,30 +29,30 @@ Given the user is on any page,
 When the page loads,
 Then the top navigation bar displays a "Suppliers" link.
 
-**Click Suppliers Nav Link Navigates to Dashboard**
+**Click Suppliers Nav Link Scrolls to Suppliers Section**
 Given the user is on any page,
 When the user clicks the "Suppliers" nav link,
-Then the user is navigated to / (the DashboardPage).
+Then the user is navigated to / (the DashboardPage) and the page scrolls to the suppliers section.
 
 **Display Orders Nav Link**
 Given the user is on any page,
 When the page loads,
 Then the top navigation bar displays an "Orders" link.
 
-**Click Orders Nav Link Navigates to Dashboard**
+**Click Orders Nav Link Scrolls to Orders Section**
 Given the user is on any page,
 When the user clicks the "Orders" nav link,
-Then the user is navigated to / (the DashboardPage).
+Then the user is navigated to / (the DashboardPage) and the page scrolls to the orders section.
 
 **Display Inventory Nav Link**
 Given the user is on any page,
 When the page loads,
 Then the top navigation bar displays an "Inventory" link.
 
-**Click Inventory Nav Link Navigates to Dashboard**
+**Click Inventory Nav Link Scrolls to Inventory Section**
 Given the user is on any page,
 When the user clicks the "Inventory" nav link,
-Then the user is navigated to / (the DashboardPage).
+Then the user is navigated to / (the DashboardPage) and the page scrolls to the inventory section.
 
 **Active Nav Link Highlights Current Page**
 Given the user is on the DashboardPage,

@@ -19,7 +19,7 @@ export function SuppliersList({ suppliers }: { suppliers: Supplier[] }) {
   const navigate = useNavigate();
 
   return (
-    <div className="suppliers-list" data-testid="suppliers-list">
+    <div id="suppliers" className="suppliers-list" data-testid="suppliers-list">
       <div className="suppliers-list-header">
         <h2 className="suppliers-list-title" data-testid="suppliers-list-heading">
           Suppliers List

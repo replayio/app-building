@@ -41,7 +41,7 @@ export function UpcomingOrdersTable({ orders }: { orders: Order[] }) {
   }, [orders, statusFilter, supplierFilter]);
 
   return (
-    <div className="section-card upcoming-orders" data-testid="upcoming-orders">
+    <div id="orders" className="section-card upcoming-orders" data-testid="upcoming-orders">
       <div className="section-card-header">
         <h2 className="section-card-title" data-testid="upcoming-orders-heading">
           Upcoming Orders
