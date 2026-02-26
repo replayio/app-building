@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestTagsMultiple: Write test for TagsInput allows adding multiple tags",
-        "WriteTestTagsOptional: Write test for TagsInput field is optional and transaction saves without tags",
-        "WriteTestTagsPersisted: Write test for TagsInput tags are persisted with saved transaction"
-      ],
-      "timestamp": "2026-02-26T05:32:34.518Z",
-      "app": "Accounting"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "WriteComponentDateRangeFilter: Write the DateRangeFilter component for TransactionsPage",
