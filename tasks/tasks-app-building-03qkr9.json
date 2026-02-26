@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecTransactionDetail: Check testSpec.md directive violations in TransactionDetailPage test entries",
-        "CheckComponentsTransactionDetail: Check writeApp.md directive violations in TransactionDetailPage components",
-        "CheckTestsTransactionDetail: Check writeTests.md directive violations in TransactionDetailPage tests"
-      ],
-      "timestamp": "2026-02-26T18:26:43.041Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecTransactions: Check testSpec.md directive violations in TransactionsPage test entries",
         "CheckComponentsTransactions: Check writeApp.md directive violations in TransactionsPage components",
         "CheckTestsTransactions: Check writeTests.md directive violations in TransactionsPage tests"
