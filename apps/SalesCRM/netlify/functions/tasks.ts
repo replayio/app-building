@@ -221,6 +221,32 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [body.clientId, "Task Created", `Task Created: '${body.title.trim()}'`, "task", t.id, actor, actorId]
       );
+
+      // Send follower notifications for task creation
+      try {
+        const followers = await query<{ user_id: string; email: string; name: string }>(
+          sql,
+          `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+           JOIN users u ON u.id = cf.user_id
+           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+           WHERE cf.client_id = $1 AND (np.task_created IS NULL OR np.task_created = true)`,
+          [body.clientId]
+        );
+
+        for (const f of followers) {
+          if (f.user_id !== actorId) {
+            await query(
+              sql,
+              `INSERT INTO email_tokens (email, token, type)
+               VALUES ($1, $2, 'notification')
+               ON CONFLICT DO NOTHING`,
+              [f.email, `task-created-${t.id}-${Date.now()}-${f.user_id}`]
+            );
+          }
+        }
+      } catch {
+        // Notification failure shouldn't block task creation
+      }
     }
 
     // Look up related names

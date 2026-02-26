@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationTasksListFollowerNotifications: Fix missing follower notifications on task creation. Test entry says 'Task creation triggers follower notifications on the client' but backend tasks.ts POST handler only creates a timeline event - no follower notification is sent. Other functions (writeups.ts, deals.ts, task-notes.ts) implement the pattern: query client_followers JOIN notification_preferences, check task_created preference, create notification records. Add the same pattern to tasks.ts POST handler after the timeline event creation.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T09:59:41.105Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationNavDuplicateLinks: Fix TopNavBar.tsx where all 4 nav link onClick handlers call navigate('/'), making them duplicate links to the same URL. The directive says 'Navigation sidebars and menus must not contain duplicate links pointing to the same URL.' The nav items have different href paths (/, /#suppliers, /#orders, /#inventory) but the onClick ignores these. Fix the onClick handlers to use hash-based scrolling so Suppliers scrolls to the suppliers section, Orders scrolls to orders section, etc. on the dashboard page.",
         "RunTests: Verify tests pass after fix"
       ],
