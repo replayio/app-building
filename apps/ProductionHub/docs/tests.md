@@ -416,31 +416,55 @@ Components: CalendarHeader, CalendarGrid, RunDetailsPopup
 - **Then** the modal closes and a new production run event card appears on July 5 in the calendar grid
 - **And** the new run persists after navigating away and returning to /calendar
 
-#### CAL-HDR-16: Filter by Status dropdown is displayed
+#### CAL-HDR-16: Cancelling New Production Run modal does not create a run
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar
+- **When** the user clicks the "+ New Production Run" button
+- **Then** a modal is displayed with fields for recipe, start date, end date, quantity, and notes
+- **When** the user fills in the recipe, start date, end date, and quantity, then clicks the "Cancel" button on the modal
+- **Then** the modal closes and no new production run is created on the calendar grid
+
+#### CAL-HDR-17: Closing New Production Run modal with X button does not create a run
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar
+- **When** the user clicks the "+ New Production Run" button
+- **Then** a modal is displayed
+- **When** the user fills in the recipe, start date, end date, and quantity, then clicks the close (X) button on the modal header
+- **Then** the modal closes and no new production run is created on the calendar grid
+
+#### CAL-HDR-18: Clicking overlay dismisses New Production Run modal without creating a run
+- **Components:** CalendarHeader
+- **Given** the user is on /calendar
+- **When** the user clicks the "+ New Production Run" button
+- **Then** a modal is displayed
+- **When** the user fills in the recipe, start date, end date, and quantity, then clicks outside the modal on the overlay
+- **Then** the modal closes and no new production run is created on the calendar grid
+
+#### CAL-HDR-19: Filter by Status dropdown is displayed
 - **Components:** CalendarHeader
 - **Given** the user navigates to /calendar
 - **Then** a "Filter by Status" dropdown is displayed below the navigation buttons on the left side
 
-#### CAL-HDR-17: Filter by Status dropdown shows status options
+#### CAL-HDR-20: Filter by Status dropdown shows status options
 - **Components:** CalendarHeader
 - **Given** the user is on /calendar
 - **When** the user clicks the "Filter by Status" dropdown
 - **Then** a dropdown menu appears with status options including "All", "On Track", "Material Shortage", "Scheduled", "In Progress", and "Pending Approval"
 
-#### CAL-HDR-18: Selecting a status filter hides non-matching runs
+#### CAL-HDR-21: Selecting a status filter hides non-matching runs
 - **Components:** CalendarHeader, CalendarGrid
 - **Given** the user is on /calendar viewing multiple production run events with different statuses
 - **When** the user selects "Material Shortage" from the "Filter by Status" dropdown
 - **Then** only production run event cards with status "Material Shortage" are displayed in the calendar grid
 - **And** event cards with other statuses are hidden
 
-#### CAL-HDR-19: Selecting "All" in the filter shows all runs
+#### CAL-HDR-22: Selecting "All" in the filter shows all runs
 - **Components:** CalendarHeader, CalendarGrid
 - **Given** the user is on /calendar with the filter set to "Material Shortage"
 - **When** the user selects "All" from the "Filter by Status" dropdown
 - **Then** all production run event cards are displayed in the calendar grid regardless of status
 
-#### CAL-HDR-20: Legend displays color coding for statuses
+#### CAL-HDR-23: Legend displays color coding for statuses
 - **Components:** CalendarHeader
 - **Given** the user navigates to /calendar
 - **Then** a legend is displayed showing "Legend:" followed by "On Track" in green text, "Material Shortage" in red text, and "Scheduled" in yellow text

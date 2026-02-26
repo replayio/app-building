@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMissingModalCancelCalendar: Fix missing test entries and tests for New Run Modal cancel/close behavior (Cancel button, Close X button, overlay click dismiss)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T08:10:12.699Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecRunDetailsPage: Check testSpec.md directive violations in RunDetailsPage test entries",
         "CheckComponentsRunDetailsPage: Check writeApp.md directive violations in RunDetailsPage components",
         "CheckTestsRunDetailsPage: Check writeTests.md directive violations in RunDetailsPage tests"

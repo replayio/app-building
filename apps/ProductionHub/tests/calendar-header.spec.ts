@@ -298,7 +298,131 @@ test.describe("CalendarHeader", () => {
     ).toBeVisible({ timeout: 15000 });
   });
 
-  test("CAL-HDR-16: Filter by Status dropdown is displayed", async ({ page }) => {
+  test("CAL-HDR-16: Cancelling New Production Run modal does not create a run", async ({ page }) => {
+    await page.goto("/calendar");
+    await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
+
+    // Use a date cell that we will target with the form
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const targetDay = `${year}-${month}-06`;
+
+    // Wait for grid to render, then count events on the target day cell
+    await expect(page.getByTestId("calendar-grid")).toBeVisible({ timeout: 15000 });
+    const dayCell = page.getByTestId(`calendar-day-${targetDay}`);
+    const initialEventCount = await dayCell.locator('[data-testid^="calendar-event-"]').count();
+
+    // Open the New Production Run modal
+    await page.getByTestId("new-production-run-btn").click();
+    await expect(page.getByTestId("new-run-modal")).toBeVisible();
+
+    // Select a recipe from the dropdown
+    await page.getByTestId("new-run-recipe-input").click();
+    await expect(
+      page.locator('[data-testid^="new-run-recipe-option-"]').first()
+    ).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid^="new-run-recipe-option-"]').first().click();
+
+    // Fill in dates and quantity
+    await page.getByTestId("new-run-start-date").fill(`${year}-${month}-06T08:00`);
+    await page.getByTestId("new-run-end-date").fill(`${year}-${month}-06T17:00`);
+    await page.getByTestId("new-run-quantity").fill("999");
+
+    // Click Cancel
+    await page.getByTestId("new-run-cancel-btn").click();
+
+    // Modal should close
+    await expect(page.getByTestId("new-run-modal")).toBeHidden({ timeout: 30000 });
+
+    // No new event should have been created on the target day
+    await expect(dayCell.locator('[data-testid^="calendar-event-"]')).toHaveCount(initialEventCount);
+  });
+
+  test("CAL-HDR-17: Closing New Production Run modal with X button does not create a run", async ({ page }) => {
+    await page.goto("/calendar");
+    await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
+
+    // Use a date cell that we will target with the form
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const targetDay = `${year}-${month}-07`;
+
+    // Wait for grid to render, then count events on the target day cell
+    await expect(page.getByTestId("calendar-grid")).toBeVisible({ timeout: 15000 });
+    const dayCell = page.getByTestId(`calendar-day-${targetDay}`);
+    const initialEventCount = await dayCell.locator('[data-testid^="calendar-event-"]').count();
+
+    // Open the New Production Run modal
+    await page.getByTestId("new-production-run-btn").click();
+    await expect(page.getByTestId("new-run-modal")).toBeVisible();
+
+    // Select a recipe from the dropdown
+    await page.getByTestId("new-run-recipe-input").click();
+    await expect(
+      page.locator('[data-testid^="new-run-recipe-option-"]').first()
+    ).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid^="new-run-recipe-option-"]').first().click();
+
+    // Fill in dates and quantity
+    await page.getByTestId("new-run-start-date").fill(`${year}-${month}-07T08:00`);
+    await page.getByTestId("new-run-end-date").fill(`${year}-${month}-07T17:00`);
+    await page.getByTestId("new-run-quantity").fill("888");
+
+    // Click the X close button
+    await page.getByTestId("new-run-modal-close").click();
+
+    // Modal should close
+    await expect(page.getByTestId("new-run-modal")).toBeHidden({ timeout: 30000 });
+
+    // No new event should have been created on the target day
+    await expect(dayCell.locator('[data-testid^="calendar-event-"]')).toHaveCount(initialEventCount);
+  });
+
+  test("CAL-HDR-18: Clicking overlay dismisses New Production Run modal without creating a run", async ({ page }) => {
+    await page.goto("/calendar");
+    await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
+
+    // Use a date cell that we will target with the form
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const targetDay = `${year}-${month}-08`;
+
+    // Wait for grid to render, then count events on the target day cell
+    await expect(page.getByTestId("calendar-grid")).toBeVisible({ timeout: 15000 });
+    const dayCell = page.getByTestId(`calendar-day-${targetDay}`);
+    const initialEventCount = await dayCell.locator('[data-testid^="calendar-event-"]').count();
+
+    // Open the New Production Run modal
+    await page.getByTestId("new-production-run-btn").click();
+    await expect(page.getByTestId("new-run-modal")).toBeVisible();
+
+    // Select a recipe from the dropdown
+    await page.getByTestId("new-run-recipe-input").click();
+    await expect(
+      page.locator('[data-testid^="new-run-recipe-option-"]').first()
+    ).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid^="new-run-recipe-option-"]').first().click();
+
+    // Fill in dates and quantity
+    await page.getByTestId("new-run-start-date").fill(`${year}-${month}-08T08:00`);
+    await page.getByTestId("new-run-end-date").fill(`${year}-${month}-08T17:00`);
+    await page.getByTestId("new-run-quantity").fill("777");
+
+    // Click the overlay (outside the modal content) to dismiss
+    // The overlay is the modal element itself; click at position (1, 1) which is outside the modal-content
+    await page.getByTestId("new-run-modal").click({ position: { x: 1, y: 1 } });
+
+    // Modal should close
+    await expect(page.getByTestId("new-run-modal")).toBeHidden({ timeout: 30000 });
+
+    // No new event should have been created on the target day
+    await expect(dayCell.locator('[data-testid^="calendar-event-"]')).toHaveCount(initialEventCount);
+  });
+
+  test("CAL-HDR-19: Filter by Status dropdown is displayed", async ({ page }) => {
     await page.goto("/calendar");
     await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
 
@@ -307,7 +431,7 @@ test.describe("CalendarHeader", () => {
     await expect(filterBtn).toContainText("Filter by Status");
   });
 
-  test("CAL-HDR-17: Filter by Status dropdown shows status options", async ({ page }) => {
+  test("CAL-HDR-20: Filter by Status dropdown shows status options", async ({ page }) => {
     await page.goto("/calendar");
     await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
 
@@ -323,7 +447,7 @@ test.describe("CalendarHeader", () => {
     await expect(page.getByTestId("calendar-status-option-pending-approval")).toBeVisible();
   });
 
-  test("CAL-HDR-18: Selecting a status filter hides non-matching runs", async ({ page }) => {
+  test("CAL-HDR-21: Selecting a status filter hides non-matching runs", async ({ page }) => {
     // Create two runs with different statuses in the current month
     const now = new Date();
     const year = now.getFullYear();
@@ -376,7 +500,7 @@ test.describe("CalendarHeader", () => {
     }
   });
 
-  test('CAL-HDR-19: Selecting "All" in the filter shows all runs', async ({ page }) => {
+  test('CAL-HDR-22: Selecting "All" in the filter shows all runs', async ({ page }) => {
     // Create two runs with different statuses in the current month
     const now = new Date();
     const year = now.getFullYear();
@@ -434,7 +558,7 @@ test.describe("CalendarHeader", () => {
     }
   });
 
-  test("CAL-HDR-20: Legend displays color coding for statuses", async ({ page }) => {
+  test("CAL-HDR-23: Legend displays color coding for statuses", async ({ page }) => {
     await page.goto("/calendar");
     await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
 
