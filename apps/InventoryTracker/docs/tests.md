@@ -655,7 +655,7 @@ Components: AccountHeader, EditAccountButton, NewTransactionButton, TrackedMater
 - Components: TrackedMaterialsTable
 - Given: A row for "Steel Sheets (3mm)" is displayed in the Tracked Materials table for account "Finished Goods Warehouse 2"
 - When: The user clicks the "View Material in this Account" button (with external link icon) for "Steel Sheets (3mm)"
-- Then: The app navigates to the MaterialDetailPage for "Steel Sheets (3mm)" (/materials/:materialId) with context indicating the current account
+- Then: The app navigates to the MaterialDetailPage for "Steel Sheets (3mm)" at /materials/:materialId?account_id=:accountId (e.g. /materials/5?account_id=2), passing the current account ID as a query parameter
 
 **Test: Tracked Materials table shows multiple materials with different categories and units**
 - Components: TrackedMaterialsTable

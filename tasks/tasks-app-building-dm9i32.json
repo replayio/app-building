@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNavTarget: Fix testSpec.md - View Material in this Account test entry (line 658) should specify exact navigation URL format with query parameter (/materials/:materialId?account_id=:accountId) instead of ambiguous 'with context indicating the current account', per testSpec.md directive that navigation destinations must not be ambiguous"
-      ],
-      "timestamp": "2026-02-26T06:33:30.368Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationModalAbstraction: Extract inline Edit Account modal JSX from AccountDetailPage.tsx (lines 113-209) into a separate EditAccountModal component file, per writeApp.md guideline that all JSX rendered on a page must be abstracted into React components with their own files",
         "RunTests: Verify tests pass after modal abstraction"
       ],
