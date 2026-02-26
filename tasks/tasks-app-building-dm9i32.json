@@ -3,11 +3,17 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecNewTransactionModal: Check testSpec.md directive violations in NewTransactionModal test entries",
-        "CheckComponentsNewTransactionModal: Check writeApp.md directive violations in NewTransactionModal components",
-        "CheckTestsNewTransactionModal: Check writeTests.md directive violations in NewTransactionModal tests"
+        "FixViolationNewTransactionModalComponents: Fix writeApp violations in NewTransactionModal components: (1) Replace X/cross SVG with trash/bin icon on line item delete button in LineItemsTable.tsx, (2) Add missing colons to 'Total Debits' and 'Total Credits' labels in BalanceIndicator.tsx to match test spec text 'Total Debits:' and 'Total Credits:'"
       ],
-      "timestamp": "2026-02-25T15:32:24.884Z",
+      "timestamp": "2026-02-26T05:30:17.647Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationNewTransactionModalTestSpec: Fix testSpec violations in NewTransactionModal: (1) Fix Rent Expense amount mismatch $1500 vs $1350 in 'saved transaction appears' test line 357, (2) Make 'prevents saving unbalanced' test specify exact behavior instead of ambiguous 'either disabled or shows error' on line 503, (3) Make 'shows zero totals' test specify exact behavior instead of ambiguous 'or a neutral state' on line 508, (4) Add missing test for clicking modal overlay/backdrop to close the NewTransactionModal"
+      ],
+      "timestamp": "2026-02-26T05:27:26.169Z",
       "app": "Accounting"
     },
     {
@@ -467,6 +473,124 @@
         "WriteTestReportingLinksHistoryNav: Write test for ReportingLinks Transaction History Report link navigates to report"
       ],
       "timestamp": "2026-02-26T05:18:26.390Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestNewTransactionModalDisplay: Write test for NewTransactionModal displays title and close button",
+        "WriteTestNewTransactionModalXClose: Write test for NewTransactionModal X button closes modal",
+        "WriteTestNewTransactionModalCancelClose: Write test for NewTransactionModal Cancel button closes modal without saving",
+        "WriteTestNewTransactionModalSave: Write test for NewTransactionModal Save Transaction button saves transaction"
+      ],
+      "timestamp": "2026-02-26T05:31:44.591Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestNewTransactionModalSavedAppears: Write test for NewTransactionModal saved transaction appears in affected account transaction lists",
+        "WriteTestNewTransactionModalEditMode: Write test for NewTransactionModal opens in edit mode with pre-populated fields",
+        "WriteTestNewTransactionModalEditSave: Write test for NewTransactionModal editing a transaction updates existing record",
+        "WriteTestNewTransactionModalButtonLayout: Write test for NewTransactionModal Cancel and Save buttons positioned at bottom right"
+      ],
+      "timestamp": "2026-02-26T05:31:49.862Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestHeaderFieldsDate: Write test for TransactionHeaderFields displays Date field with calendar icon",
+        "WriteTestHeaderFieldsDatePicker: Write test for TransactionHeaderFields Date picker allows selecting a date",
+        "WriteTestHeaderFieldsDescription: Write test for TransactionHeaderFields displays Description input with placeholder",
+        "WriteTestHeaderFieldsDescriptionInput: Write test for TransactionHeaderFields Description input accepts text"
+      ],
+      "timestamp": "2026-02-26T05:31:54.794Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestHeaderFieldsCurrency: Write test for TransactionHeaderFields displays Currency dropdown with default value",
+        "WriteTestHeaderFieldsCurrencySelect: Write test for TransactionHeaderFields Currency dropdown allows selecting other currencies",
+        "WriteTestHeaderFieldsLayout: Write test for TransactionHeaderFields layout shows Date Description Currency in a single row"
+      ],
+      "timestamp": "2026-02-26T05:32:00.571Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestLineItemsHeading: Write test for LineItemsTable displays section heading",
+        "WriteTestLineItemsHeaders: Write test for LineItemsTable displays column headers",
+        "WriteTestLineItemsAccountDropdown: Write test for LineItemsTable Account dropdown shows accounts with codes",
+        "WriteTestLineItemsAccountPlaceholder: Write test for LineItemsTable Account dropdown placeholder for empty row"
+      ],
+      "timestamp": "2026-02-26T05:32:05.166Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestLineItemsTypeDropdown: Write test for LineItemsTable Type dropdown has Credit and Debit options",
+        "WriteTestLineItemsTypeDefault: Write test for LineItemsTable Type dropdown defaults to Debit for new rows",
+        "WriteTestLineItemsAmountInput: Write test for LineItemsTable Amount input accepts numeric values",
+        "WriteTestLineItemsDeleteRow: Write test for LineItemsTable delete row button removes line item"
+      ],
+      "timestamp": "2026-02-26T05:32:10.128Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestLineItemsAddBtn: Write test for LineItemsTable Add Line Item button adds new row",
+        "WriteTestLineItemsMultiple: Write test for LineItemsTable supports multiple line items for multi-account transactions",
+        "WriteTestLineItemsInitial: Write test for LineItemsTable initial state for new transaction has two empty rows"
+      ],
+      "timestamp": "2026-02-26T05:32:14.905Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestBalanceDebits: Write test for BalanceIndicator displays Total Debits sum",
+        "WriteTestBalanceCredits: Write test for BalanceIndicator displays Total Credits sum",
+        "WriteTestBalanceBalanced: Write test for BalanceIndicator shows balanced state when debits equal credits",
+        "WriteTestBalanceUnbalanced: Write test for BalanceIndicator shows unbalanced state when debits do not equal credits"
+      ],
+      "timestamp": "2026-02-26T05:32:19.764Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestBalanceDynamic: Write test for BalanceIndicator updates dynamically when line items change",
+        "WriteTestBalanceValidation: Write test for BalanceIndicator validation prevents saving unbalanced transaction",
+        "WriteTestBalanceZero: Write test for BalanceIndicator shows zero totals for empty line items",
+        "WriteTestBalanceDelete: Write test for BalanceIndicator updates when a line item row is deleted"
+      ],
+      "timestamp": "2026-02-26T05:32:25.138Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestTagsLabel: Write test for TagsInput displays label with optional indicator",
+        "WriteTestTagsChips: Write test for TagsInput displays existing tags as removable chips",
+        "WriteTestTagsAdd: Write test for TagsInput add a new tag by typing",
+        "WriteTestTagsRemove: Write test for TagsInput remove a tag by clicking X"
+      ],
+      "timestamp": "2026-02-26T05:32:29.806Z",
+      "app": "Accounting"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestTagsMultiple: Write test for TagsInput allows adding multiple tags",
+        "WriteTestTagsOptional: Write test for TagsInput field is optional and transaction saves without tags",
+        "WriteTestTagsPersisted: Write test for TagsInput tags are persisted with saved transaction"
+      ],
+      "timestamp": "2026-02-26T05:32:34.518Z",
       "app": "Accounting"
     }
   ]
