@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNavigationTestEntries: Add BDD-format test entries to the Navigation section of docs/tests.md. The section currently only has a prose description but needs individual titled Given/When/Then entries for: app logo display and click navigation to /, each nav link (Dashboard, Suppliers, Orders, Inventory) with exact navigation targets, user profile icon/dropdown appearance and click behavior, breadcrumb display on SupplierDetailsPage (Home > Suppliers > Name > Supplier Details) with navigation targets, breadcrumb display on OrderDetailsPage (Dashboard > Orders > Order #id) with navigation targets, and nav bar consistency across all pages."
-      ],
-      "timestamp": "2026-02-26T11:11:12.542Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
         "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
         "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"

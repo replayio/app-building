@@ -2,12 +2,116 @@
 
 ## Navigation
 
-The app has a consistent top navigation bar across all pages with:
-- App logo/name ("SupplyChain Pro")
-- Navigation links: Dashboard, Suppliers, Orders, Inventory
-- User profile icon/dropdown
+### TopNavBar
 
-Breadcrumb navigation appears on detail pages (SupplierDetailsPage, OrderDetailsPage).
+**Display App Logo with Icon and Name**
+Given the user is on any page,
+When the page loads,
+Then the top navigation bar displays a package/box icon followed by the text "SupplyChain Pro" on the left side.
+
+**Click App Logo Navigates to Dashboard**
+Given the user is on any page,
+When the user clicks the "SupplyChain Pro" logo,
+Then the user is navigated to / (the DashboardPage).
+
+**Display Dashboard Nav Link**
+Given the user is on any page,
+When the page loads,
+Then the top navigation bar displays a "Dashboard" link.
+
+**Click Dashboard Nav Link Navigates to Dashboard**
+Given the user is on any page,
+When the user clicks the "Dashboard" nav link,
+Then the user is navigated to / (the DashboardPage).
+
+**Display Suppliers Nav Link**
+Given the user is on any page,
+When the page loads,
+Then the top navigation bar displays a "Suppliers" link.
+
+**Click Suppliers Nav Link Navigates to Dashboard**
+Given the user is on any page,
+When the user clicks the "Suppliers" nav link,
+Then the user is navigated to / (the DashboardPage).
+
+**Display Orders Nav Link**
+Given the user is on any page,
+When the page loads,
+Then the top navigation bar displays an "Orders" link.
+
+**Click Orders Nav Link Navigates to Dashboard**
+Given the user is on any page,
+When the user clicks the "Orders" nav link,
+Then the user is navigated to / (the DashboardPage).
+
+**Display Inventory Nav Link**
+Given the user is on any page,
+When the page loads,
+Then the top navigation bar displays an "Inventory" link.
+
+**Click Inventory Nav Link Navigates to Dashboard**
+Given the user is on any page,
+When the user clicks the "Inventory" nav link,
+Then the user is navigated to / (the DashboardPage).
+
+**Active Nav Link Highlights Current Page**
+Given the user is on the DashboardPage,
+When the page loads,
+Then the "Dashboard" nav link appears with active/highlighted styling,
+And when the user is on a SupplierDetailsPage, the "Suppliers" nav link appears active,
+And when the user is on an OrderDetailsPage, the "Orders" nav link appears active.
+
+**Display User Profile Button**
+Given the user is on any page,
+When the page loads,
+Then the top navigation bar displays a user profile button on the right side with a circular avatar showing the letter "U" and a dropdown chevron icon.
+
+**Nav Bar Consistent Across All Pages**
+Given the user navigates between the DashboardPage, SupplierDetailsPage, and OrderDetailsPage,
+When each page loads,
+Then the same top navigation bar is displayed with the logo, all four nav links (Dashboard, Suppliers, Orders, Inventory), and the user profile button.
+
+### Breadcrumbs
+
+**Display Breadcrumbs on SupplierDetailsPage**
+Given a supplier "Apex Global Logistics" exists,
+When the user navigates to /suppliers/\<supplierId\>,
+Then a breadcrumb trail is displayed showing "Home > Suppliers > Apex Global Logistics > Supplier Details".
+
+**SupplierDetailsPage Breadcrumb Home Navigates to Dashboard**
+Given the user is on the SupplierDetailsPage,
+When the user clicks "Home" in the breadcrumb trail,
+Then the user is navigated to / (the DashboardPage).
+
+**SupplierDetailsPage Breadcrumb Suppliers Navigates to Dashboard**
+Given the user is on the SupplierDetailsPage,
+When the user clicks "Suppliers" in the breadcrumb trail,
+Then the user is navigated to / (the DashboardPage).
+
+**SupplierDetailsPage Breadcrumb Supplier Name and Supplier Details Are Not Clickable**
+Given the user is on the SupplierDetailsPage for "Apex Global Logistics",
+When the breadcrumb trail is displayed,
+Then "Apex Global Logistics" and "Supplier Details" are displayed as plain text (not clickable links).
+
+**Display Breadcrumbs on OrderDetailsPage**
+Given an order with ID "PO-2024-10-1234" exists,
+When the user navigates to /orders/PO-2024-10-1234,
+Then a breadcrumb trail is displayed showing "Dashboard > Orders > Order #PO-2024-10-1234".
+
+**OrderDetailsPage Breadcrumb Dashboard Navigates to Dashboard**
+Given the user is on the OrderDetailsPage,
+When the user clicks "Dashboard" in the breadcrumb trail,
+Then the user is navigated to / (the DashboardPage).
+
+**OrderDetailsPage Breadcrumb Orders Navigates to Dashboard**
+Given the user is on the OrderDetailsPage,
+When the user clicks "Orders" in the breadcrumb trail,
+Then the user is navigated to / (the DashboardPage).
+
+**OrderDetailsPage Breadcrumb Order ID Is Not Clickable**
+Given the user is on the OrderDetailsPage for order "PO-2024-10-1234",
+When the breadcrumb trail is displayed,
+Then "Order #PO-2024-10-1234" is displayed as plain text (not a clickable link).
 
 ---
 
