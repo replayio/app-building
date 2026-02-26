@@ -91,6 +91,14 @@ Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
 - **When** the user selects "Active" from the "Filter Status" dropdown and types "Widget" into the search bar
 - **Then** only recipe rows that match both criteria (status "Active" AND name/product containing "Widget") are displayed
 
+#### REC-HDR-15: Cancelling Add Recipe modal does not create a recipe
+- **Components:** RecipesHeader
+- **Given** the user is on /recipes
+- **When** the user clicks the "Add Recipe" button
+- **Then** a modal is displayed with fields for Recipe Name, Product, Version, and Status
+- **When** the user clicks the "Cancel" button on the modal
+- **Then** the modal closes and no new recipe is added to the RecipesTable
+
 ### RecipesTable
 
 #### REC-TBL-1: Table displays Recipe Name, Product, Version, Status, and Actions column headers
@@ -210,6 +218,14 @@ Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
 - **Given** the user navigates to /recipes and a recipe has version "2.0.1" with status "Draft"
 - **Then** the Version column displays "2.0.1 (Draft)" for that recipe row
 
+#### REC-TBL-21: Cancelling Edit Recipe modal does not save changes
+- **Components:** RecipesTable
+- **Given** the user is on /recipes and a row shows a recipe
+- **When** the user clicks the pencil icon in that row's Actions column
+- **Then** a modal is displayed pre-filled with the recipe's current data
+- **When** the user clicks the "Cancel" button on the modal
+- **Then** the modal closes and the recipe row remains unchanged
+
 ### RecipeDetailsPanel
 
 #### REC-PNL-1: Side panel displays with recipe title
@@ -294,6 +310,12 @@ Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
 - **Given** the RecipeDetailsPanel is open for a recipe that has no materials defined
 - **When** the user clicks the "Materials Breakdown" tab
 - **Then** the materials table displays a placeholder message or empty table state
+
+#### REC-PNL-15: Close button closes the RecipeDetailsPanel
+- **Components:** RecipeDetailsPanel
+- **Given** the RecipeDetailsPanel is open for a recipe
+- **When** the user clicks the close (X) button on the RecipeDetailsPanel
+- **Then** the RecipeDetailsPanel closes and is no longer visible
 
 ## CalendarPage (/calendar)
 

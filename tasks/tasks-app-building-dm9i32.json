@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMissingModalCancelTests: Fix testSpec.md - Add missing test entries for RecipeDetailsPanel close button, Add Recipe modal cancel/close, and Edit Recipe modal cancel/close, then add corresponding Playwright tests",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T07:56:39.748Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecCalendarPage: Check testSpec.md directive violations in CalendarPage test entries",
         "CheckComponentsCalendarPage: Check writeApp.md directive violations in CalendarPage components",
         "CheckTestsCalendarPage: Check writeTests.md directive violations in CalendarPage tests"

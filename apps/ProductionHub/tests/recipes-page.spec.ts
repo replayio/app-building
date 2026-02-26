@@ -250,6 +250,36 @@ test.describe("RecipesHeader", () => {
       page.locator('[data-testid^="recipe-row-"]').filter({ hasText: "Organic Granola Mix" })
     ).toBeVisible();
   });
+
+  test("REC-HDR-15: Cancelling Add Recipe modal does not create a recipe", async ({ page }) => {
+    await page.goto("/recipes");
+    await expect(page.getByTestId("recipes-table")).toBeVisible({ timeout: 30000 });
+
+    // Count current rows on page 1
+    const initialCount = await page.locator('[data-testid^="recipe-row-"]').count();
+
+    // Open Add Recipe modal
+    await page.getByTestId("add-recipe-btn").click();
+    await expect(page.getByTestId("add-recipe-modal")).toBeVisible();
+
+    // Fill in some data
+    await page.getByTestId("add-recipe-name-input").fill("CancelledRecipe");
+    await page.getByTestId("add-recipe-product-input").fill("CancelledProduct");
+
+    // Click Cancel
+    await page.getByTestId("add-recipe-cancel-btn").click();
+
+    // Modal closes
+    await expect(page.getByTestId("add-recipe-modal")).toBeHidden();
+
+    // Row count remains the same
+    await expect(page.locator('[data-testid^="recipe-row-"]')).toHaveCount(initialCount);
+
+    // The cancelled recipe does not appear
+    await expect(
+      page.locator('[data-testid^="recipe-row-"]').filter({ hasText: "CancelledRecipe" })
+    ).toHaveCount(0);
+  });
 });
 
 test.describe("RecipesTable", () => {
@@ -590,6 +620,37 @@ test.describe("RecipesTable", () => {
     // Version should show "1.0 (Draft)"
     await expect(row.locator('[data-testid^="recipe-version-"]')).toHaveText("1.0 (Draft)");
   });
+
+  test("REC-TBL-21: Cancelling Edit Recipe modal does not save changes", async ({ page }) => {
+    await page.goto("/recipes");
+    await expect(page.getByTestId("recipes-table")).toBeVisible({ timeout: 30000 });
+
+    // Use "Coconut Chips Toasted" (Active, page 1)
+    const row = page.locator('[data-testid^="recipe-row-"]').filter({ hasText: "Coconut Chips Toasted" });
+    await expect(row).toBeVisible();
+
+    // Remember original version
+    const originalVersion = await row.locator('[data-testid^="recipe-version-"]').textContent();
+
+    // Click edit button
+    await row.locator('[data-testid^="recipe-edit-btn-"]').click();
+
+    // Edit modal appears with pre-filled data
+    await expect(page.getByTestId("edit-recipe-modal")).toBeVisible();
+
+    // Change version
+    await page.getByTestId("edit-recipe-version-input").clear();
+    await page.getByTestId("edit-recipe-version-input").fill("99.99");
+
+    // Click Cancel
+    await page.getByTestId("edit-recipe-cancel-btn").click();
+
+    // Modal closes
+    await expect(page.getByTestId("edit-recipe-modal")).toBeHidden();
+
+    // Version remains unchanged
+    await expect(row.locator('[data-testid^="recipe-version-"]')).toHaveText(originalVersion!);
+  });
 });
 
 test.describe("RecipeDetailsPanel", () => {
@@ -838,5 +899,21 @@ test.describe("RecipeDetailsPanel", () => {
     await expect(materialsSection).toBeVisible({ timeout: 15000 });
     await expect(materialsSection.locator(".empty-state")).toBeVisible();
     await expect(materialsSection).toContainText("No materials defined");
+  });
+
+  test("REC-PNL-15: Close button closes the RecipeDetailsPanel", async ({ page }) => {
+    await page.goto("/recipes");
+    await expect(page.getByTestId("recipes-table")).toBeVisible({ timeout: 30000 });
+
+    // Open the details panel by clicking a recipe row
+    const row = page.locator('[data-testid^="recipe-row-"]').filter({ hasText: "Fruit Preserve" });
+    await row.click();
+    await expect(page.getByTestId("recipe-details-panel")).toBeVisible({ timeout: 15000 });
+
+    // Click the close button
+    await page.getByTestId("recipe-panel-close").click();
+
+    // Panel should be hidden
+    await expect(page.getByTestId("recipe-details-panel")).toBeHidden();
   });
 });
