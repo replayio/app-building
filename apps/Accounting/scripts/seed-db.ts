@@ -71,6 +71,66 @@ async function seed() {
        NULL, NULL, NULL, NULL, NULL, NULL, NULL)
   `;
 
+  // Get account IDs for foreign key references
+  const checkingRows = await sql`SELECT id FROM accounts WHERE name = 'Checking Account'`;
+  const checkingId = checkingRows[0].id;
+  const opexRows = await sql`SELECT id FROM accounts WHERE name = 'Operating Expenses'`;
+  const opexId = opexRows[0].id;
+  const serviceRevRows = await sql`SELECT id FROM accounts WHERE name = 'Service Revenue'`;
+  const serviceRevId = serviceRevRows[0].id;
+
+  // Seed transactions for Checking Account
+  const txn1 = await sql`
+    INSERT INTO transactions (date, description, currency)
+    VALUES ('2023-10-25', 'Grocery Store', 'USD') RETURNING id
+  `;
+  const txn2 = await sql`
+    INSERT INTO transactions (date, description, currency)
+    VALUES ('2023-10-24', 'Salary Deposit', 'USD') RETURNING id
+  `;
+  const txn3 = await sql`
+    INSERT INTO transactions (date, description, currency)
+    VALUES ('2023-10-22', 'Electric Bill', 'USD') RETURNING id
+  `;
+
+  // Seed transaction entries (double-entry)
+  await sql`INSERT INTO transaction_entries (transaction_id, account_id, entry_type, amount)
+    VALUES (${txn1[0].id}, ${checkingId}, 'debit', 125.50)`;
+  await sql`INSERT INTO transaction_entries (transaction_id, account_id, entry_type, amount)
+    VALUES (${txn1[0].id}, ${opexId}, 'credit', 125.50)`;
+
+  await sql`INSERT INTO transaction_entries (transaction_id, account_id, entry_type, amount)
+    VALUES (${txn2[0].id}, ${checkingId}, 'credit', 3200.00)`;
+  await sql`INSERT INTO transaction_entries (transaction_id, account_id, entry_type, amount)
+    VALUES (${txn2[0].id}, ${serviceRevId}, 'debit', 3200.00)`;
+
+  await sql`INSERT INTO transaction_entries (transaction_id, account_id, entry_type, amount)
+    VALUES (${txn3[0].id}, ${checkingId}, 'debit', 85.00)`;
+  await sql`INSERT INTO transaction_entries (transaction_id, account_id, entry_type, amount)
+    VALUES (${txn3[0].id}, ${opexId}, 'credit', 85.00)`;
+
+  // Seed tags
+  await sql`DELETE FROM tags`;
+  const groceriesTag = await sql`INSERT INTO tags (name) VALUES ('Groceries') RETURNING id`;
+  const salaryTag = await sql`INSERT INTO tags (name) VALUES ('Salary') RETURNING id`;
+  const utilitiesTag = await sql`INSERT INTO tags (name) VALUES ('Utilities') RETURNING id`;
+
+  // Link tags to transactions
+  await sql`INSERT INTO transaction_tags (transaction_id, tag_id)
+    VALUES (${txn1[0].id}, ${groceriesTag[0].id})`;
+  await sql`INSERT INTO transaction_tags (transaction_id, tag_id)
+    VALUES (${txn2[0].id}, ${salaryTag[0].id})`;
+  await sql`INSERT INTO transaction_tags (transaction_id, tag_id)
+    VALUES (${txn3[0].id}, ${utilitiesTag[0].id})`;
+
+  // Seed budget items for Checking Account
+  await sql`INSERT INTO budgets (account_id, name, amount, actual_amount, period)
+    VALUES (${checkingId}, 'Rent', 1500, 1500, 'monthly')`;
+  await sql`INSERT INTO budgets (account_id, name, amount, actual_amount, period)
+    VALUES (${checkingId}, 'Utilities', 250, 200, 'monthly')`;
+  await sql`INSERT INTO budgets (account_id, name, amount, actual_amount, period)
+    VALUES (${checkingId}, 'Progress', 100, 700, 'monthly')`;
+
   console.log("Seed data inserted successfully.");
 }
 

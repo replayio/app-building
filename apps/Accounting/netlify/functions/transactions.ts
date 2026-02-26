@@ -198,6 +198,20 @@ export default async function handler(req: Request, _context: Context) {
         insertedTags.push(tag);
       }
 
+      // Update matching budget items based on transaction tags
+      for (const entry of entries) {
+        if (entry.entry_type === "debit") {
+          for (const tagName of tags) {
+            await sql`
+              UPDATE budgets
+              SET actual_amount = actual_amount + ${entry.amount}
+              WHERE account_id = ${entry.account_id}
+                AND LOWER(name) = LOWER(${tagName})
+            `;
+          }
+        }
+      }
+
       return new Response(
         JSON.stringify({
           ...txn,
@@ -368,6 +382,26 @@ export default async function handler(req: Request, _context: Context) {
                 updated_at = NOW()
             WHERE id = ${old.account_id}
           `;
+        }
+      }
+
+      // Reverse budget item updates based on transaction tags
+      const delTagRows = await sql`
+        SELECT t.name FROM tags t
+        JOIN transaction_tags tt ON tt.tag_id = t.id
+        WHERE tt.transaction_id = ${id}
+      `;
+      for (const old of oldEntries) {
+        if (old.entry_type === "debit") {
+          const oldAmount = parseAmount(old.amount);
+          for (const tagRow of delTagRows) {
+            await sql`
+              UPDATE budgets
+              SET actual_amount = actual_amount - ${oldAmount}
+              WHERE account_id = ${old.account_id}
+                AND LOWER(name) = LOWER(${tagRow.name})
+            `;
+          }
         }
       }
 
