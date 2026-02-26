@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMarkCompleteFollowerNotifications: Backend tasks.ts PUT handler for status=completed creates a timeline event but does NOT send follower notifications. The test entry 'Mark Complete triggers follower notifications on the associated client' requires notifications to be sent. Add follower notification logic to the PUT handler for status=completed, following the same pattern used in task-notes.ts POST handler (lines 106-132): query client_followers JOIN users, check notification_preferences, and create notification records.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T10:05:28.826Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationCancelTaskSideEffects: Add missing test entries in docs/tests.md for Cancel action side effects on TaskDetailPage: (1) 'Cancel creates a timeline entry on the associated client' mirroring the Mark Complete pattern, (2) 'Cancel triggers follower notifications on the associated client' mirroring Mark Complete, (3) 'Canceling a task removes it from the TasksListPage upcoming list' mirroring the completion equivalent. Also update backend tasks.ts PUT handler to create timeline event and send follower notifications when status=canceled, matching the pattern used for status=completed.",
         "RunTests: Verify tests pass after fix"
       ],

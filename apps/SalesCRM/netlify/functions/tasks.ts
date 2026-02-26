@@ -291,6 +291,33 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
          VALUES ($1, $2, $3, $4, $5, $6)`,
         [existing.client_id, "Task Completed", `Task Completed: '${existing.title}'`, "task", existing.id, actor]
       );
+
+      // Send follower notifications
+      try {
+        const followers = await query<{ user_id: string; email: string; name: string }>(
+          sql,
+          `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+           JOIN users u ON u.id = cf.user_id
+           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+           WHERE cf.client_id = $1 AND (np.task_completed IS NULL OR np.task_completed = true)`,
+          [existing.client_id]
+        );
+
+        const actorId = user ? user.id : null;
+        for (const f of followers) {
+          if (f.user_id !== actorId) {
+            await query(
+              sql,
+              `INSERT INTO email_tokens (email, token, type)
+               VALUES ($1, $2, 'notification')
+               ON CONFLICT DO NOTHING`,
+              [f.email, `task-completed-${existing.id}-${Date.now()}-${f.user_id}`]
+            );
+          }
+        }
+      } catch {
+        // Notification failure shouldn't block the update
+      }
     }
 
     return jsonResponse({ success: true });
