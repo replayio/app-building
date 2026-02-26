@@ -3,11 +3,9 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
-        "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
-        "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"
+        "FixViolationCreateOrderHistorySideEffect: Update the 'Create Order via Dialog Saves and Updates Dashboard' test entry in docs/tests.md to mention that an OrderHistory entry is created for the new order (backend orders.ts POST creates history entry 'Order <orderId> created'). Also update the Playwright test in tests/dashboard-quick-actions.spec.ts to navigate to the new order's OrderDetailsPage and verify a history entry exists for the creation event, asserting it appears exactly once."
       ],
-      "timestamp": "2026-02-25T15:33:48.126Z",
+      "timestamp": "2026-02-26T11:19:16.332Z",
       "app": "SupplierTracker"
     },
     {
