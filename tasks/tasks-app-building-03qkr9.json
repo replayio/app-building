@@ -3,11 +3,19 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecMaterialDetail: Check testSpec.md directive violations in MaterialDetailPage test entries",
-        "CheckComponentsMaterialDetail: Check writeApp.md directive violations in MaterialDetailPage components",
-        "CheckTestsMaterialDetail: Check writeTests.md directive violations in MaterialDetailPage tests"
+        "FixViolationMaterialDetailLinks: Fix AccountsDistributionTable View Account links to include link icon (matching View Lineage pattern), and add data-testid to TransactionsHistoryTable batch reference links",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-26T18:26:39.255Z",
+      "timestamp": "2026-02-26T20:42:08.983Z",
+      "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationViewAccountIcon: Fix View Account link test entry in AccountsDistributionTable to specify link icon (matching View Lineage pattern), and add test entry for Create Batch optional properties (Location, Lot Number, Expiration Date) to exercise filling and persisting them",
+        "RunTests: Verify tests pass after fix"
+      ],
+      "timestamp": "2026-02-26T20:39:52.012Z",
       "app": "InventoryTracker"
     },
     {
