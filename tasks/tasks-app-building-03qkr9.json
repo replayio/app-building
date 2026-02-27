@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
-        "MakeResponsiveAccountDetailPage: Make AccountDetailPage responsive"
-      ],
-      "timestamp": "2026-02-26T23:51:41.331Z",
-      "app": "InventoryTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
         "MakeResponsiveMaterialsPage: Make MaterialsPage responsive"
       ],
       "timestamp": "2026-02-26T23:51:40.458Z",

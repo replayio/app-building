@@ -32,6 +32,7 @@ export function AccountHeader({ account, onEditAccount }: AccountHeaderProps) {
               alignItems: "center",
               gap: 16,
               marginTop: 8,
+              flexWrap: "wrap",
             }}
           >
             <span

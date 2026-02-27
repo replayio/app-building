@@ -81,7 +81,7 @@ export function AccountDetailPage() {
     >
       <AccountHeader account={account} onEditAccount={handleOpenEdit} />
 
-      <div style={{ marginTop: 24 }}>
+      <div className="mt-6">
         <TrackedMaterialsTable
           materials={accountMaterials}
           accountId={account.id}
