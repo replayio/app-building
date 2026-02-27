@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecClientsListPage: Check testSpec.md directive violations in ClientsListPage test entries",
-        "CheckComponentsClientsListPage: Check writeApp.md directive violations in ClientsListPage components",
-        "CheckTestsClientsListPage: Check writeTests.md directive violations in ClientsListPage tests"
-      ],
-      "timestamp": "2026-02-27T02:08:27.009Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecSidebar: Check testSpec.md directive violations in Sidebar test entries",
         "CheckComponentsSidebar: Check writeApp.md directive violations in Sidebar components",
         "CheckTestsSidebar: Check writeTests.md directive violations in Sidebar tests"
