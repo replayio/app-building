@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationEditDealModalTests: Fix incomplete test entries for the edit deal modal opened from DealsListPage actions menu - add entries for saving edits, canceling, field validation, and side effects (timeline entries, follower notifications)",
-        "FixViolationDealDeletionSideEffects: Fix missing test entries for deal deletion side effects - add timeline entry on client and follower notification tests for Actions menu Delete"
-      ],
-      "timestamp": "2026-02-27T03:31:42.602Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationWonBadgeDistinct: Fix Won status badge in DealsTable to be visually distinct from On Track - both currently use badge--success but test spec requires them to be distinct"
       ],
       "timestamp": "2026-02-27T03:34:50.884Z",
@@ -39,6 +30,20 @@
         "FixViolationSidebarJSXComments: Add JSX comments next to every interactive element in SidebarNavigation.tsx and SidebarAuth.tsx with the titles of the tests that exercise each element (testSpec.md directive)"
       ],
       "timestamp": "2026-02-27T04:07:58.011Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestEditDealModalSavesEdits: Write test for Actions menu Edit modal saves edits",
+        "WriteTestEditDealModalCancelCloses: Write test for Actions menu Edit modal cancel closes without saving",
+        "WriteTestEditDealModalValidation: Write test for Actions menu Edit modal validates required fields",
+        "WriteTestEditDealTimeline: Write test for Actions menu Edit deal creates a timeline entry on the client",
+        "WriteTestEditDealNotifications: Write test for Actions menu Edit deal triggers follower notifications on the client",
+        "WriteTestDeleteDealTimeline: Write test for Actions menu Delete creates a timeline entry on the client",
+        "WriteTestDeleteDealNotifications: Write test for Actions menu Delete triggers follower notifications on the client"
+      ],
+      "timestamp": "2026-02-27T07:46:06.222Z",
       "app": "SalesCRM"
     }
   ]

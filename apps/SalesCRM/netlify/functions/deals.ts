@@ -488,13 +488,54 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
   if (req.method === "DELETE" && subPath) {
     const dealId = subPath;
 
-    const existing = await query<{ id: string }>(sql, "SELECT id FROM deals WHERE id = $1", [dealId]);
+    const existing = await query<{ id: string; name: string; client_id: string }>(
+      sql, "SELECT id, name, client_id FROM deals WHERE id = $1", [dealId]
+    );
     if (existing.length === 0) {
       return errorResponse(404, "Deal not found");
     }
 
+    const dealName = existing[0].name;
+    const clientId = existing[0].client_id;
+    const actor = user ? user.name : "System";
+    const actorId = user ? user.id : null;
+
     await query(sql, "DELETE FROM deal_history WHERE deal_id = $1", [dealId]);
     await query(sql, "DELETE FROM deals WHERE id = $1", [dealId]);
+
+    // Create timeline entry for deal deletion
+    await query(
+      sql,
+      `INSERT INTO timeline_events (client_id, event_type, description, related_entity_type, related_entity_id, created_by, created_by_user_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [clientId, "Deal Deleted", `Deal Deleted: '${dealName}'`, "deal", dealId, actor, actorId]
+    );
+
+    // Send follower notifications for deal deletion
+    try {
+      const followers = await query<{ user_id: string; email: string; name: string }>(
+        sql,
+        `SELECT cf.user_id, u.email, u.name FROM client_followers cf
+         JOIN users u ON u.id = cf.user_id
+         LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
+         WHERE cf.client_id = $1 AND (np.deal_created IS NULL OR np.deal_created = true)`,
+        [clientId]
+      );
+
+      for (const f of followers) {
+        if (f.user_id !== actorId) {
+          await query(
+            sql,
+            `INSERT INTO email_tokens (email, token, type)
+             VALUES ($1, $2, 'notification')
+             ON CONFLICT DO NOTHING`,
+            [f.email, `deal-deleted-${dealId}-${Date.now()}-${f.user_id}`]
+          );
+        }
+      }
+    } catch {
+      // Notification failure shouldn't block the deletion
+    }
 
     return jsonResponse({ success: true });
   }

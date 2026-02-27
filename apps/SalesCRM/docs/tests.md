@@ -1087,8 +1087,29 @@ Given the user is on /deals, when they click the three-dot actions menu on a dea
 **Actions menu Edit option opens edit deal modal**
 Given the user is on /deals and clicks the actions menu on a deal row, when they select "Edit", an edit modal opens pre-populated with the deal's current data allowing the user to modify deal fields.
 
+**Actions menu Edit modal saves edits**
+Given the edit deal modal is open from the actions menu with pre-populated data, when the user modifies fields (e.g., changes deal name, value, stage, or owner) and clicks save/submit, the deal is updated in the database, the modal closes, and the deals table row reflects the updated values without requiring a page refresh.
+
+**Actions menu Edit modal cancel closes without saving**
+Given the edit deal modal is open from the actions menu and the user has modified some fields, when they click the cancel button or close icon, the modal closes and no changes are saved to the deal.
+
+**Actions menu Edit modal validates required fields**
+Given the edit deal modal is open from the actions menu, when the user clears the required deal name field and clicks save/submit, a validation error message is displayed and the form is not submitted.
+
+**Actions menu Edit deal creates a timeline entry on the client**
+Given the user edits a deal via the actions menu Edit modal and saves changes, a "Deal Updated" timeline entry is created on the associated client recording the changes made, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Actions menu Edit deal triggers follower notifications on the client**
+Given the user edits a deal via the actions menu Edit modal and changes the stage on a deal whose associated client has followers, email notifications are sent to followers who have "deal stage changed" notifications enabled (excluding the actor).
+
 **Actions menu Delete option removes deal after confirmation**
 Given the user is on /deals and clicks the actions menu on a deal row, when they select "Delete", a confirmation dialog appears. When the user confirms, the deal is deleted from the database and the row is removed from the table. If the user cancels, the deal remains.
+
+**Actions menu Delete creates a timeline entry on the client**
+Given the user deletes a deal via the actions menu Delete option and confirms, a "Deal Deleted" timeline entry is created on the associated client recording the deal name that was deleted, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created.
+
+**Actions menu Delete triggers follower notifications on the client**
+Given the user deletes a deal via the actions menu Delete option on a deal whose associated client has followers, email notifications are sent to followers who have "deal created" notifications enabled (excluding the actor).
 
 **Row click navigates to DealDetailPage**
 Given the user is on /deals, when they click on a deal row (anywhere except the actions menu), the app navigates to /deals/:dealId for that deal and the DealDetailPage is displayed.
