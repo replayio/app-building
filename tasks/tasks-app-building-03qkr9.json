@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationBreadcrumbNonClickableItems: Fix shared Breadcrumb component (apps/shared/components/Breadcrumb.tsx) to render items without onClick as plain text spans instead of anchor tags, even when they are not the last item. Currently the supplier name breadcrumb on SupplierDetailsPage appears as a clickable link but should be plain text per test spec. Also add data-testid attributes to individual breadcrumb items for E2E test targeting.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-27T06:11:00.503Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationTopNavBarJSXComments: Add JSX comments next to every interactive element in TopNavBar.tsx with the titles of the tests that exercise each element (testSpec.md directive). Elements: logo link, nav link items, user profile button"
       ],
       "timestamp": "2026-02-27T06:10:54.745Z",
