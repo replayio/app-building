@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
-        "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
-        "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
-      ],
-      "timestamp": "2026-02-27T02:08:30.702Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecPersonDetailPage: Check testSpec.md directive violations in PersonDetailPage test entries",
         "CheckComponentsPersonDetailPage: Check writeApp.md directive violations in PersonDetailPage components",
         "CheckTestsPersonDetailPage: Check writeTests.md directive violations in PersonDetailPage tests"
@@ -167,6 +157,23 @@
         "WriteTestActivityEmptyState: Write test for Empty state when user has no recent activity"
       ],
       "timestamp": "2026-02-27T02:41:05.813Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationEditDealModalTests: Fix incomplete test entries for the edit deal modal opened from DealsListPage actions menu - add entries for saving edits, canceling, field validation, and side effects (timeline entries, follower notifications)",
+        "FixViolationDealDeletionSideEffects: Fix missing test entries for deal deletion side effects - add timeline entry on client and follower notification tests for Actions menu Delete"
+      ],
+      "timestamp": "2026-02-27T03:31:42.602Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationWonBadgeDistinct: Fix Won status badge in DealsTable to be visually distinct from On Track - both currently use badge--success but test spec requires them to be distinct"
+      ],
+      "timestamp": "2026-02-27T03:34:50.884Z",
       "app": "SalesCRM"
     }
   ]
