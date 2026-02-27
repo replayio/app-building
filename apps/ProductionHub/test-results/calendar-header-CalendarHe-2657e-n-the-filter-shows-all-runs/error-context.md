@@ -1,0 +1,130 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - link "FactoryFlow" [ref=e6] [cursor=pointer]:
+      - /url: /
+      - img [ref=e7]
+      - text: FactoryFlow
+    - navigation [ref=e9]:
+      - link "Recipes" [ref=e10] [cursor=pointer]:
+        - /url: /recipes
+        - img [ref=e12]
+        - text: Recipes
+      - link "Calendar" [ref=e15] [cursor=pointer]:
+        - /url: /calendar
+        - img [ref=e17]
+        - text: Calendar
+      - link "Equipment" [ref=e19] [cursor=pointer]:
+        - /url: /equipment
+        - img [ref=e21]
+        - text: Equipment
+    - generic [ref=e24]:
+      - generic [ref=e25]: A
+      - generic [ref=e26]: A. Chen
+  - main [ref=e27]:
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - heading "Production Calendar" [level=1] [ref=e31]
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - button "Daily" [ref=e34] [cursor=pointer]
+              - button "Weekly" [ref=e35] [cursor=pointer]
+              - button "Monthly" [ref=e36] [cursor=pointer]
+            - button "New Production Run" [ref=e37] [cursor=pointer]:
+              - img [ref=e38]
+              - generic [ref=e39]: New Production Run
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - button "Prev" [ref=e42] [cursor=pointer]:
+              - img [ref=e43]
+              - generic [ref=e45]: Prev
+            - button "Today" [ref=e46] [cursor=pointer]
+            - button "Next" [ref=e47] [cursor=pointer]:
+              - generic [ref=e48]: Next
+              - img [ref=e49]
+            - generic [ref=e51]: February 2026
+          - generic [ref=e52]:
+            - 'button "Filter by Status: All" [ref=e54] [cursor=pointer]':
+              - text: "Filter by Status: All"
+              - img [ref=e55]
+            - generic [ref=e57]:
+              - generic [ref=e58]: "Legend:"
+              - generic [ref=e59]: On Track
+              - generic [ref=e61]: Material Shortage
+              - generic [ref=e63]: Scheduled
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - generic [ref=e68]: Sun
+          - generic [ref=e69]: Mon
+          - generic [ref=e70]: Tue
+          - generic [ref=e71]: Wed
+          - generic [ref=e72]: Thu
+          - generic [ref=e73]: Fri
+          - generic [ref=e74]: Sat
+        - generic [ref=e75]:
+          - generic [ref=e77]: "1"
+          - generic [ref=e79]: "2"
+          - generic [ref=e81]: "3"
+          - generic [ref=e83]: "4"
+          - generic [ref=e84]:
+            - generic [ref=e85]: "5"
+            - generic [ref=e87] [cursor=pointer]: "Almond Butter (Almond Butter Smooth) | 500 Units | Status: Scheduled"
+          - generic [ref=e89]: "6"
+          - generic [ref=e91]: "7"
+          - generic [ref=e93]: "8"
+          - generic [ref=e95]: "9"
+          - generic [ref=e97]: "10"
+          - generic [ref=e99]: "11"
+          - generic [ref=e101]: "12"
+          - generic [ref=e103]: "13"
+          - generic [ref=e104]:
+            - generic [ref=e105]: "14"
+            - generic [ref=e106] [cursor=pointer]:
+              - img [ref=e107]
+              - generic [ref=e111]: "Unknown (No Recipe) | 100 Units | Status: Material Shortage"
+          - generic [ref=e112]:
+            - generic [ref=e113]: "15"
+            - generic [ref=e115] [cursor=pointer]: "Unknown (No Recipe) | 200 Units | Status: Scheduled"
+          - generic [ref=e117]: "16"
+          - generic [ref=e119]: "17"
+          - generic [ref=e121]: "18"
+          - generic [ref=e123]: "19"
+          - generic [ref=e125]: "20"
+          - generic [ref=e127]: "21"
+          - generic [ref=e129]: "22"
+          - generic [ref=e131]: "23"
+          - generic [ref=e132]:
+            - generic [ref=e133]: "24"
+            - generic [ref=e135] [cursor=pointer]: "Granola (Organic Granola Mix) | 500 kg | Status: Completed"
+          - generic [ref=e137]: "25"
+          - generic [ref=e138]:
+            - generic [ref=e139]: "26"
+            - generic [ref=e141] [cursor=pointer]: "Energy Bar (Protein Energy Bar) | 300 kg | Status: Scheduled"
+          - generic [ref=e142]:
+            - generic [ref=e143]: "27"
+            - generic [ref=e145] [cursor=pointer]: "Strawberry Jam (Fruit Preserve - Strawberry) | 400 kg | Status: Confirmed"
+          - generic [ref=e147]: "28"
+          - generic [ref=e149]: "1"
+          - generic [ref=e151]: "2"
+          - generic [ref=e152]:
+            - generic [ref=e153]: "3"
+            - generic [ref=e155] [cursor=pointer]: "Granola (Organic Granola Mix) | 600 kg | Status: Scheduled"
+          - generic [ref=e157]: "4"
+          - generic [ref=e159]: "5"
+          - generic [ref=e161]: "6"
+          - generic [ref=e163]: "7"
+          - generic [ref=e165]: "8"
+          - generic [ref=e167]: "9"
+          - generic [ref=e168]:
+            - generic [ref=e169]: "10"
+            - generic [ref=e170] [cursor=pointer]:
+              - img [ref=e171]
+              - generic [ref=e175]: "Energy Bar (Protein Energy Bar) | 250 kg | Status: Material Shortage"
+          - generic [ref=e177]: "11"
+          - generic [ref=e179]: "12"
+          - generic [ref=e181]: "13"
+          - generic [ref=e183]: "14"
+```

@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationNetlifyToml: Fix netlify.toml missing base setting - add base = 'apps/ProductionHub' and command = 'npm run build' to match directive and other apps",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-27T00:36:54.180Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecEquipmentDetailsPage: Check testSpec.md directive violations in EquipmentDetailsPage test entries",
         "CheckComponentsEquipmentDetailsPage: Check writeApp.md directive violations in EquipmentDetailsPage components",
         "CheckTestsEquipmentDetailsPage: Check writeTests.md directive violations in EquipmentDetailsPage tests"
