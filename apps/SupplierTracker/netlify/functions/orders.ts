@@ -172,18 +172,37 @@ export default async function handler(req: Request, _context: Context) {
       const body = await req.json();
       const { status, expected_delivery } = body;
 
+      // Fetch existing order for change detection
+      const existing = await sql`
+        SELECT status, expected_delivery, order_id FROM orders WHERE id = ${orderId}::uuid LIMIT 1
+      `;
+
       // If status is changing, record it in history
-      if (status) {
-        const existing = await sql`
-          SELECT status, order_id FROM orders WHERE id = ${orderId}::uuid LIMIT 1
+      if (status && existing.length > 0 && existing[0].status !== status) {
+        await sql`
+          INSERT INTO order_history (order_id, event_type, description, actor)
+          VALUES (
+            ${orderId}::uuid,
+            'status_change',
+            ${"Status changed from " + existing[0].status + " to " + status},
+            'System'
+          )
         `;
-        if (existing.length > 0 && existing[0].status !== status) {
+      }
+
+      // If expected delivery is changing, record it in history
+      if (expected_delivery && existing.length > 0) {
+        const oldDate = existing[0].expected_delivery ? new Date(existing[0].expected_delivery).toISOString().slice(0, 10) : null;
+        const newDate = new Date(expected_delivery).toISOString().slice(0, 10);
+        if (oldDate !== newDate) {
+          const fmtOld = oldDate ? new Date(oldDate + "T00:00:00").toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "none";
+          const fmtNew = new Date(newDate + "T00:00:00").toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
           await sql`
             INSERT INTO order_history (order_id, event_type, description, actor)
             VALUES (
               ${orderId}::uuid,
-              'status_change',
-              ${"Status changed from " + existing[0].status + " to " + status},
+              'delivery_change',
+              ${"Expected delivery changed from " + fmtOld + " to " + fmtNew},
               'System'
             )
           `;

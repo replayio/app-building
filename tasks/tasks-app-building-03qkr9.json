@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationEditOrderTest: Fix 'Edit Button Opens Edit Dialog' test to also exercise editing the expected delivery date field (not just status). The test spec says both status and expected delivery are editable, and the writeTests.md directive requires each described field interaction to be tested.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-27T04:53:47.852Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationOrderDetailsLayout: Fix OrderDetailsPage layout - mockup shows two-column grid (Line Items + Cost Breakdown left, Documents + Order History right) but code renders all sections in single vertical column. Add CSS grid/flex layout to OrderDetailsPage.",
         "RunTests: Verify tests pass after fix"
       ],

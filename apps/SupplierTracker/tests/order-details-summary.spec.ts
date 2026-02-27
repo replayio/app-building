@@ -131,9 +131,11 @@ test.describe("OrderDetailsPage - OrderSummary", () => {
 
     await navigateToFirstOrder(page);
 
-    // Read current status for later verification
+    // Read current status and expected delivery for later verification
     const badge = page.getByTestId("order-status-badge");
     const originalStatus = await badge.textContent();
+    const deliveryField = page.getByTestId("order-field-expected-delivery");
+    const originalDelivery = await deliveryField.locator(".order-summary-field-value").textContent();
 
     // Click Edit button
     const editBtn = page.getByTestId("order-edit-btn");
@@ -155,6 +157,10 @@ test.describe("OrderDetailsPage - OrderSummary", () => {
     await expect(page.getByTestId("edit-order-form-status-dropdown")).toBeVisible();
     await page.getByTestId("edit-order-status-option-shipped").click();
 
+    // Change the expected delivery date
+    const deliveryInput = page.getByTestId("edit-order-form-expected-delivery");
+    await deliveryInput.fill("2025-12-31");
+
     // Click Save
     await page.getByTestId("edit-order-save").click();
 
@@ -164,13 +170,21 @@ test.describe("OrderDetailsPage - OrderSummary", () => {
     // Verify updated status is reflected
     await expect(page.getByTestId("order-status-badge")).toContainText("Shipped", { timeout: 30000 });
 
-    // Verify a history entry was added for the status change
+    // Verify updated expected delivery date is reflected
+    await expect(
+      deliveryField.locator(".order-summary-field-value")
+    ).toHaveText("Dec 31, 2025", { timeout: 30000 });
+
+    // Verify history entries were added for both changes
     const historySection = page.getByTestId("order-history");
     await expect(historySection).toBeVisible({ timeout: 30000 });
 
     const historyEvents = page.getByTestId("timeline-event-description");
     await expect(
       historyEvents.filter({ hasText: /Status changed/ }).first()
+    ).toBeVisible({ timeout: 30000 });
+    await expect(
+      historyEvents.filter({ hasText: /Expected delivery changed/ }).first()
     ).toBeVisible({ timeout: 30000 });
   });
 
