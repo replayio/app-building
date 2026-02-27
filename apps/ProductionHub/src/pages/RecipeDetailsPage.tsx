@@ -52,12 +52,12 @@ export function RecipeDetailsPage() {
     <div data-testid="recipe-details-page">
       <RecipeDetailHeader recipe={currentRecipe} />
       <div className="page-content">
-        <DescriptionCard description={currentRecipe.description} />
         <div className="recipe-details-grid">
+          <DescriptionCard description={currentRecipe.description} />
           <ProductsOutputTable products={currentRecipe.products} />
           <RawMaterialsCard materials={currentRecipe.materials} />
+          <EquipmentRequiredList equipment={currentRecipe.equipment} />
         </div>
-        <EquipmentRequiredList equipment={currentRecipe.equipment} />
       </div>
     </div>
   );
