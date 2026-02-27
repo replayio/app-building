@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMissingConfirmEmailTests: Write confirm-email.spec.ts with all 7 test entries from docs/tests.md for ConfirmEmailPage, following the real-auth-flow pattern from reset-password.spec.ts (query DB for token, exercise real production code path)",
-        "RunTests: Verify all tests pass after adding confirm-email tests"
-      ],
-      "timestamp": "2026-02-27T02:17:18.701Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecResetPasswordPage: Check testSpec.md directive violations in ResetPasswordPage test entries",
         "CheckComponentsResetPasswordPage: Check writeApp.md directive violations in ResetPasswordPage components",
         "CheckTestsResetPasswordPage: Check writeTests.md directive violations in ResetPasswordPage tests"
