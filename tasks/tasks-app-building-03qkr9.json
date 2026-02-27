@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationTopNavBarJSXComments: Add JSX comments next to every interactive element in TopNavBar.tsx with the titles of the tests that exercise each element (testSpec.md directive). Elements: logo link, nav link items, user profile button"
-      ],
-      "timestamp": "2026-02-27T06:10:54.745Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationBreadcrumbConsistency: Fix inconsistent breadcrumb root label - SupplierDetailsPage uses 'Home' while OrderDetailsPage uses 'Dashboard' for the first breadcrumb. Change to 'Dashboard' consistently in both tests.md spec entries and SupplierDetailsPage.tsx code (line 75)",
         "RunTests: Verify tests pass after fix"
       ],

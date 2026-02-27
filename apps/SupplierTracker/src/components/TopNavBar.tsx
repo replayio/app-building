@@ -22,6 +22,7 @@ export function TopNavBar() {
   return (
     <header data-testid="top-nav" className="top-nav">
       <div className="top-nav-left">
+        {/* Test: Click App Logo Navigates to Dashboard */}
         <a
           data-testid="top-nav-logo"
           className="top-nav-logo"
@@ -50,6 +51,7 @@ export function TopNavBar() {
         </a>
 
         <nav data-testid="top-nav-links" className="top-nav-links">
+          {/* Tests: Click Dashboard Nav Link Navigates to Dashboard, Click Suppliers Nav Link Scrolls to Suppliers Section, Click Orders Nav Link Scrolls to Orders Section, Click Inventory Nav Link Scrolls to Inventory Section, Active Nav Link Highlights Current Page */}
           {navItems.map((item) => (
             <a
               key={item.key}
@@ -77,6 +79,7 @@ export function TopNavBar() {
       </div>
 
       <div className="top-nav-right">
+        {/* Test: Display User Profile Button */}
         <button data-testid="top-nav-user" className="top-nav-user-btn">
           <div className="top-nav-avatar">U</div>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
