@@ -248,6 +248,7 @@ export function QuantityTransfersTable({ transfers }: QuantityTransfersTableProp
                   display: "flex",
                   justifyContent: "flex-end",
                   gap: 16,
+                  flexWrap: "wrap",
                 }}
               >
                 <span>Total Debits: {totalDebits.toFixed(2)}</span>

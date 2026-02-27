@@ -44,11 +44,7 @@ export function BasicInfoSection({ transaction }: BasicInfoSectionProps) {
         <div className="section-card-body">
           <div
             data-testid="basic-info-fields"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: 20,
-            }}
+            className="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4"
           >
             <div data-testid="basic-info-date">
               <span className="form-label">Date</span>

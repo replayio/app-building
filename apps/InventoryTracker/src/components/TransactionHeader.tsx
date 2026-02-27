@@ -58,7 +58,7 @@ export function TransactionHeader({ transaction }: TransactionHeaderProps) {
       />
 
       <div className="page-header" style={{ marginTop: 16 }}>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
               display: "flex",
@@ -67,7 +67,7 @@ export function TransactionHeader({ transaction }: TransactionHeaderProps) {
               flexWrap: "wrap",
             }}
           >
-            <h1 data-testid="transaction-id-heading" className="page-title">
+            <h1 data-testid="transaction-id-heading" className="page-title" style={{ wordBreak: "break-all" }}>
               Transaction ID: {transaction.id}
             </h1>
             <span
@@ -82,7 +82,7 @@ export function TransactionHeader({ transaction }: TransactionHeaderProps) {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 24,
+              gap: 16,
               marginTop: 12,
               flexWrap: "wrap",
             }}
@@ -127,6 +127,7 @@ export function TransactionHeader({ transaction }: TransactionHeaderProps) {
                 marginTop: 8,
                 maxWidth: 600,
                 lineHeight: 1.5,
+                wordBreak: "break-word",
               }}
             >
               <span

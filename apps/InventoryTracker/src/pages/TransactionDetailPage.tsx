@@ -50,15 +50,15 @@ export function TransactionDetailPage() {
     <div data-testid="transaction-detail-page" className="page-content p-6 max-sm:p-3">
       <TransactionHeader transaction={transaction} />
 
-      <div style={{ marginTop: 24 }}>
+      <div className="mt-6">
         <BasicInfoSection transaction={transaction} />
       </div>
 
-      <div style={{ marginTop: 24 }}>
+      <div className="mt-6">
         <QuantityTransfersTable transfers={transaction.transfers || []} />
       </div>
 
-      <div style={{ marginTop: 24 }}>
+      <div className="mt-6">
         <BatchesCreatedTable batches={transaction.batches_created || []} />
       </div>
     </div>
