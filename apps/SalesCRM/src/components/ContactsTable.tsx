@@ -22,11 +22,11 @@ export function ContactsTable({ contacts }: ContactsTableProps) {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Title</th>
+            <th className="max-md:hidden">Title</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Location</th>
-            <th>Associated Clients</th>
+            <th className="max-md:hidden">Phone</th>
+            <th className="max-lg:hidden">Location</th>
+            <th className="max-lg:hidden">Associated Clients</th>
           </tr>
         </thead>
         <tbody>
@@ -39,11 +39,11 @@ export function ContactsTable({ contacts }: ContactsTableProps) {
               style={{ cursor: "pointer" }}
             >
               <td className="contacts-name-cell">{contact.name}</td>
-              <td>{contact.title || ""}</td>
+              <td className="max-md:hidden">{contact.title || ""}</td>
               <td>{contact.email || ""}</td>
-              <td>{contact.phone || ""}</td>
-              <td>{contact.location || ""}</td>
-              <td>
+              <td className="max-md:hidden">{contact.phone || ""}</td>
+              <td className="max-lg:hidden">{contact.location || ""}</td>
+              <td className="max-lg:hidden">
                 {contact.associatedClients.length > 0
                   ? contact.associatedClients.map((c) => c.name).join(", ")
                   : ""}

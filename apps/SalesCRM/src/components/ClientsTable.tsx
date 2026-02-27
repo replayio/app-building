@@ -149,12 +149,12 @@ export function ClientsTable({ clients }: ClientsTableProps) {
         <thead>
           <tr>
             <th>Client Name</th>
-            <th>Type</th>
+            <th className="max-md:hidden">Type</th>
             <th>Status</th>
-            <th>Tags</th>
-            <th>Primary Contact</th>
-            <th>Open Deals</th>
-            <th>Next Task</th>
+            <th className="max-lg:hidden">Tags</th>
+            <th className="max-md:hidden">Primary Contact</th>
+            <th className="max-md:hidden">Open Deals</th>
+            <th className="max-lg:hidden">Next Task</th>
             <th></th>
           </tr>
         </thead>
@@ -170,7 +170,7 @@ export function ClientsTable({ clients }: ClientsTableProps) {
               <td className="clients-name-cell">
                 {client.name}
               </td>
-              <td>
+              <td className="max-md:hidden">
                 {client.type === "organization" ? "Organization" : "Individual"}
               </td>
               <td>
@@ -178,7 +178,7 @@ export function ClientsTable({ clients }: ClientsTableProps) {
                   {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
                 </span>
               </td>
-              <td>
+              <td className="max-lg:hidden">
                 {client.tags.length > 0 ? (
                   <span className="clients-tags">
                     {client.tags.map((tag) => (
@@ -189,17 +189,17 @@ export function ClientsTable({ clients }: ClientsTableProps) {
                   </span>
                 ) : null}
               </td>
-              <td>
+              <td className="max-md:hidden">
                 {client.primaryContact
                   ? `${client.primaryContact.name} (${client.primaryContact.role || "N/A"})`
                   : "—"}
               </td>
-              <td>
+              <td className="max-md:hidden">
                 {client.openDeals.count > 0
                   ? `${client.openDeals.count} (Value: ${formatDealValue(client.openDeals.totalValue)})`
                   : "0"}
               </td>
-              <td>
+              <td className="max-lg:hidden">
                 {client.nextTask
                   ? `${client.nextTask.title} - ${formatTaskDate(client.nextTask.dueDate)}`
                   : "No task scheduled"}

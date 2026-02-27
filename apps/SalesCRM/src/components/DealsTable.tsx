@@ -196,11 +196,11 @@ export function DealsTable({ deals, sort, onSortChange, onEditDeal }: DealsTable
         <thead>
           <tr>
             <th>Deal Name</th>
-            <th>Client</th>
-            <th>Stage</th>
-            <th>Owner</th>
+            <th className="max-md:hidden">Client</th>
+            <th className="max-md:hidden">Stage</th>
+            <th className="max-lg:hidden">Owner</th>
             <th>Value</th>
-            <th>
+            <th className="max-lg:hidden">
               <button
                 className="deals-sort-header-btn"
                 data-testid="close-date-sort"
@@ -226,11 +226,11 @@ export function DealsTable({ deals, sort, onSortChange, onEditDeal }: DealsTable
               style={{ cursor: "pointer" }}
             >
               <td className="deals-name-cell">{deal.name}</td>
-              <td>{deal.clientName || "—"}</td>
-              <td>{deal.stage}</td>
-              <td>{deal.ownerName || "—"}</td>
+              <td className="max-md:hidden">{deal.clientName || "—"}</td>
+              <td className="max-md:hidden">{deal.stage}</td>
+              <td className="max-lg:hidden">{deal.ownerName || "—"}</td>
               <td className="deals-value-cell">{deal.value != null ? formatCurrency(deal.value) : "—"}</td>
-              <td>{deal.expectedCloseDate || "—"}</td>
+              <td className="max-lg:hidden">{deal.expectedCloseDate || "—"}</td>
               <td>
                 <span className={statusBadgeClass(deal.status)} data-testid={`deal-status-${deal.id}`}>
                   {formatStatus(deal.status)}

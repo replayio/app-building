@@ -1,17 +1,17 @@
 ## Polish
 
-### Responsive UI
-- [ ] ClientsListPage
-- [ ] ClientDetailPage
-- [ ] PersonDetailPage
-- [ ] DealsListPage
-- [ ] DealDetailPage
-- [ ] TasksListPage
-- [ ] TaskDetailPage
-- [ ] ContactsListPage
-- [ ] SettingsPage
-- [ ] UsersListPage
-- [ ] UserDetailPage
-- [ ] ForgotPasswordPage
-- [ ] ResetPasswordPage
-- [ ] ConfirmEmailPage
+### Responsive UI ✓
+- [x] ClientsListPage
+- [x] ClientDetailPage
+- [x] PersonDetailPage
+- [x] DealsListPage
+- [x] DealDetailPage
+- [x] TasksListPage
+- [x] TaskDetailPage
+- [x] ContactsListPage
+- [x] SettingsPage
+- [x] UsersListPage
+- [x] UserDetailPage
+- [x] ForgotPasswordPage
+- [x] ResetPasswordPage
+- [x] ConfirmEmailPage

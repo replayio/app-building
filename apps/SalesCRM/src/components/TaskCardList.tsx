@@ -118,7 +118,7 @@ export function TaskCardList({ tasks }: TaskCardListProps) {
                 ) : (
                   <span className="task-card-assignee-initials">{getInitials(task.assigneeName)}</span>
                 )}
-                <span className="task-card-assignee-name">{task.assigneeName}{task.assigneeRole ? ` (${task.assigneeRole})` : ""}</span>
+                <span className="task-card-assignee-name"><span className="max-md:hidden">{task.assigneeName}</span>{task.assigneeRole ? <span className="max-lg:hidden"> ({task.assigneeRole})</span> : ""}</span>
               </div>
             )}
             <div

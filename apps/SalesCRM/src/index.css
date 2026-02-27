@@ -179,6 +179,14 @@
   .auth-page {
     padding: 12px;
   }
+
+  .auth-form-card {
+    padding: 24px;
+  }
+
+  .auth-form-title {
+    font-size: 20px;
+  }
 }
 
 .auth-form-card {
@@ -401,6 +409,42 @@
   color: var(--text-muted);
 }
 
+/* Clients table card mode at narrow viewport */
+@media (max-width: 480px) {
+  .data-table thead {
+    display: none;
+  }
+  .data-table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--bg-border-color-light);
+  }
+  .data-table tbody tr td {
+    border-bottom: none;
+    padding: 0;
+    font-size: 13px;
+  }
+  .data-table tbody tr td.clients-name-cell {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .clients-filters {
+    padding: 0 16px 12px;
+  }
+  .clients-pagination {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
 /* Contacts page */
 .contacts-page {
   display: flex;
@@ -433,6 +477,17 @@
 .contacts-pagination-info {
   font-size: 13px;
   color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .contacts-search {
+    padding: 0 16px 12px;
+  }
+  .contacts-pagination {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 }
 
 /* Inactive badge (not already in common.css) */
@@ -523,6 +578,28 @@
 
 .form-group--half {
   flex: 1;
+}
+
+/* Shared responsive: page header, modals, form rows */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 16px 16px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 20px;
+  }
+  .modal {
+    max-width: calc(100% - 24px);
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 /* ========= Client Detail Page ========= */
@@ -1188,6 +1265,35 @@
   .source-info-grid {
     grid-template-columns: 1fr;
   }
+
+  .detail-section-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .client-header-name {
+    font-size: 20px;
+  }
+
+  .client-detail {
+    gap: 16px;
+  }
+
+  .detail-section-body {
+    padding: 12px;
+  }
+
+  .task-meta {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .attachment-meta {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 }
 
 /* ========= Person Detail Page ========= */
@@ -1605,6 +1711,25 @@
   font-size: 12px;
 }
 
+@media (max-width: 640px) {
+  .person-header-name {
+    font-size: 20px;
+  }
+
+  .person-detail {
+    gap: 16px;
+  }
+
+  .contact-history-item-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .associated-clients-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ========= Deals List Page ========= */
 
 .deals-page {
@@ -1636,6 +1761,15 @@
 @media (max-width: 768px) {
   .deals-summary-cards {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .deals-search-wrapper {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .deals-summary-cards {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1901,6 +2035,13 @@
 @media (max-width: 1024px) {
   .pipeline-view {
     grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .pipeline-view {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    min-height: 300px;
   }
 }
 
@@ -2205,6 +2346,29 @@
 @media (max-width: 900px) {
   .deal-detail-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .deal-header-title {
+    font-size: 18px;
+  }
+
+  .deal-stage-label-text {
+    font-size: 10px;
+  }
+
+  .deal-stage-pipeline {
+    padding: 12px;
+  }
+
+  .deal-metrics-grid {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .deal-header-fields {
+    gap: 10px;
   }
 }
 
@@ -3394,6 +3558,39 @@
   color: var(--status-error);
 }
 
+@media (max-width: 640px) {
+  .task-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .task-card-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .task-detail-title {
+    font-size: 20px;
+  }
+
+  .task-detail-fields {
+    gap: 10px;
+  }
+
+  .task-actions {
+    flex-wrap: wrap;
+  }
+
+  .task-notes-input-row {
+    flex-direction: column;
+  }
+
+  .task-note-meta {
+    flex-wrap: wrap;
+  }
+}
+
 /* ========= Settings Page ========= */
 
 .settings-page {
@@ -3792,6 +3989,30 @@
   justify-content: center;
 }
 
+@media (max-width: 640px) {
+  .settings-section {
+    padding: 16px;
+  }
+
+  .settings-section-header {
+    flex-wrap: wrap;
+  }
+
+  .webhook-entry {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .webhook-events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .webhook-platform-selector {
+    flex-wrap: wrap;
+  }
+}
+
 /* ========= Team / Users Page ========= */
 
 .users-page {
@@ -4040,6 +4261,38 @@
 @media (max-width: 768px) {
   .user-detail-sections {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .user-detail-name {
+    font-size: 20px;
+  }
+
+  .user-detail {
+    gap: 16px;
+  }
+
+  .user-detail-stats {
+    flex-wrap: wrap;
+  }
+
+  .user-detail-stat {
+    min-width: 100px;
+    padding: 12px 16px;
+  }
+
+  .user-detail-stat-value {
+    font-size: 20px;
+  }
+
+  .user-detail-header-content {
+    gap: 12px;
+  }
+
+  .user-detail-avatar {
+    width: 56px;
+    height: 56px;
   }
 }
 

@@ -1,27 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveClientsListPage: Make ClientsListPage responsive",
-        "MakeResponsiveClientDetailPage: Make ClientDetailPage responsive",
-        "MakeResponsivePersonDetailPage: Make PersonDetailPage responsive",
-        "MakeResponsiveDealsListPage: Make DealsListPage responsive",
-        "MakeResponsiveDealDetailPage: Make DealDetailPage responsive",
-        "MakeResponsiveTasksListPage: Make TasksListPage responsive",
-        "MakeResponsiveTaskDetailPage: Make TaskDetailPage responsive",
-        "MakeResponsiveContactsListPage: Make ContactsListPage responsive",
-        "MakeResponsiveSettingsPage: Make SettingsPage responsive",
-        "MakeResponsiveUsersListPage: Make UsersListPage responsive",
-        "MakeResponsiveUserDetailPage: Make UserDetailPage responsive",
-        "MakeResponsiveForgotPasswordPage: Make ForgotPasswordPage responsive",
-        "MakeResponsiveResetPasswordPage: Make ResetPasswordPage responsive",
-        "MakeResponsiveConfirmEmailPage: Make ConfirmEmailPage responsive"
-      ],
-      "timestamp": "2026-02-27T04:09:27.667Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"

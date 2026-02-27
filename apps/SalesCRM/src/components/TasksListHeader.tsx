@@ -92,7 +92,7 @@ export function TasksListHeader({ onCreateTask }: TasksListHeaderProps) {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 1v9M3.5 6.5L7 10l3.5-3.5M2 12.5h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            Import
+            <span className="max-sm:hidden">Import</span>
           </button>
           <button
             className="btn btn--secondary"
@@ -103,7 +103,7 @@ export function TasksListHeader({ onCreateTask }: TasksListHeaderProps) {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 10V1M3.5 4.5L7 1l3.5 3.5M2 12.5h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            Export
+            <span className="max-sm:hidden">Export</span>
           </button>
           <button
             className="btn btn--primary"
@@ -114,7 +114,7 @@ export function TasksListHeader({ onCreateTask }: TasksListHeaderProps) {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
-            New Task
+            <span className="max-sm:hidden">New Task</span>
           </button>
         </div>
       </div>
