@@ -2,7 +2,7 @@
 
 ### Responsive UI
 - [x] DashboardPage
-- [ ] AccountsPage
+- [x] AccountsPage
 - [ ] AccountDetailPage
 - [ ] MaterialsPage
 - [ ] MaterialDetailPage

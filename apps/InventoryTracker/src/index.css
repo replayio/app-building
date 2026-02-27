@@ -689,10 +689,12 @@
 .form-row {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .form-row > .form-group {
   flex: 1;
+  min-width: 0;
 }
 
 /* Filter bar */
@@ -1141,6 +1143,12 @@
     width: calc(100% - 24px);
     padding: 16px;
   }
+  .modal-title {
+    font-size: 16px;
+  }
+  .modal-footer {
+    flex-wrap: wrap;
+  }
   .account-type-header {
     flex-wrap: wrap;
     gap: 8px;
@@ -1196,10 +1204,18 @@
     padding: 12px;
     border-bottom: 1px solid var(--bg-border-color-light);
     gap: 4px 12px;
+    align-items: center;
   }
   .data-table tbody td {
     border-bottom: none;
     padding: 2px 0;
+  }
+  .data-table tbody td:first-child {
+    flex: 1 1 0%;
+    font-weight: 500;
+  }
+  .data-table tbody td:last-child {
+    margin-left: auto;
   }
   .pagination {
     flex-wrap: wrap;
@@ -1209,5 +1225,11 @@
   }
   .balance-indicator {
     font-size: 12px;
+  }
+  .account-type-section {
+    margin-bottom: 16px;
+  }
+  .empty-state {
+    padding: 24px 12px;
   }
 }
