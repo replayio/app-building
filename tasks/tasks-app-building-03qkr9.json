@@ -3,11 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
-        "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
-        "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"
+        "FixViolationClientDetailFollowerNotifications: Add missing follower notification test entries for 'Saving edited client details' and 'Saving edited source info' in ClientDetailPage section of docs/tests.md, matching the pattern used by other mutation actions",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-27T02:08:28.372Z",
+      "timestamp": "2026-02-27T03:47:26.700Z",
       "app": "SalesCRM"
     },
     {
