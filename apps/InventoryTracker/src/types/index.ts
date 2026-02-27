@@ -51,6 +51,8 @@ export interface Batch {
   storage_condition: string;
   status: "active" | "depleted" | "expired";
   originating_transaction_id: string | null;
+  originating_transaction_description?: string;
+  originating_transaction_type?: string;
   created_at: string;
   updated_at: string;
 }

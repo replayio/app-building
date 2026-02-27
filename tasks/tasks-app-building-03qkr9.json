@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationLineageProcessBox: Fix LineageSection flow diagram to show transaction name/type (e.g. 'Washing & Processing (TX-PROD-987)') instead of just the transaction ID. Requires backend to return originating transaction description/type, and LineageSection to display it in the process box. Also add a separate 'Lineage' h2 heading above the card (matching BatchOverview pattern) instead of using 'Lineage' as the card title inside section-card-header.",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-26T20:34:04.871Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "WriteTestUserNameDisplayed: Write test for User name is displayed prominently",

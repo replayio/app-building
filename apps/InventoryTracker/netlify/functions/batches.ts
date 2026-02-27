@@ -95,10 +95,13 @@ export default async function handler(req: Request, _context: Context) {
                b.quantity, b.unit, b.location, b.lot_number,
                b.expiration_date, b.quality_grade, b.storage_condition,
                b.status, b.originating_transaction_id,
+               t.description as originating_transaction_description,
+               t.transaction_type as originating_transaction_type,
                b.created_at, b.updated_at
         FROM batches b
         LEFT JOIN materials m ON b.material_id = m.id
         LEFT JOIN accounts a ON b.account_id = a.id
+        LEFT JOIN transactions t ON b.originating_transaction_id = t.id
         WHERE b.id = ${batchId}
       `;
       if (rows.length === 0) {

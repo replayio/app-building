@@ -37,6 +37,17 @@ export function LineageSection({ batch, lineage }: LineageSectionProps) {
 
   return (
     <div data-testid="lineage-section">
+      <h2
+        data-testid="lineage-heading"
+        style={{
+          fontSize: 16,
+          fontWeight: 600,
+          color: "var(--text-primary)",
+          marginBottom: 16,
+        }}
+      >
+        Lineage
+      </h2>
       <div className="section-card">
         <div className="section-card-header">
           <h2 className="section-card-title">
@@ -55,7 +66,7 @@ export function LineageSection({ batch, lineage }: LineageSectionProps) {
               <line x1="15" y1="15" x2="21" y2="21" />
               <line x1="4" y1="4" x2="9" y2="9" />
             </svg>
-            Lineage
+            Source Transaction &amp; Flow
           </h2>
         </div>
         <div className="section-card-body">
@@ -161,7 +172,9 @@ export function LineageSection({ batch, lineage }: LineageSectionProps) {
                 {/* Transaction process box */}
                 <div className="lineage-process">
                   <div className="lineage-process-title">
-                    {batch.originating_transaction_id!}
+                    {batch.originating_transaction_description
+                      ? `${batch.originating_transaction_description} (${batch.originating_transaction_id!})`
+                      : batch.originating_transaction_id!}
                   </div>
                   <div className="lineage-process-date">
                     Date: {formatDate(batch.created_at)}
