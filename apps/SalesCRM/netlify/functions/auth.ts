@@ -1,4 +1,4 @@
-import { getDb, query, queryOne, jsonResponse, errorResponse } from "@shared/backend/db";
+import { getDb, query, queryOne, jsonResponse, errorResponse } from "./_db.js";
 
 function base64url(str: string): string {
   return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");

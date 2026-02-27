@@ -1,4 +1,4 @@
-import { getDb, query, queryOne, jsonResponse, errorResponse } from "@shared/backend/db";
+import { getDb, query, queryOne, jsonResponse, errorResponse } from "./_db.js";
 
 const VALID_TYPES = ["organization", "individual"];
 const VALID_STATUSES = ["active", "inactive", "prospect", "churned"];

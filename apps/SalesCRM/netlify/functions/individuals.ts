@@ -1,5 +1,5 @@
-import { getDb, query, queryOne, jsonResponse, errorResponse } from "@shared/backend/db";
-import { withAuth } from "@shared/backend/auth-middleware";
+import { getDb, query, queryOne, jsonResponse, errorResponse } from "./_db.js";
+import { withAuth } from "./_auth-middleware.js";
 
 async function handler(authReq: { req: Request; user: { id: string; name: string; email: string } | null }): Promise<Response> {
   const { req, user } = authReq;

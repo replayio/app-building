@@ -1,4 +1,4 @@
-import { getDb, query, jsonResponse, errorResponse } from "@shared/backend/db";
+import { getDb, query, jsonResponse, errorResponse } from "./_db.js";
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method === "OPTIONS") {

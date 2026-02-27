@@ -1,5 +1,5 @@
-import { getDb, query, queryOne, jsonResponse, errorResponse } from "@shared/backend/db";
-import { withAuth } from "@shared/backend/auth-middleware";
+import { getDb, query, queryOne, jsonResponse, errorResponse } from "./_db.js";
+import { withAuth } from "./_auth-middleware.js";
 
 interface WebhookRow {
   id: string;
