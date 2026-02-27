@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecPersonDetailPage: Check testSpec.md directive violations in PersonDetailPage test entries",
-        "CheckComponentsPersonDetailPage: Check writeApp.md directive violations in PersonDetailPage components",
-        "CheckTestsPersonDetailPage: Check writeTests.md directive violations in PersonDetailPage tests"
-      ],
-      "timestamp": "2026-02-27T02:08:29.544Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecClientDetailPage: Check testSpec.md directive violations in ClientDetailPage test entries",
         "CheckComponentsClientDetailPage: Check writeApp.md directive violations in ClientDetailPage components",
         "CheckTestsClientDetailPage: Check writeTests.md directive violations in ClientDetailPage tests"
@@ -174,6 +164,22 @@
         "FixViolationWonBadgeDistinct: Fix Won status badge in DealsTable to be visually distinct from On Track - both currently use badge--success but test spec requires them to be distinct"
       ],
       "timestamp": "2026-02-27T03:34:50.884Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationRelationshipDeleteTestEntries: Fix missing test entries for relationship delete button visibility/appearance and specify exact delete UI action in PersonDetailPage RelationshipsSection"
+      ],
+      "timestamp": "2026-02-27T03:40:28.057Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationContactHistoryTeamMemberDropdown: Fix ContactHistorySection Team Member field to use SearchableSelect dropdown populated from users API instead of plain text input, in both add modal and edit form"
+      ],
+      "timestamp": "2026-02-27T03:41:53.970Z",
       "app": "SalesCRM"
     }
   ]
