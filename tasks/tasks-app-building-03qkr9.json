@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationRelationshipDeleteTestEntries: Fix missing test entries for relationship delete button visibility/appearance and specify exact delete UI action in PersonDetailPage RelationshipsSection"
-      ],
-      "timestamp": "2026-02-27T03:40:28.057Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationContactHistoryTeamMemberDropdown: Fix ContactHistorySection Team Member field to use SearchableSelect dropdown populated from users API instead of plain text input, in both add modal and edit form"
       ],
       "timestamp": "2026-02-27T03:41:53.970Z",

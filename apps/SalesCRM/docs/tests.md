@@ -809,8 +809,11 @@ Given a person has relationships with "David Chen (Colleague)", "Maria Rodriguez
 **Creating a relationship creates reciprocal entry on the other person**
 Given the user adds a new "Colleague" relationship between the current person and "Alex Rivera", the relationship is created on both sides: Alex Rivera appears in the current person's relationships, and the current person appears in Alex Rivera's relationships. Both sides show the same relationship type.
 
+**Relationship entries display delete button with X icon**
+Given a person has relationships, each relationship entry in the list view displays a delete button with an X icon (data-testid="relationship-delete-{id}") next to the [Link] button.
+
 **Deleting a relationship removes both sides**
-Given a reciprocal relationship exists between the current person and "David Chen", when the user deletes the relationship entry for David Chen, the relationship is removed from both the current person's list and from David Chen's list.
+Given a reciprocal relationship exists between the current person and "David Chen", when the user clicks the X delete button on the relationship entry for David Chen, the relationship is removed from both the current person's list and from David Chen's list.
 
 **Empty state when no relationships exist**
 Given the person has no relationships with other individuals, the Relationships section displays an empty state message (e.g., "No relationships") and the "+ Add Entry" button remains available.
