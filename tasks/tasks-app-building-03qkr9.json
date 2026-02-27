@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckBackend: Check writeApp.md directive violations in all backend functions"
-      ],
-      "timestamp": "2026-02-27T02:08:54.755Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecConfirmEmailPage: Check testSpec.md directive violations in ConfirmEmailPage test entries",
         "CheckComponentsConfirmEmailPage: Check writeApp.md directive violations in ConfirmEmailPage components",
         "CheckTestsConfirmEmailPage: Check writeTests.md directive violations in ConfirmEmailPage tests"
