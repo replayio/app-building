@@ -178,7 +178,7 @@ export function TransactionsPage() {
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12, alignItems: "start" }}>
+        <div className="max-md:grid-cols-2 max-sm:grid-cols-1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 12, alignItems: "start" }}>
           <DateRangeFilter
             dateFrom={dateFrom}
             dateTo={dateTo}

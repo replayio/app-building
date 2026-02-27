@@ -115,7 +115,7 @@ export function TransactionsTable({
   return (
     <div data-testid="transactions-table-container">
       {/* Sort bar */}
-      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 16, marginBottom: 8 }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 16, marginBottom: 8, flexWrap: "wrap" }}>
         <div ref={sortRef} style={{ position: "relative" }}>
           <button
             data-testid="transactions-sort-dropdown"
@@ -153,7 +153,7 @@ export function TransactionsTable({
             </div>
           )}
         </div>
-        <span className="pagination-info" data-testid="transactions-result-count">
+        <span className="pagination-info max-sm:hidden" data-testid="transactions-result-count">
           Showing {totalFiltered === 0 ? 0 : startIndex + 1}-{endIndex} of {totalFiltered} results
         </span>
       </div>
@@ -183,8 +183,8 @@ export function TransactionsTable({
               </button>
             </th>
             <th>Description</th>
-            <th>Accounts affected</th>
-            <th>Materials and amounts</th>
+            <th className="max-md:hidden">Accounts affected</th>
+            <th className="max-lg:hidden">Materials and amounts</th>
           </tr>
         </thead>
         <tbody>
@@ -207,8 +207,8 @@ export function TransactionsTable({
                 <td data-testid={`transaction-date-${txn.id}`}>{formatDate(txn.date)}</td>
                 <td data-testid={`transaction-ref-${txn.id}`}>{txn.reference_id || txn.id}</td>
                 <td data-testid={`transaction-desc-${txn.id}`}>{txn.description}</td>
-                <td data-testid={`transaction-accounts-${txn.id}`}>{formatAccountsAffected(txn)}</td>
-                <td data-testid={`transaction-materials-${txn.id}`}>{formatMaterialsAndAmounts(txn)}</td>
+                <td data-testid={`transaction-accounts-${txn.id}`} className="max-md:hidden">{formatAccountsAffected(txn)}</td>
+                <td data-testid={`transaction-materials-${txn.id}`} className="max-lg:hidden">{formatMaterialsAndAmounts(txn)}</td>
               </tr>
             ))
           )}

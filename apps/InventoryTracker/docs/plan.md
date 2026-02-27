@@ -7,6 +7,6 @@
 - [x] MaterialsPage
 - [x] MaterialDetailPage
 - [x] BatchDetailPage
-- [ ] TransactionsPage
+- [x] TransactionsPage
 - [ ] TransactionDetailPage
 - [ ] NewTransactionPage

@@ -71,7 +71,7 @@ export function TransactionsPagination({
       <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
         <button
           data-testid="pagination-first"
-          className="pagination-btn"
+          className="pagination-btn max-sm:hidden"
           disabled={isFirstPage}
           onClick={() => onPageChange(1)}
           type="button"
@@ -117,7 +117,7 @@ export function TransactionsPagination({
         </button>
         <button
           data-testid="pagination-last"
-          className="pagination-btn"
+          className="pagination-btn max-sm:hidden"
           disabled={isLastPage}
           onClick={() => onPageChange(totalPages)}
           type="button"
@@ -127,7 +127,7 @@ export function TransactionsPagination({
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span className="pagination-info" data-testid="pagination-showing">
+        <span className="pagination-info max-sm:hidden" data-testid="pagination-showing">
           Showing {startIndex + 1}-{endIndex} of {totalItems} results
         </span>
         <div ref={rowsRef} style={{ position: "relative", display: "inline-block" }}>
