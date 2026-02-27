@@ -1,4 +1,12 @@
-url=https://production-hub-1771989781506.netlify.app
+url=https://69a0fb1fd32f73c8c8acaddd--production-hub-1771989781506.netlify.app
 site_id=8ea4c442-61eb-496e-8a14-3d7a0b681c12
 neon_project_id=icy-haze-77449695
 database_url=postgresql://neondb_owner:npg_A1I4bGeciBTa@ep-spring-king-aeeuyv0l.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require
+
+--- Deployment 2026-02-27 ---
+Changes:
+- Fixed Recipes page modal/form header and table body directive violations (REC-HDR-13, REC-TBL-7)
+- Fixed CalendarPage header text to match directive specification
+- Fixed RecipeDetailsPage grid layout to comply with directives
+- Fixed netlify.toml missing base setting for deployment
+Replay recording: https://app.replay.io/recording/56e939dc-9800-4ccd-9a28-a196c384c5d3
