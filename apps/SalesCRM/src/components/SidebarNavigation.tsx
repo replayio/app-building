@@ -83,6 +83,11 @@ export function SidebarNavigation() {
 
   return (
     <nav data-testid="sidebar-nav" className="sidebar-nav">
+      {/* Tests: Sidebar displays all navigation links with icons, Clients link navigates to /clients,
+          Contacts link navigates to /contacts, Deals link navigates to /deals, Tasks link navigates to /tasks,
+          Team link navigates to /users, Settings link navigates to /settings,
+          Active link is visually highlighted for current page, Active state updates on navigation,
+          Sidebar persists across page navigation */}
       {navItems.map((item) => (
         <a
           key={item.key}

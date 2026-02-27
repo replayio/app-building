@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationSidebarJSXComments: Add JSX comments next to every interactive element in SidebarNavigation.tsx and SidebarAuth.tsx with the titles of the tests that exercise each element (testSpec.md directive)"
-      ],
-      "timestamp": "2026-02-27T04:07:58.011Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "WriteTestEditDealModalSavesEdits: Write test for Actions menu Edit modal saves edits",

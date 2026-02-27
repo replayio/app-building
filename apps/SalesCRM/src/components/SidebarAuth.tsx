@@ -83,6 +83,7 @@ export function SidebarAuth() {
             </div>
             <span className="sidebar-user-name" data-testid="sidebar-user-name">{user.name}</span>
           </div>
+          {/* Tests: Sign Out returns to unauthenticated state */}
           <button
             className="sidebar-signout-btn"
             data-testid="sidebar-signout-btn"
@@ -94,6 +95,7 @@ export function SidebarAuth() {
       ) : (
         <div data-testid="sidebar-auth-area">
           {!showAuthForm ? (
+            /* Tests: Sign In button displays when not authenticated, Clicking Sign In reveals inline auth form */
             <button
               className="sidebar-signin-btn"
               data-testid="sidebar-signin-btn"
@@ -114,6 +116,8 @@ export function SidebarAuth() {
               data-testid="sidebar-auth-form"
               onSubmit={handleAuthSubmit}
             >
+              {/* Tests: Sign In form submission with valid credentials, Sign In form shows error for invalid credentials,
+                  Sign Up form submission creates account (test mode) */}
               <input
                 type="email"
                 placeholder="Email"
@@ -122,6 +126,8 @@ export function SidebarAuth() {
                 data-testid="sidebar-auth-email"
                 required
               />
+              {/* Tests: Sign In form submission with valid credentials, Sign In form shows error for invalid credentials,
+                  Sign Up form submission creates account (test mode) */}
               <input
                 type="password"
                 placeholder="Password"
@@ -140,6 +146,8 @@ export function SidebarAuth() {
                   {authMessage}
                 </div>
               )}
+              {/* Tests: Sign In form submission with valid credentials, Sign In form shows error for invalid credentials,
+                  Sign Up form submission creates account (test mode) */}
               <button
                 type="submit"
                 className="sidebar-auth-submit-btn"
@@ -149,6 +157,7 @@ export function SidebarAuth() {
                 {authMode === "signin" ? "Sign In" : "Sign Up"}
               </button>
               <div className="sidebar-auth-links">
+                {/* Tests: Forgot password link navigates to /auth/forgot-password */}
                 <button
                   type="button"
                   className="sidebar-auth-link"
@@ -157,6 +166,7 @@ export function SidebarAuth() {
                 >
                   Forgot password?
                 </button>
+                {/* Tests: Sign In / Sign Up toggle switches form mode */}
                 <button
                   type="button"
                   className="sidebar-auth-toggle"
