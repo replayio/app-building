@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "CheckTestSpecSidebar: Check testSpec.md directive violations in Sidebar test entries",
-        "CheckComponentsSidebar: Check writeApp.md directive violations in Sidebar components",
-        "CheckTestsSidebar: Check writeTests.md directive violations in Sidebar tests"
-      ],
-      "timestamp": "2026-02-27T02:08:25.642Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"
@@ -160,6 +150,14 @@
         "FixViolationContactHistoryTeamMemberDropdown: Fix ContactHistorySection Team Member field to use SearchableSelect dropdown populated from users API instead of plain text input, in both add modal and edit form"
       ],
       "timestamp": "2026-02-27T03:41:53.970Z",
+      "app": "SalesCRM"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationSidebarJSXComments: Add JSX comments next to every interactive element in SidebarNavigation.tsx and SidebarAuth.tsx with the titles of the tests that exercise each element (testSpec.md directive)"
+      ],
+      "timestamp": "2026-02-27T04:07:58.011Z",
       "app": "SalesCRM"
     }
   ]
