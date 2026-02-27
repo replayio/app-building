@@ -80,7 +80,7 @@ Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
 - **Components:** RecipesHeader
 - **Given** the user is on /recipes
 - **When** the user clicks the "Add Recipe" button
-- **Then** a modal or form is displayed with fields for Recipe Name, Product, Version, and Status
+- **Then** a modal is displayed with fields for Recipe Name, Product, Version, and Status
 - **When** the user fills in Recipe Name "Test Recipe", Product "Test Product", Version "1.0", Status "Draft" and submits
 - **Then** the modal closes and a new row appears in the RecipesTable with Recipe Name "Test Recipe", Product "Test Product", Version "1.0", and Status "Draft"
 - **And** the new recipe persists after navigating away and returning to /recipes
@@ -135,7 +135,7 @@ Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
 - **Components:** RecipesTable
 - **Given** the user is on /recipes and a row shows recipe "Standard Widget Assembly"
 - **When** the user clicks the pencil icon in that row's Actions column
-- **Then** a modal or form is displayed pre-filled with the recipe's current Recipe Name, Product, Version, and Status
+- **Then** a modal is displayed pre-filled with the recipe's current Recipe Name, Product, Version, and Status
 - **When** the user changes the Version from "1.2" to "1.3" and saves
 - **Then** the table row updates to show Version as "1.3"
 - **And** the change persists after navigating away and returning to /recipes
@@ -316,6 +316,19 @@ Components: RecipesHeader, RecipesTable, RecipeDetailsPanel
 - **Given** the RecipeDetailsPanel is open for a recipe
 - **When** the user clicks the close (X) button on the RecipeDetailsPanel
 - **Then** the RecipeDetailsPanel closes and is no longer visible
+
+#### REC-PNL-16: Editing a recipe updates the RecipeDetailsPanel
+- **Components:** RecipeDetailsPanel, RecipesTable
+- **Given** the user is on /recipes with the RecipeDetailsPanel open for "Standard Widget Assembly"
+- **When** the user clicks the pencil icon in the "Standard Widget Assembly" row's Actions column
+- **And** changes the Version from "1.2" to "1.3" and saves
+- **Then** the RecipeDetailsPanel updates to show the new Version "1.3" in the General Info tab
+
+#### REC-PNL-17: Deleting a recipe closes the RecipeDetailsPanel
+- **Components:** RecipeDetailsPanel, RecipesTable
+- **Given** the user is on /recipes with the RecipeDetailsPanel open for "Eco-Pack Material Mix"
+- **When** the user clicks the trash icon in the "Eco-Pack Material Mix" row's Actions column and confirms the deletion
+- **Then** the recipe row is removed from the table and the RecipeDetailsPanel closes
 
 ## CalendarPage (/calendar)
 

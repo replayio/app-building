@@ -916,4 +916,69 @@ test.describe("RecipeDetailsPanel", () => {
     // Panel should be hidden
     await expect(page.getByTestId("recipe-details-panel")).toBeHidden();
   });
+
+  test("REC-PNL-16: Editing a recipe updates the RecipeDetailsPanel", async ({ page }) => {
+    test.slow();
+    await page.goto("/recipes");
+    await expect(page.getByTestId("recipes-table")).toBeVisible({ timeout: 30000 });
+
+    // Click on "Cashew Butter Creamy" row to open the details panel
+    const row = page.locator('[data-testid^="recipe-row-"]').filter({ hasText: "Cashew Butter Creamy" });
+    await expect(row).toBeVisible();
+    await row.click();
+
+    await expect(page.getByTestId("recipe-details-panel")).toBeVisible({ timeout: 15000 });
+
+    // Verify current version in the panel
+    await expect(page.getByTestId("recipe-panel-general-version")).toHaveText("2.0", { timeout: 15000 });
+
+    // Click the edit pencil icon for the same recipe
+    await row.locator('[data-testid^="recipe-edit-btn-"]').click();
+    await expect(page.getByTestId("edit-recipe-modal")).toBeVisible();
+
+    // Change version from "2.0" to "2.1"
+    await page.getByTestId("edit-recipe-version-input").clear();
+    await page.getByTestId("edit-recipe-version-input").fill("2.1");
+
+    // Save
+    await page.getByTestId("edit-recipe-submit-btn").click();
+    await expect(page.getByTestId("edit-recipe-modal")).toBeHidden({ timeout: 30000 });
+
+    // Verify the panel updates to show the new version
+    await expect(page.getByTestId("recipe-panel-general-version")).toHaveText("2.1", { timeout: 15000 });
+  });
+
+  test("REC-PNL-17: Deleting a recipe closes the RecipeDetailsPanel", async ({ page }) => {
+    test.slow();
+    await page.goto("/recipes");
+    await expect(page.getByTestId("recipes-table")).toBeVisible({ timeout: 30000 });
+
+    // Create a temporary recipe for this test
+    await page.getByTestId("add-recipe-btn").click();
+    await expect(page.getByTestId("add-recipe-modal")).toBeVisible();
+    await page.getByTestId("add-recipe-name-input").fill("TempPanelDeleteRecipe");
+    await page.getByTestId("add-recipe-product-input").fill("TempProduct");
+    await page.getByTestId("add-recipe-submit-btn").click();
+    await expect(page.getByTestId("add-recipe-modal")).toBeHidden({ timeout: 30000 });
+
+    // Search for the created recipe
+    await page.getByTestId("recipes-search-input").fill("TempPanelDeleteRecipe");
+    const row = page.locator('[data-testid^="recipe-row-"]').filter({ hasText: "TempPanelDeleteRecipe" });
+    await expect(row).toBeVisible({ timeout: 15000 });
+
+    // Click the row to open the details panel
+    await row.click();
+    await expect(page.getByTestId("recipe-details-panel")).toBeVisible({ timeout: 15000 });
+
+    // Click the delete button
+    await row.locator('[data-testid^="recipe-delete-btn-"]').click();
+    await expect(page.getByTestId("confirm-dialog")).toBeVisible();
+
+    // Confirm deletion
+    await page.getByTestId("confirm-dialog-confirm").click();
+
+    // Recipe row should be removed and panel should close
+    await expect(row).toHaveCount(0, { timeout: 15000 });
+    await expect(page.getByTestId("recipe-details-panel")).toBeHidden();
+  });
 });

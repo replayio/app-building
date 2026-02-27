@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationRecipesModalOrForm: Fix REC-HDR-13 and REC-TBL-7 test entries to say 'a modal' instead of ambiguous 'a modal or form'",
-        "FixViolationRecipesPanelStateUpdate: Add test entries for edit/delete recipe updating RecipeDetailsPanel when open"
-      ],
-      "timestamp": "2026-02-27T01:50:20.817Z",
-      "app": "ProductionHub"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"
