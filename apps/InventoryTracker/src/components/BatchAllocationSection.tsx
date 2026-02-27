@@ -193,7 +193,7 @@ export function BatchAllocationSection({
                 style={{ height: 36, whiteSpace: "nowrap" }}
                 onClick={handleAdd}
               >
-                + Create New Batch
+                + <span className="max-sm:hidden">Create New Batch</span><span className="hidden max-sm:inline">Add</span>
               </button>
             </div>
           </div>

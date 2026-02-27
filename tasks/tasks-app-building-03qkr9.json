@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveNewTransactionPage: Make NewTransactionPage responsive"
-      ],
-      "timestamp": "2026-02-26T23:51:36.189Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"

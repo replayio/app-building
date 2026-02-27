@@ -1,6 +1,6 @@
 ## Polish
 
-### Responsive UI
+### Responsive UI ✓
 - [x] DashboardPage
 - [x] AccountsPage
 - [x] AccountDetailPage
@@ -9,4 +9,4 @@
 - [x] BatchDetailPage
 - [x] TransactionsPage
 - [x] TransactionDetailPage
-- [ ] NewTransactionPage
+- [x] NewTransactionPage

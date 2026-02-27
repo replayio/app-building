@@ -217,7 +217,7 @@ export function NewTransactionPage() {
       </div>
 
       {/* Form sections */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <div className="flex flex-col gap-6">
         <BasicInfoForm
           data={basicInfo}
           onChange={setBasicInfo}

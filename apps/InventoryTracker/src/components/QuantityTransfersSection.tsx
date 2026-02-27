@@ -300,7 +300,7 @@ export function QuantityTransfersSection({
                 style={{ height: 36, whiteSpace: "nowrap" }}
                 onClick={handleAdd}
               >
-                + Add Quantity Transfer
+                + <span className="max-sm:hidden">Add Quantity Transfer</span><span className="hidden max-sm:inline">Add</span>
               </button>
             </div>
           </div>

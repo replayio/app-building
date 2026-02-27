@@ -1132,6 +1132,9 @@
   .max-sm\:hidden {
     display: none !important;
   }
+  .max-sm\:inline {
+    display: inline !important;
+  }
   .max-sm\:grid-cols-1 {
     grid-template-columns: 1fr !important;
   }
@@ -1185,6 +1188,18 @@
 }
 
 /* Responsive: utility classes */
+.hidden {
+  display: none;
+}
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.inline {
+  display: inline;
+}
 .p-6 {
   padding: 24px;
 }
