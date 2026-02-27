@@ -165,6 +165,7 @@ export function WriteupsSection({ writeups, dealId }: WriteupsSectionProps) {
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                           <path d="M8.5 2.5L11.5 5.5M1 13L1.5 10.5L10 2L12 4L3.5 12.5L1 13Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
+                        Edit
                       </button>
                       <button
                         className="writeup-action-btn"
@@ -177,6 +178,7 @@ export function WriteupsSection({ writeups, dealId }: WriteupsSectionProps) {
                           <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2" />
                           <path d="M7 4V7.5L9.5 9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                         </svg>
+                        Version History
                       </button>
                     </div>
                   </>

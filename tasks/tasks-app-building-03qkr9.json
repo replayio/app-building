@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationWriteupsButtonLabels: Fix WriteupsSection Edit and Version History buttons missing visible text labels (mockup shows 'Edit' text with pencil icon and 'Version History' text with clock icon, but component only renders SVG icons)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-27T03:26:29.871Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecDealsListPage: Check testSpec.md directive violations in DealsListPage test entries",
         "CheckComponentsDealsListPage: Check writeApp.md directive violations in DealsListPage components",
         "CheckTestsDealsListPage: Check writeTests.md directive violations in DealsListPage tests"
