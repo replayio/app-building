@@ -3,11 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecRecipeDetailsPage: Check testSpec.md directive violations in RecipeDetailsPage test entries",
-        "CheckComponentsRecipeDetailsPage: Check writeApp.md directive violations in RecipeDetailsPage components",
-        "CheckTestsRecipeDetailsPage: Check writeTests.md directive violations in RecipeDetailsPage tests"
+        "FixViolationRecipeDetailsLayout: Fix RecipeDetailsPage grid layout to match mockup (Description+Products in row 1, Materials+Equipment in row 2 instead of current Description full-width, Products+Materials grid, Equipment full-width)",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-27T00:34:35.615Z",
+      "timestamp": "2026-02-27T01:23:50.881Z",
       "app": "ProductionHub"
     },
     {
