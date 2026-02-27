@@ -3,11 +3,11 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecTasksListPage: Check testSpec.md directive violations in TasksListPage test entries",
-        "CheckComponentsTasksListPage: Check writeApp.md directive violations in TasksListPage components",
-        "CheckTestsTasksListPage: Check writeTests.md directive violations in TasksListPage tests"
+        "FixViolationTasksListPageTestEntries: Fix missing test entries in TasksListPage: (1) Add test entry for Edit action in actions menu specifying it navigates to /tasks/:taskId, (2) Add timeline entry and notification tests for Cancel action in TaskCardList (backend creates 'Task Canceled' timeline event and sends notifications but test entry does not verify these side effects, unlike the Mark Complete entry which does)",
+        "RunTests: Verify tests pass after fix",
+        "DocumentFix: Document the fix"
       ],
-      "timestamp": "2026-02-27T02:08:33.348Z",
+      "timestamp": "2026-02-27T03:18:11.656Z",
       "app": "SalesCRM"
     },
     {
