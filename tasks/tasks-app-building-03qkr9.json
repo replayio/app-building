@@ -3,9 +3,49 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "Unpack: Check directive compliance"
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
-      "timestamp": "2026-02-26T16:13:54.432Z",
+      "timestamp": "2026-02-27T04:41:44.227Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecOrderDetailsPage: Check testSpec.md directive violations in OrderDetailsPage test entries",
+        "CheckComponentsOrderDetailsPage: Check writeApp.md directive violations in OrderDetailsPage components",
+        "CheckTestsOrderDetailsPage: Check writeTests.md directive violations in OrderDetailsPage tests"
+      ],
+      "timestamp": "2026-02-27T04:41:43.234Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecSupplierDetailsPage: Check testSpec.md directive violations in SupplierDetailsPage test entries",
+        "CheckComponentsSupplierDetailsPage: Check writeApp.md directive violations in SupplierDetailsPage components",
+        "CheckTestsSupplierDetailsPage: Check writeTests.md directive violations in SupplierDetailsPage tests"
+      ],
+      "timestamp": "2026-02-27T04:41:42.054Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
+        "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
+        "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"
+      ],
+      "timestamp": "2026-02-27T04:41:40.675Z",
+      "app": "SupplierTracker"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecNavigation: Check testSpec.md directive violations in Navigation test entries",
+        "CheckComponentsNavigation: Check writeApp.md directive violations in Navigation components",
+        "CheckTestsNavigation: Check writeTests.md directive violations in Navigation tests"
+      ],
+      "timestamp": "2026-02-27T04:41:36.504Z",
       "app": "SupplierTracker"
     },
     {
