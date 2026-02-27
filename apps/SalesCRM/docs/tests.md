@@ -334,6 +334,9 @@ Given the edit mode is open and the user changes the client name from "Acme Corp
 **Editing client details creates a timeline entry**
 Given the user edits client details (e.g., changes the status from "Active" to "Inactive") and saves, a new timeline entry is created recording the change (e.g., "Client Updated" with details of what changed), attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created per save action.
 
+**Saving edited client details triggers follower notifications**
+Given the user saves edited client details on a client that has followers, email notifications are sent to followers who have "client updated" notifications enabled (excluding the actor).
+
 **Edit cancel discards unsaved changes**
 Given the edit mode is open and the user has modified some fields, when they click cancel or close the edit mode, the changes are discarded and the header reverts to the previous values.
 
@@ -405,6 +408,9 @@ Given the source info edit mode is active and the user changes the Campaign from
 
 **Editing source info creates a timeline entry**
 Given the user edits source info and saves, a timeline entry is created recording that the client's source info was updated, attributed to the current user (or "System" if unauthenticated). Exactly one timeline entry is created per save.
+
+**Saving edited source info triggers follower notifications**
+Given the user saves edited source info on a client that has followers, email notifications are sent to followers who have "client updated" notifications enabled (excluding the actor).
 
 **Edit cancel discards unsaved source info changes**
 Given the source info edit mode is active and the user has modified fields, when they click cancel, the changes are discarded and the section reverts to the previous values.
