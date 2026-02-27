@@ -4,7 +4,7 @@
 - [x] DashboardPage
 - [x] AccountsPage
 - [x] AccountDetailPage
-- [ ] MaterialsPage
+- [x] MaterialsPage
 - [ ] MaterialDetailPage
 - [ ] BatchDetailPage
 - [ ] TransactionsPage

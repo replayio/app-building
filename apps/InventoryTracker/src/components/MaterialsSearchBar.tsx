@@ -9,7 +9,7 @@ export function MaterialsSearchBar({
 }: MaterialsSearchBarProps) {
   return (
     <div
-      className="search-input-wrapper"
+      className="search-input-wrapper materials-search-bar"
       style={{ flex: 1, maxWidth: 300 }}
     >
       <svg

@@ -59,7 +59,7 @@ export function MaterialsPagination({
       </button>
 
       <span
-        className="pagination-info"
+        className="pagination-info max-sm:hidden"
         data-testid="pagination-showing"
       >
         Showing {totalItems === 0 ? 0 : startIndex + 1}-{endIndex} of{" "}

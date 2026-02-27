@@ -1223,6 +1223,10 @@
   .filter-bar {
     gap: 8px;
   }
+  .filter-bar .materials-search-bar {
+    max-width: none !important;
+    width: 100%;
+  }
   .balance-indicator {
     font-size: 12px;
   }
