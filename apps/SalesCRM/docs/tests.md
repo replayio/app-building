@@ -1918,23 +1918,32 @@ Given the user is on /contacts and creates a new contact via the AddContactModal
 **Pagination shows current range and total count**
 Given the user is on /contacts with more than 50 contacts, the pagination area displays text like "Showing 1-50 of N contacts" indicating the current range and total count.
 
-**Page number buttons are displayed**
-Given the user is on /contacts with multiple pages of contacts (more than 50), numbered page buttons (1, 2, 3, ...) are displayed in the pagination area, with the current page highlighted.
+**Pagination shows current page and total pages**
+Given the user is on /contacts with more than 50 contacts, the pagination area displays text like "Page 1 of 9" indicating the current page and total pages.
 
-**Clicking a page number navigates to that page**
-Given the user is on /contacts viewing page 1, when they click page number "2", the table updates to show the next set of contacts (e.g., rows 51-100) and the page 2 button becomes highlighted.
+**First page button is disabled on first page**
+Given the user is on /contacts viewing page 1, the first page button («) is disabled, indicating the user is already on the first page.
 
-**Previous button is disabled on first page**
-Given the user is on /contacts viewing page 1, the "Previous" button is disabled or visually inactive, indicating there is no previous page.
+**First page button navigates to the first page**
+Given the user is on /contacts viewing page 3, when they click the first page button («), the table updates to show page 1 data and the pagination text updates accordingly.
 
-**Previous button navigates to the prior page**
-Given the user is on /contacts viewing page 2, when they click "Previous", the table updates to show page 1 data and the page 1 button becomes highlighted.
+**Previous page button is disabled on first page**
+Given the user is on /contacts viewing page 1, the previous page button (‹) is disabled, indicating there is no previous page.
 
-**Next button navigates to the next page**
-Given the user is on /contacts viewing page 1 with multiple pages, when they click "Next", the table updates to show page 2 data and the page 2 button becomes highlighted.
+**Previous page button navigates to the prior page**
+Given the user is on /contacts viewing page 2, when they click the previous page button (‹), the table updates to show page 1 data and the pagination text updates accordingly.
 
-**Next button is disabled on last page**
-Given the user is on /contacts viewing the last page, the "Next" button is disabled or visually inactive, indicating there is no next page.
+**Next page button navigates to the next page**
+Given the user is on /contacts viewing page 1 with multiple pages, when they click the next page button (›), the table updates to show page 2 data and the pagination text updates accordingly.
+
+**Next page button is disabled on last page**
+Given the user is on /contacts viewing the last page, the next page button (›) is disabled, indicating there is no next page.
+
+**Last page button navigates to the last page**
+Given the user is on /contacts viewing page 1 with multiple pages, when they click the last page button (»), the table updates to show the last page of contacts and the pagination text updates accordingly.
+
+**Last page button is disabled on last page**
+Given the user is on /contacts viewing the last page, the last page button (») is disabled, indicating the user is already on the last page.
 
 **Pagination resets to page 1 when search filter changes**
 Given the user is on /contacts viewing page 2, when they type a new search term in the search bar, the pagination resets to page 1 and the table shows the first page of filtered results.
