@@ -58,11 +58,12 @@ export default async function handler(req: Request, _context: Context) {
         account_id: string;
         name: string;
         amount: number;
+        actual_amount?: number;
         period: string;
       };
       const rows = await sql`
-        INSERT INTO budgets (account_id, name, amount, period)
-        VALUES (${body.account_id}, ${body.name}, ${body.amount}, ${body.period})
+        INSERT INTO budgets (account_id, name, amount, actual_amount, period)
+        VALUES (${body.account_id}, ${body.name}, ${body.amount}, ${body.actual_amount ?? 0}, ${body.period})
         RETURNING *
       `;
       return new Response(JSON.stringify(parseBudgetRow(rows[0])), {
