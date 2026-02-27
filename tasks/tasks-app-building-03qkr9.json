@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecEquipmentDetailsPage: Check testSpec.md directive violations in EquipmentDetailsPage test entries",
-        "CheckComponentsEquipmentDetailsPage: Check writeApp.md directive violations in EquipmentDetailsPage components",
-        "CheckTestsEquipmentDetailsPage: Check writeTests.md directive violations in EquipmentDetailsPage tests"
-      ],
-      "timestamp": "2026-02-27T00:34:38.418Z",
-      "app": "ProductionHub"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecEquipmentPage: Check testSpec.md directive violations in EquipmentPage test entries",
         "CheckComponentsEquipmentPage: Check writeApp.md directive violations in EquipmentPage components",
         "CheckTestsEquipmentPage: Check writeTests.md directive violations in EquipmentPage tests"
