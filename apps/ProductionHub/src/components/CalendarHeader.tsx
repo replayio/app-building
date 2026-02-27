@@ -79,9 +79,17 @@ export function CalendarHeader({
   return (
     <div data-testid="calendar-header">
       <div className="calendar-header-top">
-        <h1 className="page-title" data-testid="calendar-page-title">
-          Production Calendar
-        </h1>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+          <h1 className="page-title" data-testid="calendar-page-title">
+            Production Calendar
+          </h1>
+          <span
+            style={{ fontSize: 13, color: "var(--text-muted)", fontWeight: 400 }}
+            data-testid="calendar-page-route"
+          >
+            /calendar
+          </span>
+        </div>
         <div className="calendar-header-actions">
           <div className="calendar-view-toggle" data-testid="calendar-view-toggle">
             {(["Daily", "Weekly", "Monthly"] as CalendarView[]).map((v) => (

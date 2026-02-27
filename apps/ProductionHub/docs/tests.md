@@ -326,7 +326,7 @@ Components: CalendarHeader, CalendarGrid, RunDetailsPopup
 #### CAL-HDR-1: Page title displays "Production Calendar"
 - **Components:** CalendarHeader
 - **Given** the user navigates to /calendar
-- **Then** the page title "Production Calendar" is displayed as a large heading
+- **Then** the page title "Production Calendar" is displayed as a large heading with the route "/calendar" shown beside it
 
 #### CAL-HDR-2: Prev button is displayed
 - **Components:** CalendarHeader

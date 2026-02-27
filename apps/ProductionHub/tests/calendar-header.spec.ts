@@ -6,6 +6,8 @@ test.describe("CalendarHeader", () => {
     await expect(page.getByTestId("calendar-page")).toBeVisible({ timeout: 30000 });
     await expect(page.getByTestId("calendar-page-title")).toBeVisible();
     await expect(page.getByTestId("calendar-page-title")).toHaveText("Production Calendar");
+    await expect(page.getByTestId("calendar-page-route")).toBeVisible();
+    await expect(page.getByTestId("calendar-page-route")).toHaveText("/calendar");
   });
 
   test("CAL-HDR-2: Prev button is displayed", async ({ page }) => {
