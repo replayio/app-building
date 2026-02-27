@@ -1,18 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestEditDealModalSavesEdits: Write test for Actions menu Edit modal saves edits",
-        "WriteTestEditDealModalCancelCloses: Write test for Actions menu Edit modal cancel closes without saving",
-        "WriteTestEditDealModalValidation: Write test for Actions menu Edit modal validates required fields",
-        "WriteTestEditDealTimeline: Write test for Actions menu Edit deal creates a timeline entry on the client",
-        "WriteTestEditDealNotifications: Write test for Actions menu Edit deal triggers follower notifications on the client",
-        "WriteTestDeleteDealTimeline: Write test for Actions menu Delete creates a timeline entry on the client",
-        "WriteTestDeleteDealNotifications: Write test for Actions menu Delete triggers follower notifications on the client"
-      ],
-      "timestamp": "2026-02-27T07:46:06.222Z",
-      "app": "SalesCRM"
-    }
-  ]
+  "tasks": []
 }
