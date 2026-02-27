@@ -3,11 +3,9 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecDashboardPage: Check testSpec.md directive violations in DashboardPage test entries",
-        "CheckComponentsDashboardPage: Check writeApp.md directive violations in DashboardPage components",
-        "CheckTestsDashboardPage: Check writeTests.md directive violations in DashboardPage tests"
+        "FixViolationDashboardJSXComments: Add JSX comments next to every interactive element in QuickActions.tsx, UpcomingOrdersTable.tsx, and SuppliersList.tsx with the titles of the tests that exercise each element (testSpec.md directive)"
       ],
-      "timestamp": "2026-02-27T04:41:40.675Z",
+      "timestamp": "2026-02-27T05:58:36.517Z",
       "app": "SupplierTracker"
     },
     {
