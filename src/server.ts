@@ -117,6 +117,7 @@ let log: ReturnType<typeof createBufferedLogger>;
 
 const onEvent: EventCallback = (rawLine) => {
   eventBuffer.append(rawLine);
+  lastActivityAt = new Date().toISOString();
 };
 
 // --- HTTP helpers ---
