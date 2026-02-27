@@ -89,40 +89,46 @@ export function OrderDetailsPage() {
         }}
       />
 
-      <LineItemsTable
-        lineItems={lineItems}
-        onAdd={async (data) => {
-          await dispatch(addLineItem({ orderId: order.id, ...data })).unwrap();
-          await dispatch(fetchLineItems(order.id));
-          await refetchOrder();
-          await dispatch(fetchOrderHistory(order.id));
-        }}
-        onEdit={async (lineItemId, data) => {
-          await dispatch(updateLineItem({ orderId: order.id, lineItemId, ...data })).unwrap();
-          await dispatch(fetchLineItems(order.id));
-          await refetchOrder();
-          await dispatch(fetchOrderHistory(order.id));
-        }}
-        onDelete={async (lineItemId) => {
-          await dispatch(deleteLineItem({ orderId: order.id, lineItemId })).unwrap();
-          await dispatch(fetchLineItems(order.id));
-          await refetchOrder();
-          await dispatch(fetchOrderHistory(order.id));
-        }}
-      />
+      <div className="order-details-grid">
+        <div className="order-details-left">
+          <LineItemsTable
+            lineItems={lineItems}
+            onAdd={async (data) => {
+              await dispatch(addLineItem({ orderId: order.id, ...data })).unwrap();
+              await dispatch(fetchLineItems(order.id));
+              await refetchOrder();
+              await dispatch(fetchOrderHistory(order.id));
+            }}
+            onEdit={async (lineItemId, data) => {
+              await dispatch(updateLineItem({ orderId: order.id, lineItemId, ...data })).unwrap();
+              await dispatch(fetchLineItems(order.id));
+              await refetchOrder();
+              await dispatch(fetchOrderHistory(order.id));
+            }}
+            onDelete={async (lineItemId) => {
+              await dispatch(deleteLineItem({ orderId: order.id, lineItemId })).unwrap();
+              await dispatch(fetchLineItems(order.id));
+              await refetchOrder();
+              await dispatch(fetchOrderHistory(order.id));
+            }}
+          />
 
-      <CostBreakdown order={order} />
+          <CostBreakdown order={order} />
+        </div>
 
-      <OrderDocuments
-        documents={documents}
-        onUpload={async (file, documentType) => {
-          await dispatch(uploadOrderDocument({ orderId: order.id, file, documentType })).unwrap();
-          await dispatch(fetchOrderDocuments(order.id));
-          await dispatch(fetchOrderHistory(order.id));
-        }}
-      />
+        <div className="order-details-right">
+          <OrderDocuments
+            documents={documents}
+            onUpload={async (file, documentType) => {
+              await dispatch(uploadOrderDocument({ orderId: order.id, file, documentType })).unwrap();
+              await dispatch(fetchOrderDocuments(order.id));
+              await dispatch(fetchOrderHistory(order.id));
+            }}
+          />
 
-      <OrderHistory history={history} />
+          <OrderHistory history={history} />
+        </div>
+      </div>
     </div>
   );
 }

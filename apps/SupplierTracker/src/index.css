@@ -579,9 +579,26 @@
   }
 }
 
+/* Order details two-column grid */
+.order-details-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.order-details-left,
+.order-details-right {
+  min-width: 0;
+}
+
 /* ── Responsive layout rules ── */
 
 @media (max-width: 768px) {
+  .order-details-grid {
+    grid-template-columns: 1fr;
+  }
+
   .section-card-header {
     flex-wrap: wrap;
     gap: 8px;

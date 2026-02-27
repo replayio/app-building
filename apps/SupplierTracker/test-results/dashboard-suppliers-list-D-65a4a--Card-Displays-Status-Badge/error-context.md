@@ -1,0 +1,118 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "SupplyChain Pro" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img [ref=e7]
+        - text: SupplyChain Pro
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Suppliers" [ref=e12] [cursor=pointer]:
+          - /url: /#suppliers
+        - link "Orders" [ref=e13] [cursor=pointer]:
+          - /url: /#orders
+        - link "Inventory" [ref=e14] [cursor=pointer]:
+          - /url: /#inventory
+    - button "U" [ref=e16] [cursor=pointer]:
+      - generic [ref=e17]: U
+      - img [ref=e18]
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - heading "Quick Actions" [level=2] [ref=e23]
+        - generic [ref=e24]:
+          - button "Add New Supplier" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+            - text: Add New Supplier
+          - button "Create Purchase Order" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+            - text: Create Purchase Order
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - heading "Upcoming Orders" [level=2] [ref=e35]
+          - generic [ref=e36]:
+            - button "All Statuses" [ref=e38] [cursor=pointer]:
+              - generic [ref=e39]: All Statuses
+              - img [ref=e40]
+            - button "All Suppliers" [ref=e43] [cursor=pointer]:
+              - generic [ref=e44]: All Suppliers
+              - img [ref=e45]
+        - paragraph [ref=e49]: No upcoming orders.
+      - generic [ref=e50]:
+        - heading "Suppliers List" [level=2] [ref=e52]
+        - generic [ref=e53]:
+          - generic [ref=e54] [cursor=pointer]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Acme Corp
+              - generic [ref=e57]: Active
+            - generic [ref=e58]: Bob Wilson
+            - generic [ref=e59]: orders@acmecorp.com
+            - generic [ref=e60]: 1 Open Orders, $12k Value
+          - generic [ref=e61] [cursor=pointer]:
+            - generic [ref=e62]:
+              - generic [ref=e63]: Apex Logistics
+              - generic [ref=e64]: Active
+            - generic [ref=e65]: John Smith
+            - generic [ref=e66]: jane.doe@example.com
+            - generic [ref=e67]: 0 Open Orders, $0 Value
+          - generic [ref=e68] [cursor=pointer]:
+            - generic [ref=e69]:
+              - generic [ref=e70]: Apex Logistics
+              - generic [ref=e71]: Active
+            - generic [ref=e72]: John Smith
+            - generic [ref=e73]: jane.doe@example.com
+            - generic [ref=e74]: 3 Open Orders, $36k Value
+          - generic [ref=e75] [cursor=pointer]:
+            - generic [ref=e76]:
+              - generic [ref=e77]: Binmant Inc.
+              - generic [ref=e78]: On Hold
+            - generic [ref=e79]: John Smith
+            - generic [ref=e80]: jane.doe@example.com
+            - generic [ref=e81]: 0 Open Orders, $0 Value
+          - generic [ref=e82] [cursor=pointer]:
+            - generic [ref=e83]:
+              - generic [ref=e84]: Charralets Inc.
+              - generic [ref=e85]: On Hold
+            - generic [ref=e86]: John Smith
+            - generic [ref=e87]: jane.doe@example.com
+            - generic [ref=e88]: 0 Open Orders, $0 Value
+          - generic [ref=e89] [cursor=pointer]:
+            - generic [ref=e90]:
+              - generic [ref=e91]: Global Sourcing Inc.
+              - generic [ref=e92]: On Hold
+            - generic [ref=e93]: John Smith
+            - generic [ref=e94]: jane.doe@example.com
+            - generic [ref=e95]: 0 Open Orders, $0 Value
+          - generic [ref=e96] [cursor=pointer]:
+            - generic [ref=e97]:
+              - generic [ref=e98]: Merianastillers Inc.
+              - generic [ref=e99]: Active
+            - generic [ref=e100]: John Smith
+            - generic [ref=e101]: jane.doe@example.com
+            - generic [ref=e102]: 0 Open Orders, $0 Value
+          - generic [ref=e103] [cursor=pointer]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: Minmer Logistics
+              - generic [ref=e106]: Active
+            - generic [ref=e107]: John Smith
+            - generic [ref=e108]: jane.doe@example.com
+            - generic [ref=e109]: 0 Open Orders, $0 Value
+          - generic [ref=e110] [cursor=pointer]:
+            - generic [ref=e111]:
+              - generic [ref=e112]: Peaor Logistics
+              - generic [ref=e113]: Active
+            - generic [ref=e114]: John Smith
+            - generic [ref=e115]: jane.doe@example.com
+            - generic [ref=e116]: 0 Open Orders, $0 Value
+          - generic [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]:
+              - generic [ref=e119]: Techcom Solutions
+              - generic [ref=e120]: Active
+            - generic [ref=e121]: Jane Tech
+            - generic [ref=e122]: contact@techcom.com
+            - generic [ref=e123]: 2 Open Orders, $9k Value
+```
