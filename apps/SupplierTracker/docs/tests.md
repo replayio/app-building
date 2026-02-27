@@ -76,11 +76,11 @@ Then the same top navigation bar is displayed with the logo, all four nav links 
 **Display Breadcrumbs on SupplierDetailsPage**
 Given a supplier "Apex Global Logistics" exists,
 When the user navigates to /suppliers/\<supplierId\>,
-Then a breadcrumb trail is displayed showing "Home > Suppliers > Apex Global Logistics > Supplier Details".
+Then a breadcrumb trail is displayed showing "Dashboard > Suppliers > Apex Global Logistics > Supplier Details".
 
-**SupplierDetailsPage Breadcrumb Home Navigates to Dashboard**
+**SupplierDetailsPage Breadcrumb Dashboard Navigates to Dashboard**
 Given the user is on the SupplierDetailsPage,
-When the user clicks "Home" in the breadcrumb trail,
+When the user clicks "Dashboard" in the breadcrumb trail,
 Then the user is navigated to / (the DashboardPage).
 
 **SupplierDetailsPage Breadcrumb Suppliers Navigates to Dashboard**

@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationBreadcrumbConsistency: Fix inconsistent breadcrumb root label - SupplierDetailsPage uses 'Home' while OrderDetailsPage uses 'Dashboard' for the first breadcrumb. Change to 'Dashboard' consistently in both tests.md spec entries and SupplierDetailsPage.tsx code (line 75)",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-27T06:10:46.781Z",
-      "app": "SupplierTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"

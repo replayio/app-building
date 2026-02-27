@@ -72,7 +72,7 @@ export function SupplierDetailsPage() {
   }
 
   const breadcrumbItems = [
-    { label: "Home", onClick: () => navigate("/") },
+    { label: "Dashboard", onClick: () => navigate("/") },
     { label: "Suppliers", onClick: () => navigate("/") },
     { label: supplier.name },
     { label: "Supplier Details" },
