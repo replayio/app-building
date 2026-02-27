@@ -3,11 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecForgotPasswordPage: Check testSpec.md directive violations in ForgotPasswordPage test entries",
-        "CheckComponentsForgotPasswordPage: Check writeApp.md directive violations in ForgotPasswordPage components",
-        "CheckTestsForgotPasswordPage: Check writeTests.md directive violations in ForgotPasswordPage tests"
+        "FixViolationMissingForgotPasswordTests: Write forgot-password.spec.ts with all 8 ForgotPasswordForm test entries",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-02-27T02:08:40.821Z",
+      "timestamp": "2026-02-27T02:32:05.302Z",
       "app": "SalesCRM"
     },
     {
