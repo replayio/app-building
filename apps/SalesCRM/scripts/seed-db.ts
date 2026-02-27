@@ -194,7 +194,8 @@ export async function seedDatabase(databaseUrl: string): Promise<void> {
       ('c1000000-0000-0000-0000-000000000003', 'deal_created', 'Deal "Global Solutions Consulting" was created', 'deal', 'd1000000-0000-0000-0000-000000000005', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
       ('c1000000-0000-0000-0000-000000000003', 'deal_stage_changed', 'Deal "Global Solutions Consulting" moved to Closed Won', 'deal', 'd1000000-0000-0000-0000-000000000005', 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001'),
       ('c1000000-0000-0000-0000-000000000010', 'client_created', 'Client Orion Dynamics was created', NULL, NULL, 'System', NULL),
-      ('c1000000-0000-0000-0000-000000000010', 'deal_created', 'Deal "Orion Platform Deal" was created', 'deal', 'd1000000-0000-0000-0000-000000000007', 'Emma Wilson', 'a1000000-0000-0000-0000-000000000005')
+      ('c1000000-0000-0000-0000-000000000010', 'deal_created', 'Deal "Orion Platform Deal" was created', 'deal', 'd1000000-0000-0000-0000-000000000007', 'Emma Wilson', 'a1000000-0000-0000-0000-000000000005'),
+      ('c1000000-0000-0000-0000-000000000001', 'client_note_added', 'Added note on client "Acme Corp"', NULL, NULL, 'Alice Johnson', 'a1000000-0000-0000-0000-000000000001')
     ON CONFLICT DO NOTHING
   `;
 
