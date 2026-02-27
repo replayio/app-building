@@ -57,7 +57,7 @@ export function BatchDetailPage() {
         <LineageSection batch={batch} lineage={lineage} />
       </div>
 
-      <div style={{ marginTop: 24 }}>
+      <div className="mt-6">
         <UsageHistoryTable entries={usageHistory} unit={batch.unit} />
       </div>
     </div>

@@ -140,7 +140,7 @@ export function LineageSection({ batch, lineage }: LineageSectionProps) {
                 {/* Input nodes */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {lineage.map((entry) => (
-                    <div key={entry.id} className="lineage-node" style={{ minWidth: 160 }}>
+                    <div key={entry.id} className="lineage-node">
                       <div className="lineage-node-title">Input</div>
                       <a
                         className="link lineage-node-content"
@@ -171,7 +171,7 @@ export function LineageSection({ batch, lineage }: LineageSectionProps) {
                 <ArrowRight />
 
                 {/* Output node */}
-                <div className="lineage-node" style={{ minWidth: 160 }}>
+                <div className="lineage-node">
                   <div className="lineage-node-title">Output:</div>
                   <a
                     className="link lineage-node-content"

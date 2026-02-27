@@ -1092,6 +1092,21 @@
   padding: 8px 12px 8px 48px;
 }
 
+/* Responsive: lineage diagram at 768px */
+@media (max-width: 768px) {
+  .lineage-diagram {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lineage-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+  .lineage-node {
+    min-width: 0;
+  }
+}
+
 /* Responsive: column hiding at 1024px */
 @media (max-width: 1024px) {
   .max-lg\:hidden {
@@ -1243,5 +1258,14 @@
   }
   .empty-state {
     padding: 24px 12px;
+  }
+  .batch-property-label {
+    min-width: 80px !important;
+  }
+  .lineage-node {
+    min-width: 0;
+  }
+  .lineage-process {
+    min-width: 0;
   }
 }

@@ -109,6 +109,7 @@ function PropertyRow({ icon, label, value, testId }: PropertyRowProps) {
     >
       <span style={{ color: "var(--text-muted)" }}>{icon}</span>
       <span
+        className="batch-property-label"
         style={{
           fontSize: 12,
           fontWeight: 500,
