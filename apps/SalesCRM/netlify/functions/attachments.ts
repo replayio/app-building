@@ -139,8 +139,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
           sql,
           `SELECT cf.user_id, u.email, u.name FROM client_followers cf
            JOIN users u ON u.id = cf.user_id
-           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
-           WHERE cf.client_id = $1 AND (np.attachment_added IS NULL OR np.attachment_added = true)`,
+           WHERE cf.client_id = $1`,
           [clientId]
         );
 
@@ -231,8 +230,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
           sql,
           `SELECT cf.user_id, u.email, u.name FROM client_followers cf
            JOIN users u ON u.id = cf.user_id
-           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
-           WHERE cf.client_id = $1 AND (np.attachment_added IS NULL OR np.attachment_added = true)`,
+           WHERE cf.client_id = $1`,
           [body.clientId]
         );
 
@@ -299,8 +297,7 @@ async function handler(authReq: { req: Request; user: { id: string; name: string
           sql,
           `SELECT cf.user_id, u.email, u.name FROM client_followers cf
            JOIN users u ON u.id = cf.user_id
-           LEFT JOIN notification_preferences np ON np.user_id = cf.user_id
-           WHERE cf.client_id = $1 AND (np.attachment_deleted IS NULL OR np.attachment_deleted = true)`,
+           WHERE cf.client_id = $1`,
           [existing.client_id]
         );
 

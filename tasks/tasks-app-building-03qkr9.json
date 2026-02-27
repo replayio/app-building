@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationExtraNotificationToggles: Remove extra notification toggles (Task Canceled, Attachment Added, Attachment Deleted) from EmailNotificationsSection, settingsSlice, notification-preferences backend, and database schema to match test spec requirement of exactly 7 toggles",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-02-27T02:50:35.236Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecContactsListPage: Check testSpec.md directive violations in ContactsListPage test entries",
         "CheckComponentsContactsListPage: Check writeApp.md directive violations in ContactsListPage components",
         "CheckTestsContactsListPage: Check writeTests.md directive violations in ContactsListPage tests"
