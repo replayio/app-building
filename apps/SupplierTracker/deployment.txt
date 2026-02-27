@@ -2,3 +2,17 @@ url=https://supplier-tracker-1771996496854.netlify.app
 site_id=721b0e88-ad0c-4231-b2b6-f365cc0625ad
 neon_project_id=solitary-king-65398738
 database_url=postgresql://neondb_owner:npg_spWO9TmAi3yP@ep-patient-mud-ajoza2ex.c-3.us-east-2.aws.neon.tech/neondb?sslmode=require
+
+--- Deployment 2026-02-27 ---
+Changes:
+- Fixed breadcrumb consistency across pages
+- Added JSX comments to TopNavBar and Dashboard components
+- Fixed OrderDetailsPage layout
+- Fixed Edit Order dialog test
+- Added missing test entries for SupplierDetails modal and tab links
+- Fixed TopNavBar duplicate navigation links
+- Added missing netlify.toml base configuration
+- Fixed OrderDetails modal test entries
+- Updated Create Order history side effect handling
+- Added BDD-format navigation test entries
+Replay recording: 523c56bd-59ba-4099-ab00-662d310f2523

@@ -223,17 +223,26 @@ async function main() {
     { cwd: appDir, encoding: "utf-8" }
   );
   const deployData = JSON.parse(deployOutput);
-  const deployedUrl = deployData.deploy_url || deployData.url;
+  const deployedUrl = deployData.url || deployData.deploy_url;
   console.log(`Deployed to: ${deployedUrl}`);
 
   // --- Write deployment.txt ---
-  const deploymentContent = [
+  const deploymentTxtPath = path.join(appDir, "deployment.txt");
+  let historyEntries = "";
+  if (existsSync(deploymentTxtPath)) {
+    const existing = readFileSync(deploymentTxtPath, "utf-8");
+    const historyMatch = existing.indexOf("\n--- Deployment");
+    if (historyMatch !== -1) {
+      historyEntries = existing.slice(historyMatch);
+    }
+  }
+  const resourceBlock = [
     `url=${deployedUrl}`,
     `site_id=${netlifySiteId}`,
     `neon_project_id=${neonProjectId}`,
     `database_url=${databaseUrl}`,
   ].join("\n") + "\n";
-  writeFileSync(path.join(appDir, "deployment.txt"), deploymentContent);
+  writeFileSync(deploymentTxtPath, resourceBlock + historyEntries);
   console.log("\ndeployment.txt updated.");
 
   console.log("\nDeployment complete!");
