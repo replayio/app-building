@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/fixBugReport.md",
-      "subtasks": [
-        "Unpack: Fix open bug reports"
-      ],
-      "timestamp": "2026-02-26T16:13:49.072Z",
-      "app": "SalesCRM"
-    },
-    {
       "skill": "skills/tasks/maintain/reviewBugReport.md",
       "subtasks": [
         "Unpack: Review fixed bug reports"
