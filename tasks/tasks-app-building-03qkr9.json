@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecUserDetailPage: Check testSpec.md directive violations in UserDetailPage test entries",
-        "CheckComponentsUserDetailPage: Check writeApp.md directive violations in UserDetailPage components",
-        "CheckTestsUserDetailPage: Check writeTests.md directive violations in UserDetailPage tests"
-      ],
-      "timestamp": "2026-02-27T02:08:39.454Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecUsersListPage: Check testSpec.md directive violations in UsersListPage test entries",
         "CheckComponentsUsersListPage: Check writeApp.md directive violations in UsersListPage components",
         "CheckTestsUsersListPage: Check writeTests.md directive violations in UsersListPage tests"
@@ -195,6 +185,49 @@
       ],
       "timestamp": "2026-02-26T20:34:04.871Z",
       "app": "InventoryTracker"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestUserNameDisplayed: Write test for User name is displayed prominently",
+        "WriteTestUserEmailDisplayed: Write test for User email is displayed",
+        "WriteTestUserJoinDateDisplayed: Write test for User join date is displayed",
+        "WriteTestUserAvatarDisplayed: Write test for User avatar is displayed",
+        "WriteTestBackNavigation: Write test for Back navigation to team page",
+        "WriteTestActiveDealsCount: Write test for Active deals count is displayed",
+        "WriteTestOpenTasksCount: Write test for Open tasks count is displayed",
+        "WriteTestTotalDealsCount: Write test for Total deals count is displayed",
+        "WriteTestStatsZero: Write test for Stats show zero when user has no deals or tasks",
+        "WriteTestStatsAccurate: Write test for Stats reflect current data accurately",
+        "WriteTestOwnedDealsHeading: Write test for Section displays Owned Deals heading",
+        "WriteTestDealName: Write test for Each deal entry displays the deal name",
+        "WriteTestDealStage: Write test for Each deal entry displays the deal stage",
+        "WriteTestDealValue: Write test for Each deal entry displays the deal value",
+        "WriteTestDealClientName: Write test for Each deal entry displays the associated client name",
+        "WriteTestMultipleDeals: Write test for Multiple owned deals are listed",
+        "WriteTestDealNavigation: Write test for Clicking a deal navigates to deal detail page",
+        "WriteTestDealsEmptyState: Write test for Empty state when user owns no deals",
+        "WriteTestAssignedTasksHeading: Write test for Section displays Assigned Tasks heading",
+        "WriteTestTaskTitle: Write test for Each task entry displays the task title",
+        "WriteTestTaskDueDate: Write test for Each task entry displays the task due date",
+        "WriteTestTaskPriority: Write test for Each task entry displays the task priority",
+        "WriteTestTaskStatus: Write test for Each task entry displays the task status",
+        "WriteTestTaskClientName: Write test for Each task entry displays the associated client name",
+        "WriteTestMultipleTasks: Write test for Multiple assigned tasks are listed",
+        "WriteTestTaskNavigation: Write test for Clicking a task navigates to task detail page",
+        "WriteTestTasksEmptyState: Write test for Empty state when user has no assigned tasks",
+        "WriteTestActivityHeading: Write test for Section displays Recent Activity heading",
+        "WriteTestActivityOrder: Write test for Activity entries are displayed in reverse chronological order",
+        "WriteTestActivityTimestamp: Write test for Each activity entry displays a timestamp",
+        "WriteTestActivityDescription: Write test for Each activity entry displays a description",
+        "WriteTestActivityDealActions: Write test for Activity entries include deal-related actions",
+        "WriteTestActivityTaskActions: Write test for Activity entries include task-related actions",
+        "WriteTestActivityClientActions: Write test for Activity entries include client-related actions",
+        "WriteTestMultipleActivities: Write test for Multiple activity entries are displayed",
+        "WriteTestActivityEmptyState: Write test for Empty state when user has no recent activity"
+      ],
+      "timestamp": "2026-02-27T02:41:05.813Z",
+      "app": "SalesCRM"
     }
   ]
 }
