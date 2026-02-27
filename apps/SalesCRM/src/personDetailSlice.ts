@@ -46,12 +46,21 @@ export interface IndividualOption {
   title: string | null;
 }
 
+export interface UserItem {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
 interface PersonDetailState {
   person: PersonDetail | null;
   relationships: RelationshipItem[];
   contactHistory: ContactHistoryItem[];
   associatedClients: AssociatedClient[];
   allIndividuals: IndividualOption[];
+  users: UserItem[];
   loading: boolean;
   error: string | null;
 }
@@ -62,6 +71,7 @@ const initialState: PersonDetailState = {
   contactHistory: [],
   associatedClients: [],
   allIndividuals: [],
+  users: [],
   loading: false,
   error: null,
 };
@@ -180,6 +190,15 @@ export const fetchAllIndividuals = createAsyncThunk(
   }
 );
 
+export const fetchUsers = createAsyncThunk(
+  "personDetail/fetchUsers",
+  async () => {
+    const resp = await fetch("/.netlify/functions/users");
+    if (!resp.ok) throw new Error("Failed to fetch users");
+    return resp.json() as Promise<UserItem[]>;
+  }
+);
+
 // --- Slice ---
 
 const personDetailSlice = createSlice({
@@ -192,6 +211,7 @@ const personDetailSlice = createSlice({
       state.contactHistory = [];
       state.associatedClients = [];
       state.allIndividuals = [];
+      state.users = [];
       state.loading = false;
       state.error = null;
     },
@@ -239,6 +259,10 @@ const personDetailSlice = createSlice({
       // All Individuals
       .addCase(fetchAllIndividuals.fulfilled, (state, action: PayloadAction<IndividualOption[]>) => {
         state.allIndividuals = action.payload;
+      })
+      // Users
+      .addCase(fetchUsers.fulfilled, (state, action: PayloadAction<UserItem[]>) => {
+        state.users = action.payload;
       });
   },
 });

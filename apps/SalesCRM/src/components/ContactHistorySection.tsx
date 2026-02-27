@@ -5,12 +5,15 @@ import {
   updateContactHistoryEntry,
   fetchContactHistory,
   type ContactHistoryItem,
+  type UserItem,
 } from "../personDetailSlice";
 import { FilterSelect } from "@shared/components/FilterSelect";
+import { SearchableSelect } from "@shared/components/SearchableSelect";
 
 interface ContactHistorySectionProps {
   contactHistory: ContactHistoryItem[];
   individualId: string;
+  users: UserItem[];
 }
 
 const CONTACT_TYPES = [
@@ -39,6 +42,7 @@ function formatDate(dateStr: string): string {
 export function ContactHistorySection({
   contactHistory,
   individualId,
+  users,
 }: ContactHistorySectionProps) {
   const dispatch = useAppDispatch();
   const [showFilter, setShowFilter] = useState(false);
@@ -61,6 +65,8 @@ export function ContactHistorySection({
   const [editPerformedBy, setEditPerformedBy] = useState("");
   const [editSaving, setEditSaving] = useState(false);
 
+  const userOptions = users.map((u) => ({ id: u.id, label: u.name }));
+
   const filtered = filterType
     ? contactHistory.filter((e) => e.type === filterType)
     : contactHistory;
@@ -77,6 +83,7 @@ export function ContactHistorySection({
     }
     setAddSaving(true);
     setAddError("");
+    const selectedUser = users.find((u) => u.id === addPerformedBy);
     try {
       await dispatch(
         createContactHistoryEntry({
@@ -84,7 +91,7 @@ export function ContactHistorySection({
           type: addType,
           summary: addSummary.trim(),
           contactDate: addDate || new Date().toISOString(),
-          performedBy: addPerformedBy.trim() || "System",
+          performedBy: selectedUser?.name || "System",
         })
       ).unwrap();
       setShowAddModal(false);
@@ -113,12 +120,14 @@ export function ContactHistorySection({
     setEditType(entry.type);
     setEditSummary(entry.summary);
     setEditDate(new Date(entry.contactDate).toISOString().slice(0, 16));
-    setEditPerformedBy(entry.performedBy);
+    const matchingUser = users.find((u) => u.name === entry.performedBy);
+    setEditPerformedBy(matchingUser?.id || "");
   };
 
   const handleSaveEdit = async () => {
     if (!editingId) return;
     setEditSaving(true);
+    const selectedUser = users.find((u) => u.id === editPerformedBy);
     try {
       await dispatch(
         updateContactHistoryEntry({
@@ -127,7 +136,7 @@ export function ContactHistorySection({
             type: editType,
             summary: editSummary.trim(),
             contactDate: editDate ? new Date(editDate).toISOString() : undefined,
-            performedBy: editPerformedBy.trim() || undefined,
+            performedBy: selectedUser?.name || undefined,
           },
         })
       ).unwrap();
@@ -231,11 +240,12 @@ export function ContactHistorySection({
                   </div>
                   <div className="form-group">
                     <label className="form-label">Team Member</label>
-                    <input
-                      className="form-input"
-                      data-testid="edit-contact-performed-by"
+                    <SearchableSelect
+                      options={userOptions}
                       value={editPerformedBy}
-                      onChange={(e) => setEditPerformedBy(e.target.value)}
+                      onChange={setEditPerformedBy}
+                      placeholder="Search for a team member..."
+                      testId="edit-contact-performed-by"
                     />
                   </div>
                   <div className="contact-history-edit-actions">
@@ -345,12 +355,12 @@ export function ContactHistorySection({
               </div>
               <div className="form-group">
                 <label className="form-label">Team Member(s)</label>
-                <input
-                  className="form-input"
-                  data-testid="add-contact-performed-by"
-                  placeholder="e.g., Michael B. (Sales Lead)"
+                <SearchableSelect
+                  options={userOptions}
                   value={addPerformedBy}
-                  onChange={(e) => setAddPerformedBy(e.target.value)}
+                  onChange={setAddPerformedBy}
+                  placeholder="Search for a team member..."
+                  testId="add-contact-performed-by"
                 />
               </div>
             </div>

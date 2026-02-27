@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationContactHistoryTeamMemberDropdown: Fix ContactHistorySection Team Member field to use SearchableSelect dropdown populated from users API instead of plain text input, in both add modal and edit form"
-      ],
-      "timestamp": "2026-02-27T03:41:53.970Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationSidebarJSXComments: Add JSX comments next to every interactive element in SidebarNavigation.tsx and SidebarAuth.tsx with the titles of the tests that exercise each element (testSpec.md directive)"
       ],
       "timestamp": "2026-02-27T04:07:58.011Z",

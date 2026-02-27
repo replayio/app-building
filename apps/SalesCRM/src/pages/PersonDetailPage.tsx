@@ -7,6 +7,7 @@ import {
   fetchContactHistory,
   fetchAssociatedClients,
   fetchAllIndividuals,
+  fetchUsers,
   clearPersonDetail,
 } from "../personDetailSlice";
 import { PersonHeader } from "../components/PersonHeader";
@@ -23,6 +24,7 @@ export function PersonDetailPage() {
     contactHistory,
     associatedClients,
     allIndividuals,
+    users,
     loading,
     error,
   } = useAppSelector((state) => state.personDetail);
@@ -35,6 +37,7 @@ export function PersonDetailPage() {
     dispatch(fetchContactHistory(individualId));
     dispatch(fetchAssociatedClients(individualId));
     dispatch(fetchAllIndividuals());
+    dispatch(fetchUsers());
 
     return () => {
       dispatch(clearPersonDetail());
@@ -71,6 +74,7 @@ export function PersonDetailPage() {
         <ContactHistorySection
           contactHistory={contactHistory}
           individualId={person.id}
+          users={users}
         />
 
         <AssociatedClientsSection clients={associatedClients} />

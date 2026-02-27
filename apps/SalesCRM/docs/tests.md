@@ -836,7 +836,7 @@ Given the contact history has entries of types Video Call, Email, Meeting, and N
 Given the user is on a person detail page, the Contact History section displays a "+ Add Entry" button with a plus icon.
 
 **Add Entry button opens add contact history modal**
-Given the user is on a person detail page, when they click the "+ Add Entry" button in the Contact History section, a modal or form opens allowing the user to add a new contact history entry with fields for date/time, type (Video Call, Email, Meeting, Note), summary text, and team member(s).
+Given the user is on a person detail page, when they click the "+ Add Entry" button in the Contact History section, a modal or form opens allowing the user to add a new contact history entry with fields for date/time, type (Video Call, Email, Meeting, Note), summary text, and a "Team Member(s)" SearchableSelect dropdown populated with team members from the users API, instead of a free-form text field.
 
 **Submitting add entry form creates a new contact history entry**
 Given the add contact history modal is open and the user fills in date "Oct 28, 2023, 3:00 PM", type "Email", summary "Sent updated pricing proposal", and team member "Emily R.", when they click submit, the modal closes and the new entry appears in the contact history list with the correct date, type, summary, and team member.
@@ -863,7 +863,7 @@ Given a contact history entry auto-logged by the system, the entry row displays 
 Given a contact history entry is displayed, a pencil/edit icon is visible on the right side of the entry row.
 
 **Clicking edit icon opens edit mode for that entry**
-Given the user clicks the pencil/edit icon on a contact history entry, an edit modal or inline edit mode opens allowing the user to modify the date/time, type, summary, and team member fields for that entry.
+Given the user clicks the pencil/edit icon on a contact history entry, an edit modal or inline edit mode opens allowing the user to modify the date/time, type, summary, and team member fields for that entry. The team member field is a SearchableSelect dropdown populated with team members from the users API.
 
 **Saving edited contact history entry persists changes**
 Given the edit mode is open for a contact history entry and the user changes the summary from "Discussed Q4 roadmap integration." to "Discussed Q4 roadmap and budget review.", when they save, the entry updates to reflect the new summary and the changes are persisted to the database.
