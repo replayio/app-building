@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationWonBadgeDistinct: Fix Won status badge in DealsTable to be visually distinct from On Track - both currently use badge--success but test spec requires them to be distinct"
-      ],
-      "timestamp": "2026-02-27T03:34:50.884Z",
-      "app": "SalesCRM"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationRelationshipDeleteTestEntries: Fix missing test entries for relationship delete button visibility/appearance and specify exact delete UI action in PersonDetailPage RelationshipsSection"
       ],
       "timestamp": "2026-02-27T03:40:28.057Z",

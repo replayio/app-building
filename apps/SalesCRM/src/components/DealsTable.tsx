@@ -25,7 +25,7 @@ function statusBadgeClass(status: string): string {
     case "At Risk":
       return "badge badge--error";
     case "Won":
-      return "badge badge--success";
+      return "badge badge--won";
     case "Lost":
       return "badge badge--error";
     case "active":

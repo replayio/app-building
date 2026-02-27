@@ -490,6 +490,12 @@
   }
 }
 
+/* Won badge — green but distinct from success (deeper teal-green) */
+.badge--won {
+  background: #d4edda;
+  color: #1a6b3c;
+}
+
 /* Inactive badge (not already in common.css) */
 .badge--neutral {
   background: #eae8e4;
