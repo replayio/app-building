@@ -209,7 +209,7 @@ export function AccountsDistributionTable({
                           key={`${acc.account_id}-batches`}
                           data-testid={`account-batches-row-${acc.account_id}`}
                         >
-                          <td colSpan={6} style={{ padding: "8px 12px 8px 48px" }}>
+                          <td colSpan={6} className="nested-batches-cell">
                             <div
                               style={{
                                 fontSize: 12,
@@ -243,8 +243,8 @@ export function AccountsDistributionTable({
                                   <tr>
                                     <th>Batch ID</th>
                                     <th>Quantity ({unitOfMeasure})</th>
-                                    <th>Unit</th>
-                                    <th>Created Date</th>
+                                    <th className="max-md:hidden">Unit</th>
+                                    <th className="max-md:hidden">Created Date</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -267,8 +267,8 @@ export function AccountsDistributionTable({
                                         </a>
                                       </td>
                                       <td>{formatQuantity(batch.quantity)}</td>
-                                      <td>{batch.unit || unitOfMeasure}</td>
-                                      <td>{formatDate(batch.created_at)}</td>
+                                      <td className="max-md:hidden">{batch.unit || unitOfMeasure}</td>
+                                      <td className="max-md:hidden">{formatDate(batch.created_at)}</td>
                                     </tr>
                                   ))}
                                 </tbody>

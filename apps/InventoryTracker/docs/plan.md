@@ -5,7 +5,7 @@
 - [x] AccountsPage
 - [x] AccountDetailPage
 - [x] MaterialsPage
-- [ ] MaterialDetailPage
+- [x] MaterialDetailPage
 - [ ] BatchDetailPage
 - [ ] TransactionsPage
 - [ ] TransactionDetailPage

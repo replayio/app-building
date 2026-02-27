@@ -1087,6 +1087,11 @@
   color: var(--text-primary);
 }
 
+/* Nested batches cell */
+.nested-batches-cell {
+  padding: 8px 12px 8px 48px;
+}
+
 /* Responsive: column hiding at 1024px */
 @media (max-width: 1024px) {
   .max-lg\:hidden {
@@ -1158,6 +1163,9 @@
   }
   .section-card-title {
     font-size: 14px;
+  }
+  .nested-batches-cell {
+    padding: 8px 12px 8px 16px;
   }
 }
 
