@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-27T00:28:02.000Z",
-      "app": "InventoryTracker"
-    },
-    {
       "skill": "skills/tasks/maintain/fixBugReport.md",
       "subtasks": [
         "Unpack: Fix open bug reports"

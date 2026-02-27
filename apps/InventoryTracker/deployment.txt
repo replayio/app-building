@@ -2,3 +2,14 @@ url=https://inventory-tracker-1771968892859.netlify.app
 site_id=b6ac3057-5dd4-495a-85b3-72d89caf0a12
 neon_project_id=frosty-hat-69372999
 database_url=postgresql://neondb_owner:npg_KeQ1adowM8Ul@ep-super-sunset-aiij41wc.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require
+
+--- Deployment 2026-02-27 ---
+Changes:
+- Made all pages responsive (Dashboard, Accounts, Materials, Batches, Transactions and detail pages)
+- Fixed ambiguous navigation on Dashboard page
+- Fixed dismiss alert persistence on Dashboard
+- Fixed various test spec violations (Accounts, Materials, Transactions)
+- Fixed edit material validation, view account icon, material detail links
+- Fixed description field size and inline JSX issues
+- Added DateRangeFilter component and TransactionsPage filter tests
+Replay recording: 9ba30dca-81dd-4e98-9a4c-09036e129b9b
