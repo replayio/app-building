@@ -47,6 +47,7 @@ export function UpcomingOrdersTable({ orders }: { orders: Order[] }) {
           Upcoming Orders
         </h2>
         <div className="upcoming-orders-filters">
+          {/* Test: Filter by Status Dropdown, Both Filters Applied Together, Empty State When No Orders Match Filters */}
           <FilterSelect
             options={statusOptions}
             value={statusFilter}
@@ -54,6 +55,7 @@ export function UpcomingOrdersTable({ orders }: { orders: Order[] }) {
             placeholder="Filter"
             testId="upcoming-orders-status-filter"
           />
+          {/* Test: Filter by Supplier Dropdown, Both Filters Applied Together, Empty State When No Orders Match Filters */}
           <FilterSelect
             options={supplierOptions}
             value={supplierFilter}
@@ -90,6 +92,7 @@ export function UpcomingOrdersTable({ orders }: { orders: Order[] }) {
               {filteredOrders.map((order) => (
                 <tr key={order.id} data-testid={`upcoming-order-row-${order.order_id}`}>
                   <td>
+                    {/* Test: Order ID Links Navigate to Order Details, Order ID Links Are Styled as Clickable */}
                     <button
                       className="order-id-link"
                       data-testid={`order-link-${order.order_id}`}

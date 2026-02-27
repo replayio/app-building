@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationDashboardJSXComments: Add JSX comments next to every interactive element in QuickActions.tsx, UpcomingOrdersTable.tsx, and SuppliersList.tsx with the titles of the tests that exercise each element (testSpec.md directive)"
-      ],
-      "timestamp": "2026-02-27T05:58:36.517Z",
-      "app": "SupplierTracker"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecNavigation: Check testSpec.md directive violations in Navigation test entries",
         "CheckComponentsNavigation: Check writeApp.md directive violations in Navigation components",
         "CheckTestsNavigation: Check writeTests.md directive violations in Navigation tests"

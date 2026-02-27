@@ -35,6 +35,7 @@ export function SuppliersList({ suppliers }: { suppliers: Supplier[] }) {
       ) : (
         <div className="suppliers-grid" data-testid="suppliers-grid">
           {suppliers.map((supplier) => (
+            // Test: Clicking Supplier Card Navigates to Supplier Details
             <div
               key={supplier.id}
               className="supplier-card"

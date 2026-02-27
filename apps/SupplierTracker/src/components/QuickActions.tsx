@@ -32,6 +32,7 @@ export function QuickActions() {
     <div className="quick-actions" data-testid="quick-actions">
       <h2 className="quick-actions-title" data-testid="quick-actions-heading">Quick Actions</h2>
       <div className="quick-actions-buttons">
+        {/* Test: Add New Supplier Button Opens Create Supplier Dialog */}
         <button
           className="quick-action-btn"
           data-testid="quick-action-add-supplier"
@@ -46,6 +47,7 @@ export function QuickActions() {
           Add New Supplier
         </button>
 
+        {/* Test: Create Purchase Order Button Opens Create Order Dialog */}
         <button
           className="quick-action-btn"
           data-testid="quick-action-create-order"
@@ -140,10 +142,12 @@ function AddSupplierModal({
   };
 
   return (
+    // Test: Create Supplier Dialog Cancel Does Not Create Supplier
     <div className="modal-overlay" data-testid="add-supplier-modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Add New Supplier</h2>
+          {/* Test: Create Supplier Dialog Cancel Does Not Create Supplier */}
           <button className="modal-close-btn" data-testid="add-supplier-modal-close" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -153,6 +157,7 @@ function AddSupplierModal({
 
         <div className="form-group">
           <label className="form-label">Supplier Name *</label>
+          {/* Test: Create Supplier via Dialog Saves and Updates Dashboard, Create Supplier Dialog Validation */}
           <input
             className="form-input"
             data-testid="supplier-form-name"
@@ -165,6 +170,7 @@ function AddSupplierModal({
 
         <div className="form-group">
           <label className="form-label">Address</label>
+          {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
           <textarea
             className="form-textarea"
             data-testid="supplier-form-address"
@@ -177,6 +183,7 @@ function AddSupplierModal({
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">Contact Name</label>
+            {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
             <input
               className="form-input"
               data-testid="supplier-form-contact-name"
@@ -187,6 +194,7 @@ function AddSupplierModal({
           </div>
           <div className="form-group">
             <label className="form-label">Phone</label>
+            {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
             <input
               className="form-input"
               data-testid="supplier-form-phone"
@@ -199,6 +207,7 @@ function AddSupplierModal({
 
         <div className="form-group">
           <label className="form-label">Email</label>
+          {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
           <input
             className="form-input"
             data-testid="supplier-form-email"
@@ -211,6 +220,7 @@ function AddSupplierModal({
 
         <div className="form-group">
           <label className="form-label">Description</label>
+          {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
           <textarea
             className="form-textarea"
             data-testid="supplier-form-description"
@@ -223,6 +233,7 @@ function AddSupplierModal({
         <div className="form-group">
           <label className="form-label">Status</label>
           <div className="filter-select" style={{ position: "relative" }}>
+            {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
             <button
               className="filter-select-trigger"
               data-testid="supplier-form-status"
@@ -237,6 +248,7 @@ function AddSupplierModal({
             {statusOpen && (
               <div className="filter-select-dropdown" data-testid="supplier-form-status-dropdown">
                 <div className="filter-select-options">
+                  {/* Test: Create Supplier via Dialog Saves and Updates Dashboard */}
                   {SUPPLIER_STATUSES.map((s) => (
                     <button
                       key={s}
@@ -258,9 +270,11 @@ function AddSupplierModal({
         </div>
 
         <div className="modal-footer">
+          {/* Test: Create Supplier Dialog Cancel Does Not Create Supplier */}
           <button className="btn-secondary" data-testid="add-supplier-cancel" onClick={onClose}>
             Cancel
           </button>
+          {/* Test: Create Supplier via Dialog Saves and Updates Dashboard, Create Supplier Dialog Validation */}
           <button className="btn-primary" data-testid="add-supplier-save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </button>
@@ -346,10 +360,12 @@ function CreateOrderModal({
   };
 
   return (
+    // Test: Create Order Dialog Cancel Does Not Create Order
     <div className="modal-overlay" data-testid="create-order-modal" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Create Purchase Order</h2>
+          {/* Test: Create Order Dialog Cancel Does Not Create Order */}
           <button className="modal-close-btn" data-testid="create-order-modal-close" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -359,6 +375,7 @@ function CreateOrderModal({
 
         <div className="form-group">
           <label className="form-label">Supplier *</label>
+          {/* Test: Create Order via Dialog Saves and Updates Dashboard, Create Order Dialog Validation */}
           <SearchableSelect
             options={supplierOptions}
             value={supplierId}
@@ -375,6 +392,7 @@ function CreateOrderModal({
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">Order Date</label>
+            {/* Test: Create Order via Dialog Saves and Updates Dashboard */}
             <input
               className="form-input"
               data-testid="order-form-order-date"
@@ -385,6 +403,7 @@ function CreateOrderModal({
           </div>
           <div className="form-group">
             <label className="form-label">Expected Delivery</label>
+            {/* Test: Create Order via Dialog Saves and Updates Dashboard */}
             <input
               className="form-input"
               data-testid="order-form-expected-delivery"
@@ -398,6 +417,7 @@ function CreateOrderModal({
         <div className="line-items-section">
           <div className="line-items-section-header">
             <span className="line-items-section-title">Line Items</span>
+            {/* Test: Create Order via Dialog Saves and Updates Dashboard */}
             <button className="add-line-item-btn" data-testid="order-form-add-line-item" type="button" onClick={addLineItem}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
@@ -406,6 +426,7 @@ function CreateOrderModal({
             </button>
           </div>
 
+          {/* Test: Create Order via Dialog Saves and Updates Dashboard */}
           {lineItems.map((li, idx) => (
             <div className="line-item-row" key={idx} data-testid={`order-form-line-item-${idx}`}>
               <input
@@ -455,9 +476,11 @@ function CreateOrderModal({
         </div>
 
         <div className="modal-footer">
+          {/* Test: Create Order Dialog Cancel Does Not Create Order */}
           <button className="btn-secondary" data-testid="create-order-cancel" onClick={onClose}>
             Cancel
           </button>
+          {/* Test: Create Order via Dialog Saves and Updates Dashboard, Create Order Dialog Validation */}
           <button className="btn-primary" data-testid="create-order-save" onClick={handleSave} disabled={saving}>
             {saving ? "Saving..." : "Save"}
           </button>
