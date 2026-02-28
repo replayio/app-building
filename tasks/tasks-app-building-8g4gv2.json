@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "DesignWebhookSchema: Design and add new database tables to schema.ts and migrations: (1) containers table - tracks container_id, name, status (not 'stopped' means active), prompt used, created_at, last_event_at. (2) webhook_events table - stores raw webhook events with id, container_id, event_type, payload JSON, received_at. (3) settings table - key/value store for app settings like default_prompt. Add appropriate indexes. Use WEBHOOK_SECRET env var pattern for auth."
-      ],
-      "timestamp": "2026-02-28T22:40:15.625Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteAppBuilderEvent: Create netlify/functions/app-builder-event.ts backend function. This is a webhook endpoint that receives POST requests from app-building containers reporting events (e.g. task started, task completed, error, container stopped). Validate the WEBHOOK_SECRET env var against the Authorization header or a secret query param. Parse the event payload and upsert the containers table (update status, last_event_at) and insert into webhook_events table. Return appropriate status codes."
       ],
       "timestamp": "2026-02-28T22:40:27.082Z",

@@ -57,4 +57,48 @@ export async function initSchema(databaseUrl: string): Promise<void> {
   await sql`
     CREATE INDEX IF NOT EXISTS idx_app_requests_app_id ON app_requests(app_id)
   `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS containers (
+      container_id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'starting',
+      prompt TEXT,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+      last_event_at TIMESTAMP
+    )
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS webhook_events (
+      id SERIAL PRIMARY KEY,
+      container_id TEXT NOT NULL REFERENCES containers(container_id),
+      event_type TEXT NOT NULL,
+      payload JSONB NOT NULL DEFAULT '{}',
+      received_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    )
+  `
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_containers_status ON containers(status)
+  `
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_webhook_events_container_id ON webhook_events(container_id)
+  `
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_webhook_events_received_at ON webhook_events(received_at DESC)
+  `
+
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_webhook_events_event_type ON webhook_events(event_type)
+  `
 }
