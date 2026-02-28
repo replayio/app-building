@@ -1,5 +1,8 @@
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import { Command } from "commander";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 import { loadDotEnv, ContainerRegistry, type ContainerConfig, startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState, httpGet, httpPost, type HttpOptions, httpOptsFor } from "./package";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 import { formatEvent } from "./format";

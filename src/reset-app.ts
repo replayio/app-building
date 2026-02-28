@@ -1,6 +1,9 @@
 import { execFileSync } from "child_process";
 import { existsSync, readdirSync, rmSync } from "fs";
-import { join, resolve } from "path";
+import { join, resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const projectRoot = resolve(__dirname, "..");
 const appName = process.argv[2];

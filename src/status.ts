@@ -1,4 +1,7 @@
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 import { httpGet, type HttpOptions, ContainerRegistry, type RegistryEntry, httpOptsFor } from "./package";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 

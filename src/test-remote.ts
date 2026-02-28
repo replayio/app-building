@@ -4,8 +4,11 @@
  * 1. No event duplication across messages
  * 2. Session continuity (message 2 should remember message 1's context)
  */
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import { loadDotEnv, ContainerRegistry, type ContainerConfig, type RepoOptions, startRemoteContainer, stopRemoteContainer, httpGet, httpPost, type HttpOptions } from "./package";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 
 async function sleep(ms: number) {
