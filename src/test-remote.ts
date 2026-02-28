@@ -4,7 +4,8 @@
  * 1. No event duplication across messages
  * 2. Session continuity (message 2 should remember message 1's context)
  */
-import { startRemoteContainer, stopRemoteContainer, type StartContainerOptions, httpGet, httpPost, type HttpOptions } from "./package";
+import { resolve } from "path";
+import { loadDotEnv, ContainerRegistry, type ContainerConfig, type RepoOptions, startRemoteContainer, stopRemoteContainer, httpGet, httpPost, type HttpOptions } from "./package";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 
 async function sleep(ms: number) {
@@ -26,17 +27,27 @@ async function waitForMessage(
 }
 
 async function main() {
+  const projectRoot = resolve(__dirname, "..");
+  const envVars = loadDotEnv(projectRoot);
+  const config: ContainerConfig = {
+    projectRoot,
+    envVars,
+    registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+    flyToken: envVars.FLY_API_TOKEN,
+    flyApp: envVars.FLY_APP_NAME,
+  };
+
   const repo = process.env.REPO_URL ?? getLocalRemoteUrl();
   const branch = process.env.CLONE_BRANCH ?? getLocalBranch();
 
-  const startOpts: StartContainerOptions = {
+  const repoOpts: RepoOptions = {
     repoUrl: repo,
     cloneBranch: branch,
     pushBranch: branch,
   };
 
   console.log("Starting remote container...");
-  const state = await startRemoteContainer(startOpts);
+  const state = await startRemoteContainer(config, repoOpts);
   console.log(`Machine: ${state.flyMachineId}`);
   console.log(`URL: ${state.baseUrl}`);
 
@@ -125,7 +136,7 @@ async function main() {
 
   } finally {
     console.log("\nCleaning up...");
-    await stopRemoteContainer(state);
+    await stopRemoteContainer(config, state);
     console.log("Done.");
   }
 

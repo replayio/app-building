@@ -1,4 +1,5 @@
-import { stopRemoteContainer, findContainer, markStopped, httpGet, httpPost, type RegistryEntry, httpOptsFor, findAliveContainers } from "./package";
+import { resolve } from "path";
+import { loadDotEnv, ContainerRegistry, type ContainerConfig, stopRemoteContainer, httpGet, httpPost, type RegistryEntry, httpOptsFor } from "./package";
 import { RED, RESET } from "./format";
 
 async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<void> {
@@ -17,7 +18,7 @@ async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Prom
   }
 }
 
-async function stopEntry(entry: RegistryEntry): Promise<void> {
+async function stopEntry(config: ContainerConfig, entry: RegistryEntry): Promise<void> {
   console.log(`Stopping container ${entry.containerName}...`);
   const httpOpts = httpOptsFor(entry);
 
@@ -46,7 +47,7 @@ async function stopEntry(entry: RegistryEntry): Promise<void> {
 
   if (entry.type === "remote") {
     // Destroy the Fly machine so it doesn't sit idle and cost money
-    await stopRemoteContainer(entry);
+    await stopRemoteContainer(config, entry);
     return;
   }
 
@@ -59,7 +60,7 @@ async function stopEntry(entry: RegistryEntry): Promise<void> {
     } catch {
       // Connection refused = container is gone
       console.log("Container stopped.");
-      markStopped(entry.containerName);
+      config.registry.markStopped(entry.containerName);
       return;
     }
   }
@@ -69,21 +70,31 @@ async function stopEntry(entry: RegistryEntry): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  const projectRoot = resolve(__dirname, "..");
+  const envVars = loadDotEnv(projectRoot);
+  const config: ContainerConfig = {
+    projectRoot,
+    envVars,
+    registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+    flyToken: envVars.FLY_API_TOKEN,
+    flyApp: envVars.FLY_APP_NAME,
+  };
+
   const targetName = process.argv[2];
 
   if (targetName) {
     // Stop a specific container by name from the registry
-    const entry = findContainer(targetName);
+    const entry = config.registry.find(targetName);
     if (!entry) {
       console.error(`${RED}Container "${targetName}" not found in registry.${RESET}`);
       process.exit(1);
     }
-    await stopEntry(entry);
+    await stopEntry(config, entry);
     return;
   }
 
   // No name given: find all alive containers and stop them.
-  const alive = await findAliveContainers();
+  const alive = await config.registry.findAlive();
 
   if (alive.length === 0) {
     console.log("No running containers found.");
@@ -91,7 +102,7 @@ async function main(): Promise<void> {
   }
 
   for (const entry of alive) {
-    await stopEntry(entry);
+    await stopEntry(config, entry);
   }
 }
 

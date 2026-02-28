@@ -1,5 +1,6 @@
+import { resolve } from "path";
 import { Command } from "commander";
-import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState, httpGet, httpPost, type HttpOptions, httpOptsFor } from "./package";
+import { loadDotEnv, ContainerRegistry, type ContainerConfig, startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState, httpGet, httpPost, type HttpOptions, httpOptsFor } from "./package";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 import { formatEvent } from "./format";
 
@@ -131,20 +132,16 @@ async function waitForMessage(
 
 // --- Interactive mode ---
 
-async function runInteractive(opts: {
+async function runInteractive(config: ContainerConfig, opts: {
   repo: string;
   branch: string;
   pushBranch: string;
   remote?: boolean;
 }): Promise<void> {
-  const startOpts = {
-    repoUrl: opts.repo,
-    cloneBranch: opts.branch,
-    pushBranch: opts.pushBranch,
-  };
+  const repo = { repoUrl: opts.repo, cloneBranch: opts.branch, pushBranch: opts.pushBranch };
   const state = opts.remote
-    ? await startRemoteContainer(startOpts)
-    : await startContainer(startOpts);
+    ? await startRemoteContainer(config, repo)
+    : await startContainer(config, repo);
 
   const { containerName, baseUrl } = state;
   const httpOpts = httpOptsFor(state);
@@ -154,9 +151,9 @@ async function runInteractive(opts: {
 
   process.on("SIGINT", () => {
     if (state.type === "remote") {
-      stopRemoteContainer(state).finally(() => process.exit(0));
+      stopRemoteContainer(config, state).finally(() => process.exit(0));
     } else {
-      stopContainer(containerName);
+      stopContainer(config, containerName);
       process.exit(0);
     }
   });
@@ -221,28 +218,24 @@ async function runInteractive(opts: {
       await httpPost(`${baseUrl}/detach`, undefined, httpOpts);
       console.log("Detached from container. It will exit when work completes.");
     } catch {
-      stopContainer(containerName);
+      stopContainer(config, containerName);
     }
   }
 }
 
 // --- Detached mode ---
 
-async function runDetached(opts: {
+async function runDetached(config: ContainerConfig, opts: {
   repo: string;
   branch: string;
   pushBranch: string;
   prompt?: string;
   remote?: boolean;
 }): Promise<void> {
-  const startOpts = {
-    repoUrl: opts.repo,
-    cloneBranch: opts.branch,
-    pushBranch: opts.pushBranch,
-  };
+  const repo = { repoUrl: opts.repo, cloneBranch: opts.branch, pushBranch: opts.pushBranch };
   const state = opts.remote
-    ? await startRemoteContainer(startOpts)
-    : await startContainer(startOpts);
+    ? await startRemoteContainer(config, repo)
+    : await startContainer(config, repo);
 
   const { containerName, baseUrl } = state;
   const httpOpts = httpOptsFor(state);
@@ -284,10 +277,20 @@ async function main(): Promise<void> {
   const branch = opts.branch ?? process.env.CLONE_BRANCH ?? getLocalBranch();
   const pushBranch = opts.pushBranch ?? branch;
 
+  const projectRoot = resolve(__dirname, "..");
+  const envVars = loadDotEnv(projectRoot);
+  const config: ContainerConfig = {
+    projectRoot,
+    envVars,
+    registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+    flyToken: envVars.FLY_API_TOKEN,
+    flyApp: envVars.FLY_APP_NAME,
+  };
+
   if (opts.interactive) {
-    await runInteractive({ repo, branch, pushBranch, remote: opts.remote });
+    await runInteractive(config, { repo, branch, pushBranch, remote: opts.remote });
   } else {
-    await runDetached({ repo, branch, pushBranch, prompt: opts.prompt, remote: opts.remote });
+    await runDetached(config, { repo, branch, pushBranch, prompt: opts.prompt, remote: opts.remote });
   }
 }
 

@@ -1,4 +1,5 @@
-import { httpGet, type HttpOptions, getRecentContainers, type RegistryEntry, httpOptsFor, findAliveContainers } from "./package";
+import { resolve } from "path";
+import { httpGet, type HttpOptions, ContainerRegistry, type RegistryEntry, httpOptsFor } from "./package";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 
 function stripTimestamp(rawLine: string): string {
@@ -216,7 +217,10 @@ function parseArgs(args: string[]): { tailTarget: string | null; contextCount: n
 async function main(): Promise<void> {
   const { tailTarget, contextCount } = parseArgs(process.argv.slice(2));
 
-  const entries = getRecentContainers();
+  const projectRoot = resolve(__dirname, "..");
+  const registry = new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl"));
+
+  const entries = registry.getRecent();
 
   // If --tail <name>, find that container and tail it
   if (tailTarget) {
@@ -236,7 +240,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const alive = await findAliveContainers();
+  const alive = await registry.findAlive();
 
   if (alive.length === 0) {
     showStoppedEntries(entries);

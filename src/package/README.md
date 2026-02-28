@@ -1,34 +1,79 @@
 # app-building package
 
-Reusable container management library for the app-building agent. External websites can import this package to start/stop containers and communicate with the in-container HTTP server.
+Reusable container management library for the app-building agent. External consumers import this package to start/stop containers and communicate with the in-container HTTP server.
 
 ## Usage
 
 ```ts
 import {
+  loadDotEnv,
+  ContainerRegistry,
+  type ContainerConfig,
+  type RepoOptions,
   startContainer,
   startRemoteContainer,
+  stopContainer,
   stopRemoteContainer,
   httpGet,
   httpPost,
 } from "<path-to>/src/package";
+
+// Assemble config once at startup
+const projectRoot = resolve(__dirname, "..");
+const envVars = loadDotEnv(projectRoot);
+const config: ContainerConfig = {
+  projectRoot,
+  envVars,
+  registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+  flyToken: envVars.FLY_API_TOKEN,
+  flyApp: envVars.FLY_APP_NAME,
+};
+
+// Start a container
+const repo: RepoOptions = { repoUrl: "...", cloneBranch: "main", pushBranch: "main" };
+const state = await startContainer(config, repo);
+
+// Query the registry
+const alive = await config.registry.findAlive();
+const entry = config.registry.find("app-building-abc123");
 ```
 
 ## Exported API
+
+### Domain objects
+
+| Export | Description |
+|---|---|
+| `ContainerConfig` | Interface bundling all external state: `projectRoot`, `envVars`, `registry`, optional `flyToken`/`flyApp`/`imageRef`. |
+| `RepoOptions` | Per-invocation git settings: `repoUrl`, `cloneBranch`, `pushBranch`. |
+| `ContainerRegistry` | Class encapsulating `.container-registry.jsonl` persistence. Methods: `log`, `markStopped`, `clearStopped`, `getRecent`, `find`, `findAlive`. |
 
 ### Container lifecycle
 
 | Export | Description |
 |---|---|
-| `startContainer(opts)` | Build the Docker image locally and start a container with `--network host`. Returns `AgentState`. |
-| `startRemoteContainer(opts)` | Create a Fly.io machine using the GHCR image. Requires `FLY_API_TOKEN` in `.env` or environment. Returns `AgentState`. |
-| `stopContainer(name)` | Stop a local Docker container by name. |
-| `stopRemoteContainer(state)` | Destroy the Fly.io machine for a remote container. |
-| `buildImage()` | Build the Docker image locally (called automatically by `startContainer`). |
-| `spawnTestContainer()` | Start an interactive (`-it`) container with the repo mounted at `/repo`. |
+| `startContainer(config, repo)` | Build the Docker image locally and start a container with `--network host`. Returns `AgentState`. |
+| `startRemoteContainer(config, repo)` | Create a Fly.io machine using the GHCR image. Requires `config.flyToken` and `config.flyApp`. Returns `AgentState`. |
+| `stopContainer(config, containerName)` | Stop a local Docker container by name. |
+| `stopRemoteContainer(config, state)` | Destroy the Fly.io machine for a remote container. Requires `config.flyToken`. |
+| `buildImage(config)` | Build the Docker image locally (called automatically by `startContainer`). |
+| `spawnTestContainer(config)` | Start an interactive (`-it`) container with the repo mounted at `/repo`. |
 | `loadDotEnv(projectRoot)` | Parse a `.env` file and return key-value pairs. |
 
-**Types:** `AgentState`, `StartContainerOptions`
+**Types:** `AgentState`, `ContainerConfig`, `RepoOptions`
+
+### Container registry (`ContainerRegistry` class)
+
+| Method | Description |
+|---|---|
+| `log(state)` | Append a new entry to the registry. |
+| `markStopped(name?)` | Mark a container as stopped. |
+| `clearStopped(name)` | Clear the stopped flag (container came back alive). |
+| `getRecent(limit?)` | Read the most recent registry entries. |
+| `find(name)` | Find a specific container by name. |
+| `findAlive()` | Probe recent entries and return those that are alive. Reconciles stopped flags. |
+
+**Types:** `RegistryEntry`
 
 ### HTTP client
 
@@ -39,27 +84,12 @@ import {
 
 **Types:** `HttpOptions`
 
-### Container registry
-
-Tracks started/stopped containers in a `.container-registry.jsonl` file at the project root.
-
-| Export | Description |
-|---|---|
-| `logContainer(state)` | Append a new entry to the registry. |
-| `markStopped(name?)` | Mark a container as stopped. |
-| `clearStopped(name)` | Clear the stopped flag (container came back alive). |
-| `getRecentContainers(limit?)` | Read the most recent registry entries. |
-| `findContainer(name)` | Find a specific container by name. |
-
-**Types:** `RegistryEntry`
-
 ### Container utilities
 
 | Export | Description |
 |---|---|
 | `httpOptsFor(state)` | Return `HttpOptions` for a container (adds `fly-force-instance-id` header for remote containers). |
 | `probeAlive(entry)` | Check if a container is responding to `/status`. |
-| `findAliveContainers()` | Scan recent registry entries and return those that are alive. |
 
 ### Fly.io machines
 

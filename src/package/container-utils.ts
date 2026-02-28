@@ -1,7 +1,6 @@
 import type { AgentState } from "./container";
 import type { RegistryEntry } from "./container-registry";
 import type { HttpOptions } from "./http-client";
-import { getRecentContainers, markStopped, clearStopped } from "./container-registry";
 
 export function httpOptsFor(state: AgentState): HttpOptions {
   if (state.type === "remote" && state.flyMachineId) {
@@ -31,27 +30,4 @@ export async function probeAlive(entry: RegistryEntry): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-export async function findAliveContainers(): Promise<RegistryEntry[]> {
-  const entries = getRecentContainers();
-  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-  const candidates = entries.filter((e) => new Date(e.startedAt).getTime() > oneDayAgo);
-
-  const aliveResults = await Promise.all(
-    candidates.map(async (entry) => ({
-      entry,
-      alive: await probeAlive(entry),
-    })),
-  );
-
-  for (const r of aliveResults) {
-    if (r.alive && r.entry.stoppedAt) {
-      clearStopped(r.entry.containerName);
-    } else if (!r.alive && !r.entry.stoppedAt) {
-      markStopped(r.entry.containerName);
-    }
-  }
-
-  return aliveResults.filter((r) => r.alive).map((r) => r.entry);
 }
