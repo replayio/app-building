@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationStatusPageTestEntries: Add StatusPage section to docs/tests.md with test entries for all existing components (DefaultPromptDisplay, ActiveContainers, WebhookEventFeed, back link) and add webhook help UI test entries per the testSpec.md webhook documentation directive — the help button must show each webhook endpoint URL path, HTTP method, auth requirements, payload fields, and example curl commands for: POST app-builder-event, POST spawn-container, POST set-default-prompt",
-        "FixViolationWebhookHelpUI: Add a WebhookHelpButton component to StatusPage that opens a help panel/modal listing all webhook endpoints with URL path, HTTP method, authentication (Bearer token or secret query param), required/optional payload fields, and example curl commands",
-        "RunTests: Verify tests pass after fixes"
-      ],
-      "timestamp": "2026-02-28T23:17:11.255Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "FixRefreshStatusPage: Fix refresh logic on StatusPage — the 10-second polling causes screen flashing; ensure loading state is only shown on initial load and data updates don't cause visual artifacts"

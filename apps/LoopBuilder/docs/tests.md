@@ -522,3 +522,147 @@ The MainPage loads with the default StatusFilter tab selected.
 Given the user's request for "Inventory Tracker Pro" has been accepted and queued,
 when the user navigates to the MainPage (/) and selects the "Queued" tab in the StatusFilter,
 an AppCard for "Inventory Tracker Pro" is visible in the AppCardGrid with status "Queued" and a 0% progress bar.
+
+## StatusPage (/status)
+
+<!-- Components: DefaultPromptDisplay, ActiveContainers, WebhookEventFeed, WebhookHelpButton, BackLink -->
+
+### BackLink
+
+**BackLink: Visible in header**
+Given the user navigates to StatusPage (/status),
+the page header contains a back link labeled "← Back" on the left side of the header, next to the "System Status" title.
+
+**BackLink: Navigates to MainPage on click**
+Given the user is on StatusPage (/status),
+when the user clicks the "← Back" link,
+the app navigates to the MainPage (/).
+
+### DefaultPromptDisplay
+
+**DefaultPromptDisplay: Displays section title**
+Given the user navigates to StatusPage (/status) and the status data has loaded,
+the DefaultPromptDisplay section is visible with the heading "Default Prompt".
+
+**DefaultPromptDisplay: Shows configured prompt text**
+Given the system has a default prompt configured as "Build a todo app with authentication",
+when the user navigates to StatusPage (/status),
+the DefaultPromptDisplay shows the text "Build a todo app with authentication" below the heading.
+
+**DefaultPromptDisplay: Shows placeholder when no prompt configured**
+Given the system has no default prompt configured,
+when the user navigates to StatusPage (/status),
+the DefaultPromptDisplay shows the text "No default prompt configured".
+
+### ActiveContainers
+
+**ActiveContainers: Displays section title**
+Given the user navigates to StatusPage (/status) and the status data has loaded,
+the ActiveContainers section is visible with the heading "Active Containers".
+
+**ActiveContainers: Shows table with columns when containers exist**
+Given there are active containers in the system,
+when the user navigates to StatusPage (/status),
+the ActiveContainers section displays a table with column headers "Name", "Status", "Prompt", and "Last Event".
+Each container is shown as a row in the table.
+
+**ActiveContainers: Shows container name in table row**
+Given there is a container named "app-building-abc123",
+when the user navigates to StatusPage (/status),
+a table row displays "app-building-abc123" in the Name column.
+
+**ActiveContainers: Shows container status with styling**
+Given there is a container with status "started",
+when the user navigates to StatusPage (/status),
+the Status column for that row displays "started" with a styled status badge.
+
+**ActiveContainers: Shows container prompt**
+Given there is a container with prompt "Build a dashboard app",
+when the user navigates to StatusPage (/status),
+the Prompt column for that row displays "Build a dashboard app".
+
+**ActiveContainers: Shows dash for missing prompt**
+Given there is a container with no prompt set,
+when the user navigates to StatusPage (/status),
+the Prompt column for that row displays "—".
+
+**ActiveContainers: Shows last event timestamp**
+Given there is a container with last event at "2026-02-28T12:00:00Z",
+when the user navigates to StatusPage (/status),
+the Last Event column for that row displays the formatted timestamp.
+
+**ActiveContainers: Shows empty state when no containers**
+Given there are no active containers in the system,
+when the user navigates to StatusPage (/status),
+the ActiveContainers section displays the message "No active containers" instead of a table.
+
+### WebhookEventFeed
+
+**WebhookEventFeed: Displays section title**
+Given the user navigates to StatusPage (/status) and the status data has loaded,
+the WebhookEventFeed section is visible with the heading "Recent Webhook Events".
+
+**WebhookEventFeed: Shows event items with timestamp, container ID, and event type**
+Given there are webhook events in the system,
+when the user navigates to StatusPage (/status),
+each event item displays the timestamp, container ID, and event type in a header row.
+
+**WebhookEventFeed: Shows event payload summary**
+Given there is a webhook event with payload containing keys "status" and "message",
+when the user navigates to StatusPage (/status),
+the event item displays a payload summary showing the key-value pairs, truncating long values.
+
+**WebhookEventFeed: Shows empty state when no events**
+Given there are no webhook events in the system,
+when the user navigates to StatusPage (/status),
+the WebhookEventFeed section displays the message "No webhook events received".
+
+### WebhookHelpButton
+
+**WebhookHelpButton: Visible on StatusPage**
+Given the user navigates to StatusPage (/status) and the status data has loaded,
+a clearly labeled "Webhook Documentation" button is visible on the page, allowing the user to access webhook help information.
+
+**WebhookHelpButton: Opens help panel on click**
+Given the user is on StatusPage (/status),
+when the user clicks the "Webhook Documentation" button,
+a help panel or modal opens displaying documentation for all webhook endpoints.
+
+**WebhookHelpButton: Closes help panel**
+Given the webhook help panel is open,
+when the user clicks the close button on the panel,
+the panel closes and the StatusPage content is fully visible again.
+
+**WebhookHelpButton: Shows app-builder-event endpoint documentation**
+Given the webhook help panel is open,
+the panel displays documentation for the POST /.netlify/functions/app-builder-event endpoint including:
+- URL path: /.netlify/functions/app-builder-event
+- HTTP method: POST
+- Authentication: Bearer token via Authorization header, or secret query parameter
+- Required payload fields: container_id (string), event_type (string)
+- Optional payload fields: payload (object), status (string)
+- An example curl command demonstrating how to call the endpoint
+
+**WebhookHelpButton: Shows spawn-container endpoint documentation**
+Given the webhook help panel is open,
+the panel displays documentation for the POST /.netlify/functions/spawn-container endpoint including:
+- URL path: /.netlify/functions/spawn-container
+- HTTP method: POST
+- Authentication: Bearer token via Authorization header, or secret query parameter
+- Required payload fields: none (prompt is optional, falls back to default_prompt)
+- Optional payload fields: prompt (string)
+- An example curl command demonstrating how to call the endpoint
+
+**WebhookHelpButton: Shows set-default-prompt endpoint documentation**
+Given the webhook help panel is open,
+the panel displays documentation for the POST /.netlify/functions/set-default-prompt endpoint including:
+- URL path: /.netlify/functions/set-default-prompt
+- HTTP method: POST
+- Authentication: Bearer token via Authorization header, or secret query parameter
+- Required payload fields: prompt (string)
+- Optional payload fields: none
+- An example curl command demonstrating how to call the endpoint
+
+**WebhookHelpButton: Example curl commands are accurate**
+Given the webhook help panel is open,
+each endpoint's example curl command includes the correct URL path, Content-Type header, Authorization header with a placeholder Bearer token, and a valid JSON body with the required fields for that endpoint.

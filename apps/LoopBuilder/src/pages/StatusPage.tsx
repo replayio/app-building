@@ -5,6 +5,7 @@ import { fetchStatus } from '../store/statusSlice'
 import ActiveContainers from '../components/ActiveContainers'
 import WebhookEventFeed from '../components/WebhookEventFeed'
 import DefaultPromptDisplay from '../components/DefaultPromptDisplay'
+import WebhookHelpButton from '../components/WebhookHelpButton'
 import './StatusPage.css'
 
 const POLL_INTERVAL = 10000
@@ -33,6 +34,7 @@ function StatusPage() {
           &larr; Back
         </Link>
         <h1 className="status-page__title">System Status</h1>
+        <WebhookHelpButton />
       </div>
       {loading ? (
         <div
