@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "skill": "skills/review/analyzeLogs.md",
+      "subtasks": [
+        "Unpack: report-testFailures-reference-apps-1-review-20260228-202738 skills/review/reportTestFailures.md"
+      ],
+      "timestamp": "2026-02-28T20:27:44.526Z"
+    },
+    {
+      "skill": "skills/review/analyzeLogs.md",
+      "subtasks": [
+        "Unpack: report-shellCommands-reference-apps-1-review-20260228-202738 skills/review/reportShellCommands.md"
+      ],
+      "timestamp": "2026-02-28T20:27:45.413Z"
+    },
+    {
+      "skill": "skills/review/synthesizeReport.md",
+      "subtasks": [
+        "Synthesize: report-testFailures-reference-apps-1-review-20260228-202738 skills/review/reportTestFailures.md"
+      ],
+      "timestamp": "2026-02-28T20:27:55.337Z"
+    },
+    {
+      "skill": "skills/review/synthesizeReport.md",
+      "subtasks": [
+        "Synthesize: report-shellCommands-reference-apps-1-review-20260228-202738 skills/review/reportShellCommands.md"
+      ],
+      "timestamp": "2026-02-28T20:27:56.732Z"
+    },
+    {
+      "skill": "skills/review/updateSkills.md",
+      "subtasks": [
+        "UpdateSkills: report-testFailures-reference-apps-1-review-20260228-202738"
+      ],
+      "timestamp": "2026-02-28T20:27:59.052Z"
+    },
+    {
+      "skill": "skills/review/updateSkills.md",
+      "subtasks": [
+        "UpdateSkills: report-shellCommands-reference-apps-1-review-20260228-202738"
+      ],
+      "timestamp": "2026-02-28T20:27:59.884Z"
+    },
+    {
+      "skill": "skills/review/mergeSkills.md",
+      "subtasks": [
+        "MergeSkills: report-testFailures-reference-apps-1-review-20260228-202738"
+      ],
+      "timestamp": "2026-02-28T20:28:00.683Z"
+    },
+    {
+      "skill": "skills/review/mergeSkills.md",
+      "subtasks": [
+        "MergeSkills: report-shellCommands-reference-apps-1-review-20260228-202738"
+      ],
+      "timestamp": "2026-02-28T20:28:01.606Z"
+    }
+  ]
+}
