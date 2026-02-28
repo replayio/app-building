@@ -157,6 +157,17 @@ If it does not exist, run `npx replayio install` before any test execution. Runn
 without the Replay browser means failures produce no recordings, making debugging impossible.
 Do not defer Replay installation to after failures are discovered.
 
+## Pre-Flight Checks
+
+Before running any tests, perform these checks from the app directory:
+
+1. **Verify `NEON_PROJECT_ID` is set**: `grep NEON_PROJECT_ID .env` — the test script requires
+   it for creating ephemeral Neon branches. If missing, check `deployment.txt` for the project ID.
+2. **Kill stale servers**: `pkill -f "netlify dev" 2>/dev/null; pkill -f "vite" 2>/dev/null`
+3. **Verify dependencies**: `ls node_modules/@neondatabase/serverless 2>/dev/null || npm install`
+
+See `skills/scripts/env-setup.md` for full environment prerequisites.
+
 ## Running Tests
 
 Run tests via `npm run test <testFile>` from the app directory (see `skills/scripts/test.md`

@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/review/updateSkills.md",
-      "subtasks": [
-        "UpdateSkills: report-shellCommands-reference-apps-1-review-20260228-202738"
-      ],
-      "timestamp": "2026-02-28T20:27:59.884Z"
-    },
-    {
       "skill": "skills/review/mergeSkills.md",
       "subtasks": [
         "MergeSkills: report-testFailures-reference-apps-1-review-20260228-202738"
