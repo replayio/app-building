@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/review/analyzeLogs.md",
-      "subtasks": [
-        "AnalyzeGroup: report-shellCommands-reference-apps-1-review-20260228-202738 skills/review/reportShellCommands.md logs/worker-app-building-eghui7-84-2026-02-25T17-22-36-805Z.log logs/worker-app-building-eghui7-85-2026-02-25T17-22-50-087Z.log logs/worker-app-building-eghui7-86-2026-02-25T17-22-54-681Z.log logs/worker-app-building-eghui7-87-2026-02-25T17-24-36-518Z.log logs/worker-app-building-eghui7-88-2026-02-25T17-24-53-071Z.log logs/worker-app-building-eghui7-89-2026-02-25T17-26-16-932Z.log logs/worker-app-building-eghui7-9-2026-02-25T15-46-55-972Z.log logs/worker-app-building-mimlkq-1-2026-02-26T03-39-13-479Z.log"
-      ],
-      "timestamp": "2026-02-28T21:55:14.837Z"
-    },
-    {
       "skill": "skills/review/synthesizeReport.md",
       "subtasks": [
         "Synthesize: report-testFailures-reference-apps-1-review-20260228-202738 skills/review/reportTestFailures.md"
