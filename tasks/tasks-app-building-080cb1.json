@@ -3,9 +3,13 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+        "PlanPageMainPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentStatusFilter: Add test entries for StatusFilter (tab selector: Building/Finished/Queued)",
+        "PlanComponentRequestAppCTA: Add test entries for RequestAppCTA (prominent request button)",
+        "PlanComponentAppCard: Add test entries for AppCard (title, description, progress bar, View App button)",
+        "PlanComponentAppCardGrid: Add test entries for AppCardGrid (2-column grid layout, filtering)"
       ],
-      "timestamp": "2026-02-28T20:19:22.555Z",
+      "timestamp": "2026-02-28T20:20:31.267Z",
       "app": "LoopBuilder"
     },
     {
@@ -54,6 +58,31 @@
         "Unpack: Deploy to production"
       ],
       "timestamp": "2026-02-28T20:18:18.697Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageAppPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentAppHeader: Add test entries for AppHeader (title, status badge, description, metadata)",
+        "PlanComponentAppActions: Add test entries for AppActions (Open Live App, Download Source Code buttons)",
+        "PlanComponentActivityLog: Add test entries for ActivityLog (live feed, refresh, historical view)",
+        "PlanComponentActivityLogEntry: Add test entries for ActivityLogEntry (timestamps, type tags, expandable sections)"
+      ],
+      "timestamp": "2026-02-28T20:20:36.759Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageRequestPage: Decide on components, add sections to docs/tests.md",
+        "PlanComponentWizardStepper: Add test entries for WizardStepper (progress indicator: Describe App, Assessment, Confirmation)",
+        "PlanComponentDescribeAppForm: Add test entries for DescribeAppForm (app name, description, requirements fields)",
+        "PlanComponentAssessmentScreen: Add test entries for AssessmentScreen (loading state, policy check)",
+        "PlanComponentRejectionResult: Add test entries for RejectionResult (rejection reason, Edit Request button)",
+        "PlanComponentAcceptanceResult: Add test entries for AcceptanceResult (success message, Go to AppPage button, View all My Apps link)"
+      ],
+      "timestamp": "2026-02-28T20:20:42.688Z",
       "app": "LoopBuilder"
     }
   ]
