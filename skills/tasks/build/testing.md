@@ -338,3 +338,15 @@ When testing the app after deployment, use the Replay browser to record the app 
   assertions (e.g., `"500"` not `"500.00"`). These column types return decimal strings from
   PostgreSQL, so the app must format them before display. If tests fail on numeric values,
   check the column type and app formatting layer before modifying test expectations.
+- When navigation timeouts persist across retries for a specific app (e.g., all supplier-details
+  pages timing out), this is likely a Replay browser resource issue rather than an app bug.
+  Adding a retry-with-delay (e.g., 5s between retries) can help distinguish transient
+  infrastructure issues from persistent ones. If retries still fail, skip those tests and
+  note the infrastructure issue.
+- Seed data should use relative dates (e.g., "current month minus 1") rather than hardcoded
+  month names. Tests that assert on date-filtered data (e.g., expecting "Jan" entries) will
+  fail when run in a different month. Either make seed data date-relative or make test
+  assertions date-aware.
+- When many tests are pre-existing failures unrelated to the current task, avoid re-verifying
+  them on every run. Use the `git stash` triage approach (see `skills/debugging/README.md`)
+  once per task to confirm, then focus on new failures only.
