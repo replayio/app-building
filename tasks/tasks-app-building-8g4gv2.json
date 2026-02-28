@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteSpawnContainer: Create netlify/functions/spawn-container.ts backend function. This is a webhook endpoint (POST) that starts a new app-building container. Validate WEBHOOK_SECRET. Accept a JSON body with an optional prompt field. If no prompt is provided, read the default_prompt from the settings table. Use the available Fly.io credentials (FLY_API_TOKEN, FLY_APP_NAME) and the app-building package APIs to create a new remote container with the prompt passed as a PROMPT env var for detached mode execution. Record the new container in the containers table. Return the container info."
-      ],
-      "timestamp": "2026-02-28T22:40:34.485Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteSetDefaultPrompt: Create netlify/functions/set-default-prompt.ts backend function. This is a webhook endpoint (POST) that sets the default prompt used by SpawnContainer when no prompt is provided. Validate WEBHOOK_SECRET. Accept a JSON body with a prompt field. Upsert the settings table with key='default_prompt'. Also support GET to retrieve the current default prompt (no auth required for GET, used by the frontend status page)."
       ],
       "timestamp": "2026-02-28T22:40:44.688Z",
