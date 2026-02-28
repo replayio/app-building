@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "RenameNetlifySite: Rename the Netlify site to loop-builder so the deployed URL becomes loop-builder.netlify.app. Use the Netlify CLI or API with the existing site_id from deployment.txt. Update deployment.txt with the new URL."
-      ],
-      "timestamp": "2026-02-28T22:39:53.168Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
         "UpdateAppBuildingPackage: Install the latest version of the app-building npm package in the LoopBuilder app (npm install app-building@latest). This package now exposes a webhook endpoint that can be called when starting containers. Review the package API to understand the webhook interface."
