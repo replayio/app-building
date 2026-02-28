@@ -3,13 +3,6 @@
     {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
-        "AnalyzeGroup: report-shellCommands-reference-apps-1-review-20260228-202738 skills/review/reportShellCommands.md logs/worker-app-building-dm9i32-101-2026-02-26T13-05-28-506Z.log logs/worker-app-building-dm9i32-102-2026-02-26T13-10-01-988Z.log logs/worker-app-building-dm9i32-103-2026-02-26T13-14-24-340Z.log logs/worker-app-building-dm9i32-104-2026-02-26T13-18-26-401Z.log logs/worker-app-building-dm9i32-105-2026-02-26T13-20-11-106Z.log logs/worker-app-building-dm9i32-106-2026-02-26T13-22-36-673Z.log logs/worker-app-building-dm9i32-107-2026-02-26T13-25-22-779Z.log logs/worker-app-building-dm9i32-108-2026-02-26T13-36-32-440Z.log logs/worker-app-building-dm9i32-109-2026-02-26T13-45-59-900Z.log logs/worker-app-building-dm9i32-11-2026-02-26T04-48-04-485Z.log"
-      ],
-      "timestamp": "2026-02-28T21:55:29.601Z"
-    },
-    {
-      "skill": "skills/review/analyzeLogs.md",
-      "subtasks": [
         "AnalyzeGroup: report-shellCommands-reference-apps-1-review-20260228-202738 skills/review/reportShellCommands.md logs/worker-app-building-dm9i32-110-2026-02-26T13-48-00-293Z.log logs/worker-app-building-dm9i32-111-2026-02-26T13-56-33-882Z.log logs/worker-app-building-dm9i32-112-2026-02-26T13-58-59-175Z.log logs/worker-app-building-dm9i32-113-2026-02-26T14-06-55-187Z.log logs/worker-app-building-dm9i32-114-2026-02-26T14-09-52-491Z.log logs/worker-app-building-dm9i32-115-2026-02-26T14-12-11-425Z.log logs/worker-app-building-dm9i32-116-2026-02-26T14-19-00-950Z.log logs/worker-app-building-dm9i32-117-2026-02-26T14-21-50-759Z.log logs/worker-app-building-dm9i32-118-2026-02-26T14-43-14-113Z.log logs/worker-app-building-dm9i32-119-2026-02-26T15-10-22-902Z.log"
       ],
       "timestamp": "2026-02-28T21:55:28.842Z"
