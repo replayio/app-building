@@ -6,13 +6,13 @@ Building app...
 === BUILD STDOUT ===
 vite v6.4.1 building for production...
 transforming...
-✓ 1637 modules transformed.
+✓ 1646 modules transformed.
 rendering chunks...
 computing gzip size...
-dist/index.html                     0.46 kB │ gzip:   0.29 kB
-dist/assets/index-CRVr6OLa.css     19.86 kB │ gzip:   3.35 kB
-dist/assets/index-B8lmwFOr.js   1,216.99 kB │ gzip: 213.84 kB │ map: 2,414.10 kB
-✓ built in 7.12s
+dist/index.html                     0.46 kB │ gzip:   0.30 kB
+dist/assets/index-v0EIE1Kf.css     24.58 kB │ gzip:   3.93 kB
+dist/assets/index-YOqQCBU8.js   1,225.16 kB │ gzip: 215.09 kB │ map: 2,428.00 kB
+✓ built in 3.92s
 
 === BUILD STDERR ===
 
@@ -30,19 +30,18 @@ Deploying to Netlify
 🚀 Deploy complete
 ────────────────────────────────────────────────────────────────
 
-╭────────────────────── ⬥  Production deploy is live ⬥  ───────────────────────╮
-│                                                                              │
-│                         Deployed to production URL:                          │
-│                https://loop-builder-1772312024104.netlify.app                │
-│                                                                              │
-│                              Unique deploy URL:                              │
-│   https://69a35be351acc438994589f1--loop-builder-1772312024104.netlify.app   │
-│                                                                              │
-╰──────────────────────────────────────────────────────────────────────────────╯
+   ╭──────────────── ⬥  Production deploy is live ⬥  ─────────────────╮
+   │                                                                  │
+   │   Deployed to production URL: https://loop-builder.netlify.app   │
+   │                                                                  │
+   │                        Unique deploy URL:                        │
+   │    https://69a3731478efd36a5f5361e5--loop-builder.netlify.app    │
+   │                                                                  │
+   ╰──────────────────────────────────────────────────────────────────╯
 
-[32mBuild logs: [39m        https://app.netlify.com/projects/loop-builder-1772312024104/deploys/69a35be351acc438994589f1
-[32mFunction logs: [39m     https://app.netlify.com/projects/loop-builder-1772312024104/logs/functions
-[32mEdge function Logs: [39mhttps://app.netlify.com/projects/loop-builder-1772312024104/logs/edge-functions
+[32mBuild logs: [39m        https://app.netlify.com/projects/loop-builder/deploys/69a3731478efd36a5f5361e5
+[32mFunction logs: [39m     https://app.netlify.com/projects/loop-builder/logs/functions
+[32mEdge function Logs: [39mhttps://app.netlify.com/projects/loop-builder/logs/edge-functions
 
 === DEPLOY STDERR ===
 ⠋ Uploading blobs to deploy store...
@@ -51,11 +50,11 @@ Deploying to Netlify
 ⠋ Hashing files...
 ⠋ Looking for a functions cache...
 √ No cached functions were found
-√ Finished hashing 5 files and 3 functions
+√ Finished hashing 5 files and 7 functions
 ⠋ CDN diffing files...
-√ CDN requesting 0 files and 3 functions
-⠋ Uploading 3 files
-√ Finished uploading 3 assets
+√ CDN requesting 4 files and 7 functions
+⠋ Uploading 11 files
+√ Finished uploading 11 assets
 ⠋ Waiting for deploy to go live...
 √ Deploy is live!
 

@@ -1,13 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production with all new webhook functions, status page, and updated dependencies. Ensure WEBHOOK_SECRET, FLY_API_TOKEN, and FLY_APP_NAME env vars are set on the Netlify site.",
-        "TestDeploy: Test the deployed app to verify the main page, status page, and webhook endpoints work"
-      ],
-      "timestamp": "2026-02-28T22:41:07.430Z",
-      "app": "LoopBuilder"
-    }
-  ]
+  "tasks": []
 }

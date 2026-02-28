@@ -2,7 +2,7 @@ url: https://loop-builder.netlify.app
 site_id: 983e878a-ea97-4bf5-8e2f-eaf6dabe5287
 neon_project_id: fragrant-hat-64146678
 database_url: postgresql://neondb_owner:npg_CPJRAF5dXry4@ep-little-feather-akpp5d1q.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require
-deployed_at: 2026-02-28T21:19:48.810Z
+deployed_at: 2026-02-28T22:58:45.652Z
 
 --- Deployment 2026-02-28 ---
 Changes:
@@ -10,3 +10,13 @@ Changes:
 - Added deployment test (tests/deployment.spec.ts) and config (playwright.deployment.config.ts)
 - Added testIgnore for deployment.spec.ts in main playwright config
 Replay Recording: 8cd35e77-8467-4cad-b3e7-e19fa1b675cc
+
+--- Deployment 2026-02-28 ---
+Changes:
+- Added webhook functions: app-builder-event, spawn-container, set-default-prompt, status
+- Added new database tables for webhook events, containers, and status tracking
+- Added Request page and App page with full component implementations
+- Renamed Netlify site to loop-builder
+- Updated app-building package to latest version
+- Set WEBHOOK_SECRET, FLY_API_TOKEN, and FLY_APP_NAME env vars on Netlify site
+Replay Recording: 29c2a27a-79e2-4fe6-bd59-888c3ed3dd5f

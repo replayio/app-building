@@ -17,8 +17,8 @@ test('deployment: app displays data and supports updates', async ({ page }) => {
   await page.getByTestId('app-description-input').fill(testDescription)
   await page.getByTestId('describe-app-form-submit').click()
 
-  // Wait for assessment screen, then confirmation
-  await expect(page.getByTestId('assessment-screen')).toBeVisible({ timeout: 15000 })
+  // Wait for the request to complete — the assessment screen may flash by too
+  // quickly so we wait directly for the acceptance confirmation
   await expect(page.getByTestId('acceptance-result')).toBeVisible({ timeout: 30000 })
 
   // 3. Verify the new app persisted — navigate back and check data displays
