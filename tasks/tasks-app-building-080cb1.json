@@ -1,33 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestStatusFilterDefaultTab: Write test for StatusFilter: Default tab is Building",
-        "WriteTestStatusFilterFinished: Write test for StatusFilter: Switch to Finished tab",
-        "WriteTestStatusFilterQueued: Write test for StatusFilter: Switch to Queued tab",
-        "WriteTestStatusFilterAllTabs: Write test for StatusFilter: Switch between all tabs preserves correct filter",
-        "WriteTestStatusFilterEmptyState: Write test for StatusFilter: Empty state when no apps match filter",
-        "WriteTestRequestAppCTAVisible: Write test for RequestAppCTA: Visible below StatusFilter",
-        "WriteTestRequestAppCTANavigates: Write test for RequestAppCTA: Navigates to RequestPage on click",
-        "WriteTestRequestAppCTAAllTabs: Write test for RequestAppCTA: Remains visible across all filter tabs",
-        "WriteTestAppCardTitleDesc: Write test for AppCard: Displays title and description",
-        "WriteTestAppCardProgressBuilding: Write test for AppCard: Shows progress bar with percentage for Building apps",
-        "WriteTestAppCardProgressFinished: Write test for AppCard: Shows progress bar at 100% for Finished apps",
-        "WriteTestAppCardProgressQueued: Write test for AppCard: Shows progress bar at 0% for Queued apps",
-        "WriteTestAppCardViewAppNav: Write test for AppCard: View App button navigates to AppPage",
-        "WriteTestAppCardRoutePath: Write test for AppCard: Displays app route path next to View App button",
-        "WriteTestAppCardViewAppStyling: Write test for AppCard: View App button styling",
-        "WriteTestAppCardGridLayout: Write test for AppCardGrid: Displays cards in 2-column grid layout",
-        "WriteTestAppCardGridFilters: Write test for AppCardGrid: Filters cards based on StatusFilter selection",
-        "WriteTestAppCardGridEmptyState: Write test for AppCardGrid: Empty state when no apps match filter",
-        "WriteTestAppCardGridUpdates: Write test for AppCardGrid: Updates when new apps are added",
-        "WriteTestAppCardGridResponsive: Write test for AppCardGrid: Responsive layout"
-      ],
-      "timestamp": "2026-02-28T20:56:43.700Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
         "Unpack: Get all tests passing"

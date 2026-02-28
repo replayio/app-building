@@ -4,6 +4,7 @@ import { devices as replayDevices, replayReporter } from '@replayio/playwright'
 export default defineConfig({
   testDir: './tests',
   timeout: 60_000,
+  fullyParallel: true,
   retries: 0,
   use: {
     ...replayDevices['Replay Chromium'],
@@ -18,6 +19,6 @@ export default defineConfig({
     command: 'npx netlify dev',
     port: 8888,
     reuseExistingServer: true,
-    timeout: 30_000,
+    timeout: 60_000,
   },
 })
