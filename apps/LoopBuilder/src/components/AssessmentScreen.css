@@ -1,0 +1,112 @@
+.assessment-screen {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .assessment-screen {
+    grid-template-columns: 1fr;
+  }
+}
+
+.assessment-screen__summary {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  padding: 24px;
+}
+
+.assessment-screen__summary-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+.assessment-screen__summary-field {
+  margin-bottom: 16px;
+}
+
+.assessment-screen__summary-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.assessment-screen__summary-value {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.assessment-screen__progress {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.assessment-screen__progress-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.assessment-screen__progress-bar-track {
+  width: 100%;
+  max-width: 400px;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.assessment-screen__progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--gradient-cta);
+  animation: assessment-progress 2s ease-in-out infinite;
+}
+
+@keyframes assessment-progress {
+  0% {
+    width: 20%;
+  }
+  50% {
+    width: 80%;
+  }
+  100% {
+    width: 20%;
+  }
+}
+
+.assessment-screen__progress-message {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.assessment-screen__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

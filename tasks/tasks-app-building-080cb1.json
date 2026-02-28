@@ -1,19 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteComponentWizardStepper: Write the WizardStepper component",
-        "WriteComponentDescribeAppForm: Write the DescribeAppForm component",
-        "WriteComponentAssessmentScreen: Write the AssessmentScreen component",
-        "WriteComponentRejectionResult: Write the RejectionResult component",
-        "WriteComponentAcceptanceResult: Write the AcceptanceResult component",
-        "WritePageRequestPage: Write the RequestPage page itself"
-      ],
-      "timestamp": "2026-02-28T20:25:26.589Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
         "Unpack: Implement package scripts"
