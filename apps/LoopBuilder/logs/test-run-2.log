@@ -1,0 +1,14 @@
+Creating Neon branch: test-worker-9d5ced3d
+Branch created: br-odd-sound-ak6avh9v (host: ep-cold-shadow-ako4n0ap.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/main-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 20 passed, 0 failed, 0 skipped

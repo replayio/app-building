@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testing.md",
-      "subtasks": [
-        "Unpack: Get all tests passing"
-      ],
-      "timestamp": "2026-02-28T20:18:18.008Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"

@@ -202,29 +202,37 @@ interface PlaywrightResults {
   skipped: number
 }
 
-function parsePlaywrightResults(): PlaywrightResults {
-  const resultsPath = join(appDir, 'test-results', 'results.json')
-  if (!existsSync(resultsPath)) return { passed: 0, failed: 0, skipped: 0 }
-  const data = JSON.parse(readFileSync(resultsPath, 'utf-8')) as {
-    suites?: Array<{
-      specs?: Array<{
-        tests?: Array<{ results?: Array<{ status?: string }> }>
-      }>
-    }>
-  }
-  let passed = 0, failed = 0, skipped = 0
-  for (const suite of data.suites || []) {
+interface SuiteData {
+  specs?: Array<{
+    tests?: Array<{ results?: Array<{ status?: string }> }>
+  }>
+  suites?: SuiteData[]
+}
+
+function countResults(suites: SuiteData[], counts: { passed: number; failed: number; skipped: number }) {
+  for (const suite of suites) {
     for (const spec of suite.specs || []) {
       for (const test of spec.tests || []) {
         for (const result of test.results || []) {
-          if (result.status === 'passed') passed++
-          else if (result.status === 'skipped') skipped++
-          else failed++
+          if (result.status === 'passed') counts.passed++
+          else if (result.status === 'skipped') counts.skipped++
+          else counts.failed++
         }
       }
     }
+    if (suite.suites) {
+      countResults(suite.suites, counts)
+    }
   }
-  return { passed, failed, skipped }
+}
+
+function parsePlaywrightResults(): PlaywrightResults {
+  const resultsPath = join(appDir, 'test-results', 'results.json')
+  if (!existsSync(resultsPath)) return { passed: 0, failed: 0, skipped: 0 }
+  const data = JSON.parse(readFileSync(resultsPath, 'utf-8')) as { suites?: SuiteData[] }
+  const counts = { passed: 0, failed: 0, skipped: 0 }
+  countResults(data.suites || [], counts)
+  return counts
 }
 
 async function main() {

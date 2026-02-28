@@ -4,6 +4,8 @@ import { devices as replayDevices, replayReporter } from '@replayio/playwright'
 export default defineConfig({
   testDir: './tests',
   timeout: 60_000,
+  actionTimeout: 15_000,
+  navigationTimeout: 30_000,
   fullyParallel: true,
   retries: 0,
   use: {
@@ -16,7 +18,7 @@ export default defineConfig({
     ['html', { open: 'never' }],
   ],
   webServer: {
-    command: 'npx netlify dev',
+    command: 'npx netlify dev --port 8888 --functions ./netlify/functions',
     port: 8888,
     reuseExistingServer: true,
     timeout: 60_000,
