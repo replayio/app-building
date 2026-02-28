@@ -1,11 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/review/mergeSkills.md",
-      "subtasks": [
-        "MergeSkills: report-shellCommands-reference-apps-1-review-20260228-202738"
-      ],
-      "timestamp": "2026-02-28T20:28:01.606Z"
-    }
-  ]
+  "tasks": []
 }
