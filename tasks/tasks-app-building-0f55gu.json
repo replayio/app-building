@@ -3,13 +3,6 @@
     {
       "skill": "skills/review/analyzeLogs.md",
       "subtasks": [
-        "AnalyzeGroup: report-testFailures-reference-apps-1-review-20260228-202738 skills/review/reportTestFailures.md logs/worker-app-building-eghui7-62-2026-02-25T17-14-18-434Z.log logs/worker-app-building-eghui7-63-2026-02-25T17-14-31-525Z.log logs/worker-app-building-eghui7-64-2026-02-25T17-15-18-722Z.log logs/worker-app-building-eghui7-65-2026-02-25T17-15-35-410Z.log logs/worker-app-building-eghui7-66-2026-02-25T17-15-44-460Z.log logs/worker-app-building-eghui7-67-2026-02-25T17-15-52-067Z.log logs/worker-app-building-eghui7-68-2026-02-25T17-15-56-575Z.log logs/worker-app-building-eghui7-69-2026-02-25T17-16-00-952Z.log logs/worker-app-building-eghui7-7-2026-02-25T15-41-19-142Z.log logs/worker-app-building-eghui7-70-2026-02-25T17-16-14-124Z.log"
-      ],
-      "timestamp": "2026-02-28T20:29:04.067Z"
-    },
-    {
-      "skill": "skills/review/analyzeLogs.md",
-      "subtasks": [
         "AnalyzeGroup: report-testFailures-reference-apps-1-review-20260228-202738 skills/review/reportTestFailures.md logs/worker-app-building-eghui7-53-2026-02-25T17-11-01-978Z.log logs/worker-app-building-eghui7-54-2026-02-25T17-11-25-703Z.log logs/worker-app-building-eghui7-55-2026-02-25T17-11-35-054Z.log logs/worker-app-building-eghui7-56-2026-02-25T17-11-39-451Z.log logs/worker-app-building-eghui7-57-2026-02-25T17-11-57-369Z.log logs/worker-app-building-eghui7-58-2026-02-25T17-13-11-007Z.log logs/worker-app-building-eghui7-59-2026-02-25T17-13-31-765Z.log logs/worker-app-building-eghui7-6-2026-02-25T15-40-45-784Z.log logs/worker-app-building-eghui7-60-2026-02-25T17-13-40-277Z.log logs/worker-app-building-eghui7-61-2026-02-25T17-13-58-693Z.log"
       ],
       "timestamp": "2026-02-28T20:29:03.287Z"
