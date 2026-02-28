@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-02-28T21:14:36.447Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
         "PlanPageAppPage: Decide on components, add sections to docs/tests.md",

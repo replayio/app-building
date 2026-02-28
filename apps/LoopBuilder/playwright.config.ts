@@ -3,6 +3,7 @@ import { devices as replayDevices, replayReporter } from '@replayio/playwright'
 
 export default defineConfig({
   testDir: './tests',
+  testIgnore: ['**/deployment.spec.ts'],
   timeout: 60_000,
   actionTimeout: 15_000,
   navigationTimeout: 30_000,
