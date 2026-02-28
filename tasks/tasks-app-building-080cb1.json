@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "PlanPageAppPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentAppHeader: Add test entries for AppHeader (title, status badge, description, metadata)",
-        "PlanComponentAppActions: Add test entries for AppActions (Open Live App, Download Source Code buttons)",
-        "PlanComponentActivityLog: Add test entries for ActivityLog (live feed, refresh, historical view)",
-        "PlanComponentActivityLogEntry: Add test entries for ActivityLogEntry (timestamps, type tags, expandable sections)"
-      ],
-      "timestamp": "2026-02-28T20:20:36.759Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
         "PlanPageRequestPage: Decide on components, add sections to docs/tests.md",
         "PlanComponentWizardStepper: Add test entries for WizardStepper (progress indicator: Describe App, Assessment, Confirmation)",
         "PlanComponentDescribeAppForm: Add test entries for DescribeAppForm (app name, description, requirements fields)",
