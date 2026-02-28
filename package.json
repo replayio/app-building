@@ -1,7 +1,18 @@
 {
-  "name": "app-building",
-  "version": "1.0.0",
+  "name": "@replayio/app-building",
+  "version": "1.0.1",
   "description": "Simple agent loop for building apps with Claude Code CLI",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/package/index.js",
+      "types": "./dist/package/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/package"
+  ],
+  "readme": "src/package/README.md",
   "scripts": {
     "agent": "tsx src/agent.ts",
     "status": "tsx src/status.ts",

@@ -1,6 +1,12 @@
-# app-building package
+# @replayio/app-building
 
-Reusable container management library for the app-building agent. External consumers import this package to start/stop containers and communicate with the in-container HTTP server.
+Library for managing agentic app-building containers. Start and stop containers locally (Docker) or remotely (Fly.io), communicate with the in-container HTTP server, and track container state via a local registry.
+
+## Install
+
+```bash
+npm install @replayio/app-building
+```
 
 ## Usage
 
@@ -12,30 +18,38 @@ import {
   type RepoOptions,
   startContainer,
   startRemoteContainer,
-  stopContainer,
   stopRemoteContainer,
   httpGet,
   httpPost,
-} from "<path-to>/src/package";
+  httpOptsFor,
+} from "@replayio/app-building";
 
 // Assemble config once at startup
-const projectRoot = resolve(__dirname, "..");
-const envVars = loadDotEnv(projectRoot);
+const envVars = loadDotEnv("/path/to/project");
 const config: ContainerConfig = {
-  projectRoot,
+  projectRoot: "/path/to/project",
   envVars,
-  registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+  registry: new ContainerRegistry("/path/to/.container-registry.jsonl"),
   flyToken: envVars.FLY_API_TOKEN,
   flyApp: envVars.FLY_APP_NAME,
 };
 
-// Start a container
-const repo: RepoOptions = { repoUrl: "...", cloneBranch: "main", pushBranch: "main" };
-const state = await startContainer(config, repo);
+// Start a remote container
+const repo: RepoOptions = { repoUrl: "https://github.com/...", cloneBranch: "main", pushBranch: "main" };
+const state = await startRemoteContainer(config, repo);
+
+// Send a prompt and wait for completion
+const httpOpts = httpOptsFor(state);
+const { id } = await httpPost(`${state.baseUrl}/message`, { prompt: "Build the app" }, httpOpts);
+
+// Check status
+const status = await httpGet(`${state.baseUrl}/status`, httpOpts);
 
 // Query the registry
 const alive = await config.registry.findAlive();
-const entry = config.registry.find("app-building-abc123");
+
+// Clean up
+await stopRemoteContainer(config, state);
 ```
 
 ## Exported API
