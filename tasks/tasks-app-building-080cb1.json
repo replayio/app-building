@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageMainPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentStatusFilter: Add test entries for StatusFilter (tab selector: Building/Finished/Queued)",
-        "PlanComponentRequestAppCTA: Add test entries for RequestAppCTA (prominent request button)",
-        "PlanComponentAppCard: Add test entries for AppCard (title, description, progress bar, View App button)",
-        "PlanComponentAppCardGrid: Add test entries for AppCardGrid (2-column grid layout, filtering)"
-      ],
-      "timestamp": "2026-02-28T20:20:31.267Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code"
