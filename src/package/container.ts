@@ -1,11 +1,11 @@
 import { execFileSync, spawn } from "child_process";
-import { readFileSync, appendFileSync, existsSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
-import { remoteBuildAndPush, createApp, createMachine, waitForMachine, destroyMachine, listMachines } from "./fly";
-import { logContainer, markStopped } from "./container-registry";
+import { createMachine, waitForMachine, destroyMachine, listMachines } from "./fly";
+import { getImageRef } from "./image-ref";
+import type { ContainerRegistry } from "./container-registry";
 
 const IMAGE_NAME = "app-building";
-const CONTAINER_PORT = 3000;
 
 export interface AgentState {
   type: "local" | "remote";
@@ -16,24 +16,19 @@ export interface AgentState {
   flyMachineId?: string;
 }
 
-export function buildImage(): void {
-  const contextDir = resolve(__dirname, "..");
-  console.log("Building Docker image...");
-  execFileSync("docker", ["build", "--network", "host", "-t", IMAGE_NAME, contextDir], {
-    stdio: "inherit",
-    timeout: 600000,
-  });
-  console.log("Docker image built successfully.");
+export interface ContainerConfig {
+  projectRoot: string;
+  envVars: Record<string, string>;
+  registry: ContainerRegistry;
+  flyToken?: string;
+  flyApp?: string;
+  imageRef?: string;
 }
 
-function ensureImageExists(): void {
-  try {
-    execFileSync("docker", ["image", "inspect", IMAGE_NAME], {
-      stdio: "ignore",
-    });
-  } catch {
-    buildImage();
-  }
+export interface RepoOptions {
+  repoUrl: string;
+  cloneBranch: string;
+  pushBranch: string;
 }
 
 export function loadDotEnv(projectRoot: string): Record<string, string> {
@@ -58,23 +53,33 @@ export function loadDotEnv(projectRoot: string): Record<string, string> {
   return vars;
 }
 
-function loadRequiredEnvVars(projectRoot: string): string[] {
-  const examplePath = resolve(projectRoot, ".env.example");
-  if (!existsSync(examplePath)) return [];
-  const content = readFileSync(examplePath, "utf-8");
-  return content
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((line) => line && !line.startsWith("#") && !line.includes("# optional"))
-    .map((line) => line.split("=")[0].trim())
-    .filter((key) => key.length > 0);
+export function buildImage(config: ContainerConfig): void {
+  console.log("Building Docker image...");
+  execFileSync("docker", ["build", "--network", "host", "-t", IMAGE_NAME, config.projectRoot], {
+    stdio: "inherit",
+    timeout: 600000,
+  });
+  console.log("Docker image built successfully.");
+}
+
+function ensureImageExists(projectRoot: string): void {
+  try {
+    execFileSync("docker", ["image", "inspect", IMAGE_NAME], {
+      stdio: "ignore",
+    });
+  } catch {
+    console.log("Building Docker image...");
+    execFileSync("docker", ["build", "--network", "host", "-t", IMAGE_NAME, projectRoot], {
+      stdio: "inherit",
+      timeout: 600000,
+    });
+    console.log("Docker image built successfully.");
+  }
 }
 
 function findFreePort(): number {
   let port = 3100;
   try {
-    // With --network host, docker doesn't track port mappings.
-    // Check actual listening ports on the host via ss.
     const out = execFileSync("ss", ["-tlnH"], {
       encoding: "utf-8",
       timeout: 5000,
@@ -90,25 +95,15 @@ function findFreePort(): number {
   return port;
 }
 
-function registerContainer(state: AgentState): void {
-  logContainer(state);
-}
-
-export interface StartContainerOptions {
-  repoUrl: string;
-  cloneBranch: string;
-  pushBranch: string;
-}
-
 function buildContainerEnv(
-  opts: StartContainerOptions,
+  repo: RepoOptions,
   envVars: Record<string, string>,
   extra: Record<string, string> = {},
 ): Record<string, string> {
   const env: Record<string, string> = {
-    REPO_URL: opts.repoUrl,
-    CLONE_BRANCH: opts.cloneBranch,
-    PUSH_BRANCH: opts.pushBranch,
+    REPO_URL: repo.repoUrl,
+    CLONE_BRANCH: repo.cloneBranch,
+    PUSH_BRANCH: repo.pushBranch,
     GIT_AUTHOR_NAME: "App Builder",
     GIT_AUTHOR_EMAIL: "app-builder@localhost",
     GIT_COMMITTER_NAME: "App Builder",
@@ -124,26 +119,16 @@ function buildContainerEnv(
 }
 
 export async function startContainer(
-  opts: StartContainerOptions,
+  config: ContainerConfig,
+  repo: RepoOptions,
 ): Promise<AgentState> {
-  const projectRoot = resolve(__dirname, "..");
-
-  buildImage();
-
-  const envVars = loadDotEnv(projectRoot);
-
-  // Check required env vars from .env.example
-  const requiredVars = loadRequiredEnvVars(projectRoot);
-  const missing = requiredVars.filter((v) => !envVars[v]);
-  if (missing.length > 0) {
-    throw new Error(`Missing required env vars in .env: ${missing.join(", ")}`);
-  }
+  buildImage(config);
 
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const containerName = `app-building-${uniqueId}`;
   const hostPort = findFreePort();
 
-  const containerEnv = buildContainerEnv(opts, envVars, {
+  const containerEnv = buildContainerEnv(repo, config.envVars, {
     PORT: String(hostPort),
     CONTAINER_NAME: containerName,
   });
@@ -216,42 +201,25 @@ export async function startContainer(
   }
 
   const agentState: AgentState = { type: "local", containerName, port: hostPort, baseUrl };
-  registerContainer(agentState);
+  config.registry.log(agentState);
 
   return agentState;
 }
 
 export async function startRemoteContainer(
-  opts: StartContainerOptions,
+  config: ContainerConfig,
+  repo: RepoOptions,
 ): Promise<AgentState> {
-  const projectRoot = resolve(__dirname, "..");
+  if (!config.flyToken) throw new Error("flyToken is required for remote containers");
+  if (!config.flyApp) throw new Error("flyApp is required for remote containers");
 
-  const envVars = loadDotEnv(projectRoot);
-
-  const flyToken = envVars.FLY_API_TOKEN ?? process.env.FLY_API_TOKEN;
-  let flyApp = envVars.FLY_APP_NAME ?? process.env.FLY_APP_NAME;
-
-  if (!flyToken) throw new Error("FLY_API_TOKEN is required for --remote");
-
-  if (!flyApp) {
-    const randomId = Math.random().toString(36).slice(2, 8);
-    flyApp = `app-building-${randomId}`;
-    console.log(`No FLY_APP_NAME set. Creating Fly app "${flyApp}"...`);
-    await createApp(flyToken, flyApp);
-    const envPath = resolve(projectRoot, ".env");
-    appendFileSync(envPath, `\nFLY_APP_NAME=${flyApp}\n`);
-    console.log(`Fly app created and saved to .env as FLY_APP_NAME=${flyApp}`);
-  }
-
-  // Build remotely on Fly and push to registry (no local Docker needed)
-  console.log("Building and pushing image via Fly remote builder...");
-  const imageRef = remoteBuildAndPush(flyApp, flyToken);
+  const imageRef = config.imageRef ?? getImageRef();
 
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const machineName = `app-building-${uniqueId}`;
 
   // Build env vars for the machine
-  const containerEnv = buildContainerEnv(opts, envVars, {
+  const containerEnv = buildContainerEnv(repo, config.envVars, {
     PORT: "3000",
     CONTAINER_NAME: machineName,
   });
@@ -260,9 +228,9 @@ export async function startRemoteContainer(
   delete containerEnv.FLY_APP_NAME;
 
   // Log existing machines (but don't destroy — multiple containers may run concurrently)
-  const existing = await listMachines(flyApp, flyToken);
+  const existing = await listMachines(config.flyApp, config.flyToken);
   if (existing.length > 0) {
-    console.log(`${existing.length} existing machine(s) in ${flyApp}:`);
+    console.log(`${existing.length} existing machine(s) in ${config.flyApp}:`);
     for (const m of existing) {
       console.log(`  ${m.id} (${m.name}) — ${m.state}`);
     }
@@ -273,7 +241,7 @@ export async function startRemoteContainer(
   let machineId = "";
   for (let attempt = 0; attempt < 5; attempt++) {
     try {
-      machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, machineName);
+      machineId = await createMachine(config.flyApp, config.flyToken, imageRef, containerEnv, machineName);
       break;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -288,19 +256,19 @@ export async function startRemoteContainer(
   console.log(`Machine created: ${machineId}`);
 
   // Register immediately so the container is tracked even if startup times out
-  const baseUrl = `https://${flyApp}.fly.dev`;
+  const baseUrl = `https://${config.flyApp}.fly.dev`;
   const agentState: AgentState = {
     type: "remote",
     containerName: machineName,
     port: 443,
     baseUrl,
-    flyApp,
+    flyApp: config.flyApp,
     flyMachineId: machineId,
   };
-  registerContainer(agentState);
+  config.registry.log(agentState);
 
   console.log("Waiting for machine to start...");
-  await waitForMachine(flyApp, flyToken, machineId);
+  await waitForMachine(config.flyApp, config.flyToken, machineId);
   console.log("Machine started.");
 
   // Poll the public URL until the HTTP server is ready, targeting this specific machine
@@ -327,63 +295,57 @@ export async function startRemoteContainer(
   if (!ready) {
     // Clean up machine if we can't reach it
     console.log("Timed out waiting for machine, destroying...");
-    await destroyMachine(flyApp, flyToken, machineId).catch(() => {});
+    await destroyMachine(config.flyApp, config.flyToken, machineId).catch(() => {});
     throw new Error("Remote container did not become ready within timeout");
   }
 
   return agentState;
 }
 
-export async function stopRemoteContainer(state: AgentState): Promise<void> {
+export async function stopRemoteContainer(config: ContainerConfig, state: AgentState): Promise<void> {
   if (!state.flyApp || !state.flyMachineId) {
     throw new Error("Missing flyApp or flyMachineId in agent state");
   }
 
-  const projectRoot = resolve(__dirname, "..");
-  const envVars = loadDotEnv(projectRoot);
-  const flyToken = envVars.FLY_API_TOKEN ?? process.env.FLY_API_TOKEN;
-
-  if (!flyToken) throw new Error("FLY_API_TOKEN is required to stop remote container");
+  if (!config.flyToken) throw new Error("flyToken is required to stop remote container");
 
   console.log(`Destroying Fly machine ${state.flyMachineId}...`);
-  await destroyMachine(state.flyApp, flyToken, state.flyMachineId);
+  await destroyMachine(state.flyApp, config.flyToken, state.flyMachineId);
   console.log("Machine destroyed.");
-  markStopped(state.containerName);
+  config.registry.markStopped(state.containerName);
 }
 
-export function stopContainer(containerName: string): void {
+export function stopContainer(config: ContainerConfig, containerName: string): void {
   try {
     execFileSync("docker", ["stop", containerName], { stdio: "ignore", timeout: 30000 });
   } catch {
     // Container may already be stopped
   }
-  markStopped(containerName);
+  config.registry.markStopped(containerName);
 }
 
-export function spawnTestContainer(): Promise<void> {
-  const projectRoot = resolve(__dirname, "..");
-  ensureImageExists();
+export function spawnTestContainer(config: ContainerConfig): Promise<void> {
+  ensureImageExists(config.projectRoot);
 
-  const envVars = loadDotEnv(projectRoot);
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const containerName = `app-building-test-${uniqueId}`;
 
   const args: string[] = ["run", "-it", "--rm", "--name", containerName];
-  args.push("-v", `${projectRoot}:/repo`);
+  args.push("-v", `${config.projectRoot}:/repo`);
   args.push("-w", "/repo");
   args.push("--network", "host");
   args.push("--user", `${process.getuid!()}:${process.getgid!()}`);
   args.push("--env", "HOME=/repo/.agent-home");
   args.push("--env", "PLAYWRIGHT_BROWSERS_PATH=/opt/playwright");
-  for (const [k, v] of Object.entries(envVars)) {
+  for (const [k, v] of Object.entries(config.envVars)) {
     args.push("--env", `${k}=${v}`);
   }
   args.push(IMAGE_NAME, "bash");
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolvePromise, reject) => {
     const child = spawn("docker", args, { stdio: "inherit" });
     child.on("close", (code) => {
-      if (code === 0) resolve();
+      if (code === 0) resolvePromise();
       else reject(new Error(`Container exited with code ${code}`));
     });
     child.on("error", reject);

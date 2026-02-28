@@ -1,6 +1,5 @@
 import { resolve } from "path";
-import { loadDotEnv } from "./container";
-import { listMachines, destroyMachine } from "./fly";
+import { loadDotEnv, listMachines, destroyMachine } from "./package";
 
 const BOLD = "\x1b[1m";
 const DIM = "\x1b[2m";
