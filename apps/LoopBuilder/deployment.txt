@@ -1,0 +1,5 @@
+url: https://loop-builder-1772312024104.netlify.app
+site_id: 983e878a-ea97-4bf5-8e2f-eaf6dabe5287
+neon_project_id: fragrant-hat-64146678
+database_url: postgresql://neondb_owner:npg_CPJRAF5dXry4@ep-little-feather-akpp5d1q.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require
+deployed_at: 2026-02-28T20:55:48.269Z
