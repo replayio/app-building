@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentAppHeader: Write the AppHeader component",
-        "WriteComponentAppActions: Write the AppActions component",
-        "WriteComponentActivityLogEntry: Write the ActivityLogEntry component",
-        "WriteComponentActivityLog: Write the ActivityLog component",
-        "WritePageAppPage: Write the AppPage page itself"
-      ],
-      "timestamp": "2026-02-28T20:25:21.722Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentWizardStepper: Write the WizardStepper component",
         "WriteComponentDescribeAppForm: Write the DescribeAppForm component",
         "WriteComponentAssessmentScreen: Write the AssessmentScreen component",

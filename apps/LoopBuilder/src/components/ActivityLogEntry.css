@@ -1,0 +1,134 @@
+.activity-entry {
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s;
+}
+
+.activity-entry--deploy {
+  background: var(--color-log-deploy-bg);
+}
+
+.activity-entry--test {
+  background: var(--color-log-test-bg);
+}
+
+.activity-entry--reasoning {
+  background: var(--color-log-reasoning-bg);
+}
+
+.activity-entry--plan {
+  background: var(--color-log-plan-bg);
+}
+
+.activity-entry--init {
+  background: var(--color-log-init-bg);
+}
+
+.activity-entry__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.activity-entry__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.activity-entry--deploy .activity-entry__icon {
+  color: var(--color-log-deploy);
+}
+
+.activity-entry--test .activity-entry__icon {
+  color: var(--color-log-test);
+}
+
+.activity-entry--reasoning .activity-entry__icon {
+  color: var(--color-log-reasoning);
+}
+
+.activity-entry--plan .activity-entry__icon {
+  color: var(--color-log-plan);
+}
+
+.activity-entry--init .activity-entry__icon {
+  color: var(--color-log-init);
+}
+
+.activity-entry__timestamp {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.activity-entry__separator {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.activity-entry__type {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.activity-entry__type--deploy {
+  color: var(--color-log-deploy);
+}
+
+.activity-entry__type--test {
+  color: var(--color-log-test);
+}
+
+.activity-entry__type--reasoning {
+  color: var(--color-log-reasoning);
+}
+
+.activity-entry__type--plan {
+  color: var(--color-log-plan);
+}
+
+.activity-entry__type--init {
+  color: var(--color-log-init);
+}
+
+.activity-entry__message {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.activity-entry__expandable {
+  margin-top: 8px;
+  margin-left: 28px;
+}
+
+.activity-entry__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+
+.activity-entry__toggle:hover {
+  color: var(--color-text);
+}
+
+.activity-entry__detail {
+  margin-top: 8px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--color-text);
+}

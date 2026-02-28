@@ -2,3 +2,9 @@
 
 === LINT ===
 
+/repo/apps/LoopBuilder/src/pages/AppPage.tsx
+  43:6  warning  React Hook useEffect has a missing dependency: 'app'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 1 problem (0 errors, 1 warning)
+
+

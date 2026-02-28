@@ -21,6 +21,18 @@
   /* Gradient */
   --gradient-cta: linear-gradient(135deg, #3b82f6, #06b6d4);
 
+  /* Log type colors */
+  --color-log-deploy: #22c55e;
+  --color-log-deploy-bg: #f0fdf4;
+  --color-log-test: #3b82f6;
+  --color-log-test-bg: #eff6ff;
+  --color-log-reasoning: #f59e0b;
+  --color-log-reasoning-bg: #fffbeb;
+  --color-log-plan: #3b82f6;
+  --color-log-plan-bg: #eff6ff;
+  --color-log-init: #64748b;
+  --color-log-init-bg: #f8fafc;
+
   /* Shadows */
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.1);

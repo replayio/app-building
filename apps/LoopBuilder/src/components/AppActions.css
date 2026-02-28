@@ -1,0 +1,31 @@
+.app-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.app-actions__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.app-actions__btn:hover {
+  opacity: 0.85;
+}
+
+.app-actions__btn--primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.app-actions__btn--secondary {
+  background: var(--color-text);
+  color: #ffffff;
+}

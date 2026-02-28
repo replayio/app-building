@@ -1,0 +1,37 @@
+.app-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .app-page {
+    padding: 12px;
+  }
+}
+
+.app-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: 8px 0;
+  transition: color 0.15s;
+  align-self: flex-start;
+}
+
+.app-page__back:hover {
+  color: var(--color-primary);
+}
+
+.app-page__loading {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
