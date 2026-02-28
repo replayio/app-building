@@ -1,0 +1,21 @@
+{
+  "tasks": [
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecStatusPage: Check testSpec.md directive violations in StatusPage test entries — the new webhook help UI directive requires a help button showing webhook endpoints, methods, auth, payload fields, and example curl commands",
+        "CheckComponentsStatusPage: Check writeApp.md directive violations in StatusPage components"
+      ],
+      "timestamp": "2026-02-28T23:15:21.457Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/maintain/polishApp.md",
+      "subtasks": [
+        "FixRefreshStatusPage: Fix refresh logic on StatusPage — the 10-second polling causes screen flashing; ensure loading state is only shown on initial load and data updates don't cause visual artifacts"
+      ],
+      "timestamp": "2026-02-28T23:15:27.053Z",
+      "app": "LoopBuilder"
+    }
+  ]
+}

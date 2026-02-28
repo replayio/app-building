@@ -63,6 +63,12 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
   and any required configuration on the external side. Test entries should verify that these instructions are
   visible and accurate for each supported platform.
 
+- Apps that receive webhooks from external services must include a webhook help/documentation UI
+  accessible from the app's status or admin page. The help UI must list each webhook endpoint with its
+  URL path, HTTP method, authentication requirements (e.g., Bearer token, query parameter), required
+  and optional payload fields, and an example curl command. Test entries should verify that the help UI
+  is accessible via a clearly labeled button and displays accurate documentation for each webhook endpoint.
+
 - State-changing actions must have tests that when performed other parts of the app update appropriately. For example:
 * If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry. Ensure this happens atomically to avoid duplicates from re-renders. Think through every field that can change and whether it needs history tracking.
 * If the app has symmetrical or reciprocal relationships (e.g., contact relationships, mutual links between entities), creating/updating/deleting one side must automatically update the other side. Test entries must verify both sides of the relationship are in sync.

@@ -121,3 +121,36 @@ each card at breakpoints:
   using `hidden max-md:flex`.
 - At `max-sm:` consolidate remaining metadata into a single compact row using
   `hidden max-sm:flex`.
+
+### Refresh Logic
+
+If the `Refresh Logic` section in `docs/plan.md` is missing or not marked `✓`, check for polling
+issues. Read `docs/tests.md` to identify pages that use periodic data refreshing or polling, then
+add one task per page:
+
+```
+npx tsx /repo/scripts/add-task.ts --skill "skills/tasks/maintain/polishApp.md" --app "<AppName>" \
+  --subtask "FixRefresh<PageName>: Fix refresh logic on <PageName>"
+```
+
+Add or update the `Refresh Logic` section in `docs/plan.md` with an unchecked entry for each page.
+
+## Fixing Refresh Logic
+
+When working on a `FixRefresh` subtask, update the page so periodic polling and data refreshing does
+not cause visual artifacts such as flashing, layout shifts, or component remounting:
+
+- Only show loading indicators (spinners, skeletons) on the initial data fetch, not on subsequent
+  polls. Use a flag like `isInitialLoad` or check whether data already exists before showing loading
+  state.
+- Merge new data into existing state without replacing the entire state tree — use selective updates
+  so only changed items trigger re-renders.
+- Use stable React keys based on data identifiers, not array indices, so list items are not
+  unmounted and remounted on refresh.
+- Avoid conditional rendering that switches between loading and loaded component trees — keep the
+  component tree stable and update data in place.
+- Test that refreshes are visually seamless by verifying no layout shift or flash occurs during
+  polling cycles.
+
+After completing the work, check off the page in `docs/plan.md`. If all pages are done, mark the
+section heading with `✓`.
