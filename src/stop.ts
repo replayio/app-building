@@ -1,9 +1,5 @@
-import { stopRemoteContainer } from "./container";
-import { findContainer, markStopped } from "./container-registry";
-import { httpGet, httpPost } from "./http-client";
-import type { RegistryEntry } from "./container-registry";
+import { stopRemoteContainer, findContainer, markStopped, httpGet, httpPost, type RegistryEntry, httpOptsFor, findAliveContainers } from "./package";
 import { RED, RESET } from "./format";
-import { httpOptsFor, findAliveContainers } from "./container-utils";
 
 async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<void> {
   const start = Date.now();

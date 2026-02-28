@@ -1,4 +1,4 @@
-import { spawnTestContainer } from "./container";
+import { spawnTestContainer } from "./package";
 
 spawnTestContainer().then(
   () => process.exit(0),

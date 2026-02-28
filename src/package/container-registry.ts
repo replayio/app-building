@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import type { AgentState } from "./container";
 
-const REGISTRY_FILE = resolve(__dirname, "..", ".container-registry.jsonl");
+const REGISTRY_FILE = resolve(__dirname, "../..", ".container-registry.jsonl");
 
 export interface RegistryEntry extends AgentState {
   startedAt: string;

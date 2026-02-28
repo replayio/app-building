@@ -1,7 +1,8 @@
 import { execFileSync, spawn } from "child_process";
 import { readFileSync, appendFileSync, existsSync } from "fs";
 import { resolve } from "path";
-import { remoteBuildAndPush, createApp, createMachine, waitForMachine, destroyMachine, listMachines } from "./fly";
+import { createApp, createMachine, waitForMachine, destroyMachine, listMachines } from "./fly";
+import { getImageRef } from "./image-ref";
 import { logContainer, markStopped } from "./container-registry";
 
 const IMAGE_NAME = "app-building";
@@ -17,7 +18,7 @@ export interface AgentState {
 }
 
 export function buildImage(): void {
-  const contextDir = resolve(__dirname, "..");
+  const contextDir = resolve(__dirname, "../..");
   console.log("Building Docker image...");
   execFileSync("docker", ["build", "--network", "host", "-t", IMAGE_NAME, contextDir], {
     stdio: "inherit",
@@ -126,7 +127,7 @@ function buildContainerEnv(
 export async function startContainer(
   opts: StartContainerOptions,
 ): Promise<AgentState> {
-  const projectRoot = resolve(__dirname, "..");
+  const projectRoot = resolve(__dirname, "../..");
 
   buildImage();
 
@@ -224,7 +225,7 @@ export async function startContainer(
 export async function startRemoteContainer(
   opts: StartContainerOptions,
 ): Promise<AgentState> {
-  const projectRoot = resolve(__dirname, "..");
+  const projectRoot = resolve(__dirname, "../..");
 
   const envVars = loadDotEnv(projectRoot);
 
@@ -243,9 +244,7 @@ export async function startRemoteContainer(
     console.log(`Fly app created and saved to .env as FLY_APP_NAME=${flyApp}`);
   }
 
-  // Build remotely on Fly and push to registry (no local Docker needed)
-  console.log("Building and pushing image via Fly remote builder...");
-  const imageRef = remoteBuildAndPush(flyApp, flyToken);
+  const imageRef = getImageRef();
 
   const uniqueId = Math.random().toString(36).slice(2, 8);
   const machineName = `app-building-${uniqueId}`;
@@ -339,7 +338,7 @@ export async function stopRemoteContainer(state: AgentState): Promise<void> {
     throw new Error("Missing flyApp or flyMachineId in agent state");
   }
 
-  const projectRoot = resolve(__dirname, "..");
+  const projectRoot = resolve(__dirname, "../..");
   const envVars = loadDotEnv(projectRoot);
   const flyToken = envVars.FLY_API_TOKEN ?? process.env.FLY_API_TOKEN;
 
@@ -361,7 +360,7 @@ export function stopContainer(containerName: string): void {
 }
 
 export function spawnTestContainer(): Promise<void> {
-  const projectRoot = resolve(__dirname, "..");
+  const projectRoot = resolve(__dirname, "../..");
   ensureImageExists();
 
   const envVars = loadDotEnv(projectRoot);

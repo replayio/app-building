@@ -1,7 +1,5 @@
-import { httpGet, type HttpOptions } from "./http-client";
-import { getRecentContainers, RegistryEntry } from "./container-registry";
+import { httpGet, type HttpOptions, getRecentContainers, type RegistryEntry, httpOptsFor, findAliveContainers } from "./package";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
-import { httpOptsFor, findAliveContainers } from "./container-utils";
 
 function stripTimestamp(rawLine: string): string {
   const tsMatch = rawLine.match(/^\[\d{4}-\d{2}-\d{2}T[\d:.]+Z\]\s*(.*)/);

@@ -1,9 +1,7 @@
 import { Command } from "commander";
-import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState } from "./container";
+import { startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState, httpGet, httpPost, type HttpOptions, httpOptsFor } from "./package";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
-import { httpGet, httpPost, type HttpOptions } from "./http-client";
 import { formatEvent } from "./format";
-import { httpOptsFor } from "./container-utils";
 
 // --- Input helpers ---
 
