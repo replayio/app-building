@@ -2,7 +2,6 @@
 
 === LINT (FAILED) ===
 
-npm warn exec The following package was not found and will be installed: eslint@10.0.2
 
 Oops! Something went wrong! :(
 

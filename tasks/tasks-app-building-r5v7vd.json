@@ -1,12 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "FixRefreshStatusPage: Fix refresh logic on StatusPage — the 10-second polling causes screen flashing; ensure loading state is only shown on initial load and data updates don't cause visual artifacts"
-      ],
-      "timestamp": "2026-02-28T23:15:27.053Z",
-      "app": "LoopBuilder"
-    }
-  ]
+  "tasks": []
 }

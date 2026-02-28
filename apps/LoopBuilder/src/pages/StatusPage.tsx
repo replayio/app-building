@@ -36,21 +36,23 @@ function StatusPage() {
         <h1 className="status-page__title">System Status</h1>
         <WebhookHelpButton />
       </div>
-      {loading ? (
+      {loading && (
         <div
           className="status-page__loading"
           data-testid="status-page-loading"
         >
           Loading status...
         </div>
-      ) : error ? (
+      )}
+      {error && !loading && (
         <div
           className="status-page__error"
           data-testid="status-page-error"
         >
           {error}
         </div>
-      ) : (
+      )}
+      {!loading && (
         <div className="status-page__content">
           <DefaultPromptDisplay prompt={defaultPrompt} />
           <ActiveContainers containers={containers} />

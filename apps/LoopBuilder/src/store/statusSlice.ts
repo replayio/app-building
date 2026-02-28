@@ -21,6 +21,7 @@ interface StatusState {
   webhookEvents: WebhookEvent[]
   defaultPrompt: string | null
   loading: boolean
+  initialized: boolean
   error: string | null
 }
 
@@ -29,6 +30,7 @@ const initialState: StatusState = {
   webhookEvents: [],
   defaultPrompt: null,
   loading: false,
+  initialized: false,
   error: null,
 }
 
@@ -49,19 +51,21 @@ const statusSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchStatus.pending, (state) => {
-        if (state.containers.length === 0 && state.webhookEvents.length === 0) {
+        if (!state.initialized) {
           state.loading = true
         }
         state.error = null
       })
       .addCase(fetchStatus.fulfilled, (state, action) => {
         state.loading = false
+        state.initialized = true
         state.containers = action.payload.containers
         state.webhookEvents = action.payload.webhookEvents
         state.defaultPrompt = action.payload.defaultPrompt
       })
       .addCase(fetchStatus.rejected, (state, action) => {
         state.loading = false
+        state.initialized = true
         state.error = action.error.message || 'Failed to fetch status'
       })
   },
