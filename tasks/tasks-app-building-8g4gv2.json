@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "UpdateAppBuildingPackage: Install the latest version of the app-building npm package in the LoopBuilder app (npm install app-building@latest). This package now exposes a webhook endpoint that can be called when starting containers. Review the package API to understand the webhook interface."
-      ],
-      "timestamp": "2026-02-28T22:40:03.211Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "DesignWebhookSchema: Design and add new database tables to schema.ts and migrations: (1) containers table - tracks container_id, name, status (not 'stopped' means active), prompt used, created_at, last_event_at. (2) webhook_events table - stores raw webhook events with id, container_id, event_type, payload JSON, received_at. (3) settings table - key/value store for app settings like default_prompt. Add appropriate indexes. Use WEBHOOK_SECRET env var pattern for auth."
       ],
       "timestamp": "2026-02-28T22:40:15.625Z",
