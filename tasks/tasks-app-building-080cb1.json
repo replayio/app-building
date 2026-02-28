@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "SetupApp: Setup the app",
-        "DesignDatabase: Design the database"
-      ],
-      "timestamp": "2026-02-28T20:25:12.462Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentStatusFilter: Write the StatusFilter component",
         "WriteComponentRequestAppCTA: Write the RequestAppCTA component",
         "WriteComponentAppCard: Write the AppCard component",
