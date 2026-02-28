@@ -3,10 +3,11 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecStatusPage: Check testSpec.md directive violations in StatusPage test entries — the new webhook help UI directive requires a help button showing webhook endpoints, methods, auth, payload fields, and example curl commands",
-        "CheckComponentsStatusPage: Check writeApp.md directive violations in StatusPage components"
+        "FixViolationStatusPageTestEntries: Add StatusPage section to docs/tests.md with test entries for all existing components (DefaultPromptDisplay, ActiveContainers, WebhookEventFeed, back link) and add webhook help UI test entries per the testSpec.md webhook documentation directive — the help button must show each webhook endpoint URL path, HTTP method, auth requirements, payload fields, and example curl commands for: POST app-builder-event, POST spawn-container, POST set-default-prompt",
+        "FixViolationWebhookHelpUI: Add a WebhookHelpButton component to StatusPage that opens a help panel/modal listing all webhook endpoints with URL path, HTTP method, authentication (Bearer token or secret query param), required/optional payload fields, and example curl commands",
+        "RunTests: Verify tests pass after fixes"
       ],
-      "timestamp": "2026-02-28T23:15:21.457Z",
+      "timestamp": "2026-02-28T23:17:11.255Z",
       "app": "LoopBuilder"
     },
     {
