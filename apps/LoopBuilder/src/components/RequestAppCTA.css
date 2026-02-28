@@ -1,0 +1,16 @@
+.request-app-cta {
+  display: block;
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--gradient-cta);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: var(--radius);
+  transition: opacity 0.2s;
+}
+
+.request-app-cta:hover {
+  opacity: 0.9;
+}

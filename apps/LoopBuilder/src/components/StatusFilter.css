@@ -1,0 +1,30 @@
+.status-filter {
+  display: flex;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.status-filter__tab {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.status-filter__tab:hover {
+  background: var(--color-bg);
+}
+
+.status-filter__tab--active {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.status-filter__tab--active:hover {
+  background: var(--color-primary-dark);
+}

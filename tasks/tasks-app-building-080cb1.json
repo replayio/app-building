@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteComponentStatusFilter: Write the StatusFilter component",
-        "WriteComponentRequestAppCTA: Write the RequestAppCTA component",
-        "WriteComponentAppCard: Write the AppCard component",
-        "WriteComponentAppCardGrid: Write the AppCardGrid component",
-        "WritePageMainPage: Write the MainPage page itself"
-      ],
-      "timestamp": "2026-02-28T20:25:17.315Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteComponentAppHeader: Write the AppHeader component",
         "WriteComponentAppActions: Write the AppActions component",
         "WriteComponentActivityLogEntry: Write the ActivityLogEntry component",
