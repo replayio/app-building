@@ -1,17 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageRequestPage: Decide on components, add sections to docs/tests.md",
-        "PlanComponentWizardStepper: Add test entries for WizardStepper (progress indicator: Describe App, Assessment, Confirmation)",
-        "PlanComponentDescribeAppForm: Add test entries for DescribeAppForm (app name, description, requirements fields)",
-        "PlanComponentAssessmentScreen: Add test entries for AssessmentScreen (loading state, policy check)",
-        "PlanComponentRejectionResult: Add test entries for RejectionResult (rejection reason, Edit Request button)",
-        "PlanComponentAcceptanceResult: Add test entries for AcceptanceResult (success message, Go to AppPage button, View all My Apps link)"
-      ],
-      "timestamp": "2026-02-28T20:20:42.688Z",
-      "app": "LoopBuilder"
-    }
-  ]
+  "tasks": []
 }

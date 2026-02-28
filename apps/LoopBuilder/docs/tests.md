@@ -332,4 +332,193 @@ Entries are separated by visible spacing or borders.
 
 <!-- Components: WizardStepper, DescribeAppForm, AssessmentScreen, RejectionResult, AcceptanceResult -->
 
-_(Tests to be added by PlanPageRequestPage task)_
+### WizardStepper
+
+**WizardStepper: Displays three labeled steps**
+Given the user navigates to RequestPage (/request),
+the WizardStepper is visible at the top of the page showing three steps in a horizontal progress indicator:
+"1. Describe App", "2. Assessment", and "3. Confirmation".
+The steps are connected by a horizontal progress line.
+
+**WizardStepper: Step 1 active on initial load**
+Given the user navigates to RequestPage (/request),
+the WizardStepper shows "1. Describe App" as the active step (highlighted dot/circle).
+"2. Assessment" and "3. Confirmation" appear as upcoming steps (empty/unfilled circles).
+The progress line between steps is not filled beyond step 1.
+
+**WizardStepper: Step 1 completed and Step 2 active during assessment**
+Given the user has submitted the DescribeAppForm and the system is assessing the request,
+the WizardStepper shows "1. Describe App" with a completed checkmark icon,
+"2. Assessment" as the active step (highlighted dot/circle),
+and "3. Confirmation" as upcoming (empty/unfilled circle).
+The progress line is filled between step 1 and step 2.
+
+**WizardStepper: Steps 1 and 2 completed and Step 3 active on confirmation**
+Given the assessment is complete (either accepted or rejected),
+the WizardStepper shows "1. Describe App" and "2. Assessment" both with completed checkmark icons,
+and "3. Confirmation" as the active step (highlighted dot/circle).
+The progress line is filled across all three steps.
+
+**WizardStepper: Steps are not clickable for navigation**
+Given the user is on step 2 (Assessment) of the wizard,
+when the user clicks on "1. Describe App" in the stepper,
+the wizard does not navigate back to step 1.
+The stepper is a read-only progress indicator, not a navigation control.
+
+### DescribeAppForm
+
+**DescribeAppForm: Displays form fields on step 1**
+Given the user navigates to RequestPage (/request) and the wizard is on step 1,
+the DescribeAppForm is visible with three input fields:
+an "App Name" text input field,
+a "Description" multi-line textarea field,
+and a "Requirements" multi-line textarea field.
+Each field has a visible label above it.
+
+**DescribeAppForm: User can type into App Name field**
+Given the user is on step 1 of the RequestPage wizard,
+when the user clicks the "App Name" field and types "Inventory Tracker Pro",
+the text "Inventory Tracker Pro" appears in the App Name input field.
+
+**DescribeAppForm: User can type into Description field**
+Given the user is on step 1 of the RequestPage wizard,
+when the user clicks the "Description" field and types "A mobile-friendly app to manage warehouse stock, track shipments, and generate reports. Must integrate with existing ERP.",
+the full text appears in the Description textarea, wrapping to multiple lines as needed.
+
+**DescribeAppForm: User can type into Requirements field**
+Given the user is on step 1 of the RequestPage wizard,
+when the user clicks the "Requirements" field and types "User authentication, barcode scanning, real-time data sync.",
+the text appears in the Requirements textarea.
+
+**DescribeAppForm: Submit button visible and labeled**
+Given the user is on step 1 of the RequestPage wizard,
+a submit button is visible below the form fields with text such as "Submit Request" or "Next".
+The button is styled as a primary blue button.
+
+**DescribeAppForm: Validation requires App Name**
+Given the user is on step 1 with the App Name field empty,
+when the user clicks the submit button,
+the form does not advance to step 2.
+A validation error message is displayed near the App Name field indicating it is required.
+
+**DescribeAppForm: Validation requires Description**
+Given the user is on step 1 with the App Name filled but the Description field empty,
+when the user clicks the submit button,
+the form does not advance to step 2.
+A validation error message is displayed near the Description field indicating it is required.
+
+**DescribeAppForm: Successful submission advances to Assessment step**
+Given the user has filled in App Name as "Inventory Tracker Pro", Description as "A mobile-friendly app to manage warehouse stock", and Requirements as "User authentication, barcode scanning",
+when the user clicks the submit button,
+the wizard advances to step 2 (Assessment).
+The WizardStepper updates to show step 1 as completed and step 2 as active.
+The DescribeAppForm is replaced by the AssessmentScreen.
+
+**DescribeAppForm: Submitted data persists in request summary during assessment**
+Given the user submitted the form with App Name "Inventory Tracker Pro", Description "A mobile-friendly app to manage warehouse stock, track shipments, and generate reports. Must integrate with existing ERP.", and Requirements "User authentication, barcode scanning, real-time data sync.",
+when the wizard advances to step 2,
+a "Request Summary" panel is displayed on the left side showing the submitted App Name, Description, and Requirements exactly as entered.
+
+### AssessmentScreen
+
+**AssessmentScreen: Displays loading state during assessment**
+Given the user has submitted the DescribeAppForm and the wizard is on step 2,
+the AssessmentScreen is displayed with the text "Assessing Request against Policy & Technical Criteria..." as a heading or prominent label.
+A progress bar is visible below the heading, showing assessment progress with colored segments (green for passing checks, red for failing checks).
+Below the progress bar, the text "Please wait while we review your request. This typically takes a few moments." is displayed.
+A loading spinner animation is visible below the waiting text.
+
+**AssessmentScreen: Request summary visible alongside assessment**
+Given the wizard is on step 2 (Assessment),
+a "Request Summary" panel is displayed on the left side of the screen showing the submitted App Name, Description, and Requirements.
+The assessment loading UI is displayed on the right side.
+
+**AssessmentScreen: Progress bar animates during assessment**
+Given the AssessmentScreen is displayed and the backend is processing the request,
+the progress bar updates to reflect assessment progress (e.g., green segments growing as checks pass).
+The progress bar provides visual feedback that the assessment is actively running.
+
+**AssessmentScreen: Transitions to rejection on policy failure**
+Given the system has finished assessing the request and determined it violates policy (e.g., contains personal information requirements),
+the wizard automatically advances to step 3 (Confirmation).
+The AssessmentScreen is replaced by the RejectionResult.
+The WizardStepper updates to show steps 1 and 2 as completed and step 3 as active.
+
+**AssessmentScreen: Transitions to acceptance on policy pass**
+Given the system has finished assessing the request and determined it passes all policy and technical checks,
+the wizard automatically advances to step 3 (Confirmation).
+The AssessmentScreen is replaced by the AcceptanceResult.
+The WizardStepper updates to show steps 1 and 2 as completed and step 3 as active.
+
+### RejectionResult
+
+**RejectionResult: Displays rejection heading with warning icon**
+Given the request has been rejected after assessment,
+the RejectionResult screen displays a yellow/amber warning triangle icon at the top,
+followed by a large bold heading reading "Request Rejected".
+
+**RejectionResult: Displays rejection context message**
+Given the request for app "Inventory Tracker Pro" has been rejected,
+the RejectionResult displays a message below the heading reading "Your request for 'Inventory Tracker Pro' cannot be processed at this time."
+The app name in the message matches the name submitted in the DescribeAppForm.
+
+**RejectionResult: Displays reason for rejection box**
+Given the request has been rejected with a policy violation reason,
+the RejectionResult displays a bordered box with the heading "Reason for Rejection" in bold.
+Below the heading, a "Policy Violation:" label is shown in bold, followed by the specific reason text (e.g., "The request contains specifications for handling sensitive personal information without adequate security protocols. Please revise your request to comply with data privacy guidelines.").
+The reason box has a distinct background or border to visually separate it from the rest of the content.
+
+**RejectionResult: Edit Request button visible and styled**
+Given the request has been rejected,
+an "Edit Request" button is displayed below the rejection reason box.
+The button is styled as a full-width primary blue button with the text "Edit Request".
+
+**RejectionResult: Edit Request button navigates back to step 1**
+Given the user is on the RejectionResult screen,
+when the user clicks the "Edit Request" button,
+the wizard navigates back to step 1 (Describe App).
+The WizardStepper updates to show step 1 as active.
+The DescribeAppForm is displayed with the previously submitted values pre-filled in the App Name, Description, and Requirements fields, allowing the user to edit and resubmit.
+
+### AcceptanceResult
+
+**AcceptanceResult: Displays success heading with checkmark icon**
+Given the request has been accepted after assessment,
+the AcceptanceResult screen displays a green checkmark circle icon at the top,
+followed by a large bold heading reading "App Queued for Building!".
+
+**AcceptanceResult: Displays success context message**
+Given the request for app "Inventory Tracker Pro" has been accepted,
+the AcceptanceResult displays a message below the heading reading "Great news! Your request for 'Inventory Tracker Pro' has been accepted and is now queued for autonomous building."
+The app name in the message matches the name submitted in the DescribeAppForm.
+
+**AcceptanceResult: Displays Next Steps section**
+Given the request has been accepted,
+the AcceptanceResult displays a "Next Steps" section with the text "Your app is being generated. You can monitor its progress on the AppPage."
+This section provides the user with context about what happens next.
+
+**AcceptanceResult: Go to AppPage button visible and styled**
+Given the request has been accepted and the app has been created with an id,
+the AcceptanceResult displays a "Go to AppPage to Monitor Progress" button styled as a primary blue button.
+
+**AcceptanceResult: Go to AppPage button navigates to new app's AppPage**
+Given the request has been accepted and an app with id "inventory-tracker-pro" has been created,
+when the user clicks the "Go to AppPage to Monitor Progress" button,
+the app navigates to the AppPage at /apps/inventory-tracker-pro.
+The AppPage displays the newly queued app with status "Queued".
+
+**AcceptanceResult: View all My Apps link visible**
+Given the request has been accepted,
+below the "Go to AppPage to Monitor Progress" button, a "View all My Apps" text link is displayed.
+The link is styled as a text hyperlink (not a button), visually distinct from the primary button above.
+
+**AcceptanceResult: View all My Apps link navigates to MainPage**
+Given the user is on the AcceptanceResult screen,
+when the user clicks the "View all My Apps" link,
+the app navigates to the MainPage (/).
+The MainPage loads with the default StatusFilter tab selected.
+
+**AcceptanceResult: Accepted app appears in MainPage Queued tab**
+Given the user's request for "Inventory Tracker Pro" has been accepted and queued,
+when the user navigates to the MainPage (/) and selects the "Queued" tab in the StatusFilter,
+an AppCard for "Inventory Tracker Pro" is visible in the AppCardGrid with status "Queued" and a 0% progress bar.
