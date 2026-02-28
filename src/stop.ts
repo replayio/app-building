@@ -2,7 +2,7 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import { loadDotEnv, ContainerRegistry, type ContainerConfig, stopRemoteContainer, httpGet, httpPost, type RegistryEntry, httpOptsFor } from "./package";
+import { loadDotEnv, FileContainerRegistry, type ContainerConfig, stopRemoteContainer, httpGet, httpPost, type RegistryEntry, httpOptsFor } from "./package";
 import { RED, RESET } from "./format";
 
 async function waitForStopped(baseUrl: string, timeoutMs: number = 120000): Promise<void> {
@@ -78,7 +78,7 @@ async function main(): Promise<void> {
   const config: ContainerConfig = {
     projectRoot,
     envVars,
-    registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+    registry: new FileContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
     flyToken: envVars.FLY_API_TOKEN,
     flyApp: envVars.FLY_APP_NAME,
   };

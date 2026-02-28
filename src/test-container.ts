@@ -2,14 +2,14 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import { loadDotEnv, ContainerRegistry, type ContainerConfig, spawnTestContainer } from "./package";
+import { loadDotEnv, FileContainerRegistry, type ContainerConfig, spawnTestContainer } from "./package";
 
 const projectRoot = resolve(__dirname, "..");
 const envVars = loadDotEnv(projectRoot);
 const config: ContainerConfig = {
   projectRoot,
   envVars,
-  registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+  registry: new FileContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
 };
 
 spawnTestContainer(config).then(

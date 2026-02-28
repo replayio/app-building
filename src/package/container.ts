@@ -17,12 +17,13 @@ export interface AgentState {
 }
 
 export interface ContainerConfig {
-  projectRoot: string;
+  projectRoot?: string;
   envVars: Record<string, string>;
   registry: ContainerRegistry;
   flyToken?: string;
   flyApp?: string;
   imageRef?: string;
+  webhookUrl?: string;
 }
 
 export interface RepoOptions {
@@ -54,6 +55,7 @@ export function loadDotEnv(projectRoot: string): Record<string, string> {
 }
 
 export function buildImage(config: ContainerConfig): void {
+  if (!config.projectRoot) throw new Error("projectRoot is required for local Docker operations");
   console.log("Building Docker image...");
   execFileSync("docker", ["build", "--network", "host", "-t", IMAGE_NAME, config.projectRoot], {
     stdio: "inherit",
@@ -128,10 +130,12 @@ export async function startContainer(
   const containerName = `app-building-${uniqueId}`;
   const hostPort = findFreePort();
 
-  const containerEnv = buildContainerEnv(repo, config.envVars, {
+  const extra: Record<string, string> = {
     PORT: String(hostPort),
     CONTAINER_NAME: containerName,
-  });
+  };
+  if (config.webhookUrl) extra.WEBHOOK_URL = config.webhookUrl;
+  const containerEnv = buildContainerEnv(repo, config.envVars, extra);
 
   // Build docker run args
   const args: string[] = ["run", "-d", "--rm", "--name", containerName];
@@ -219,10 +223,12 @@ export async function startRemoteContainer(
   const machineName = `app-building-${uniqueId}`;
 
   // Build env vars for the machine
-  const containerEnv = buildContainerEnv(repo, config.envVars, {
+  const remoteExtra: Record<string, string> = {
     PORT: "3000",
     CONTAINER_NAME: machineName,
-  });
+  };
+  if (config.webhookUrl) remoteExtra.WEBHOOK_URL = config.webhookUrl;
+  const containerEnv = buildContainerEnv(repo, config.envVars, remoteExtra);
   // Remove Fly-specific vars from container env (not needed inside)
   delete containerEnv.FLY_API_TOKEN;
   delete containerEnv.FLY_APP_NAME;
@@ -325,6 +331,7 @@ export function stopContainer(config: ContainerConfig, containerName: string): v
 }
 
 export function spawnTestContainer(config: ContainerConfig): Promise<void> {
+  if (!config.projectRoot) throw new Error("projectRoot is required for local Docker operations");
   ensureImageExists(config.projectRoot);
 
   const uniqueId = Math.random().toString(36).slice(2, 8);

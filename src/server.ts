@@ -19,6 +19,7 @@ const REPO_URL = process.env.REPO_URL ?? "";
 const CLONE_BRANCH = process.env.CLONE_BRANCH ?? "main";
 const PUSH_BRANCH = process.env.PUSH_BRANCH ?? CLONE_BRANCH;
 const CONTAINER_NAME = process.env.CONTAINER_NAME ?? "agent";
+const WEBHOOK_URL = process.env.WEBHOOK_URL ?? "";
 const REPO_DIR = "/repo";
 const LOGS_DIR = resolve(REPO_DIR, "logs");
 
@@ -88,6 +89,23 @@ function waitForWake(): Promise<void> {
   return new Promise((resolve) => {
     wakeResolve = resolve;
   });
+}
+
+// --- Webhook ---
+
+function postWebhook(type: string, data?: Record<string, unknown>): void {
+  if (!WEBHOOK_URL) return;
+  const payload = JSON.stringify({
+    type,
+    containerName: CONTAINER_NAME,
+    timestamp: new Date().toISOString(),
+    ...(data !== undefined ? { data } : {}),
+  });
+  fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payload,
+  }).catch(() => {});
 }
 
 // --- Claude extra args ---
@@ -183,10 +201,12 @@ async function processLoop(): Promise<void> {
       const entry = messages.get(msgId)!;
       entry.status = "processing";
       iteration++;
+      postWebhook("container.processing", { iteration });
 
       log(`=== Message ${msgId} (iteration ${iteration}) ===`);
       log(`Initial revision: ${getRevision(REPO_DIR)}`);
 
+      const messageStartTime = Date.now();
       try {
         const result = await processMessage(entry.prompt, extraArgs, log, onEvent, interactiveSessionId);
         entry.result = result;
@@ -201,10 +221,18 @@ async function processLoop(): Promise<void> {
           totalCost += result.cost_usd;
           log(`Cost: $${result.cost_usd.toFixed(4)} (total: $${totalCost.toFixed(4)})`);
         }
+
+        postWebhook("message.done", {
+          messageId: msgId,
+          cost_usd: result.cost_usd ?? 0,
+          duration_ms: Date.now() - messageStartTime,
+          num_turns: result.num_turns ?? 0,
+        });
       } catch (e: any) {
         entry.status = "error";
         entry.error = e.message;
         log(`Error: ${e.message}`);
+        postWebhook("message.error", { messageId: msgId, error: e.message });
       }
 
       lastActivityAt = new Date().toISOString();
@@ -218,6 +246,7 @@ async function processLoop(): Promise<void> {
       }
 
       state = "idle";
+      postWebhook("container.idle", { pendingTasks: getPendingTaskCount(), queueLength: messageQueue.length });
       continue;
     }
 
@@ -226,6 +255,8 @@ async function processLoop(): Promise<void> {
     if (!stopRequested && pendingTasks > 0) {
       log(`Processing ${pendingTasks} pending task(s)...`);
       state = "processing";
+      postWebhook("container.processing", { iteration });
+      postWebhook("task.started", { pendingTasks });
       const jobResult = await processTasks(
         extraArgs,
         log,
@@ -244,7 +275,9 @@ async function processLoop(): Promise<void> {
       tasksProcessed += jobResult.tasksProcessed;
       totalCost += jobResult.totalCost;
       log(`Task processing complete. ${jobResult.tasksProcessed} task(s) processed, cost: $${jobResult.totalCost.toFixed(4)}`);
+      postWebhook("task.done", { tasksProcessed: jobResult.tasksProcessed, totalCost: jobResult.totalCost });
       state = "idle";
+      postWebhook("container.idle", { pendingTasks: getPendingTaskCount(), queueLength: messageQueue.length });
       continue;
     }
 
@@ -257,10 +290,12 @@ async function processLoop(): Promise<void> {
     // Wait for something to happen
     log(`Idle. Queue: ${messageQueue.length} messages, ${getPendingTaskCount()} tasks pending. Waiting...`);
     state = "idle";
+    postWebhook("container.idle", { pendingTasks: getPendingTaskCount(), queueLength: messageQueue.length });
     await waitForWake();
   }
 
   state = "stopping";
+  postWebhook("container.stopping", {});
   log("Server shutting down.");
 
   // Commit and push any remaining work on stop
@@ -275,6 +310,7 @@ async function processLoop(): Promise<void> {
   }
 
   state = "stopped";
+  postWebhook("container.stopped", {});
 
   // Wait briefly for final status polls before exiting
   setTimeout(() => process.exit(0), 5000);
@@ -299,6 +335,7 @@ const server = createServer(async (req, res) => {
       const entry: MessageEntry = { id, prompt, status: "queued" };
       messages.set(id, entry);
       messageQueue.push(id);
+      postWebhook("message.queued", { messageId: id, prompt });
       wake();
       json(res, 200, { id });
       return;
@@ -426,6 +463,7 @@ async function main(): Promise<void> {
   // Now that /repo exists, initialize the logger
   log = createBufferedLogger(LOGS_DIR, CONTAINER_NAME, iteration, (line) => {
     logBuffer.append(line);
+    postWebhook("log", { line });
   });
 
   // Checkout target branch if different from clone branch
@@ -449,6 +487,8 @@ async function main(): Promise<void> {
   server.listen(PORT, () => {
     log(`HTTP server listening on port ${PORT}`);
     state = "idle";
+    postWebhook("container.started", { pushBranch: PUSH_BRANCH, revision: getRevision(REPO_DIR) });
+    postWebhook("container.idle", { pendingTasks: getPendingTaskCount(), queueLength: messageQueue.length });
   });
 
   // Start processing loop

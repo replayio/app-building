@@ -13,10 +13,9 @@ npm install @replayio/app-building
 ```ts
 import {
   loadDotEnv,
-  ContainerRegistry,
+  FileContainerRegistry,
   type ContainerConfig,
   type RepoOptions,
-  startContainer,
   startRemoteContainer,
   stopRemoteContainer,
   httpGet,
@@ -27,9 +26,9 @@ import {
 // Assemble config once at startup
 const envVars = loadDotEnv("/path/to/project");
 const config: ContainerConfig = {
-  projectRoot: "/path/to/project",
+  projectRoot: "/path/to/project",  // optional — only needed for local Docker operations
   envVars,
-  registry: new ContainerRegistry("/path/to/.container-registry.jsonl"),
+  registry: new FileContainerRegistry("/path/to/.container-registry.jsonl"),
   flyToken: envVars.FLY_API_TOKEN,
   flyApp: envVars.FLY_APP_NAME,
 };
@@ -58,9 +57,10 @@ await stopRemoteContainer(config, state);
 
 | Export | Description |
 |---|---|
-| `ContainerConfig` | Interface bundling all external state: `projectRoot`, `envVars`, `registry`, optional `flyToken`/`flyApp`/`imageRef`. |
+| `ContainerConfig` | Interface bundling all external state: optional `projectRoot` (only needed for local Docker operations), `envVars`, `registry`, optional `flyToken`/`flyApp`/`imageRef`/`webhookUrl`. See [Webhooks](#webhooks) below. |
 | `RepoOptions` | Per-invocation git settings: `repoUrl`, `cloneBranch`, `pushBranch`. |
-| `ContainerRegistry` | Class encapsulating `.container-registry.jsonl` persistence. Methods: `log`, `markStopped`, `clearStopped`, `getRecent`, `find`, `findAlive`. |
+| `ContainerRegistry` | Interface for container registry storage. Methods: `log`, `markStopped`, `clearStopped`, `getRecent`, `find`, `findAlive`. |
+| `FileContainerRegistry` | Built-in file-backed implementation of `ContainerRegistry`, backed by a `.jsonl` file. |
 
 ### Container lifecycle
 
@@ -76,7 +76,7 @@ await stopRemoteContainer(config, state);
 
 **Types:** `AgentState`, `ContainerConfig`, `RepoOptions`
 
-### Container registry (`ContainerRegistry` class)
+### Container registry (`ContainerRegistry` interface / `FileContainerRegistry` class)
 
 | Method | Description |
 |---|---|
@@ -122,3 +122,54 @@ await stopRemoteContainer(config, state);
 | Export | Description |
 |---|---|
 | `getImageRef()` | Returns `CONTAINER_IMAGE_REF` env var, or `ghcr.io/replayio/app-building:latest` by default. Used by `startRemoteContainer`. |
+
+## Webhooks
+
+Set `webhookUrl` on `ContainerConfig` to receive real-time notifications of container activity. The container POSTs fire-and-forget JSON to that URL on key events (no retries, failures are silently ignored).
+
+### Payload format
+
+Every POST body has this shape:
+
+```json
+{
+  "type": "container.started",
+  "containerName": "app-building-abc123",
+  "timestamp": "2026-02-28T12:00:00.000Z",
+  "data": { ... }
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `type` | `string` | Event type (see table below). |
+| `containerName` | `string` | Name of the container that emitted the event. |
+| `timestamp` | `string` | ISO-8601 timestamp. |
+| `data` | `object` | Event-specific payload. Present on all events; contents vary by type. |
+
+### Events
+
+| Type | When | `data` fields |
+|---|---|---|
+| `container.started` | HTTP server is listening | `pushBranch`, `revision` |
+| `container.idle` | State transitions to idle | `pendingTasks`, `queueLength` |
+| `container.processing` | State transitions to processing | `iteration` |
+| `container.stopping` | State transitions to stopping | _(empty)_ |
+| `container.stopped` | State transitions to stopped | _(empty)_ |
+| `message.queued` | `POST /message` received | `messageId`, `prompt` |
+| `message.done` | Message processing complete | `messageId`, `cost_usd`, `duration_ms`, `num_turns` |
+| `message.error` | Message processing failed | `messageId`, `error` |
+| `task.started` | Task processing begins | `pendingTasks` |
+| `task.done` | Task processing complete | `tasksProcessed`, `totalCost` |
+| `log` | Each log line | `line` |
+
+### Example
+
+```ts
+const config: ContainerConfig = {
+  projectRoot: "/path/to/project",
+  envVars: loadDotEnv("/path/to/project"),
+  registry: new FileContainerRegistry("/path/to/.container-registry.jsonl"),
+  webhookUrl: "https://example.com/hooks/container-events",
+};
+```

@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { Command } from "commander";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import { loadDotEnv, ContainerRegistry, type ContainerConfig, startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState, httpGet, httpPost, type HttpOptions, httpOptsFor } from "./package";
+import { loadDotEnv, FileContainerRegistry, type ContainerConfig, startContainer, startRemoteContainer, stopContainer, stopRemoteContainer, type AgentState, httpGet, httpPost, type HttpOptions, httpOptsFor } from "./package";
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
 import { formatEvent } from "./format";
 
@@ -285,7 +285,7 @@ async function main(): Promise<void> {
   const config: ContainerConfig = {
     projectRoot,
     envVars,
-    registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+    registry: new FileContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
     flyToken: envVars.FLY_API_TOKEN,
     flyApp: envVars.FLY_APP_NAME,
   };

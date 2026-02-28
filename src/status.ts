@@ -2,7 +2,7 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-import { httpGet, type HttpOptions, ContainerRegistry, type RegistryEntry, httpOptsFor } from "./package";
+import { httpGet, type HttpOptions, FileContainerRegistry, type RegistryEntry, httpOptsFor } from "./package";
 import { formatLogLine, RESET, DIM, BOLD, CYAN, GREEN, YELLOW, RED } from "./format";
 
 function stripTimestamp(rawLine: string): string {
@@ -221,7 +221,7 @@ async function main(): Promise<void> {
   const { tailTarget, contextCount } = parseArgs(process.argv.slice(2));
 
   const projectRoot = resolve(__dirname, "..");
-  const registry = new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl"));
+  const registry = new FileContainerRegistry(resolve(projectRoot, ".container-registry.jsonl"));
 
   const entries = registry.getRecent();
 

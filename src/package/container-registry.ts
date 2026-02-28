@@ -7,7 +7,16 @@ export interface RegistryEntry extends AgentState {
   stoppedAt?: string;
 }
 
-export class ContainerRegistry {
+export interface ContainerRegistry {
+  log(state: AgentState): void;
+  markStopped(containerName?: string): void;
+  clearStopped(containerName: string): void;
+  getRecent(limit?: number): RegistryEntry[];
+  find(containerName: string): RegistryEntry | null;
+  findAlive(): Promise<RegistryEntry[]>;
+}
+
+export class FileContainerRegistry implements ContainerRegistry {
   constructor(private filePath: string) {}
 
   private readRegistry(): { lines: string[]; entries: (RegistryEntry | null)[] } {

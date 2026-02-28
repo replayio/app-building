@@ -6,7 +6,7 @@
  */
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
-import { loadDotEnv, ContainerRegistry, type ContainerConfig, type RepoOptions, startRemoteContainer, stopRemoteContainer, httpGet, httpPost, type HttpOptions } from "./package";
+import { loadDotEnv, FileContainerRegistry, type ContainerConfig, type RepoOptions, startRemoteContainer, stopRemoteContainer, httpGet, httpPost, type HttpOptions } from "./package";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import { getLocalRemoteUrl, getLocalBranch } from "./git";
@@ -35,7 +35,7 @@ async function main() {
   const config: ContainerConfig = {
     projectRoot,
     envVars,
-    registry: new ContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
+    registry: new FileContainerRegistry(resolve(projectRoot, ".container-registry.jsonl")),
     flyToken: envVars.FLY_API_TOKEN,
     flyApp: envVars.FLY_APP_NAME,
   };
