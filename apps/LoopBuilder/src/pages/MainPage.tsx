@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { fetchApps } from '../store/appsSlice'
 import StatusFilter from '../components/StatusFilter'
@@ -30,6 +31,11 @@ function MainPage() {
       ) : (
         <AppCardGrid />
       )}
+      <div className="main-page__footer">
+        <Link to="/status" className="main-page__status-link" data-testid="status-link">
+          System Status
+        </Link>
+      </div>
     </div>
   )
 }

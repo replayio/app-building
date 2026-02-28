@@ -7,6 +7,20 @@
   gap: 20px;
 }
 
+.main-page__footer {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.main-page__status-link {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.main-page__status-link:hover {
+  color: var(--color-primary);
+}
+
 @media (max-width: 640px) {
   .main-page {
     padding: 12px;

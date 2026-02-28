@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
-        "WriteStatusBackend: Create netlify/functions/status.ts backend function. GET returns: (1) all containers NOT in 'stopped' state with their last_event_at timestamp, (2) the last 50 webhook events received ordered by received_at DESC, (3) the current default_prompt from settings. This powers the status page.",
-        "WriteStatusPage: Create src/pages/StatusPage.tsx with Redux slice (statusSlice) and route at /status. The page shows: (1) a list/table of all active containers (not stopped) with container name, status, prompt, and last event time, (2) a feed of the last 50 webhook events with timestamp, container_id, event_type, and payload summary, (3) the current default prompt. Poll for updates every 10 seconds. Add data-testid attributes.",
-        "AddStatusLink: Add a subtle/small link to the status page on MainPage. It should not be a prominent CTA - just a small text link in the header or footer area, e.g. 'System Status' link. Add the /status route to App.tsx."
-      ],
-      "timestamp": "2026-02-28T22:40:59.950Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "DoDeploy: Deploy the app to production with all new webhook functions, status page, and updated dependencies. Ensure WEBHOOK_SECRET, FLY_API_TOKEN, and FLY_APP_NAME env vars are set on the Netlify site.",
