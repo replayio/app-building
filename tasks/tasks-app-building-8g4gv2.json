@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "RenameNetlifySite: Rename the Netlify site to loop-builder so the deployed URL becomes loop-builder.netlify.app. Use the Netlify CLI or API with the existing site_id from deployment.txt. Update deployment.txt with the new URL."
+      ],
+      "timestamp": "2026-02-28T22:39:53.168Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "UpdateAppBuildingPackage: Install the latest version of the app-building npm package in the LoopBuilder app (npm install app-building@latest). This package now exposes a webhook endpoint that can be called when starting containers. Review the package API to understand the webhook interface."
+      ],
+      "timestamp": "2026-02-28T22:40:03.211Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "DesignWebhookSchema: Design and add new database tables to schema.ts and migrations: (1) containers table - tracks container_id, name, status (not 'stopped' means active), prompt used, created_at, last_event_at. (2) webhook_events table - stores raw webhook events with id, container_id, event_type, payload JSON, received_at. (3) settings table - key/value store for app settings like default_prompt. Add appropriate indexes. Use WEBHOOK_SECRET env var pattern for auth."
+      ],
+      "timestamp": "2026-02-28T22:40:15.625Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteAppBuilderEvent: Create netlify/functions/app-builder-event.ts backend function. This is a webhook endpoint that receives POST requests from app-building containers reporting events (e.g. task started, task completed, error, container stopped). Validate the WEBHOOK_SECRET env var against the Authorization header or a secret query param. Parse the event payload and upsert the containers table (update status, last_event_at) and insert into webhook_events table. Return appropriate status codes."
+      ],
+      "timestamp": "2026-02-28T22:40:27.082Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteSpawnContainer: Create netlify/functions/spawn-container.ts backend function. This is a webhook endpoint (POST) that starts a new app-building container. Validate WEBHOOK_SECRET. Accept a JSON body with an optional prompt field. If no prompt is provided, read the default_prompt from the settings table. Use the available Fly.io credentials (FLY_API_TOKEN, FLY_APP_NAME) and the app-building package APIs to create a new remote container with the prompt passed as a PROMPT env var for detached mode execution. Record the new container in the containers table. Return the container info."
+      ],
+      "timestamp": "2026-02-28T22:40:34.485Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteSetDefaultPrompt: Create netlify/functions/set-default-prompt.ts backend function. This is a webhook endpoint (POST) that sets the default prompt used by SpawnContainer when no prompt is provided. Validate WEBHOOK_SECRET. Accept a JSON body with a prompt field. Upsert the settings table with key='default_prompt'. Also support GET to retrieve the current default prompt (no auth required for GET, used by the frontend status page)."
+      ],
+      "timestamp": "2026-02-28T22:40:44.688Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "WriteStatusBackend: Create netlify/functions/status.ts backend function. GET returns: (1) all containers NOT in 'stopped' state with their last_event_at timestamp, (2) the last 50 webhook events received ordered by received_at DESC, (3) the current default_prompt from settings. This powers the status page.",
+        "WriteStatusPage: Create src/pages/StatusPage.tsx with Redux slice (statusSlice) and route at /status. The page shows: (1) a list/table of all active containers (not stopped) with container name, status, prompt, and last event time, (2) a feed of the last 50 webhook events with timestamp, container_id, event_type, and payload summary, (3) the current default prompt. Poll for updates every 10 seconds. Add data-testid attributes.",
+        "AddStatusLink: Add a subtle/small link to the status page on MainPage. It should not be a prominent CTA - just a small text link in the header or footer area, e.g. 'System Status' link. Add the /status route to App.tsx."
+      ],
+      "timestamp": "2026-02-28T22:40:59.950Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "DoDeploy: Deploy the app to production with all new webhook functions, status page, and updated dependencies. Ensure WEBHOOK_SECRET, FLY_API_TOKEN, and FLY_APP_NAME env vars are set on the Netlify site.",
+        "TestDeploy: Test the deployed app to verify the main page, status page, and webhook endpoints work"
+      ],
+      "timestamp": "2026-02-28T22:41:07.430Z",
+      "app": "LoopBuilder"
+    }
+  ]
+}
