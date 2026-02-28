@@ -3,9 +3,9 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "Unpack: Write test specification"
+        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
       ],
-      "timestamp": "2026-02-28T20:18:14.531Z",
+      "timestamp": "2026-02-28T20:19:22.555Z",
       "app": "LoopBuilder"
     },
     {
