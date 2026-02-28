@@ -3,14 +3,6 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "WriteAppBuilderEvent: Create netlify/functions/app-builder-event.ts backend function. This is a webhook endpoint that receives POST requests from app-building containers reporting events (e.g. task started, task completed, error, container stopped). Validate the WEBHOOK_SECRET env var against the Authorization header or a secret query param. Parse the event payload and upsert the containers table (update status, last_event_at) and insert into webhook_events table. Return appropriate status codes."
-      ],
-      "timestamp": "2026-02-28T22:40:27.082Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeApp.md",
-      "subtasks": [
         "WriteSpawnContainer: Create netlify/functions/spawn-container.ts backend function. This is a webhook endpoint (POST) that starts a new app-building container. Validate WEBHOOK_SECRET. Accept a JSON body with an optional prompt field. If no prompt is provided, read the default_prompt from the settings table. Use the available Fly.io credentials (FLY_API_TOKEN, FLY_APP_NAME) and the app-building package APIs to create a new remote container with the prompt passed as a PROMPT env var for detached mode execution. Record the new container in the containers table. Return the container info."
       ],
       "timestamp": "2026-02-28T22:40:34.485Z",
