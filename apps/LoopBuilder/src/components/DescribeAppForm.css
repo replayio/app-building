@@ -84,3 +84,8 @@
   font-size: 14px;
   margin-bottom: 16px;
 }
+
+.describe-app-form__field-error {
+  color: var(--color-rejected);
+  font-size: 13px;
+}

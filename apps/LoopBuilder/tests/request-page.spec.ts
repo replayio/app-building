@@ -269,14 +269,17 @@ test.describe('DescribeAppForm', () => {
     // Fill description but leave App Name empty
     await page.getByTestId('app-description-input').fill('A useful app for tracking.')
 
-    // Submit button should be disabled when App Name is empty
+    // Click the submit button
     const submitBtn = page.getByTestId('describe-app-form-submit')
-    await expect(submitBtn).toBeDisabled()
+    await submitBtn.click()
 
-    // Click the submit button — should NOT advance to step 2
-    await submitBtn.click({ force: true })
+    // Should NOT advance to step 2
     await expect(page.getByTestId('describe-app-form')).toBeVisible()
     await expect(page.getByTestId('assessment-screen')).not.toBeVisible()
+
+    // A validation error message is displayed near the App Name field
+    await expect(page.getByTestId('app-name-error')).toBeVisible()
+    await expect(page.getByTestId('app-name-error')).toContainText('required')
   })
 
   test('DescribeAppForm: Validation requires Description', async ({ page }) => {
@@ -286,14 +289,17 @@ test.describe('DescribeAppForm', () => {
     // Fill App Name but leave Description empty
     await page.getByTestId('app-name-input').fill('Inventory Tracker Pro')
 
-    // Submit button should be disabled when Description is empty
+    // Click the submit button
     const submitBtn = page.getByTestId('describe-app-form-submit')
-    await expect(submitBtn).toBeDisabled()
+    await submitBtn.click()
 
-    // Click the submit button — should NOT advance to step 2
-    await submitBtn.click({ force: true })
+    // Should NOT advance to step 2
     await expect(page.getByTestId('describe-app-form')).toBeVisible()
     await expect(page.getByTestId('assessment-screen')).not.toBeVisible()
+
+    // A validation error message is displayed near the Description field
+    await expect(page.getByTestId('app-description-error')).toBeVisible()
+    await expect(page.getByTestId('app-description-error')).toContainText('required')
   })
 
   test('DescribeAppForm: Successful submission advances to Assessment step', async ({ page }) => {

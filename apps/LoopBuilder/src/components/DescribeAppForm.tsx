@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { setAppName, setAppDescription, setAppRequirements, submitRequest } from '../store/requestSlice'
 import './DescribeAppForm.css'
@@ -7,12 +8,15 @@ function DescribeAppForm() {
   const { appName, appDescription, appRequirements, submitting, error } = useAppSelector(
     (state) => state.request,
   )
+  const [submitted, setSubmitted] = useState(false)
 
-  const canSubmit = appName.trim().length > 0 && appDescription.trim().length > 0 && !submitting
+  const nameEmpty = appName.trim().length === 0
+  const descriptionEmpty = appDescription.trim().length === 0
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!canSubmit) return
+    setSubmitted(true)
+    if (nameEmpty || descriptionEmpty || submitting) return
     dispatch(
       submitRequest({
         name: appName.trim(),
@@ -45,6 +49,11 @@ function DescribeAppForm() {
           value={appName}
           onChange={(e) => dispatch(setAppName(e.target.value))}
         />
+        {submitted && nameEmpty && (
+          <span className="describe-app-form__field-error" data-testid="app-name-error">
+            App Name is required
+          </span>
+        )}
       </div>
 
       <div className="describe-app-form__field">
@@ -60,6 +69,11 @@ function DescribeAppForm() {
           value={appDescription}
           onChange={(e) => dispatch(setAppDescription(e.target.value))}
         />
+        {submitted && descriptionEmpty && (
+          <span className="describe-app-form__field-error" data-testid="app-description-error">
+            Description is required
+          </span>
+        )}
       </div>
 
       <div className="describe-app-form__field">
@@ -81,7 +95,6 @@ function DescribeAppForm() {
         type="submit"
         className="describe-app-form__submit"
         data-testid="describe-app-form-submit"
-        disabled={!canSubmit}
       >
         {submitting ? 'Submitting...' : 'Submit Request'}
       </button>
