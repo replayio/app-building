@@ -98,6 +98,7 @@
 }
 
 .webhook-help-endpoint__path {
+  flex: 1;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 13px;
   font-weight: 600;
@@ -147,6 +148,17 @@
   background: var(--color-bg);
   padding: 1px 4px;
   border-radius: 3px;
+}
+
+.webhook-help-endpoint__curl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.webhook-help-endpoint__curl-header .webhook-help-endpoint__label {
+  margin-bottom: 0;
 }
 
 .webhook-help-endpoint__curl {

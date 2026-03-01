@@ -19,6 +19,12 @@ function setupMockStatus(data: StatusResponse) {
   }
 }
 
+const emptyStatus: StatusResponse = {
+  containers: [],
+  webhookEvents: [],
+  defaultPrompt: null,
+}
+
 test.describe('ActiveContainers', () => {
   test('ActiveContainers: Shows pending container after spawn', async ({ page }) => {
     const pendingContainer: ContainerInfo = {
@@ -56,5 +62,73 @@ test.describe('ActiveContainers', () => {
     await expect(page.getByTestId('container-prompt')).toContainText(
       'Build a todo app with authentication'
     )
+  })
+})
+
+test.describe('WebhookHelpButton', () => {
+  test('WebhookHelpButton: Curl commands use actual site URL', async ({ page }) => {
+    await setupMockStatus(emptyStatus)(page)
+    await page.goto('/status')
+    await expect(page.getByTestId('status-page')).toBeVisible({ timeout: 15000 })
+
+    await page.getByTestId('webhook-help-button').click()
+    await expect(page.getByTestId('webhook-help-panel')).toBeVisible({ timeout: 10000 })
+
+    // Each curl command should contain the actual site host, not YOUR_SITE
+    const curlBlocks = page.getByTestId('webhook-endpoint-curl')
+    const count = await curlBlocks.count()
+    expect(count).toBe(3)
+
+    for (let i = 0; i < count; i++) {
+      const text = await curlBlocks.nth(i).textContent()
+      expect(text).not.toContain('YOUR_SITE')
+      expect(text).toContain('localhost')
+    }
+  })
+
+  test('WebhookHelpButton: Curl copy buttons exist', async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+    await setupMockStatus(emptyStatus)(page)
+    await page.goto('/status')
+    await expect(page.getByTestId('status-page')).toBeVisible({ timeout: 15000 })
+
+    await page.getByTestId('webhook-help-button').click()
+    await expect(page.getByTestId('webhook-help-panel')).toBeVisible({ timeout: 10000 })
+
+    // Each endpoint should have a curl copy button
+    const copyButtons = page.getByTestId('webhook-endpoint-copy-curl')
+    await expect(copyButtons).toHaveCount(3, { timeout: 10000 })
+
+    // Click the first copy button and verify it changes to "Copied!"
+    await copyButtons.first().click()
+    await expect(copyButtons.first()).toContainText('Copied!')
+
+    // Verify clipboard contains the curl command with actual URL
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText())
+    expect(clipboardText).toContain('curl -X POST')
+    expect(clipboardText).not.toContain('YOUR_SITE')
+    expect(clipboardText).toContain('app-builder-event')
+  })
+
+  test('WebhookHelpButton: Endpoint URL copy buttons exist', async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+    await setupMockStatus(emptyStatus)(page)
+    await page.goto('/status')
+    await expect(page.getByTestId('status-page')).toBeVisible({ timeout: 15000 })
+
+    await page.getByTestId('webhook-help-button').click()
+    await expect(page.getByTestId('webhook-help-panel')).toBeVisible({ timeout: 10000 })
+
+    // Each endpoint should have a "Copy URL" button
+    const copyUrlButtons = page.getByTestId('webhook-endpoint-copy-path')
+    await expect(copyUrlButtons).toHaveCount(3, { timeout: 10000 })
+
+    // Click the first copy URL button and verify clipboard contains full URL
+    await copyUrlButtons.first().click()
+    await expect(copyUrlButtons.first()).toContainText('Copied!')
+
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText())
+    expect(clipboardText).toContain('/.netlify/functions/app-builder-event')
+    expect(clipboardText).toMatch(/^https?:\/\//)
   })
 })

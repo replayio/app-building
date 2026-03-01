@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import CopyButton from './CopyButton'
 import './WebhookHelpButton.css'
 
 const ENDPOINTS = [
@@ -49,6 +50,10 @@ const ENDPOINTS = [
   },
 ]
 
+function resolveCurl(curl: string): string {
+  return curl.replace(/YOUR_SITE/g, window.location.host)
+}
+
 function WebhookHelpButton() {
   const [open, setOpen] = useState(false)
 
@@ -82,68 +87,76 @@ function WebhookHelpButton() {
                 Close
               </button>
             </div>
-            {ENDPOINTS.map((ep) => (
-              <div
-                key={ep.path}
-                className="webhook-help-endpoint"
-                data-testid="webhook-help-endpoint"
-              >
-                <div className="webhook-help-endpoint__header">
-                  <span className="webhook-help-endpoint__method" data-testid="webhook-endpoint-method">
-                    {ep.method}
-                  </span>
-                  <span className="webhook-help-endpoint__path" data-testid="webhook-endpoint-path">
-                    {ep.path}
-                  </span>
-                </div>
-                <div className="webhook-help-endpoint__body">
-                  <div className="webhook-help-endpoint__section">
-                    <div className="webhook-help-endpoint__label">Authentication</div>
-                    <div className="webhook-help-endpoint__text" data-testid="webhook-endpoint-auth">
-                      {ep.auth}
-                    </div>
+            {ENDPOINTS.map((ep) => {
+              const resolvedCurl = resolveCurl(ep.curl)
+              const fullPath = `${window.location.origin}${ep.path}`
+              return (
+                <div
+                  key={ep.path}
+                  className="webhook-help-endpoint"
+                  data-testid="webhook-help-endpoint"
+                >
+                  <div className="webhook-help-endpoint__header">
+                    <span className="webhook-help-endpoint__method" data-testid="webhook-endpoint-method">
+                      {ep.method}
+                    </span>
+                    <span className="webhook-help-endpoint__path" data-testid="webhook-endpoint-path">
+                      {ep.path}
+                    </span>
+                    <CopyButton text={fullPath} label="Copy URL" data-testid="webhook-endpoint-copy-path" />
                   </div>
-                  {ep.requiredFields.length > 0 && (
+                  <div className="webhook-help-endpoint__body">
                     <div className="webhook-help-endpoint__section">
-                      <div className="webhook-help-endpoint__label">Required Fields</div>
-                      <ul className="webhook-help-endpoint__fields" data-testid="webhook-endpoint-required-fields">
-                        {ep.requiredFields.map((f) => (
-                          <li key={f.name}>
-                            <code>{f.name}</code> ({f.type}) — {f.description}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {ep.optionalFields.length > 0 && (
-                    <div className="webhook-help-endpoint__section">
-                      <div className="webhook-help-endpoint__label">Optional Fields</div>
-                      <ul className="webhook-help-endpoint__fields" data-testid="webhook-endpoint-optional-fields">
-                        {ep.optionalFields.map((f) => (
-                          <li key={f.name}>
-                            <code>{f.name}</code> ({f.type}) — {f.description}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {ep.requiredFields.length === 0 && (
-                    <div className="webhook-help-endpoint__section">
-                      <div className="webhook-help-endpoint__label">Required Fields</div>
-                      <div className="webhook-help-endpoint__text" data-testid="webhook-endpoint-required-fields">
-                        None — all fields are optional
+                      <div className="webhook-help-endpoint__label">Authentication</div>
+                      <div className="webhook-help-endpoint__text" data-testid="webhook-endpoint-auth">
+                        {ep.auth}
                       </div>
                     </div>
-                  )}
-                  <div className="webhook-help-endpoint__section">
-                    <div className="webhook-help-endpoint__label">Example</div>
-                    <code className="webhook-help-endpoint__curl" data-testid="webhook-endpoint-curl">
-                      {ep.curl}
-                    </code>
+                    {ep.requiredFields.length > 0 && (
+                      <div className="webhook-help-endpoint__section">
+                        <div className="webhook-help-endpoint__label">Required Fields</div>
+                        <ul className="webhook-help-endpoint__fields" data-testid="webhook-endpoint-required-fields">
+                          {ep.requiredFields.map((f) => (
+                            <li key={f.name}>
+                              <code>{f.name}</code> ({f.type}) — {f.description}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {ep.optionalFields.length > 0 && (
+                      <div className="webhook-help-endpoint__section">
+                        <div className="webhook-help-endpoint__label">Optional Fields</div>
+                        <ul className="webhook-help-endpoint__fields" data-testid="webhook-endpoint-optional-fields">
+                          {ep.optionalFields.map((f) => (
+                            <li key={f.name}>
+                              <code>{f.name}</code> ({f.type}) — {f.description}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {ep.requiredFields.length === 0 && (
+                      <div className="webhook-help-endpoint__section">
+                        <div className="webhook-help-endpoint__label">Required Fields</div>
+                        <div className="webhook-help-endpoint__text" data-testid="webhook-endpoint-required-fields">
+                          None — all fields are optional
+                        </div>
+                      </div>
+                    )}
+                    <div className="webhook-help-endpoint__section">
+                      <div className="webhook-help-endpoint__curl-header">
+                        <div className="webhook-help-endpoint__label">Example</div>
+                        <CopyButton text={resolvedCurl} data-testid="webhook-endpoint-copy-curl" />
+                      </div>
+                      <code className="webhook-help-endpoint__curl" data-testid="webhook-endpoint-curl">
+                        {resolvedCurl}
+                      </code>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}

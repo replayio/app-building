@@ -672,3 +672,15 @@ the panel displays documentation for the POST /.netlify/functions/set-default-pr
 **WebhookHelpButton: Example curl commands are accurate**
 Given the webhook help panel is open,
 each endpoint's example curl command includes the correct URL path, Content-Type header, Authorization header with a placeholder Bearer token, and a valid JSON body with the required fields for that endpoint.
+
+**WebhookHelpButton: Curl commands use actual site URL**
+Given the webhook help panel is open,
+each endpoint's example curl command uses the actual site URL (derived from the current page origin) instead of a placeholder like YOUR_SITE.
+
+**WebhookHelpButton: Curl copy buttons exist**
+Given the webhook help panel is open,
+each endpoint's example section has a copy button that copies the curl command (with the actual site URL substituted) to the clipboard.
+
+**WebhookHelpButton: Endpoint URL copy buttons exist**
+Given the webhook help panel is open,
+each endpoint's header has a "Copy URL" button that copies the full endpoint URL (origin + path) to the clipboard.

@@ -45,3 +45,7 @@ comes from the `ContainerRegistry` and is joined with database records at query 
 
 The AppPage feed for in-progress apps should poll the container's status/output endpoint
 at regular intervals to show live AI output during development.
+
+## Webhook Documentation
+
+The webhook help panel (WebhookHelpButton) displays interactive documentation for all API endpoints. Curl command examples automatically substitute the current site URL in place of placeholder values. Each endpoint has a "Copy URL" button in the header that copies the full endpoint URL to the clipboard, and each curl example section has a "Copy" button that copies the resolved curl command to the clipboard.

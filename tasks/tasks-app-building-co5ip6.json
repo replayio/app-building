@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/fixBugReport.md",
-      "subtasks": [
-        "AnalyzeBug: Analyze webhook docs copy button bug",
-        "FixBug: Fix webhook docs copy button bug",
-        "UpdateTests: Update tests for webhook docs copy button bug",
-        "UpdateRevisions: Record spec changes for webhook docs copy button bug",
-        "ResolveBug: Mark webhook docs copy button bug as resolved"
-      ],
-      "timestamp": "2026-03-01T03:58:27.281Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/maintain/reviewBugReport.md",
       "subtasks": [
         "Unpack: Review fixed bug reports"

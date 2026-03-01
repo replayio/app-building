@@ -1,0 +1,25 @@
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.copy-btn--copied {
+  color: var(--color-status-finished);
+  border-color: var(--color-status-finished);
+}
