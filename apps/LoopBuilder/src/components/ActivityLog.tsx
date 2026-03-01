@@ -20,16 +20,22 @@ function ActivityLog({ entries, loading, error, appStatus, onRefresh }: Activity
       <div className="activity-log__header">
         <h2 className="activity-log__title">AI Development Activity Log</h2>
         <div className="activity-log__status-row">
-          {isLive ? (
-            <span className="activity-log__live-indicator" data-testid="activity-log-live">
-              <span className="activity-log__live-dot" />
+          <span className="activity-log__feed-label" data-testid="activity-log-feed-label">
+            {isLive && <span className="activity-log__live-dot" data-testid="activity-log-live-dot" />}
+            <span
+              className={isLive ? 'activity-log__live-text' : 'activity-log__inactive-text'}
+              data-testid="activity-log-live"
+            >
               Live Feed
             </span>
-          ) : (
-            <span className="activity-log__historical" data-testid="activity-log-historical">
+            <span className="activity-log__label-sep"> - </span>
+            <span
+              className={!isLive ? 'activity-log__historical-text' : 'activity-log__inactive-text'}
+              data-testid="activity-log-historical"
+            >
               Historical View
             </span>
-          )}
+          </span>
           <button
             className="activity-log__refresh"
             onClick={onRefresh}

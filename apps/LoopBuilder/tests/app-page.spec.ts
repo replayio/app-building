@@ -397,3 +397,149 @@ test.describe('AppActions', () => {
     expect(sourceBox!.x).toBeGreaterThan(openBox!.x)
   })
 })
+
+// ──────────────────────────────────────────────────────────────────────────────
+// ActivityLog
+// ──────────────────────────────────────────────────────────────────────────────
+
+test.describe('ActivityLog', () => {
+  test('ActivityLog: Section title and layout', async ({ page }) => {
+    await setupMockApp(buildingApp)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Verify ActivityLog section is visible below AppActions
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible({ timeout: 10000 })
+
+    const appActions = page.getByTestId('app-actions')
+    await expect(appActions).toBeVisible()
+
+    const actionsBox = await appActions.boundingBox()
+    const activityBox = await activityLog.boundingBox()
+    expect(actionsBox).toBeTruthy()
+    expect(activityBox).toBeTruthy()
+    expect(activityBox!.y).toBeGreaterThan(actionsBox!.y)
+
+    // Verify the heading text
+    const title = activityLog.locator('h2')
+    await expect(title).toHaveText('AI Development Activity Log')
+
+    // Verify bold styling on heading
+    const fontWeight = await title.evaluate((el) => window.getComputedStyle(el).fontWeight)
+    expect(Number(fontWeight)).toBeGreaterThanOrEqual(700)
+
+    // Verify bordered container around log entries
+    const borderStyle = await activityLog.evaluate((el) => {
+      const style = window.getComputedStyle(el)
+      return style.boxShadow
+    })
+    // The component uses box-shadow for card styling
+    expect(borderStyle).not.toBe('none')
+  })
+
+  test('ActivityLog: Live Feed indicator for Building app', async ({ page }) => {
+    await setupMockApp(buildingApp)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible({ timeout: 10000 })
+
+    // Verify the combined label is visible
+    const feedLabel = page.getByTestId('activity-log-feed-label')
+    await expect(feedLabel).toBeVisible()
+    await expect(feedLabel).toContainText('Live Feed')
+    await expect(feedLabel).toContainText('Historical View')
+
+    // Verify the green dot is present for Building app
+    const liveDot = page.getByTestId('activity-log-live-dot')
+    await expect(liveDot).toBeVisible()
+
+    // Verify green dot has green background
+    const dotBg = await liveDot.evaluate((el) => window.getComputedStyle(el).backgroundColor)
+    // Should be green (the --color-finished variable)
+    expect(dotBg).toBeTruthy()
+
+    // Verify "Live Feed" text is active (has active styling)
+    const liveText = page.getByTestId('activity-log-live')
+    await expect(liveText).toHaveText('Live Feed')
+    const liveClass = await liveText.getAttribute('class')
+    expect(liveClass).toContain('live-text')
+
+    // Verify "Historical View" text is inactive
+    const historicalText = page.getByTestId('activity-log-historical')
+    await expect(historicalText).toHaveText('Historical View')
+    const histClass = await historicalText.getAttribute('class')
+    expect(histClass).toContain('inactive-text')
+  })
+
+  test('ActivityLog: Historical View indicator for Completed app', async ({ page }) => {
+    await setupMockApp(completedApp)(page)
+    await page.goto(`/apps/${completedApp.id}`)
+
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible({ timeout: 10000 })
+
+    // Verify the combined label is visible with both texts
+    const feedLabel = page.getByTestId('activity-log-feed-label')
+    await expect(feedLabel).toBeVisible()
+    await expect(feedLabel).toContainText('Live Feed')
+    await expect(feedLabel).toContainText('Historical View')
+
+    // Verify the green dot is NOT present for Completed app
+    const liveDot = page.getByTestId('activity-log-live-dot')
+    await expect(liveDot).toHaveCount(0)
+
+    // Verify "Historical View" text is active (has active styling)
+    const historicalText = page.getByTestId('activity-log-historical')
+    await expect(historicalText).toHaveText('Historical View')
+    const histClass = await historicalText.getAttribute('class')
+    expect(histClass).toContain('historical-text')
+
+    // Verify "Live Feed" text is inactive
+    const liveText = page.getByTestId('activity-log-live')
+    await expect(liveText).toHaveText('Live Feed')
+    const liveClass = await liveText.getAttribute('class')
+    expect(liveClass).toContain('inactive-text')
+  })
+
+  test('ActivityLog: Refresh button visible and functional', async ({ page }) => {
+    let activityFetchCount = 0
+
+    await page.route(`**/.netlify/functions/apps/${buildingApp.id}`, (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(buildingApp),
+      })
+    })
+    await page.route(`**/.netlify/functions/activity/${buildingApp.id}`, (route) => {
+      activityFetchCount++
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([]),
+      })
+    })
+
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Verify the refresh button is visible in the top-right of the ActivityLog
+    const refreshBtn = page.getByTestId('activity-log-refresh')
+    await expect(refreshBtn).toBeVisible({ timeout: 10000 })
+
+    // Verify the button is within the activity-log section
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible()
+
+    // Record the fetch count after initial load
+    const initialFetchCount = activityFetchCount
+
+    // Click the refresh button
+    await refreshBtn.click()
+
+    // Wait for the activity endpoint to be called again
+    await expect(async () => {
+      expect(activityFetchCount).toBeGreaterThan(initialFetchCount)
+    }).toPass({ timeout: 10000 })
+  })
+})

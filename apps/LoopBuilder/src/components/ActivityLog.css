@@ -26,13 +26,12 @@
   gap: 16px;
 }
 
-.activity-log__live-indicator {
+.activity-log__feed-label {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  font-weight: 600;
-  color: var(--color-finished);
+  font-weight: 500;
 }
 
 .activity-log__live-dot {
@@ -52,9 +51,21 @@
   }
 }
 
-.activity-log__historical {
-  font-size: 13px;
-  font-weight: 500;
+.activity-log__live-text {
+  font-weight: 600;
+  color: var(--color-finished);
+}
+
+.activity-log__historical-text {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.activity-log__inactive-text {
+  color: var(--color-text-muted);
+}
+
+.activity-log__label-sep {
   color: var(--color-text-muted);
 }
 
