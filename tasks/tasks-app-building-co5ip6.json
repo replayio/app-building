@@ -1,13 +1,24 @@
 {
   "tasks": [
     {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestAppHeaderTitle: Write test for AppHeader: Displays app title",
+        "WriteTestAppHeaderStatusBuilding: Write test for AppHeader: Displays status badge for Building app",
+        "WriteTestAppHeaderStatusCompleted: Write test for AppHeader: Displays status badge for Completed app",
+        "WriteTestAppHeaderStatusQueued: Write test for AppHeader: Displays status badge for Queued app"
+      ],
+      "timestamp": "2026-03-01T07:34:40.506Z",
+      "app": "LoopBuilder"
+    },
+    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecAppPage: Check testSpec.md directive violations in AppPage test entries",
-        "CheckComponentsAppPage: Check writeApp.md directive violations in AppPage components",
-        "CheckTestsAppPage: Check writeTests.md directive violations in AppPage tests"
+        "FixViolationAppActionsDisabledState: Fix AppActions to show buttons as visible but disabled for Building/Queued apps instead of hiding them, and fix ActivityLogEntry to render URLs in messages as clickable hyperlinks",
+        "FixViolationMissingBackButtonEntry: Add test entry for Back to Dashboard button in AppPage section of docs/tests.md",
+        "RunTests: Verify tests pass after fixes"
       ],
-      "timestamp": "2026-03-01T04:34:41.568Z",
+      "timestamp": "2026-03-01T07:34:35.637Z",
       "app": "LoopBuilder"
     },
     {
@@ -34,6 +45,94 @@
         "Unpack: Deploy to production"
       ],
       "timestamp": "2026-03-01T03:57:51.497Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestAppHeaderDescription: Write test for AppHeader: Displays app description",
+        "WriteTestAppHeaderMeta: Write test for AppHeader: Displays metadata line with Created date, Model, and Deployment",
+        "WriteTestAppHeaderMetaValues: Write test for AppHeader: Metadata line shows correct values from app data",
+        "WriteTestAppActionsOpenVisible: Write test for AppActions: Open Live App button visible for completed app"
+      ],
+      "timestamp": "2026-03-01T07:34:45.461Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestAppActionsOpenNewTab: Write test for AppActions: Open Live App button opens deployed URL in new tab",
+        "WriteTestAppActionsOpenDisabledBuilding: Write test for AppActions: Open Live App button disabled for Building app",
+        "WriteTestAppActionsOpenDisabledQueued: Write test for AppActions: Open Live App button disabled for Queued app",
+        "WriteTestAppActionsDownloadVisible: Write test for AppActions: Download Source Code button visible for completed app"
+      ],
+      "timestamp": "2026-03-01T07:34:50.341Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestAppActionsDownloadTrigger: Write test for AppActions: Download Source Code button triggers file download",
+        "WriteTestAppActionsDownloadDisabledBuilding: Write test for AppActions: Download Source Code button disabled for Building app",
+        "WriteTestAppActionsDownloadDisabledQueued: Write test for AppActions: Download Source Code button disabled for Queued app",
+        "WriteTestAppActionsBothButtons: Write test for AppActions: Both buttons positioned below description and above activity log"
+      ],
+      "timestamp": "2026-03-01T07:34:57.338Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestActivityLogTitle: Write test for ActivityLog: Section title and layout",
+        "WriteTestActivityLogLive: Write test for ActivityLog: Live Feed indicator for Building app",
+        "WriteTestActivityLogHistorical: Write test for ActivityLog: Historical View indicator for Completed app",
+        "WriteTestActivityLogRefresh: Write test for ActivityLog: Refresh button visible and functional"
+      ],
+      "timestamp": "2026-03-01T07:35:02.141Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestActivityLogAutoUpdate: Write test for ActivityLog: Auto-updates for in-progress Building app",
+        "WriteTestActivityLogOrder: Write test for ActivityLog: Displays entries in reverse chronological order",
+        "WriteTestActivityLogEmpty: Write test for ActivityLog: Empty state for Queued app",
+        "WriteTestActivityLogHistoricalEntries: Write test for ActivityLog: Shows historical entries for Completed app"
+      ],
+      "timestamp": "2026-03-01T07:35:07.003Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestActivityLogEntryTimestamp: Write test for ActivityLogEntry: Displays timestamp",
+        "WriteTestActivityLogEntryTypeTag: Write test for ActivityLogEntry: Displays type tag in bold brackets",
+        "WriteTestActivityLogEntryDeploy: Write test for ActivityLogEntry: DEPLOY type tag with checkmark icon and green styling",
+        "WriteTestActivityLogEntryTest: Write test for ActivityLogEntry: TEST type tag with info icon and blue styling"
+      ],
+      "timestamp": "2026-03-01T07:35:12.013Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestActivityLogEntryReasoning: Write test for ActivityLogEntry: REASONING type tag with gear icon",
+        "WriteTestActivityLogEntryPlan: Write test for ActivityLogEntry: PLAN type tag with info icon",
+        "WriteTestActivityLogEntryInit: Write test for ActivityLogEntry: INIT type tag with gear icon",
+        "WriteTestActivityLogEntryMessage: Write test for ActivityLogEntry: Displays message text after type tag"
+      ],
+      "timestamp": "2026-03-01T07:35:16.528Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "WriteTestActivityLogEntryExpandCollapse: Write tests for ActivityLogEntry: Expandable section collapsed by default, Expand section on click, and Collapse expanded section on click",
+        "WriteTestActivityLogEntryCodeBlock: Write test for ActivityLogEntry: Code block displays with monospace formatting",
+        "WriteTestActivityLogEntryLinks: Write test for ActivityLogEntry: Clickable links in message text",
+        "WriteTestActivityLogEntryMultiple: Write test for ActivityLogEntry: Multiple entries displayed in sequence"
+      ],
+      "timestamp": "2026-03-01T07:35:22.136Z",
       "app": "LoopBuilder"
     }
   ]
