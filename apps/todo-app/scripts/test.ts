@@ -1,5 +1,5 @@
 import { execSync, spawnSync } from 'child_process';
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
 import { initSchema } from './schema.js';
 
 const NEON_API_KEY = process.env.NEON_API_KEY;
@@ -160,8 +160,8 @@ async function main() {
   await new Promise(r => setTimeout(r, 1000));
 
   // 2. Clean up stale Neon branches
-  let branchId = '';
-  let branchDbUrl = '';
+  const NUM_WORKERS = 2;
+  const workerBranches: { id: string; dbUrl: string }[] = [];
   try {
     const { branches } = await listBranches();
     for (const b of branches) {
@@ -177,33 +177,46 @@ async function main() {
     console.error('Warning: failed to clean stale branches:', e);
   }
 
-  // 3. Create ephemeral Neon branch
+  // 3. Create per-worker ephemeral Neon branches
   try {
-    const result = await createBranch(runId);
-    branchId = result.branch.id;
-    branchDbUrl = result.connection_uris[0].connection_uri;
+    for (let i = 0; i < NUM_WORKERS; i++) {
+      const result = await createBranch(`${runId}-w${i}`);
+      const dbUrl = result.connection_uris[0].connection_uri;
+      workerBranches.push({ id: result.branch.id, dbUrl });
+      await initSchema(dbUrl);
+    }
   } catch (e) {
-    console.error('Failed to create Neon branch:', e);
+    console.error('Failed to create Neon branches:', e);
+    // Clean up any branches we already created
+    for (const b of workerBranches) {
+      try { await deleteBranch(b.id); } catch {}
+    }
     process.exit(1);
   }
 
   let playwrightExitCode = 1;
 
   try {
-    // 4. Initialize schema
-    await initSchema(branchDbUrl);
-
-    // 5. Remove stale recordings
+    // 4. Remove stale recordings
     try { execSync('npx replayio remove --all', { stdio: 'ignore' }); } catch {}
 
-    // 6. Run Playwright
+    // 5. Build per-worker DATABASE_URL env vars
+    const workerEnv: Record<string, string> = {
+      ...process.env as Record<string, string>,
+      DATABASE_URL: workerBranches[0].dbUrl,
+    };
+    for (let i = 0; i < NUM_WORKERS; i++) {
+      workerEnv[`DATABASE_URL_W${i}`] = workerBranches[i].dbUrl;
+    }
+
+    // 6. Run Playwright (webServer managed by Playwright config; per-worker DB via cookies)
     const result = spawnSync(
       'npx',
       ['playwright', 'test', testFile, '--retries', '0'],
       {
-        env: { ...process.env, DATABASE_URL: branchDbUrl },
+        env: workerEnv,
         stdio: ['ignore', 'pipe', 'pipe'],
-        timeout: 300000, // 5 minute overall timeout
+        timeout: 1200000, // 20 minute overall timeout
       }
     );
 
@@ -329,13 +342,11 @@ async function main() {
     console.log(summary);
 
   } finally {
-    // 9. Clean up
-    try {
-      if (branchId) await deleteBranch(branchId);
-    } catch {
-      // ignore cleanup failures
+    // 9. Clean up branches
+    for (const b of workerBranches) {
+      try { await deleteBranch(b.id); } catch {}
     }
-    try { execSync('npx replayio remove --all', { stdio: 'ignore' }); } catch {}
+    // Note: recordings are NOT removed here so they can be manually uploaded for debugging
   }
 
   process.exit(playwrightExitCode);

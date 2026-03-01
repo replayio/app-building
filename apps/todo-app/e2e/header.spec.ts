@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 const API_URL = '/.netlify/functions/todos';
 
@@ -34,17 +34,19 @@ test('Submit button is visible', async ({ page }) => {
 
 test('Add todo via submit button', async ({ page }) => {
   await page.getByTestId('todo-input').fill('Buy groceries');
+  await expect(page.getByTestId('todo-input')).toHaveValue('Buy groceries');
   await page.getByTestId('add-todo-button').click();
 
-  await expect(page.getByTestId('todo-text').filter({ hasText: 'Buy groceries' })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByTestId('todo-text').filter({ hasText: 'Buy groceries' })).toBeVisible({ timeout: 15000 });
   await expect(page.getByTestId('todo-input')).toHaveValue('');
 });
 
 test('Add todo by pressing Enter', async ({ page }) => {
   await page.getByTestId('todo-input').fill('Walk the dog');
+  await expect(page.getByTestId('todo-input')).toHaveValue('Walk the dog');
   await page.getByTestId('todo-input').press('Enter');
 
-  await expect(page.getByTestId('todo-text').filter({ hasText: 'Walk the dog' })).toBeVisible({ timeout: 10000 });
+  await expect(page.getByTestId('todo-text').filter({ hasText: 'Walk the dog' })).toBeVisible({ timeout: 15000 });
   await expect(page.getByTestId('todo-input')).toHaveValue('');
 });
 

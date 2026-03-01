@@ -1,7 +1,13 @@
 import type { Context } from '@netlify/functions';
 import { neon } from '@neondatabase/serverless';
 
-function getSql() {
+function getSql(req: Request) {
+  const cookies = req.headers.get('cookie') || '';
+  const match = cookies.match(/test-worker=(\d+)/);
+  if (match) {
+    const workerUrl = process.env[`DATABASE_URL_W${match[1]}`];
+    if (workerUrl) return neon(workerUrl);
+  }
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error('DATABASE_URL not set');
   return neon(url);
@@ -15,7 +21,7 @@ function json(body: unknown, status = 200) {
 }
 
 export default async function handler(req: Request, _context: Context) {
-  const sql = getSql();
+  const sql = getSql(req);
   const url = new URL(req.url);
   const segments = url.pathname.split('/').filter(Boolean);
   // segments: ["", ".netlify", "functions", "todos", ...rest]

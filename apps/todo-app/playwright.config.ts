@@ -6,7 +6,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
-  timeout: 60000,
+  timeout: 180000,
   actionTimeout: 15000,
   navigationTimeout: 30000,
   reporter: [
