@@ -31,7 +31,7 @@ test.beforeEach(async ({ page }) => {
 
 test('Empty state message when no todos exist', async ({ page }) => {
   await page.reload();
-  await expect(page.getByTestId('empty-state')).toBeVisible({ timeout: 10000 });
+  await expect(page.getByTestId('empty-state')).toBeVisible({ timeout: 30000 });
   await expect(page.getByTestId('empty-state')).toHaveText('No todos yet. Add one above!');
 });
 

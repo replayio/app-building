@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testing.md",
-      "subtasks": [
-        "Unpack: Get all tests passing"
-      ],
-      "timestamp": "2026-03-01T02:30:47.260Z",
-      "app": "todo-app"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"
