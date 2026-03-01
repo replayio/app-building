@@ -1,26 +1,28 @@
 import { defineConfig } from '@playwright/test';
-import { replayDevices } from '@replayio/playwright';
+import { devices as replayDevices, replayReporter } from '@replayio/playwright';
 
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  retries: 0,
   timeout: 60000,
+  actionTimeout: 15000,
+  navigationTimeout: 30000,
+  reporter: [
+    replayReporter({
+      apiKey: process.env.REPLAY_API_KEY ?? process.env.RECORD_REPLAY_API_KEY,
+      upload: false,
+    }),
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['list'],
+  ],
   use: {
     baseURL: 'http://localhost:8888',
-    trace: 'on-first-retry',
+    ...replayDevices['Replay Chromium'],
   },
-  projects: [
-    {
-      name: 'replay-chromium',
-      use: { ...replayDevices['Replay Chromium'] },
-    },
-  ],
   webServer: {
-    command: 'npx netlify dev',
+    command: 'npx netlify dev --port 8888 --functions ./netlify/functions',
     url: 'http://localhost:8888',
     reuseExistingServer: !process.env.CI,
     timeout: 60000,
