@@ -20,7 +20,7 @@ function AppActions({ app }: AppActionsProps) {
           data-testid="app-actions-open"
         >
           <ExternalLink size={18} />
-          Open Live App
+          <span className="app-actions__btn-label">Open Live App</span>
         </a>
       ) : (
         <button
@@ -29,7 +29,7 @@ function AppActions({ app }: AppActionsProps) {
           data-testid="app-actions-open"
         >
           <ExternalLink size={18} />
-          Open Live App
+          <span className="app-actions__btn-label">Open Live App</span>
         </button>
       )}
       {isCompleted && app.source_url ? (
@@ -41,7 +41,7 @@ function AppActions({ app }: AppActionsProps) {
           data-testid="app-actions-source"
         >
           <Download size={18} />
-          Download Source Code
+          <span className="app-actions__btn-label">Download Source Code</span>
         </a>
       ) : (
         <button
@@ -50,7 +50,7 @@ function AppActions({ app }: AppActionsProps) {
           data-testid="app-actions-source"
         >
           <Download size={18} />
-          Download Source Code
+          <span className="app-actions__btn-label">Download Source Code</span>
         </button>
       )}
     </div>

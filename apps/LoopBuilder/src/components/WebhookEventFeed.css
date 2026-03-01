@@ -69,3 +69,25 @@
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   line-height: 1.4;
 }
+
+@media (max-width: 640px) {
+  .webhook-feed__title {
+    padding: 12px 16px;
+  }
+
+  .webhook-feed__item {
+    padding: 10px 16px;
+  }
+
+  .webhook-feed__item-header {
+    gap: 8px;
+  }
+
+  .webhook-feed__container-id {
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    white-space: nowrap;
+  }
+}

@@ -28,3 +28,13 @@
 .request-page__form-wrapper .describe-app-form {
   padding: 32px;
 }
+
+@media (max-width: 640px) {
+  .request-page {
+    gap: 24px;
+  }
+
+  .request-page__form-wrapper .describe-app-form {
+    padding: 20px;
+  }
+}

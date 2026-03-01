@@ -71,3 +71,21 @@
 .wizard-stepper__connector--completed {
   background: var(--color-primary);
 }
+
+@media (max-width: 640px) {
+  .wizard-stepper__connector {
+    min-width: 40px;
+    margin: 0 4px;
+    margin-bottom: 28px;
+  }
+
+  .wizard-stepper__label {
+    font-size: 11px;
+  }
+
+  .wizard-stepper__circle {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}

@@ -142,3 +142,26 @@
   word-break: break-word;
   color: var(--color-text);
 }
+
+@media (max-width: 640px) {
+  .activity-entry {
+    padding: 12px;
+  }
+
+  .activity-entry__timestamp {
+    font-size: 11px;
+  }
+
+  .activity-entry__message {
+    font-size: 13px;
+  }
+
+  .activity-entry__expandable {
+    margin-left: 0;
+  }
+
+  .activity-entry__detail {
+    padding: 12px;
+    font-size: 12px;
+  }
+}

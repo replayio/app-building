@@ -93,3 +93,17 @@
 .activity-log__error {
   color: var(--color-rejected);
 }
+
+@media (max-width: 640px) {
+  .activity-log__header {
+    padding: 16px;
+  }
+
+  .activity-log__title {
+    font-size: 16px;
+  }
+
+  .activity-log__entries {
+    padding: 12px;
+  }
+}

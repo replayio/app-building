@@ -18,3 +18,13 @@
   white-space: pre-wrap;
   line-height: 1.6;
 }
+
+@media (max-width: 640px) {
+  .default-prompt__title {
+    padding: 12px 16px;
+  }
+
+  .default-prompt__content {
+    padding: 12px 16px;
+  }
+}

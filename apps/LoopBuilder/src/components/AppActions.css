@@ -38,3 +38,18 @@
 .app-actions__btn--disabled:hover {
   opacity: 0.5;
 }
+
+.app-actions__btn-label {
+  display: inline;
+}
+
+@media (max-width: 480px) {
+  .app-actions__btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .app-actions__btn-label {
+    display: none;
+  }
+}

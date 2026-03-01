@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/polishApp.md",
-      "subtasks": [
-        "MakeResponsiveMainPage: Make MainPage responsive",
-        "MakeResponsiveAppPage: Make AppPage responsive",
-        "MakeResponsiveRequestPage: Make RequestPage responsive",
-        "MakeResponsiveStatusPage: Make StatusPage responsive"
-      ],
-      "timestamp": "2026-03-01T08:01:36.823Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/deployment.md",
       "subtasks": [
         "Unpack: Deploy to production"

@@ -50,4 +50,13 @@
   .status-page {
     padding: 12px;
   }
+
+  .status-page__header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .status-page__title {
+    font-size: 18px;
+  }
 }

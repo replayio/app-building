@@ -175,3 +175,35 @@
   word-break: break-all;
   overflow-x: auto;
 }
+
+@media (max-width: 640px) {
+  .webhook-help-panel {
+    width: calc(100% - 24px);
+    padding: 16px;
+    max-height: 90vh;
+  }
+
+  .webhook-help-panel__title {
+    font-size: 16px;
+  }
+
+  .webhook-help-endpoint__header {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .webhook-help-endpoint__path {
+    font-size: 11px;
+    word-break: break-all;
+  }
+
+  .webhook-help-endpoint__body {
+    padding: 10px 12px;
+  }
+
+  .webhook-help-endpoint__curl {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+}

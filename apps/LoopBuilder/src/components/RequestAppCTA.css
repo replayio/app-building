@@ -14,3 +14,10 @@
 .request-app-cta:hover {
   opacity: 0.9;
 }
+
+@media (max-width: 640px) {
+  .request-app-cta {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+}
