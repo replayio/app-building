@@ -38,6 +38,42 @@ const queuedApp: AppEntry = {
   source_url: null,
 }
 
+const appWithFullMeta: AppEntry = {
+  id: 'full-meta-app',
+  name: 'Full Meta App',
+  description: 'An app with all metadata fields populated.',
+  status: 'finished',
+  progress: 100,
+  created_at: '2023-10-26T00:00:00Z',
+  model: 'gpt-4 Turbo',
+  deployment_url: 'https://full-meta.vercel.app',
+  source_url: null,
+}
+
+const netlifyApp: AppEntry = {
+  id: 'netlify-app',
+  name: 'Netlify App',
+  description: 'First test app for metadata comparison.',
+  status: 'finished',
+  progress: 100,
+  created_at: '2023-11-01T00:00:00Z',
+  model: 'Claude 3',
+  deployment_url: 'https://netlify-app.netlify.app',
+  source_url: null,
+}
+
+const awsApp: AppEntry = {
+  id: 'aws-app',
+  name: 'AWS App',
+  description: 'Second test app for metadata comparison.',
+  status: 'finished',
+  progress: 100,
+  created_at: '2023-12-05T00:00:00Z',
+  model: 'gpt-4o',
+  deployment_url: 'https://aws-app.amazonaws.com',
+  source_url: null,
+}
+
 function setupMockApp(app: AppEntry) {
   return async (page: import('@playwright/test').Page) => {
     await page.route(`**/.netlify/functions/apps/${app.id}`, (route) => {
@@ -123,5 +159,81 @@ test.describe('AppHeader', () => {
     expect(bgColor).toContain('156')
     expect(bgColor).toContain('163')
     expect(bgColor).toContain('175')
+  })
+
+  test('AppHeader: Displays app description', async ({ page }) => {
+    await setupMockApp(buildingApp)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    const description = page.getByTestId('app-header-description')
+    await expect(description).toBeVisible({ timeout: 10000 })
+    await expect(description).toHaveText(
+      'An autonomously generated web application. Features user authentication, dashboard, and reporting module. Built with React and Node.js.'
+    )
+  })
+
+  test('AppHeader: Displays metadata line with Created date, Model, and Deployment', async ({ page }) => {
+    await setupMockApp(appWithFullMeta)(page)
+    await page.goto(`/apps/${appWithFullMeta.id}`)
+
+    const meta = page.getByTestId('app-header-meta')
+    await expect(meta).toBeVisible({ timeout: 10000 })
+    await expect(meta).toContainText('Created: Oct 26, 2023')
+    await expect(meta).toContainText('Model: gpt-4 Turbo')
+    await expect(meta).toContainText('Deployment: full-meta.vercel.app')
+    // Verify pipe separators
+    const metaText = await meta.textContent()
+    expect(metaText).toContain('|')
+    const parts = metaText!.split('|').map((s) => s.trim())
+    expect(parts).toHaveLength(3)
+    expect(parts[0]).toBe('Created: Oct 26, 2023')
+    expect(parts[1]).toBe('Model: gpt-4 Turbo')
+    expect(parts[2]).toBe('Deployment: full-meta.vercel.app')
+  })
+
+  test('AppHeader: Metadata line shows correct values from app data', async ({ page }) => {
+    // First app: Nov 1, 2023, Claude 3, netlify-app.netlify.app
+    await setupMockApp(netlifyApp)(page)
+    await page.goto(`/apps/${netlifyApp.id}`)
+
+    const meta1 = page.getByTestId('app-header-meta')
+    await expect(meta1).toBeVisible({ timeout: 10000 })
+    const meta1Text = await meta1.textContent()
+    const parts1 = meta1Text!.split('|').map((s) => s.trim())
+    expect(parts1[0]).toBe('Created: Nov 1, 2023')
+    expect(parts1[1]).toBe('Model: Claude 3')
+    expect(parts1[2]).toBe('Deployment: netlify-app.netlify.app')
+
+    // Second app: Dec 5, 2023, gpt-4o, aws-app.amazonaws.com
+    await setupMockApp(awsApp)(page)
+    await page.goto(`/apps/${awsApp.id}`)
+
+    const meta2 = page.getByTestId('app-header-meta')
+    await expect(meta2).toBeVisible({ timeout: 10000 })
+    const meta2Text = await meta2.textContent()
+    const parts2 = meta2Text!.split('|').map((s) => s.trim())
+    expect(parts2[0]).toBe('Created: Dec 5, 2023')
+    expect(parts2[1]).toBe('Model: gpt-4o')
+    expect(parts2[2]).toBe('Deployment: aws-app.amazonaws.com')
+  })
+})
+
+// ──────────────────────────────────────────────────────────────────────────────
+// AppActions
+// ──────────────────────────────────────────────────────────────────────────────
+
+test.describe('AppActions', () => {
+  test('AppActions: Open Live App button visible for completed app', async ({ page }) => {
+    await setupMockApp(completedApp)(page)
+    await page.goto(`/apps/${completedApp.id}`)
+
+    const openBtn = page.getByTestId('app-actions-open')
+    await expect(openBtn).toBeVisible({ timeout: 10000 })
+    await expect(openBtn).toBeEnabled()
+    await expect(openBtn).toHaveAttribute('href', completedApp.deployment_url!)
+    await expect(openBtn).toHaveAttribute('target', '_blank')
+
+    // Verify button text
+    await expect(openBtn.locator('.app-actions__btn-label')).toHaveText('Open Live App')
   })
 })

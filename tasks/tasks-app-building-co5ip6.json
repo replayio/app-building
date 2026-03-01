@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestAppHeaderDescription: Write test for AppHeader: Displays app description",
-        "WriteTestAppHeaderMeta: Write test for AppHeader: Displays metadata line with Created date, Model, and Deployment",
-        "WriteTestAppHeaderMetaValues: Write test for AppHeader: Metadata line shows correct values from app data",
-        "WriteTestAppActionsOpenVisible: Write test for AppActions: Open Live App button visible for completed app"
-      ],
-      "timestamp": "2026-03-01T07:34:45.461Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestAppActionsOpenNewTab: Write test for AppActions: Open Live App button opens deployed URL in new tab",
         "WriteTestAppActionsOpenDisabledBuilding: Write test for AppActions: Open Live App button disabled for Building app",
         "WriteTestAppActionsOpenDisabledQueued: Write test for AppActions: Open Live App button disabled for Queued app",
