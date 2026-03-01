@@ -167,6 +167,203 @@ test.describe('ActivityLogEntry', () => {
     expect(Number(fontWeight)).toBeGreaterThanOrEqual(700)
   })
 
+  test('ActivityLogEntry: REASONING type tag with gear icon', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'REASONING',
+        message:
+          'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
+        detail: null,
+        expandable: false,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    const entry = page.getByTestId('activity-log-entry')
+
+    // Verify the entry has the reasoning color class
+    const entryClass = await entry.getAttribute('class')
+    expect(entryClass).toContain('activity-entry--reasoning')
+
+    // Verify a gear/cog icon is present on the left side
+    const icon = entry.locator('.activity-entry__icon')
+    await expect(icon).toBeVisible()
+
+    // Verify the icon has the reasoning color (amber: #f59e0b -> rgb(245, 158, 11))
+    const iconColor = await icon.evaluate((el) => window.getComputedStyle(el).color)
+    expect(iconColor).toContain('245')
+    expect(iconColor).toContain('158')
+    expect(iconColor).toContain('11')
+
+    // Verify the icon is on the left side (before the timestamp)
+    const iconBox = await icon.boundingBox()
+    const timestampBox = await page.getByTestId('activity-entry-timestamp').boundingBox()
+    expect(iconBox).toBeTruthy()
+    expect(timestampBox).toBeTruthy()
+    expect(iconBox!.x).toBeLessThan(timestampBox!.x)
+
+    // Verify the type tag reads "[REASONING]" in bold
+    const typeTag = page.getByTestId('activity-entry-type')
+    await expect(typeTag).toHaveText('[REASONING]')
+    const fontWeight = await typeTag.evaluate((el) => window.getComputedStyle(el).fontWeight)
+    expect(Number(fontWeight)).toBeGreaterThanOrEqual(700)
+  })
+
+  test('ActivityLogEntry: PLAN type tag with info icon', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'PLAN',
+        message:
+          'Initial project plan generated. Key feature modules identified: Authentication, User Dashboard, Reporting, and Settings.',
+        detail: null,
+        expandable: false,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    const entry = page.getByTestId('activity-log-entry')
+
+    // Verify the entry has the plan color class (blue-tinted background)
+    const entryClass = await entry.getAttribute('class')
+    expect(entryClass).toContain('activity-entry--plan')
+
+    // Verify blue-tinted background color
+    const bgColor = await entry.evaluate((el) => window.getComputedStyle(el).backgroundColor)
+    // --color-log-plan-bg: #eff6ff which is rgb(239, 246, 255)
+    expect(bgColor).toContain('239')
+    expect(bgColor).toContain('246')
+    expect(bgColor).toContain('255')
+
+    // Verify a blue info circle icon is present on the left side
+    const icon = entry.locator('.activity-entry__icon')
+    await expect(icon).toBeVisible()
+
+    // Verify the icon has blue color (--color-log-plan: #3b82f6 -> rgb(59, 130, 246))
+    const iconColor = await icon.evaluate((el) => window.getComputedStyle(el).color)
+    expect(iconColor).toContain('59')
+    expect(iconColor).toContain('130')
+    expect(iconColor).toContain('246')
+
+    // Verify the icon is on the left side (before the timestamp)
+    const iconBox = await icon.boundingBox()
+    const timestampBox = await page.getByTestId('activity-entry-timestamp').boundingBox()
+    expect(iconBox).toBeTruthy()
+    expect(timestampBox).toBeTruthy()
+    expect(iconBox!.x).toBeLessThan(timestampBox!.x)
+
+    // Verify the type tag reads "[PLAN]" in bold
+    const typeTag = page.getByTestId('activity-entry-type')
+    await expect(typeTag).toHaveText('[PLAN]')
+    const fontWeight = await typeTag.evaluate((el) => window.getComputedStyle(el).fontWeight)
+    expect(Number(fontWeight)).toBeGreaterThanOrEqual(700)
+  })
+
+  test('ActivityLogEntry: INIT type tag with gear icon', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'INIT',
+        message:
+          "App creation initiated from prompt: 'Create a SaaS customer portal MVP with auth, dashboard, and reporting.' Project structure initialized.",
+        detail: null,
+        expandable: false,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    const entry = page.getByTestId('activity-log-entry')
+
+    // Verify the entry has the init color class
+    const entryClass = await entry.getAttribute('class')
+    expect(entryClass).toContain('activity-entry--init')
+
+    // Verify a gear/cog icon is present on the left side
+    const icon = entry.locator('.activity-entry__icon')
+    await expect(icon).toBeVisible()
+
+    // Verify the icon has the init color (--color-log-init: #64748b -> rgb(100, 116, 139))
+    const iconColor = await icon.evaluate((el) => window.getComputedStyle(el).color)
+    expect(iconColor).toContain('100')
+    expect(iconColor).toContain('116')
+    expect(iconColor).toContain('139')
+
+    // Verify the icon is on the left side (before the timestamp)
+    const iconBox = await icon.boundingBox()
+    const timestampBox = await page.getByTestId('activity-entry-timestamp').boundingBox()
+    expect(iconBox).toBeTruthy()
+    expect(timestampBox).toBeTruthy()
+    expect(iconBox!.x).toBeLessThan(timestampBox!.x)
+
+    // Verify the type tag reads "[INIT]" in bold
+    const typeTag = page.getByTestId('activity-entry-type')
+    await expect(typeTag).toHaveText('[INIT]')
+    const fontWeight = await typeTag.evaluate((el) => window.getComputedStyle(el).fontWeight)
+    expect(Number(fontWeight)).toBeGreaterThanOrEqual(700)
+  })
+
+  test('ActivityLogEntry: Displays message text after type tag', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'DEPLOY',
+        message:
+          'Deployment successful. App is live at https://my-saas-platform.vercel.app. Final verification complete.',
+        detail: null,
+        expandable: false,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    // Verify the message text is displayed
+    const message = page.getByTestId('activity-entry-message')
+    await expect(message).toBeVisible()
+    await expect(message).toContainText('Deployment successful.')
+    await expect(message).toContainText('Final verification complete.')
+
+    // Verify the message appears after the type tag (separated by a pipe)
+    const entryRow = page.getByTestId('activity-log-entry').locator('.activity-entry__row')
+    const rowText = await entryRow.textContent()
+    expect(rowText).toContain('|')
+
+    // Verify the message is positioned after the type tag
+    const typeTag = page.getByTestId('activity-entry-type')
+    const typeBox = await typeTag.boundingBox()
+    const messageBox = await message.boundingBox()
+    expect(typeBox).toBeTruthy()
+    expect(messageBox).toBeTruthy()
+    expect(messageBox!.x).toBeGreaterThan(typeBox!.x)
+  })
+
   test('ActivityLogEntry: TEST type tag with info icon and blue styling', async ({ page }) => {
     const entries: ActivityEntry[] = [
       {
