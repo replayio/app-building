@@ -125,7 +125,18 @@ the AppCardGrid displays cards in a 2-column layout as shown in the mockup, with
 
 ## AppPage (/apps/:id)
 
-<!-- Components: AppHeader, AppActions, ActivityLog, ActivityLogEntry -->
+<!-- Components: BackToDashboard, AppHeader, AppActions, ActivityLog, ActivityLogEntry -->
+
+### BackToDashboard
+
+**BackToDashboard: Back button visible on AppPage**
+Given the user navigates to AppPage (/apps/:id),
+a "Back to Dashboard" button is visible at the top of the page with a left arrow icon and the text "Back to Dashboard".
+
+**BackToDashboard: Navigates to MainPage on click**
+Given the user is on AppPage (/apps/:id),
+when the user clicks the "Back to Dashboard" button,
+the app navigates to the MainPage (/).
 
 ### AppHeader
 

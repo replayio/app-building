@@ -7,9 +7,11 @@ interface AppActionsProps {
 }
 
 function AppActions({ app }: AppActionsProps) {
+  const isCompleted = app.status === 'finished'
+
   return (
     <div className="app-actions" data-testid="app-actions">
-      {app.deployment_url && (
+      {isCompleted && app.deployment_url ? (
         <a
           className="app-actions__btn app-actions__btn--primary"
           href={app.deployment_url}
@@ -20,8 +22,17 @@ function AppActions({ app }: AppActionsProps) {
           <ExternalLink size={18} />
           Open Live App
         </a>
+      ) : (
+        <button
+          className="app-actions__btn app-actions__btn--primary app-actions__btn--disabled"
+          disabled
+          data-testid="app-actions-open"
+        >
+          <ExternalLink size={18} />
+          Open Live App
+        </button>
       )}
-      {app.source_url && (
+      {isCompleted && app.source_url ? (
         <a
           className="app-actions__btn app-actions__btn--secondary"
           href={app.source_url}
@@ -32,6 +43,15 @@ function AppActions({ app }: AppActionsProps) {
           <Download size={18} />
           Download Source Code
         </a>
+      ) : (
+        <button
+          className="app-actions__btn app-actions__btn--secondary app-actions__btn--disabled"
+          disabled
+          data-testid="app-actions-source"
+        >
+          <Download size={18} />
+          Download Source Code
+        </button>
       )}
     </div>
   )

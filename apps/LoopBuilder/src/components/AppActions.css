@@ -29,3 +29,12 @@
   background: var(--color-text);
   color: #ffffff;
 }
+
+.app-actions__btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.app-actions__btn--disabled:hover {
+  opacity: 0.5;
+}

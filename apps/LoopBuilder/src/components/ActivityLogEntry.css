@@ -99,6 +99,16 @@
   line-height: 1.5;
 }
 
+.activity-entry__link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  transition: opacity 0.15s;
+}
+
+.activity-entry__link:hover {
+  opacity: 0.8;
+}
+
 .activity-entry__expandable {
   margin-top: 8px;
   margin-left: 28px;

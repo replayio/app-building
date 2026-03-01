@@ -27,6 +27,28 @@ function formatTimestamp(ts: string): string {
   })
 }
 
+const URL_REGEX = /(https?:\/\/[^\s),]+)/g
+
+function renderMessageWithLinks(message: string) {
+  const parts = message.split(URL_REGEX)
+  if (parts.length === 1) return message
+  return parts.map((part, i) =>
+    URL_REGEX.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="activity-entry__link"
+      >
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  )
+}
+
 function ActivityLogEntry({ entry }: ActivityLogEntryProps) {
   const [expanded, setExpanded] = useState(false)
   const config = typeConfig[entry.log_type.toUpperCase()] || typeConfig.INIT
@@ -52,7 +74,7 @@ function ActivityLogEntry({ entry }: ActivityLogEntryProps) {
         </span>
         <span className="activity-entry__separator">|</span>
         <span className="activity-entry__message" data-testid="activity-entry-message">
-          {entry.message}
+          {renderMessageWithLinks(entry.message)}
         </span>
       </div>
       {entry.expandable && entry.detail && (

@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationAppActionsDisabledState: Fix AppActions to show buttons as visible but disabled for Building/Queued apps instead of hiding them, and fix ActivityLogEntry to render URLs in messages as clickable hyperlinks",
-        "FixViolationMissingBackButtonEntry: Add test entry for Back to Dashboard button in AppPage section of docs/tests.md",
-        "RunTests: Verify tests pass after fixes"
-      ],
-      "timestamp": "2026-03-01T07:34:35.637Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "CheckTestSpecMainPage: Check testSpec.md directive violations in MainPage test entries",
         "CheckComponentsMainPage: Check writeApp.md directive violations in MainPage components",
         "CheckTestsMainPage: Check writeTests.md directive violations in MainPage tests"
