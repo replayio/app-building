@@ -6,13 +6,13 @@ Building app...
 === BUILD STDOUT ===
 vite v6.4.1 building for production...
 transforming...
-✓ 1648 modules transformed.
+✓ 1650 modules transformed.
 rendering chunks...
 computing gzip size...
-dist/index.html                     0.46 kB │ gzip:   0.29 kB
-dist/assets/index-DBywVm-6.css     27.95 kB │ gzip:   4.32 kB
-dist/assets/index-iXOMTjDv.js   1,232.86 kB │ gzip: 216.24 kB │ map: 2,438.49 kB
-✓ built in 4.44s
+dist/index.html                     0.46 kB │ gzip:   0.30 kB
+dist/assets/index-BMlJsWCg.css     33.74 kB │ gzip:   5.04 kB
+dist/assets/index-CYBIC_Sq.js   1,236.39 kB │ gzip: 216.81 kB │ map: 2,443.83 kB
+✓ built in 4.11s
 
 === BUILD STDERR ===
 
@@ -35,11 +35,11 @@ Deploying to Netlify
    │   Deployed to production URL: https://loop-builder.netlify.app   │
    │                                                                  │
    │                        Unique deploy URL:                        │
-   │    https://69a3840bfbb453bd0351fd91--loop-builder.netlify.app    │
+   │    https://69a3f40e34f1e1d43b8b9159--loop-builder.netlify.app    │
    │                                                                  │
    ╰──────────────────────────────────────────────────────────────────╯
 
-[32mBuild logs: [39m        https://app.netlify.com/projects/loop-builder/deploys/69a3840bfbb453bd0351fd91
+[32mBuild logs: [39m        https://app.netlify.com/projects/loop-builder/deploys/69a3f40e34f1e1d43b8b9159
 [32mFunction logs: [39m     https://app.netlify.com/projects/loop-builder/logs/functions
 [32mEdge function Logs: [39mhttps://app.netlify.com/projects/loop-builder/logs/edge-functions
 
@@ -52,9 +52,9 @@ Deploying to Netlify
 √ No cached functions were found
 √ Finished hashing 5 files and 8 functions
 ⠋ CDN diffing files...
-√ CDN requesting 3 files and 2 functions
-⠋ Uploading 5 files
-√ Finished uploading 5 assets
+√ CDN requesting 4 files and 8 functions
+⠋ Uploading 12 files
+√ Finished uploading 12 assets
 ⠋ Waiting for deploy to go live...
 √ Deploy is live!
 

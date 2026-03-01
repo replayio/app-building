@@ -2,7 +2,17 @@ url: https://loop-builder.netlify.app
 site_id: 983e878a-ea97-4bf5-8e2f-eaf6dabe5287
 neon_project_id: fragrant-hat-64146678
 database_url: postgresql://neondb_owner:npg_CPJRAF5dXry4@ep-little-feather-akpp5d1q.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require
-deployed_at: 2026-03-01T00:11:03.380Z
+deployed_at: 2026-03-01T08:09:17.354Z
+
+--- Deployment 2026-03-01 ---
+Changes:
+- Made MainPage responsive for mobile and tablet viewports
+- Fixed AppActions disabled state handling
+- Fixed DescribeAppForm validation
+- Added comprehensive Playwright tests for Request, Status, App, and MainPage
+- Added missing test spec entries for endpoints and status link
+- Reviewed and classified bug reports for webhook docs and container spawn
+Replay Recording: e4acd515-9927-45d5-bd6b-32254a9fac60
 
 --- Deployment 2026-02-28 ---
 Changes:

@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/deployment.md",
-      "subtasks": [
-        "DoDeploy: Deploy the app to production",
-        "TestDeploy: Test the deployed app"
-      ],
-      "timestamp": "2026-03-01T08:07:08.641Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "WriteTestAppHeaderDescription: Write test for AppHeader: Displays app description",
