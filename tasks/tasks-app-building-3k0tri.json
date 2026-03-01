@@ -3,9 +3,9 @@
     {
       "skill": "skills/tasks/writeScript.md",
       "subtasks": [
-        "Unpack: Implement package scripts"
+        "Unpack: Implement the deploy script"
       ],
-      "timestamp": "2026-03-01T02:30:45.548Z",
+      "timestamp": "2026-03-01T04:05:04.487Z",
       "app": "todo-app"
     },
     {
@@ -78,6 +78,14 @@
         "Unpack: Deploy to production"
       ],
       "timestamp": "2026-03-01T02:30:48.091Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/writeScript.md",
+      "subtasks": [
+        "Unpack: Implement the test script"
+      ],
+      "timestamp": "2026-03-01T04:05:08.111Z",
       "app": "todo-app"
     }
   ]
