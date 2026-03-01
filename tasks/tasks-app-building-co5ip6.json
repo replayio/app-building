@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestActivityLogEntryTimestamp: Write test for ActivityLogEntry: Displays timestamp",
-        "WriteTestActivityLogEntryTypeTag: Write test for ActivityLogEntry: Displays type tag in bold brackets",
-        "WriteTestActivityLogEntryDeploy: Write test for ActivityLogEntry: DEPLOY type tag with checkmark icon and green styling",
-        "WriteTestActivityLogEntryTest: Write test for ActivityLogEntry: TEST type tag with info icon and blue styling"
-      ],
-      "timestamp": "2026-03-01T07:35:12.013Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestActivityLogEntryReasoning: Write test for ActivityLogEntry: REASONING type tag with gear icon",
         "WriteTestActivityLogEntryPlan: Write test for ActivityLogEntry: PLAN type tag with info icon",
         "WriteTestActivityLogEntryInit: Write test for ActivityLogEntry: INIT type tag with gear icon",
