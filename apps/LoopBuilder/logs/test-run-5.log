@@ -1,0 +1,25 @@
+Creating Neon branch: test-worker-072c7502
+Branch created: br-cold-rain-akrtle1i (host: ep-flat-wildflower-akwms925.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/main-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 0 passed, 0 failed, 0 skipped
+=== REPLAY RECORDINGS METADATA ===
+{"id":"abfe4994-553a-4a15-b816-76929cc3d927","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"55aa6f9a-4472-4a45-8f9c-f667da6443f9","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"9abef6d3-5335-42bc-b8bc-cb262d763efd","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"93873ac7-ac36-494b-b92e-005e3169f063","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"14c35284-98ff-48df-af6d-77d48d9ec240","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"4bcccf9d-89d0-43c0-a1d9-214e32d420a3","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"cfef9195-5859-46b4-9a5f-1bbc6c3ccad2","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"d1d7c6fd-788e-449e-a93e-4c0c604f5952","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"74805bc6-e0ac-4b62-9875-f9cdcbcd2586","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"2c865a65-f340-4ba3-8b79-5fdbf509d902","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"90ba745e-381a-4726-ab55-39e400879094","testResult":"passed","testTitle":"","specFile":"","duration":0}
+=== END REPLAY RECORDINGS METADATA ===

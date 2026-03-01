@@ -596,6 +596,12 @@ Given there are no active containers in the system,
 when the user navigates to StatusPage (/status),
 the ActiveContainers section displays the message "No active containers" instead of a table.
 
+**ActiveContainers: Shows pending container after spawn**
+Given there are no active containers in the system,
+when a container is spawned via the POST /.netlify/functions/spawn-container endpoint with a prompt,
+and the user navigates to StatusPage (/status),
+the ActiveContainers table includes a row for the newly created container with status "pending" and the supplied prompt.
+
 ### WebhookEventFeed
 
 **WebhookEventFeed: Displays section title**

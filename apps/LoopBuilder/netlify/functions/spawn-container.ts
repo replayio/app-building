@@ -81,16 +81,18 @@ export default async (request: Request) => {
   }
 
   const siteUrl = process.env.URL || `https://${request.headers.get('host')}`
-  fetch(`${siteUrl}/.netlify/functions/spawn-container-background`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${webhookSecret}`,
-    },
-    body: JSON.stringify({ containerName, prompt, imageRef, flyApp, flyToken }),
-  }).catch((err) => {
+  try {
+    await fetch(`${siteUrl}/.netlify/functions/spawn-container-background`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${webhookSecret}`,
+      },
+      body: JSON.stringify({ containerName, prompt, imageRef, flyApp, flyToken }),
+    })
+  } catch (err) {
     console.error('Failed to trigger background function:', err)
-  })
+  }
 
   return new Response(JSON.stringify({
     name: containerName,

@@ -50,7 +50,21 @@ export const handler: Handler = async (event) => {
   }
 
   try {
-    const machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, containerName)
+    let machineId = ''
+    for (let attempt = 0; attempt < 5; attempt++) {
+      try {
+        machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, containerName)
+        break
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        if (msg.includes('MANIFEST_UNKNOWN') && attempt < 4) {
+          console.log('Image not yet available in registry, retrying in 5s...')
+          await new Promise((r) => setTimeout(r, 5000))
+          continue
+        }
+        throw err
+      }
+    }
     await waitForMachine(flyApp, flyToken, machineId)
 
     await sql`

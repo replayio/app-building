@@ -3,18 +3,6 @@
     {
       "skill": "skills/tasks/maintain/fixBugReport.md",
       "subtasks": [
-        "AnalyzeBug: Analyze container spawn endpoint bug",
-        "FixBug: Fix container spawn endpoint bug",
-        "UpdateTests: Update tests for container spawn endpoint bug",
-        "UpdateRevisions: Record spec changes for container spawn endpoint bug",
-        "ResolveBug: Mark container spawn endpoint bug as resolved"
-      ],
-      "timestamp": "2026-03-01T03:58:31.444Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/maintain/fixBugReport.md",
-      "subtasks": [
         "AnalyzeBug: Analyze webhook docs copy button bug",
         "FixBug: Fix webhook docs copy button bug",
         "UpdateTests: Update tests for webhook docs copy button bug",

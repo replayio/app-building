@@ -1,0 +1,14 @@
+Creating Neon branch: test-worker-6d6c1e76
+Branch created: br-rough-firefly-akdavzsv (host: ep-royal-voice-ak6vlrng.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 1 passed, 0 failed, 0 skipped
