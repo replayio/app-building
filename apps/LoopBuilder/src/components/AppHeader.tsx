@@ -6,9 +6,9 @@ interface AppHeaderProps {
 }
 
 const statusDisplayMap: Record<string, string> = {
-  building: 'Building (In Progress)',
+  building: 'Building',
   finished: 'Completed (Successfully Deployed)',
-  queued: 'Queued (Waiting to Start)',
+  queued: 'Queued',
 }
 
 function formatDate(dateString: string): string {
@@ -35,7 +35,7 @@ function AppHeader({ app }: AppHeaderProps) {
           className={`app-header__status app-header__status--${app.status}`}
           data-testid="app-header-status"
         >
-          Status: {statusText}
+          STATUS: {statusText}
         </span>
       </div>
       <p className="app-header__description" data-testid="app-header-description">

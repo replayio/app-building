@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestAppHeaderTitle: Write test for AppHeader: Displays app title",
-        "WriteTestAppHeaderStatusBuilding: Write test for AppHeader: Displays status badge for Building app",
-        "WriteTestAppHeaderStatusCompleted: Write test for AppHeader: Displays status badge for Completed app",
-        "WriteTestAppHeaderStatusQueued: Write test for AppHeader: Displays status badge for Queued app"
-      ],
-      "timestamp": "2026-03-01T07:34:40.506Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "FixViolationAppActionsDisabledState: Fix AppActions to show buttons as visible but disabled for Building/Queued apps instead of hiding them, and fix ActivityLogEntry to render URLs in messages as clickable hyperlinks",

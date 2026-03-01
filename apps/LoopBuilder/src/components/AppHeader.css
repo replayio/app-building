@@ -28,8 +28,8 @@
 }
 
 .app-header__status--building {
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--color-building);
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
 }
 
 .app-header__status--finished {
@@ -38,8 +38,8 @@
 }
 
 .app-header__status--queued {
-  background: rgba(168, 85, 247, 0.1);
-  color: var(--color-queued);
+  background: rgba(156, 163, 175, 0.2);
+  color: #6b7280;
 }
 
 .app-header__description {
