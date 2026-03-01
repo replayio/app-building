@@ -3,11 +3,20 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecStatusPage: Check testSpec.md directive violations in StatusPage test entries",
-        "CheckComponentsStatusPage: Check writeApp.md directive violations in StatusPage components",
-        "CheckTestsStatusPage: Check writeTests.md directive violations in StatusPage tests"
+        "FixViolationMissingStatusPageTests: Write 24 missing Playwright tests for StatusPage spec entries (BackLink, DefaultPromptDisplay, ActiveContainers, WebhookEventFeed, WebhookHelpButton) and fix Shows-pending-container-after-spawn test to call actual endpoint instead of mocking",
+        "RunTests: Verify all StatusPage tests pass"
       ],
-      "timestamp": "2026-03-01T04:34:44.016Z",
+      "timestamp": "2026-03-01T04:43:19.028Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "FixViolationMissingEndpointTestEntries: Add test spec entries in docs/tests.md for verifying app-builder-event endpoint (POST event and verify it appears in WebhookEventFeed) and set-default-prompt endpoint (POST prompt and verify it updates in DefaultPromptDisplay)",
+        "FixViolationMissingStatusStyles: Add CSS styles for started and pending status variants in ActiveContainers.css to match the styled status badge requirement in the test spec",
+        "RunTests: Verify tests pass after fixes"
+      ],
+      "timestamp": "2026-03-01T04:43:13.726Z",
       "app": "LoopBuilder"
     },
     {
