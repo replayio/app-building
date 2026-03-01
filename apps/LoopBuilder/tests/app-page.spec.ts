@@ -74,6 +74,18 @@ const awsApp: AppEntry = {
   source_url: null,
 }
 
+const completedAppWithSource: AppEntry = {
+  id: 'completed-source-app',
+  name: 'Completed App With Source',
+  description: 'A fully deployed web application with source code.',
+  status: 'finished',
+  progress: 100,
+  created_at: '2023-11-15T00:00:00Z',
+  model: 'Claude 3',
+  deployment_url: 'https://completed-source.vercel.app',
+  source_url: 'https://completed-source.vercel.app/source.zip',
+}
+
 function setupMockApp(app: AppEntry) {
   return async (page: import('@playwright/test').Page) => {
     await page.route(`**/.netlify/functions/apps/${app.id}`, (route) => {
@@ -235,5 +247,70 @@ test.describe('AppActions', () => {
 
     // Verify button text
     await expect(openBtn.locator('.app-actions__btn-label')).toHaveText('Open Live App')
+  })
+
+  test('AppActions: Open Live App button opens deployed URL in new tab', async ({ page }) => {
+    await setupMockApp(completedApp)(page)
+    await page.goto(`/apps/${completedApp.id}`)
+
+    const openBtn = page.getByTestId('app-actions-open')
+    await expect(openBtn).toBeVisible({ timeout: 10000 })
+
+    // Click and verify a new tab opens with the deployed URL
+    const [popup] = await Promise.all([
+      page.waitForEvent('popup'),
+      openBtn.click(),
+    ])
+    expect(popup.url()).toBe(completedApp.deployment_url!)
+
+    // Verify the original page remains open
+    await expect(page.getByTestId('app-actions')).toBeVisible()
+  })
+
+  test('AppActions: Open Live App button disabled for Building app', async ({ page }) => {
+    await setupMockApp(buildingApp)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    const openBtn = page.getByTestId('app-actions-open')
+    await expect(openBtn).toBeVisible({ timeout: 10000 })
+    await expect(openBtn).toBeDisabled()
+
+    // Verify button text is still present
+    await expect(openBtn.locator('.app-actions__btn-label')).toHaveText('Open Live App')
+  })
+
+  test('AppActions: Open Live App button disabled for Queued app', async ({ page }) => {
+    await setupMockApp(queuedApp)(page)
+    await page.goto(`/apps/${queuedApp.id}`)
+
+    const openBtn = page.getByTestId('app-actions-open')
+    await expect(openBtn).toBeVisible({ timeout: 10000 })
+    await expect(openBtn).toBeDisabled()
+
+    // Verify button text is still present
+    await expect(openBtn.locator('.app-actions__btn-label')).toHaveText('Open Live App')
+  })
+
+  test('AppActions: Download Source Code button visible for completed app', async ({ page }) => {
+    await setupMockApp(completedAppWithSource)(page)
+    await page.goto(`/apps/${completedAppWithSource.id}`)
+
+    const sourceBtn = page.getByTestId('app-actions-source')
+    await expect(sourceBtn).toBeVisible({ timeout: 10000 })
+    await expect(sourceBtn).toBeEnabled()
+    await expect(sourceBtn).toHaveAttribute('href', completedAppWithSource.source_url!)
+    await expect(sourceBtn).toHaveAttribute('target', '_blank')
+
+    // Verify button text
+    await expect(sourceBtn.locator('.app-actions__btn-label')).toHaveText('Download Source Code')
+
+    // Verify positioned to the right of Open Live App button
+    const openBtn = page.getByTestId('app-actions-open')
+    await expect(openBtn).toBeVisible()
+    const openBox = await openBtn.boundingBox()
+    const sourceBox = await sourceBtn.boundingBox()
+    expect(openBox).toBeTruthy()
+    expect(sourceBox).toBeTruthy()
+    expect(sourceBox!.x).toBeGreaterThan(openBox!.x)
   })
 })

@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestAppActionsOpenNewTab: Write test for AppActions: Open Live App button opens deployed URL in new tab",
-        "WriteTestAppActionsOpenDisabledBuilding: Write test for AppActions: Open Live App button disabled for Building app",
-        "WriteTestAppActionsOpenDisabledQueued: Write test for AppActions: Open Live App button disabled for Queued app",
-        "WriteTestAppActionsDownloadVisible: Write test for AppActions: Download Source Code button visible for completed app"
-      ],
-      "timestamp": "2026-03-01T07:34:50.341Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestAppActionsDownloadTrigger: Write test for AppActions: Download Source Code button triggers file download",
         "WriteTestAppActionsDownloadDisabledBuilding: Write test for AppActions: Download Source Code button disabled for Building app",
         "WriteTestAppActionsDownloadDisabledQueued: Write test for AppActions: Download Source Code button disabled for Queued app",
