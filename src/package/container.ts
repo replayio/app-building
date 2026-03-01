@@ -229,9 +229,6 @@ export async function startRemoteContainer(
   };
   if (config.webhookUrl) remoteExtra.WEBHOOK_URL = config.webhookUrl;
   const containerEnv = buildContainerEnv(repo, config.envVars, remoteExtra);
-  // Remove Fly-specific vars from container env (not needed inside)
-  delete containerEnv.FLY_API_TOKEN;
-  delete containerEnv.FLY_APP_NAME;
 
   // Log existing machines (but don't destroy — multiple containers may run concurrently)
   const existing = await listMachines(config.flyApp, config.flyToken);
