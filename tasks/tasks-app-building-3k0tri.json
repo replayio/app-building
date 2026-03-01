@@ -3,9 +3,21 @@
     {
       "skill": "skills/tasks/build/writeApp.md",
       "subtasks": [
-        "Unpack: Write the app"
+        "WriteComponentHeader: Write the Header component",
+        "WriteComponentTodoList: Write the TodoList component",
+        "WriteComponentFilters: Write the Filters component",
+        "WritePageTodoList: Write the page itself"
       ],
-      "timestamp": "2026-03-01T02:30:44.675Z",
+      "timestamp": "2026-03-01T03:56:39.467Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "SetupApp: Setup the app",
+        "DesignDatabase: Design the database"
+      ],
+      "timestamp": "2026-03-01T03:56:35.454Z",
       "app": "todo-app"
     },
     {
