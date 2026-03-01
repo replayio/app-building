@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPageTodoList: Decide on components, add sections to docs/tests.md for the Todo List page",
+        "PlanComponentHeader: Add test entries for Header component",
+        "PlanComponentTodoList: Add test entries for Todo List component",
+        "PlanComponentFilters: Add test entries for Filters component"
+      ],
+      "timestamp": "2026-03-01T02:31:20.648Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+      ],
+      "timestamp": "2026-03-01T02:31:14.699Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/writeShared.md",
+      "subtasks": [
+        "Unpack: Write app shared code"
+      ],
+      "timestamp": "2026-03-01T02:30:43.855Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/writeApp.md",
+      "subtasks": [
+        "Unpack: Write the app"
+      ],
+      "timestamp": "2026-03-01T02:30:44.675Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/writeScript.md",
+      "subtasks": [
+        "Unpack: Implement package scripts"
+      ],
+      "timestamp": "2026-03-01T02:30:45.548Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/writeTests.md",
+      "subtasks": [
+        "Unpack: Write Playwright tests"
+      ],
+      "timestamp": "2026-03-01T02:30:46.409Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/testing.md",
+      "subtasks": [
+        "Unpack: Get all tests passing"
+      ],
+      "timestamp": "2026-03-01T02:30:47.260Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/deployment.md",
+      "subtasks": [
+        "Unpack: Deploy to production"
+      ],
+      "timestamp": "2026-03-01T02:30:48.091Z",
+      "app": "todo-app"
+    }
+  ]
+}
