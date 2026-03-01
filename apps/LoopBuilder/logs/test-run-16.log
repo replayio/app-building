@@ -1,0 +1,17 @@
+Creating Neon branch: test-worker-d0548766
+Branch created: br-still-king-akg53ams (host: ep-mute-star-aklk9ri6.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT DEBUG ===
+status: 0, signal: null, error: undefined
+stdout length: 63, stderr length: 0
+=== PLAYWRIGHT STDOUT ===
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 28 passed, 0 failed, 0 skipped

@@ -1,0 +1,16 @@
+Creating Neon branch: test-worker-fae97624
+Branch created: br-steep-hill-akw5w7sd (host: ep-steep-mountain-ak6edid2.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+[replay.io]:
+
+
+=== PLAYWRIGHT STDERR ===
+[replay.io]: None of the configured projects ran using Replay Chromium.
+[replay.io]: Learn more at https://docs.replay.io/reference/test-runners/playwright/overview
+
+Results: 0 passed, 0 failed, 0 skipped

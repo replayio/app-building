@@ -1,0 +1,26 @@
+Creating Neon branch: test-worker-34d9e86f
+Branch created: br-autumn-grass-akx76ez7 (host: ep-wandering-hat-akubphyl.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 0 passed, 0 failed, 0 skipped
+=== REPLAY RECORDINGS METADATA ===
+{"id":"06c398aa-6e0c-4aad-99dc-298dc33bbabf","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"e5402b13-2218-4977-a7b3-77f69e32e777","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"97017a51-8c92-4299-acce-160aac191b06","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"db0cb8e3-edee-4e72-9b01-f72b123bc36d","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"fa81f37e-5876-4fab-ba31-be1fe8063dab","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"ad6498af-562a-4f80-bc58-8f0215a8253e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"4768decc-a361-474f-bd8c-1fd502ff4c8c","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"754e40ef-eb19-413b-a82c-2f32fe2d6502","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"5ef8be35-13c7-46d6-924d-77a7f85f444c","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"187d412f-43f5-4232-9cb7-9387d005ded5","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"f56bee4d-0cb9-4473-851f-5dded2afcd2d","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"ca098769-7b68-48f0-8d5e-f7b87dc166e0","testResult":"passed","testTitle":"","specFile":"","duration":0}
+=== END REPLAY RECORDINGS METADATA ===

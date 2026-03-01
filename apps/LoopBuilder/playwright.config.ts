@@ -22,6 +22,6 @@ export default defineConfig({
     command: 'npx netlify dev --port 8888 --functions ./netlify/functions',
     port: 8888,
     reuseExistingServer: true,
-    timeout: 60_000,
+    timeout: 180_000,
   },
 })

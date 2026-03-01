@@ -1,0 +1,46 @@
+Creating Neon branch: test-worker-8da64479
+Branch created: br-bitter-dawn-akg8jy48 (host: ep-wispy-union-akwob2rh.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+[replay.io]: Finishing up. This should only take a moment ...
+
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 27 passed, 1 failed, 0 skipped
+=== REPLAY RECORDINGS METADATA ===
+{"id":"a86ee051-b393-4412-aa28-113e4f4c9e73","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"4fbf2dce-32a3-4111-8cd1-15b4b4aa6bc4","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"8382bae1-1a75-4088-83b7-9440707bc456","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"8b25dd34-d1dd-4c1f-a78f-21bb0fe67380","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"d683b30b-0fd9-46dd-82f6-49c7a8a12e5f","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"532b9e94-2cee-4b85-a6f6-4b55c07b5636","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"bddd3179-87d9-4852-93a2-55c8f5e9a103","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"d8f3debe-23ac-4626-a380-a2e4ea464553","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"3c37a2c5-3da0-4cc2-abd0-401a8cb1d68d","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"f3e5a58b-e649-4a91-8fdb-c6a5d21fbfa3","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"0bbb42a3-9222-4ca2-bd34-bf02f1ffc3a1","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"265c92d8-41ea-4d74-a96d-782ff49b115c","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"82b15c69-0aac-40b6-a838-434c41d63092","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"955d9de0-f4bf-4c24-ab5c-bfddc8c9e176","testResult":"failed","testTitle":"","specFile":"","duration":0}
+{"id":"c8ccdb88-10ab-4d83-9059-d444f49e10b0","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"226e739f-1d49-4bd0-ac94-f48eaad9ad7f","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"a115946c-0f34-4b18-a52c-83a9d79bc20e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"e2b2df22-de07-491d-b390-0aebb8561999","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"354e10f7-906d-4d13-86f0-a8b301a7518e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"58976637-8535-40fb-820f-fd3dfc5ca540","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"68f15c20-6084-43c7-bf19-88f04e5ebcaa","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"426fa9ed-f68e-4514-8fb4-023dec96b1d4","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"967b58cf-ccaa-4a76-958f-0f063e1a3262","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"d436d128-e63f-4f1f-944e-74523eb87ea3","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"88525999-cd59-4d4c-9f29-00b882e43851","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"ebf9986b-69cd-4dd1-93ee-64cd1fabac66","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"d8a61acb-ef63-4b6b-90ef-4400e21fa03e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"4972ba8f-61ab-41cc-baa6-3cd857733fab","testResult":"passed","testTitle":"","specFile":"","duration":0}
+=== END REPLAY RECORDINGS METADATA ===
+Uploading recording: 955d9de0-f4bf-4c24-ab5c-bfddc8c9e176
+REPLAY UPLOADED: 955d9de0-f4bf-4c24-ab5c-bfddc8c9e176

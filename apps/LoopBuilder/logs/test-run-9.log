@@ -1,0 +1,30 @@
+Creating Neon branch: test-worker-d860141a
+Branch created: br-divine-art-akufz7d3 (host: ep-twilight-wind-akfo1m8t.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 0 passed, 0 failed, 0 skipped
+=== REPLAY RECORDINGS METADATA ===
+{"id":"fd5725d7-d4b9-4dbe-9d07-e089b32be2c5","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"5a38b97e-d7eb-427d-853c-b5e25c17f79b","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"f3819a73-374d-4bb6-8a2e-bdcbac611675","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"7064c610-cd87-49ed-98a4-af693d83f621","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"b0d7c881-781f-4567-8438-00f0ac61697b","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"6ec0c4e0-b408-4fa1-8137-21ec9b049c66","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"859c9525-36f0-464e-a3c8-784e4094748d","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"fecdb8aa-03c7-4498-8870-0889c3cb1175","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"09651e9d-0db8-48b8-9dc6-feedc82644b0","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"df47a7a9-96b7-418b-8963-7c626b0fb681","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"650c15b8-bb5b-449a-989e-a1c917d084ad","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"62e6296a-66a2-4cb2-ac7e-cb0ab34a6046","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"0b54aa9b-eba8-47f1-84bc-b25f8df6f684","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"9226dbdd-bb18-4b2f-bddc-525c31a63eb4","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"10751f2c-b32f-4d6c-affd-d948a36b2c61","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"8db30e52-c977-41dd-869b-a29f4c9fea97","testResult":"passed","testTitle":"","specFile":"","duration":0}
+=== END REPLAY RECORDINGS METADATA ===

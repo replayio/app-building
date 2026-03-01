@@ -272,7 +272,7 @@ async function main() {
       env: { ...process.env, DATABASE_URL: branchDatabaseUrl },
       stdio: ['ignore', 'pipe', 'pipe'],
       encoding: 'utf-8',
-      timeout: 300_000,
+      timeout: 600_000,
     })
     appendLog('=== PLAYWRIGHT STDOUT ===')
     appendLog(pw.stdout || '')
