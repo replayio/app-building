@@ -3,9 +3,12 @@
     {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
-        "Unpack: Polish app quality"
+        "MakeResponsiveMainPage: Make MainPage responsive",
+        "MakeResponsiveAppPage: Make AppPage responsive",
+        "MakeResponsiveRequestPage: Make RequestPage responsive",
+        "MakeResponsiveStatusPage: Make StatusPage responsive"
       ],
-      "timestamp": "2026-03-01T03:57:47.599Z",
+      "timestamp": "2026-03-01T08:01:36.823Z",
       "app": "LoopBuilder"
     },
     {
