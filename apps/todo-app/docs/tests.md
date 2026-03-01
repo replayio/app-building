@@ -23,6 +23,11 @@ The main and only page. Displays all todos with controls for adding, completing,
 - **Action:** None (observation).
 - **Expected:** An input field is visible with placeholder text "What needs to be done?".
 
+#### Test: Submit button is visible
+- **Initial state:** Page loads at `/`.
+- **Action:** None (observation).
+- **Expected:** A submit/add button is visible next to the input field, allowing the user to add a todo by clicking it.
+
 #### Test: Add todo via submit button
 - **Initial state:** Page loads at `/` with no todos.
 - **Action:** User types "Buy groceries" into the input field and clicks the add/submit button.
@@ -66,6 +71,11 @@ The main and only page. Displays all todos with controls for adding, completing,
 - **Initial state:** Page loads at `/` with one existing todo "Review code".
 - **Action:** User hovers over the todo item.
 - **Expected:** The todo displays a checkbox (unchecked), the text "Review code", and a delete button with a trash icon appears on hover.
+
+#### Test: Delete button is hidden when not hovering
+- **Initial state:** Page loads at `/` with one existing todo "Some task".
+- **Action:** The mouse is not hovering over the todo item (observation).
+- **Expected:** The delete button (trash icon) is not visible on the todo item.
 
 #### Test: Toggle todo completion via checkbox
 - **Initial state:** Page loads at `/` with one uncompleted todo "Clean house".
@@ -141,6 +151,16 @@ The main and only page. Displays all todos with controls for adding, completing,
 - **Action:** None (observation).
 - **Expected:** The text "3 items left" is displayed in the filters area.
 
+#### Test: Singular item count displays "1 item left"
+- **Initial state:** Page loads at `/` with 1 active todo and 0 completed todos.
+- **Action:** None (observation).
+- **Expected:** The text "1 item left" (singular) is displayed, not "1 items left".
+
+#### Test: Zero items count displays "0 items left"
+- **Initial state:** Page loads at `/` with 0 active todos and 1 completed todo.
+- **Action:** None (observation).
+- **Expected:** The text "0 items left" is displayed.
+
 #### Test: Active items count updates when todo is completed
 - **Initial state:** Page loads at `/` with 3 active todos ("A", "B", "C") and 0 completed todos. Count shows "3 items left".
 - **Action:** User clicks the checkbox on todo "A" to mark it completed.
@@ -155,6 +175,16 @@ The main and only page. Displays all todos with controls for adding, completing,
 - **Initial state:** Page loads at `/` with 3 active todos. Count shows "3 items left".
 - **Action:** User deletes one active todo via its trash icon.
 - **Expected:** The count updates to "2 items left".
+
+#### Test: Completing a todo while "Active" filter is selected hides it
+- **Initial state:** Page loads at `/` with 2 active todos ("Task A", "Task B"). User clicks "Active" filter.
+- **Action:** User clicks the checkbox on "Task A" to mark it completed.
+- **Expected:** "Task A" disappears from the filtered view (since it is now completed and the "Active" filter is selected). Only "Task B" remains visible.
+
+#### Test: Uncompleting a todo while "Completed" filter is selected hides it
+- **Initial state:** Page loads at `/` with 2 completed todos ("Task A", "Task B"). User clicks "Completed" filter.
+- **Action:** User clicks the checkbox on "Task A" to mark it active.
+- **Expected:** "Task A" disappears from the filtered view (since it is now active and the "Completed" filter is selected). Only "Task B" remains visible.
 
 #### Test: "Clear completed" button visible when completed todos exist
 - **Initial state:** Page loads at `/` with 1 active todo and 1 completed todo.

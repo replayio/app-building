@@ -1,17 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-        "PlanPageTodoList: Decide on components, add sections to docs/tests.md",
-        "PlanComponentHeader: Add test entries for Header",
-        "PlanComponentTodoList: Add test entries for TodoList",
-        "PlanComponentFilters: Add test entries for Filters"
-      ],
-      "timestamp": "2026-03-01T02:33:34.364Z",
-      "app": "todo-app"
-    },
-    {
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code"
