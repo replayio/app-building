@@ -1,29 +1,6 @@
 {
   "tasks": [
     {
-<<<<<<<< HEAD:tasks/tasks-app-building-qag3kn.json
-========
-<<<<<<< HEAD:tasks/tasks-app-building-bydkxh.json
-=======
-      "skill": "skills/tasks/build/testSpec.md",
-      "subtasks": [
-<<<<<<< HEAD:tasks/tasks-app-building-cps77p.json
-        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
-      ],
-      "timestamp": "2026-03-01T02:31:14.699Z",
-=======
-        "PlanPageTodoList: Decide on components, add sections to docs/tests.md",
-        "PlanComponentHeader: Add test entries for Header",
-        "PlanComponentTodoList: Add test entries for TodoList",
-        "PlanComponentFilters: Add test entries for Filters"
-      ],
-      "timestamp": "2026-03-01T02:33:34.364Z",
->>>>>>> origin/main:tasks/tasks-app-building-bydkxh.json
-      "app": "todo-app"
-    },
-    {
->>>>>>> origin/main:tasks/tasks-app-building-cps77p.json
->>>>>>>> origin/main:tasks/tasks-app-building-cps77p.json
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code"
