@@ -123,7 +123,7 @@ export default async (request, context) => {
     };
     if (containerWebhookUrl) remoteExtra.WEBHOOK_URL = containerWebhookUrl;
     const containerEnv = buildContainerEnv(
-      { repoUrl: repoUrl || "", cloneBranch: cloneBranch || "main", pushBranch: pushBranch || "" },
+      { repoUrl: repoUrl || "git@github.com:replayio/app-building.git", cloneBranch: cloneBranch || "main", pushBranch: pushBranch || "main" },
       envVars,
       remoteExtra,
     );
