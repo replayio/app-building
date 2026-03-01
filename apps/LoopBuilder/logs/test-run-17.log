@@ -1,0 +1,43 @@
+Creating Neon branch: test-worker-cca86b5e
+Branch created: br-floral-voice-akxqinwn (host: ep-tiny-wildflower-akjwl0lv.c-3.us-west-2.aws.neon.tech)
+Initializing schema...
+Running migrations...
+Seeding test data...
+Database ready.
+Running: npx playwright test tests/status-page.spec.ts --retries 0
+=== PLAYWRIGHT STDOUT ===
+
+=== PLAYWRIGHT STDERR ===
+
+Results: 0 passed, 0 failed, 0 skipped
+=== REPLAY RECORDINGS METADATA ===
+{"id":"64f39a70-c099-471c-a2df-fd84a322c49f","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"0fc48d9e-48df-4ff2-bbd3-a3f41f8b6d57","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"e4e72949-1ce3-42e6-8841-4515cce1dcfc","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"692c9093-a7ff-4fa8-a279-8d75b54ce898","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"8225bb57-2793-4bde-9553-9b0c056e210d","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"1e0f4edc-8f07-4e98-bf8d-eff8137c1060","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"b5bdb40a-4fca-45c4-8717-88836a08ccd0","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"c88d4dae-b3e9-476b-9802-cb597ce8bf28","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"afc8e643-ce7c-47a2-a48c-8bfec9e20615","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"11b6b13a-7d65-4aca-9dd3-f61425ce7047","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"18f574fc-e3cb-484f-b1b7-f9c7b3305fb8","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"5fdbb9ac-7cbc-4899-bcee-9558bcf3c25e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"35074627-05d4-4530-bdcd-d07242b6bf6e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"6c2fba64-11b2-4ec7-aa3d-38c8b64f44c1","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"43bdab6c-e826-4fff-9e6f-53eb7fb2ff1b","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"965b1bc2-73aa-42f4-890d-9df4403bb2ed","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"c29391cd-ff21-42e9-a285-c8d1ba6f9b69","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"501d4000-468c-41a8-8c49-df163afcc4f6","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"3e76eb64-1e0b-41c0-9962-19c2632f4a8d","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"7e648a1e-61b8-426c-978a-c034e46fa43b","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"475e86ae-3539-49f6-9689-35ad06874b22","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"046917db-d0c1-4463-8fa3-0a07967f435e","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"731cc090-c8fc-46f1-bb86-883515ae6e6f","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"9b9752ab-d776-4abe-bfce-86474cbced3b","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"bafc29d0-3e11-4bb5-840d-d7b42e9b3a3b","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"a0e1692e-2eea-428d-9419-d0eb21ba063f","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"f6029c7c-6238-470a-af7c-765c7b16395c","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"15cf8ce3-b51f-4d35-bd1a-7a279b805a81","testResult":"passed","testTitle":"","specFile":"","duration":0}
+{"id":"09c8e66f-d9a5-453a-aae9-8bbeef98898a","testResult":"passed","testTitle":"","specFile":"","duration":0}
+=== END REPLAY RECORDINGS METADATA ===

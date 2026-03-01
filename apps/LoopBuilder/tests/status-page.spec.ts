@@ -111,6 +111,28 @@ test.describe('DefaultPromptDisplay', () => {
       'No default prompt configured'
     )
   })
+
+  test('DefaultPromptDisplay: Shows updated prompt after POST to set-default-prompt endpoint', async ({ page }) => {
+    const testPrompt = `Test default prompt ${Date.now()}`
+
+    // POST to set-default-prompt endpoint
+    const resp = await page.request.post('/.netlify/functions/set-default-prompt', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.WEBHOOK_SECRET}`,
+      },
+      data: { prompt: testPrompt },
+    })
+    expect(resp.ok()).toBeTruthy()
+    const body = await resp.json()
+    expect(body.prompt).toBe(testPrompt)
+
+    // Navigate to status page and verify the prompt is displayed
+    await page.goto('/status')
+    await expect(page.getByTestId('status-page')).toBeVisible({ timeout: 15000 })
+
+    await expect(page.getByTestId('default-prompt-value')).toContainText(testPrompt)
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -326,6 +348,40 @@ test.describe('WebhookEventFeed', () => {
     await expect(page.getByTestId('webhook-feed-empty')).toContainText(
       'No webhook events received'
     )
+  })
+
+  test('WebhookEventFeed: Shows event after POST to app-builder-event endpoint', async ({ page }) => {
+    const testContainerId = `test-container-${Date.now()}`
+    const testEventType = 'build_started'
+
+    // POST to app-builder-event endpoint
+    const resp = await page.request.post('/.netlify/functions/app-builder-event', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.WEBHOOK_SECRET}`,
+      },
+      data: {
+        container_id: testContainerId,
+        event_type: testEventType,
+        payload: { status: 'running', message: 'Test build event' },
+      },
+    })
+    expect(resp.ok()).toBeTruthy()
+
+    // Navigate to status page and verify the event appears
+    await page.goto('/status')
+    await expect(page.getByTestId('status-page')).toBeVisible({ timeout: 15000 })
+
+    // Find the event item with the test container ID
+    const eventItem = page.getByTestId('webhook-event-item').filter({ hasText: testContainerId })
+    await expect(eventItem).toBeVisible({ timeout: 10000 })
+
+    // Verify event type is displayed
+    await expect(eventItem.getByTestId('webhook-event-type')).toContainText(testEventType)
+
+    // Verify payload summary is displayed
+    await expect(eventItem.getByTestId('webhook-event-payload')).toContainText('status')
+    await expect(eventItem.getByTestId('webhook-event-payload')).toContainText('running')
   })
 })
 

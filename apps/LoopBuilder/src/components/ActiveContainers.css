@@ -67,6 +67,16 @@
   color: var(--color-log-reasoning);
 }
 
+.active-containers__status--started {
+  background: var(--color-log-reasoning-bg);
+  color: var(--color-log-reasoning);
+}
+
+.active-containers__status--pending {
+  background: var(--color-log-plan-bg);
+  color: var(--color-log-plan);
+}
+
 .active-containers__status--alive {
   background: var(--color-log-deploy-bg);
   color: var(--color-log-deploy);

@@ -554,6 +554,12 @@ Given the system has no default prompt configured,
 when the user navigates to StatusPage (/status),
 the DefaultPromptDisplay shows the text "No default prompt configured".
 
+**DefaultPromptDisplay: Shows updated prompt after POST to set-default-prompt endpoint**
+Given the user POSTs a new prompt string to the POST /.netlify/functions/set-default-prompt endpoint,
+the endpoint returns a 200 success response with the prompt value.
+When the user navigates to StatusPage (/status),
+the DefaultPromptDisplay shows the newly set prompt text.
+
 ### ActiveContainers
 
 **ActiveContainers: Displays section title**
@@ -622,6 +628,12 @@ the event item displays a payload summary showing the key-value pairs, truncatin
 Given there are no webhook events in the system,
 when the user navigates to StatusPage (/status),
 the WebhookEventFeed section displays the message "No webhook events received".
+
+**WebhookEventFeed: Shows event after POST to app-builder-event endpoint**
+Given the user POSTs a valid event to the POST /.netlify/functions/app-builder-event endpoint with a container_id, event_type, and payload,
+the endpoint returns a 200 success response.
+When the user navigates to StatusPage (/status),
+the WebhookEventFeed displays an event item containing the submitted container_id, event_type, and payload summary.
 
 ### WebhookHelpButton
 
