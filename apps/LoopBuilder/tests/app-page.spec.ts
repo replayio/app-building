@@ -542,4 +542,270 @@ test.describe('ActivityLog', () => {
       expect(activityFetchCount).toBeGreaterThan(initialFetchCount)
     }).toPass({ timeout: 10000 })
   })
+
+  test('ActivityLog: Auto-updates for in-progress Building app', async ({ page }) => {
+    let pollCount = 0
+    const newEntry: import('../src/store/activitySlice').ActivityEntry = {
+      id: 1,
+      app_id: buildingApp.id,
+      timestamp: '2023-10-26T14:35:22Z',
+      log_type: 'REASONING',
+      message: 'Designing database schema for Reporting Module.',
+      detail: null,
+      expandable: false,
+    }
+
+    await page.route(`**/.netlify/functions/apps/${buildingApp.id}`, (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(buildingApp),
+      })
+    })
+    await page.route(`**/.netlify/functions/activity/${buildingApp.id}`, (route) => {
+      pollCount++
+      // Return empty on first call, then return an entry on subsequent calls
+      const entries = pollCount <= 1 ? [] : [newEntry]
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(entries),
+      })
+    })
+
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible({ timeout: 10000 })
+
+    // Initially no entries
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(0)
+
+    // Wait for the polling to pick up the new entry (poll interval is 5s)
+    await expect(
+      page.getByTestId('activity-log-entry')
+    ).toHaveCount(1, { timeout: 15000 })
+
+    // Verify the new entry content appeared without manual refresh
+    await expect(page.getByTestId('activity-entry-type').first()).toContainText('[REASONING]')
+    await expect(page.getByTestId('activity-entry-message').first()).toContainText(
+      'Designing database schema for Reporting Module.'
+    )
+
+    // Verify polling happened more than once (auto-update)
+    expect(pollCount).toBeGreaterThan(1)
+  })
+
+  test('ActivityLog: Displays entries in reverse chronological order', async ({ page }) => {
+    const entries: import('../src/store/activitySlice').ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'DEPLOY',
+        message: 'Deployment successful.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 2,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:30:00Z',
+        log_type: 'TEST',
+        message: 'Running integration tests.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 3,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:20:00Z',
+        log_type: 'REASONING',
+        message: 'Designing database schema.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 4,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:10:00Z',
+        log_type: 'PLAN',
+        message: 'Initial project plan generated.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 5,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:00:00Z',
+        log_type: 'INIT',
+        message: 'App creation initiated.',
+        detail: null,
+        expandable: false,
+      },
+    ]
+
+    await page.route(`**/.netlify/functions/apps/${buildingApp.id}`, (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(buildingApp),
+      })
+    })
+    await page.route(`**/.netlify/functions/activity/${buildingApp.id}`, (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(entries),
+      })
+    })
+
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for entries to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(5, { timeout: 10000 })
+
+    // Verify entries are in reverse chronological order (most recent first)
+    const allTimestamps = page.getByTestId('activity-entry-timestamp')
+    const firstTimestamp = await allTimestamps.nth(0).textContent()
+    const lastTimestamp = await allTimestamps.nth(4).textContent()
+
+    // First entry should be DEPLOY (most recent: 14:35:22)
+    await expect(page.getByTestId('activity-entry-type').nth(0)).toContainText('[DEPLOY]')
+    // Last entry should be INIT (oldest: 14:00:00)
+    await expect(page.getByTestId('activity-entry-type').nth(4)).toContainText('[INIT]')
+
+    // Verify timestamps decrease from top to bottom
+    expect(firstTimestamp).toBeTruthy()
+    expect(lastTimestamp).toBeTruthy()
+    expect(firstTimestamp!).not.toBe(lastTimestamp!)
+
+    // Parse the timestamps and verify ordering
+    const timestampTexts: string[] = []
+    for (let i = 0; i < 5; i++) {
+      const text = await allTimestamps.nth(i).textContent()
+      timestampTexts.push(text!)
+    }
+    // Each entry should have a unique timestamp displayed in descending order
+    for (let i = 0; i < timestampTexts.length - 1; i++) {
+      expect(timestampTexts[i]).not.toBe(timestampTexts[i + 1])
+    }
+  })
+
+  test('ActivityLog: Empty state for Queued app', async ({ page }) => {
+    await setupMockApp(queuedApp)(page)
+    await page.goto(`/apps/${queuedApp.id}`)
+
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible({ timeout: 10000 })
+
+    // Verify section title is still visible
+    const title = activityLog.locator('h2')
+    await expect(title).toHaveText('AI Development Activity Log')
+
+    // Verify refresh button is still visible
+    const refreshBtn = page.getByTestId('activity-log-refresh')
+    await expect(refreshBtn).toBeVisible()
+
+    // Verify empty state message is displayed
+    const emptyState = page.getByTestId('activity-log-empty')
+    await expect(emptyState).toBeVisible()
+    await expect(emptyState).toHaveText(
+      'Development has not started yet. Activity will appear here once building begins.'
+    )
+
+    // Verify no entry elements are rendered
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(0)
+  })
+
+  test('ActivityLog: Shows historical entries for Completed app', async ({ page }) => {
+    const historicalEntries: import('../src/store/activitySlice').ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: completedApp.id,
+        timestamp: '2023-11-01T16:00:00Z',
+        log_type: 'DEPLOY',
+        message: 'Deployment successful. App is live.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 2,
+        app_id: completedApp.id,
+        timestamp: '2023-11-01T15:30:00Z',
+        log_type: 'TEST',
+        message: 'Running automated integration tests. 15/15 tests passed.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 3,
+        app_id: completedApp.id,
+        timestamp: '2023-11-01T15:00:00Z',
+        log_type: 'REASONING',
+        message: 'Designing the database schema for the Reporting Module.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 4,
+        app_id: completedApp.id,
+        timestamp: '2023-11-01T14:30:00Z',
+        log_type: 'PLAN',
+        message: 'Initial project plan generated. Key feature modules identified.',
+        detail: null,
+        expandable: false,
+      },
+      {
+        id: 5,
+        app_id: completedApp.id,
+        timestamp: '2023-11-01T14:00:00Z',
+        log_type: 'INIT',
+        message: 'App creation initiated from prompt.',
+        detail: null,
+        expandable: false,
+      },
+    ]
+
+    await page.route(`**/.netlify/functions/apps/${completedApp.id}`, (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(completedApp),
+      })
+    })
+    await page.route(`**/.netlify/functions/activity/${completedApp.id}`, (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(historicalEntries),
+      })
+    })
+
+    await page.goto(`/apps/${completedApp.id}`)
+
+    const activityLog = page.getByTestId('activity-log')
+    await expect(activityLog).toBeVisible({ timeout: 10000 })
+
+    // Verify all 5 entries are displayed (INIT, PLAN, REASONING, TEST, DEPLOY)
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(5, { timeout: 10000 })
+
+    // Verify all entry types are present
+    const types = page.getByTestId('activity-entry-type')
+    await expect(types.nth(0)).toContainText('[DEPLOY]')
+    await expect(types.nth(1)).toContainText('[TEST]')
+    await expect(types.nth(2)).toContainText('[REASONING]')
+    await expect(types.nth(3)).toContainText('[PLAN]')
+    await expect(types.nth(4)).toContainText('[INIT]')
+
+    // Verify each entry has a visible timestamp and message
+    for (let i = 0; i < 5; i++) {
+      await expect(page.getByTestId('activity-entry-timestamp').nth(i)).toBeVisible()
+      await expect(page.getByTestId('activity-entry-message').nth(i)).toBeVisible()
+    }
+
+    // Verify entries are visible and scrollable within the section
+    const entriesContainer = page.getByTestId('activity-log-entries')
+    await expect(entriesContainer).toBeVisible()
+  })
 })

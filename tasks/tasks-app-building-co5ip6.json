@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestActivityLogAutoUpdate: Write test for ActivityLog: Auto-updates for in-progress Building app",
-        "WriteTestActivityLogOrder: Write test for ActivityLog: Displays entries in reverse chronological order",
-        "WriteTestActivityLogEmpty: Write test for ActivityLog: Empty state for Queued app",
-        "WriteTestActivityLogHistoricalEntries: Write test for ActivityLog: Shows historical entries for Completed app"
-      ],
-      "timestamp": "2026-03-01T07:35:07.003Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestActivityLogEntryTimestamp: Write test for ActivityLogEntry: Displays timestamp",
         "WriteTestActivityLogEntryTypeTag: Write test for ActivityLogEntry: Displays type tag in bold brackets",
         "WriteTestActivityLogEntryDeploy: Write test for ActivityLogEntry: DEPLOY type tag with checkmark icon and green styling",
