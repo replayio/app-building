@@ -1,8 +1,6 @@
 {
   "tasks": [
     {
-<<<<<<< HEAD
-=======
 <<<<<<<< HEAD:tasks/tasks-app-building-qag3kn.json
 ========
 <<<<<<< HEAD:tasks/tasks-app-building-bydkxh.json
@@ -26,7 +24,6 @@
     {
 >>>>>>> origin/main:tasks/tasks-app-building-cps77p.json
 >>>>>>>> origin/main:tasks/tasks-app-building-cps77p.json
->>>>>>> origin/main
       "skill": "skills/tasks/build/writeShared.md",
       "subtasks": [
         "Unpack: Write app shared code"
