@@ -1,14 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/writeScript.md",
-      "subtasks": [
-        "Unpack: Implement the deploy script"
-      ],
-      "timestamp": "2026-03-01T04:05:04.487Z",
-      "app": "todo-app"
-    },
-    {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
         "Unpack: Write Playwright tests"
