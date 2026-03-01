@@ -11,3 +11,9 @@ Changes:
 - Playwright test suite (38 tests)
 - Fixed DATABASE_URL mismatch on Netlify (was pointing to wrong Neon project)
 Replay recording: ead7cde9-00c8-46d1-92dc-8011036021b7
+
+--- Deployment 2026-03-01 ---
+Changes:
+- Redeployment with no source code changes
+- Synced production database schema and redeployed to Netlify
+Replay recording: 8443dcc9-a0ce-4946-b0f6-068742bf351b
