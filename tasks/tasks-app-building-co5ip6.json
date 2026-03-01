@@ -3,11 +3,10 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "CheckTestSpecMainPage: Check testSpec.md directive violations in MainPage test entries",
-        "CheckComponentsMainPage: Check writeApp.md directive violations in MainPage components",
-        "CheckTestsMainPage: Check writeTests.md directive violations in MainPage tests"
+        "FixViolationMissingStatusLinkTestEntry: Add test entry for System Status footer link on MainPage and write corresponding Playwright test",
+        "RunTests: Verify tests pass after fix"
       ],
-      "timestamp": "2026-03-01T04:34:40.362Z",
+      "timestamp": "2026-03-01T07:53:23.157Z",
       "app": "LoopBuilder"
     },
     {
