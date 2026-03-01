@@ -1,51 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestAppTitleIsDisplayed: Write test for App title is displayed",
-        "WriteTestAddTodoInputFieldIsVisibleWithPlaceholder: Write test for Add todo input field is visible with placeholder",
-        "WriteTestSubmitButtonIsVisible: Write test for Submit button is visible",
-        "WriteTestAddTodoViaSubmitButton: Write test for Add todo via submit button",
-        "WriteTestAddTodoByPressingEnter: Write test for Add todo by pressing Enter",
-        "WriteTestCannotAddEmptyTodo: Write test for Cannot add empty todo",
-        "WriteTestCannotAddWhitespaceOnlyTodo: Write test for Cannot add whitespace-only todo",
-        "WriteTestAddedTodoPersistsAfterPageReload: Write test for Added todo persists after page reload",
-        "WriteTestEmptyStateMessageWhenNoTodosExist: Write test for Empty state message when no todos exist",
-        "WriteTestTodosDisplayedInAVerticalList: Write test for Todos displayed in a vertical list",
-        "WriteTestEachTodoShowsCheckboxTextAndDeleteButtonOnHover: Write test for Each todo shows checkbox, text, and delete button on hover",
-        "WriteTestDeleteButtonIsHiddenWhenNotHovering: Write test for Delete button is hidden when not hovering",
-        "WriteTestToggleTodoCompletionViaCheckbox: Write test for Toggle todo completion via checkbox",
-        "WriteTestUntoggleCompletedTodoViaCheckbox: Write test for Untoggle completed todo via checkbox",
-        "WriteTestToggleCompletionPersistsAfterPageReload: Write test for Toggle completion persists after page reload",
-        "WriteTestDeleteATodoViaDeleteButton: Write test for Delete a todo via delete button",
-        "WriteTestDeletedTodoDoesNotReappearAfterPageReload: Write test for Deleted todo does not reappear after page reload",
-        "WriteTestCompletedTodoDisplaysStrikethroughStyling: Write test for Completed todo displays strikethrough styling",
-        "WriteTestActiveTodoDisplaysNormalStyling: Write test for Active todo displays normal styling",
-        "WriteTestFilterButtonsAllActiveCompletedAreDisplayed: Write test for Filter buttons All Active Completed are displayed",
-        "WriteTestAllFilterIsActiveByDefault: Write test for All filter is active by default",
-        "WriteTestFilterByActiveShowsOnlyUncompletedTodos: Write test for Filter by Active shows only uncompleted todos",
-        "WriteTestFilterByCompletedShowsOnlyCompletedTodos: Write test for Filter by Completed shows only completed todos",
-        "WriteTestFilterByAllShowsAllTodos: Write test for Filter by All shows all todos",
-        "WriteTestActiveFilterIsVisuallyHighlighted: Write test for Active filter is visually highlighted",
-        "WriteTestRemainingActiveItemsCountIsDisplayed: Write test for Remaining active items count is displayed",
-        "WriteTestSingularItemCountDisplays1ItemLeft: Write test for Singular item count displays 1 item left",
-        "WriteTestZeroItemsCountDisplays0ItemsLeft: Write test for Zero items count displays 0 items left",
-        "WriteTestActiveItemsCountUpdatesWhenTodoIsCompleted: Write test for Active items count updates when todo is completed",
-        "WriteTestActiveItemsCountUpdatesWhenTodoIsAdded: Write test for Active items count updates when todo is added",
-        "WriteTestActiveItemsCountUpdatesWhenTodoIsDeleted: Write test for Active items count updates when todo is deleted",
-        "WriteTestCompletingATodoWhileActiveFilterIsSelectedHidesIt: Write test for Completing a todo while Active filter is selected hides it",
-        "WriteTestUncompletingATodoWhileCompletedFilterIsSelectedHidesIt: Write test for Uncompleting a todo while Completed filter is selected hides it",
-        "WriteTestClearCompletedButtonVisibleWhenCompletedTodosExist: Write test for Clear completed button visible when completed todos exist",
-        "WriteTestClearCompletedButtonHiddenWhenNoCompletedTodosExist: Write test for Clear completed button hidden when no completed todos exist",
-        "WriteTestClearCompletedRemovesAllCompletedTodos: Write test for Clear completed removes all completed todos",
-        "WriteTestClearCompletedPersistsAfterPageReload: Write test for Clear completed persists after page reload",
-        "WriteTestFilteringIsClientSideOnly: Write test for Filtering is client-side only"
-      ],
-      "timestamp": "2026-03-01T04:08:46.466Z",
-      "app": "todo-app"
-    },
-    {
       "skill": "skills/tasks/build/testing.md",
       "subtasks": [
         "Unpack: Get all tests passing"
