@@ -69,6 +69,12 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
   and optional payload fields, and an example curl command. Test entries should verify that the help UI
   is accessible via a clearly labeled button and displays accurate documentation for each webhook endpoint.
 
+- For apps that expose backend API endpoints (webhooks, serverless functions, etc.), the test specification
+  must include entries that verify the endpoints actually function correctly — not just that their
+  documentation or help UI is accurate. Test entries should cover calling each endpoint with valid inputs
+  and verifying the expected side effects (e.g., database records created or updated, status transitions
+  completed, downstream processes triggered).
+
 - State-changing actions must have tests that when performed other parts of the app update appropriately. For example:
 * If the app has a timeline or history feature, every mutation that the timeline tracks must write a history entry. Ensure this happens atomically to avoid duplicates from re-renders. Think through every field that can change and whether it needs history tracking.
 * If the app has symmetrical or reciprocal relationships (e.g., contact relationships, mutual links between entities), creating/updating/deleting one side must automatically update the other side. Test entries must verify both sides of the relationship are in sync.

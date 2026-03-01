@@ -3,16 +3,6 @@
     {
       "skill": "skills/tasks/maintain/reviewBugReport.md",
       "subtasks": [
-        "ClassifyBug: Classify container-spawn-endpoint",
-        "UpdateDirectives: Update directives for container-spawn-endpoint",
-        "FinishBug: Mark container-spawn-endpoint as reviewed"
-      ],
-      "timestamp": "2026-03-01T04:29:13.408Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/maintain/reviewBugReport.md",
-      "subtasks": [
         "ClassifyBug: Classify webhook-docs-copy-button",
         "UpdateDirectives: Update directives for webhook-docs-copy-button",
         "FinishBug: Mark webhook-docs-copy-button as reviewed"
