@@ -3,9 +3,49 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "Unpack: Check directive compliance"
+        "CheckBackend: Check writeApp.md directive violations in all backend functions"
       ],
-      "timestamp": "2026-03-01T03:57:44.527Z",
+      "timestamp": "2026-03-01T04:34:45.131Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecStatusPage: Check testSpec.md directive violations in StatusPage test entries",
+        "CheckComponentsStatusPage: Check writeApp.md directive violations in StatusPage components",
+        "CheckTestsStatusPage: Check writeTests.md directive violations in StatusPage tests"
+      ],
+      "timestamp": "2026-03-01T04:34:44.016Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecRequestPage: Check testSpec.md directive violations in RequestPage test entries",
+        "CheckComponentsRequestPage: Check writeApp.md directive violations in RequestPage components",
+        "CheckTestsRequestPage: Check writeTests.md directive violations in RequestPage tests"
+      ],
+      "timestamp": "2026-03-01T04:34:42.790Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecAppPage: Check testSpec.md directive violations in AppPage test entries",
+        "CheckComponentsAppPage: Check writeApp.md directive violations in AppPage components",
+        "CheckTestsAppPage: Check writeTests.md directive violations in AppPage tests"
+      ],
+      "timestamp": "2026-03-01T04:34:41.568Z",
+      "app": "LoopBuilder"
+    },
+    {
+      "skill": "skills/tasks/maintain/checkDirectives.md",
+      "subtasks": [
+        "CheckTestSpecMainPage: Check testSpec.md directive violations in MainPage test entries",
+        "CheckComponentsMainPage: Check writeApp.md directive violations in MainPage components",
+        "CheckTestsMainPage: Check writeTests.md directive violations in MainPage tests"
+      ],
+      "timestamp": "2026-03-01T04:34:40.362Z",
       "app": "LoopBuilder"
     },
     {
