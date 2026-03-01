@@ -3,9 +3,20 @@
     {
       "skill": "skills/tasks/build/testSpec.md",
       "subtasks": [
-        "Unpack: Write test specification"
+        "PlanPageTodoList: Decide on components, add sections to docs/tests.md for the Todo List page",
+        "PlanComponentHeader: Add test entries for Header component",
+        "PlanComponentTodoList: Add test entries for Todo List component",
+        "PlanComponentFilters: Add test entries for Filters component"
       ],
-      "timestamp": "2026-03-01T02:30:36.856Z",
+      "timestamp": "2026-03-01T02:31:20.648Z",
+      "app": "todo-app"
+    },
+    {
+      "skill": "skills/tasks/build/testSpec.md",
+      "subtasks": [
+        "PlanPages: Read the spec, decide on pages, and add PlanPage tasks for each page"
+      ],
+      "timestamp": "2026-03-01T02:31:14.699Z",
       "app": "todo-app"
     },
     {
