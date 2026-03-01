@@ -85,7 +85,7 @@ function ActivityLogEntry({ entry }: ActivityLogEntryProps) {
             data-testid="activity-entry-toggle"
           >
             {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-            {expanded ? 'Hide Detail' : 'View Detail'}
+            {expanded ? `Hide ${entry.detail_label || 'Detail'}` : `View ${entry.detail_label || 'Detail'}`}
           </button>
           {expanded && (
             <pre className="activity-entry__detail" data-testid="activity-entry-detail">

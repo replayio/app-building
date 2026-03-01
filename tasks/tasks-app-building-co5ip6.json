@@ -1,15 +1,3 @@
 {
-  "tasks": [
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
-        "WriteTestActivityLogEntryExpandCollapse: Write tests for ActivityLogEntry: Expandable section collapsed by default, Expand section on click, and Collapse expanded section on click",
-        "WriteTestActivityLogEntryCodeBlock: Write test for ActivityLogEntry: Code block displays with monospace formatting",
-        "WriteTestActivityLogEntryLinks: Write test for ActivityLogEntry: Clickable links in message text",
-        "WriteTestActivityLogEntryMultiple: Write test for ActivityLogEntry: Multiple entries displayed in sequence"
-      ],
-      "timestamp": "2026-03-01T07:35:22.136Z",
-      "app": "LoopBuilder"
-    }
-  ]
+  "tasks": []
 }

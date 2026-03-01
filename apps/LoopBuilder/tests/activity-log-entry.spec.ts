@@ -48,6 +48,7 @@ test.describe('ActivityLogEntry', () => {
         log_type: 'DEPLOY',
         message: 'Deployment successful.',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -76,6 +77,7 @@ test.describe('ActivityLogEntry', () => {
         log_type: 'DEPLOY',
         message: 'Deployment successful.',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -119,6 +121,7 @@ test.describe('ActivityLogEntry', () => {
         message:
           'Deployment successful. App is live at https://my-saas-platform.vercel.app. Final verification complete.',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -177,6 +180,7 @@ test.describe('ActivityLogEntry', () => {
         message:
           'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -227,6 +231,7 @@ test.describe('ActivityLogEntry', () => {
         message:
           'Initial project plan generated. Key feature modules identified: Authentication, User Dashboard, Reporting, and Settings.',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -284,6 +289,7 @@ test.describe('ActivityLogEntry', () => {
         message:
           "App creation initiated from prompt: 'Create a SaaS customer portal MVP with auth, dashboard, and reporting.' Project structure initialized.",
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -334,6 +340,7 @@ test.describe('ActivityLogEntry', () => {
         message:
           'Deployment successful. App is live at https://my-saas-platform.vercel.app. Final verification complete.',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -374,6 +381,7 @@ test.describe('ActivityLogEntry', () => {
         message:
           'Running automated integration tests for the Reporting Module. 15/15 tests passed. Generating test report.',
         detail: null,
+        detail_label: null,
         expandable: false,
       },
     ]
@@ -420,5 +428,299 @@ test.describe('ActivityLogEntry', () => {
     await expect(typeTag).toHaveText('[TEST]')
     const fontWeight = await typeTag.evaluate((el) => window.getComputedStyle(el).fontWeight)
     expect(Number(fontWeight)).toBeGreaterThanOrEqual(700)
+  })
+
+  test('ActivityLogEntry: Expandable section collapsed by default', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'REASONING',
+        message:
+          'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
+        detail: 'CREATE TABLE reports (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(255),\n  created_at TIMESTAMP\n);',
+        detail_label: 'Schema Snippet',
+        expandable: true,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    // Verify the toggle button is visible with collapsed label
+    const toggle = page.getByTestId('activity-entry-toggle')
+    await expect(toggle).toBeVisible()
+    await expect(toggle).toContainText('View Schema Snippet')
+
+    // Verify the chevron indicator is present (ChevronRight for collapsed state)
+    const chevronRight = toggle.locator('svg')
+    await expect(chevronRight).toBeVisible()
+
+    // Verify the code detail content is NOT visible (collapsed by default)
+    await expect(page.getByTestId('activity-entry-detail')).toHaveCount(0)
+  })
+
+  test('ActivityLogEntry: Expand section on click', async ({ page }) => {
+    const schemaDetail =
+      'CREATE TABLE reports (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(255),\n  created_at TIMESTAMP\n);'
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'REASONING',
+        message:
+          'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
+        detail: schemaDetail,
+        detail_label: 'Schema Snippet',
+        expandable: true,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    // Click the toggle to expand
+    const toggle = page.getByTestId('activity-entry-toggle')
+    await toggle.click()
+
+    // Verify the section is now expanded - detail block is visible
+    const detail = page.getByTestId('activity-entry-detail')
+    await expect(detail).toBeVisible({ timeout: 5000 })
+
+    // Verify the toggle text changes to "Hide Schema Snippet"
+    await expect(toggle).toContainText('Hide Schema Snippet')
+
+    // Verify the code block displays the schema content
+    await expect(detail).toContainText('CREATE TABLE reports')
+    await expect(detail).toContainText('id SERIAL PRIMARY KEY')
+
+    // Verify the code block has a monospace font (it's a <pre> element)
+    const fontFamily = await detail.evaluate((el) => window.getComputedStyle(el).fontFamily)
+    expect(fontFamily.toLowerCase()).toMatch(/mono|courier|consolas/)
+  })
+
+  test('ActivityLogEntry: Collapse expanded section on click', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'REASONING',
+        message:
+          'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
+        detail: 'CREATE TABLE reports (\n  id SERIAL PRIMARY KEY\n);',
+        detail_label: 'Schema Snippet',
+        expandable: true,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    const toggle = page.getByTestId('activity-entry-toggle')
+
+    // Expand the section first
+    await toggle.click()
+    await expect(page.getByTestId('activity-entry-detail')).toBeVisible({ timeout: 5000 })
+    await expect(toggle).toContainText('Hide Schema Snippet')
+
+    // Click again to collapse
+    await toggle.click()
+
+    // Verify the detail block is no longer visible
+    await expect(page.getByTestId('activity-entry-detail')).toHaveCount(0)
+
+    // Verify the toggle text reverts to "View Schema Snippet"
+    await expect(toggle).toContainText('View Schema Snippet')
+  })
+
+  test('ActivityLogEntry: Code block displays with monospace formatting', async ({ page }) => {
+    const schemaDetail =
+      'CREATE TABLE reports (\n  id SERIAL PRIMARY KEY,\n  title VARCHAR(255),\n  created_at TIMESTAMP DEFAULT NOW()\n);'
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'REASONING',
+        message:
+          'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
+        detail: schemaDetail,
+        detail_label: 'Schema Snippet',
+        expandable: true,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    // Expand the section
+    await page.getByTestId('activity-entry-toggle').click()
+    const detail = page.getByTestId('activity-entry-detail')
+    await expect(detail).toBeVisible({ timeout: 5000 })
+
+    // Verify monospace/code font
+    const fontFamily = await detail.evaluate((el) => window.getComputedStyle(el).fontFamily)
+    expect(fontFamily.toLowerCase()).toMatch(/mono|courier|consolas/)
+
+    // Verify distinct background color (darker or gray, different from parent entry)
+    const detailBg = await detail.evaluate((el) => window.getComputedStyle(el).backgroundColor)
+    const entryBg = await page
+      .getByTestId('activity-log-entry')
+      .evaluate((el) => window.getComputedStyle(el).backgroundColor)
+    expect(detailBg).not.toEqual(entryBg)
+
+    // Verify code indentation and line breaks are preserved (the element is <pre>)
+    const tagName = await detail.evaluate((el) => el.tagName.toLowerCase())
+    expect(tagName).toBe('pre')
+
+    // Verify the content preserves the schema text including indentation
+    await expect(detail).toContainText('CREATE TABLE reports')
+    await expect(detail).toContainText('id SERIAL PRIMARY KEY')
+    await expect(detail).toContainText('title VARCHAR(255)')
+    await expect(detail).toContainText('created_at TIMESTAMP DEFAULT NOW()')
+  })
+
+  test('ActivityLogEntry: Clickable links in message text', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:35:22Z',
+        log_type: 'DEPLOY',
+        message:
+          'Deployment successful. App is live at https://my-saas-platform.vercel.app. Final verification complete.',
+        detail: null,
+        detail_label: null,
+        expandable: false,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for the entry to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(1, { timeout: 10000 })
+
+    // Verify the URL is rendered as a clickable hyperlink
+    const message = page.getByTestId('activity-entry-message')
+    const link = message.locator('a')
+    await expect(link).toBeVisible()
+    await expect(link).toHaveAttribute('href', 'https://my-saas-platform.vercel.app.')
+
+    // Verify the link opens in a new tab
+    await expect(link).toHaveAttribute('target', '_blank')
+    await expect(link).toHaveAttribute('rel', /noopener/)
+
+    // Verify the link is visually distinct (has underline or distinct color via class)
+    const textDecoration = await link.evaluate((el) => window.getComputedStyle(el).textDecorationLine)
+    expect(textDecoration).toContain('underline')
+  })
+
+  test('ActivityLogEntry: Multiple entries displayed in sequence', async ({ page }) => {
+    const entries: ActivityEntry[] = [
+      {
+        id: 5,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T15:00:00Z',
+        log_type: 'DEPLOY',
+        message: 'Deployment successful. App is live at https://my-saas-platform.vercel.app. Final verification complete.',
+        detail: null,
+        detail_label: null,
+        expandable: false,
+      },
+      {
+        id: 4,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:50:00Z',
+        log_type: 'TEST',
+        message: 'Running automated integration tests for the Reporting Module. 15/15 tests passed. Generating test report.',
+        detail: null,
+        detail_label: null,
+        expandable: false,
+      },
+      {
+        id: 3,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:40:00Z',
+        log_type: 'REASONING',
+        message: 'Designing the database schema for the Reporting Module. Considering relational versus document structure...',
+        detail: null,
+        detail_label: null,
+        expandable: false,
+      },
+      {
+        id: 2,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:30:00Z',
+        log_type: 'PLAN',
+        message: 'Initial project plan generated. Key feature modules identified: Authentication, User Dashboard, Reporting, and Settings.',
+        detail: null,
+        detail_label: null,
+        expandable: false,
+      },
+      {
+        id: 1,
+        app_id: buildingApp.id,
+        timestamp: '2023-10-26T14:20:00Z',
+        log_type: 'INIT',
+        message: "App creation initiated from prompt: 'Create a SaaS customer portal MVP with auth, dashboard, and reporting.' Project structure initialized.",
+        detail: null,
+        detail_label: null,
+        expandable: false,
+      },
+    ]
+
+    await setupMockAppWithEntries(buildingApp, entries)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    // Wait for all five entries to render
+    await expect(page.getByTestId('activity-log-entry')).toHaveCount(5, { timeout: 10000 })
+
+    const allEntries = page.getByTestId('activity-log-entry')
+
+    // Verify each entry has its own icon, timestamp, type tag, and message
+    for (let i = 0; i < 5; i++) {
+      const entry = allEntries.nth(i)
+      await expect(entry.locator('.activity-entry__icon')).toBeVisible()
+      await expect(entry.getByTestId('activity-entry-timestamp')).toBeVisible()
+      await expect(entry.getByTestId('activity-entry-type')).toBeVisible()
+      await expect(entry.getByTestId('activity-entry-message')).toBeVisible()
+    }
+
+    // Verify the correct type tags in order (DEPLOY, TEST, REASONING, PLAN, INIT)
+    await expect(allEntries.nth(0).getByTestId('activity-entry-type')).toHaveText('[DEPLOY]')
+    await expect(allEntries.nth(1).getByTestId('activity-entry-type')).toHaveText('[TEST]')
+    await expect(allEntries.nth(2).getByTestId('activity-entry-type')).toHaveText('[REASONING]')
+    await expect(allEntries.nth(3).getByTestId('activity-entry-type')).toHaveText('[PLAN]')
+    await expect(allEntries.nth(4).getByTestId('activity-entry-type')).toHaveText('[INIT]')
+
+    // Verify entries are visually distinct blocks (each has its type-specific class)
+    const expectedClasses = ['deploy', 'test', 'reasoning', 'plan', 'init']
+    for (let i = 0; i < 5; i++) {
+      const entryClass = await allEntries.nth(i).getAttribute('class')
+      expect(entryClass).toContain(`activity-entry--${expectedClasses[i]}`)
+    }
+
+    // Verify entries are separated by visible spacing (each entry has non-zero height and distinct vertical position)
+    const firstBox = await allEntries.nth(0).boundingBox()
+    const secondBox = await allEntries.nth(1).boundingBox()
+    expect(firstBox).toBeTruthy()
+    expect(secondBox).toBeTruthy()
+    expect(secondBox!.y).toBeGreaterThan(firstBox!.y + firstBox!.height - 1)
   })
 })

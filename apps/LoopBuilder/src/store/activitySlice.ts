@@ -7,6 +7,7 @@ export interface ActivityEntry {
   log_type: string
   message: string
   detail: string | null
+  detail_label: string | null
   expandable: boolean
 }
 
