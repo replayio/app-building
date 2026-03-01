@@ -3,15 +3,6 @@
     {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
-        "FixViolationMissingRequestPageTests: Write Playwright tests for all 27 RequestPage test spec entries (WizardStepper, DescribeAppForm, AssessmentScreen, RejectionResult, AcceptanceResult) in a new request-page.spec.ts file",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-03-01T06:40:53.500Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
         "FixViolationDescribeAppFormValidation: Fix DescribeAppForm to show per-field validation error messages near App Name and Description fields when submit is clicked with empty fields, instead of just disabling the button",
         "RunTests: Verify tests pass after fix"
       ],
