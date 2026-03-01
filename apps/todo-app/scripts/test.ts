@@ -1,5 +1,5 @@
 import { execSync, spawnSync } from 'child_process';
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
 import { initSchema } from './schema.js';
 
 const NEON_API_KEY = process.env.NEON_API_KEY;
@@ -184,6 +184,14 @@ async function main() {
       const dbUrl = result.connection_uris[0].connection_uri;
       workerBranches.push({ id: result.branch.id, dbUrl });
       await initSchema(dbUrl);
+
+      // Run migrations if migrate-db.ts exists (same pattern as deploy.ts)
+      if (existsSync('scripts/migrate-db.ts')) {
+        execSync('npx tsx scripts/migrate-db.ts', {
+          stdio: 'pipe',
+          env: { ...process.env, DATABASE_URL: dbUrl },
+        });
+      }
     }
   } catch (e) {
     console.error('Failed to create Neon branches:', e);
@@ -300,34 +308,6 @@ async function main() {
         } catch (e) {
           writeFileSync(logFile, readFileSync(logFile, 'utf-8') + `\nREPLAY UPLOAD ERROR: ${e}\n`);
         }
-      } else {
-        // Try listing and uploading any available recording
-        try {
-          const listResult = spawnSync('npx', ['replayio', 'list', '--json'], {
-            env: process.env,
-            stdio: ['ignore', 'pipe', 'pipe'],
-            timeout: 30000,
-          });
-          const listOut = listResult.stdout?.toString() || '';
-          writeFileSync(logFile, readFileSync(logFile, 'utf-8') + `\n=== REPLAY LIST ===\n${listOut}\n`);
-
-          // Try to parse and upload the first available recording
-          try {
-            const recs = JSON.parse(listOut);
-            if (Array.isArray(recs) && recs.length > 0) {
-              const rec = recs[0];
-              const uploadResult = spawnSync('npx', ['replayio', 'upload', rec.id], {
-                env: process.env,
-                stdio: ['ignore', 'pipe', 'pipe'],
-                timeout: 120000,
-              });
-              if (uploadResult.status === 0) {
-                uploadedId = rec.id;
-                writeFileSync(logFile, readFileSync(logFile, 'utf-8') + `\nREPLAY UPLOADED: ${uploadedId}\n`);
-              }
-            }
-          } catch {}
-        } catch {}
       }
     }
 
@@ -342,11 +322,11 @@ async function main() {
     console.log(summary);
 
   } finally {
-    // 9. Clean up branches
+    // 9. Clean up branches and recordings
     for (const b of workerBranches) {
       try { await deleteBranch(b.id); } catch {}
     }
-    // Note: recordings are NOT removed here so they can be manually uploaded for debugging
+    try { execSync('npx replayio remove --all', { stdio: 'ignore' }); } catch {}
   }
 
   process.exit(playwrightExitCode);
