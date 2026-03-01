@@ -313,4 +313,87 @@ test.describe('AppActions', () => {
     expect(sourceBox).toBeTruthy()
     expect(sourceBox!.x).toBeGreaterThan(openBox!.x)
   })
+
+  test('AppActions: Download Source Code button triggers file download', async ({ page }) => {
+    await setupMockApp(completedAppWithSource)(page)
+    await page.goto(`/apps/${completedAppWithSource.id}`)
+
+    const sourceBtn = page.getByTestId('app-actions-source')
+    await expect(sourceBtn).toBeVisible({ timeout: 10000 })
+    await expect(sourceBtn).toBeEnabled()
+
+    // Click and verify a new tab opens with the source URL
+    const [popup] = await Promise.all([
+      page.waitForEvent('popup'),
+      sourceBtn.click(),
+    ])
+    expect(popup.url()).toBe(completedAppWithSource.source_url!)
+
+    // Verify the original page remains open
+    await expect(page.getByTestId('app-actions')).toBeVisible()
+  })
+
+  test('AppActions: Download Source Code button disabled for Building app', async ({ page }) => {
+    await setupMockApp(buildingApp)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    const sourceBtn = page.getByTestId('app-actions-source')
+    await expect(sourceBtn).toBeVisible({ timeout: 10000 })
+    await expect(sourceBtn).toBeDisabled()
+
+    // Verify button text is still present
+    await expect(sourceBtn.locator('.app-actions__btn-label')).toHaveText('Download Source Code')
+  })
+
+  test('AppActions: Download Source Code button disabled for Queued app', async ({ page }) => {
+    await setupMockApp(queuedApp)(page)
+    await page.goto(`/apps/${queuedApp.id}`)
+
+    const sourceBtn = page.getByTestId('app-actions-source')
+    await expect(sourceBtn).toBeVisible({ timeout: 10000 })
+    await expect(sourceBtn).toBeDisabled()
+
+    // Verify button text is still present
+    await expect(sourceBtn.locator('.app-actions__btn-label')).toHaveText('Download Source Code')
+  })
+
+  test('AppActions: Both buttons positioned below description and above activity log', async ({ page }) => {
+    await setupMockApp(buildingApp)(page)
+    await page.goto(`/apps/${buildingApp.id}`)
+
+    const headerMeta = page.getByTestId('app-header-meta')
+    const appActions = page.getByTestId('app-actions')
+    const activityLog = page.getByTestId('activity-log')
+
+    await expect(headerMeta).toBeVisible({ timeout: 10000 })
+    await expect(appActions).toBeVisible()
+    await expect(activityLog).toBeVisible()
+
+    const metaBox = await headerMeta.boundingBox()
+    const actionsBox = await appActions.boundingBox()
+    const activityBox = await activityLog.boundingBox()
+
+    expect(metaBox).toBeTruthy()
+    expect(actionsBox).toBeTruthy()
+    expect(activityBox).toBeTruthy()
+
+    // AppActions below AppHeader metadata
+    expect(actionsBox!.y).toBeGreaterThan(metaBox!.y)
+    // AppActions above ActivityLog
+    expect(activityBox!.y).toBeGreaterThan(actionsBox!.y)
+
+    // Verify both buttons are in a horizontal row
+    const openBtn = page.getByTestId('app-actions-open')
+    const sourceBtn = page.getByTestId('app-actions-source')
+    await expect(openBtn).toBeVisible()
+    await expect(sourceBtn).toBeVisible()
+
+    const openBox = await openBtn.boundingBox()
+    const sourceBox = await sourceBtn.boundingBox()
+    expect(openBox).toBeTruthy()
+    expect(sourceBox).toBeTruthy()
+
+    // Open Live App on the left, Download Source Code on the right
+    expect(sourceBox!.x).toBeGreaterThan(openBox!.x)
+  })
 })

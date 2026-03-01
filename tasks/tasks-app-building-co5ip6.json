@@ -3,17 +3,6 @@
     {
       "skill": "skills/tasks/build/writeTests.md",
       "subtasks": [
-        "WriteTestAppActionsDownloadTrigger: Write test for AppActions: Download Source Code button triggers file download",
-        "WriteTestAppActionsDownloadDisabledBuilding: Write test for AppActions: Download Source Code button disabled for Building app",
-        "WriteTestAppActionsDownloadDisabledQueued: Write test for AppActions: Download Source Code button disabled for Queued app",
-        "WriteTestAppActionsBothButtons: Write test for AppActions: Both buttons positioned below description and above activity log"
-      ],
-      "timestamp": "2026-03-01T07:34:57.338Z",
-      "app": "LoopBuilder"
-    },
-    {
-      "skill": "skills/tasks/build/writeTests.md",
-      "subtasks": [
         "WriteTestActivityLogTitle: Write test for ActivityLog: Section title and layout",
         "WriteTestActivityLogLive: Write test for ActivityLog: Live Feed indicator for Building app",
         "WriteTestActivityLogHistorical: Write test for ActivityLog: Historical View indicator for Completed app",
