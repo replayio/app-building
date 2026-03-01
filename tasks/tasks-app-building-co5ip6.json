@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/checkDirectives.md",
-      "subtasks": [
-        "FixViolationMissingStatusLinkTestEntry: Add test entry for System Status footer link on MainPage and write corresponding Playwright test",
-        "RunTests: Verify tests pass after fix"
-      ],
-      "timestamp": "2026-03-01T07:53:23.157Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/maintain/polishApp.md",
       "subtasks": [
         "Unpack: Polish app quality"

@@ -2,7 +2,7 @@
 
 ## MainPage (/)
 
-<!-- Components: StatusFilter, RequestAppCTA, AppCard, AppCardGrid -->
+<!-- Components: StatusFilter, RequestAppCTA, AppCard, AppCardGrid, StatusLink -->
 
 ### StatusFilter
 
@@ -122,6 +122,17 @@ the AppCardGrid includes the newly queued app as an AppCard on page refresh or n
 **AppCardGrid: Responsive layout**
 Given the user is on MainPage on a standard desktop viewport,
 the AppCardGrid displays cards in a 2-column layout as shown in the mockup, with consistent spacing between cards.
+
+### StatusLink
+
+**StatusLink: Visible in footer**
+Given the user navigates to MainPage (/),
+the page footer contains a "System Status" link at the bottom of the page.
+
+**StatusLink: Navigates to StatusPage on click**
+Given the user is on MainPage (/),
+when the user clicks the "System Status" link in the footer,
+the app navigates to the StatusPage (/status).
 
 ## AppPage (/apps/:id)
 

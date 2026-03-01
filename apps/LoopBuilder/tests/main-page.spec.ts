@@ -636,3 +636,47 @@ test.describe('AppCardGrid', () => {
     expect(gridStyle.gap).not.toBe('normal')
   })
 })
+
+// ──────────────────────────────────────────────────────────────────────────────
+// StatusLink
+// ──────────────────────────────────────────────────────────────────────────────
+
+test.describe('StatusLink', () => {
+  test('StatusLink: Visible in footer', async ({ page }) => {
+    await setupMockApps(mockApps)(page)
+    await page.goto('/')
+    await expect(page.getByTestId('main-page')).toBeVisible({ timeout: 10000 })
+
+    // Status link is visible in the footer
+    const statusLink = page.getByTestId('status-link')
+    await expect(statusLink).toBeVisible()
+    await expect(statusLink).toContainText('System Status')
+  })
+
+  test('StatusLink: Navigates to StatusPage on click', async ({ page }) => {
+    await setupMockApps(mockApps)(page)
+
+    // Mock the status endpoint so StatusPage can load
+    await page.route('**/.netlify/functions/status', (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          containers: [],
+          webhookEvents: [],
+          defaultPrompt: null,
+        }),
+      })
+    })
+
+    await page.goto('/')
+    await expect(page.getByTestId('status-link')).toBeVisible({ timeout: 10000 })
+
+    // Click the System Status link
+    await page.getByTestId('status-link').click()
+
+    // Verify navigation to StatusPage
+    await expect(page).toHaveURL(/\/status/, { timeout: 10000 })
+    await expect(page.getByTestId('status-page')).toBeVisible({ timeout: 10000 })
+  })
+})

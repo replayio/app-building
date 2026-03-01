@@ -31,6 +31,7 @@ function MainPage() {
       ) : (
         <AppCardGrid />
       )}
+      {/* StatusLink: Visible in footer, StatusLink: Navigates to StatusPage on click */}
       <div className="main-page__footer">
         <Link to="/status" className="main-page__status-link" data-testid="status-link">
           System Status
