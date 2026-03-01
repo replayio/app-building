@@ -66,8 +66,12 @@ The test spec must be written in docs/tests.md. This file is organized by page, 
 - Apps that receive webhooks from external services must include a webhook help/documentation UI
   accessible from the app's status or admin page. The help UI must list each webhook endpoint with its
   URL path, HTTP method, authentication requirements (e.g., Bearer token, query parameter), required
-  and optional payload fields, and an example curl command. Test entries should verify that the help UI
-  is accessible via a clearly labeled button and displays accurate documentation for each webhook endpoint.
+  and optional payload fields, and an example curl command. Example curl commands must use the actual
+  deployed site URL (derived from the current page origin) rather than placeholder values — commands
+  should be ready to use as-is. Each curl command and endpoint URL should have a copy-to-clipboard
+  button so users can quickly use them. Test entries should verify that the help UI is accessible via a
+  clearly labeled button, displays accurate documentation for each webhook endpoint, uses the actual
+  site URL in examples, and provides working copy buttons.
 
 - For apps that expose backend API endpoints (webhooks, serverless functions, etc.), the test specification
   must include entries that verify the endpoints actually function correctly — not just that their

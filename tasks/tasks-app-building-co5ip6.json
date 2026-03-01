@@ -1,16 +1,6 @@
 {
   "tasks": [
     {
-      "skill": "skills/tasks/maintain/reviewBugReport.md",
-      "subtasks": [
-        "ClassifyBug: Classify webhook-docs-copy-button",
-        "UpdateDirectives: Update directives for webhook-docs-copy-button",
-        "FinishBug: Mark webhook-docs-copy-button as reviewed"
-      ],
-      "timestamp": "2026-03-01T04:29:12.401Z",
-      "app": "LoopBuilder"
-    },
-    {
       "skill": "skills/tasks/maintain/checkDirectives.md",
       "subtasks": [
         "Unpack: Check directive compliance"
