@@ -30,7 +30,9 @@ const ENDPOINTS = [
     curl: `curl -X POST https://YOUR_SITE/.netlify/functions/spawn-container \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
-  -d '{"prompt": "Build a todo app with authentication"}'`,
+  -d '{"prompt": "Build a todo app with authentication"}'
+# Returns immediately with { name, status: "pending", prompt }
+# Container spawning runs in background; poll status endpoint for updates`,
   },
   {
     method: 'POST',

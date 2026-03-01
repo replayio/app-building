@@ -98,6 +98,14 @@ contexts (testing, deployment).
 - Attachment functionality must support actual file uploads. Any UI that allows adding attachments
   must include a working file upload mechanism (e.g., file picker, drag-and-drop), not just link entry.
 
+- Netlify Functions that perform long-running operations (e.g., spawning containers, calling external APIs
+  that may take more than a few seconds, polling for readiness) must use Netlify Background Functions.
+  Background functions use the v1 handler format (`export const handler: Handler`) and the `-background`
+  filename suffix (e.g., `my-function-background.ts`). They return 202 immediately to the caller and run
+  for up to 15 minutes. The synchronous entry-point function should validate input, insert a pending record
+  in the database, trigger the background function via HTTP, and return immediately. The background function
+  should update the database on completion (success or failure).
+
 - Every page component must include consistent padding on its root element (`p-6 max-sm:p-3`)
   so content is never flush against the screen edges. This applies to all pages including
   centered layouts (auth forms, error pages) — add padding alongside centering utilities.

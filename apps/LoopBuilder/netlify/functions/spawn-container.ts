@@ -1,5 +1,4 @@
 import { neon } from '@neondatabase/serverless'
-import { createMachine, waitForMachine } from '@replayio/app-building'
 
 const DEFAULT_IMAGE_REF = 'ghcr.io/replayio/app-building:latest'
 
@@ -68,45 +67,37 @@ export default async (request: Request) => {
   const uniqueId = Math.random().toString(36).slice(2, 8)
   const containerName = `app-building-${uniqueId}`
 
-  const containerEnv: Record<string, string> = {
-    GIT_AUTHOR_NAME: 'App Builder',
-    GIT_AUTHOR_EMAIL: 'app-builder@localhost',
-    GIT_COMMITTER_NAME: 'App Builder',
-    GIT_COMMITTER_EMAIL: 'app-builder@localhost',
-    PLAYWRIGHT_BROWSERS_PATH: '/opt/playwright',
-    PORT: '3000',
-    CONTAINER_NAME: containerName,
-    PROMPT: prompt,
-  }
-
-  const webhookUrl = process.env.WEBHOOK_URL
-  if (webhookUrl) {
-    containerEnv.WEBHOOK_URL = webhookUrl
-  }
-
   try {
-    const machineId = await createMachine(flyApp, flyToken, imageRef, containerEnv, containerName)
-    await waitForMachine(flyApp, flyToken, machineId)
-
     await sql`
       INSERT INTO containers (container_id, name, status, prompt, created_at, last_event_at)
-      VALUES (${machineId}, ${containerName}, 'started', ${prompt}, NOW(), NOW())
+      VALUES (${containerName}, ${containerName}, 'pending', ${prompt}, NOW(), NOW())
     `
-
-    return new Response(JSON.stringify({
-      container_id: machineId,
-      name: containerName,
-      status: 'started',
-      prompt,
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
-    return new Response(JSON.stringify({ error: 'Failed to spawn container', detail: message }), {
+    return new Response(JSON.stringify({ error: 'Failed to create pending record', detail: message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
   }
+
+  const siteUrl = process.env.URL || `https://${request.headers.get('host')}`
+  fetch(`${siteUrl}/.netlify/functions/spawn-container-background`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${webhookSecret}`,
+    },
+    body: JSON.stringify({ containerName, prompt, imageRef, flyApp, flyToken }),
+  }).catch((err) => {
+    console.error('Failed to trigger background function:', err)
+  })
+
+  return new Response(JSON.stringify({
+    name: containerName,
+    status: 'pending',
+    prompt,
+  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
 }
