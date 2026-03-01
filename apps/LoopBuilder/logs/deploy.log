@@ -11,8 +11,8 @@ rendering chunks...
 computing gzip size...
 dist/index.html                     0.46 kB │ gzip:   0.29 kB
 dist/assets/index-DBywVm-6.css     27.95 kB │ gzip:   4.32 kB
-dist/assets/index-C8vuuPwr.js   1,232.72 kB │ gzip: 216.16 kB │ map: 2,438.34 kB
-✓ built in 4.10s
+dist/assets/index-iXOMTjDv.js   1,232.86 kB │ gzip: 216.24 kB │ map: 2,438.49 kB
+✓ built in 4.44s
 
 === BUILD STDERR ===
 
@@ -35,11 +35,11 @@ Deploying to Netlify
    │   Deployed to production URL: https://loop-builder.netlify.app   │
    │                                                                  │
    │                        Unique deploy URL:                        │
-   │    https://69a379a334f1e16d008b9099--loop-builder.netlify.app    │
+   │    https://69a3840bfbb453bd0351fd91--loop-builder.netlify.app    │
    │                                                                  │
    ╰──────────────────────────────────────────────────────────────────╯
 
-[32mBuild logs: [39m        https://app.netlify.com/projects/loop-builder/deploys/69a379a334f1e16d008b9099
+[32mBuild logs: [39m        https://app.netlify.com/projects/loop-builder/deploys/69a3840bfbb453bd0351fd91
 [32mFunction logs: [39m     https://app.netlify.com/projects/loop-builder/logs/functions
 [32mEdge function Logs: [39mhttps://app.netlify.com/projects/loop-builder/logs/edge-functions
 
@@ -50,11 +50,11 @@ Deploying to Netlify
 ⠋ Hashing files...
 ⠋ Looking for a functions cache...
 √ No cached functions were found
-√ Finished hashing 5 files and 7 functions
+√ Finished hashing 5 files and 8 functions
 ⠋ CDN diffing files...
-√ CDN requesting 4 files and 0 functions
-⠋ Uploading 4 files
-√ Finished uploading 4 assets
+√ CDN requesting 3 files and 2 functions
+⠋ Uploading 5 files
+√ Finished uploading 5 assets
 ⠋ Waiting for deploy to go live...
 √ Deploy is live!
 
